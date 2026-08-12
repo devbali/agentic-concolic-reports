@@ -1,0 +1,398 @@
+{
+  "schema_version": "1.0",
+  "label": "aspects_create_with_person",
+  "symbolic_vars": [
+    {
+      "name": "SYM_RESULT_ActiveRecord__Base_save_1_save_ok",
+      "sort": "Bool",
+      "value": true,
+      "note": "Aspect#save args={}"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_not_found",
+      "sort": "Bool",
+      "value": false,
+      "note": "Person query (class-level finder), args=ids=2"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id",
+      "sort": "Int",
+      "value": 1,
+      "note": "Person query (class-level finder), args=ids=2"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_guid",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_guid_v",
+      "note": "Person query (class-level finder), args=ids=2"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_diaspora_handle",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_diaspora_handle_v",
+      "note": "Person query (class-level finder), args=ids=2"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_serialized_public_key",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_serialized_public_key_v",
+      "note": "Person query (class-level finder), args=ids=2"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_owner_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "Person query (class-level finder), args=ids=2"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_created_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_created_at_v",
+      "note": "Person query (class-level finder), args=ids=2"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_updated_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_updated_at_v",
+      "note": "Person query (class-level finder), args=ids=2"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_closed_account",
+      "sort": "Bool",
+      "value": false,
+      "note": "Person query (class-level finder), args=ids=2"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_fetch_status",
+      "sort": "Int",
+      "value": 0,
+      "note": "Person query (class-level finder), args=ids=2"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_pod_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "Person query (class-level finder), args=ids=2"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"contacts\".* FROM \"contacts\""
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_id",
+      "sort": "Int",
+      "value": 1,
+      "note": "SELECT \"contacts\".* FROM \"contacts\""
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"contacts\".* FROM \"contacts\""
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"contacts\".* FROM \"contacts\""
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_created_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_created_at_v",
+      "note": "SELECT \"contacts\".* FROM \"contacts\""
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_updated_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_updated_at_v",
+      "note": "SELECT \"contacts\".* FROM \"contacts\""
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_sharing",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"contacts\".* FROM \"contacts\""
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_receiving",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"contacts\".* FROM \"contacts\""
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Associations__CollectionProxy_create_1_membership_id",
+      "sort": "Int",
+      "value": 1,
+      "note": "aspect_memberships.create {\"attributes\"=>nil, \"block\"=>nil}"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Associations__CollectionProxy_create_1_membership_aspect_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "aspect_memberships.create {\"attributes\"=>nil, \"block\"=>nil}"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Associations__CollectionProxy_create_1_membership_contact_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "aspect_memberships.create {\"attributes\"=>nil, \"block\"=>nil}"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Associations__CollectionProxy_create_1_membership_created_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__Associations__CollectionProxy_create_1_membership_created_at_v",
+      "note": "aspect_memberships.create {\"attributes\"=>nil, \"block\"=>nil}"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Associations__CollectionProxy_create_1_membership_updated_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__Associations__CollectionProxy_create_1_membership_updated_at_v",
+      "note": "aspect_memberships.create {\"attributes\"=>nil, \"block\"=>nil}"
+    },
+    {
+      "name": "assoc_aspect_id",
+      "sort": "Int",
+      "value": 1,
+      "note": "SingularAssociation#aspect"
+    },
+    {
+      "name": "assoc_aspect_name",
+      "sort": "String",
+      "value": "assoc_aspect_name_v",
+      "note": "SingularAssociation#aspect"
+    },
+    {
+      "name": "assoc_aspect_user_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SingularAssociation#aspect"
+    },
+    {
+      "name": "assoc_aspect_created_at",
+      "sort": "String",
+      "value": "assoc_aspect_created_at_v",
+      "note": "SingularAssociation#aspect"
+    },
+    {
+      "name": "assoc_aspect_updated_at",
+      "sort": "String",
+      "value": "assoc_aspect_updated_at_v",
+      "note": "SingularAssociation#aspect"
+    },
+    {
+      "name": "assoc_aspect_order_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SingularAssociation#aspect"
+    },
+    {
+      "name": "assoc_aspect_chat_enabled",
+      "sort": "Bool",
+      "value": false,
+      "note": "SingularAssociation#aspect"
+    },
+    {
+      "name": "assoc_aspect_post_default",
+      "sort": "Bool",
+      "value": false,
+      "note": "SingularAssociation#aspect"
+    }
+  ],
+  "events": [
+    {
+      "type": "call",
+      "target": "ActiveRecord::Base.save",
+      "args": {
+},
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/aspects_controller.rb",
+      "lineno": 18,
+      "function": "create"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::Base.save",
+      "args": {
+},
+      "result_name": "SYM_RESULT_ActiveRecord__Base_save_1",
+      "result_value": true,
+      "result_sort": "Bool",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/aspects_controller.rb",
+      "lineno": 18,
+      "function": "create",
+      "note": "Aspect#save args={}"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::Core::ClassMethods.find",
+      "args": {
+        "ids": 2
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/aspects_controller.rb",
+      "lineno": 88,
+      "function": "connect_person_to_aspect"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::Core::ClassMethods.find",
+      "args": {
+        "ids": 2
+      },
+      "result_name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1",
+      "result_value": "#<Person:0x144d8c4f>",
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/aspects_controller.rb",
+      "lineno": 88,
+      "function": "connect_person_to_aspect",
+      "note": "Person query (class-level finder), args=ids=2"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_not_found == True)",
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/concolic_targets.rb",
+      "lineno": 296,
+      "function": "block in finder_mock"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::FinderMethods.find_by",
+      "args": {
+        "arg": null,
+        "args": null
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/models/user/querying.rb",
+      "lineno": 43,
+      "function": "contact_for_person_id"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::FinderMethods.find_by",
+      "args": {
+        "arg": null,
+        "args": null
+      },
+      "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1",
+      "result_value": "#<Contact:0x7cb81ae>",
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/models/user/querying.rb",
+      "lineno": 43,
+      "function": "contact_for_person_id",
+      "note": "SELECT \"contacts\".* FROM \"contacts\""
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found == True)",
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/concolic_targets.rb",
+      "lineno": 296,
+      "function": "block in finder_mock"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::Associations::CollectionProxy.create",
+      "args": {
+        "attributes": null,
+        "block": null
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/aspects_controller.rb",
+      "lineno": 90,
+      "function": "connect_person_to_aspect"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::Associations::CollectionProxy.create",
+      "args": {
+        "attributes": null,
+        "block": null
+      },
+      "result_name": "SYM_RESULT_ActiveRecord__Associations__CollectionProxy_create_1",
+      "result_value": "#<AspectMembership:0x1f6b9ab7>",
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/aspects_controller.rb",
+      "lineno": 90,
+      "function": "connect_person_to_aspect",
+      "note": "aspect_memberships.create {\"attributes\"=>nil, \"block\"=>nil}"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::Associations::SingularAssociation.find_target",
+      "args": {
+},
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations/association.rb",
+      "lineno": 159,
+      "function": "load_target"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::Associations::SingularAssociation.find_target",
+      "args": {
+},
+      "result_name": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1",
+      "result_value": "assoc_aspect_name_v",
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations/association.rb",
+      "lineno": 159,
+      "function": "load_target",
+      "note": "SingularAssociation#aspect"
+    },
+    {
+      "type": "call",
+      "target": "ActionController::Rendering.render",
+      "args": {
+        "args": null
+      },
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/instrumentation.rb",
+      "lineno": 46,
+      "function": "block"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActionController::Rendering.render",
+      "args": {
+        "args": null
+      },
+      "result_name": "SYM_RESULT_ActionController__Rendering_render_1",
+      "result_value": "render_reached",
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/instrumentation.rb",
+      "lineno": 46,
+      "function": "block in render"
+    }
+  ],
+  "symbolic_results": [
+    {
+      "name": "SYM_RESULT_ActiveRecord__Base_save_1",
+      "sort": "Bool",
+      "value": true
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1",
+      "sort": "Int",
+      "value": "#<Person:0x144d8c4f>"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1",
+      "sort": "Int",
+      "value": "#<Contact:0x7cb81ae>"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Associations__CollectionProxy_create_1",
+      "sort": "Int",
+      "value": "#<AspectMembership:0x1f6b9ab7>"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1",
+      "sort": "Int",
+      "value": "assoc_aspect_name_v"
+    },
+    {
+      "name": "SYM_RESULT_ActionController__Rendering_render_1",
+      "sort": "Int",
+      "value": "render_reached"
+    }
+  ],
+  "script": "run_concolic.rb"
+}

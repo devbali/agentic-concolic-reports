@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.0",
+  "label": "aspects_create_default",
+  "symbolic_vars": [
+    {
+      "name": "SYM_RESULT_ActiveRecord__Base_save_1_save_ok",
+      "sort": "Bool",
+      "value": true,
+      "note": "Aspect#save args={}"
+    }
+  ],
+  "events": [
+    {
+      "type": "call",
+      "target": "ActiveRecord::Base.save",
+      "args": {
+},
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/aspects_controller.rb",
+      "lineno": 18,
+      "function": "create"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::Base.save",
+      "args": {
+},
+      "result_name": "SYM_RESULT_ActiveRecord__Base_save_1",
+      "result_value": true,
+      "result_sort": "Bool",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/aspects_controller.rb",
+      "lineno": 18,
+      "function": "create",
+      "note": "Aspect#save args={}"
+    },
+    {
+      "type": "call",
+      "target": "ActionController::Rendering.render",
+      "args": {
+        "args": null
+      },
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/instrumentation.rb",
+      "lineno": 46,
+      "function": "block"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActionController::Rendering.render",
+      "args": {
+        "args": null
+      },
+      "result_name": "SYM_RESULT_ActionController__Rendering_render_1",
+      "result_value": "render_reached",
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/instrumentation.rb",
+      "lineno": 46,
+      "function": "block in render"
+    }
+  ],
+  "symbolic_results": [
+    {
+      "name": "SYM_RESULT_ActiveRecord__Base_save_1",
+      "sort": "Bool",
+      "value": true
+    },
+    {
+      "name": "SYM_RESULT_ActionController__Rendering_render_1",
+      "sort": "Int",
+      "value": "render_reached"
+    }
+  ],
+  "script": "run_concolic.rb"
+}

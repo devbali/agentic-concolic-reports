@@ -1,0 +1,105 @@
+{
+  "schema_version": "1.0",
+  "label": "comments_create_r2",
+  "symbolic_vars": [
+    {
+      "name": "post_id",
+      "sort": "String",
+      "value": "5"
+    },
+    {
+      "name": "text",
+      "sort": "String",
+      "value": "a symbolic comment"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found",
+      "sort": "Bool",
+      "value": true,
+      "note": "SELECT \"users\".* FROM \"users\""
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found",
+      "sort": "Bool",
+      "value": true,
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 5"
+    }
+  ],
+  "events": [
+    {
+      "type": "call",
+      "target": "ActiveRecord::FinderMethods.first",
+      "args": {
+        "limit": null
+      },
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/querying.rb",
+      "lineno": 5,
+      "function": "first"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::FinderMethods.first",
+      "args": {
+        "limit": null
+      },
+      "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
+      "result_value": null,
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/querying.rb",
+      "lineno": 5,
+      "function": "first"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+      "taken": true,
+      "file": "/home/dev/project/reports/diaspora/concolic_targets.rb",
+      "lineno": 157,
+      "function": "block in finder_mock"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::FinderMethods.first",
+      "args": {
+        "limit": null
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/services/post_service.rb",
+      "lineno": 52,
+      "function": "find_public!"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::FinderMethods.first",
+      "args": {
+        "limit": null
+      },
+      "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2",
+      "result_value": null,
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/services/post_service.rb",
+      "lineno": 52,
+      "function": "find_public!"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found == True)",
+      "taken": true,
+      "file": "/home/dev/project/reports/diaspora/concolic_targets.rb",
+      "lineno": 157,
+      "function": "block in finder_mock"
+    }
+  ],
+  "symbolic_results": [
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
+      "sort": "Int",
+      "value": null
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2",
+      "sort": "Int",
+      "value": null
+    }
+  ],
+  "script": "run_concolic.rb"
+}

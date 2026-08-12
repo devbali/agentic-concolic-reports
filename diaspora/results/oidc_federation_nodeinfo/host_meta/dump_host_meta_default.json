@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0",
+  "label": "host_meta_default",
+  "symbolic_vars": [
+
+  ],
+  "events": [
+
+  ],
+  "script": "run_concolic.rb",
+  "error": {
+    "type": "ActionController::UrlGenerationError",
+    "message": "No route matches {:action=>\"host_meta\", :controller=>\"diaspora_federation/webfinger\"}",
+    "traceback": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_dispatch/journey/formatter.rb:57:in `generate'\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_dispatch/routing/route_set.rb:744:in `generate'\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_dispatch/routing/route_set.rb:775:in `generate'\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_dispatch/routing/route_set.rb:770:in `generate_extras'\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/test_case.rb:495:in `process'\n/home/dev/.gem/jruby/2.6.0/gems/active_model_serializers-0.9.7/lib/action_controller/serialization_test_case.rb:25:in `process'\n/home/dev/project/reports/diaspora/results/oidc_federation_nodeinfo/run_concolic.rb:90:in `block in drive'\n/home/dev/project/src/ruby_runtime/call_interceptor.rb:266:in `run'\n/home/dev/project/reports/diaspora/results/oidc_federation_nodeinfo/run_concolic.rb:89:in `drive'\n/home/dev/project/reports/diaspora/results/oidc_federation_nodeinfo/run_concolic.rb:119:in `<main>'"
+  }
+}

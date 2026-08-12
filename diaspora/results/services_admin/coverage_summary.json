@@ -1,0 +1,36 @@
+{
+  "batch": "services_admin",
+  "runs_loaded": 12,
+  "runs_completed_noerror": 5,
+  "runs_crashed": 7,
+  "crash_types": {
+    "NotImplementedError": 3,
+    "NoMethodError": 3,
+    "ActionController::UrlGenerationError": 1
+  },
+  "coverage_complete": false,
+  "tree_nodes": 2,
+  "missing_branches": 2,
+  "solver_lost": 0,
+  "solver_ms": 0.5869441665709019,
+  "missing": [
+    {
+      "at": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_not_found == True)",
+      "loc": "/home/dev/project/reports/diaspora/concolic_targets.rb:133 in block in finder_mock()",
+      "branch": "taken",
+      "values": {
+        "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_not_found": true
+      },
+      "untracked": false
+    },
+    {
+      "at": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_not_found == True)",
+      "loc": "/home/dev/project/reports/diaspora/concolic_targets.rb:133 in block in finder_mock()",
+      "branch": "taken",
+      "values": {
+        "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_not_found": true
+      },
+      "untracked": false
+    }
+  ]
+}

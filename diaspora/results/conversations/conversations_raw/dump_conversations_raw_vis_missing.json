@@ -1,0 +1,216 @@
+{
+  "schema_version": "1.0",
+  "label": "conversations_raw_vis_missing",
+  "symbolic_vars": [
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"conversations\".* FROM \"conversations\" WHERE \"conversations\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_id",
+      "sort": "Int",
+      "value": 1,
+      "note": "SELECT \"conversations\".* FROM \"conversations\" WHERE \"conversations\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_subject",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_subject_v",
+      "note": "SELECT \"conversations\".* FROM \"conversations\" WHERE \"conversations\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid_v",
+      "note": "SELECT \"conversations\".* FROM \"conversations\" WHERE \"conversations\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_author_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"conversations\".* FROM \"conversations\" WHERE \"conversations\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_created_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_created_at_v",
+      "note": "SELECT \"conversations\".* FROM \"conversations\" WHERE \"conversations\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_updated_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_updated_at_v",
+      "note": "SELECT \"conversations\".* FROM \"conversations\" WHERE \"conversations\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found",
+      "sort": "Bool",
+      "value": true,
+      "note": "SELECT \"conversation_visibilities\".* FROM \"conversation_visibilities\" WHERE \"conversation_visibilities\".\"person_id\" = 1 AND (unread > 0)"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"conversation_visibilities\".* FROM \"conversation_visibilities\""
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_id",
+      "sort": "Int",
+      "value": 1,
+      "note": "SELECT \"conversation_visibilities\".* FROM \"conversation_visibilities\""
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_conversation_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"conversation_visibilities\".* FROM \"conversation_visibilities\""
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"conversation_visibilities\".* FROM \"conversation_visibilities\""
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_unread",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"conversation_visibilities\".* FROM \"conversation_visibilities\""
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_created_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_created_at_v",
+      "note": "SELECT \"conversation_visibilities\".* FROM \"conversation_visibilities\""
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_updated_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_updated_at_v",
+      "note": "SELECT \"conversation_visibilities\".* FROM \"conversation_visibilities\""
+    }
+  ],
+  "events": [
+    {
+      "type": "call",
+      "target": "ActiveRecord::FinderMethods.first",
+      "args": {
+        "limit": null
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/conversations_controller.rb",
+      "lineno": 81,
+      "function": "raw"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::FinderMethods.first",
+      "args": {
+        "limit": null
+      },
+      "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
+      "result_value": "#<Conversation:0x2cc224b7>",
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/conversations_controller.rb",
+      "lineno": 81,
+      "function": "raw"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/concolic_targets.rb",
+      "lineno": 133,
+      "function": "block in finder_mock"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::FinderMethods.first",
+      "args": {
+        "limit": null
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/models/conversation.rb",
+      "lineno": 32,
+      "function": "first_unread_message"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::FinderMethods.first",
+      "args": {
+        "limit": null
+      },
+      "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2",
+      "result_value": null,
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/models/conversation.rb",
+      "lineno": 32,
+      "function": "first_unread_message"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found == True)",
+      "taken": true,
+      "file": "/home/dev/project/reports/diaspora/concolic_targets.rb",
+      "lineno": 133,
+      "function": "block in finder_mock"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::FinderMethods.find_by",
+      "args": {
+        "arg": null,
+        "args": null
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/models/conversation.rb",
+      "lineno": 38,
+      "function": "set_read"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::FinderMethods.find_by",
+      "args": {
+        "arg": null,
+        "args": null
+      },
+      "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1",
+      "result_value": "#<ConversationVisibility:0x76f58d0>",
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/models/conversation.rb",
+      "lineno": 38,
+      "function": "set_read"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found == True)",
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/concolic_targets.rb",
+      "lineno": 133,
+      "function": "block in finder_mock"
+    }
+  ],
+  "symbolic_results": [
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
+      "sort": "Int",
+      "value": "#<Conversation:0x2cc224b7>"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2",
+      "sort": "Int",
+      "value": null
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1",
+      "sort": "Int",
+      "value": "#<ConversationVisibility:0x76f58d0>"
+    }
+  ],
+  "script": "run_phase2.rb",
+  "error": {
+    "type": "NoMethodError",
+    "message": "undefined method `write_from_user' for nil:NilClass\nDid you mean?  write_dump",
+    "traceback": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods/write.rb:51:in `_write_attribute'\n/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods/write.rb:24:in `__temp__57e627561646='\n/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/models/conversation.rb:40:in `set_read'\n/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/conversations_controller.rb:84:in `raw'\n/home/dev/project/reports/diaspora/results/conversations/run_phase2.rb:108:in `block in drive'\n/home/dev/project/src/ruby_runtime/call_interceptor.rb:266:in `run'\n/home/dev/project/reports/diaspora/results/conversations/run_phase2.rb:108:in `drive'\n/home/dev/project/reports/diaspora/results/conversations/run_phase2.rb:125:in `<main>'"
+  }
+}

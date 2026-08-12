@@ -1,0 +1,675 @@
+{
+  "schema_version": "1.0",
+  "label": "streams_mentioned_json",
+  "symbolic_vars": [
+    {
+      "name": "assoc_owner_id",
+      "sort": "Int",
+      "value": 1,
+      "note": "SingularAssociation#owner"
+    },
+    {
+      "name": "assoc_owner_username",
+      "sort": "String",
+      "value": "assoc_owner_username_v",
+      "note": "SingularAssociation#owner"
+    },
+    {
+      "name": "assoc_owner_serialized_private_key",
+      "sort": "String",
+      "value": "assoc_owner_serialized_private_key_v",
+      "note": "SingularAssociation#owner"
+    },
+    {
+      "name": "assoc_owner_getting_started",
+      "sort": "Bool",
+      "value": false,
+      "note": "SingularAssociation#owner"
+    },
+    {
+      "name": "assoc_owner_disable_mail",
+      "sort": "Bool",
+      "value": false,
+      "note": "SingularAssociation#owner"
+    },
+    {
+      "name": "assoc_owner_language",
+      "sort": "String",
+      "value": "assoc_owner_language_v",
+      "note": "SingularAssociation#owner"
+    },
+    {
+      "name": "assoc_owner_email",
+      "sort": "String",
+      "value": "assoc_owner_email_v",
+      "note": "SingularAssociation#owner"
+    },
+    {
+      "name": "assoc_owner_encrypted_password",
+      "sort": "String",
+      "value": "assoc_owner_encrypted_password_v",
+      "note": "SingularAssociation#owner"
+    },
+    {
+      "name": "assoc_owner_created_at",
+      "sort": "String",
+      "value": "assoc_owner_created_at_v",
+      "note": "SingularAssociation#owner"
+    },
+    {
+      "name": "assoc_owner_updated_at",
+      "sort": "String",
+      "value": "assoc_owner_updated_at_v",
+      "note": "SingularAssociation#owner"
+    },
+    {
+      "name": "assoc_owner_locked_at",
+      "sort": "String",
+      "value": "assoc_owner_locked_at_v",
+      "note": "SingularAssociation#owner"
+    },
+    {
+      "name": "assoc_owner_sign_in_count",
+      "sort": "Int",
+      "value": 0,
+      "note": "SingularAssociation#owner"
+    },
+    {
+      "name": "assoc_owner_current_sign_in_at",
+      "sort": "String",
+      "value": "assoc_owner_current_sign_in_at_v",
+      "note": "SingularAssociation#owner"
+    },
+    {
+      "name": "assoc_owner_last_sign_in_at",
+      "sort": "String",
+      "value": "assoc_owner_last_sign_in_at_v",
+      "note": "SingularAssociation#owner"
+    },
+    {
+      "name": "assoc_owner_current_sign_in_ip",
+      "sort": "String",
+      "value": "assoc_owner_current_sign_in_ip_v",
+      "note": "SingularAssociation#owner"
+    },
+    {
+      "name": "assoc_owner_last_sign_in_ip",
+      "sort": "String",
+      "value": "assoc_owner_last_sign_in_ip_v",
+      "note": "SingularAssociation#owner"
+    },
+    {
+      "name": "assoc_owner_hidden_shareables",
+      "sort": "String",
+      "value": "assoc_owner_hidden_shareables_v",
+      "note": "SingularAssociation#owner"
+    },
+    {
+      "name": "assoc_owner_reset_password_sent_at",
+      "sort": "String",
+      "value": "assoc_owner_reset_password_sent_at_v",
+      "note": "SingularAssociation#owner"
+    },
+    {
+      "name": "assoc_owner_last_seen",
+      "sort": "String",
+      "value": "assoc_owner_last_seen_v",
+      "note": "SingularAssociation#owner"
+    },
+    {
+      "name": "assoc_owner_remove_after",
+      "sort": "String",
+      "value": "assoc_owner_remove_after_v",
+      "note": "SingularAssociation#owner"
+    },
+    {
+      "name": "assoc_owner_export",
+      "sort": "String",
+      "value": "assoc_owner_export_v",
+      "note": "SingularAssociation#owner"
+    },
+    {
+      "name": "assoc_owner_exported_at",
+      "sort": "String",
+      "value": "assoc_owner_exported_at_v",
+      "note": "SingularAssociation#owner"
+    },
+    {
+      "name": "assoc_owner_exporting",
+      "sort": "Bool",
+      "value": false,
+      "note": "SingularAssociation#owner"
+    },
+    {
+      "name": "assoc_owner_strip_exif",
+      "sort": "Bool",
+      "value": false,
+      "note": "SingularAssociation#owner"
+    },
+    {
+      "name": "assoc_owner_exported_photos_file",
+      "sort": "String",
+      "value": "assoc_owner_exported_photos_file_v",
+      "note": "SingularAssociation#owner"
+    },
+    {
+      "name": "assoc_owner_exported_photos_at",
+      "sort": "String",
+      "value": "assoc_owner_exported_photos_at_v",
+      "note": "SingularAssociation#owner"
+    },
+    {
+      "name": "assoc_owner_exporting_photos",
+      "sort": "Bool",
+      "value": false,
+      "note": "SingularAssociation#owner"
+    },
+    {
+      "name": "assoc_owner_color_theme",
+      "sort": "String",
+      "value": "assoc_owner_color_theme_v",
+      "note": "SingularAssociation#owner"
+    },
+    {
+      "name": "assoc_owner_post_default_public",
+      "sort": "Bool",
+      "value": false,
+      "note": "SingularAssociation#owner"
+    },
+    {
+      "name": "assoc_owner_auto_follow_back",
+      "sort": "Bool",
+      "value": false,
+      "note": "SingularAssociation#owner"
+    },
+    {
+      "name": "assoc_owner_auto_follow_back_aspect_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SingularAssociation#owner"
+    },
+    {
+      "name": "assoc_owner_show_community_spotlight_in_stream",
+      "sort": "Bool",
+      "value": false,
+      "note": "SingularAssociation#owner"
+    },
+    {
+      "name": "assoc_owner_otp_required_for_login",
+      "sort": "Bool",
+      "value": false,
+      "note": "SingularAssociation#owner"
+    },
+    {
+      "name": "assoc_owner_otp_backup_codes",
+      "sort": "String",
+      "value": "assoc_owner_otp_backup_codes_v",
+      "note": "SingularAssociation#owner"
+    },
+    {
+      "name": "assoc_owner_plain_otp_secret",
+      "sort": "String",
+      "value": "assoc_owner_plain_otp_secret_v",
+      "note": "SingularAssociation#owner"
+    },
+    {
+      "name": "assoc_owner_reset_password_token",
+      "sort": "String",
+      "value": "assoc_owner_reset_password_token_v",
+      "note": "SingularAssociation#owner"
+    },
+    {
+      "name": "assoc_owner_remember_created_at",
+      "sort": "String",
+      "value": "assoc_owner_remember_created_at_v",
+      "note": "SingularAssociation#owner"
+    },
+    {
+      "name": "assoc_owner_invited_by_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SingularAssociation#owner"
+    },
+    {
+      "name": "assoc_owner_authentication_token",
+      "sort": "String",
+      "value": "assoc_owner_authentication_token_v",
+      "note": "SingularAssociation#owner"
+    },
+    {
+      "name": "assoc_person_id",
+      "sort": "Int",
+      "value": 1,
+      "note": "SingularAssociation#person"
+    },
+    {
+      "name": "assoc_person_guid",
+      "sort": "String",
+      "value": "assoc_person_guid_v",
+      "note": "SingularAssociation#person"
+    },
+    {
+      "name": "assoc_person_diaspora_handle",
+      "sort": "String",
+      "value": "assoc_person_diaspora_handle_v",
+      "note": "SingularAssociation#person"
+    },
+    {
+      "name": "assoc_person_serialized_public_key",
+      "sort": "String",
+      "value": "assoc_person_serialized_public_key_v",
+      "note": "SingularAssociation#person"
+    },
+    {
+      "name": "assoc_person_owner_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SingularAssociation#person"
+    },
+    {
+      "name": "assoc_person_created_at",
+      "sort": "String",
+      "value": "assoc_person_created_at_v",
+      "note": "SingularAssociation#person"
+    },
+    {
+      "name": "assoc_person_updated_at",
+      "sort": "String",
+      "value": "assoc_person_updated_at_v",
+      "note": "SingularAssociation#person"
+    },
+    {
+      "name": "assoc_person_closed_account",
+      "sort": "Bool",
+      "value": false,
+      "note": "SingularAssociation#person"
+    },
+    {
+      "name": "assoc_person_fetch_status",
+      "sort": "Int",
+      "value": 0,
+      "note": "SingularAssociation#person"
+    },
+    {
+      "name": "assoc_person_pod_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SingularAssociation#person"
+    },
+    {
+      "name": "len(SYM_RESULT_Anonymous_blocked_people_1)",
+      "sort": "Int",
+      "value": 0
+    },
+    {
+      "name": "len(SYM_RESULT_Stream__Base_post_ids_1)",
+      "sort": "Int",
+      "value": 1
+    },
+    {
+      "name": "SYM_RESULT_StreamsController_decorated_stream_posts_1_decorated_id",
+      "sort": "Int",
+      "value": 1,
+      "note": "StreamsController#decorated_stream_posts"
+    },
+    {
+      "name": "SYM_RESULT_StreamsController_decorated_stream_posts_1_decorated_author_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "StreamsController#decorated_stream_posts"
+    },
+    {
+      "name": "SYM_RESULT_StreamsController_decorated_stream_posts_1_decorated_public",
+      "sort": "Bool",
+      "value": false,
+      "note": "StreamsController#decorated_stream_posts"
+    },
+    {
+      "name": "SYM_RESULT_StreamsController_decorated_stream_posts_1_decorated_guid",
+      "sort": "String",
+      "value": "SYM_RESULT_StreamsController_decorated_stream_posts_1_decorated_guid_v",
+      "note": "StreamsController#decorated_stream_posts"
+    },
+    {
+      "name": "SYM_RESULT_StreamsController_decorated_stream_posts_1_decorated_type",
+      "sort": "String",
+      "value": "SYM_RESULT_StreamsController_decorated_stream_posts_1_decorated_type_v",
+      "note": "StreamsController#decorated_stream_posts"
+    },
+    {
+      "name": "SYM_RESULT_StreamsController_decorated_stream_posts_1_decorated_text",
+      "sort": "String",
+      "value": "SYM_RESULT_StreamsController_decorated_stream_posts_1_decorated_text_v",
+      "note": "StreamsController#decorated_stream_posts"
+    },
+    {
+      "name": "SYM_RESULT_StreamsController_decorated_stream_posts_1_decorated_created_at",
+      "sort": "String",
+      "value": "SYM_RESULT_StreamsController_decorated_stream_posts_1_decorated_created_at_v",
+      "note": "StreamsController#decorated_stream_posts"
+    },
+    {
+      "name": "SYM_RESULT_StreamsController_decorated_stream_posts_1_decorated_updated_at",
+      "sort": "String",
+      "value": "SYM_RESULT_StreamsController_decorated_stream_posts_1_decorated_updated_at_v",
+      "note": "StreamsController#decorated_stream_posts"
+    },
+    {
+      "name": "SYM_RESULT_StreamsController_decorated_stream_posts_1_decorated_provider_display_name",
+      "sort": "String",
+      "value": "SYM_RESULT_StreamsController_decorated_stream_posts_1_decorated_provider_display_name_v",
+      "note": "StreamsController#decorated_stream_posts"
+    },
+    {
+      "name": "SYM_RESULT_StreamsController_decorated_stream_posts_1_decorated_root_guid",
+      "sort": "String",
+      "value": "SYM_RESULT_StreamsController_decorated_stream_posts_1_decorated_root_guid_v",
+      "note": "StreamsController#decorated_stream_posts"
+    },
+    {
+      "name": "SYM_RESULT_StreamsController_decorated_stream_posts_1_decorated_likes_count",
+      "sort": "Int",
+      "value": 0,
+      "note": "StreamsController#decorated_stream_posts"
+    },
+    {
+      "name": "SYM_RESULT_StreamsController_decorated_stream_posts_1_decorated_comments_count",
+      "sort": "Int",
+      "value": 0,
+      "note": "StreamsController#decorated_stream_posts"
+    },
+    {
+      "name": "SYM_RESULT_StreamsController_decorated_stream_posts_1_decorated_o_embed_cache_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "StreamsController#decorated_stream_posts"
+    },
+    {
+      "name": "SYM_RESULT_StreamsController_decorated_stream_posts_1_decorated_reshares_count",
+      "sort": "Int",
+      "value": 0,
+      "note": "StreamsController#decorated_stream_posts"
+    },
+    {
+      "name": "SYM_RESULT_StreamsController_decorated_stream_posts_1_decorated_interacted_at",
+      "sort": "String",
+      "value": "SYM_RESULT_StreamsController_decorated_stream_posts_1_decorated_interacted_at_v",
+      "note": "StreamsController#decorated_stream_posts"
+    },
+    {
+      "name": "SYM_RESULT_StreamsController_decorated_stream_posts_1_decorated_tweet_id",
+      "sort": "String",
+      "value": "SYM_RESULT_StreamsController_decorated_stream_posts_1_decorated_tweet_id_v",
+      "note": "StreamsController#decorated_stream_posts"
+    },
+    {
+      "name": "SYM_RESULT_StreamsController_decorated_stream_posts_1_decorated_open_graph_cache_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "StreamsController#decorated_stream_posts"
+    },
+    {
+      "name": "SYM_RESULT_StreamsController_decorated_stream_posts_1_decorated_tumblr_ids",
+      "sort": "String",
+      "value": "SYM_RESULT_StreamsController_decorated_stream_posts_1_decorated_tumblr_ids_v",
+      "note": "StreamsController#decorated_stream_posts"
+    },
+    {
+      "name": "len(SYM_RESULT_StreamsController_decorated_stream_posts_1)",
+      "sort": "Int",
+      "value": 1,
+      "note": "StreamsController#decorated_stream_posts"
+    }
+  ],
+  "events": [
+    {
+      "type": "call",
+      "target": "ActiveRecord::Associations::SingularAssociation.find_target",
+      "args": {
+},
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations/association.rb",
+      "lineno": 159,
+      "function": "load_target"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::Associations::SingularAssociation.find_target",
+      "args": {
+},
+      "result_name": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1",
+      "result_value": "#<User:0x39b704f7>",
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations/association.rb",
+      "lineno": 159,
+      "function": "load_target"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::Associations::SingularAssociation.find_target",
+      "args": {
+},
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations/association.rb",
+      "lineno": 159,
+      "function": "load_target"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::Associations::SingularAssociation.find_target",
+      "args": {
+},
+      "result_name": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_2",
+      "result_value": "#<Person:0x22a9170c>",
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations/association.rb",
+      "lineno": 159,
+      "function": "load_target"
+    },
+    {
+      "type": "call",
+      "target": "Anonymous.blocked_people",
+      "args": {
+        "user": "#<User:0x42af751f>"
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/models/post.rb",
+      "lineno": 90,
+      "function": "excluding_blocks"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "Anonymous.blocked_people",
+      "args": {
+        "user": "#<User:0x42af751f>"
+      },
+      "result_name": "SYM_RESULT_Anonymous_blocked_people_1",
+      "result_value": [
+
+      ],
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/models/post.rb",
+      "lineno": 90,
+      "function": "excluding_blocks"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(len(SYM_RESULT_Anonymous_blocked_people_1) != 0)",
+      "taken": false,
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/models/post.rb",
+      "lineno": 93,
+      "function": "excluding_blocks"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SubString(SYM_USER_ST_hidden_shareables, 0, 1) == '')",
+      "taken": true,
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activesupport-5.2.4.3/lib/active_support/core_ext/object/blank.rb",
+      "lineno": 126,
+      "function": "blank?"
+    },
+    {
+      "type": "call",
+      "target": "Stream::Base.post_ids",
+      "args": {
+        "posts": "#<StatusMessage::ActiveRecord_Relation:0x5876bdbb>"
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/lib/stream/base.rb",
+      "lineno": 85,
+      "function": "like_posts_for_stream!"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "Stream::Base.post_ids",
+      "args": {
+        "posts": "#<StatusMessage::ActiveRecord_Relation:0x5876bdbb>"
+      },
+      "result_name": "SYM_RESULT_Stream__Base_post_ids_1",
+      "result_value": [
+        1
+      ],
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/lib/stream/base.rb",
+      "lineno": 85,
+      "function": "like_posts_for_stream!"
+    },
+    {
+      "type": "call",
+      "target": "Stream::Base.attach_user_likes",
+      "args": {
+        "posts": "#<StatusMessage::ActiveRecord_Relation:0x5876bdbb>",
+        "likes": "#<Like::ActiveRecord_Relation:0x4fa62aed>"
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/lib/stream/base.rb",
+      "lineno": 87,
+      "function": "like_posts_for_stream!"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "Stream::Base.attach_user_likes",
+      "args": {
+        "posts": "#<StatusMessage::ActiveRecord_Relation:0x5876bdbb>",
+        "likes": "#<Like::ActiveRecord_Relation:0x4fa62aed>"
+      },
+      "result_name": "SYM_RESULT_Stream__Base_attach_user_likes_1",
+      "result_value": "#<StatusMessage::ActiveRecord_Relation:0x5876bdbb>",
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/lib/stream/base.rb",
+      "lineno": 87,
+      "function": "like_posts_for_stream!"
+    },
+    {
+      "type": "call",
+      "target": "StreamsController.decorated_stream_posts",
+      "args": {
+        "posts": "#<StatusMessage::ActiveRecord_Relation:0x5876bdbb>"
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/streams_controller.rb",
+      "lineno": 70,
+      "function": "block"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "StreamsController.decorated_stream_posts",
+      "args": {
+        "posts": "#<StatusMessage::ActiveRecord_Relation:0x5876bdbb>"
+      },
+      "result_name": "SYM_RESULT_StreamsController_decorated_stream_posts_1",
+      "result_value": 1,
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/streams_controller.rb",
+      "lineno": 70,
+      "function": "block in stream_responder"
+    },
+    {
+      "type": "call",
+      "target": "ActionController::Rendering.render",
+      "args": {
+        "args": null
+      },
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/instrumentation.rb",
+      "lineno": 46,
+      "function": "block"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActionController::Rendering.render",
+      "args": {
+        "args": null
+      },
+      "result_name": "SYM_RESULT_ActionController__Rendering_render_1",
+      "result_value": "render_reached",
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/instrumentation.rb",
+      "lineno": 46,
+      "function": "block in render"
+    },
+    {
+      "type": "call",
+      "target": "ActionController::ImplicitRender.default_render",
+      "args": {
+        "args": null
+      },
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/basic_implicit_render.rb",
+      "lineno": 6,
+      "function": "block"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActionController::ImplicitRender.default_render",
+      "args": {
+        "args": null
+      },
+      "result_name": "SYM_RESULT_ActionController__ImplicitRender_default_render_1",
+      "result_value": "render_reached",
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/basic_implicit_render.rb",
+      "lineno": 6,
+      "function": "block in send_action"
+    }
+  ],
+  "symbolic_results": [
+    {
+      "name": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1",
+      "sort": "Int",
+      "value": "#<User:0x39b704f7>"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_2",
+      "sort": "Int",
+      "value": "#<Person:0x22a9170c>"
+    },
+    {
+      "name": "SYM_RESULT_Anonymous_blocked_people_1",
+      "sort": "Int",
+      "value": [
+
+      ]
+    },
+    {
+      "name": "SYM_RESULT_Stream__Base_post_ids_1",
+      "sort": "Int",
+      "value": [
+        1
+      ]
+    },
+    {
+      "name": "SYM_RESULT_Stream__Base_attach_user_likes_1",
+      "sort": "Int",
+      "value": "#<StatusMessage::ActiveRecord_Relation:0x5876bdbb>"
+    },
+    {
+      "name": "SYM_RESULT_StreamsController_decorated_stream_posts_1",
+      "sort": "Int",
+      "value": 1
+    },
+    {
+      "name": "SYM_RESULT_ActionController__Rendering_render_1",
+      "sort": "Int",
+      "value": "render_reached"
+    },
+    {
+      "name": "SYM_RESULT_ActionController__ImplicitRender_default_render_1",
+      "sort": "Int",
+      "value": "render_reached"
+    }
+  ],
+  "script": "run_concolic.rb"
+}

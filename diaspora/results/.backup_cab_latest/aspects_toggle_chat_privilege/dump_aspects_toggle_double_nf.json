@@ -1,0 +1,100 @@
+{
+  "schema_version": "1.0",
+  "label": "aspects_toggle_double_nf",
+  "symbolic_vars": [
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found",
+      "sort": "Bool",
+      "value": true,
+      "note": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found",
+      "sort": "Bool",
+      "value": true,
+      "note": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"id\" = 1"
+    }
+  ],
+  "events": [
+    {
+      "type": "call",
+      "target": "ActiveRecord::FinderMethods.first",
+      "args": {
+        "limit": null
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/aspects_controller.rb",
+      "lineno": 84,
+      "function": "aspect"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::FinderMethods.first",
+      "args": {
+        "limit": null
+      },
+      "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
+      "result_value": null,
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/aspects_controller.rb",
+      "lineno": 84,
+      "function": "aspect"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+      "taken": true,
+      "file": "/home/dev/project/reports/diaspora/concolic_targets.rb",
+      "lineno": 133,
+      "function": "block in finder_mock"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::FinderMethods.first",
+      "args": {
+        "limit": null
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/aspects_controller.rb",
+      "lineno": 84,
+      "function": "aspect"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::FinderMethods.first",
+      "args": {
+        "limit": null
+      },
+      "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2",
+      "result_value": null,
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/aspects_controller.rb",
+      "lineno": 84,
+      "function": "aspect"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found == True)",
+      "taken": true,
+      "file": "/home/dev/project/reports/diaspora/concolic_targets.rb",
+      "lineno": 133,
+      "function": "block in finder_mock"
+    }
+  ],
+  "symbolic_results": [
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
+      "sort": "Int",
+      "value": null
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2",
+      "sort": "Int",
+      "value": null
+    }
+  ],
+  "script": "run_phase3.rb",
+  "error": {
+    "type": "NoMethodError",
+    "message": "undefined method `chat_enabled' for nil:NilClass",
+    "traceback": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/aspects_controller.rb:76:in `toggle_chat_privilege'\n/home/dev/project/reports/diaspora/results/contacts_aspects_blocks/run_phase3.rb:75:in `block in drive'\n/home/dev/project/src/ruby_runtime/call_interceptor.rb:266:in `run'\n/home/dev/project/reports/diaspora/results/contacts_aspects_blocks/run_phase3.rb:75:in `drive'\n/home/dev/project/reports/diaspora/results/contacts_aspects_blocks/run_phase3.rb:83:in `<main>'"
+  }
+}

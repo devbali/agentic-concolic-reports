@@ -1,0 +1,106 @@
+{
+  "schema_version": "1.0",
+  "label": "aspects_show_default",
+  "symbolic_vars": [
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_id",
+      "sort": "Int",
+      "value": 1,
+      "note": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_name",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_name_v",
+      "note": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_user_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_created_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_created_at_v",
+      "note": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_updated_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_updated_at_v",
+      "note": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_order_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_chat_enabled",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_post_default",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"id\" = 1"
+    }
+  ],
+  "events": [
+    {
+      "type": "call",
+      "target": "ActiveRecord::FinderMethods.first",
+      "args": {
+        "limit": null
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/aspects_controller.rb",
+      "lineno": 84,
+      "function": "aspect"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::FinderMethods.first",
+      "args": {
+        "limit": null
+      },
+      "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
+      "result_value": "#<Aspect:0x4b79eecc>",
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/aspects_controller.rb",
+      "lineno": 84,
+      "function": "aspect"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/concolic_targets.rb",
+      "lineno": 133,
+      "function": "block in finder_mock"
+    }
+  ],
+  "symbolic_results": [
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
+      "sort": "Int",
+      "value": "#<Aspect:0x4b79eecc>"
+    }
+  ],
+  "script": "run_concolic.rb",
+  "error": {
+    "type": "Module::DelegationError",
+    "message": "ActionController::Metal#status= delegated to @_response.status=, but @_response is nil: #<AspectsController:0xc4c4852 @_params=<ActionController::Parameters {\"id\"=>1} permitted: false>, @aspect=#<Aspect not initialized>, @_action_has_layout=true, @_url_options={:host=>\"test.host\", :port=>nil, :protocol=>\"http://\", :_recall=>{}}, @_response=nil, @_request=#<ActionController::TestRequest:0x61be2a65 @filtered_parameters=nil, @request_method=nil, @ip=nil, @fullpath=nil, @remote_ip=nil, @original_fullpath=nil, @env={\"rack.version\"=>[1, 3], \"rack.input\"=>#<StringIO:0x5d225368>, \"rack.errors\"=>#<StringIO:0x48f9f1d6>, \"rack.multithread\"=>true, \"rack.multiprocess\"=>true, \"rack.run_once\"=>false, \"REQUEST_METHOD\"=>\"GET\", \"SERVER_NAME\"=>\"example.org\", \"SERVER_PORT\"=>\"80\", \"QUERY_STRING\"=>\"\", \"rack.url_scheme\"=>\"http\", \"HTTPS\"=>\"off\", \"SCRIPT_NAME\"=>\"\", \"CONTENT_LENGTH\"=>\"0\", \"HTTP_HOST\"=>\"test.host\", \"REMOTE_ADDR\"=>\"0.0.0.0\", \"HTTP_USER_AGENT\"=>\"Rails Testing\", \"action_dispatch.parameter_filter\"=>[:xml, :aes_key, :encrypted_magic_envelope, :password, :message, :text, :bio, :otp_attempt], \"action_dispatch.redirect_filter\"=>[], \"action_dispatch.secret_token\"=>nil, \"action_dispatch.secret_key_base\"=>\"dc02cea59aece71901168f3682662e5a10e3e83d2648afd3dadfe66ac2b5b138880b209400cd3016\", \"action_dispatch.show_exceptions\"=>true, \"action_dispatch.show_detailed_exceptions\"=>true, \"action_dispatch.logger\"=>#<Logging::Logger:0x6b951ee5 @appenders=[], @name=\"Rails\", @additive=true, @parent=#<Logging::RootLogger:0x2463a9ec @name=\"root\", @appenders=[#<Logging::Appenders::RollingFile:0x2d6d0cf6 @filters=[], @age=\"daily\", @write_size=500, @layout=#<Logging::Layouts::Pattern:0x6e4c5d88 @date_pattern=\"%Y-%m-%dT%H:%M:%S\", @date_method=nil, @cause_depth=8, @pattern=\"[%d] %-5l PID-%p TID-%t %c: %m\\n\", @utc_offset=nil, @backtrace=true, @created_at=2026-08-10 08:10:17 +0000, @color_scheme=nil, @obj_format=:inspect>, @auto_flushing=1, @io=#<File:/home/dev/project/ruby_examples/dse-apps/apps/diaspora/log/concolic.log>, @age_fn=\"/home/dev/project/ruby_examples/dse-apps/apps/diaspora/log/concolic.log.age\", @closed=false, @encoding=#<Encoding:UTF-8>, @buffer=[], @roller=#<Logging::Appenders::RollingFile::Roller:0x2149532d @roll=false, @roll_by=:date, @filename=\"/home/dev/project/ruby_examples/dse-apps/apps/diaspora/log/concolic.log\", @fn=\"/home/dev/project/ruby_examples/dse-apps/apps/diaspora/log/concolic{{.%Y%m%d}}.log\", @keep=7>, @async_flusher=nil, @age_fn_mtime=nil, @immediate=[], @mutex=#<ReentrantMutex:0x3b21b0f5 @locker=nil>, @name=\"file\", @level=0, @size=nil, @close_method=:close, @flush_period=nil, @async=false>], @level=2, @additive=false, @caller_tracing=false>, @level=nil, @caller_tracing=false>, \"action_dispatch.backtrace_cleaner\"=>#<Rails::BacktraceCleaner:0x1331742 @filters=[#<Proc:0x68378acc@/home/dev/.gem/jruby/2.6.0/gems/railties-5.2.4.3/lib/rails/backtrace_cleaner.rb:16>, #<Proc:0x5ea73927@/home/dev/.gem/jruby/2.6.0/gems/railties-5.2.4.3/lib/rails/backtrace_cleaner.rb:17>, #<Proc:0x47b7bcb6@/home/dev/.gem/jruby/2.6.0/gems/railties-5.2.4.3/lib/rails/backtrace_cleaner.rb:18>, #<Proc:0x27561cd2@/home/dev/.gem/jruby/2.6.0/gems/railties-5.2.4.3/lib/rails/backtrace_cleaner.rb:31>], @root=\"/home/dev/project/ruby_examples/dse-apps/apps/diaspora/\", @silencers=[#<Proc:0x14eae244@/home/dev/.gem/jruby/2.6.0/gems/railties-5.2.4.3/lib/rails/backtrace_cleaner.rb:21>]>, \"action_dispatch.key_generator\"=>#<ActiveSupport::CachingKeyGenerator:0x6ec2be63 @cache_keys=#<Concurrent::Map:0x79658fe5 entries=2 default_proc=nil>, @key_generator=#<ActiveSupport::KeyGenerator:0x16f108a4 @secret=\"dc02cea59aece71901168f3682662e5a10e3e83d2648afd3dadfe66ac2b5b138880b209400cd3016\", @iterations=1000>>, \"action_dispatch.http_auth_salt\"=>\"http authentication\", \"action_dispatch.signed_cookie_salt\"=>\"signed cookie\", \"action_dispatch.encrypted_cookie_salt\"=>\"encrypted cookie\", \"action_dispatch.encrypted_signed_cookie_salt\"=>\"signed encrypted cookie\", \"action_dispatch.authenticated_encrypted_cookie_salt\"=>\"authenticated encrypted cookie\", \"action_dispatch.use_authenticated_cookie_encryption\"=>false, \"action_dispatch.encrypted_cookie_cipher\"=>nil, \"action_dispatch.signed_cookie_digest\"=>nil, \"action_dispatch.cookies_serializer\"=>:marshal, \"action_dispatch.cookies_digest\"=>nil, \"action_dispatch.cookies_rotations\"=>#<ActiveSupport::Messages::RotationConfiguration:0x554a30fc @signed=[], @encrypted=[]>, \"action_dispatch.content_security_policy\"=>nil, \"action_dispatch.content_security_policy_report_only\"=>false, \"action_dispatch.content_security_policy_nonce_generator\"=>nil, \"rack.request.cookie_hash\"=>{}, \"rack.session\"=>{}, \"rack.session.options\"=>{:key=>\"rack.session\", :path=>\"/\", :domain=>nil, :expire_after=>nil, :secure=>false, :httponly=>true, :defer=>false, :renew=>false, :sidbits=>128, :cookie_only=>true, :secure_random=>SecureRandom}, \"action_dispatch.request.path_parameters\"=>{}}, @method=nil, @controller_class=AspectsController, @filtered_path=nil, @port=80, @filtered_env=nil, @custom_param_parsers={:xml=>#<Proc:0x33d9904f@/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/test_case.rb:61 (lambda)>}, @protocol=\"http://\">, @_routes=nil>",
+    "traceback": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal.rb:150:in `status='\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/redirecting.rb:62:in `redirect_to'\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/flash.rb:58:in `redirect_to'\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/instrumentation.rb:66:in `block in redirect_to'\n/home/dev/.gem/jruby/2.6.0/gems/activesupport-5.2.4.3/lib/active_support/notifications.rb:168:in `block in instrument'\n/home/dev/.gem/jruby/2.6.0/gems/activesupport-5.2.4.3/lib/active_support/notifications/instrumenter.rb:23:in `instrument'\n/home/dev/.gem/jruby/2.6.0/gems/activesupport-5.2.4.3/lib/active_support/notifications.rb:168:in `instrument'\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/instrumentation.rb:65:in `redirect_to'\n/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/aspects_controller.rb:53:in `show'\n/home/dev/project/reports/diaspora/results/contacts_aspects_blocks/run_concolic.rb:118:in `block in drive'\n/home/dev/project/src/ruby_runtime/call_interceptor.rb:266:in `run'\n/home/dev/project/reports/diaspora/results/contacts_aspects_blocks/run_concolic.rb:118:in `drive'\n/home/dev/project/reports/diaspora/results/contacts_aspects_blocks/run_concolic.rb:167:in `block in <main>'\norg/jruby/RubyHash.java:1496:in `each'\n/home/dev/project/reports/diaspora/results/contacts_aspects_blocks/run_concolic.rb:166:in `<main>'"
+  }
+}

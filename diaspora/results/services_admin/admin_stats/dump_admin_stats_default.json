@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0",
+  "label": "admin_stats_default",
+  "symbolic_vars": [
+
+  ],
+  "events": [
+    {
+      "type": "call",
+      "target": "ActiveRecord::Batches.find_each",
+      "args": {
+        "start": null,
+        "finish": null,
+        "batch_size": null,
+        "error_on_ignore": null
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/admins_controller.rb",
+      "lineno": 44,
+      "function": "weekly_user_stats"
+    }
+  ],
+  "script": "run_concolic.rb",
+  "error": {
+    "type": "NotImplementedError",
+    "message": "unimplemented concolic operation: Batches#find_each (contents out of scope)",
+    "traceback": "/home/dev/project/reports/diaspora/concolic_targets.rb:30:in `block in ConcolicTargets'\n/home/dev/project/reports/diaspora/concolic_targets.rb:253:in `block in install!'\n/home/dev/project/src/ruby_runtime/call_interceptor.rb:147:in `block in find_each'\n/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/admins_controller.rb:44:in `weekly_user_stats'\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/basic_implicit_render.rb:6:in `send_action'\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/abstract_controller/base.rb:194:in `process_action'\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/rendering.rb:30:in `process_action'\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/abstract_controller/callbacks.rb:42:in `block in process_action'\n/home/dev/.gem/jruby/2.6.0/gems/activesupport-5.2.4.3/lib/active_support/callbacks.rb:132:in `run_callbacks'\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/abstract_controller/callbacks.rb:41:in `process_action'\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/rescue.rb:22:in `process_action'\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/instrumentation.rb:34:in `block in process_action'\n/home/dev/.gem/jruby/2.6.0/gems/activesupport-5.2.4.3/lib/active_support/notifications.rb:168:in `block in instrument'\n/home/dev/.gem/jruby/2.6.0/gems/activesupport-5.2.4.3/lib/active_support/notifications/instrumenter.rb:23:in `instrument'\n/home/dev/.gem/jruby/2.6.0/gems/activesupport-5.2.4.3/lib/active_support/notifications.rb:168:in `instrument'\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/instrumentation.rb:32:in `process_action'\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/params_wrapper.rb:256:in `process_action'\n/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/railties/controller_runtime.rb:24:in `process_action'\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/abstract_controller/base.rb:134:in `process'\n/home/dev/.gem/jruby/2.6.0/gems/actionview-5.2.4.3/lib/action_view/rendering.rb:32:in `process'"
+  }
+}

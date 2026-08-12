@@ -1,0 +1,174 @@
+{
+  "schema_version": "1.0",
+  "label": "likes_index_default",
+  "symbolic_vars": [
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_id",
+      "sort": "Int",
+      "value": 1,
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_author_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_public",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid_v",
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_type",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_type_v",
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_text",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_text_v",
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_created_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_created_at_v",
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_updated_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_updated_at_v",
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_provider_display_name",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_provider_display_name_v",
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_root_guid",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_root_guid_v",
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_likes_count",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_comments_count",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_o_embed_cache_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_reshares_count",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_interacted_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_interacted_at_v",
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_tweet_id",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_tweet_id_v",
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_open_graph_cache_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_tumblr_ids",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_tumblr_ids_v",
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 1"
+    }
+  ],
+  "events": [
+    {
+      "type": "call",
+      "target": "ActiveRecord::FinderMethods.first",
+      "args": {
+        "limit": null
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/services/post_service.rb",
+      "lineno": 52,
+      "function": "find_public!"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::FinderMethods.first",
+      "args": {
+        "limit": null
+      },
+      "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
+      "result_value": "#<Post:0x631c244c>",
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/services/post_service.rb",
+      "lineno": 52,
+      "function": "find_public!"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/concolic_targets.rb",
+      "lineno": 157,
+      "function": "block in finder_mock"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_public == True)",
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/concolic_targets.rb",
+      "lineno": 111,
+      "function": "block in symbolic_instance"
+    }
+  ],
+  "symbolic_results": [
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
+      "sort": "Int",
+      "value": "#<Post:0x631c244c>"
+    }
+  ],
+  "script": "run_concolic.rb",
+  "error": {
+    "type": "Diaspora::NonPublic",
+    "message": "Diaspora::NonPublic",
+    "traceback": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/services/post_service.rb:54:in `block in find_public!'\norg/jruby/RubyKernel.java:1940:in `tap'\n/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/services/post_service.rb:52:in `find_public!'\n/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/services/post_service.rb:20:in `find!'\n/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/services/like_service.rb:24:in `find_for_post'\n/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/likes_controller.rb:40:in `index'\n/home/dev/project/reports/diaspora/results/likes/run_concolic.rb:146:in `block in drive'\n/home/dev/project/src/ruby_runtime/call_interceptor.rb:266:in `run'\n/home/dev/project/reports/diaspora/results/likes/run_concolic.rb:146:in `drive'\n/home/dev/project/reports/diaspora/results/likes/run_concolic.rb:227:in `block in <main>'\norg/jruby/RubyHash.java:1496:in `each'\n/home/dev/project/reports/diaspora/results/likes/run_concolic.rb:226:in `<main>'"
+  }
+}

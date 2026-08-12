@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.0",
+  "label": "photos_show_anon_notfound",
+  "symbolic_vars": [
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found",
+      "sort": "Bool",
+      "value": true,
+      "note": "SELECT \"photos\".* FROM \"photos\" WHERE \"photos\".\"id\" = 1 AND \"photos\".\"public\" = 't'"
+    }
+  ],
+  "events": [
+    {
+      "type": "call",
+      "target": "ActiveRecord::FinderMethods.first",
+      "args": {
+        "limit": null
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/photos_controller.rb",
+      "lineno": 15,
+      "function": "show"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::FinderMethods.first",
+      "args": {
+        "limit": null
+      },
+      "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
+      "result_value": null,
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/photos_controller.rb",
+      "lineno": 15,
+      "function": "show"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+      "taken": true,
+      "file": "/home/dev/project/reports/diaspora/concolic_targets.rb",
+      "lineno": 157,
+      "function": "block in finder_mock"
+    }
+  ],
+  "symbolic_results": [
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
+      "sort": "Int",
+      "value": null
+    }
+  ],
+  "script": "run_concolic.rb",
+  "error": {
+    "type": "ActiveRecord::RecordNotFound",
+    "message": "ActiveRecord::RecordNotFound",
+    "traceback": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/photos_controller.rb:18:in `show'\n/home/dev/project/reports/diaspora/results/photos/run_concolic.rb:156:in `block in <main>'\n/home/dev/project/src/ruby_runtime/call_interceptor.rb:266:in `run'\n/home/dev/project/reports/diaspora/results/photos/run_concolic.rb:156:in `block in <main>'\norg/jruby/RubyHash.java:1496:in `each'\n/home/dev/project/reports/diaspora/results/photos/run_concolic.rb:151:in `<main>'"
+  }
+}

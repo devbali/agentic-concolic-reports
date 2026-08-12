@@ -1,0 +1,188 @@
+{
+  "schema_version": "1.0",
+  "label": "people_show_diasporaid_closed",
+  "symbolic_vars": [
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"diaspora_handle\" = 'bob@example.org'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_id",
+      "sort": "Int",
+      "value": 1,
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"diaspora_handle\" = 'bob@example.org'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid_v",
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"diaspora_handle\" = 'bob@example.org'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle_v",
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"diaspora_handle\" = 'bob@example.org'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_serialized_public_key",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_serialized_public_key_v",
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"diaspora_handle\" = 'bob@example.org'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_owner_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"diaspora_handle\" = 'bob@example.org'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_created_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_created_at_v",
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"diaspora_handle\" = 'bob@example.org'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_updated_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_updated_at_v",
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"diaspora_handle\" = 'bob@example.org'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_closed_account",
+      "sort": "Bool",
+      "value": true,
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"diaspora_handle\" = 'bob@example.org'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_fetch_status",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"diaspora_handle\" = 'bob@example.org'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_pod_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"diaspora_handle\" = 'bob@example.org'"
+    },
+    {
+      "name": "len(SYM_RESULT_ActionController__Rendering__set_rendered_content_type_1)",
+      "sort": "Int",
+      "value": 1
+    }
+  ],
+  "events": [
+    {
+      "type": "call",
+      "target": "ActiveRecord::FinderMethods.first",
+      "args": {
+        "limit": null
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/people_controller.rb",
+      "lineno": 132,
+      "function": "find_person"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::FinderMethods.first",
+      "args": {
+        "limit": null
+      },
+      "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
+      "result_value": "#<Person:0x6226a088>",
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/people_controller.rb",
+      "lineno": 132,
+      "function": "find_person"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/concolic_targets.rb",
+      "lineno": 157,
+      "function": "block in finder_mock"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_closed_account == True)",
+      "taken": true,
+      "file": "/home/dev/project/reports/diaspora/concolic_targets.rb",
+      "lineno": 111,
+      "function": "block in symbolic_instance"
+    },
+    {
+      "type": "call",
+      "target": "ActionController::Rendering._set_rendered_content_type",
+      "args": {
+        "format": "text/html"
+      },
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/mime_responds.rb",
+      "lineno": 201,
+      "function": "respond_to"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActionController::Rendering._set_rendered_content_type",
+      "args": {
+        "format": "text/html"
+      },
+      "result_name": "SYM_RESULT_ActionController__Rendering__set_rendered_content_type_1",
+      "result_value": {
+        "format": "text/html"
+      },
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/mime_responds.rb",
+      "lineno": 201,
+      "function": "respond_to"
+    },
+    {
+      "type": "call",
+      "target": "ActionController::Redirecting.redirect_to",
+      "args": {
+        "options": "/",
+        "response_status": null
+      },
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/flash.rb",
+      "lineno": 58,
+      "function": "redirect_to"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActionController::Redirecting.redirect_to",
+      "args": {
+        "options": "/",
+        "response_status": null
+      },
+      "result_name": "SYM_RESULT_ActionController__Redirecting_redirect_to_1",
+      "result_value": "redirect_reached",
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/flash.rb",
+      "lineno": 58,
+      "function": "redirect_to"
+    }
+  ],
+  "symbolic_results": [
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
+      "sort": "Int",
+      "value": "#<Person:0x6226a088>"
+    },
+    {
+      "name": "SYM_RESULT_ActionController__Rendering__set_rendered_content_type_1",
+      "sort": "Int",
+      "value": {
+        "format": "text/html"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActionController__Redirecting_redirect_to_1",
+      "sort": "Int",
+      "value": "redirect_reached"
+    }
+  ],
+  "script": "run_concolic.rb"
+}

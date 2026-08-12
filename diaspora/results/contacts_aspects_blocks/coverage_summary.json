@@ -1,0 +1,35 @@
+{
+  "batch": "contacts_aspects_blocks",
+  "runs_loaded": 22,
+  "runs_completed_noerror": 20,
+  "runs_crashed": 2,
+  "crash_types": {
+    "ActiveRecord::RecordNotFound": 2
+  },
+  "coverage_complete": false,
+  "tree_nodes": 12,
+  "missing_branches": 2,
+  "solver_lost": 0,
+  "solver_ms": 2.098460216075182,
+  "missing": [
+    {
+      "at": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_not_found == True)",
+      "loc": "/home/dev/project/reports/diaspora/concolic_targets.rb:296 in block in finder_mock()",
+      "branch": "taken",
+      "values": {
+        "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_not_found": true
+      },
+      "untracked": false
+    },
+    {
+      "at": "(SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found == True)",
+      "loc": "/home/dev/project/reports/diaspora/concolic_targets.rb:296 in block in finder_mock()",
+      "branch": "taken",
+      "values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": true
+      },
+      "untracked": false
+    }
+  ]
+}

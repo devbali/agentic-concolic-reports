@@ -1,0 +1,157 @@
+{
+  "schema_version": "1.0",
+  "label": "status_messages_new_nofindby",
+  "symbolic_vars": [
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_id",
+      "sort": "Int",
+      "value": 1,
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid_v",
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle_v",
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_serialized_public_key",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_serialized_public_key_v",
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_owner_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_created_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_created_at_v",
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_updated_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_updated_at_v",
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_closed_account",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_fetch_status",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_pod_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found",
+      "sort": "Bool",
+      "value": true,
+      "note": "SELECT \"contacts\".* FROM \"contacts\""
+    }
+  ],
+  "events": [
+    {
+      "type": "call",
+      "target": "ActiveRecord::FinderMethods.first",
+      "args": {
+        "limit": null
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/status_messages_controller.rb",
+      "lineno": 61,
+      "function": "fetch_person"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::FinderMethods.first",
+      "args": {
+        "limit": null
+      },
+      "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
+      "result_value": "#<Person:0x2ec3d746>",
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/status_messages_controller.rb",
+      "lineno": 61,
+      "function": "fetch_person"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/concolic_targets.rb",
+      "lineno": 116,
+      "function": "block in finder_mock"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::FinderMethods.find_by",
+      "args": {
+        "arg": null,
+        "args": null
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/models/user/querying.rb",
+      "lineno": 43,
+      "function": "contact_for_person_id"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::FinderMethods.find_by",
+      "args": {
+        "arg": null,
+        "args": null
+      },
+      "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1",
+      "result_value": null,
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/models/user/querying.rb",
+      "lineno": 43,
+      "function": "contact_for_person_id"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found == True)",
+      "taken": true,
+      "file": "/home/dev/project/reports/diaspora/concolic_targets.rb",
+      "lineno": 116,
+      "function": "block in finder_mock"
+    }
+  ],
+  "symbolic_results": [
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
+      "sort": "Int",
+      "value": "#<Person:0x2ec3d746>"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1",
+      "sort": "Int",
+      "value": null
+    }
+  ],
+  "script": "run_concolic.rb"
+}

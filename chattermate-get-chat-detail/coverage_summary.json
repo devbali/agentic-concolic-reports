@@ -1,0 +1,42 @@
+{
+  "total_runs": 9,
+  "total_nodes": 7,
+  "complete": true,
+  "missing_count": 0,
+  "solver_lost": 0,
+  "elapsed_ms": 0.0,
+  "assumptions_used": 0,
+  "independent_folds": 0,
+  "assumptions": [
+    {
+      "type": "IndependenceAssumption",
+      "description": "Shopify vs JWT check is independent of scoped-access checks.",
+      "source_a": {
+        "file": "app/api/chat.py",
+        "lineno": 127,
+        "function": "",
+        "col_offset": 0,
+        "snippet": "auth_type == 'shopify_session' or auth_type == 'shopify'"
+      },
+      "source_b": {
+        "file": "app/api/chat.py",
+        "lineno": 140,
+        "function": "",
+        "col_offset": 0,
+        "snippet": "if not can_view_all:"
+      }
+    },
+    {
+      "type": "UntrackedPathAssumption",
+      "description": "Message attribute parsing is data presentation, not access control.",
+      "source": {
+        "file": "app/api/chat.py",
+        "lineno": 156,
+        "function": "",
+        "col_offset": 0,
+        "snippet": "if hasattr(chat_detail, 'messages') and chat_detail.messages:"
+      }
+    }
+  ],
+  "missing": []
+}

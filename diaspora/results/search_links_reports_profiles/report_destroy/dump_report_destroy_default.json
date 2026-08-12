@@ -1,0 +1,100 @@
+{
+  "schema_version": "1.0",
+  "label": "report_destroy_default",
+  "symbolic_vars": [
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"reports\".* FROM \"reports\" WHERE \"reports\".\"id\" = '1'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_item_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"reports\".* FROM \"reports\" WHERE \"reports\".\"id\" = '1'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_item_type",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_item_type_v",
+      "note": "SELECT \"reports\".* FROM \"reports\" WHERE \"reports\".\"id\" = '1'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_reviewed",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"reports\".* FROM \"reports\" WHERE \"reports\".\"id\" = '1'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_text",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_text_v",
+      "note": "SELECT \"reports\".* FROM \"reports\" WHERE \"reports\".\"id\" = '1'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_created_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_created_at_v",
+      "note": "SELECT \"reports\".* FROM \"reports\" WHERE \"reports\".\"id\" = '1'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_updated_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_updated_at_v",
+      "note": "SELECT \"reports\".* FROM \"reports\" WHERE \"reports\".\"id\" = '1'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_user_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"reports\".* FROM \"reports\" WHERE \"reports\".\"id\" = '1'"
+    }
+  ],
+  "events": [
+    {
+      "type": "call",
+      "target": "ActiveRecord::FinderMethods.first",
+      "args": {
+        "limit": null
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/report_controller.rb",
+      "lineno": 23,
+      "function": "destroy"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::FinderMethods.first",
+      "args": {
+        "limit": null
+      },
+      "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
+      "result_value": "#<Report:0x697fb4b1>",
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/report_controller.rb",
+      "lineno": 23,
+      "function": "destroy"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/concolic_targets.rb",
+      "lineno": 133,
+      "function": "block in finder_mock"
+    }
+  ],
+  "symbolic_results": [
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
+      "sort": "Int",
+      "value": "#<Report:0x697fb4b1>"
+    }
+  ],
+  "script": "run_concolic.rb",
+  "error": {
+    "type": "NoMethodError",
+    "message": "undefined method `[]' for nil:NilClass",
+    "traceback": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations.rb:271:in `association_instance_get'\n/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations.rb:231:in `association'\n/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations/builder/association.rb:108:in `item'\n/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/models/report.rb:37:in `destroy_reported_item'\n/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/report_controller.rb:23:in `destroy'\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/basic_implicit_render.rb:6:in `send_action'\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/abstract_controller/base.rb:194:in `process_action'\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/rendering.rb:30:in `process_action'\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/abstract_controller/callbacks.rb:42:in `block in process_action'\n/home/dev/.gem/jruby/2.6.0/gems/activesupport-5.2.4.3/lib/active_support/callbacks.rb:132:in `run_callbacks'\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/abstract_controller/callbacks.rb:41:in `process_action'\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/rescue.rb:22:in `process_action'\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/instrumentation.rb:34:in `block in process_action'\n/home/dev/.gem/jruby/2.6.0/gems/activesupport-5.2.4.3/lib/active_support/notifications.rb:168:in `block in instrument'\n/home/dev/.gem/jruby/2.6.0/gems/activesupport-5.2.4.3/lib/active_support/notifications/instrumenter.rb:23:in `instrument'\n/home/dev/.gem/jruby/2.6.0/gems/activesupport-5.2.4.3/lib/active_support/notifications.rb:168:in `instrument'\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/instrumentation.rb:32:in `process_action'\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/params_wrapper.rb:256:in `process_action'\n/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/railties/controller_runtime.rb:24:in `process_action'\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/abstract_controller/base.rb:134:in `process'"
+  }
+}

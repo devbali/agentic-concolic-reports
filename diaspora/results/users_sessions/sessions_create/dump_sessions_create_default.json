@@ -1,0 +1,878 @@
+{
+  "schema_version": "1.0",
+  "label": "sessions_create_default",
+  "symbolic_vars": [
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"username\" = 'alice'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_id",
+      "sort": "Int",
+      "value": 1,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"username\" = 'alice'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_username",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_username_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"username\" = 'alice'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_serialized_private_key",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_serialized_private_key_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"username\" = 'alice'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_getting_started",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"username\" = 'alice'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_disable_mail",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"username\" = 'alice'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_language",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_language_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"username\" = 'alice'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_email",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_email_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"username\" = 'alice'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_encrypted_password",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_encrypted_password_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"username\" = 'alice'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_created_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_created_at_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"username\" = 'alice'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_updated_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_updated_at_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"username\" = 'alice'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_locked_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_locked_at_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"username\" = 'alice'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_sign_in_count",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"username\" = 'alice'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_current_sign_in_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_current_sign_in_at_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"username\" = 'alice'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_last_sign_in_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_last_sign_in_at_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"username\" = 'alice'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_current_sign_in_ip",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_current_sign_in_ip_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"username\" = 'alice'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_last_sign_in_ip",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_last_sign_in_ip_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"username\" = 'alice'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_hidden_shareables",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_hidden_shareables_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"username\" = 'alice'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_reset_password_sent_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_reset_password_sent_at_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"username\" = 'alice'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_last_seen",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_last_seen_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"username\" = 'alice'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_remove_after",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_remove_after_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"username\" = 'alice'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_export",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_export_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"username\" = 'alice'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_exported_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_exported_at_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"username\" = 'alice'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_exporting",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"username\" = 'alice'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_strip_exif",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"username\" = 'alice'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_exported_photos_file",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_exported_photos_file_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"username\" = 'alice'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_exported_photos_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_exported_photos_at_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"username\" = 'alice'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_exporting_photos",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"username\" = 'alice'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_color_theme",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_color_theme_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"username\" = 'alice'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_post_default_public",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"username\" = 'alice'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_auto_follow_back",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"username\" = 'alice'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_auto_follow_back_aspect_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"username\" = 'alice'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_show_community_spotlight_in_stream",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"username\" = 'alice'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_otp_required_for_login",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"username\" = 'alice'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_otp_backup_codes",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_otp_backup_codes_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"username\" = 'alice'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_plain_otp_secret",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_plain_otp_secret_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"username\" = 'alice'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_reset_password_token",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_reset_password_token_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"username\" = 'alice'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_remember_created_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_remember_created_at_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"username\" = 'alice'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_invited_by_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"username\" = 'alice'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_authentication_token",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_authentication_token_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"username\" = 'alice'"
+    }
+  ],
+  "events": [
+    {
+      "type": "call",
+      "target": "DeviseController.assert_is_devise_resource!",
+      "args": {
+},
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/devise-4.7.1/app/controllers/devise_controller.rb",
+      "lineno": 103,
+      "function": "require_no_authentication"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "DeviseController.assert_is_devise_resource!",
+      "args": {
+},
+      "result_name": "SYM_RESULT_DeviseController_assert_is_devise_resource__1",
+      "result_value": true,
+      "result_sort": "Bool",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/devise-4.7.1/app/controllers/devise_controller.rb",
+      "lineno": 103,
+      "function": "require_no_authentication"
+    },
+    {
+      "type": "call",
+      "target": "DeviseController.devise_mapping",
+      "args": {
+},
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/devise-4.7.1/app/controllers/devise_controller.rb",
+      "lineno": 105,
+      "function": "require_no_authentication"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "DeviseController.devise_mapping",
+      "args": {
+},
+      "result_name": "SYM_RESULT_DeviseController_devise_mapping_1",
+      "result_value": "#<Object:0x6a82d4b4>",
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/devise-4.7.1/app/controllers/devise_controller.rb",
+      "lineno": 105,
+      "function": "require_no_authentication"
+    },
+    {
+      "type": "call",
+      "target": "DeviseController.devise_mapping",
+      "args": {
+},
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/devise-4.7.1/app/controllers/devise_controller.rb",
+      "lineno": 44,
+      "function": "resource_name"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "DeviseController.devise_mapping",
+      "args": {
+},
+      "result_name": "SYM_RESULT_DeviseController_devise_mapping_2",
+      "result_value": "#<Object:0x6a82d4b4>",
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/devise-4.7.1/app/controllers/devise_controller.rb",
+      "lineno": 44,
+      "function": "resource_name"
+    },
+    {
+      "type": "call",
+      "target": "DeviseController.devise_mapping",
+      "args": {
+},
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/devise-4.7.1/app/controllers/devise_controller.rb",
+      "lineno": 44,
+      "function": "resource_name"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "DeviseController.devise_mapping",
+      "args": {
+},
+      "result_name": "SYM_RESULT_DeviseController_devise_mapping_3",
+      "result_value": "#<Object:0x6a82d4b4>",
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/devise-4.7.1/app/controllers/devise_controller.rb",
+      "lineno": 44,
+      "function": "resource_name"
+    },
+    {
+      "type": "call",
+      "target": "ApplicationController.after_sign_in_path_for",
+      "args": {
+        "resource": "#<User:0x492a54b4>"
+      },
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/devise-4.7.1/app/controllers/devise_controller.rb",
+      "lineno": 116,
+      "function": "require_no_authentication"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ApplicationController.after_sign_in_path_for",
+      "args": {
+        "resource": "#<User:0x492a54b4>"
+      },
+      "result_name": "SYM_RESULT_ApplicationController_after_sign_in_path_for_1",
+      "result_value": "/",
+      "result_sort": "String",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/devise-4.7.1/app/controllers/devise_controller.rb",
+      "lineno": 116,
+      "function": "require_no_authentication"
+    },
+    {
+      "type": "call",
+      "target": "ActionController::Instrumentation.redirect_to",
+      "args": {
+        "args": "/"
+      },
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/devise-4.7.1/app/controllers/devise_controller.rb",
+      "lineno": 116,
+      "function": "require_no_authentication"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActionController::Instrumentation.redirect_to",
+      "args": {
+        "args": "/"
+      },
+      "result_name": "SYM_RESULT_ActionController__Instrumentation_redirect_to_1",
+      "result_value": "redirect_reached",
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/devise-4.7.1/app/controllers/devise_controller.rb",
+      "lineno": 116,
+      "function": "require_no_authentication"
+    },
+    {
+      "type": "call",
+      "target": "DeviseController.assert_is_devise_resource!",
+      "args": {
+},
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activesupport-5.2.4.3/lib/active_support/callbacks.rb",
+      "lineno": 426,
+      "function": "block"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "DeviseController.assert_is_devise_resource!",
+      "args": {
+},
+      "result_name": "SYM_RESULT_DeviseController_assert_is_devise_resource__2",
+      "result_value": true,
+      "result_sort": "Bool",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activesupport-5.2.4.3/lib/active_support/callbacks.rb",
+      "lineno": 426,
+      "function": "block in make_lambda"
+    },
+    {
+      "type": "call",
+      "target": "Gon::ControllerHelpers.gon",
+      "args": {
+},
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/application_controller.rb",
+      "lineno": 172,
+      "function": "gon_set_appconfig"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "Gon::ControllerHelpers.gon",
+      "args": {
+},
+      "result_name": "SYM_RESULT_Gon__ControllerHelpers_gon_1",
+      "result_value": "#<Object:0x89537c1>",
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/application_controller.rb",
+      "lineno": 172,
+      "function": "gon_set_appconfig"
+    },
+    {
+      "type": "call",
+      "target": "Gon::ControllerHelpers.gon",
+      "args": {
+},
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/application_controller.rb",
+      "lineno": 191,
+      "function": "gon_set_preloads"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "Gon::ControllerHelpers.gon",
+      "args": {
+},
+      "result_name": "SYM_RESULT_Gon__ControllerHelpers_gon_2",
+      "result_value": "#<Object:0x89537c1>",
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/application_controller.rb",
+      "lineno": 191,
+      "function": "gon_set_preloads"
+    },
+    {
+      "type": "call",
+      "target": "ApplicationController.configure_permitted_parameters",
+      "args": {
+},
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activesupport-5.2.4.3/lib/active_support/callbacks.rb",
+      "lineno": 426,
+      "function": "block"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ApplicationController.configure_permitted_parameters",
+      "args": {
+},
+      "result_name": "SYM_RESULT_ApplicationController_configure_permitted_parameters_1",
+      "result_value": null,
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activesupport-5.2.4.3/lib/active_support/callbacks.rb",
+      "lineno": 426,
+      "function": "block in make_lambda"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::FinderMethods.first",
+      "args": {
+        "limit": null
+      },
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/orm_adapter-0.5.0/lib/orm_adapter/adapters/active_record.rb",
+      "lineno": 22,
+      "function": "find_first"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::FinderMethods.first",
+      "args": {
+        "limit": null
+      },
+      "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
+      "result_value": "#<User:0x4a5f435b>",
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/orm_adapter-0.5.0/lib/orm_adapter/adapters/active_record.rb",
+      "lineno": 22,
+      "function": "find_first",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"username\" = 'alice'"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/concolic_targets.rb",
+      "lineno": 296,
+      "function": "block in finder_mock"
+    },
+    {
+      "type": "call",
+      "target": "DeviseController.devise_mapping",
+      "args": {
+},
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/devise-4.7.1/app/controllers/devise_controller.rb",
+      "lineno": 44,
+      "function": "resource_name"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "DeviseController.devise_mapping",
+      "args": {
+},
+      "result_name": "SYM_RESULT_DeviseController_devise_mapping_4",
+      "result_value": "#<Object:0x6a82d4b4>",
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/devise-4.7.1/app/controllers/devise_controller.rb",
+      "lineno": 44,
+      "function": "resource_name"
+    },
+    {
+      "type": "call",
+      "target": "DeviseController.devise_mapping",
+      "args": {
+},
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/devise-4.7.1/app/controllers/devise_controller.rb",
+      "lineno": 44,
+      "function": "resource_name"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "DeviseController.devise_mapping",
+      "args": {
+},
+      "result_name": "SYM_RESULT_DeviseController_devise_mapping_5",
+      "result_value": "#<Object:0x6a82d4b4>",
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/devise-4.7.1/app/controllers/devise_controller.rb",
+      "lineno": 44,
+      "function": "resource_name"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_otp_required_for_login == True)",
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/concolic_targets.rb",
+      "lineno": 204,
+      "function": "block in symbolic_instance"
+    },
+    {
+      "type": "call",
+      "target": "DeviseController.devise_mapping",
+      "args": {
+},
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/devise-4.7.1/app/controllers/devise_controller.rb",
+      "lineno": 44,
+      "function": "resource_name"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "DeviseController.devise_mapping",
+      "args": {
+},
+      "result_name": "SYM_RESULT_DeviseController_devise_mapping_6",
+      "result_value": "#<Object:0x6a82d4b4>",
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/devise-4.7.1/app/controllers/devise_controller.rb",
+      "lineno": 44,
+      "function": "resource_name"
+    },
+    {
+      "type": "call",
+      "target": "DeviseController.devise_mapping",
+      "args": {
+},
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/devise-4.7.1/app/controllers/devise_controller.rb",
+      "lineno": 44,
+      "function": "resource_name"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "DeviseController.devise_mapping",
+      "args": {
+},
+      "result_name": "SYM_RESULT_DeviseController_devise_mapping_7",
+      "result_value": "#<Object:0x6a82d4b4>",
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/devise-4.7.1/app/controllers/devise_controller.rb",
+      "lineno": 44,
+      "function": "resource_name"
+    },
+    {
+      "type": "call",
+      "target": "DeviseController.devise_mapping",
+      "args": {
+},
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/devise-4.7.1/app/controllers/devise_controller.rb",
+      "lineno": 44,
+      "function": "resource_name"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "DeviseController.devise_mapping",
+      "args": {
+},
+      "result_name": "SYM_RESULT_DeviseController_devise_mapping_8",
+      "result_value": "#<Object:0x6a82d4b4>",
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/devise-4.7.1/app/controllers/devise_controller.rb",
+      "lineno": 44,
+      "function": "resource_name"
+    },
+    {
+      "type": "call",
+      "target": "DeviseController.devise_mapping",
+      "args": {
+},
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/devise-4.7.1/app/controllers/devise_controller.rb",
+      "lineno": 44,
+      "function": "resource_name"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "DeviseController.devise_mapping",
+      "args": {
+},
+      "result_name": "SYM_RESULT_DeviseController_devise_mapping_9",
+      "result_value": "#<Object:0x6a82d4b4>",
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/devise-4.7.1/app/controllers/devise_controller.rb",
+      "lineno": 44,
+      "function": "resource_name"
+    },
+    {
+      "type": "call",
+      "target": "DeviseController.devise_mapping",
+      "args": {
+},
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/devise-4.7.1/app/controllers/devise_controller.rb",
+      "lineno": 44,
+      "function": "resource_name"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "DeviseController.devise_mapping",
+      "args": {
+},
+      "result_name": "SYM_RESULT_DeviseController_devise_mapping_10",
+      "result_value": "#<Object:0x6a82d4b4>",
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/devise-4.7.1/app/controllers/devise_controller.rb",
+      "lineno": 44,
+      "function": "resource_name"
+    },
+    {
+      "type": "call",
+      "target": "DeviseController.devise_mapping",
+      "args": {
+},
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/devise-4.7.1/app/controllers/devise_controller.rb",
+      "lineno": 44,
+      "function": "resource_name"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "DeviseController.devise_mapping",
+      "args": {
+},
+      "result_name": "SYM_RESULT_DeviseController_devise_mapping_11",
+      "result_value": "#<Object:0x6a82d4b4>",
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/devise-4.7.1/app/controllers/devise_controller.rb",
+      "lineno": 44,
+      "function": "resource_name"
+    },
+    {
+      "type": "call",
+      "target": "DeviseController.devise_mapping",
+      "args": {
+},
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/devise-4.7.1/app/controllers/devise_controller.rb",
+      "lineno": 44,
+      "function": "resource_name"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "DeviseController.devise_mapping",
+      "args": {
+},
+      "result_name": "SYM_RESULT_DeviseController_devise_mapping_12",
+      "result_value": "#<Object:0x6a82d4b4>",
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/devise-4.7.1/app/controllers/devise_controller.rb",
+      "lineno": 44,
+      "function": "resource_name"
+    },
+    {
+      "type": "call",
+      "target": "ApplicationController.after_sign_in_path_for",
+      "args": {
+        "resource": "#<User:0x492a54b4>"
+      },
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/devise-4.7.1/app/controllers/devise/sessions_controller.rb",
+      "lineno": 23,
+      "function": "create"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ApplicationController.after_sign_in_path_for",
+      "args": {
+        "resource": "#<User:0x492a54b4>"
+      },
+      "result_name": "SYM_RESULT_ApplicationController_after_sign_in_path_for_2",
+      "result_value": "/",
+      "result_sort": "String",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/devise-4.7.1/app/controllers/devise/sessions_controller.rb",
+      "lineno": 23,
+      "function": "create"
+    },
+    {
+      "type": "call",
+      "target": "ActionController::Rendering.render",
+      "args": {
+        "args": null
+      },
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/instrumentation.rb",
+      "lineno": 46,
+      "function": "block"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActionController::Rendering.render",
+      "args": {
+        "args": null
+      },
+      "result_name": "SYM_RESULT_ActionController__Rendering_render_1",
+      "result_value": "render_reached",
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/instrumentation.rb",
+      "lineno": 46,
+      "function": "block in render"
+    },
+    {
+      "type": "call",
+      "target": "ActionController::ImplicitRender.default_render",
+      "args": {
+        "args": null
+      },
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/basic_implicit_render.rb",
+      "lineno": 6,
+      "function": "block"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActionController::ImplicitRender.default_render",
+      "args": {
+        "args": null
+      },
+      "result_name": "SYM_RESULT_ActionController__ImplicitRender_default_render_1",
+      "result_value": "render_reached",
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/basic_implicit_render.rb",
+      "lineno": 6,
+      "function": "block in send_action"
+    }
+  ],
+  "symbolic_results": [
+    {
+      "name": "SYM_RESULT_DeviseController_assert_is_devise_resource__1",
+      "sort": "Bool",
+      "value": true
+    },
+    {
+      "name": "SYM_RESULT_DeviseController_devise_mapping_1",
+      "sort": "Int",
+      "value": "#<Object:0x6a82d4b4>"
+    },
+    {
+      "name": "SYM_RESULT_DeviseController_devise_mapping_2",
+      "sort": "Int",
+      "value": "#<Object:0x6a82d4b4>"
+    },
+    {
+      "name": "SYM_RESULT_DeviseController_devise_mapping_3",
+      "sort": "Int",
+      "value": "#<Object:0x6a82d4b4>"
+    },
+    {
+      "name": "SYM_RESULT_ApplicationController_after_sign_in_path_for_1",
+      "sort": "String",
+      "value": "/"
+    },
+    {
+      "name": "SYM_RESULT_ActionController__Instrumentation_redirect_to_1",
+      "sort": "Int",
+      "value": "redirect_reached"
+    },
+    {
+      "name": "SYM_RESULT_DeviseController_assert_is_devise_resource__2",
+      "sort": "Bool",
+      "value": true
+    },
+    {
+      "name": "SYM_RESULT_Gon__ControllerHelpers_gon_1",
+      "sort": "Int",
+      "value": "#<Object:0x89537c1>"
+    },
+    {
+      "name": "SYM_RESULT_Gon__ControllerHelpers_gon_2",
+      "sort": "Int",
+      "value": "#<Object:0x89537c1>"
+    },
+    {
+      "name": "SYM_RESULT_ApplicationController_configure_permitted_parameters_1",
+      "sort": "Int",
+      "value": null
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
+      "sort": "Int",
+      "value": "#<User:0x4a5f435b>"
+    },
+    {
+      "name": "SYM_RESULT_DeviseController_devise_mapping_4",
+      "sort": "Int",
+      "value": "#<Object:0x6a82d4b4>"
+    },
+    {
+      "name": "SYM_RESULT_DeviseController_devise_mapping_5",
+      "sort": "Int",
+      "value": "#<Object:0x6a82d4b4>"
+    },
+    {
+      "name": "SYM_RESULT_DeviseController_devise_mapping_6",
+      "sort": "Int",
+      "value": "#<Object:0x6a82d4b4>"
+    },
+    {
+      "name": "SYM_RESULT_DeviseController_devise_mapping_7",
+      "sort": "Int",
+      "value": "#<Object:0x6a82d4b4>"
+    },
+    {
+      "name": "SYM_RESULT_DeviseController_devise_mapping_8",
+      "sort": "Int",
+      "value": "#<Object:0x6a82d4b4>"
+    },
+    {
+      "name": "SYM_RESULT_DeviseController_devise_mapping_9",
+      "sort": "Int",
+      "value": "#<Object:0x6a82d4b4>"
+    },
+    {
+      "name": "SYM_RESULT_DeviseController_devise_mapping_10",
+      "sort": "Int",
+      "value": "#<Object:0x6a82d4b4>"
+    },
+    {
+      "name": "SYM_RESULT_DeviseController_devise_mapping_11",
+      "sort": "Int",
+      "value": "#<Object:0x6a82d4b4>"
+    },
+    {
+      "name": "SYM_RESULT_DeviseController_devise_mapping_12",
+      "sort": "Int",
+      "value": "#<Object:0x6a82d4b4>"
+    },
+    {
+      "name": "SYM_RESULT_ApplicationController_after_sign_in_path_for_2",
+      "sort": "String",
+      "value": "/"
+    },
+    {
+      "name": "SYM_RESULT_ActionController__Rendering_render_1",
+      "sort": "Int",
+      "value": "render_reached"
+    },
+    {
+      "name": "SYM_RESULT_ActionController__ImplicitRender_default_render_1",
+      "sort": "Int",
+      "value": "render_reached"
+    }
+  ],
+  "script": "run_concolic.rb"
+}

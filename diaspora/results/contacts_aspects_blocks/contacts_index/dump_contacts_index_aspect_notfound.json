@@ -1,0 +1,77 @@
+{
+  "schema_version": "1.0",
+  "label": "contacts_index_aspect_notfound",
+  "symbolic_vars": [
+    {
+      "name": "len(SYM_RESULT_ActionController__Rendering__set_rendered_content_type_1)",
+      "sort": "Int",
+      "value": 1
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_1_not_found",
+      "sort": "Bool",
+      "value": true,
+      "note": "SELECT \"aspects\".* FROM \"aspects\""
+    }
+  ],
+  "events": [
+    {
+      "type": "call",
+      "target": "ActionController::Rendering._set_rendered_content_type",
+      "args": {
+        "format": "text/html"
+      },
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/mime_responds.rb",
+      "lineno": 201,
+      "function": "respond_to"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActionController::Rendering._set_rendered_content_type",
+      "args": {
+        "format": "text/html"
+      },
+      "result_name": "SYM_RESULT_ActionController__Rendering__set_rendered_content_type_1",
+      "result_value": {
+        "format": "text/html"
+      },
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/mime_responds.rb",
+      "lineno": 201,
+      "function": "respond_to"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::FinderMethods.find",
+      "args": {
+        "args": 1
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/contacts_controller.rb",
+      "lineno": 41,
+      "function": "set_up_contacts"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_find_1_not_found == True)",
+      "taken": true,
+      "file": "/home/dev/project/reports/diaspora/concolic_targets.rb",
+      "lineno": 296,
+      "function": "block in finder_mock"
+    }
+  ],
+  "symbolic_results": [
+    {
+      "name": "SYM_RESULT_ActionController__Rendering__set_rendered_content_type_1",
+      "sort": "Int",
+      "value": {
+        "format": "text/html"
+      }
+    }
+  ],
+  "script": "run_concolic.rb",
+  "error": {
+    "type": "ActiveRecord::RecordNotFound",
+    "message": "concolic: empty result for: SELECT \"aspects\".* FROM \"aspects\"",
+    "traceback": "/home/dev/project/reports/diaspora/concolic_targets.rb:297:in `block in finder_mock'\n/home/dev/project/src/ruby_runtime/call_interceptor.rb:147:in `block in find'\n/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/contacts_controller.rb:41:in `set_up_contacts'\n/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/contacts_controller.rb:14:in `block in index'\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/mime_responds.rb:203:in `respond_to'\n/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/contacts_controller.rb:11:in `index'\n/home/dev/project/reports/diaspora/results/contacts_aspects_blocks/run_concolic.rb:122:in `block in drive'\n/home/dev/project/src/ruby_runtime/call_interceptor.rb:283:in `run'\n/home/dev/project/reports/diaspora/results/contacts_aspects_blocks/run_concolic.rb:122:in `drive'\n/home/dev/project/reports/diaspora/results/contacts_aspects_blocks/run_concolic.rb:139:in `block in <main>'\norg/jruby/RubyHash.java:1496:in `each'\n/home/dev/project/reports/diaspora/results/contacts_aspects_blocks/run_concolic.rb:138:in `<main>'"
+  }
+}

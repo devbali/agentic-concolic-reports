@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0",
+  "label": "messages_create_notfound",
+  "symbolic_vars": [
+    {
+      "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_not_found",
+      "sort": "Bool",
+      "value": true,
+      "note": "Conversation query (class-level finder), args={\"ids\"=>1}"
+    }
+  ],
+  "events": [
+    {
+      "type": "call",
+      "target": "ActiveRecord::Core::ClassMethods.find",
+      "args": {
+        "ids": 1
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/messages_controller.rb",
+      "lineno": 14,
+      "function": "create"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_not_found == True)",
+      "taken": true,
+      "file": "/home/dev/project/reports/diaspora/concolic_targets.rb",
+      "lineno": 133,
+      "function": "block in finder_mock"
+    }
+  ],
+  "script": "run_concolic.rb",
+  "error": {
+    "type": "ActiveRecord::RecordNotFound",
+    "message": "concolic: empty result for: Conversation query (class-level finder), args={\"ids\"=>1}",
+    "traceback": "/home/dev/project/reports/diaspora/concolic_targets.rb:134:in `block in finder_mock'\n/home/dev/project/src/ruby_runtime/call_interceptor.rb:147:in `block in find'\n/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/messages_controller.rb:14:in `create'\n/home/dev/project/reports/diaspora/results/conversations/run_concolic.rb:159:in `block in drive'\n/home/dev/project/src/ruby_runtime/call_interceptor.rb:266:in `run'\n/home/dev/project/reports/diaspora/results/conversations/run_concolic.rb:159:in `drive'\n/home/dev/project/reports/diaspora/results/conversations/run_concolic.rb:224:in `block in <main>'\norg/jruby/RubyHash.java:1496:in `each'\n/home/dev/project/reports/diaspora/results/conversations/run_concolic.rb:223:in `<main>'"
+  }
+}

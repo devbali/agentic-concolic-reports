@@ -1,0 +1,78 @@
+{
+  "schema_version": "1.0",
+  "label": "tag_followings_create_default",
+  "symbolic_vars": [
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"tags\".* FROM \"tags\""
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_id",
+      "sort": "Int",
+      "value": 1,
+      "note": "SELECT \"tags\".* FROM \"tags\""
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_name",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_name_v",
+      "note": "SELECT \"tags\".* FROM \"tags\""
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_taggings_count",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"tags\".* FROM \"tags\""
+    }
+  ],
+  "events": [
+    {
+      "type": "call",
+      "target": "ActiveRecord::FinderMethods.find_by",
+      "args": {
+        "arg": null,
+        "args": null
+      },
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/relation.rb",
+      "lineno": 164,
+      "function": "find_or_create_by"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::FinderMethods.find_by",
+      "args": {
+        "arg": null,
+        "args": null
+      },
+      "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1",
+      "result_value": "#<ActsAsTaggableOn::Tag:0x5f0d1a0d>",
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/relation.rb",
+      "lineno": 164,
+      "function": "find_or_create_by"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found == True)",
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/concolic_targets.rb",
+      "lineno": 133,
+      "function": "block in finder_mock"
+    }
+  ],
+  "symbolic_results": [
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1",
+      "sort": "Int",
+      "value": "#<ActsAsTaggableOn::Tag:0x5f0d1a0d>"
+    }
+  ],
+  "script": "run_concolic.rb",
+  "error": {
+    "type": "NoMethodError",
+    "message": "undefined method `[]' for nil:NilClass",
+    "traceback": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations.rb:271:in `association_instance_get'\n/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations.rb:231:in `association'\n/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations/builder/association.rb:108:in `tag_followings'\n/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/tag_followings_controller.rb:23:in `create'\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/basic_implicit_render.rb:6:in `send_action'\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/abstract_controller/base.rb:194:in `process_action'\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/rendering.rb:30:in `process_action'\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/abstract_controller/callbacks.rb:42:in `block in process_action'\n/home/dev/.gem/jruby/2.6.0/gems/activesupport-5.2.4.3/lib/active_support/callbacks.rb:132:in `run_callbacks'\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/abstract_controller/callbacks.rb:41:in `process_action'\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/rescue.rb:22:in `process_action'\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/instrumentation.rb:34:in `block in process_action'\n/home/dev/.gem/jruby/2.6.0/gems/activesupport-5.2.4.3/lib/active_support/notifications.rb:168:in `block in instrument'\n/home/dev/.gem/jruby/2.6.0/gems/activesupport-5.2.4.3/lib/active_support/notifications/instrumenter.rb:23:in `instrument'\n/home/dev/.gem/jruby/2.6.0/gems/activesupport-5.2.4.3/lib/active_support/notifications.rb:168:in `instrument'\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/instrumentation.rb:32:in `process_action'\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/params_wrapper.rb:256:in `process_action'\n/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/railties/controller_runtime.rb:24:in `process_action'\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/abstract_controller/base.rb:134:in `process'\n/home/dev/.gem/jruby/2.6.0/gems/actionview-5.2.4.3/lib/action_view/rendering.rb:32:in `process'"
+  }
+}

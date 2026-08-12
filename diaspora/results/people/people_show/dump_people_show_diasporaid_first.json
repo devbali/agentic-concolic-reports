@@ -1,0 +1,279 @@
+{
+  "schema_version": "1.0",
+  "label": "people_show_diasporaid_first",
+  "symbolic_vars": [
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"diaspora_handle\" = 'bob@example.org'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_id",
+      "sort": "Int",
+      "value": 1,
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"diaspora_handle\" = 'bob@example.org'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid_v",
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"diaspora_handle\" = 'bob@example.org'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle_v",
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"diaspora_handle\" = 'bob@example.org'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_serialized_public_key",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_serialized_public_key_v",
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"diaspora_handle\" = 'bob@example.org'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_owner_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"diaspora_handle\" = 'bob@example.org'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_created_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_created_at_v",
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"diaspora_handle\" = 'bob@example.org'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_updated_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_updated_at_v",
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"diaspora_handle\" = 'bob@example.org'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_closed_account",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"diaspora_handle\" = 'bob@example.org'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_fetch_status",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"diaspora_handle\" = 'bob@example.org'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_pod_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"diaspora_handle\" = 'bob@example.org'"
+    },
+    {
+      "name": "len(SYM_RESULT_ActionController__Rendering__set_rendered_content_type_1)",
+      "sort": "Int",
+      "value": 1
+    },
+    {
+      "name": "SYM_PROFILE_PERSON_id",
+      "sort": "Int",
+      "value": 1,
+      "note": "Person#profile (has_one)"
+    },
+    {
+      "name": "SYM_PROFILE_PERSON_diaspora_handle",
+      "sort": "String",
+      "value": "SYM_PROFILE_PERSON_diaspora_handle_v",
+      "note": "Person#profile (has_one)"
+    },
+    {
+      "name": "SYM_PROFILE_PERSON_first_name",
+      "sort": "String",
+      "value": "SYM_PROFILE_PERSON_first_name_v",
+      "note": "Person#profile (has_one)"
+    },
+    {
+      "name": "SYM_PROFILE_PERSON_last_name",
+      "sort": "String",
+      "value": "SYM_PROFILE_PERSON_last_name_v",
+      "note": "Person#profile (has_one)"
+    },
+    {
+      "name": "SYM_PROFILE_PERSON_image_url",
+      "sort": "String",
+      "value": "SYM_PROFILE_PERSON_image_url_v",
+      "note": "Person#profile (has_one)"
+    },
+    {
+      "name": "SYM_PROFILE_PERSON_image_url_small",
+      "sort": "String",
+      "value": "SYM_PROFILE_PERSON_image_url_small_v",
+      "note": "Person#profile (has_one)"
+    },
+    {
+      "name": "SYM_PROFILE_PERSON_image_url_medium",
+      "sort": "String",
+      "value": "SYM_PROFILE_PERSON_image_url_medium_v",
+      "note": "Person#profile (has_one)"
+    },
+    {
+      "name": "SYM_PROFILE_PERSON_birthday",
+      "sort": "String",
+      "value": "SYM_PROFILE_PERSON_birthday_v",
+      "note": "Person#profile (has_one)"
+    },
+    {
+      "name": "SYM_PROFILE_PERSON_gender",
+      "sort": "String",
+      "value": "SYM_PROFILE_PERSON_gender_v",
+      "note": "Person#profile (has_one)"
+    },
+    {
+      "name": "SYM_PROFILE_PERSON_bio",
+      "sort": "String",
+      "value": "SYM_PROFILE_PERSON_bio_v",
+      "note": "Person#profile (has_one)"
+    },
+    {
+      "name": "SYM_PROFILE_PERSON_searchable",
+      "sort": "Bool",
+      "value": false,
+      "note": "Person#profile (has_one)"
+    },
+    {
+      "name": "SYM_PROFILE_PERSON_person_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "Person#profile (has_one)"
+    },
+    {
+      "name": "SYM_PROFILE_PERSON_created_at",
+      "sort": "String",
+      "value": "SYM_PROFILE_PERSON_created_at_v",
+      "note": "Person#profile (has_one)"
+    },
+    {
+      "name": "SYM_PROFILE_PERSON_updated_at",
+      "sort": "String",
+      "value": "SYM_PROFILE_PERSON_updated_at_v",
+      "note": "Person#profile (has_one)"
+    },
+    {
+      "name": "SYM_PROFILE_PERSON_location",
+      "sort": "String",
+      "value": "SYM_PROFILE_PERSON_location_v",
+      "note": "Person#profile (has_one)"
+    },
+    {
+      "name": "SYM_PROFILE_PERSON_full_name",
+      "sort": "String",
+      "value": "SYM_PROFILE_PERSON_full_name_v",
+      "note": "Person#profile (has_one)"
+    },
+    {
+      "name": "SYM_PROFILE_PERSON_nsfw",
+      "sort": "Bool",
+      "value": false,
+      "note": "Person#profile (has_one)"
+    },
+    {
+      "name": "SYM_PROFILE_PERSON_public_details",
+      "sort": "Bool",
+      "value": false,
+      "note": "Person#profile (has_one)"
+    }
+  ],
+  "events": [
+    {
+      "type": "call",
+      "target": "ActiveRecord::FinderMethods.first",
+      "args": {
+        "limit": null
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/people_controller.rb",
+      "lineno": 132,
+      "function": "find_person"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::FinderMethods.first",
+      "args": {
+        "limit": null
+      },
+      "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
+      "result_value": "#<Person:0x3408fdb8>",
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/people_controller.rb",
+      "lineno": 132,
+      "function": "find_person"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/concolic_targets.rb",
+      "lineno": 157,
+      "function": "block in finder_mock"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_closed_account == True)",
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/concolic_targets.rb",
+      "lineno": 111,
+      "function": "block in symbolic_instance"
+    },
+    {
+      "type": "call",
+      "target": "ActionController::Rendering._set_rendered_content_type",
+      "args": {
+        "format": "text/html"
+      },
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/mime_responds.rb",
+      "lineno": 201,
+      "function": "respond_to"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActionController::Rendering._set_rendered_content_type",
+      "args": {
+        "format": "text/html"
+      },
+      "result_name": "SYM_RESULT_ActionController__Rendering__set_rendered_content_type_1",
+      "result_value": {
+        "format": "text/html"
+      },
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/mime_responds.rb",
+      "lineno": 201,
+      "function": "respond_to"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_PROFILE_PERSON_first_name == '')",
+      "taken": false,
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activesupport-5.2.4.3/lib/active_support/core_ext/object/blank.rb",
+      "lineno": 126,
+      "function": "blank?"
+    }
+  ],
+  "symbolic_results": [
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
+      "sort": "Int",
+      "value": "#<Person:0x3408fdb8>"
+    },
+    {
+      "name": "SYM_RESULT_ActionController__Rendering__set_rendered_content_type_1",
+      "sort": "Int",
+      "value": {
+        "format": "text/html"
+      }
+    }
+  ],
+  "script": "run_concolic.rb",
+  "error": {
+    "type": "NotImplementedError",
+    "message": "SymbolicString#strip is not supported in the concolic runtime",
+    "traceback": "/home/dev/project/src/ruby_runtime/string.rb:355:in `block in strip'\n/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/models/person.rb:255:in `name_from_attrs'\n/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/models/person.rb:251:in `name'\norg/jruby/RubyKernel.java:2003:in `public_send'\n/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/presenters/base_presenter.rb:24:in `method_missing'\n/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/presenters/person_presenter.rb:8:in `base_hash'\n/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/presenters/person_presenter.rb:73:in `base_hash_with_contact'\n/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/presenters/person_presenter.rb:14:in `full_hash'\n/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/presenters/person_presenter.rb:79:in `full_hash_with_profile'\n/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/presenters/person_presenter.rb:23:in `as_json'\n/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/people_controller.rb:78:in `block in show'\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/mime_responds.rb:203:in `respond_to'\n/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/people_controller.rb:73:in `show'\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/basic_implicit_render.rb:6:in `send_action'\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/abstract_controller/base.rb:194:in `process_action'\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/rendering.rb:30:in `process_action'\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/abstract_controller/callbacks.rb:42:in `block in process_action'\n/home/dev/.gem/jruby/2.6.0/gems/activesupport-5.2.4.3/lib/active_support/callbacks.rb:132:in `run_callbacks'\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/abstract_controller/callbacks.rb:41:in `process_action'\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/rescue.rb:22:in `process_action'"
+  }
+}

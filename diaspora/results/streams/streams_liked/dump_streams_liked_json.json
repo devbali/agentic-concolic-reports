@@ -1,0 +1,329 @@
+{
+  "schema_version": "1.0",
+  "label": "streams_liked_json",
+  "symbolic_vars": [
+    {
+      "name": "len(SYM_RESULT_Anonymous_blocked_people_1)",
+      "sort": "Int",
+      "value": 0
+    },
+    {
+      "name": "len(SYM_RESULT_Stream__Base_post_ids_1)",
+      "sort": "Int",
+      "value": 1
+    },
+    {
+      "name": "SYM_RESULT_StreamsController_decorated_stream_posts_1_decorated_id",
+      "sort": "Int",
+      "value": 1,
+      "note": "StreamsController#decorated_stream_posts"
+    },
+    {
+      "name": "SYM_RESULT_StreamsController_decorated_stream_posts_1_decorated_author_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "StreamsController#decorated_stream_posts"
+    },
+    {
+      "name": "SYM_RESULT_StreamsController_decorated_stream_posts_1_decorated_public",
+      "sort": "Bool",
+      "value": false,
+      "note": "StreamsController#decorated_stream_posts"
+    },
+    {
+      "name": "SYM_RESULT_StreamsController_decorated_stream_posts_1_decorated_guid",
+      "sort": "String",
+      "value": "SYM_RESULT_StreamsController_decorated_stream_posts_1_decorated_guid_v",
+      "note": "StreamsController#decorated_stream_posts"
+    },
+    {
+      "name": "SYM_RESULT_StreamsController_decorated_stream_posts_1_decorated_type",
+      "sort": "String",
+      "value": "SYM_RESULT_StreamsController_decorated_stream_posts_1_decorated_type_v",
+      "note": "StreamsController#decorated_stream_posts"
+    },
+    {
+      "name": "SYM_RESULT_StreamsController_decorated_stream_posts_1_decorated_text",
+      "sort": "String",
+      "value": "SYM_RESULT_StreamsController_decorated_stream_posts_1_decorated_text_v",
+      "note": "StreamsController#decorated_stream_posts"
+    },
+    {
+      "name": "SYM_RESULT_StreamsController_decorated_stream_posts_1_decorated_created_at",
+      "sort": "String",
+      "value": "SYM_RESULT_StreamsController_decorated_stream_posts_1_decorated_created_at_v",
+      "note": "StreamsController#decorated_stream_posts"
+    },
+    {
+      "name": "SYM_RESULT_StreamsController_decorated_stream_posts_1_decorated_updated_at",
+      "sort": "String",
+      "value": "SYM_RESULT_StreamsController_decorated_stream_posts_1_decorated_updated_at_v",
+      "note": "StreamsController#decorated_stream_posts"
+    },
+    {
+      "name": "SYM_RESULT_StreamsController_decorated_stream_posts_1_decorated_provider_display_name",
+      "sort": "String",
+      "value": "SYM_RESULT_StreamsController_decorated_stream_posts_1_decorated_provider_display_name_v",
+      "note": "StreamsController#decorated_stream_posts"
+    },
+    {
+      "name": "SYM_RESULT_StreamsController_decorated_stream_posts_1_decorated_root_guid",
+      "sort": "String",
+      "value": "SYM_RESULT_StreamsController_decorated_stream_posts_1_decorated_root_guid_v",
+      "note": "StreamsController#decorated_stream_posts"
+    },
+    {
+      "name": "SYM_RESULT_StreamsController_decorated_stream_posts_1_decorated_likes_count",
+      "sort": "Int",
+      "value": 0,
+      "note": "StreamsController#decorated_stream_posts"
+    },
+    {
+      "name": "SYM_RESULT_StreamsController_decorated_stream_posts_1_decorated_comments_count",
+      "sort": "Int",
+      "value": 0,
+      "note": "StreamsController#decorated_stream_posts"
+    },
+    {
+      "name": "SYM_RESULT_StreamsController_decorated_stream_posts_1_decorated_o_embed_cache_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "StreamsController#decorated_stream_posts"
+    },
+    {
+      "name": "SYM_RESULT_StreamsController_decorated_stream_posts_1_decorated_reshares_count",
+      "sort": "Int",
+      "value": 0,
+      "note": "StreamsController#decorated_stream_posts"
+    },
+    {
+      "name": "SYM_RESULT_StreamsController_decorated_stream_posts_1_decorated_interacted_at",
+      "sort": "String",
+      "value": "SYM_RESULT_StreamsController_decorated_stream_posts_1_decorated_interacted_at_v",
+      "note": "StreamsController#decorated_stream_posts"
+    },
+    {
+      "name": "SYM_RESULT_StreamsController_decorated_stream_posts_1_decorated_tweet_id",
+      "sort": "String",
+      "value": "SYM_RESULT_StreamsController_decorated_stream_posts_1_decorated_tweet_id_v",
+      "note": "StreamsController#decorated_stream_posts"
+    },
+    {
+      "name": "SYM_RESULT_StreamsController_decorated_stream_posts_1_decorated_open_graph_cache_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "StreamsController#decorated_stream_posts"
+    },
+    {
+      "name": "SYM_RESULT_StreamsController_decorated_stream_posts_1_decorated_tumblr_ids",
+      "sort": "String",
+      "value": "SYM_RESULT_StreamsController_decorated_stream_posts_1_decorated_tumblr_ids_v",
+      "note": "StreamsController#decorated_stream_posts"
+    },
+    {
+      "name": "len(SYM_RESULT_StreamsController_decorated_stream_posts_1)",
+      "sort": "Int",
+      "value": 1,
+      "note": "StreamsController#decorated_stream_posts"
+    }
+  ],
+  "events": [
+    {
+      "type": "call",
+      "target": "Anonymous.blocked_people",
+      "args": {
+        "user": "#<User:0x42af751f>"
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/models/post.rb",
+      "lineno": 90,
+      "function": "excluding_blocks"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "Anonymous.blocked_people",
+      "args": {
+        "user": "#<User:0x42af751f>"
+      },
+      "result_name": "SYM_RESULT_Anonymous_blocked_people_1",
+      "result_value": [
+
+      ],
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/models/post.rb",
+      "lineno": 90,
+      "function": "excluding_blocks"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(len(SYM_RESULT_Anonymous_blocked_people_1) != 0)",
+      "taken": false,
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/models/post.rb",
+      "lineno": 93,
+      "function": "excluding_blocks"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SubString(SYM_USER_ST_hidden_shareables, 0, 1) == '')",
+      "taken": true,
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activesupport-5.2.4.3/lib/active_support/core_ext/object/blank.rb",
+      "lineno": 126,
+      "function": "blank?"
+    },
+    {
+      "type": "call",
+      "target": "Stream::Base.post_ids",
+      "args": {
+        "posts": "#<Post::ActiveRecord_Relation:0x265bea14>"
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/lib/stream/base.rb",
+      "lineno": 85,
+      "function": "like_posts_for_stream!"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "Stream::Base.post_ids",
+      "args": {
+        "posts": "#<Post::ActiveRecord_Relation:0x265bea14>"
+      },
+      "result_name": "SYM_RESULT_Stream__Base_post_ids_1",
+      "result_value": [
+        1
+      ],
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/lib/stream/base.rb",
+      "lineno": 85,
+      "function": "like_posts_for_stream!"
+    },
+    {
+      "type": "call",
+      "target": "Stream::Base.attach_user_likes",
+      "args": {
+        "posts": "#<Post::ActiveRecord_Relation:0x265bea14>",
+        "likes": "#<Like::ActiveRecord_Relation:0x37533190>"
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/lib/stream/base.rb",
+      "lineno": 87,
+      "function": "like_posts_for_stream!"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "Stream::Base.attach_user_likes",
+      "args": {
+        "posts": "#<Post::ActiveRecord_Relation:0x265bea14>",
+        "likes": "#<Like::ActiveRecord_Relation:0x37533190>"
+      },
+      "result_name": "SYM_RESULT_Stream__Base_attach_user_likes_1",
+      "result_value": "#<Post::ActiveRecord_Relation:0x265bea14>",
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/lib/stream/base.rb",
+      "lineno": 87,
+      "function": "like_posts_for_stream!"
+    },
+    {
+      "type": "call",
+      "target": "StreamsController.decorated_stream_posts",
+      "args": {
+        "posts": "#<Post::ActiveRecord_Relation:0x265bea14>"
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/streams_controller.rb",
+      "lineno": 70,
+      "function": "block"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "StreamsController.decorated_stream_posts",
+      "args": {
+        "posts": "#<Post::ActiveRecord_Relation:0x265bea14>"
+      },
+      "result_name": "SYM_RESULT_StreamsController_decorated_stream_posts_1",
+      "result_value": 1,
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/streams_controller.rb",
+      "lineno": 70,
+      "function": "block in stream_responder"
+    },
+    {
+      "type": "call",
+      "target": "ActionController::Rendering.render",
+      "args": {
+        "args": null
+      },
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/instrumentation.rb",
+      "lineno": 46,
+      "function": "block"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActionController::Rendering.render",
+      "args": {
+        "args": null
+      },
+      "result_name": "SYM_RESULT_ActionController__Rendering_render_1",
+      "result_value": "render_reached",
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/instrumentation.rb",
+      "lineno": 46,
+      "function": "block in render"
+    },
+    {
+      "type": "call",
+      "target": "ActionController::ImplicitRender.default_render",
+      "args": {
+        "args": null
+      },
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/basic_implicit_render.rb",
+      "lineno": 6,
+      "function": "block"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActionController::ImplicitRender.default_render",
+      "args": {
+        "args": null
+      },
+      "result_name": "SYM_RESULT_ActionController__ImplicitRender_default_render_1",
+      "result_value": "render_reached",
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/basic_implicit_render.rb",
+      "lineno": 6,
+      "function": "block in send_action"
+    }
+  ],
+  "symbolic_results": [
+    {
+      "name": "SYM_RESULT_Anonymous_blocked_people_1",
+      "sort": "Int",
+      "value": [
+
+      ]
+    },
+    {
+      "name": "SYM_RESULT_Stream__Base_post_ids_1",
+      "sort": "Int",
+      "value": [
+        1
+      ]
+    },
+    {
+      "name": "SYM_RESULT_Stream__Base_attach_user_likes_1",
+      "sort": "Int",
+      "value": "#<Post::ActiveRecord_Relation:0x265bea14>"
+    },
+    {
+      "name": "SYM_RESULT_StreamsController_decorated_stream_posts_1",
+      "sort": "Int",
+      "value": 1
+    },
+    {
+      "name": "SYM_RESULT_ActionController__Rendering_render_1",
+      "sort": "Int",
+      "value": "render_reached"
+    },
+    {
+      "name": "SYM_RESULT_ActionController__ImplicitRender_default_render_1",
+      "sort": "Int",
+      "value": "render_reached"
+    }
+  ],
+  "script": "run_concolic.rb"
+}

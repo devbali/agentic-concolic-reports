@@ -1,0 +1,110 @@
+{
+  "schema_version": "1.0",
+  "label": "report_update_default",
+  "symbolic_vars": [
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"reports\".* FROM \"reports\" WHERE \"reports\".\"id\" = '1'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_item_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"reports\".* FROM \"reports\" WHERE \"reports\".\"id\" = '1'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_item_type",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_item_type_v",
+      "note": "SELECT \"reports\".* FROM \"reports\" WHERE \"reports\".\"id\" = '1'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_reviewed",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"reports\".* FROM \"reports\" WHERE \"reports\".\"id\" = '1'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_text",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_text_v",
+      "note": "SELECT \"reports\".* FROM \"reports\" WHERE \"reports\".\"id\" = '1'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_created_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_created_at_v",
+      "note": "SELECT \"reports\".* FROM \"reports\" WHERE \"reports\".\"id\" = '1'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_updated_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_updated_at_v",
+      "note": "SELECT \"reports\".* FROM \"reports\" WHERE \"reports\".\"id\" = '1'"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_user_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"reports\".* FROM \"reports\" WHERE \"reports\".\"id\" = '1'"
+    }
+  ],
+  "events": [
+    {
+      "type": "call",
+      "target": "ActiveRecord::FinderMethods.first",
+      "args": {
+        "limit": null
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/report_controller.rb",
+      "lineno": 16,
+      "function": "update"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::FinderMethods.first",
+      "args": {
+        "limit": null
+      },
+      "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
+      "result_value": "#<Report:0x1e4cf0e5>",
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/report_controller.rb",
+      "lineno": 16,
+      "function": "update"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/concolic_targets.rb",
+      "lineno": 133,
+      "function": "block in finder_mock"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::Relation.update_all",
+      "args": {
+        "updates": null
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/models/report.rb",
+      "lineno": 57,
+      "function": "mark_as_reviewed"
+    }
+  ],
+  "symbolic_results": [
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
+      "sort": "Int",
+      "value": "#<Report:0x1e4cf0e5>"
+    }
+  ],
+  "script": "run_concolic.rb",
+  "error": {
+    "type": "NotImplementedError",
+    "message": "SymbolicInt#to_i is not supported in the concolic runtime (use .value internally)",
+    "traceback": "/home/dev/project/src/ruby_runtime/int.rb:30:in `to_i'\n/home/dev/.gem/jruby/2.6.0/gems/activemodel-5.2.4.3/lib/active_model/type/integer.rb:47:in `cast_value'\n/home/dev/.gem/jruby/2.6.0/gems/activemodel-5.2.4.3/lib/active_model/type/value.rb:38:in `cast'\n/home/dev/.gem/jruby/2.6.0/gems/activemodel-5.2.4.3/lib/active_model/type/helpers/numeric.rb:15:in `cast'\n/home/dev/.gem/jruby/2.6.0/gems/activemodel-5.2.4.3/lib/active_model/type/integer.rb:27:in `serialize'\n/home/dev/.gem/jruby/2.6.0/gems/activemodel-5.2.4.3/lib/active_model/attribute.rb:55:in `value_for_database'\n/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/relation/query_attribute.rb:13:in `value_for_database'\n/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/connection_adapters/abstract/quoting.rb:15:in `quote'\n/home/dev/.gem/jruby/2.6.0/gems/arel-9.0.0/lib/arel/collectors/substitute_binds.rb:16:in `add_bind'\n/home/dev/.gem/jruby/2.6.0/gems/arel-9.0.0/lib/arel/visitors/to_sql.rb:741:in `visit_Arel_Nodes_BindParam'\n/home/dev/.gem/jruby/2.6.0/gems/arel-9.0.0/lib/arel/visitors/reduce.rb:15:in `visit'\n/home/dev/.gem/jruby/2.6.0/gems/arel-9.0.0/lib/arel/visitors/to_sql.rb:670:in `visit_Arel_Nodes_Equality'\n/home/dev/.gem/jruby/2.6.0/gems/arel-9.0.0/lib/arel/visitors/reduce.rb:15:in `visit'\n/home/dev/.gem/jruby/2.6.0/gems/arel-9.0.0/lib/arel/visitors/to_sql.rb:824:in `block in inject_join'\norg/jruby/RubyArray.java:1865:in `each'\norg/jruby/RubyEnumerable.java:1143:in `each_with_index'\norg/jruby/RubyEnumerator.java:383:in `each'\norg/jruby/RubyEnumerable.java:1024:in `inject'\n/home/dev/.gem/jruby/2.6.0/gems/arel-9.0.0/lib/arel/visitors/to_sql.rb:820:in `inject_join'\n/home/dev/.gem/jruby/2.6.0/gems/arel-9.0.0/lib/arel/visitors/to_sql.rb:639:in `visit_Arel_Nodes_And'"
+  }
+}

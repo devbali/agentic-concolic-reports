@@ -1,0 +1,174 @@
+{
+  "schema_version": "1.0",
+  "label": "users_download_profile_default",
+  "symbolic_vars": [
+
+  ],
+  "events": [
+    {
+      "type": "call",
+      "target": "Anonymous.escape_segment",
+      "args": {
+        "segment": "json"
+      },
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_dispatch/journey/visitors.rb",
+      "lineno": 8,
+      "function": "block"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "Anonymous.escape_segment",
+      "args": {
+        "segment": "json"
+      },
+      "result_name": "SYM_RESULT_Anonymous_escape_segment_1",
+      "result_value": "json",
+      "result_sort": "String",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_dispatch/journey/visitors.rb",
+      "lineno": 8,
+      "function": "block in Format"
+    },
+    {
+      "type": "call",
+      "target": "Gon::ControllerHelpers.gon",
+      "args": {
+},
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/application_controller.rb",
+      "lineno": 187,
+      "function": "gon_set_current_user"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "Gon::ControllerHelpers.gon",
+      "args": {
+},
+      "result_name": "SYM_RESULT_Gon__ControllerHelpers_gon_1",
+      "result_value": "#<Object:0x89537c1>",
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/application_controller.rb",
+      "lineno": 187,
+      "function": "gon_set_current_user"
+    },
+    {
+      "type": "call",
+      "target": "Gon::ControllerHelpers.gon",
+      "args": {
+},
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/application_controller.rb",
+      "lineno": 172,
+      "function": "gon_set_appconfig"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "Gon::ControllerHelpers.gon",
+      "args": {
+},
+      "result_name": "SYM_RESULT_Gon__ControllerHelpers_gon_2",
+      "result_value": "#<Object:0x89537c1>",
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/application_controller.rb",
+      "lineno": 172,
+      "function": "gon_set_appconfig"
+    },
+    {
+      "type": "call",
+      "target": "Gon::ControllerHelpers.gon",
+      "args": {
+},
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/application_controller.rb",
+      "lineno": 191,
+      "function": "gon_set_preloads"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "Gon::ControllerHelpers.gon",
+      "args": {
+},
+      "result_name": "SYM_RESULT_Gon__ControllerHelpers_gon_3",
+      "result_value": "#<Object:0x89537c1>",
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/application_controller.rb",
+      "lineno": 191,
+      "function": "gon_set_preloads"
+    },
+    {
+      "type": "call",
+      "target": "ActionController::Instrumentation.redirect_to",
+      "args": {
+        "args": "http://example.com/export.zip"
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/users_controller.rb",
+      "lineno": 111,
+      "function": "download_profile"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActionController::Instrumentation.redirect_to",
+      "args": {
+        "args": "http://example.com/export.zip"
+      },
+      "result_name": "SYM_RESULT_ActionController__Instrumentation_redirect_to_1",
+      "result_value": "redirect_reached",
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/users_controller.rb",
+      "lineno": 111,
+      "function": "download_profile"
+    },
+    {
+      "type": "call",
+      "target": "ActionController::ImplicitRender.default_render",
+      "args": {
+        "args": null
+      },
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/basic_implicit_render.rb",
+      "lineno": 6,
+      "function": "block"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActionController::ImplicitRender.default_render",
+      "args": {
+        "args": null
+      },
+      "result_name": "SYM_RESULT_ActionController__ImplicitRender_default_render_1",
+      "result_value": "render_reached",
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/basic_implicit_render.rb",
+      "lineno": 6,
+      "function": "block in send_action"
+    }
+  ],
+  "symbolic_results": [
+    {
+      "name": "SYM_RESULT_Anonymous_escape_segment_1",
+      "sort": "String",
+      "value": "json"
+    },
+    {
+      "name": "SYM_RESULT_Gon__ControllerHelpers_gon_1",
+      "sort": "Int",
+      "value": "#<Object:0x89537c1>"
+    },
+    {
+      "name": "SYM_RESULT_Gon__ControllerHelpers_gon_2",
+      "sort": "Int",
+      "value": "#<Object:0x89537c1>"
+    },
+    {
+      "name": "SYM_RESULT_Gon__ControllerHelpers_gon_3",
+      "sort": "Int",
+      "value": "#<Object:0x89537c1>"
+    },
+    {
+      "name": "SYM_RESULT_ActionController__Instrumentation_redirect_to_1",
+      "sort": "Int",
+      "value": "redirect_reached"
+    },
+    {
+      "name": "SYM_RESULT_ActionController__ImplicitRender_default_render_1",
+      "sort": "Int",
+      "value": "render_reached"
+    }
+  ],
+  "script": "run_concolic.rb"
+}

@@ -1,0 +1,114 @@
+{
+  "schema_version": "1.0",
+  "label": "aspects_toggle_enabled",
+  "symbolic_vars": [
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_id",
+      "sort": "Int",
+      "value": 1,
+      "note": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_name",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_name_v",
+      "note": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_user_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_created_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_created_at_v",
+      "note": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_updated_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_updated_at_v",
+      "note": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_order_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_chat_enabled",
+      "sort": "Bool",
+      "value": true,
+      "note": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_post_default",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"id\" = 1"
+    }
+  ],
+  "events": [
+    {
+      "type": "call",
+      "target": "ActiveRecord::FinderMethods.first",
+      "args": {
+        "limit": null
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/aspects_controller.rb",
+      "lineno": 84,
+      "function": "aspect"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::FinderMethods.first",
+      "args": {
+        "limit": null
+      },
+      "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
+      "result_value": "#<Aspect:0x71e32098>",
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/aspects_controller.rb",
+      "lineno": 84,
+      "function": "aspect"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/concolic_targets.rb",
+      "lineno": 133,
+      "function": "block in finder_mock"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_chat_enabled == True)",
+      "taken": true,
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/aspects_controller.rb",
+      "lineno": 76,
+      "function": "toggle_chat_privilege"
+    }
+  ],
+  "symbolic_results": [
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
+      "sort": "Int",
+      "value": "#<Aspect:0x71e32098>"
+    }
+  ],
+  "script": "run_concolic.rb",
+  "error": {
+    "type": "NoMethodError",
+    "message": "undefined method `write_from_user' for nil:NilClass\nDid you mean?  write_dump",
+    "traceback": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods/write.rb:51:in `_write_attribute'\n/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods/write.rb:24:in `__temp__36861647f556e61626c65646='\n/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/aspects_controller.rb:76:in `toggle_chat_privilege'\n/home/dev/project/reports/diaspora/results/contacts_aspects_blocks/run_concolic.rb:118:in `block in drive'\n/home/dev/project/src/ruby_runtime/call_interceptor.rb:266:in `run'\n/home/dev/project/reports/diaspora/results/contacts_aspects_blocks/run_concolic.rb:118:in `drive'\n/home/dev/project/reports/diaspora/results/contacts_aspects_blocks/run_concolic.rb:207:in `block in <main>'\norg/jruby/RubyHash.java:1496:in `each'\n/home/dev/project/reports/diaspora/results/contacts_aspects_blocks/run_concolic.rb:206:in `<main>'"
+  }
+}

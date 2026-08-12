@@ -1,0 +1,86 @@
+{
+  "schema_version": "1.0",
+  "label": "photos_mkprof_notfound",
+  "symbolic_vars": [
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found",
+      "sort": "Bool",
+      "value": true,
+      "note": "SELECT \"photos\".* FROM \"photos\" WHERE \"photos\".\"id\" = 1 AND \"photos\".\"author_id\" = 1"
+    }
+  ],
+  "events": [
+    {
+      "type": "call",
+      "target": "ActiveRecord::FinderMethods.first",
+      "args": {
+        "limit": null
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/photos_controller.rb",
+      "lineno": 53,
+      "function": "make_profile_photo"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::FinderMethods.first",
+      "args": {
+        "limit": null
+      },
+      "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
+      "result_value": null,
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/photos_controller.rb",
+      "lineno": 53,
+      "function": "make_profile_photo"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+      "taken": true,
+      "file": "/home/dev/project/reports/diaspora/concolic_targets.rb",
+      "lineno": 157,
+      "function": "block in finder_mock"
+    },
+    {
+      "type": "call",
+      "target": "ActionController::Metal.status=",
+      "args": {
+        "arg": "unprocessable_entity"
+      },
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/head.rb",
+      "lineno": 35,
+      "function": "head"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActionController::Metal.status=",
+      "args": {
+        "arg": "unprocessable_entity"
+      },
+      "result_name": "SYM_RESULT_ActionController__Metal_status__1",
+      "result_value": null,
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/head.rb",
+      "lineno": 35,
+      "function": "head"
+    }
+  ],
+  "symbolic_results": [
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
+      "sort": "Int",
+      "value": null
+    },
+    {
+      "name": "SYM_RESULT_ActionController__Metal_status__1",
+      "sort": "Int",
+      "value": null
+    }
+  ],
+  "script": "run_concolic.rb",
+  "error": {
+    "type": "NoMethodError",
+    "message": "undefined method `reset_body!' for nil:NilClass",
+    "traceback": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal.rb:177:in `response_body='\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/head.rb:38:in `head'\n/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/photos_controller.rb:73:in `make_profile_photo'\n/home/dev/project/reports/diaspora/results/photos/run_concolic.rb:232:in `block in <main>'\n/home/dev/project/src/ruby_runtime/call_interceptor.rb:266:in `run'\n/home/dev/project/reports/diaspora/results/photos/run_concolic.rb:232:in `block in <main>'\norg/jruby/RubyHash.java:1496:in `each'\n/home/dev/project/reports/diaspora/results/photos/run_concolic.rb:227:in `<main>'"
+  }
+}

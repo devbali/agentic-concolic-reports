@@ -1,0 +1,50 @@
+{
+  "schema_version": "1.0",
+  "label": "notifications_index_default",
+  "symbolic_vars": [
+    {
+      "name": "SYM_RESULT_ActiveRecord__Calculations_count_1_count",
+      "sort": "Int",
+      "value": 1,
+      "note": "SELECT \"notifications\".* FROM \"notifications\" WHERE \"notifications\".\"recipient_id\" = 1"
+    }
+  ],
+  "events": [
+    {
+      "type": "call",
+      "target": "ActiveRecord::Calculations.count",
+      "args": {
+        "column_name": null
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/notifications_controller.rb",
+      "lineno": 34,
+      "function": "index"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::Calculations.count",
+      "args": {
+        "column_name": null
+      },
+      "result_name": "SYM_RESULT_ActiveRecord__Calculations_count_1",
+      "result_value": 1,
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/notifications_controller.rb",
+      "lineno": 34,
+      "function": "index"
+    }
+  ],
+  "symbolic_results": [
+    {
+      "name": "SYM_RESULT_ActiveRecord__Calculations_count_1",
+      "sort": "Int",
+      "value": 1
+    }
+  ],
+  "script": "run_concolic.rb",
+  "error": {
+    "type": "NotImplementedError",
+    "message": "SymbolicInt#to_i is not supported in the concolic runtime (use .value internally)",
+    "traceback": "/home/dev/project/src/ruby_runtime/int.rb:30:in `to_i'\n/home/dev/.gem/jruby/2.6.0/gems/will_paginate-3.3.0/lib/will_paginate/collection.rb:109:in `total_entries='\n/home/dev/.gem/jruby/2.6.0/gems/will_paginate-3.3.0/lib/will_paginate/collection.rb:64:in `initialize'\norg/jruby/RubyClass.java:906:in `new'\n/home/dev/.gem/jruby/2.6.0/gems/will_paginate-3.3.0/lib/will_paginate/collection.rb:95:in `create'\n/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/notifications_controller.rb:34:in `index'\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/basic_implicit_render.rb:6:in `send_action'\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/abstract_controller/base.rb:194:in `process_action'\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/rendering.rb:30:in `process_action'\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/abstract_controller/callbacks.rb:42:in `block in process_action'\n/home/dev/.gem/jruby/2.6.0/gems/activesupport-5.2.4.3/lib/active_support/callbacks.rb:132:in `run_callbacks'\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/abstract_controller/callbacks.rb:41:in `process_action'\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/rescue.rb:22:in `process_action'\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/instrumentation.rb:34:in `block in process_action'\n/home/dev/.gem/jruby/2.6.0/gems/activesupport-5.2.4.3/lib/active_support/notifications.rb:168:in `block in instrument'\n/home/dev/.gem/jruby/2.6.0/gems/activesupport-5.2.4.3/lib/active_support/notifications/instrumenter.rb:23:in `instrument'\n/home/dev/.gem/jruby/2.6.0/gems/activesupport-5.2.4.3/lib/active_support/notifications.rb:168:in `instrument'\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/instrumentation.rb:32:in `process_action'\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/params_wrapper.rb:256:in `process_action'\n/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/railties/controller_runtime.rb:24:in `process_action'"
+  }
+}

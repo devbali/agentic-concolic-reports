@@ -1,0 +1,78 @@
+{
+  "schema_version": "1.0",
+  "label": "posts_mentionable_default",
+  "symbolic_vars": [
+    {
+      "name": "len(SYM_RESULT_ActionController__Rendering__set_rendered_content_type_1)",
+      "sort": "Int",
+      "value": 1
+    }
+  ],
+  "events": [
+    {
+      "type": "call",
+      "target": "ActionController::Rendering._set_rendered_content_type",
+      "args": {
+        "format": "text/html"
+      },
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/mime_responds.rb",
+      "lineno": 201,
+      "function": "respond_to"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActionController::Rendering._set_rendered_content_type",
+      "args": {
+        "format": "text/html"
+      },
+      "result_name": "SYM_RESULT_ActionController__Rendering__set_rendered_content_type_1",
+      "result_value": {
+        "format": "text/html"
+      },
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/mime_responds.rb",
+      "lineno": 201,
+      "function": "respond_to"
+    },
+    {
+      "type": "call",
+      "target": "ActionController::Head.head",
+      "args": {
+        "status": "not_acceptable",
+        "options": null
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/posts_controller.rb",
+      "lineno": 53,
+      "function": "block"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActionController::Head.head",
+      "args": {
+        "status": "not_acceptable",
+        "options": null
+      },
+      "result_name": "SYM_RESULT_ActionController__Head_head_1",
+      "result_value": "head_reached",
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/posts_controller.rb",
+      "lineno": 53,
+      "function": "block in mentionable"
+    }
+  ],
+  "symbolic_results": [
+    {
+      "name": "SYM_RESULT_ActionController__Rendering__set_rendered_content_type_1",
+      "sort": "Int",
+      "value": {
+        "format": "text/html"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActionController__Head_head_1",
+      "sort": "Int",
+      "value": "head_reached"
+    }
+  ],
+  "script": "run_concolic.rb"
+}

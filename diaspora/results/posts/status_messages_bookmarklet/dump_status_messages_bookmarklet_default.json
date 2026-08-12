@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0",
+  "label": "status_messages_bookmarklet_default",
+  "symbolic_vars": [
+
+  ],
+  "events": [
+    {
+      "type": "call",
+      "target": "Gon::ControllerHelpers.gon",
+      "args": {
+},
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/status_messages_controller.rb",
+      "lineno": 38,
+      "function": "bookmarklet"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "Gon::ControllerHelpers.gon",
+      "args": {
+},
+      "result_name": "SYM_RESULT_Gon__ControllerHelpers_gon_1",
+      "result_value": "#<Object:0x1353f515>",
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/status_messages_controller.rb",
+      "lineno": 38,
+      "function": "bookmarklet"
+    }
+  ],
+  "symbolic_results": [
+    {
+      "name": "SYM_RESULT_Gon__ControllerHelpers_gon_1",
+      "sort": "Int",
+      "value": "#<Object:0x1353f515>"
+    }
+  ],
+  "script": "run_concolic.rb"
+}

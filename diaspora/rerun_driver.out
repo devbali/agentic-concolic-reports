@@ -1,0 +1,69 @@
+===== BATCH comments START 2026-08-08T09:22:52Z =====
+  -- runner: run_concolic.rb
+    [run_concolic.rb rc=1]      <main> at /home/dev/project/reports/diaspora/results/comments/run_concolic.rb:167
+===== BATCH comments DONE 2026-08-08T09:23:01Z =====
+===== BATCH likes START 2026-08-08T09:23:01Z =====
+  -- runner: run_concolic.rb
+    [run_concolic.rb rc=0] == likes batch done (elapsed 0.16s) ==
+===== BATCH likes DONE 2026-08-08T09:23:11Z =====
+===== BATCH services_admin START 2026-08-08T09:23:11Z =====
+  -- runner: run_concolic.rb
+    [run_concolic.rb rc=0] == services_admin done (elapsed 0.22s) ==
+===== BATCH services_admin DONE 2026-08-08T09:23:21Z =====
+===== BATCH photos START 2026-08-08T09:23:21Z =====
+  -- runner: run_concolic.rb
+    [run_concolic.rb rc=0] == photos batch done ==
+===== BATCH photos DONE 2026-08-08T09:23:31Z =====
+===== BATCH people START 2026-08-08T09:23:31Z =====
+  -- runner: run_concolic.rb
+    [run_concolic.rb rc=0] == people batch done (elapsed 0.8s) ==
+===== BATCH people DONE 2026-08-08T09:23:42Z =====
+===== BATCH posts START 2026-08-08T09:23:42Z =====
+  -- runner: run_concolic.rb
+    [run_concolic.rb rc=0] == posts batch phase 3 done ==
+  -- runner: run_phase4.rb
+    [run_phase4.rb rc=0] == phase4 done ==
+  -- runner: run_phase5.rb
+    [run_phase5.rb rc=0] == phase5 done ==
+===== BATCH posts DONE 2026-08-08T09:24:13Z =====
+===== BATCH contacts_aspects_blocks START 2026-08-08T09:24:13Z =====
+  -- runner: run_concolic.rb
+    [run_concolic.rb rc=0] == contacts_aspects_blocks batch done ==
+  -- runner: run_phase2.rb
+    [run_phase2.rb rc=0] == phase2 done ==
+  -- runner: run_phase3.rb
+    [run_phase3.rb rc=0] == phase3 done ==
+===== BATCH contacts_aspects_blocks DONE 2026-08-08T09:24:43Z =====
+===== BATCH conversations START 2026-08-08T09:24:43Z =====
+  -- runner: run_concolic.rb
+    [run_concolic.rb rc=0] == conversations batch done (elapsed 0.17s) ==
+  -- runner: run_phase2.rb
+    [run_phase2.rb rc=0] == conversations phase2 done ==
+  -- runner: run_phase3.rb
+    [run_phase3.rb rc=0] == conversations phase3 done ==
+===== BATCH conversations DONE 2026-08-08T09:25:14Z =====
+===== BATCH notifications_tags START 2026-08-08T09:25:14Z =====
+  -- runner: run_concolic.rb
+    [run_concolic.rb rc=0] == notifications_tags batch done (elapsed 0.46s) ==
+  -- runner: run_concolic_seeds.rb
+    [run_concolic_seeds.rb rc=0] == notifications_tags seed re-runs done ==
+===== BATCH notifications_tags DONE 2026-08-08T09:25:35Z =====
+===== BATCH streams START 2026-08-08T09:25:35Z =====
+  -- runner: run_concolic.rb
+    [run_concolic.rb rc=0] == streams batch done (elapsed 0.81s) ==
+  -- runner: run_concolic_seeds.rb
+    [run_concolic_seeds.rb rc=0] == streams seed re-runs done ==
+===== BATCH streams DONE 2026-08-08T09:25:56Z =====
+===== BATCH users_sessions START 2026-08-08T09:25:56Z =====
+  -- runner: run_concolic.rb
+    [run_concolic.rb rc=0] == users_sessions done (elapsed 0.43s) ==
+===== BATCH users_sessions DONE 2026-08-08T09:26:07Z =====
+===== BATCH oidc_federation_nodeinfo START 2026-08-08T09:26:07Z =====
+  -- runner: run_concolic.rb
+    [run_concolic.rb rc=0] == oidc_federation_nodeinfo done (elapsed 0.27s) ==
+===== BATCH oidc_federation_nodeinfo DONE 2026-08-08T09:26:18Z =====
+===== BATCH search_links_reports_profiles START 2026-08-08T09:26:18Z =====
+  -- runner: run_concolic.rb
+    [run_concolic.rb rc=0] == search_links_reports_profiles done (elapsed 0.38s) ==
+===== BATCH search_links_reports_profiles DONE 2026-08-08T09:26:28Z =====
+ALL BATCHES COMPLETE 2026-08-08T09:26:28Z

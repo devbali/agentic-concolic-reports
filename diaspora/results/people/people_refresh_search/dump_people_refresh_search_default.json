@@ -1,0 +1,99 @@
+{
+  "schema_version": "1.0",
+  "label": "people_refresh_search_default",
+  "symbolic_vars": [
+    {
+      "name": "SYM_RESULT_ActiveRecord__Relation_empty__1_empty",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"diaspora_handle\" = 'bob@example.org' AND \"people\".\"closed_account\" = 'f'"
+    }
+  ],
+  "events": [
+    {
+      "type": "call",
+      "target": "ActiveRecord::Relation.empty?",
+      "args": {
+},
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/people_controller.rb",
+      "lineno": 59,
+      "function": "refresh_search"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::Relation.empty?",
+      "args": {
+},
+      "result_name": "SYM_RESULT_ActiveRecord__Relation_empty__1",
+      "result_value": false,
+      "result_sort": "Bool",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/people_controller.rb",
+      "lineno": 59,
+      "function": "refresh_search"
+    },
+    {
+      "type": "call",
+      "target": "ActionController::Rendering.render",
+      "args": {
+        "args": null
+      },
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/instrumentation.rb",
+      "lineno": 46,
+      "function": "block"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActionController::Rendering.render",
+      "args": {
+        "args": null
+      },
+      "result_name": "SYM_RESULT_ActionController__Rendering_render_1",
+      "result_value": "render_reached",
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/instrumentation.rb",
+      "lineno": 46,
+      "function": "block in render"
+    },
+    {
+      "type": "call",
+      "target": "ActionController::ImplicitRender.default_render",
+      "args": {
+        "args": null
+      },
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/basic_implicit_render.rb",
+      "lineno": 6,
+      "function": "block"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActionController::ImplicitRender.default_render",
+      "args": {
+        "args": null
+      },
+      "result_name": "SYM_RESULT_ActionController__ImplicitRender_default_render_1",
+      "result_value": "render_reached",
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/basic_implicit_render.rb",
+      "lineno": 6,
+      "function": "block in send_action"
+    }
+  ],
+  "symbolic_results": [
+    {
+      "name": "SYM_RESULT_ActiveRecord__Relation_empty__1",
+      "sort": "Bool",
+      "value": false
+    },
+    {
+      "name": "SYM_RESULT_ActionController__Rendering_render_1",
+      "sort": "Int",
+      "value": "render_reached"
+    },
+    {
+      "name": "SYM_RESULT_ActionController__ImplicitRender_default_render_1",
+      "sort": "Int",
+      "value": "render_reached"
+    }
+  ],
+  "script": "run_concolic.rb"
+}

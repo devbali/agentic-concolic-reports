@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.0",
+  "label": "people_retrieve_remote_nohandle",
+  "symbolic_vars": [
+
+  ],
+  "events": [
+    {
+      "type": "call",
+      "target": "ActionController::Metal.status=",
+      "args": {
+        "arg": "unprocessable_entity"
+      },
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/head.rb",
+      "lineno": 35,
+      "function": "head"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActionController::Metal.status=",
+      "args": {
+        "arg": "unprocessable_entity"
+      },
+      "result_name": "SYM_RESULT_ActionController__Metal_status__1",
+      "result_value": null,
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/head.rb",
+      "lineno": 35,
+      "function": "head"
+    }
+  ],
+  "symbolic_results": [
+    {
+      "name": "SYM_RESULT_ActionController__Metal_status__1",
+      "sort": "Int",
+      "value": null
+    }
+  ],
+  "script": "run_concolic.rb"
+}

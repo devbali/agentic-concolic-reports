@@ -1,0 +1,262 @@
+{
+  "schema_version": "1.0",
+  "label": "photos_destroy_found",
+  "symbolic_vars": [
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"photos\".* FROM \"photos\" WHERE \"photos\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_id",
+      "sort": "Int",
+      "value": 1,
+      "note": "SELECT \"photos\".* FROM \"photos\" WHERE \"photos\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_author_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"photos\".* FROM \"photos\" WHERE \"photos\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_public",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"photos\".* FROM \"photos\" WHERE \"photos\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid_v",
+      "note": "SELECT \"photos\".* FROM \"photos\" WHERE \"photos\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_pending",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"photos\".* FROM \"photos\" WHERE \"photos\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_text",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_text_v",
+      "note": "SELECT \"photos\".* FROM \"photos\" WHERE \"photos\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_remote_photo_path",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_remote_photo_path_v",
+      "note": "SELECT \"photos\".* FROM \"photos\" WHERE \"photos\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_remote_photo_name",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_remote_photo_name_v",
+      "note": "SELECT \"photos\".* FROM \"photos\" WHERE \"photos\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_random_string",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_random_string_v",
+      "note": "SELECT \"photos\".* FROM \"photos\" WHERE \"photos\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_processed_image",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_processed_image_v",
+      "note": "SELECT \"photos\".* FROM \"photos\" WHERE \"photos\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_created_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_created_at_v",
+      "note": "SELECT \"photos\".* FROM \"photos\" WHERE \"photos\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_updated_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_updated_at_v",
+      "note": "SELECT \"photos\".* FROM \"photos\" WHERE \"photos\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_unprocessed_image",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_unprocessed_image_v",
+      "note": "SELECT \"photos\".* FROM \"photos\" WHERE \"photos\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_status_message_guid",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_status_message_guid_v",
+      "note": "SELECT \"photos\".* FROM \"photos\" WHERE \"photos\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_comments_count",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"photos\".* FROM \"photos\" WHERE \"photos\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_height",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"photos\".* FROM \"photos\" WHERE \"photos\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_width",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"photos\".* FROM \"photos\" WHERE \"photos\".\"id\" = 1"
+    },
+    {
+      "name": "assoc_author_id",
+      "sort": "Int",
+      "value": 1,
+      "note": "SingularAssociation#author"
+    },
+    {
+      "name": "assoc_author_guid",
+      "sort": "String",
+      "value": "assoc_author_guid_v",
+      "note": "SingularAssociation#author"
+    },
+    {
+      "name": "assoc_author_diaspora_handle",
+      "sort": "String",
+      "value": "assoc_author_diaspora_handle_v",
+      "note": "SingularAssociation#author"
+    },
+    {
+      "name": "assoc_author_serialized_public_key",
+      "sort": "String",
+      "value": "assoc_author_serialized_public_key_v",
+      "note": "SingularAssociation#author"
+    },
+    {
+      "name": "assoc_author_owner_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SingularAssociation#author"
+    },
+    {
+      "name": "assoc_author_created_at",
+      "sort": "String",
+      "value": "assoc_author_created_at_v",
+      "note": "SingularAssociation#author"
+    },
+    {
+      "name": "assoc_author_updated_at",
+      "sort": "String",
+      "value": "assoc_author_updated_at_v",
+      "note": "SingularAssociation#author"
+    },
+    {
+      "name": "assoc_author_closed_account",
+      "sort": "Bool",
+      "value": false,
+      "note": "SingularAssociation#author"
+    },
+    {
+      "name": "assoc_author_fetch_status",
+      "sort": "Int",
+      "value": 0,
+      "note": "SingularAssociation#author"
+    },
+    {
+      "name": "assoc_author_pod_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SingularAssociation#author"
+    }
+  ],
+  "events": [
+    {
+      "type": "call",
+      "target": "ActiveRecord::FinderMethods.first",
+      "args": {
+        "limit": null
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/photos_controller.rb",
+      "lineno": 78,
+      "function": "destroy"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::FinderMethods.first",
+      "args": {
+        "limit": null
+      },
+      "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
+      "result_value": "#<Photo:0x57e6fd09>",
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/photos_controller.rb",
+      "lineno": 78,
+      "function": "destroy"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/concolic_targets.rb",
+      "lineno": 157,
+      "function": "block in finder_mock"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::Associations::SingularAssociation.find_target",
+      "args": {
+},
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations/association.rb",
+      "lineno": 159,
+      "function": "load_target"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::Associations::SingularAssociation.find_target",
+      "args": {
+},
+      "result_name": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1",
+      "result_value": "#<Person:0x258274cb>",
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations/association.rb",
+      "lineno": 159,
+      "function": "load_target"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_public == True)",
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/concolic_targets.rb",
+      "lineno": 111,
+      "function": "block in symbolic_instance"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(assoc_author_diaspora_handle == '')",
+      "taken": false,
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/diaspora_federation-0.2.6/lib/diaspora_federation/entity.rb",
+      "lineno": 233,
+      "function": "nilify"
+    }
+  ],
+  "symbolic_results": [
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
+      "sort": "Int",
+      "value": "#<Photo:0x57e6fd09>"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1",
+      "sort": "Int",
+      "value": "#<Person:0x258274cb>"
+    }
+  ],
+  "script": "run_concolic.rb",
+  "error": {
+    "type": "NotImplementedError",
+    "message": "SymbolicString#to_s is not supported in the concolic runtime (use .value internally)",
+    "traceback": "/home/dev/project/src/ruby_runtime/string.rb:57:in `to_s'\n/home/dev/.gem/jruby/2.6.0/gems/diaspora_federation-0.2.6/lib/diaspora_federation/entity.rb:261:in `error_message'\n/home/dev/.gem/jruby/2.6.0/gems/diaspora_federation-0.2.6/lib/diaspora_federation/entity.rb:254:in `validate'\n/home/dev/.gem/jruby/2.6.0/gems/diaspora_federation-0.2.6/lib/diaspora_federation/entity.rb:72:in `initialize'\norg/jruby/RubyClass.java:885:in `new'\n/home/dev/project/ruby_examples/dse-apps/apps/diaspora/lib/diaspora/federation/entities.rb:219:in `related_entity'\n/home/dev/project/ruby_examples/dse-apps/apps/diaspora/lib/diaspora/federated/retraction.rb:26:in `retraction_data_for'\n/home/dev/project/ruby_examples/dse-apps/apps/diaspora/lib/diaspora/federated/retraction.rb:33:in `for'\n/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/models/user.rb:370:in `retract'\n/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/photos_controller.rb:81:in `destroy'\n/home/dev/project/reports/diaspora/results/photos/run_concolic.rb:218:in `block in <main>'\n/home/dev/project/src/ruby_runtime/call_interceptor.rb:266:in `run'\n/home/dev/project/reports/diaspora/results/photos/run_concolic.rb:218:in `block in <main>'\norg/jruby/RubyHash.java:1496:in `each'\n/home/dev/project/reports/diaspora/results/photos/run_concolic.rb:213:in `<main>'"
+  }
+}

@@ -1,0 +1,7 @@
+# comments batch — total elapsed wall-clock for the coverage loop
+# (comments_index 3 runs + comments_create 4 runs + comments_new 1 run +
+#  comments_destroy 1 run = 9 JRuby app-boot runs, plus the CoverageChecker
+#  python passes). Each run = full Rails 5.2 boot on JRuby 9.3 + Java 21.
+elapsed_seconds: 610
+# ~10:10 minutes total across all 9 boot runs + coverage passes.
+# Per-entrypoint: index ~200s, create ~300s, new ~60s, destroy ~50s.

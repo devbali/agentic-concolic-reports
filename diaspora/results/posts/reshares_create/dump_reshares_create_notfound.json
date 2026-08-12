@@ -1,0 +1,744 @@
+{
+  "schema_version": "1.0",
+  "label": "reshares_create_notfound",
+  "symbolic_vars": [
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found",
+      "sort": "Bool",
+      "value": true,
+      "note": "SELECT posts.* FROM \"posts\" INNER JOIN \"share_visibilities\" ON \"share_visibilities\".\"shareable_id\" = \"posts\".\"id\" AND \"share_visibilities\".\"shareable_type\" = 'Post' WHERE \"posts\".\"id\" = 'abc123' AND \"share_visibilities\".\"user_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 'abc123' AND \"posts\".\"author_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_id",
+      "sort": "Int",
+      "value": 1,
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 'abc123' AND \"posts\".\"author_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_author_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 'abc123' AND \"posts\".\"author_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_public",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 'abc123' AND \"posts\".\"author_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_guid",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_guid_v",
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 'abc123' AND \"posts\".\"author_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_type",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_type_v",
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 'abc123' AND \"posts\".\"author_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_text",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_text_v",
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 'abc123' AND \"posts\".\"author_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_created_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_created_at_v",
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 'abc123' AND \"posts\".\"author_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_updated_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_updated_at_v",
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 'abc123' AND \"posts\".\"author_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_provider_display_name",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_provider_display_name_v",
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 'abc123' AND \"posts\".\"author_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_root_guid",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_root_guid_v",
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 'abc123' AND \"posts\".\"author_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_likes_count",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 'abc123' AND \"posts\".\"author_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_comments_count",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 'abc123' AND \"posts\".\"author_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_o_embed_cache_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 'abc123' AND \"posts\".\"author_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_reshares_count",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 'abc123' AND \"posts\".\"author_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_interacted_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_interacted_at_v",
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 'abc123' AND \"posts\".\"author_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_tweet_id",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_tweet_id_v",
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 'abc123' AND \"posts\".\"author_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_open_graph_cache_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 'abc123' AND \"posts\".\"author_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_tumblr_ids",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_tumblr_ids_v",
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 'abc123' AND \"posts\".\"author_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_Anonymous_diaspora_initialize_1_id",
+      "sort": "Int",
+      "value": 1,
+      "note": "Post.diaspora_initialize params={\"params\"=>nil}"
+    },
+    {
+      "name": "SYM_RESULT_Anonymous_diaspora_initialize_1_author_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "Post.diaspora_initialize params={\"params\"=>nil}"
+    },
+    {
+      "name": "SYM_RESULT_Anonymous_diaspora_initialize_1_public",
+      "sort": "Bool",
+      "value": false,
+      "note": "Post.diaspora_initialize params={\"params\"=>nil}"
+    },
+    {
+      "name": "SYM_RESULT_Anonymous_diaspora_initialize_1_guid",
+      "sort": "String",
+      "value": "SYM_RESULT_Anonymous_diaspora_initialize_1_guid_v",
+      "note": "Post.diaspora_initialize params={\"params\"=>nil}"
+    },
+    {
+      "name": "SYM_RESULT_Anonymous_diaspora_initialize_1_type",
+      "sort": "String",
+      "value": "SYM_RESULT_Anonymous_diaspora_initialize_1_type_v",
+      "note": "Post.diaspora_initialize params={\"params\"=>nil}"
+    },
+    {
+      "name": "SYM_RESULT_Anonymous_diaspora_initialize_1_text",
+      "sort": "String",
+      "value": "SYM_RESULT_Anonymous_diaspora_initialize_1_text_v",
+      "note": "Post.diaspora_initialize params={\"params\"=>nil}"
+    },
+    {
+      "name": "SYM_RESULT_Anonymous_diaspora_initialize_1_created_at",
+      "sort": "String",
+      "value": "SYM_RESULT_Anonymous_diaspora_initialize_1_created_at_v",
+      "note": "Post.diaspora_initialize params={\"params\"=>nil}"
+    },
+    {
+      "name": "SYM_RESULT_Anonymous_diaspora_initialize_1_updated_at",
+      "sort": "String",
+      "value": "SYM_RESULT_Anonymous_diaspora_initialize_1_updated_at_v",
+      "note": "Post.diaspora_initialize params={\"params\"=>nil}"
+    },
+    {
+      "name": "SYM_RESULT_Anonymous_diaspora_initialize_1_provider_display_name",
+      "sort": "String",
+      "value": "SYM_RESULT_Anonymous_diaspora_initialize_1_provider_display_name_v",
+      "note": "Post.diaspora_initialize params={\"params\"=>nil}"
+    },
+    {
+      "name": "SYM_RESULT_Anonymous_diaspora_initialize_1_root_guid",
+      "sort": "String",
+      "value": "SYM_RESULT_Anonymous_diaspora_initialize_1_root_guid_v",
+      "note": "Post.diaspora_initialize params={\"params\"=>nil}"
+    },
+    {
+      "name": "SYM_RESULT_Anonymous_diaspora_initialize_1_likes_count",
+      "sort": "Int",
+      "value": 0,
+      "note": "Post.diaspora_initialize params={\"params\"=>nil}"
+    },
+    {
+      "name": "SYM_RESULT_Anonymous_diaspora_initialize_1_comments_count",
+      "sort": "Int",
+      "value": 0,
+      "note": "Post.diaspora_initialize params={\"params\"=>nil}"
+    },
+    {
+      "name": "SYM_RESULT_Anonymous_diaspora_initialize_1_o_embed_cache_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "Post.diaspora_initialize params={\"params\"=>nil}"
+    },
+    {
+      "name": "SYM_RESULT_Anonymous_diaspora_initialize_1_reshares_count",
+      "sort": "Int",
+      "value": 0,
+      "note": "Post.diaspora_initialize params={\"params\"=>nil}"
+    },
+    {
+      "name": "SYM_RESULT_Anonymous_diaspora_initialize_1_interacted_at",
+      "sort": "String",
+      "value": "SYM_RESULT_Anonymous_diaspora_initialize_1_interacted_at_v",
+      "note": "Post.diaspora_initialize params={\"params\"=>nil}"
+    },
+    {
+      "name": "SYM_RESULT_Anonymous_diaspora_initialize_1_tweet_id",
+      "sort": "String",
+      "value": "SYM_RESULT_Anonymous_diaspora_initialize_1_tweet_id_v",
+      "note": "Post.diaspora_initialize params={\"params\"=>nil}"
+    },
+    {
+      "name": "SYM_RESULT_Anonymous_diaspora_initialize_1_open_graph_cache_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "Post.diaspora_initialize params={\"params\"=>nil}"
+    },
+    {
+      "name": "SYM_RESULT_Anonymous_diaspora_initialize_1_tumblr_ids",
+      "sort": "String",
+      "value": "SYM_RESULT_Anonymous_diaspora_initialize_1_tumblr_ids_v",
+      "note": "Post.diaspora_initialize params={\"params\"=>nil}"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_exists__1_exists",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"guid\" = $$(SYM_RESULT_Anonymous_diaspora_initialize_1_guid)"
+    },
+    {
+      "name": "assoc_author_id",
+      "sort": "Int",
+      "value": 1,
+      "note": "SingularAssociation#author"
+    },
+    {
+      "name": "assoc_author_guid",
+      "sort": "String",
+      "value": "assoc_author_guid_v",
+      "note": "SingularAssociation#author"
+    },
+    {
+      "name": "assoc_author_diaspora_handle",
+      "sort": "String",
+      "value": "assoc_author_diaspora_handle_v",
+      "note": "SingularAssociation#author"
+    },
+    {
+      "name": "assoc_author_serialized_public_key",
+      "sort": "String",
+      "value": "assoc_author_serialized_public_key_v",
+      "note": "SingularAssociation#author"
+    },
+    {
+      "name": "assoc_author_owner_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SingularAssociation#author"
+    },
+    {
+      "name": "assoc_author_created_at",
+      "sort": "String",
+      "value": "assoc_author_created_at_v",
+      "note": "SingularAssociation#author"
+    },
+    {
+      "name": "assoc_author_updated_at",
+      "sort": "String",
+      "value": "assoc_author_updated_at_v",
+      "note": "SingularAssociation#author"
+    },
+    {
+      "name": "assoc_author_closed_account",
+      "sort": "Bool",
+      "value": false,
+      "note": "SingularAssociation#author"
+    },
+    {
+      "name": "assoc_author_fetch_status",
+      "sort": "Int",
+      "value": 0,
+      "note": "SingularAssociation#author"
+    },
+    {
+      "name": "assoc_author_pod_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SingularAssociation#author"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_exists__2_exists",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_RESULT_Anonymous_diaspora_initialize_1_id)"
+    },
+    {
+      "name": "assoc_root_id",
+      "sort": "Int",
+      "value": 1,
+      "note": "SingularAssociation#root"
+    },
+    {
+      "name": "assoc_root_author_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SingularAssociation#root"
+    },
+    {
+      "name": "assoc_root_public",
+      "sort": "Bool",
+      "value": false,
+      "note": "SingularAssociation#root"
+    },
+    {
+      "name": "assoc_root_guid",
+      "sort": "String",
+      "value": "assoc_root_guid_v",
+      "note": "SingularAssociation#root"
+    },
+    {
+      "name": "assoc_root_type",
+      "sort": "String",
+      "value": "assoc_root_type_v",
+      "note": "SingularAssociation#root"
+    },
+    {
+      "name": "assoc_root_text",
+      "sort": "String",
+      "value": "assoc_root_text_v",
+      "note": "SingularAssociation#root"
+    },
+    {
+      "name": "assoc_root_created_at",
+      "sort": "String",
+      "value": "assoc_root_created_at_v",
+      "note": "SingularAssociation#root"
+    },
+    {
+      "name": "assoc_root_updated_at",
+      "sort": "String",
+      "value": "assoc_root_updated_at_v",
+      "note": "SingularAssociation#root"
+    },
+    {
+      "name": "assoc_root_provider_display_name",
+      "sort": "String",
+      "value": "assoc_root_provider_display_name_v",
+      "note": "SingularAssociation#root"
+    },
+    {
+      "name": "assoc_root_root_guid",
+      "sort": "String",
+      "value": "assoc_root_root_guid_v",
+      "note": "SingularAssociation#root"
+    },
+    {
+      "name": "assoc_root_likes_count",
+      "sort": "Int",
+      "value": 0,
+      "note": "SingularAssociation#root"
+    },
+    {
+      "name": "assoc_root_comments_count",
+      "sort": "Int",
+      "value": 0,
+      "note": "SingularAssociation#root"
+    },
+    {
+      "name": "assoc_root_o_embed_cache_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SingularAssociation#root"
+    },
+    {
+      "name": "assoc_root_reshares_count",
+      "sort": "Int",
+      "value": 0,
+      "note": "SingularAssociation#root"
+    },
+    {
+      "name": "assoc_root_interacted_at",
+      "sort": "String",
+      "value": "assoc_root_interacted_at_v",
+      "note": "SingularAssociation#root"
+    },
+    {
+      "name": "assoc_root_tweet_id",
+      "sort": "String",
+      "value": "assoc_root_tweet_id_v",
+      "note": "SingularAssociation#root"
+    },
+    {
+      "name": "assoc_root_open_graph_cache_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SingularAssociation#root"
+    },
+    {
+      "name": "assoc_root_tumblr_ids",
+      "sort": "String",
+      "value": "assoc_root_tumblr_ids_v",
+      "note": "SingularAssociation#root"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_exists__3_exists",
+      "sort": "Bool",
+      "value": false,
+      "note": "Reshare query (render_relation_sql failed: NoMethodErrorundefined method `value' for #<Arel::Nod), args=conditions=nil"
+    }
+  ],
+  "events": [
+    {
+      "type": "call",
+      "target": "ActiveRecord::FinderMethods.first",
+      "args": {
+        "limit": null
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/lib/evil_query.rb",
+      "lineno": 104,
+      "function": "post!"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::FinderMethods.first",
+      "args": {
+        "limit": null
+      },
+      "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
+      "result_value": null,
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/lib/evil_query.rb",
+      "lineno": 104,
+      "function": "post!"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+      "taken": true,
+      "file": "/home/dev/project/reports/diaspora/concolic_targets.rb",
+      "lineno": 286,
+      "function": "block in finder_mock"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::FinderMethods.first",
+      "args": {
+        "limit": null
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/lib/evil_query.rb",
+      "lineno": 104,
+      "function": "post!"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::FinderMethods.first",
+      "args": {
+        "limit": null
+      },
+      "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2",
+      "result_value": "#<Post:0x53b2e5>",
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/lib/evil_query.rb",
+      "lineno": 104,
+      "function": "post!",
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 'abc123' AND \"posts\".\"author_id\" = 1"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found == True)",
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/concolic_targets.rb",
+      "lineno": 286,
+      "function": "block in finder_mock"
+    },
+    {
+      "type": "call",
+      "target": "Anonymous.diaspora_initialize",
+      "args": {
+        "params": null
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/models/user.rb",
+      "lineno": 243,
+      "function": "build_post"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "Anonymous.diaspora_initialize",
+      "args": {
+        "params": null
+      },
+      "result_name": "SYM_RESULT_Anonymous_diaspora_initialize_1",
+      "result_value": "#<Reshare:0x7dd5d17a>",
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/models/user.rb",
+      "lineno": 243,
+      "function": "build_post",
+      "note": "Post.diaspora_initialize params={\"params\"=>nil}"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_Anonymous_diaspora_initialize_1_guid == '')",
+      "taken": false,
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activesupport-5.2.4.3/lib/active_support/core_ext/object/blank.rb",
+      "lineno": 126,
+      "function": "blank?"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::FinderMethods.exists?",
+      "args": {
+        "conditions": null
+      },
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/validations/uniqueness.rb",
+      "lineno": 34,
+      "function": "validate_each"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::FinderMethods.exists?",
+      "args": {
+        "conditions": null
+      },
+      "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_exists__1",
+      "result_value": false,
+      "result_sort": "Bool",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/validations/uniqueness.rb",
+      "lineno": 34,
+      "function": "validate_each",
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"guid\" = $$(SYM_RESULT_Anonymous_diaspora_initialize_1_guid)"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::Associations::SingularAssociation.find_target",
+      "args": {
+},
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations/association.rb",
+      "lineno": 159,
+      "function": "load_target"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::Associations::SingularAssociation.find_target",
+      "args": {
+},
+      "result_name": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1",
+      "result_value": "#<Person:0x18a8a42b>",
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations/association.rb",
+      "lineno": 159,
+      "function": "load_target",
+      "note": "SingularAssociation#author"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::FinderMethods.exists?",
+      "args": {
+        "conditions": null
+      },
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/validations/uniqueness.rb",
+      "lineno": 34,
+      "function": "validate_each"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::FinderMethods.exists?",
+      "args": {
+        "conditions": null
+      },
+      "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_exists__2",
+      "result_value": false,
+      "result_sort": "Bool",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/validations/uniqueness.rb",
+      "lineno": 34,
+      "function": "validate_each",
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_RESULT_Anonymous_diaspora_initialize_1_id)"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::Associations::SingularAssociation.find_target",
+      "args": {
+},
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations/association.rb",
+      "lineno": 159,
+      "function": "load_target"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::Associations::SingularAssociation.find_target",
+      "args": {
+},
+      "result_name": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_2",
+      "result_value": "#<Post:0x4d5dc037>",
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations/association.rb",
+      "lineno": 159,
+      "function": "load_target",
+      "note": "SingularAssociation#root"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_Anonymous_diaspora_initialize_1_root_guid != SYM_RESULT_Anonymous_diaspora_initialize_1_root_guid)",
+      "taken": false,
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations/association.rb",
+      "lineno": 69,
+      "function": "stale_target?"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(assoc_root_public == True)",
+      "taken": false,
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/models/reshare.rb",
+      "lineno": 89,
+      "function": "root_must_be_public"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_Anonymous_diaspora_initialize_1_root_guid != SYM_RESULT_Anonymous_diaspora_initialize_1_root_guid)",
+      "taken": false,
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations/association.rb",
+      "lineno": 69,
+      "function": "stale_target?"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_Anonymous_diaspora_initialize_1_root_guid == '')",
+      "taken": false,
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activesupport-5.2.4.3/lib/active_support/core_ext/object/blank.rb",
+      "lineno": 126,
+      "function": "blank?"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::FinderMethods.exists?",
+      "args": {
+        "conditions": null
+      },
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/validations/uniqueness.rb",
+      "lineno": 34,
+      "function": "validate_each"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::FinderMethods.exists?",
+      "args": {
+        "conditions": null
+      },
+      "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_exists__3",
+      "result_value": false,
+      "result_sort": "Bool",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/validations/uniqueness.rb",
+      "lineno": 34,
+      "function": "validate_each",
+      "note": "Reshare query (render_relation_sql failed: NoMethodErrorundefined method `value' for #<Arel::Nod), args=conditions=nil"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_Anonymous_diaspora_initialize_1_id != SYM_RESULT_Anonymous_diaspora_initialize_1_id)",
+      "taken": false,
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/transactions.rb",
+      "lineno": 443,
+      "function": "restore_transaction_record_state"
+    },
+    {
+      "type": "call",
+      "target": "ActionController::Rendering.render",
+      "args": {
+        "args": null
+      },
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/instrumentation.rb",
+      "lineno": 46,
+      "function": "block"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActionController::Rendering.render",
+      "args": {
+        "args": null
+      },
+      "result_name": "SYM_RESULT_ActionController__Rendering_render_1",
+      "result_value": "render_reached",
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/instrumentation.rb",
+      "lineno": 46,
+      "function": "block in render"
+    }
+  ],
+  "symbolic_results": [
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
+      "sort": "Int",
+      "value": null
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2",
+      "sort": "Int",
+      "value": "#<Post:0x53b2e5>"
+    },
+    {
+      "name": "SYM_RESULT_Anonymous_diaspora_initialize_1",
+      "sort": "Int",
+      "value": "#<Reshare:0x7dd5d17a>"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_exists__1",
+      "sort": "Bool",
+      "value": false
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1",
+      "sort": "Int",
+      "value": "#<Person:0x18a8a42b>"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_exists__2",
+      "sort": "Bool",
+      "value": false
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_2",
+      "sort": "Int",
+      "value": "#<Post:0x4d5dc037>"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_exists__3",
+      "sort": "Bool",
+      "value": false
+    },
+    {
+      "name": "SYM_RESULT_ActionController__Rendering_render_1",
+      "sort": "Int",
+      "value": "render_reached"
+    }
+  ],
+  "script": "run_concolic.rb"
+}

@@ -1,0 +1,143 @@
+{
+  "schema_version": "1.0",
+  "label": "aspect_memberships_destroy_noaspect",
+  "symbolic_vars": [
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found",
+      "sort": "Bool",
+      "value": true,
+      "note": "SELECT \"aspects\".* FROM \"aspects\" INNER JOIN \"aspect_memberships\" ON \"aspect_memberships\".\"aspect_id\" = \"aspects\".\"id\" WHERE \"aspect_memberships\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"contacts\".* FROM \"contacts\" INNER JOIN \"aspect_memberships\" ON \"aspect_memberships\".\"contact_id\" = \"contacts\".\"id\" WHERE \"aspect_memberships\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_id",
+      "sort": "Int",
+      "value": 1,
+      "note": "SELECT \"contacts\".* FROM \"contacts\" INNER JOIN \"aspect_memberships\" ON \"aspect_memberships\".\"contact_id\" = \"contacts\".\"id\" WHERE \"aspect_memberships\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_user_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"contacts\".* FROM \"contacts\" INNER JOIN \"aspect_memberships\" ON \"aspect_memberships\".\"contact_id\" = \"contacts\".\"id\" WHERE \"aspect_memberships\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_person_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"contacts\".* FROM \"contacts\" INNER JOIN \"aspect_memberships\" ON \"aspect_memberships\".\"contact_id\" = \"contacts\".\"id\" WHERE \"aspect_memberships\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_created_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_created_at_v",
+      "note": "SELECT \"contacts\".* FROM \"contacts\" INNER JOIN \"aspect_memberships\" ON \"aspect_memberships\".\"contact_id\" = \"contacts\".\"id\" WHERE \"aspect_memberships\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_updated_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_updated_at_v",
+      "note": "SELECT \"contacts\".* FROM \"contacts\" INNER JOIN \"aspect_memberships\" ON \"aspect_memberships\".\"contact_id\" = \"contacts\".\"id\" WHERE \"aspect_memberships\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_sharing",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"contacts\".* FROM \"contacts\" INNER JOIN \"aspect_memberships\" ON \"aspect_memberships\".\"contact_id\" = \"contacts\".\"id\" WHERE \"aspect_memberships\".\"id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_receiving",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"contacts\".* FROM \"contacts\" INNER JOIN \"aspect_memberships\" ON \"aspect_memberships\".\"contact_id\" = \"contacts\".\"id\" WHERE \"aspect_memberships\".\"id\" = 1"
+    }
+  ],
+  "events": [
+    {
+      "type": "call",
+      "target": "ActiveRecord::FinderMethods.first",
+      "args": {
+        "limit": null
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/aspect_memberships_controller.rb",
+      "lineno": 14,
+      "function": "destroy"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::FinderMethods.first",
+      "args": {
+        "limit": null
+      },
+      "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
+      "result_value": null,
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/aspect_memberships_controller.rb",
+      "lineno": 14,
+      "function": "destroy"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+      "taken": true,
+      "file": "/home/dev/project/reports/diaspora/concolic_targets.rb",
+      "lineno": 296,
+      "function": "block in finder_mock"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::FinderMethods.first",
+      "args": {
+        "limit": null
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/aspect_memberships_controller.rb",
+      "lineno": 15,
+      "function": "destroy"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::FinderMethods.first",
+      "args": {
+        "limit": null
+      },
+      "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2",
+      "result_value": "#<Contact:0x13d57fd0>",
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/aspect_memberships_controller.rb",
+      "lineno": 15,
+      "function": "destroy",
+      "note": "SELECT \"contacts\".* FROM \"contacts\" INNER JOIN \"aspect_memberships\" ON \"aspect_memberships\".\"contact_id\" = \"contacts\".\"id\" WHERE \"aspect_memberships\".\"id\" = 1"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found == True)",
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/concolic_targets.rb",
+      "lineno": 296,
+      "function": "block in finder_mock"
+    }
+  ],
+  "symbolic_results": [
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
+      "sort": "Int",
+      "value": null
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2",
+      "sort": "Int",
+      "value": "#<Contact:0x13d57fd0>"
+    }
+  ],
+  "script": "run_concolic.rb",
+  "error": {
+    "type": "ActiveRecord::RecordNotFound",
+    "message": "ActiveRecord::RecordNotFound",
+    "traceback": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/aspect_memberships_controller.rb:17:in `destroy'\n/home/dev/project/reports/diaspora/results/contacts_aspects_blocks/run_concolic.rb:122:in `block in drive'\n/home/dev/project/src/ruby_runtime/call_interceptor.rb:283:in `run'\n/home/dev/project/reports/diaspora/results/contacts_aspects_blocks/run_concolic.rb:122:in `drive'\n/home/dev/project/reports/diaspora/results/contacts_aspects_blocks/run_concolic.rb:240:in `block in <main>'\norg/jruby/RubyHash.java:1496:in `each'\n/home/dev/project/reports/diaspora/results/contacts_aspects_blocks/run_concolic.rb:239:in `<main>'"
+  }
+}

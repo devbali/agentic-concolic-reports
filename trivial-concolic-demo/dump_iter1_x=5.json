@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.0",
+  "label": "iter1_x=5",
+  "symbolic_vars": [
+    {
+      "name": "x",
+      "sort": "Int",
+      "value": 5
+    }
+  ],
+  "events": [
+    {
+      "type": "call",
+      "target": "is_positive",
+      "args": {
+        "x": 5
+      },
+      "file": "/home/dev/project/reports/trivial-concolic-demo/run_demo.py",
+      "lineno": 49,
+      "function": "entrypoint"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "is_positive",
+      "args": {
+        "x": 5
+      },
+      "result_name": "SYM_RESULT_is_positive_1",
+      "result_value": true,
+      "result_sort": "Bool",
+      "file": "/home/dev/project/reports/trivial-concolic-demo/run_demo.py",
+      "lineno": 49,
+      "function": "entrypoint"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(x > 0)",
+      "taken": true,
+      "file": "/home/dev/project/reports/trivial-concolic-demo/run_demo.py",
+      "lineno": 42,
+      "function": "is_positive"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_is_positive_1 != 0)",
+      "taken": true,
+      "file": "/home/dev/project/reports/trivial-concolic-demo/run_demo.py",
+      "lineno": 49,
+      "function": "entrypoint"
+    }
+  ],
+  "symbolic_results": [
+    {
+      "name": "SYM_RESULT_is_positive_1",
+      "sort": "Bool",
+      "value": true
+    }
+  ]
+}

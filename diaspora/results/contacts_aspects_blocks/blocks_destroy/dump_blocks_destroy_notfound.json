@@ -1,0 +1,120 @@
+{
+  "schema_version": "1.0",
+  "label": "blocks_destroy_notfound",
+  "symbolic_vars": [
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found",
+      "sort": "Bool",
+      "value": true,
+      "note": "SELECT \"blocks\".* FROM \"blocks\""
+    },
+    {
+      "name": "len(SYM_RESULT_ActionController__Rendering__set_rendered_content_type_1)",
+      "sort": "Int",
+      "value": 1
+    }
+  ],
+  "events": [
+    {
+      "type": "call",
+      "target": "ActiveRecord::FinderMethods.find_by",
+      "args": {
+        "arg": null,
+        "args": null
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/blocks_controller.rb",
+      "lineno": 18,
+      "function": "destroy"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::FinderMethods.find_by",
+      "args": {
+        "arg": null,
+        "args": null
+      },
+      "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1",
+      "result_value": null,
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/blocks_controller.rb",
+      "lineno": 18,
+      "function": "destroy"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found == True)",
+      "taken": true,
+      "file": "/home/dev/project/reports/diaspora/concolic_targets.rb",
+      "lineno": 296,
+      "function": "block in finder_mock"
+    },
+    {
+      "type": "call",
+      "target": "ActionController::Rendering._set_rendered_content_type",
+      "args": {
+        "format": "text/html"
+      },
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/mime_responds.rb",
+      "lineno": 201,
+      "function": "respond_to"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActionController::Rendering._set_rendered_content_type",
+      "args": {
+        "format": "text/html"
+      },
+      "result_name": "SYM_RESULT_ActionController__Rendering__set_rendered_content_type_1",
+      "result_value": {
+        "format": "text/html"
+      },
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/mime_responds.rb",
+      "lineno": 201,
+      "function": "respond_to"
+    },
+    {
+      "type": "call",
+      "target": "ActionController::Instrumentation.redirect_to",
+      "args": {
+        "args": "http://example.com/contacts"
+      },
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/redirecting.rb",
+      "lineno": 93,
+      "function": "redirect_back"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActionController::Instrumentation.redirect_to",
+      "args": {
+        "args": "http://example.com/contacts"
+      },
+      "result_name": "SYM_RESULT_ActionController__Instrumentation_redirect_to_1",
+      "result_value": "redirect_reached",
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/redirecting.rb",
+      "lineno": 93,
+      "function": "redirect_back"
+    }
+  ],
+  "symbolic_results": [
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1",
+      "sort": "Int",
+      "value": null
+    },
+    {
+      "name": "SYM_RESULT_ActionController__Rendering__set_rendered_content_type_1",
+      "sort": "Int",
+      "value": {
+        "format": "text/html"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActionController__Instrumentation_redirect_to_1",
+      "sort": "Int",
+      "value": "redirect_reached"
+    }
+  ],
+  "script": "run_concolic.rb"
+}

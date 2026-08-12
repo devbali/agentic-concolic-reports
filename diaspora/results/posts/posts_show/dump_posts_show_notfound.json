@@ -1,0 +1,1828 @@
+{
+  "schema_version": "1.0",
+  "label": "posts_show_notfound",
+  "symbolic_vars": [
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found",
+      "sort": "Bool",
+      "value": true,
+      "note": "SELECT posts.* FROM \"posts\" INNER JOIN \"share_visibilities\" ON \"share_visibilities\".\"shareable_id\" = \"posts\".\"id\" AND \"share_visibilities\".\"shareable_type\" = 'Post' WHERE \"posts\".\"id\" = 1 AND \"share_visibilities\".\"user_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 1 AND \"posts\".\"author_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_id",
+      "sort": "Int",
+      "value": 1,
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 1 AND \"posts\".\"author_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_author_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 1 AND \"posts\".\"author_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_public",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 1 AND \"posts\".\"author_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_guid",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_guid_v",
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 1 AND \"posts\".\"author_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_type",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_type_v",
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 1 AND \"posts\".\"author_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_text",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_text_v",
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 1 AND \"posts\".\"author_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_created_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_created_at_v",
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 1 AND \"posts\".\"author_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_updated_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_updated_at_v",
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 1 AND \"posts\".\"author_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_provider_display_name",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_provider_display_name_v",
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 1 AND \"posts\".\"author_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_root_guid",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_root_guid_v",
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 1 AND \"posts\".\"author_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_likes_count",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 1 AND \"posts\".\"author_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_comments_count",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 1 AND \"posts\".\"author_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_o_embed_cache_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 1 AND \"posts\".\"author_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_reshares_count",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 1 AND \"posts\".\"author_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_interacted_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_interacted_at_v",
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 1 AND \"posts\".\"author_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_tweet_id",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_tweet_id_v",
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 1 AND \"posts\".\"author_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_open_graph_cache_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 1 AND \"posts\".\"author_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_tumblr_ids",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_tumblr_ids_v",
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 1 AND \"posts\".\"author_id\" = 1"
+    },
+    {
+      "name": "len(SYM_RESULT_ActionController__Rendering__set_rendered_content_type_1)",
+      "sort": "Int",
+      "value": 1
+    },
+    {
+      "name": "len(SYM_RESULT_Anonymous_people_from_string_1)",
+      "sort": "Int",
+      "value": 0
+    },
+    {
+      "name": "assoc_author_id",
+      "sort": "Int",
+      "value": 1,
+      "note": "SingularAssociation#author"
+    },
+    {
+      "name": "assoc_author_guid",
+      "sort": "String",
+      "value": "assoc_author_guid_v",
+      "note": "SingularAssociation#author"
+    },
+    {
+      "name": "assoc_author_diaspora_handle",
+      "sort": "String",
+      "value": "assoc_author_diaspora_handle_v",
+      "note": "SingularAssociation#author"
+    },
+    {
+      "name": "assoc_author_serialized_public_key",
+      "sort": "String",
+      "value": "assoc_author_serialized_public_key_v",
+      "note": "SingularAssociation#author"
+    },
+    {
+      "name": "assoc_author_owner_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SingularAssociation#author"
+    },
+    {
+      "name": "assoc_author_created_at",
+      "sort": "String",
+      "value": "assoc_author_created_at_v",
+      "note": "SingularAssociation#author"
+    },
+    {
+      "name": "assoc_author_updated_at",
+      "sort": "String",
+      "value": "assoc_author_updated_at_v",
+      "note": "SingularAssociation#author"
+    },
+    {
+      "name": "assoc_author_closed_account",
+      "sort": "Bool",
+      "value": false,
+      "note": "SingularAssociation#author"
+    },
+    {
+      "name": "assoc_author_fetch_status",
+      "sort": "Int",
+      "value": 0,
+      "note": "SingularAssociation#author"
+    },
+    {
+      "name": "assoc_author_pod_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SingularAssociation#author"
+    },
+    {
+      "name": "assoc_profile_id",
+      "sort": "Int",
+      "value": 1,
+      "note": "SingularAssociation#profile"
+    },
+    {
+      "name": "assoc_profile_diaspora_handle",
+      "sort": "String",
+      "value": "assoc_profile_diaspora_handle_v",
+      "note": "SingularAssociation#profile"
+    },
+    {
+      "name": "assoc_profile_first_name",
+      "sort": "String",
+      "value": "assoc_profile_first_name_v",
+      "note": "SingularAssociation#profile"
+    },
+    {
+      "name": "assoc_profile_last_name",
+      "sort": "String",
+      "value": "assoc_profile_last_name_v",
+      "note": "SingularAssociation#profile"
+    },
+    {
+      "name": "assoc_profile_image_url",
+      "sort": "String",
+      "value": "assoc_profile_image_url_v",
+      "note": "SingularAssociation#profile"
+    },
+    {
+      "name": "assoc_profile_image_url_small",
+      "sort": "String",
+      "value": "assoc_profile_image_url_small_v",
+      "note": "SingularAssociation#profile"
+    },
+    {
+      "name": "assoc_profile_image_url_medium",
+      "sort": "String",
+      "value": "assoc_profile_image_url_medium_v",
+      "note": "SingularAssociation#profile"
+    },
+    {
+      "name": "assoc_profile_birthday",
+      "sort": "String",
+      "value": "assoc_profile_birthday_v",
+      "note": "SingularAssociation#profile"
+    },
+    {
+      "name": "assoc_profile_gender",
+      "sort": "String",
+      "value": "assoc_profile_gender_v",
+      "note": "SingularAssociation#profile"
+    },
+    {
+      "name": "assoc_profile_bio",
+      "sort": "String",
+      "value": "assoc_profile_bio_v",
+      "note": "SingularAssociation#profile"
+    },
+    {
+      "name": "assoc_profile_searchable",
+      "sort": "Bool",
+      "value": false,
+      "note": "SingularAssociation#profile"
+    },
+    {
+      "name": "assoc_profile_person_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SingularAssociation#profile"
+    },
+    {
+      "name": "assoc_profile_created_at",
+      "sort": "String",
+      "value": "assoc_profile_created_at_v",
+      "note": "SingularAssociation#profile"
+    },
+    {
+      "name": "assoc_profile_updated_at",
+      "sort": "String",
+      "value": "assoc_profile_updated_at_v",
+      "note": "SingularAssociation#profile"
+    },
+    {
+      "name": "assoc_profile_location",
+      "sort": "String",
+      "value": "assoc_profile_location_v",
+      "note": "SingularAssociation#profile"
+    },
+    {
+      "name": "assoc_profile_full_name",
+      "sort": "String",
+      "value": "assoc_profile_full_name_v",
+      "note": "SingularAssociation#profile"
+    },
+    {
+      "name": "assoc_profile_nsfw",
+      "sort": "Bool",
+      "value": false,
+      "note": "SingularAssociation#profile"
+    },
+    {
+      "name": "assoc_profile_public_details",
+      "sort": "Bool",
+      "value": false,
+      "note": "SingularAssociation#profile"
+    },
+    {
+      "name": "assoc_o_embed_cache_id",
+      "sort": "Int",
+      "value": 1,
+      "note": "SingularAssociation#o_embed_cache"
+    },
+    {
+      "name": "assoc_o_embed_cache_url",
+      "sort": "String",
+      "value": "assoc_o_embed_cache_url_v",
+      "note": "SingularAssociation#o_embed_cache"
+    },
+    {
+      "name": "assoc_o_embed_cache_data",
+      "sort": "String",
+      "value": "assoc_o_embed_cache_data_v",
+      "note": "SingularAssociation#o_embed_cache"
+    },
+    {
+      "name": "assoc_open_graph_cache_id",
+      "sort": "Int",
+      "value": 1,
+      "note": "SingularAssociation#open_graph_cache"
+    },
+    {
+      "name": "assoc_open_graph_cache_title",
+      "sort": "String",
+      "value": "assoc_open_graph_cache_title_v",
+      "note": "SingularAssociation#open_graph_cache"
+    },
+    {
+      "name": "assoc_open_graph_cache_ob_type",
+      "sort": "String",
+      "value": "assoc_open_graph_cache_ob_type_v",
+      "note": "SingularAssociation#open_graph_cache"
+    },
+    {
+      "name": "assoc_open_graph_cache_image",
+      "sort": "String",
+      "value": "assoc_open_graph_cache_image_v",
+      "note": "SingularAssociation#open_graph_cache"
+    },
+    {
+      "name": "assoc_open_graph_cache_url",
+      "sort": "String",
+      "value": "assoc_open_graph_cache_url_v",
+      "note": "SingularAssociation#open_graph_cache"
+    },
+    {
+      "name": "assoc_open_graph_cache_description",
+      "sort": "String",
+      "value": "assoc_open_graph_cache_description_v",
+      "note": "SingularAssociation#open_graph_cache"
+    },
+    {
+      "name": "assoc_open_graph_cache_video_url",
+      "sort": "String",
+      "value": "assoc_open_graph_cache_video_url_v",
+      "note": "SingularAssociation#open_graph_cache"
+    },
+    {
+      "name": "len(SYM_RESULT_PostPresenter_build_mentioned_people_json_1)",
+      "sort": "Int",
+      "value": 0
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_exists__1_exists",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"participations\".* FROM \"participations\" WHERE \"participations\".\"target_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_id)"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"likes\".* FROM \"likes\" WHERE \"likes\".\"target_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_id) AND \"likes\".\"target_type\" = 'Post' AND \"likes\".\"positive\" = true"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_id",
+      "sort": "Int",
+      "value": 1,
+      "note": "SELECT \"likes\".* FROM \"likes\" WHERE \"likes\".\"target_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_id) AND \"likes\".\"target_type\" = 'Post' AND \"likes\".\"positive\" = true"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_positive",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"likes\".* FROM \"likes\" WHERE \"likes\".\"target_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_id) AND \"likes\".\"target_type\" = 'Post' AND \"likes\".\"positive\" = true"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_target_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"likes\".* FROM \"likes\" WHERE \"likes\".\"target_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_id) AND \"likes\".\"target_type\" = 'Post' AND \"likes\".\"positive\" = true"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_author_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"likes\".* FROM \"likes\" WHERE \"likes\".\"target_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_id) AND \"likes\".\"target_type\" = 'Post' AND \"likes\".\"positive\" = true"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_guid",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_guid_v",
+      "note": "SELECT \"likes\".* FROM \"likes\" WHERE \"likes\".\"target_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_id) AND \"likes\".\"target_type\" = 'Post' AND \"likes\".\"positive\" = true"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_created_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_created_at_v",
+      "note": "SELECT \"likes\".* FROM \"likes\" WHERE \"likes\".\"target_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_id) AND \"likes\".\"target_type\" = 'Post' AND \"likes\".\"positive\" = true"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_updated_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_updated_at_v",
+      "note": "SELECT \"likes\".* FROM \"likes\" WHERE \"likes\".\"target_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_id) AND \"likes\".\"target_type\" = 'Post' AND \"likes\".\"positive\" = true"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_target_type",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_target_type_v",
+      "note": "SELECT \"likes\".* FROM \"likes\" WHERE \"likes\".\"target_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_id) AND \"likes\".\"target_type\" = 'Post' AND \"likes\".\"positive\" = true"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found",
+      "sort": "Bool",
+      "value": false,
+      "note": "Reshare query (render_relation_sql failed: NoMethodErrorundefined method `value' for #<Arel::Nod), args=arg=nil, args=nil"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_id",
+      "sort": "Int",
+      "value": 1,
+      "note": "Reshare query (render_relation_sql failed: NoMethodErrorundefined method `value' for #<Arel::Nod), args=arg=nil, args=nil"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_author_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "Reshare query (render_relation_sql failed: NoMethodErrorundefined method `value' for #<Arel::Nod), args=arg=nil, args=nil"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_public",
+      "sort": "Bool",
+      "value": false,
+      "note": "Reshare query (render_relation_sql failed: NoMethodErrorundefined method `value' for #<Arel::Nod), args=arg=nil, args=nil"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_guid",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_guid_v",
+      "note": "Reshare query (render_relation_sql failed: NoMethodErrorundefined method `value' for #<Arel::Nod), args=arg=nil, args=nil"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_type",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_type_v",
+      "note": "Reshare query (render_relation_sql failed: NoMethodErrorundefined method `value' for #<Arel::Nod), args=arg=nil, args=nil"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_text",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_text_v",
+      "note": "Reshare query (render_relation_sql failed: NoMethodErrorundefined method `value' for #<Arel::Nod), args=arg=nil, args=nil"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_created_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_created_at_v",
+      "note": "Reshare query (render_relation_sql failed: NoMethodErrorundefined method `value' for #<Arel::Nod), args=arg=nil, args=nil"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_updated_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_updated_at_v",
+      "note": "Reshare query (render_relation_sql failed: NoMethodErrorundefined method `value' for #<Arel::Nod), args=arg=nil, args=nil"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_provider_display_name",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_provider_display_name_v",
+      "note": "Reshare query (render_relation_sql failed: NoMethodErrorundefined method `value' for #<Arel::Nod), args=arg=nil, args=nil"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_root_guid",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_root_guid_v",
+      "note": "Reshare query (render_relation_sql failed: NoMethodErrorundefined method `value' for #<Arel::Nod), args=arg=nil, args=nil"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_likes_count",
+      "sort": "Int",
+      "value": 0,
+      "note": "Reshare query (render_relation_sql failed: NoMethodErrorundefined method `value' for #<Arel::Nod), args=arg=nil, args=nil"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_comments_count",
+      "sort": "Int",
+      "value": 0,
+      "note": "Reshare query (render_relation_sql failed: NoMethodErrorundefined method `value' for #<Arel::Nod), args=arg=nil, args=nil"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_o_embed_cache_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "Reshare query (render_relation_sql failed: NoMethodErrorundefined method `value' for #<Arel::Nod), args=arg=nil, args=nil"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_reshares_count",
+      "sort": "Int",
+      "value": 0,
+      "note": "Reshare query (render_relation_sql failed: NoMethodErrorundefined method `value' for #<Arel::Nod), args=arg=nil, args=nil"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_interacted_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_interacted_at_v",
+      "note": "Reshare query (render_relation_sql failed: NoMethodErrorundefined method `value' for #<Arel::Nod), args=arg=nil, args=nil"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_tweet_id",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_tweet_id_v",
+      "note": "Reshare query (render_relation_sql failed: NoMethodErrorundefined method `value' for #<Arel::Nod), args=arg=nil, args=nil"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_open_graph_cache_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "Reshare query (render_relation_sql failed: NoMethodErrorundefined method `value' for #<Arel::Nod), args=arg=nil, args=nil"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_tumblr_ids",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_tumblr_ids_v",
+      "note": "Reshare query (render_relation_sql failed: NoMethodErrorundefined method `value' for #<Arel::Nod), args=arg=nil, args=nil"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_3_not_found",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT posts.* FROM \"posts\" INNER JOIN \"share_visibilities\" ON \"share_visibilities\".\"shareable_id\" = \"posts\".\"id\" AND \"share_visibilities\".\"shareable_type\" = 'Post' WHERE \"posts\".\"guid\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_id) AND \"share_visibilities\".\"user_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_3_id",
+      "sort": "Int",
+      "value": 1,
+      "note": "SELECT posts.* FROM \"posts\" INNER JOIN \"share_visibilities\" ON \"share_visibilities\".\"shareable_id\" = \"posts\".\"id\" AND \"share_visibilities\".\"shareable_type\" = 'Post' WHERE \"posts\".\"guid\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_id) AND \"share_visibilities\".\"user_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_3_author_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT posts.* FROM \"posts\" INNER JOIN \"share_visibilities\" ON \"share_visibilities\".\"shareable_id\" = \"posts\".\"id\" AND \"share_visibilities\".\"shareable_type\" = 'Post' WHERE \"posts\".\"guid\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_id) AND \"share_visibilities\".\"user_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_3_public",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT posts.* FROM \"posts\" INNER JOIN \"share_visibilities\" ON \"share_visibilities\".\"shareable_id\" = \"posts\".\"id\" AND \"share_visibilities\".\"shareable_type\" = 'Post' WHERE \"posts\".\"guid\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_id) AND \"share_visibilities\".\"user_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_3_guid",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_3_guid_v",
+      "note": "SELECT posts.* FROM \"posts\" INNER JOIN \"share_visibilities\" ON \"share_visibilities\".\"shareable_id\" = \"posts\".\"id\" AND \"share_visibilities\".\"shareable_type\" = 'Post' WHERE \"posts\".\"guid\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_id) AND \"share_visibilities\".\"user_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_3_type",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_3_type_v",
+      "note": "SELECT posts.* FROM \"posts\" INNER JOIN \"share_visibilities\" ON \"share_visibilities\".\"shareable_id\" = \"posts\".\"id\" AND \"share_visibilities\".\"shareable_type\" = 'Post' WHERE \"posts\".\"guid\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_id) AND \"share_visibilities\".\"user_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_3_text",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_3_text_v",
+      "note": "SELECT posts.* FROM \"posts\" INNER JOIN \"share_visibilities\" ON \"share_visibilities\".\"shareable_id\" = \"posts\".\"id\" AND \"share_visibilities\".\"shareable_type\" = 'Post' WHERE \"posts\".\"guid\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_id) AND \"share_visibilities\".\"user_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_3_created_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_3_created_at_v",
+      "note": "SELECT posts.* FROM \"posts\" INNER JOIN \"share_visibilities\" ON \"share_visibilities\".\"shareable_id\" = \"posts\".\"id\" AND \"share_visibilities\".\"shareable_type\" = 'Post' WHERE \"posts\".\"guid\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_id) AND \"share_visibilities\".\"user_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_3_updated_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_3_updated_at_v",
+      "note": "SELECT posts.* FROM \"posts\" INNER JOIN \"share_visibilities\" ON \"share_visibilities\".\"shareable_id\" = \"posts\".\"id\" AND \"share_visibilities\".\"shareable_type\" = 'Post' WHERE \"posts\".\"guid\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_id) AND \"share_visibilities\".\"user_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_3_provider_display_name",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_3_provider_display_name_v",
+      "note": "SELECT posts.* FROM \"posts\" INNER JOIN \"share_visibilities\" ON \"share_visibilities\".\"shareable_id\" = \"posts\".\"id\" AND \"share_visibilities\".\"shareable_type\" = 'Post' WHERE \"posts\".\"guid\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_id) AND \"share_visibilities\".\"user_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_3_root_guid",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_3_root_guid_v",
+      "note": "SELECT posts.* FROM \"posts\" INNER JOIN \"share_visibilities\" ON \"share_visibilities\".\"shareable_id\" = \"posts\".\"id\" AND \"share_visibilities\".\"shareable_type\" = 'Post' WHERE \"posts\".\"guid\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_id) AND \"share_visibilities\".\"user_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_3_likes_count",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT posts.* FROM \"posts\" INNER JOIN \"share_visibilities\" ON \"share_visibilities\".\"shareable_id\" = \"posts\".\"id\" AND \"share_visibilities\".\"shareable_type\" = 'Post' WHERE \"posts\".\"guid\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_id) AND \"share_visibilities\".\"user_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_3_comments_count",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT posts.* FROM \"posts\" INNER JOIN \"share_visibilities\" ON \"share_visibilities\".\"shareable_id\" = \"posts\".\"id\" AND \"share_visibilities\".\"shareable_type\" = 'Post' WHERE \"posts\".\"guid\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_id) AND \"share_visibilities\".\"user_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_3_o_embed_cache_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT posts.* FROM \"posts\" INNER JOIN \"share_visibilities\" ON \"share_visibilities\".\"shareable_id\" = \"posts\".\"id\" AND \"share_visibilities\".\"shareable_type\" = 'Post' WHERE \"posts\".\"guid\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_id) AND \"share_visibilities\".\"user_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_3_reshares_count",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT posts.* FROM \"posts\" INNER JOIN \"share_visibilities\" ON \"share_visibilities\".\"shareable_id\" = \"posts\".\"id\" AND \"share_visibilities\".\"shareable_type\" = 'Post' WHERE \"posts\".\"guid\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_id) AND \"share_visibilities\".\"user_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_3_interacted_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_3_interacted_at_v",
+      "note": "SELECT posts.* FROM \"posts\" INNER JOIN \"share_visibilities\" ON \"share_visibilities\".\"shareable_id\" = \"posts\".\"id\" AND \"share_visibilities\".\"shareable_type\" = 'Post' WHERE \"posts\".\"guid\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_id) AND \"share_visibilities\".\"user_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_3_tweet_id",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_3_tweet_id_v",
+      "note": "SELECT posts.* FROM \"posts\" INNER JOIN \"share_visibilities\" ON \"share_visibilities\".\"shareable_id\" = \"posts\".\"id\" AND \"share_visibilities\".\"shareable_type\" = 'Post' WHERE \"posts\".\"guid\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_id) AND \"share_visibilities\".\"user_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_3_open_graph_cache_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT posts.* FROM \"posts\" INNER JOIN \"share_visibilities\" ON \"share_visibilities\".\"shareable_id\" = \"posts\".\"id\" AND \"share_visibilities\".\"shareable_type\" = 'Post' WHERE \"posts\".\"guid\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_id) AND \"share_visibilities\".\"user_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_3_tumblr_ids",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_3_tumblr_ids_v",
+      "note": "SELECT posts.* FROM \"posts\" INNER JOIN \"share_visibilities\" ON \"share_visibilities\".\"shareable_id\" = \"posts\".\"id\" AND \"share_visibilities\".\"shareable_type\" = 'Post' WHERE \"posts\".\"guid\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_id) AND \"share_visibilities\".\"user_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActsAsApi__Collection_as_api_response_1_row_id",
+      "sort": "Int",
+      "value": 1,
+      "note": "ActsAsApi::Collection#as_api_response"
+    },
+    {
+      "name": "SYM_RESULT_ActsAsApi__Collection_as_api_response_1_row_positive",
+      "sort": "Bool",
+      "value": false,
+      "note": "ActsAsApi::Collection#as_api_response"
+    },
+    {
+      "name": "SYM_RESULT_ActsAsApi__Collection_as_api_response_1_row_target_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "ActsAsApi::Collection#as_api_response"
+    },
+    {
+      "name": "SYM_RESULT_ActsAsApi__Collection_as_api_response_1_row_author_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "ActsAsApi::Collection#as_api_response"
+    },
+    {
+      "name": "SYM_RESULT_ActsAsApi__Collection_as_api_response_1_row_guid",
+      "sort": "String",
+      "value": "SYM_RESULT_ActsAsApi__Collection_as_api_response_1_row_guid_v",
+      "note": "ActsAsApi::Collection#as_api_response"
+    },
+    {
+      "name": "SYM_RESULT_ActsAsApi__Collection_as_api_response_1_row_created_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActsAsApi__Collection_as_api_response_1_row_created_at_v",
+      "note": "ActsAsApi::Collection#as_api_response"
+    },
+    {
+      "name": "SYM_RESULT_ActsAsApi__Collection_as_api_response_1_row_updated_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActsAsApi__Collection_as_api_response_1_row_updated_at_v",
+      "note": "ActsAsApi::Collection#as_api_response"
+    },
+    {
+      "name": "SYM_RESULT_ActsAsApi__Collection_as_api_response_1_row_target_type",
+      "sort": "String",
+      "value": "SYM_RESULT_ActsAsApi__Collection_as_api_response_1_row_target_type_v",
+      "note": "ActsAsApi::Collection#as_api_response"
+    },
+    {
+      "name": "len(SYM_RESULT_ActsAsApi__Collection_as_api_response_1)",
+      "sort": "Int",
+      "value": 1,
+      "note": "ActsAsApi::Collection#as_api_response"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_4_not_found",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT posts.* FROM \"posts\" INNER JOIN \"share_visibilities\" ON \"share_visibilities\".\"shareable_id\" = \"posts\".\"id\" AND \"share_visibilities\".\"shareable_type\" = 'Post' WHERE \"posts\".\"guid\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_id) AND \"share_visibilities\".\"user_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_4_id",
+      "sort": "Int",
+      "value": 1,
+      "note": "SELECT posts.* FROM \"posts\" INNER JOIN \"share_visibilities\" ON \"share_visibilities\".\"shareable_id\" = \"posts\".\"id\" AND \"share_visibilities\".\"shareable_type\" = 'Post' WHERE \"posts\".\"guid\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_id) AND \"share_visibilities\".\"user_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_4_author_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT posts.* FROM \"posts\" INNER JOIN \"share_visibilities\" ON \"share_visibilities\".\"shareable_id\" = \"posts\".\"id\" AND \"share_visibilities\".\"shareable_type\" = 'Post' WHERE \"posts\".\"guid\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_id) AND \"share_visibilities\".\"user_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_4_public",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT posts.* FROM \"posts\" INNER JOIN \"share_visibilities\" ON \"share_visibilities\".\"shareable_id\" = \"posts\".\"id\" AND \"share_visibilities\".\"shareable_type\" = 'Post' WHERE \"posts\".\"guid\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_id) AND \"share_visibilities\".\"user_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_4_guid",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_4_guid_v",
+      "note": "SELECT posts.* FROM \"posts\" INNER JOIN \"share_visibilities\" ON \"share_visibilities\".\"shareable_id\" = \"posts\".\"id\" AND \"share_visibilities\".\"shareable_type\" = 'Post' WHERE \"posts\".\"guid\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_id) AND \"share_visibilities\".\"user_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_4_type",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_4_type_v",
+      "note": "SELECT posts.* FROM \"posts\" INNER JOIN \"share_visibilities\" ON \"share_visibilities\".\"shareable_id\" = \"posts\".\"id\" AND \"share_visibilities\".\"shareable_type\" = 'Post' WHERE \"posts\".\"guid\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_id) AND \"share_visibilities\".\"user_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_4_text",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_4_text_v",
+      "note": "SELECT posts.* FROM \"posts\" INNER JOIN \"share_visibilities\" ON \"share_visibilities\".\"shareable_id\" = \"posts\".\"id\" AND \"share_visibilities\".\"shareable_type\" = 'Post' WHERE \"posts\".\"guid\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_id) AND \"share_visibilities\".\"user_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_4_created_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_4_created_at_v",
+      "note": "SELECT posts.* FROM \"posts\" INNER JOIN \"share_visibilities\" ON \"share_visibilities\".\"shareable_id\" = \"posts\".\"id\" AND \"share_visibilities\".\"shareable_type\" = 'Post' WHERE \"posts\".\"guid\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_id) AND \"share_visibilities\".\"user_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_4_updated_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_4_updated_at_v",
+      "note": "SELECT posts.* FROM \"posts\" INNER JOIN \"share_visibilities\" ON \"share_visibilities\".\"shareable_id\" = \"posts\".\"id\" AND \"share_visibilities\".\"shareable_type\" = 'Post' WHERE \"posts\".\"guid\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_id) AND \"share_visibilities\".\"user_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_4_provider_display_name",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_4_provider_display_name_v",
+      "note": "SELECT posts.* FROM \"posts\" INNER JOIN \"share_visibilities\" ON \"share_visibilities\".\"shareable_id\" = \"posts\".\"id\" AND \"share_visibilities\".\"shareable_type\" = 'Post' WHERE \"posts\".\"guid\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_id) AND \"share_visibilities\".\"user_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_4_root_guid",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_4_root_guid_v",
+      "note": "SELECT posts.* FROM \"posts\" INNER JOIN \"share_visibilities\" ON \"share_visibilities\".\"shareable_id\" = \"posts\".\"id\" AND \"share_visibilities\".\"shareable_type\" = 'Post' WHERE \"posts\".\"guid\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_id) AND \"share_visibilities\".\"user_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_4_likes_count",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT posts.* FROM \"posts\" INNER JOIN \"share_visibilities\" ON \"share_visibilities\".\"shareable_id\" = \"posts\".\"id\" AND \"share_visibilities\".\"shareable_type\" = 'Post' WHERE \"posts\".\"guid\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_id) AND \"share_visibilities\".\"user_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_4_comments_count",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT posts.* FROM \"posts\" INNER JOIN \"share_visibilities\" ON \"share_visibilities\".\"shareable_id\" = \"posts\".\"id\" AND \"share_visibilities\".\"shareable_type\" = 'Post' WHERE \"posts\".\"guid\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_id) AND \"share_visibilities\".\"user_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_4_o_embed_cache_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT posts.* FROM \"posts\" INNER JOIN \"share_visibilities\" ON \"share_visibilities\".\"shareable_id\" = \"posts\".\"id\" AND \"share_visibilities\".\"shareable_type\" = 'Post' WHERE \"posts\".\"guid\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_id) AND \"share_visibilities\".\"user_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_4_reshares_count",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT posts.* FROM \"posts\" INNER JOIN \"share_visibilities\" ON \"share_visibilities\".\"shareable_id\" = \"posts\".\"id\" AND \"share_visibilities\".\"shareable_type\" = 'Post' WHERE \"posts\".\"guid\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_id) AND \"share_visibilities\".\"user_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_4_interacted_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_4_interacted_at_v",
+      "note": "SELECT posts.* FROM \"posts\" INNER JOIN \"share_visibilities\" ON \"share_visibilities\".\"shareable_id\" = \"posts\".\"id\" AND \"share_visibilities\".\"shareable_type\" = 'Post' WHERE \"posts\".\"guid\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_id) AND \"share_visibilities\".\"user_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_4_tweet_id",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_4_tweet_id_v",
+      "note": "SELECT posts.* FROM \"posts\" INNER JOIN \"share_visibilities\" ON \"share_visibilities\".\"shareable_id\" = \"posts\".\"id\" AND \"share_visibilities\".\"shareable_type\" = 'Post' WHERE \"posts\".\"guid\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_id) AND \"share_visibilities\".\"user_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_4_open_graph_cache_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT posts.* FROM \"posts\" INNER JOIN \"share_visibilities\" ON \"share_visibilities\".\"shareable_id\" = \"posts\".\"id\" AND \"share_visibilities\".\"shareable_type\" = 'Post' WHERE \"posts\".\"guid\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_id) AND \"share_visibilities\".\"user_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_4_tumblr_ids",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_4_tumblr_ids_v",
+      "note": "SELECT posts.* FROM \"posts\" INNER JOIN \"share_visibilities\" ON \"share_visibilities\".\"shareable_id\" = \"posts\".\"id\" AND \"share_visibilities\".\"shareable_type\" = 'Post' WHERE \"posts\".\"guid\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_id) AND \"share_visibilities\".\"user_id\" = 1"
+    },
+    {
+      "name": "SYM_RESULT_ActsAsApi__Collection_as_api_response_2_row_id",
+      "sort": "Int",
+      "value": 1,
+      "note": "ActsAsApi::Collection#as_api_response"
+    },
+    {
+      "name": "SYM_RESULT_ActsAsApi__Collection_as_api_response_2_row_author_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "ActsAsApi::Collection#as_api_response"
+    },
+    {
+      "name": "SYM_RESULT_ActsAsApi__Collection_as_api_response_2_row_public",
+      "sort": "Bool",
+      "value": false,
+      "note": "ActsAsApi::Collection#as_api_response"
+    },
+    {
+      "name": "SYM_RESULT_ActsAsApi__Collection_as_api_response_2_row_guid",
+      "sort": "String",
+      "value": "SYM_RESULT_ActsAsApi__Collection_as_api_response_2_row_guid_v",
+      "note": "ActsAsApi::Collection#as_api_response"
+    },
+    {
+      "name": "SYM_RESULT_ActsAsApi__Collection_as_api_response_2_row_type",
+      "sort": "String",
+      "value": "SYM_RESULT_ActsAsApi__Collection_as_api_response_2_row_type_v",
+      "note": "ActsAsApi::Collection#as_api_response"
+    },
+    {
+      "name": "SYM_RESULT_ActsAsApi__Collection_as_api_response_2_row_text",
+      "sort": "String",
+      "value": "SYM_RESULT_ActsAsApi__Collection_as_api_response_2_row_text_v",
+      "note": "ActsAsApi::Collection#as_api_response"
+    },
+    {
+      "name": "SYM_RESULT_ActsAsApi__Collection_as_api_response_2_row_created_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActsAsApi__Collection_as_api_response_2_row_created_at_v",
+      "note": "ActsAsApi::Collection#as_api_response"
+    },
+    {
+      "name": "SYM_RESULT_ActsAsApi__Collection_as_api_response_2_row_updated_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActsAsApi__Collection_as_api_response_2_row_updated_at_v",
+      "note": "ActsAsApi::Collection#as_api_response"
+    },
+    {
+      "name": "SYM_RESULT_ActsAsApi__Collection_as_api_response_2_row_provider_display_name",
+      "sort": "String",
+      "value": "SYM_RESULT_ActsAsApi__Collection_as_api_response_2_row_provider_display_name_v",
+      "note": "ActsAsApi::Collection#as_api_response"
+    },
+    {
+      "name": "SYM_RESULT_ActsAsApi__Collection_as_api_response_2_row_root_guid",
+      "sort": "String",
+      "value": "SYM_RESULT_ActsAsApi__Collection_as_api_response_2_row_root_guid_v",
+      "note": "ActsAsApi::Collection#as_api_response"
+    },
+    {
+      "name": "SYM_RESULT_ActsAsApi__Collection_as_api_response_2_row_likes_count",
+      "sort": "Int",
+      "value": 0,
+      "note": "ActsAsApi::Collection#as_api_response"
+    },
+    {
+      "name": "SYM_RESULT_ActsAsApi__Collection_as_api_response_2_row_comments_count",
+      "sort": "Int",
+      "value": 0,
+      "note": "ActsAsApi::Collection#as_api_response"
+    },
+    {
+      "name": "SYM_RESULT_ActsAsApi__Collection_as_api_response_2_row_o_embed_cache_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "ActsAsApi::Collection#as_api_response"
+    },
+    {
+      "name": "SYM_RESULT_ActsAsApi__Collection_as_api_response_2_row_reshares_count",
+      "sort": "Int",
+      "value": 0,
+      "note": "ActsAsApi::Collection#as_api_response"
+    },
+    {
+      "name": "SYM_RESULT_ActsAsApi__Collection_as_api_response_2_row_interacted_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActsAsApi__Collection_as_api_response_2_row_interacted_at_v",
+      "note": "ActsAsApi::Collection#as_api_response"
+    },
+    {
+      "name": "SYM_RESULT_ActsAsApi__Collection_as_api_response_2_row_tweet_id",
+      "sort": "String",
+      "value": "SYM_RESULT_ActsAsApi__Collection_as_api_response_2_row_tweet_id_v",
+      "note": "ActsAsApi::Collection#as_api_response"
+    },
+    {
+      "name": "SYM_RESULT_ActsAsApi__Collection_as_api_response_2_row_open_graph_cache_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "ActsAsApi::Collection#as_api_response"
+    },
+    {
+      "name": "SYM_RESULT_ActsAsApi__Collection_as_api_response_2_row_tumblr_ids",
+      "sort": "String",
+      "value": "SYM_RESULT_ActsAsApi__Collection_as_api_response_2_row_tumblr_ids_v",
+      "note": "ActsAsApi::Collection#as_api_response"
+    },
+    {
+      "name": "len(SYM_RESULT_ActsAsApi__Collection_as_api_response_2)",
+      "sort": "Int",
+      "value": 1,
+      "note": "ActsAsApi::Collection#as_api_response"
+    }
+  ],
+  "events": [
+    {
+      "type": "call",
+      "target": "ActiveRecord::FinderMethods.first",
+      "args": {
+        "limit": null
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/lib/evil_query.rb",
+      "lineno": 104,
+      "function": "post!"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::FinderMethods.first",
+      "args": {
+        "limit": null
+      },
+      "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
+      "result_value": null,
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/lib/evil_query.rb",
+      "lineno": 104,
+      "function": "post!"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+      "taken": true,
+      "file": "/home/dev/project/reports/diaspora/concolic_targets.rb",
+      "lineno": 286,
+      "function": "block in finder_mock"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::FinderMethods.first",
+      "args": {
+        "limit": null
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/lib/evil_query.rb",
+      "lineno": 104,
+      "function": "post!"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::FinderMethods.first",
+      "args": {
+        "limit": null
+      },
+      "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2",
+      "result_value": "#<Post:0x5da1f9b9>",
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/lib/evil_query.rb",
+      "lineno": 104,
+      "function": "post!",
+      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = 1 AND \"posts\".\"author_id\" = 1"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found == True)",
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/concolic_targets.rb",
+      "lineno": 286,
+      "function": "block in finder_mock"
+    },
+    {
+      "type": "call",
+      "target": "PostService.mark_user_notifications",
+      "args": {
+        "post_id": 1
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/posts_controller.rb",
+      "lineno": 23,
+      "function": "show"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "PostService.mark_user_notifications",
+      "args": {
+        "post_id": 1
+      },
+      "result_name": "SYM_RESULT_PostService_mark_user_notifications_1",
+      "result_value": null,
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/posts_controller.rb",
+      "lineno": 23,
+      "function": "show"
+    },
+    {
+      "type": "call",
+      "target": "ActionController::Rendering._set_rendered_content_type",
+      "args": {
+        "format": "text/html"
+      },
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/mime_responds.rb",
+      "lineno": 201,
+      "function": "respond_to"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActionController::Rendering._set_rendered_content_type",
+      "args": {
+        "format": "text/html"
+      },
+      "result_name": "SYM_RESULT_ActionController__Rendering__set_rendered_content_type_1",
+      "result_value": {
+        "format": "text/html"
+      },
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/mime_responds.rb",
+      "lineno": 201,
+      "function": "respond_to"
+    },
+    {
+      "type": "call",
+      "target": "Gon::ControllerHelpers.gon",
+      "args": {
+},
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/posts_controller.rb",
+      "lineno": 27,
+      "function": "block"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "Gon::ControllerHelpers.gon",
+      "args": {
+},
+      "result_name": "SYM_RESULT_Gon__ControllerHelpers_gon_1",
+      "result_value": "#<Object:0x1353f515>",
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/posts_controller.rb",
+      "lineno": 27,
+      "function": "block in show"
+    },
+    {
+      "type": "call",
+      "target": "Anonymous.people_from_string",
+      "args": {
+        "msg_text": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_text_v"
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/lib/diaspora/mentions_container.rb",
+      "lineno": 21,
+      "function": "mentioned_people"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "Anonymous.people_from_string",
+      "args": {
+        "msg_text": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_text_v"
+      },
+      "result_name": "SYM_RESULT_Anonymous_people_from_string_1",
+      "result_value": [
+
+      ],
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/lib/diaspora/mentions_container.rb",
+      "lineno": 21,
+      "function": "mentioned_people"
+    },
+    {
+      "type": "call",
+      "target": "Anonymous.process",
+      "args": {
+        "message": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_text_v",
+        "options": null,
+        "block": null
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/lib/diaspora/message_renderer.rb",
+      "lineno": 264,
+      "function": "process"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "Anonymous.process",
+      "args": {
+        "message": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_text_v",
+        "options": null,
+        "block": null
+      },
+      "result_name": "SYM_RESULT_Anonymous_process_1",
+      "result_value": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_text_v",
+      "result_sort": "String",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/lib/diaspora/message_renderer.rb",
+      "lineno": 264,
+      "function": "process"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::Associations::SingularAssociation.find_target",
+      "args": {
+},
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations/association.rb",
+      "lineno": 159,
+      "function": "load_target"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::Associations::SingularAssociation.find_target",
+      "args": {
+},
+      "result_name": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1",
+      "result_value": "#<Person:0x3b14d63b>",
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations/association.rb",
+      "lineno": 159,
+      "function": "load_target",
+      "note": "SingularAssociation#author"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::Associations::SingularAssociation.find_target",
+      "args": {
+},
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations/association.rb",
+      "lineno": 159,
+      "function": "load_target"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::Associations::SingularAssociation.find_target",
+      "args": {
+},
+      "result_name": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_2",
+      "result_value": "#<Profile:0x46c8a8e0>",
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations/association.rb",
+      "lineno": 159,
+      "function": "load_target",
+      "note": "SingularAssociation#profile"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(assoc_profile_nsfw == True)",
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/concolic_targets.rb",
+      "lineno": 204,
+      "function": "block in symbolic_instance"
+    },
+    {
+      "type": "call",
+      "target": "Person.name",
+      "args": {
+        "opts": null
+      },
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/acts_as_api-1.0.1/lib/acts_as_api/api_template.rb",
+      "lineno": 119,
+      "function": "process_value"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "Person.name",
+      "args": {
+        "opts": null
+      },
+      "result_name": "SYM_RESULT_Person_name_1",
+      "result_value": "Concolic Person Name",
+      "result_sort": "String",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/acts_as_api-1.0.1/lib/acts_as_api/api_template.rb",
+      "lineno": 119,
+      "function": "process_value"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::Associations::SingularAssociation.find_target",
+      "args": {
+},
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations/association.rb",
+      "lineno": 159,
+      "function": "load_target"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::Associations::SingularAssociation.find_target",
+      "args": {
+},
+      "result_name": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_3",
+      "result_value": "#<OEmbedCache:0x54ce2da8>",
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations/association.rb",
+      "lineno": 159,
+      "function": "load_target",
+      "note": "SingularAssociation#o_embed_cache"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::Associations::SingularAssociation.find_target",
+      "args": {
+},
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations/association.rb",
+      "lineno": 159,
+      "function": "load_target"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::Associations::SingularAssociation.find_target",
+      "args": {
+},
+      "result_name": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_4",
+      "result_value": "#<OpenGraphCache:0x6707ab9>",
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations/association.rb",
+      "lineno": 159,
+      "function": "load_target",
+      "note": "SingularAssociation#open_graph_cache"
+    },
+    {
+      "type": "call",
+      "target": "PostPresenter.build_mentioned_people_json",
+      "args": {
+},
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/presenters/post_presenter.rb",
+      "lineno": 66,
+      "function": "non_directly_retrieved_attributes"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "PostPresenter.build_mentioned_people_json",
+      "args": {
+},
+      "result_name": "SYM_RESULT_PostPresenter_build_mentioned_people_json_1",
+      "result_value": [
+
+      ],
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/presenters/post_presenter.rb",
+      "lineno": 66,
+      "function": "non_directly_retrieved_attributes"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_2_text == '')",
+      "taken": false,
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activesupport-5.2.4.3/lib/active_support/core_ext/object/blank.rb",
+      "lineno": 126,
+      "function": "blank?"
+    },
+    {
+      "type": "call",
+      "target": "Diaspora::MessageRenderer.title",
+      "args": {
+        "opts": null
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/presenters/post_presenter.rb",
+      "lineno": 79,
+      "function": "title"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "Diaspora::MessageRenderer.title",
+      "args": {
+        "opts": null
+      },
+      "result_name": "SYM_RESULT_Diaspora__MessageRenderer_title_1",
+      "result_value": "Concolic title",
+      "result_sort": "String",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/presenters/post_presenter.rb",
+      "lineno": 79,
+      "function": "title"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::FinderMethods.exists?",
+      "args": {
+        "conditions": null
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/presenters/post_presenter.rb",
+      "lineno": 131,
+      "function": "participate?"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::FinderMethods.exists?",
+      "args": {
+        "conditions": null
+      },
+      "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_exists__1",
+      "result_value": false,
+      "result_sort": "Bool",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/presenters/post_presenter.rb",
+      "lineno": 131,
+      "function": "participate?",
+      "note": "SELECT \"participations\".* FROM \"participations\" WHERE \"participations\".\"target_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_id)"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::FinderMethods.find_by",
+      "args": {
+        "arg": null,
+        "args": null
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/models/post.rb",
+      "lineno": 143,
+      "function": "like_for"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::FinderMethods.find_by",
+      "args": {
+        "arg": null,
+        "args": null
+      },
+      "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1",
+      "result_value": "#<Like:0x1b48c142>",
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/models/post.rb",
+      "lineno": 143,
+      "function": "like_for",
+      "note": "SELECT \"likes\".* FROM \"likes\" WHERE \"likes\".\"target_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_id) AND \"likes\".\"target_type\" = 'Post' AND \"likes\".\"positive\" = true"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found == True)",
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/concolic_targets.rb",
+      "lineno": 286,
+      "function": "block in finder_mock"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::Associations::SingularAssociation.find_target",
+      "args": {
+},
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations/association.rb",
+      "lineno": 159,
+      "function": "load_target"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::Associations::SingularAssociation.find_target",
+      "args": {
+},
+      "result_name": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_5",
+      "result_value": "#<Person:0x1844e563>",
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations/association.rb",
+      "lineno": 159,
+      "function": "load_target",
+      "note": "SingularAssociation#author"
+    },
+    {
+      "type": "call",
+      "target": "Person.name",
+      "args": {
+        "opts": null
+      },
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/acts_as_api-1.0.1/lib/acts_as_api/api_template.rb",
+      "lineno": 119,
+      "function": "process_value"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "Person.name",
+      "args": {
+        "opts": null
+      },
+      "result_name": "SYM_RESULT_Person_name_2",
+      "result_value": "Concolic Person Name",
+      "result_sort": "String",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/acts_as_api-1.0.1/lib/acts_as_api/api_template.rb",
+      "lineno": 119,
+      "function": "process_value"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::Associations::SingularAssociation.find_target",
+      "args": {
+},
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations/association.rb",
+      "lineno": 159,
+      "function": "load_target"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::Associations::SingularAssociation.find_target",
+      "args": {
+},
+      "result_name": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_6",
+      "result_value": "#<Profile:0x3dc238ae>",
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations/association.rb",
+      "lineno": 159,
+      "function": "load_target",
+      "note": "SingularAssociation#profile"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::FinderMethods.find_by",
+      "args": {
+        "arg": null,
+        "args": null
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/models/post.rb",
+      "lineno": 138,
+      "function": "reshare_for"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::FinderMethods.find_by",
+      "args": {
+        "arg": null,
+        "args": null
+      },
+      "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2",
+      "result_value": "#<Reshare:0x3862381d>",
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/models/post.rb",
+      "lineno": 138,
+      "function": "reshare_for",
+      "note": "Reshare query (render_relation_sql failed: NoMethodErrorundefined method `value' for #<Arel::Nod), args=arg=nil, args=nil"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_2_guid == '')",
+      "taken": false,
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb",
+      "lineno": 375,
+      "function": "attribute_present?"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/concolic_targets.rb",
+      "lineno": 286,
+      "function": "block in finder_mock"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::Associations::SingularAssociation.find_target",
+      "args": {
+},
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations/association.rb",
+      "lineno": 159,
+      "function": "load_target"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::Associations::SingularAssociation.find_target",
+      "args": {
+},
+      "result_name": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_7",
+      "result_value": "#<Person:0x657dbc82>",
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations/association.rb",
+      "lineno": 159,
+      "function": "load_target",
+      "note": "SingularAssociation#author"
+    },
+    {
+      "type": "call",
+      "target": "Person.name",
+      "args": {
+        "opts": null
+      },
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/acts_as_api-1.0.1/lib/acts_as_api/api_template.rb",
+      "lineno": 119,
+      "function": "process_value"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "Person.name",
+      "args": {
+        "opts": null
+      },
+      "result_name": "SYM_RESULT_Person_name_3",
+      "result_value": "Concolic Person Name",
+      "result_sort": "String",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/acts_as_api-1.0.1/lib/acts_as_api/api_template.rb",
+      "lineno": 119,
+      "function": "process_value"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::Associations::SingularAssociation.find_target",
+      "args": {
+},
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations/association.rb",
+      "lineno": 159,
+      "function": "load_target"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::Associations::SingularAssociation.find_target",
+      "args": {
+},
+      "result_name": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_8",
+      "result_value": "#<Profile:0x5aad32b3>",
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations/association.rb",
+      "lineno": 159,
+      "function": "load_target",
+      "note": "SingularAssociation#profile"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::FinderMethods.first",
+      "args": {
+        "limit": null
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/lib/evil_query.rb",
+      "lineno": 104,
+      "function": "post!"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::FinderMethods.first",
+      "args": {
+        "limit": null
+      },
+      "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_first_3",
+      "result_value": "#<Post:0x76067600>",
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/lib/evil_query.rb",
+      "lineno": 104,
+      "function": "post!",
+      "note": "SELECT posts.* FROM \"posts\" INNER JOIN \"share_visibilities\" ON \"share_visibilities\".\"shareable_id\" = \"posts\".\"id\" AND \"share_visibilities\".\"shareable_type\" = 'Post' WHERE \"posts\".\"guid\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_id) AND \"share_visibilities\".\"user_id\" = 1"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_3_not_found == True)",
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/concolic_targets.rb",
+      "lineno": 286,
+      "function": "block in finder_mock"
+    },
+    {
+      "type": "call",
+      "target": "ActsAsApi::Collection.as_api_response",
+      "args": {
+        "api_template": "backbone",
+        "options": null
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/presenters/post_presenter.rb",
+      "lineno": 27,
+      "function": "block"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActsAsApi::Collection.as_api_response",
+      "args": {
+        "api_template": "backbone",
+        "options": null
+      },
+      "result_name": "SYM_RESULT_ActsAsApi__Collection_as_api_response_1",
+      "result_value": 1,
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/presenters/post_presenter.rb",
+      "lineno": 27,
+      "function": "block in with_initial_interactions",
+      "note": "ActsAsApi::Collection#as_api_response"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::FinderMethods.first",
+      "args": {
+        "limit": null
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/lib/evil_query.rb",
+      "lineno": 104,
+      "function": "post!"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::FinderMethods.first",
+      "args": {
+        "limit": null
+      },
+      "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_first_4",
+      "result_value": "#<Post:0x5f0d1a0d>",
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/lib/evil_query.rb",
+      "lineno": 104,
+      "function": "post!",
+      "note": "SELECT posts.* FROM \"posts\" INNER JOIN \"share_visibilities\" ON \"share_visibilities\".\"shareable_id\" = \"posts\".\"id\" AND \"share_visibilities\".\"shareable_type\" = 'Post' WHERE \"posts\".\"guid\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_id) AND \"share_visibilities\".\"user_id\" = 1"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_4_not_found == True)",
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/concolic_targets.rb",
+      "lineno": 286,
+      "function": "block in finder_mock"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_4_guid == '')",
+      "taken": false,
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb",
+      "lineno": 375,
+      "function": "attribute_present?"
+    },
+    {
+      "type": "call",
+      "target": "ActsAsApi::Collection.as_api_response",
+      "args": {
+        "api_template": "backbone",
+        "options": null
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/presenters/post_presenter.rb",
+      "lineno": 28,
+      "function": "block"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActsAsApi::Collection.as_api_response",
+      "args": {
+        "api_template": "backbone",
+        "options": null
+      },
+      "result_name": "SYM_RESULT_ActsAsApi__Collection_as_api_response_2",
+      "result_value": 1,
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/presenters/post_presenter.rb",
+      "lineno": 28,
+      "function": "block in with_initial_interactions",
+      "note": "ActsAsApi::Collection#as_api_response"
+    },
+    {
+      "type": "call",
+      "target": "ActionController::Rendering.render",
+      "args": {
+        "args": null
+      },
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/instrumentation.rb",
+      "lineno": 46,
+      "function": "block"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActionController::Rendering.render",
+      "args": {
+        "args": null
+      },
+      "result_name": "SYM_RESULT_ActionController__Rendering_render_1",
+      "result_value": "render_reached",
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/instrumentation.rb",
+      "lineno": 46,
+      "function": "block in render"
+    }
+  ],
+  "symbolic_results": [
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
+      "sort": "Int",
+      "value": null
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2",
+      "sort": "Int",
+      "value": "#<Post:0x5da1f9b9>"
+    },
+    {
+      "name": "SYM_RESULT_PostService_mark_user_notifications_1",
+      "sort": "Int",
+      "value": null
+    },
+    {
+      "name": "SYM_RESULT_ActionController__Rendering__set_rendered_content_type_1",
+      "sort": "Int",
+      "value": {
+        "format": "text/html"
+      }
+    },
+    {
+      "name": "SYM_RESULT_Gon__ControllerHelpers_gon_1",
+      "sort": "Int",
+      "value": "#<Object:0x1353f515>"
+    },
+    {
+      "name": "SYM_RESULT_Anonymous_people_from_string_1",
+      "sort": "Int",
+      "value": [
+
+      ]
+    },
+    {
+      "name": "SYM_RESULT_Anonymous_process_1",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_text_v"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1",
+      "sort": "Int",
+      "value": "#<Person:0x3b14d63b>"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_2",
+      "sort": "Int",
+      "value": "#<Profile:0x46c8a8e0>"
+    },
+    {
+      "name": "SYM_RESULT_Person_name_1",
+      "sort": "String",
+      "value": "Concolic Person Name"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_3",
+      "sort": "Int",
+      "value": "#<OEmbedCache:0x54ce2da8>"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_4",
+      "sort": "Int",
+      "value": "#<OpenGraphCache:0x6707ab9>"
+    },
+    {
+      "name": "SYM_RESULT_PostPresenter_build_mentioned_people_json_1",
+      "sort": "Int",
+      "value": [
+
+      ]
+    },
+    {
+      "name": "SYM_RESULT_Diaspora__MessageRenderer_title_1",
+      "sort": "String",
+      "value": "Concolic title"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_exists__1",
+      "sort": "Bool",
+      "value": false
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1",
+      "sort": "Int",
+      "value": "#<Like:0x1b48c142>"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_5",
+      "sort": "Int",
+      "value": "#<Person:0x1844e563>"
+    },
+    {
+      "name": "SYM_RESULT_Person_name_2",
+      "sort": "String",
+      "value": "Concolic Person Name"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_6",
+      "sort": "Int",
+      "value": "#<Profile:0x3dc238ae>"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2",
+      "sort": "Int",
+      "value": "#<Reshare:0x3862381d>"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_7",
+      "sort": "Int",
+      "value": "#<Person:0x657dbc82>"
+    },
+    {
+      "name": "SYM_RESULT_Person_name_3",
+      "sort": "String",
+      "value": "Concolic Person Name"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_8",
+      "sort": "Int",
+      "value": "#<Profile:0x5aad32b3>"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_3",
+      "sort": "Int",
+      "value": "#<Post:0x76067600>"
+    },
+    {
+      "name": "SYM_RESULT_ActsAsApi__Collection_as_api_response_1",
+      "sort": "Int",
+      "value": 1
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_4",
+      "sort": "Int",
+      "value": "#<Post:0x5f0d1a0d>"
+    },
+    {
+      "name": "SYM_RESULT_ActsAsApi__Collection_as_api_response_2",
+      "sort": "Int",
+      "value": 1
+    },
+    {
+      "name": "SYM_RESULT_ActionController__Rendering_render_1",
+      "sort": "Int",
+      "value": "render_reached"
+    }
+  ],
+  "script": "run_concolic.rb"
+}

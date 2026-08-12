@@ -1,0 +1,21 @@
+{
+  "entrypoint": "comments_create",
+  "complete": true,
+  "total_runs": 4,
+  "total_nodes": 3,
+  "total_path_conditions": 9,
+  "total_symbolic_calls": 7,
+  "missing": [],
+  "runs_with_errors": [
+    {
+      "dump": "dump_comments_create_r0.json",
+      "error_type": "NotImplementedError",
+      "message": "SymbolicInt#hash is not supported (symbolic values cannot be Hash keys)"
+    },
+    {
+      "dump": "dump_comments_create_r3.json",
+      "error_type": "NoMethodError",
+      "message": "undefined method `comment!' for nil:NilClass"
+    }
+  ]
+}

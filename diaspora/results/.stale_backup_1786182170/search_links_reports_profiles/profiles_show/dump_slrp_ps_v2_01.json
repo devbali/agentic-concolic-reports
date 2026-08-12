@@ -1,0 +1,118 @@
+{
+  "schema_version": "1.0",
+  "label": "slrp_ps_v2_01",
+  "symbolic_vars": [
+    {
+      "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by__1_not_found",
+      "sort": "Bool",
+      "value": false,
+      "note": "Person query (class-level finder), args={\"args\"=>nil}"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by__1_id",
+      "sort": "Int",
+      "value": 1,
+      "note": "Person query (class-level finder), args={\"args\"=>nil}"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by__1_guid",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by__1_guid_v",
+      "note": "Person query (class-level finder), args={\"args\"=>nil}"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by__1_diaspora_handle",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by__1_diaspora_handle_v",
+      "note": "Person query (class-level finder), args={\"args\"=>nil}"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by__1_serialized_public_key",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by__1_serialized_public_key_v",
+      "note": "Person query (class-level finder), args={\"args\"=>nil}"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by__1_owner_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "Person query (class-level finder), args={\"args\"=>nil}"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by__1_created_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by__1_created_at_v",
+      "note": "Person query (class-level finder), args={\"args\"=>nil}"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by__1_updated_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by__1_updated_at_v",
+      "note": "Person query (class-level finder), args={\"args\"=>nil}"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by__1_closed_account",
+      "sort": "Bool",
+      "value": false,
+      "note": "Person query (class-level finder), args={\"args\"=>nil}"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by__1_fetch_status",
+      "sort": "Int",
+      "value": 0,
+      "note": "Person query (class-level finder), args={\"args\"=>nil}"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by__1_pod_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "Person query (class-level finder), args={\"args\"=>nil}"
+    }
+  ],
+  "events": [
+    {
+      "type": "call",
+      "target": "ActiveRecord::Core::ClassMethods.find_by!",
+      "args": {
+        "args": null
+      },
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/dynamic_matchers.rb",
+      "lineno": 66,
+      "function": "find_by_guid!"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::Core::ClassMethods.find_by!",
+      "args": {
+        "args": null
+      },
+      "result_name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by__1",
+      "result_value": "#<Person:0x109d3527>",
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/dynamic_matchers.rb",
+      "lineno": 66,
+      "function": "find_by_guid!"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by__1_not_found == True)",
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/concolic_targets.rb",
+      "lineno": 133,
+      "function": "block in finder_mock"
+    }
+  ],
+  "symbolic_results": [
+    {
+      "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by__1",
+      "sort": "Int",
+      "value": "#<Person:0x109d3527>"
+    }
+  ],
+  "script": "rerun_new_mocks.rb",
+  "error": {
+    "type": "NoMethodError",
+    "message": "undefined method `[]' for nil:NilClass",
+    "traceback": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations.rb:271:in `association_instance_get'\n/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations.rb:231:in `association'\n/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations/builder/association.rb:108:in `profile'\n/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/models/person.rb:248:in `name'\norg/jruby/RubyKernel.java:2003:in `public_send'\n/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/presenters/base_presenter.rb:24:in `method_missing'\n/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/presenters/person_presenter.rb:8:in `base_hash'\n/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/presenters/person_presenter.rb:73:in `base_hash_with_contact'\n/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/presenters/person_presenter.rb:14:in `full_hash'\n/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/presenters/person_presenter.rb:79:in `full_hash_with_profile'\n/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/presenters/person_presenter.rb:23:in `as_json'\n/home/dev/.gem/jruby/2.6.0/gems/activesupport-5.2.4.3/lib/active_support/json/encoding.rb:35:in `encode'\n/home/dev/.gem/jruby/2.6.0/gems/activesupport-5.2.4.3/lib/active_support/json/encoding.rb:22:in `encode'\n/home/dev/.gem/jruby/2.6.0/gems/activesupport-5.2.4.3/lib/active_support/core_ext/object/json.rb:41:in `to_json'\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/renderers.rb:157:in `block in _render_with_renderer_json'\n/home/dev/.gem/jruby/2.6.0/gems/active_model_serializers-0.9.7/lib/action_controller/serialization.rb:55:in `block in _render_with_renderer_json'\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/renderers.rb:150:in `block in _render_to_body_with_renderer'\norg/jruby/ext/set/RubySet.java:623:in `each'\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/renderers.rb:146:in `_render_to_body_with_renderer'\n/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/renderers.rb:142:in `render_to_body'"
+  }
+}
