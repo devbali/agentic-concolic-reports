@@ -1,0 +1,259 @@
+{
+  "streams_aspects": {
+    "entrypoint": "streams_aspects",
+    "action": "aspects",
+    "format": "json",
+    "signed_in": true,
+    "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+    "roots": [
+      {
+},
+      {
+        "USER_HAS_HIDDEN_SHAREABLES": true
+      },
+      {
+        "SUBSTITUTE_USER_VISIBLE_QUERIES": true
+      },
+      {
+        "SUBSTITUTE_USER_VISIBLE_QUERIES": true,
+        "USER_HAS_HIDDEN_SHAREABLES": true
+      }
+    ],
+    "runs_executed": 22,
+    "distinct_paths": 12,
+    "seed_sets_tried": 22,
+    "stack_remaining": 0,
+    "worklist_exhausted": true,
+    "stopped_by": null,
+    "max_runs": 900,
+    "time_budget": 420,
+    "elapsed_seconds": 1.8,
+    "run_errors": {
+      "run:ActiveRecord::StatementInvalid": 6
+    },
+    "unflippable_pcs": {
+}
+  },
+  "streams_public": {
+    "entrypoint": "streams_public",
+    "action": "public",
+    "format": "json",
+    "signed_in": false,
+    "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+    "roots": [
+      {
+        "SIGNED_IN": false
+      },
+      {
+        "SIGNED_IN": true
+      },
+      {
+        "SIGNED_IN": true,
+        "USER_HAS_HIDDEN_SHAREABLES": true
+      }
+    ],
+    "runs_executed": 7,
+    "distinct_paths": 5,
+    "seed_sets_tried": 7,
+    "stack_remaining": 0,
+    "worklist_exhausted": true,
+    "stopped_by": null,
+    "max_runs": 900,
+    "time_budget": 420,
+    "elapsed_seconds": 0.2,
+    "run_errors": {
+},
+    "unflippable_pcs": {
+}
+  },
+  "streams_activity": {
+    "entrypoint": "streams_activity",
+    "action": "activity",
+    "format": "json",
+    "signed_in": true,
+    "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+    "roots": [
+      {
+},
+      {
+        "USER_HAS_HIDDEN_SHAREABLES": true
+      }
+    ],
+    "runs_executed": 6,
+    "distinct_paths": 4,
+    "seed_sets_tried": 6,
+    "stack_remaining": 0,
+    "worklist_exhausted": true,
+    "stopped_by": null,
+    "max_runs": 900,
+    "time_budget": 420,
+    "elapsed_seconds": 0.1,
+    "run_errors": {
+},
+    "unflippable_pcs": {
+}
+  },
+  "streams_multi": {
+    "entrypoint": "streams_multi",
+    "action": "multi",
+    "format": "json",
+    "signed_in": true,
+    "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+    "roots": [
+      {
+        "USER_GETTING_STARTED": true
+      },
+      {
+        "USER_GETTING_STARTED": true,
+        "USER_HAS_HIDDEN_SHAREABLES": true
+      },
+      {
+        "USER_GETTING_STARTED": false
+      },
+      {
+        "USER_GETTING_STARTED": false,
+        "USER_HAS_HIDDEN_SHAREABLES": true
+      },
+      {
+        "USER_GETTING_STARTED": true,
+        "SUBSTITUTE_USER_VISIBLE_QUERIES": true
+      },
+      {
+        "USER_GETTING_STARTED": true,
+        "SUBSTITUTE_USER_VISIBLE_QUERIES": true,
+        "USER_HAS_HIDDEN_SHAREABLES": true
+      },
+      {
+        "USER_GETTING_STARTED": false,
+        "SUBSTITUTE_USER_VISIBLE_QUERIES": true
+      },
+      {
+        "USER_GETTING_STARTED": false,
+        "SUBSTITUTE_USER_VISIBLE_QUERIES": true,
+        "USER_HAS_HIDDEN_SHAREABLES": true
+      }
+    ],
+    "runs_executed": 36,
+    "distinct_paths": 20,
+    "seed_sets_tried": 36,
+    "stack_remaining": 0,
+    "worklist_exhausted": true,
+    "stopped_by": null,
+    "max_runs": 900,
+    "time_budget": 420,
+    "elapsed_seconds": 1.6,
+    "run_errors": {
+      "run:ActiveRecord::StatementInvalid": 4
+    },
+    "unflippable_pcs": {
+}
+  },
+  "streams_commented": {
+    "entrypoint": "streams_commented",
+    "action": "commented",
+    "format": "json",
+    "signed_in": true,
+    "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+    "roots": [
+      {
+},
+      {
+        "USER_HAS_HIDDEN_SHAREABLES": true
+      }
+    ],
+    "runs_executed": 6,
+    "distinct_paths": 4,
+    "seed_sets_tried": 6,
+    "stack_remaining": 0,
+    "worklist_exhausted": true,
+    "stopped_by": null,
+    "max_runs": 900,
+    "time_budget": 420,
+    "elapsed_seconds": 0.1,
+    "run_errors": {
+},
+    "unflippable_pcs": {
+}
+  },
+  "streams_liked": {
+    "entrypoint": "streams_liked",
+    "action": "liked",
+    "format": "json",
+    "signed_in": true,
+    "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+    "roots": [
+      {
+},
+      {
+        "USER_HAS_HIDDEN_SHAREABLES": true
+      }
+    ],
+    "runs_executed": 6,
+    "distinct_paths": 4,
+    "seed_sets_tried": 6,
+    "stack_remaining": 0,
+    "worklist_exhausted": true,
+    "stopped_by": null,
+    "max_runs": 900,
+    "time_budget": 420,
+    "elapsed_seconds": 0.1,
+    "run_errors": {
+},
+    "unflippable_pcs": {
+}
+  },
+  "streams_mentioned": {
+    "entrypoint": "streams_mentioned",
+    "action": "mentioned",
+    "format": "json",
+    "signed_in": true,
+    "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+    "roots": [
+      {
+},
+      {
+        "USER_HAS_HIDDEN_SHAREABLES": true
+      }
+    ],
+    "runs_executed": 6,
+    "distinct_paths": 4,
+    "seed_sets_tried": 6,
+    "stack_remaining": 0,
+    "worklist_exhausted": true,
+    "stopped_by": null,
+    "max_runs": 900,
+    "time_budget": 420,
+    "elapsed_seconds": 0.1,
+    "run_errors": {
+},
+    "unflippable_pcs": {
+}
+  },
+  "streams_followed_tags": {
+    "entrypoint": "streams_followed_tags",
+    "action": "followed_tags",
+    "format": "json",
+    "signed_in": true,
+    "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+    "roots": [
+      {
+},
+      {
+        "USER_HAS_HIDDEN_SHAREABLES": true
+      }
+    ],
+    "runs_executed": 6,
+    "distinct_paths": 4,
+    "seed_sets_tried": 6,
+    "stack_remaining": 0,
+    "worklist_exhausted": true,
+    "stopped_by": null,
+    "max_runs": 900,
+    "time_budget": 420,
+    "elapsed_seconds": 0.1,
+    "run_errors": {
+},
+    "unflippable_pcs": {
+}
+  }
+}

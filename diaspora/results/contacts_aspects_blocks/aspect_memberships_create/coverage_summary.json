@@ -1,11 +1,33 @@
 {
-  "complete": true,
-  "dump_count": 1,
-  "dumps": [
-    {
-      "dump": "dump_aspect_memberships_create_default.json",
-      "pc_count": 0,
-      "error": true
-    }
-  ]
+  "endpoint": "aspect_memberships_create",
+  "coverage_complete": true,
+  "genuine": true,
+  "total_path_conditions": 401,
+  "tree_nodes": 50,
+  "missing_branches": 0,
+  "blocking_missing_branches": 0,
+  "total_runs": 51,
+  "dumps_loaded": 51,
+  "dumps_unparseable": [],
+  "dump_errors": {
+    "ActiveRecord::AssociationTypeMismatch": 2,
+    "ActiveRecord::RecordNotFound": 1
+  },
+  "solver_lost": 0,
+  "assumptions": [],
+  "assumptions_used": 0,
+  "checker_elapsed_seconds": 0.0,
+  "exploration": {
+    "runs_executed": 315,
+    "distinct_paths": 51,
+    "worklist_exhausted": true,
+    "stop_reason": "worklist_drained",
+    "elapsed_seconds": 6.6,
+    "run_errors": {
+      "run:ActiveRecord::AssociationTypeMismatch": 10,
+      "run:ActiveRecord::RecordNotFound": 50
+    },
+    "unflippable_pcs": {}
+  },
+  "missing": []
 }

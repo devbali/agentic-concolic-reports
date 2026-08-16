@@ -1,0 +1,21 @@
+{
+  "entrypoint": "services_failure",
+  "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+  "param_variants": [
+    "{:provider=>\"twitter\"}"
+  ],
+  "runs_executed": 1,
+  "distinct_paths": 1,
+  "total_path_conditions_in_written_dumps": 0,
+  "seed_sets_tried": 1,
+  "stack_remaining": 0,
+  "worklist_exhausted": true,
+  "stopped_by": null,
+  "max_runs": 40000,
+  "time_budget": 1200,
+  "elapsed_seconds": 0.0,
+  "run_errors": {
+},
+  "unflippable_pcs": {
+}
+}

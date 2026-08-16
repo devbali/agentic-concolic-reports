@@ -1,0 +1,19 @@
+{
+  "entrypoint": "aspects_toggle_chat_privilege",
+  "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+  "runs_executed": 20,
+  "distinct_paths": 7,
+  "duplicate_path_runs": 13,
+  "seed_sets_tried": 20,
+  "stack_remaining": 0,
+  "worklist_exhausted": true,
+  "stop_reason": "worklist_drained",
+  "max_runs": 4000,
+  "time_budget": 600,
+  "elapsed_seconds": 0.7,
+  "run_errors": {
+    "run:NoMethodError": 9
+  },
+  "unflippable_pcs": {
+}
+}

@@ -1,0 +1,29 @@
+{
+  "entrypoint": "people_stream",
+  "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+  "scenarios": [
+    {
+      "name": "anon_html",
+      "action": "stream",
+      "params": {
+        "person_id": 1,
+        "username": "bob@example.org"
+      },
+      "format": "",
+      "signed_in": false,
+      "method": "GET"
+    }
+  ],
+  "runs_executed": 5,
+  "distinct_paths": 4,
+  "seed_sets_tried": 5,
+  "worklist_exhausted": true,
+  "capped_by": null,
+  "max_runs": 400,
+  "time_budget": 600,
+  "elapsed_seconds": 0.1,
+  "run_errors": {
+},
+  "unflippable_pcs": {
+}
+}

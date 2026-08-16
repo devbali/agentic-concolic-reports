@@ -1,0 +1,54 @@
+{
+  "endpoint": "likes_create",
+  "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+  "runs_executed": 1125,
+  "dumps_written": 12,
+  "distinct_paths": 10,
+  "path_conditions_in_dumps": 40,
+  "scenarios": {
+    "html": {
+      "runs": 375,
+      "dumps_written": 10,
+      "seed_sets_tried": 375,
+      "stack_remaining": 0,
+      "worklist_exhausted": true
+    },
+    "json": {
+      "runs": 375,
+      "dumps_written": 1,
+      "seed_sets_tried": 375,
+      "stack_remaining": 0,
+      "worklist_exhausted": true
+    },
+    "mobile": {
+      "runs": 375,
+      "dumps_written": 1,
+      "seed_sets_tried": 375,
+      "stack_remaining": 0,
+      "worklist_exhausted": true
+    }
+  },
+  "seed_sets_tried": 1125,
+  "stack_remaining": 0,
+  "worklist_exhausted": true,
+  "stop_reason": "worklist_drained",
+  "max_runs": 4000,
+  "time_budget": 900,
+  "elapsed_seconds": 15.0,
+  "run_errors": {
+    "run:NoMethodError": 350
+  },
+  "run_error_examples": {
+    "run:NoMethodError": {
+      "message": "undefined method `post_id' for #<Like:0x5baef48>",
+      "frame": [
+        "org/jruby/RubyBasicObject.java:1684:in `method_missing'",
+        "/home/dev/.gem/jruby/2.6.0/gems/activemodel-5.2.4.3/lib/active_model/attribute_methods.rb:430:in `method_missing'",
+        "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/likes_controller.rb:26:in `block in create'"
+      ]
+    }
+  },
+  "unflippable_pcs": {
+},
+  "sym_person_id_symbolic": true
+}

@@ -1,0 +1,80 @@
+# Head of hs_err_pid1646749.log — registrations#create JVM abort BEFORE targets.rb §15.
+# Reproduce: comment out §15, then run drive_registrations.py --fresh.
+# Attributed by crash-isolated DSE to seeds with find_by_1_not_found=true
+# (Person.by_account_identifier -> find_or_fetch_by_identifier ->
+#  Discovery#fetch_and_save, a real webfinger over libcurl).
+
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  SIGSEGV (0xb) at pc=0x0000000000000032, pid=1646749, tid=1646781
+#
+# JRE version: OpenJDK Runtime Environment (21.0.5+11) (build 21.0.5+11-LTS)
+# Java VM: OpenJDK 64-Bit Server VM (21.0.5+11-LTS, mixed mode, sharing, tiered, compressed oops, compressed class ptrs, g1 gc, linux-amd64)
+# Problematic frame:
+# C  0x00000000ffbe1b18
+#
+# Core dump will be written. Default location: Core dumps may be processed with "/usr/share/apport/apport -p%p -s%s -c%c -d%d -P%P -u%u -g%g -F%F -- %E" (or dumping to /home/dev/project/ruby_examples/dse-apps/apps/diaspora/core.1646749)
+#
+# If you would like to submit a bug report, please visit:
+#   https://bell-sw.com/support
+#
+
+---------------  S U M M A R Y ------------
+
+Command Line: --add-opens=java.base/java.io=org.jruby.dist --add-opens=java.base/java.nio.channels=org.jruby.dist --add-opens=java.base/sun.nio.ch=org.jruby.dist --add-opens=java.management/sun.management=org.jruby.dist -Xmx1000m -Xss2048k -Djffi.boot.library.path=/home/dev/tools/jruby-9.3.0.0/lib/jni -Djava.security.egd=file:/dev/urandom --module-path=/home/dev/tools/jruby-9.3.0.0/lib/jruby.jar -Djruby.home=/home/dev/tools/jruby-9.3.0.0 -Djruby.lib=/home/dev/tools/jruby-9.3.0.0/lib -Djruby.script=jruby -Djruby.shell=/bin/sh org.jruby.Main -I/home/dev/project/ruby_examples/dse-apps/apps/diaspora /home/dev/project/reports/diaspora/results/users_sessions/run_registrations_isolated.rb
+
+Host: QEMU Virtual CPU version 2.5+, 4 cores, 7G, Ubuntu 24.04.4 LTS
+Time: Sat Aug 15 07:20:33 2026 UTC elapsed time: 9.160932 seconds (0d 0h 0m 9s)
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x000075c12402bb90):  JavaThread "main"             [_thread_in_Java, id=1646781, stack(0x000075c12a200000,0x000075c12a400000) (2048K)]
+
+Stack: [0x000075c12a200000,0x000075c12a400000],  sp=0x000075c12a3f3f68,  free space=1999k
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+C  0x00000000ffbe1b18
+
+siginfo: si_signo: 11 (SIGSEGV), si_code: 1 (SEGV_MAPERR), si_addr: 0x0000000000000032
+
+Registers:
+RAX=0x00000000c185d6c0, RBX=0x00000000ccb31ae4, RCX=0x00000000c9696500, RDX=0x0000000000000000
+RSP=0x000075c12a3f3f60, RBP=0x00000000c185d6c0, RSI=0x000075c0b0038e88, RDI=0x000075c1294bfc6f
+R8 =0x00000000ffd001a8, R9 =0x0000000000000001, R10=0x0000000000000002, R11=0x0000000000000032
+R12=0x0000000000000000, R13=0x00000000d6b8df90, R14=0x000075c0b03935d0, R15=0x000075c12402bb90
+RIP=0x0000000000000032, EFLAGS=0x0000000000010217, CSGSFS=0x002b000000000033, ERR=0x0000000000000014
+  TRAPNO=0x000000000000000e
+
+
+Register to memory mapping:
+
+RAX=0x00000000c185d6c0 is an oop: org.jruby.RubyFixnum 
+{0x00000000c185d6c0} - klass: 'org/jruby/RubyFixnum'
+ - ---- fields (total size 5 words):
+ - protected 'flags' 'I' @12  4 (0x00000004)
+ - public volatile transient 'varTableStamp' 'I' @16  0 (0x00000000)
+ - protected transient 'metaClass' 'Lorg/jruby/RubyClass;' @20  a 'org/jruby/RubyClass'{0x00000000ffbe90f0} (0xffbe90f0)
+ - public transient 'varTable' '[Ljava/lang/Object;' @24  null (0x00000000)
+ - final 'value' 'J' @32  50 (0x0000000000000032)
+RBX=0x00000000ccb31ae4 is pointing into object: [Lorg.jruby.runtime.Frame; 
+{0x00000000ccb31a08} - klass: 'org/jruby/runtime/Frame'[]
+ - length: 160
+RCX=0x00000000c9696500 is an oop: org.jruby.runtime.MixedModeIRBlockBody 
+{0x00000000c9696500} - klass: 'org/jruby/runtime/MixedModeIRBlockBody'
+ - ---- fields (total size 7 words):
+ - protected final 'signature' 'Lorg/jruby/runtime/Signature;' @12  a 'org/jruby/runtime/Signature'{0x00000000ffbe2910} (0xffbe2910)
+ - protected 'testBlockBody' 'Ljava/lang/invoke/MethodHandle;' @16  null (0x00000000)
+
+# ---- ffi/native evidence ----
+19:Command Line: --add-opens=java.base/java.io=org.jruby.dist --add-opens=java.base/java.nio.channels=org.jruby.dist --add-opens=java.base/sun.nio.ch=org.jruby.dist --add-opens=java.management/sun.management=org.jruby.dist -Xmx1000m -Xss2048k -Djffi.boot.library.path=/home/dev/tools/jruby-9.3.0.0/lib/jni -Djava.security.egd=file:/dev/urandom --module-path=/home/dev/tools/jruby-9.3.0.0/lib/jruby.jar -Djruby.home=/home/dev/tools/jruby-9.3.0.0 -Djruby.lib=/home/dev/tools/jruby-9.3.0.0/lib -Djruby.script=jruby -Djruby.shell=/bin/sh org.jruby.Main -I/home/dev/project/ruby_examples/dse-apps/apps/diaspora /home/dev/project/reports/diaspora/results/users_sessions/run_registrations_isolated.rb
+554: - public 'var14' 'Ljava/lang/Object;' @84  a 'org/jruby/ext/ffi/AutoPointer'{0x00000000d6b8d7c8} (0xd6b8d7c8)
+562: - public 'var22' 'Ljava/lang/Object;' @116  a 'org/jruby/ext/ffi/AutoPointer'{0x00000000d6cb0fc8} (0xd6cb0fc8)
+1244:Event: 9.157 Thread 0x000075c124129b50 18816       3       com.kenai.jffi.CallContextCache::getInstance (4 bytes)
+1246:Event: 9.157 Thread 0x000075c124129b50 18817       3       com.kenai.jffi.CallContextCache::getCallContext (140 bytes)
+1402:Event: 0.201 Loaded shared library /home/dev/tools/jruby-9.3.0.0/lib/jni/x86_64-Linux/libjffi-1.2.so
+1405:Event: 8.407 Loaded shared library /tmp/sqlite-3.27.2.1-92837d93-baa4-445f-8ab5-7ddc24cc0f01-libsqlitejdbc.so
+1632:75c0a8c00000-75c0a8cd1000 r-xp 00000000 fc:00 5257283                    /tmp/sqlite-3.27.2.1-92837d93-baa4-445f-8ab5-7ddc24cc0f01-libsqlitejdbc.so
+1633:75c0a8cd1000-75c0a8ed1000 ---p 000d1000 fc:00 5257283                    /tmp/sqlite-3.27.2.1-92837d93-baa4-445f-8ab5-7ddc24cc0f01-libsqlitejdbc.so
+1634:75c0a8ed1000-75c0a8ed7000 rw-p 000d1000 fc:00 5257283                    /tmp/sqlite-3.27.2.1-92837d93-baa4-445f-8ab5-7ddc24cc0f01-libsqlitejdbc.so
+1660:75c0aa400000-75c0aa412000 r-xp 00000000 00:23 90469                      /home/dev/tools/jruby-9.3.0.0/lib/jni/x86_64-Linux/libjffi-1.2.so
+1661:75c0aa412000-75c0aa611000 ---p 00012000 00:23 90469                      /home/dev/tools/jruby-9.3.0.0/lib/jni/x86_64-Linux/libjffi-1.2.so

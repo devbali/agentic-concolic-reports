@@ -1,0 +1,27 @@
+{
+  "endpoint": "poll_participations_create",
+  "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+  "configs": [
+    "default"
+  ],
+  "runs_executed": 42,
+  "distinct_paths": 11,
+  "seed_sets_tried": 42,
+  "stack_remaining": 0,
+  "worklist_exhausted": true,
+  "stop_reason": "worklist_drained",
+  "max_runs": 1500,
+  "time_budget": 420,
+  "elapsed_seconds": 0.3,
+  "run_errors": {
+    "run:ActiveRecord::RecordNotFound": 14
+  },
+  "unflippable_pcs": {
+},
+  "per_config": {
+    "default": {
+      "runs": 42,
+      "paths": 11
+    }
+  }
+}

@@ -1,0 +1,134 @@
+[
+  {
+    "entrypoint": "contacts_index",
+    "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+    "runs_executed": 3,
+    "distinct_paths": 2,
+    "duplicate_path_runs": 1,
+    "seed_sets_tried": 3,
+    "stack_remaining": 0,
+    "worklist_exhausted": true,
+    "stop_reason": "worklist_drained",
+    "max_runs": 4000,
+    "time_budget": 600,
+    "elapsed_seconds": 0.2,
+    "run_errors": {
+      "run:ActiveRecord::RecordNotFound": 1
+    },
+    "unflippable_pcs": {
+}
+  },
+  {
+    "entrypoint": "community_spotlight",
+    "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+    "runs_executed": 1,
+    "distinct_paths": 1,
+    "duplicate_path_runs": 0,
+    "seed_sets_tried": 1,
+    "stack_remaining": 0,
+    "worklist_exhausted": true,
+    "stop_reason": "worklist_drained",
+    "max_runs": 4000,
+    "time_budget": 600,
+    "elapsed_seconds": 0.0,
+    "run_errors": {
+},
+    "unflippable_pcs": {
+}
+  },
+  {
+    "entrypoint": "aspects_create",
+    "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+    "runs_executed": 233,
+    "distinct_paths": 31,
+    "duplicate_path_runs": 202,
+    "seed_sets_tried": 233,
+    "stack_remaining": 0,
+    "worklist_exhausted": true,
+    "stop_reason": "worklist_drained",
+    "max_runs": 4000,
+    "time_budget": 600,
+    "elapsed_seconds": 3.4,
+    "run_errors": {
+      "run:NoMethodError": 124,
+      "run:ActiveRecord::RecordNotFound": 30
+    },
+    "unflippable_pcs": {
+}
+  },
+  {
+    "entrypoint": "aspects_show",
+    "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+    "runs_executed": 3,
+    "distinct_paths": 2,
+    "duplicate_path_runs": 1,
+    "seed_sets_tried": 3,
+    "stack_remaining": 0,
+    "worklist_exhausted": true,
+    "stop_reason": "worklist_drained",
+    "max_runs": 4000,
+    "time_budget": 600,
+    "elapsed_seconds": 0.0,
+    "run_errors": {
+},
+    "unflippable_pcs": {
+}
+  },
+  {
+    "entrypoint": "aspects_update",
+    "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+    "runs_executed": 6,
+    "distinct_paths": 3,
+    "duplicate_path_runs": 3,
+    "seed_sets_tried": 6,
+    "stack_remaining": 0,
+    "worklist_exhausted": true,
+    "stop_reason": "worklist_drained",
+    "max_runs": 4000,
+    "time_budget": 600,
+    "elapsed_seconds": 0.0,
+    "run_errors": {
+      "run:NoMethodError": 2
+    },
+    "unflippable_pcs": {
+}
+  },
+  {
+    "entrypoint": "aspects_destroy",
+    "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+    "runs_executed": 21,
+    "distinct_paths": 7,
+    "duplicate_path_runs": 14,
+    "seed_sets_tried": 21,
+    "stack_remaining": 0,
+    "worklist_exhausted": true,
+    "stop_reason": "worklist_drained",
+    "max_runs": 4000,
+    "time_budget": 600,
+    "elapsed_seconds": 0.1,
+    "run_errors": {
+      "run:NoMethodError": 6
+    },
+    "unflippable_pcs": {
+}
+  },
+  {
+    "entrypoint": "aspects_update_order",
+    "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+    "runs_executed": 22,
+    "distinct_paths": 7,
+    "duplicate_path_runs": 15,
+    "seed_sets_tried": 22,
+    "stack_remaining": 0,
+    "worklist_exhausted": true,
+    "stop_reason": "worklist_drained",
+    "max_runs": 4000,
+    "time_budget": 600,
+    "elapsed_seconds": 0.1,
+    "run_errors": {
+      "run:ActiveRecord::RecordNotFound": 11
+    },
+    "unflippable_pcs": {
+}
+  }
+]

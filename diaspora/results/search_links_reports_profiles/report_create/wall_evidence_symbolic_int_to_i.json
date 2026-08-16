@@ -1,0 +1,95 @@
+{
+  "schema_version": "1.0",
+  "label": "wall_no_int_upgrade",
+  "symbolic_vars": [
+
+  ],
+  "events": [
+    {
+      "type": "call",
+      "target": "Gon::ControllerHelpers.gon",
+      "args": {
+},
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/application_controller.rb",
+      "lineno": 187,
+      "function": "gon_set_current_user"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "Gon::ControllerHelpers.gon",
+      "args": {
+},
+      "result_name": "SYM_RESULT_Gon__ControllerHelpers_gon_1",
+      "result_value": "#<Object:0x73d7b6b0>",
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/application_controller.rb",
+      "lineno": 187,
+      "function": "gon_set_current_user"
+    },
+    {
+      "type": "call",
+      "target": "Gon::ControllerHelpers.gon",
+      "args": {
+},
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/application_controller.rb",
+      "lineno": 172,
+      "function": "gon_set_appconfig"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "Gon::ControllerHelpers.gon",
+      "args": {
+},
+      "result_name": "SYM_RESULT_Gon__ControllerHelpers_gon_2",
+      "result_value": "#<Object:0x73d7b6b0>",
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/application_controller.rb",
+      "lineno": 172,
+      "function": "gon_set_appconfig"
+    },
+    {
+      "type": "call",
+      "target": "Gon::ControllerHelpers.gon",
+      "args": {
+},
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/application_controller.rb",
+      "lineno": 191,
+      "function": "gon_set_preloads"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "Gon::ControllerHelpers.gon",
+      "args": {
+},
+      "result_name": "SYM_RESULT_Gon__ControllerHelpers_gon_3",
+      "result_value": "#<Object:0x73d7b6b0>",
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/application_controller.rb",
+      "lineno": 191,
+      "function": "gon_set_preloads"
+    }
+  ],
+  "symbolic_results": [
+    {
+      "name": "SYM_RESULT_Gon__ControllerHelpers_gon_1",
+      "sort": "Int",
+      "value": "#<Object:0x73d7b6b0>"
+    },
+    {
+      "name": "SYM_RESULT_Gon__ControllerHelpers_gon_2",
+      "sort": "Int",
+      "value": "#<Object:0x73d7b6b0>"
+    },
+    {
+      "name": "SYM_RESULT_Gon__ControllerHelpers_gon_3",
+      "sort": "Int",
+      "value": "#<Object:0x73d7b6b0>"
+    }
+  ],
+  "script": "run_dse.rb",
+  "error": {
+    "type": "NotImplementedError",
+    "message": "SymbolicInt#to_i is not supported in the concolic runtime (use .value internally)",
+    "traceback": "/home/dev/project/src/ruby_runtime/int.rb:30:in `to_i'\n/home/dev/.gem/jruby/2.6.0/gems/activemodel-5.2.4.3/lib/active_model/type/integer.rb:47:in `cast_value'\n/home/dev/.gem/jruby/2.6.0/gems/activemodel-5.2.4.3/lib/active_model/type/value.rb:38:in `cast'\n/home/dev/.gem/jruby/2.6.0/gems/activemodel-5.2.4.3/lib/active_model/type/helpers/numeric.rb:15:in `cast'\n/home/dev/.gem/jruby/2.6.0/gems/activemodel-5.2.4.3/lib/active_model/attribute.rb:175:in `type_cast'\n/home/dev/.gem/jruby/2.6.0/gems/activemodel-5.2.4.3/lib/active_model/attribute.rb:42:in `value'\n/home/dev/.gem/jruby/2.6.0/gems/activemodel-5.2.4.3/lib/active_model/attribute_set.rb:44:in `fetch_value'\n/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods/read.rb:73:in `_read_attribute'\n/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations/belongs_to_association.rb:125:in `stale_state'\n/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations/association.rb:58:in `loaded!'\n/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations/association.rb:75:in `target='\n/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations/association.rb:121:in `inversed_from'\n/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations/belongs_to_association.rb:36:in `inversed_from'\n/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations/association.rb:101:in `set_inverse_instance'\n/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations/association.rb:186:in `initialize_attributes'\n/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations/association.rb:285:in `block in build_record'\n/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/core.rb:317:in `initialize'\norg/jruby/RubyClass.java:906:in `new'\n/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/inheritance.rb:66:in `new'\n/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/reflection.rb:154:in `build_association'"
+  }
+}

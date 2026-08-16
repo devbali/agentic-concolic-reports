@@ -1,0 +1,19 @@
+{
+  "entrypoint": "share_visibilities_update",
+  "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+  "runs_executed": 37,
+  "distinct_paths": 13,
+  "duplicate_path_runs": 24,
+  "seed_sets_tried": 37,
+  "stack_remaining": 0,
+  "worklist_exhausted": true,
+  "stop_reason": "worklist_drained",
+  "max_runs": 4000,
+  "time_budget": 600,
+  "elapsed_seconds": 0.3,
+  "run_errors": {
+    "run:ActiveRecord::RecordNotFound": 4
+  },
+  "unflippable_pcs": {
+}
+}

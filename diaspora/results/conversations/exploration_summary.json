@@ -1,0 +1,126 @@
+{
+  "elapsed_seconds": 19.8,
+  "entrypoints": {
+    "conversations_index": {
+      "entrypoint": "conversations_index",
+      "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+      "request_variants": [
+        "plain",
+        "withcid"
+      ],
+      "runs_executed": 1230,
+      "distinct_paths": 32,
+      "path_conditions_written": 164,
+      "states_tried": 1230,
+      "stack_remaining": 0,
+      "worklist_drained": true,
+      "max_runs_per_ep": 8000,
+      "elapsed_seconds": 18.0,
+      "run_errors": {
+},
+      "unflippable_pcs": {
+}
+    },
+    "conversations_create": {
+      "entrypoint": "conversations_create",
+      "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+      "request_variants": [
+        "contactids",
+        "personids",
+        "norecip"
+      ],
+      "runs_executed": 7,
+      "distinct_paths": 5,
+      "path_conditions_written": 4,
+      "states_tried": 7,
+      "stack_remaining": 0,
+      "worklist_drained": true,
+      "max_runs_per_ep": 8000,
+      "elapsed_seconds": 0.1,
+      "run_errors": {
+        "run:ActiveRecord::RecordNotFound": 4
+      },
+      "unflippable_pcs": {
+}
+    },
+    "conversations_show": {
+      "entrypoint": "conversations_show",
+      "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+      "request_variants": [
+        "json",
+        "html"
+      ],
+      "runs_executed": 162,
+      "distinct_paths": 14,
+      "path_conditions_written": 46,
+      "states_tried": 162,
+      "stack_remaining": 0,
+      "worklist_drained": true,
+      "max_runs_per_ep": 8000,
+      "elapsed_seconds": 1.2,
+      "run_errors": {
+        "run:ActionController::UnknownFormat": 27
+      },
+      "unflippable_pcs": {
+}
+    },
+    "conversations_raw": {
+      "entrypoint": "conversations_raw",
+      "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+      "request_variants": [
+        "html"
+      ],
+      "runs_executed": 81,
+      "distinct_paths": 7,
+      "path_conditions_written": 23,
+      "states_tried": 81,
+      "stack_remaining": 0,
+      "worklist_drained": true,
+      "max_runs_per_ep": 8000,
+      "elapsed_seconds": 0.4,
+      "run_errors": {
+},
+      "unflippable_pcs": {
+}
+    },
+    "messages_create": {
+      "entrypoint": "messages_create",
+      "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+      "request_variants": [
+        "post"
+      ],
+      "runs_executed": 3,
+      "distinct_paths": 2,
+      "path_conditions_written": 2,
+      "states_tried": 3,
+      "stack_remaining": 0,
+      "worklist_drained": true,
+      "max_runs_per_ep": 8000,
+      "elapsed_seconds": 0.1,
+      "run_errors": {
+        "run:ActiveRecord::RecordNotFound": 1
+      },
+      "unflippable_pcs": {
+}
+    },
+    "conversation_visibilities_destroy": {
+      "entrypoint": "conversation_visibilities_destroy",
+      "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+      "request_variants": [
+        "delete"
+      ],
+      "runs_executed": 9,
+      "distinct_paths": 3,
+      "path_conditions_written": 5,
+      "states_tried": 9,
+      "stack_remaining": 0,
+      "worklist_drained": true,
+      "max_runs_per_ep": 8000,
+      "elapsed_seconds": 0.0,
+      "run_errors": {
+},
+      "unflippable_pcs": {
+}
+    }
+  }
+}

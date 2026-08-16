@@ -1,0 +1,37 @@
+{
+  "entrypoint": "tags_show",
+  "strategy": "prefix-directed DSE (seed inheritance + single-branch flip), one root per request scenario",
+  "scenarios": [
+    {
+      "name": "lower",
+      "params": "{:name=>\"testtag\", :page=>1}",
+      "format": "json",
+      "signed_in": true
+    },
+    {
+      "name": "capitals",
+      "params": "{:name=>\"TestTag\", :page=>1}",
+      "format": "json",
+      "signed_in": true
+    },
+    {
+      "name": "anon",
+      "params": "{:name=>\"testtag\", :page=>1}",
+      "format": "json",
+      "signed_in": false
+    }
+  ],
+  "runs_executed": 10,
+  "distinct_paths": 6,
+  "seed_sets_tried": 10,
+  "stack_remaining": 0,
+  "worklist_exhausted": true,
+  "max_pcs_on_a_path": 3,
+  "max_runs": 400,
+  "time_budget": 400,
+  "elapsed_seconds": 0.9,
+  "run_errors": {
+},
+  "unflippable_pcs": {
+}
+}

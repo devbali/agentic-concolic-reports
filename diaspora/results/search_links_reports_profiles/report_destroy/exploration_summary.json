@@ -1,0 +1,31 @@
+{
+  "entrypoint": "report_destroy",
+  "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+  "runs_executed": 15,
+  "distinct_paths": 4,
+  "seed_sets_tried": 15,
+  "stack_remaining": 0,
+  "worklist_exhausted": true,
+  "stop_reason": "worklist drained (fixpoint)",
+  "max_runs": 400,
+  "time_budget": 300,
+  "elapsed_seconds": 1.9,
+  "run_errors": {
+    "run:NameError": 4
+  },
+  "run_error_samples": {
+    "run:NameError": "uninitialized constant SYM_RESULT_ActiveRecord__FinderMethods_first_1_item_type_v @ /home/dev/.gem/jruby/2.6.0/gems/activesupport-5.2.4.3/lib/active_support/inflector/methods.rb:283:in `block in const_get' <- /home/dev/.gem/jruby/2.6.0/gems/activesupport-5.2.4.3/lib/active_support/inflector/methods.rb:283:in `block in cons"
+  },
+  "unflippable_pcs": {
+},
+  "suppressed_flips": {
+},
+  "enriched_seeds": [
+    {
+      "SYM_RESULT_ActiveRecord__FinderMethods_first_1_item_type": "Post"
+    },
+    {
+      "SYM_RESULT_ActiveRecord__FinderMethods_first_1_item_type": "Comment"
+    }
+  ]
+}

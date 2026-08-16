@@ -1,0 +1,37 @@
+{
+  "entrypoint": "people_retrieve_remote",
+  "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+  "scenarios": [
+    {
+      "name": "handle",
+      "action": "retrieve_remote",
+      "params": {
+        "diaspora_handle": "bob@example.org"
+      },
+      "format": "",
+      "signed_in": true,
+      "method": "POST"
+    },
+    {
+      "name": "nohandle",
+      "action": "retrieve_remote",
+      "params": {
+},
+      "format": "",
+      "signed_in": true,
+      "method": "POST"
+    }
+  ],
+  "runs_executed": 2,
+  "distinct_paths": 2,
+  "seed_sets_tried": 2,
+  "worklist_exhausted": true,
+  "capped_by": null,
+  "max_runs": 400,
+  "time_budget": 600,
+  "elapsed_seconds": 0.0,
+  "run_errors": {
+},
+  "unflippable_pcs": {
+}
+}

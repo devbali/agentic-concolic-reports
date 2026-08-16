@@ -1,1 +1,16 @@
-0.3
+# Per-entrypoint DSE exploration wall time (exploration_summary.json ->
+# elapsed_seconds) for the 2026-08-15 re-run WITH the batch-local overlay
+# (results/search_links_reports_profiles/targets.rb). Excludes JRuby+Rails
+# boot (~3-4 min per process; drive_all.sh runs one process per entrypoint).
+#
+#   report_destroy        1.9
+#   profiles_update       0.7
+#   report_update         0.6
+#   search_search         0.4
+#   links_resolve         0.2
+#   profiles_show         0.2
+#   report_create         0.2
+#   report_index          0.2
+#   profiles_edit         0.1
+#
+4.5

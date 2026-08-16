@@ -1,0 +1,18 @@
+{
+  "entrypoint": "host_meta",
+  "route": "GET /.well-known/host-meta -> DiasporaFederation::WebfingerController#host_meta",
+  "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+  "runs_executed": 1,
+  "distinct_paths": 1,
+  "max_pcs_in_a_run": 0,
+  "seed_sets_tried": 1,
+  "stack_remaining": 0,
+  "worklist_exhausted": true,
+  "max_runs": 400,
+  "time_budget": 420,
+  "elapsed_seconds": 0.1,
+  "run_errors": {
+},
+  "unflippable_pcs": {
+}
+}

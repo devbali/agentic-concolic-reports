@@ -11,3 +11,22 @@ __pycache__/
 # OS
 .DS_Store
 Thumbs.db
+
+# ---------------------------------------------------------------------------
+# Concolic run dumps — raw DSE output.
+#
+# One dump_<label>.json per distinct explored path. A full experiment run is
+# ~29,000 files / ~419 MB, dominated by posts/reshares_create (26,102 dumps,
+# 398 MB), and they are regenerated wholesale by the batch runners.
+#
+# What IS tracked is everything derived from them: REPORT.md,
+# coverage_summary.json, exploration_summary.json, seed_index.json and the
+# batch-level index files. Those are the analysis products; the dumps are the
+# raw material. Reproduce with the per-batch runner named in each REPORT.md.
+#
+# SCOPED to diaspora/results on purpose. The dumps under
+# trivial-concolic-demo/ and chattermate-get-chat-detail/ are 11 small files
+# (76 KB) that CONCOLIC_INSTRUCTIONS.md points new agents at as the worked
+# reference examples — they stay tracked.
+# ---------------------------------------------------------------------------
+diaspora/results/**/dump_*.json

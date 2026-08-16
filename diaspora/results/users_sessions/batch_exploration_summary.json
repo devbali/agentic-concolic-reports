@@ -1,0 +1,382 @@
+{
+  "elapsed_seconds": 7.8,
+  "entrypoints": {
+    "users_edit": {
+      "entrypoint": "users_edit",
+      "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+      "runs_executed": 1,
+      "distinct_paths": 1,
+      "seed_sets_tried": 1,
+      "stack_remaining": 0,
+      "worklist_exhausted": true,
+      "stop_reason": "worklist_drained",
+      "max_runs": 600,
+      "runs_capped": false,
+      "time_budget": 300,
+      "elapsed_seconds": 0.5,
+      "run_errors": {
+},
+      "unflippable_pcs": {
+}
+    },
+    "users_update": {
+      "entrypoint": "users_update",
+      "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+      "runs_executed": 3,
+      "distinct_paths": 2,
+      "seed_sets_tried": 3,
+      "stack_remaining": 0,
+      "worklist_exhausted": true,
+      "stop_reason": "worklist_drained",
+      "max_runs": 600,
+      "runs_capped": false,
+      "time_budget": 300,
+      "elapsed_seconds": 0.2,
+      "run_errors": {
+},
+      "unflippable_pcs": {
+}
+    },
+    "users_privacy_settings": {
+      "entrypoint": "users_privacy_settings",
+      "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+      "runs_executed": 1,
+      "distinct_paths": 1,
+      "seed_sets_tried": 1,
+      "stack_remaining": 0,
+      "worklist_exhausted": true,
+      "stop_reason": "worklist_drained",
+      "max_runs": 600,
+      "runs_capped": false,
+      "time_budget": 300,
+      "elapsed_seconds": 0.1,
+      "run_errors": {
+},
+      "unflippable_pcs": {
+}
+    },
+    "users_update_privacy_settings": {
+      "entrypoint": "users_update_privacy_settings",
+      "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+      "runs_executed": 3,
+      "distinct_paths": 2,
+      "seed_sets_tried": 3,
+      "stack_remaining": 0,
+      "worklist_exhausted": true,
+      "stop_reason": "worklist_drained",
+      "max_runs": 600,
+      "runs_capped": false,
+      "time_budget": 300,
+      "elapsed_seconds": 0.1,
+      "run_errors": {
+},
+      "unflippable_pcs": {
+}
+    },
+    "users_getting_started": {
+      "entrypoint": "users_getting_started",
+      "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+      "runs_executed": 38,
+      "distinct_paths": 16,
+      "seed_sets_tried": 38,
+      "stack_remaining": 0,
+      "worklist_exhausted": true,
+      "stop_reason": "worklist_drained",
+      "max_runs": 600,
+      "runs_capped": false,
+      "time_budget": 300,
+      "elapsed_seconds": 3.5,
+      "run_errors": {
+},
+      "unflippable_pcs": {
+        "(assoc_person_id == assoc_person_id)": 40
+      }
+    },
+    "users_getting_started_completed": {
+      "entrypoint": "users_getting_started_completed",
+      "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+      "runs_executed": 1,
+      "distinct_paths": 1,
+      "seed_sets_tried": 1,
+      "stack_remaining": 0,
+      "worklist_exhausted": true,
+      "stop_reason": "worklist_drained",
+      "max_runs": 600,
+      "runs_capped": false,
+      "time_budget": 300,
+      "elapsed_seconds": 0.0,
+      "run_errors": {
+},
+      "unflippable_pcs": {
+}
+    },
+    "users_export": {
+      "entrypoint": "users_export",
+      "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+      "runs_executed": 1,
+      "distinct_paths": 1,
+      "seed_sets_tried": 1,
+      "stack_remaining": 0,
+      "worklist_exhausted": true,
+      "stop_reason": "worklist_drained",
+      "max_runs": 600,
+      "runs_capped": false,
+      "time_budget": 300,
+      "elapsed_seconds": 0.1,
+      "run_errors": {
+},
+      "unflippable_pcs": {
+}
+    },
+    "users_export_photos": {
+      "entrypoint": "users_export_photos",
+      "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+      "runs_executed": 1,
+      "distinct_paths": 1,
+      "seed_sets_tried": 1,
+      "stack_remaining": 0,
+      "worklist_exhausted": true,
+      "stop_reason": "worklist_drained",
+      "max_runs": 600,
+      "runs_capped": false,
+      "time_budget": 300,
+      "elapsed_seconds": 0.0,
+      "run_errors": {
+},
+      "unflippable_pcs": {
+}
+    },
+    "users_download_profile": {
+      "entrypoint": "users_download_profile",
+      "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+      "runs_executed": 1,
+      "distinct_paths": 1,
+      "seed_sets_tried": 1,
+      "stack_remaining": 0,
+      "worklist_exhausted": true,
+      "stop_reason": "worklist_drained",
+      "max_runs": 600,
+      "runs_capped": false,
+      "time_budget": 300,
+      "elapsed_seconds": 0.0,
+      "run_errors": {
+},
+      "unflippable_pcs": {
+}
+    },
+    "users_confirm_email": {
+      "entrypoint": "users_confirm_email",
+      "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+      "runs_executed": 6,
+      "distinct_paths": 3,
+      "seed_sets_tried": 6,
+      "stack_remaining": 0,
+      "worklist_exhausted": true,
+      "stop_reason": "worklist_drained",
+      "max_runs": 600,
+      "runs_capped": false,
+      "time_budget": 300,
+      "elapsed_seconds": 0.3,
+      "run_errors": {
+},
+      "unflippable_pcs": {
+}
+    },
+    "users_public": {
+      "entrypoint": "users_public",
+      "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+      "runs_executed": 6,
+      "distinct_paths": 3,
+      "seed_sets_tried": 6,
+      "stack_remaining": 0,
+      "worklist_exhausted": true,
+      "stop_reason": "worklist_drained",
+      "max_runs": 600,
+      "runs_capped": false,
+      "time_budget": 300,
+      "elapsed_seconds": 0.3,
+      "run_errors": {
+},
+      "unflippable_pcs": {
+}
+    },
+    "users_destroy": {
+      "entrypoint": "users_destroy",
+      "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+      "runs_executed": 3,
+      "distinct_paths": 2,
+      "seed_sets_tried": 3,
+      "stack_remaining": 0,
+      "worklist_exhausted": true,
+      "stop_reason": "worklist_drained",
+      "max_runs": 600,
+      "runs_capped": false,
+      "time_budget": 300,
+      "elapsed_seconds": 0.1,
+      "run_errors": {
+},
+      "unflippable_pcs": {
+}
+    },
+    "users_auth_token": {
+      "entrypoint": "users_auth_token",
+      "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+      "runs_executed": 10,
+      "distinct_paths": 4,
+      "seed_sets_tried": 10,
+      "stack_remaining": 0,
+      "worklist_exhausted": true,
+      "stop_reason": "worklist_drained",
+      "max_runs": 600,
+      "runs_capped": false,
+      "time_budget": 300,
+      "elapsed_seconds": 0.3,
+      "run_errors": {
+},
+      "unflippable_pcs": {
+}
+    },
+    "sessions_create": {
+      "entrypoint": "sessions_create",
+      "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+      "runs_executed": 15,
+      "distinct_paths": 5,
+      "seed_sets_tried": 15,
+      "stack_remaining": 0,
+      "worklist_exhausted": true,
+      "stop_reason": "worklist_drained",
+      "max_runs": 600,
+      "runs_capped": false,
+      "time_budget": 300,
+      "elapsed_seconds": 1.3,
+      "run_errors": {
+},
+      "unflippable_pcs": {
+}
+    },
+    "sessions_destroy": {
+      "entrypoint": "sessions_destroy",
+      "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+      "runs_executed": 6,
+      "distinct_paths": 3,
+      "seed_sets_tried": 6,
+      "stack_remaining": 0,
+      "worklist_exhausted": true,
+      "stop_reason": "worklist_drained",
+      "max_runs": 600,
+      "runs_capped": false,
+      "time_budget": 300,
+      "elapsed_seconds": 0.2,
+      "run_errors": {
+},
+      "unflippable_pcs": {
+}
+    },
+    "sessions_new": {
+      "entrypoint": "sessions_new",
+      "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+      "runs_executed": 1,
+      "distinct_paths": 1,
+      "seed_sets_tried": 1,
+      "stack_remaining": 0,
+      "worklist_exhausted": true,
+      "stop_reason": "worklist_drained",
+      "max_runs": 600,
+      "runs_capped": false,
+      "time_budget": 300,
+      "elapsed_seconds": 0.1,
+      "run_errors": {
+},
+      "unflippable_pcs": {
+}
+    },
+    "registrations_new": {
+      "entrypoint": "registrations_new",
+      "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+      "runs_executed": 1,
+      "distinct_paths": 1,
+      "seed_sets_tried": 1,
+      "stack_remaining": 0,
+      "worklist_exhausted": true,
+      "stop_reason": "worklist_drained",
+      "max_runs": 600,
+      "runs_capped": false,
+      "time_budget": 300,
+      "elapsed_seconds": 0.1,
+      "run_errors": {
+},
+      "unflippable_pcs": {
+}
+    },
+    "invitations_new": {
+      "entrypoint": "invitations_new",
+      "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+      "runs_executed": 3,
+      "distinct_paths": 2,
+      "seed_sets_tried": 3,
+      "stack_remaining": 0,
+      "worklist_exhausted": true,
+      "stop_reason": "worklist_drained",
+      "max_runs": 600,
+      "runs_capped": false,
+      "time_budget": 300,
+      "elapsed_seconds": 0.2,
+      "run_errors": {
+},
+      "unflippable_pcs": {
+}
+    },
+    "invitations_create": {
+      "entrypoint": "invitations_create",
+      "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+      "runs_executed": 1,
+      "distinct_paths": 1,
+      "seed_sets_tried": 1,
+      "stack_remaining": 0,
+      "worklist_exhausted": true,
+      "stop_reason": "worklist_drained",
+      "max_runs": 600,
+      "runs_capped": false,
+      "time_budget": 300,
+      "elapsed_seconds": 0.0,
+      "run_errors": {
+},
+      "unflippable_pcs": {
+}
+    },
+    "registrations_create": {
+      "entrypoint": "registrations_create",
+      "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+      "runs_executed": 1,
+      "distinct_paths": 1,
+      "seed_sets_tried": 1,
+      "stack_remaining": 3,
+      "worklist_exhausted": false,
+      "stop_reason": "max_runs",
+      "max_runs": 1,
+      "runs_capped": true,
+      "time_budget": 300,
+      "elapsed_seconds": 0.3,
+      "run_errors": {
+        "run:Module::DelegationError": 1
+      },
+      "unflippable_pcs": {
+}
+    },
+    "users_token": {
+      "entrypoint": "users_token",
+      "stop_reason": "absent_from_app",
+      "reason": "No users#token action and no /users/token route in this Diaspora revision (config/routes.rb, app/controllers/users_controller.rb)."
+    },
+    "users_remove_avatar": {
+      "entrypoint": "users_remove_avatar",
+      "stop_reason": "absent_from_app",
+      "reason": "No users#remove_avatar action and no matching route in this Diaspora revision (grep -rn remove_avatar app/ config/ = 0 hits)."
+    },
+    "invitations_edit": {
+      "entrypoint": "invitations_edit",
+      "stop_reason": "absent_from_app",
+      "reason": "InvitationsController defines only #new and #create; there is no /users/invitation/accept route (routes.rb has users/invitations GET->new, POST->create). invitations_new is covered instead."
+    }
+  }
+}

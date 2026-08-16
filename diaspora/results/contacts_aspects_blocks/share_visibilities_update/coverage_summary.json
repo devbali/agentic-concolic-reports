@@ -1,26 +1,31 @@
 {
-  "complete": true,
-  "dump_count": 4,
-  "dumps": [
-    {
-      "dump": "dump_share_visibilities_update_default.json",
-      "pc_count": 1,
-      "error": true
+  "endpoint": "share_visibilities_update",
+  "coverage_complete": true,
+  "genuine": true,
+  "total_path_conditions": 51,
+  "tree_nodes": 12,
+  "missing_branches": 0,
+  "blocking_missing_branches": 0,
+  "total_runs": 13,
+  "dumps_loaded": 13,
+  "dumps_unparseable": [],
+  "dump_errors": {
+    "ActiveRecord::RecordNotFound": 1
+  },
+  "solver_lost": 0,
+  "assumptions": [],
+  "assumptions_used": 0,
+  "checker_elapsed_seconds": 0.0,
+  "exploration": {
+    "runs_executed": 37,
+    "distinct_paths": 13,
+    "worklist_exhausted": true,
+    "stop_reason": "worklist_drained",
+    "elapsed_seconds": 0.3,
+    "run_errors": {
+      "run:ActiveRecord::RecordNotFound": 4
     },
-    {
-      "dump": "dump_share_visibilities_update_find2nf.json",
-      "pc_count": 3,
-      "error": true
-    },
-    {
-      "dump": "dump_share_visibilities_update_find3nf.json",
-      "pc_count": 3,
-      "error": true
-    },
-    {
-      "dump": "dump_share_visibilities_update_notfound.json",
-      "pc_count": 2,
-      "error": true
-    }
-  ]
+    "unflippable_pcs": {}
+  },
+  "missing": []
 }

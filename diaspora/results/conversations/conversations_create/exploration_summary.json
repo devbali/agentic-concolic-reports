@@ -1,0 +1,22 @@
+{
+  "entrypoint": "conversations_create",
+  "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+  "request_variants": [
+    "contactids",
+    "personids",
+    "norecip"
+  ],
+  "runs_executed": 7,
+  "distinct_paths": 5,
+  "path_conditions_written": 4,
+  "states_tried": 7,
+  "stack_remaining": 0,
+  "worklist_drained": true,
+  "max_runs_per_ep": 8000,
+  "elapsed_seconds": 0.1,
+  "run_errors": {
+    "run:ActiveRecord::RecordNotFound": 4
+  },
+  "unflippable_pcs": {
+}
+}

@@ -1,0 +1,33 @@
+{
+  "endpoint": "photos_show",
+  "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+  "configs": [
+    "anon",
+    "signedin"
+  ],
+  "runs_executed": 16,
+  "distinct_paths": 7,
+  "seed_sets_tried": 16,
+  "stack_remaining": 0,
+  "worklist_exhausted": true,
+  "stop_reason": "worklist_drained",
+  "max_runs": 1500,
+  "time_budget": 420,
+  "elapsed_seconds": 0.3,
+  "run_errors": {
+    "run:ActiveRecord::RecordNotFound": 4,
+    "run:NoMethodError": 4
+  },
+  "unflippable_pcs": {
+},
+  "per_config": {
+    "signedin": {
+      "runs": 13,
+      "paths": 5
+    },
+    "anon": {
+      "runs": 3,
+      "paths": 2
+    }
+  }
+}

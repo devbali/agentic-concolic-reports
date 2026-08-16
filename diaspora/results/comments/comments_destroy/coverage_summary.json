@@ -1,16 +1,19 @@
 {
-  "entrypoint": "comments_destroy",
-  "complete": true,
-  "total_runs": 1,
-  "total_nodes": 0,
-  "total_path_conditions": 0,
-  "total_symbolic_calls": 1,
-  "missing": [],
-  "runs_with_errors": [
-    {
-      "dump": "dump_comments_destroy_r0.json",
-      "error_type": "NotImplementedError",
-      "message": "SymbolicList#first is not supported (contents out of scope). Only #empty?, #any?"
-    }
-  ]
+  "endpoint": "comments_destroy",
+  "coverage_complete": true,
+  "tree_nodes": 3,
+  "missing_branches": 0,
+  "blocking_missing_branches": 0,
+  "total_runs": 4,
+  "total_path_conditions": 9,
+  "genuine": true,
+  "vacuous": false,
+  "dumps_loaded": 4,
+  "dumps_unparseable": [],
+  "dump_errors": {},
+  "solver_lost": 0,
+  "assumptions": [],
+  "assumptions_used": 0,
+  "checker_elapsed_seconds": 0.0,
+  "missing": []
 }

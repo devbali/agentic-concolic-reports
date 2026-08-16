@@ -39,68 +39,73 @@ def main():
 
     for b in batches:
         bdir = os.path.join(RESULTS, b)
-        dumps = sorted(glob.glob(os.path.join(bdir, "**", "dump_*.json"), recursive=True))
-        runs = []
-        crashed = 0
-        complete = 0
-        crashed_types = {}
-        for p in dumps:
-            try:
-                d = json.load(open(p))
-            except Exception as e:  # noqa: BLE001
-                print(f"  [skip] {p}: {e}")
-                continue
-            run = Run.from_dict(d)
-            runs.append(run)
-            if run.error:
-                crashed += 1
-                t = run.error.get("type", "?")
-                crashed_types[t] = crashed_types.get(t, 0) + 1
-            else:
-                complete += 1
-
-        if not runs:
-            print(f"== {b}: NO RUNS ==")
+        # Each endpoint under the batch gets its OWN CoverageChecker.
+        ep_dirs = sorted(
+            d for d in os.listdir(bdir)
+            if os.path.isdir(os.path.join(bdir, d)) and not d.startswith(".")
+            and not d.startswith(".stale")
+        )
+        if not ep_dirs:
+            print(f"== {b}: no endpoint dirs ==")
             continue
 
-        try:
-            r = CoverageChecker(runs).check_coverage()
-        except Exception as e:  # noqa: BLE001
-            print(f"== {b}: checker error {e} ==")
-            r = None
+        for ep in ep_dirs:
+            epdir = os.path.join(bdir, ep)
+            dumps = sorted(glob.glob(os.path.join(epdir, "dump_*.json")))
+            if not dumps:
+                continue
 
-        summary = {
-            "batch": b,
-            "runs_loaded": len(runs),
-            "runs_completed_noerror": complete,
-            "runs_crashed": crashed,
-            "crash_types": crashed_types,
-        }
-        if r is not None:
-            summary.update({
+            runs = []
+            crashed_types = {}
+            for p in dumps:
+                try:
+                    d = json.load(open(p))
+                except Exception as e:  # noqa: BLE001
+                    print(f"  [skip] {p}: {e}")
+                    continue
+                runs.append(Run.from_dict(d))
+                if d.get("error"):
+                    t = d["error"].get("type", "?")
+                    crashed_types[t] = crashed_types.get(t, 0) + 1
+
+            try:
+                r = CoverageChecker(runs).check_coverage()
+            except Exception as e:  # noqa: BLE001
+                print(f"== {b}/{ep}: checker error {e} ==")
+                continue
+
+            n_ok = sum(1 for run in runs if not run.error)
+            summary = {
+                "endpoint": ep,
+                "batch": b,
+                "runs_loaded": len(runs),
+                "runs_completed_noerror": n_ok,
+                "runs_crashed": len(runs) - n_ok,
+                "crash_types": crashed_types,
                 "coverage_complete": r.complete,
                 "tree_nodes": r.total_nodes,
                 "missing_branches": len(r.missing),
                 "solver_lost": r.solver_lost,
                 "solver_ms": r.elapsed_ms,
-            })
+                "assumptions_used": r.assumptions_used,
+            }
+            summary["assumptions"] = r.assumptions_to_dict()
             summary["missing"] = [
                 {"at": m.node_constraint, "loc": m.source_location,
                  "branch": m.missing_branch, "values": m.concrete_values,
                  "untracked": m.untracked}
                 for m in r.missing
             ]
-            out_path = os.path.join(bdir, "coverage_summary.json")
+            # Write to the endpoint's own dir (not the batch root).
+            out_path = os.path.join(epdir, "coverage_summary.json")
             with open(out_path, "w") as f:
                 json.dump(summary, f, indent=2)
 
-            print(f"== {b}: {len(runs)} runs, {complete} ok, {crashed} crashed, "
-                  f"complete={r.complete}, nodes={r.total_nodes}, "
-                  f"missing={len(r.missing)}, lost={r.solver_lost}")
-            if crashed_types:
-                print(f"    crashed: {crashed_types}")
-        else:
-            print(f"== {b}: {len(runs)} runs, {complete} ok, {crashed} crashed (no coverage)")
+            print(f"  {b}/{ep:36s} {len(runs):2d} runs, {n_ok:2d} ok, "
+                  f"complete={r.complete}, nodes={r.total_nodes:2d}, "
+                  f"missing={len(r.missing):2d}{'  ' if not crashed_types else ' crashed=' + str(crashed_types)}")
+            if r.assumptions_used:
+                print(f"    assumptions used: {r.assumptions_used}")
 
     print("ALL_DONE")
 

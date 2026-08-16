@@ -1,41 +1,33 @@
 {
-  "complete": true,
-  "dump_count": 7,
-  "dumps": [
-    {
-      "dump": "dump_aspect_memberships_destroy_a1nf_a2nf.json",
-      "pc_count": 2,
-      "error": true
+  "endpoint": "aspect_memberships_destroy",
+  "coverage_complete": true,
+  "genuine": true,
+  "total_path_conditions": 30,
+  "tree_nodes": 7,
+  "missing_branches": 0,
+  "blocking_missing_branches": 0,
+  "total_runs": 8,
+  "dumps_loaded": 8,
+  "dumps_unparseable": [],
+  "dump_errors": {
+    "ActiveRecord::RecordNotFound": 4,
+    "Diaspora::NotMine": 2
+  },
+  "solver_lost": 0,
+  "assumptions": [],
+  "assumptions_used": 0,
+  "checker_elapsed_seconds": 0.0,
+  "exploration": {
+    "runs_executed": 30,
+    "distinct_paths": 8,
+    "worklist_exhausted": true,
+    "stop_reason": "worklist_drained",
+    "elapsed_seconds": 0.3,
+    "run_errors": {
+      "run:ActiveRecord::RecordNotFound": 16,
+      "run:Diaspora::NotMine": 10
     },
-    {
-      "dump": "dump_aspect_memberships_destroy_a1ok_a2nf.json",
-      "pc_count": 2,
-      "error": true
-    },
-    {
-      "dump": "dump_aspect_memberships_destroy_default.json",
-      "pc_count": 3,
-      "error": true
-    },
-    {
-      "dump": "dump_aspect_memberships_destroy_mine_both.json",
-      "pc_count": 4,
-      "error": true
-    },
-    {
-      "dump": "dump_aspect_memberships_destroy_mine_ok.json",
-      "pc_count": 4,
-      "error": true
-    },
-    {
-      "dump": "dump_aspect_memberships_destroy_noaspect.json",
-      "pc_count": 2,
-      "error": true
-    },
-    {
-      "dump": "dump_aspect_memberships_destroy_nomembership.json",
-      "pc_count": 3,
-      "error": true
-    }
-  ]
+    "unflippable_pcs": {}
+  },
+  "missing": []
 }

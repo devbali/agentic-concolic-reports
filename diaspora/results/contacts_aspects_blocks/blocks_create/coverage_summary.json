@@ -1,16 +1,27 @@
 {
-  "complete": true,
-  "dump_count": 2,
-  "dumps": [
-    {
-      "dump": "dump_blocks_create_default.json",
-      "pc_count": 0,
-      "error": true
-    },
-    {
-      "dump": "dump_blocks_create_save_fail.json",
-      "pc_count": 0,
-      "error": true
-    }
-  ]
+  "endpoint": "blocks_create",
+  "coverage_complete": true,
+  "genuine": true,
+  "total_path_conditions": 135,
+  "tree_nodes": 21,
+  "missing_branches": 0,
+  "blocking_missing_branches": 0,
+  "total_runs": 22,
+  "dumps_loaded": 22,
+  "dumps_unparseable": [],
+  "dump_errors": {},
+  "solver_lost": 0,
+  "assumptions": [],
+  "assumptions_used": 0,
+  "checker_elapsed_seconds": 0.0,
+  "exploration": {
+    "runs_executed": 121,
+    "distinct_paths": 22,
+    "worklist_exhausted": true,
+    "stop_reason": "worklist_drained",
+    "elapsed_seconds": 1.8,
+    "run_errors": {},
+    "unflippable_pcs": {}
+  },
+  "missing": []
 }

@@ -1,0 +1,23 @@
+{
+  "entrypoint": "services_invite",
+  "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+  "param_variants": [
+    "{:provider=>\"twitter\", :level=>\"read-write\"}",
+    "{:provider=>\"twitter\", :level=>\"read\"}",
+    "{:provider=>\"tumblr\", :level=>\"read-write\"}"
+  ],
+  "runs_executed": 2945,
+  "distinct_paths": 258,
+  "total_path_conditions_in_written_dumps": 2946,
+  "seed_sets_tried": 2945,
+  "stack_remaining": 0,
+  "worklist_exhausted": true,
+  "stopped_by": null,
+  "max_runs": 40000,
+  "time_budget": 1200,
+  "elapsed_seconds": 54.2,
+  "run_errors": {
+},
+  "unflippable_pcs": {
+}
+}

@@ -1,0 +1,49 @@
+{
+  "endpoint": "likes_index",
+  "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+  "runs_executed": 9,
+  "dumps_written": 3,
+  "distinct_paths": 3,
+  "path_conditions_in_dumps": 5,
+  "scenarios": {
+    "json": {
+      "runs": 9,
+      "dumps_written": 3,
+      "seed_sets_tried": 9,
+      "stack_remaining": 0,
+      "worklist_exhausted": true
+    }
+  },
+  "seed_sets_tried": 9,
+  "stack_remaining": 0,
+  "worklist_exhausted": true,
+  "stop_reason": "worklist_drained",
+  "max_runs": 4000,
+  "time_budget": 900,
+  "elapsed_seconds": 0.0,
+  "run_errors": {
+    "run:Diaspora::NonPublic": 4,
+    "run:ActiveRecord::RecordNotFound": 3
+  },
+  "run_error_examples": {
+    "run:Diaspora::NonPublic": {
+      "message": "Diaspora::NonPublic",
+      "frame": [
+        "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/services/post_service.rb:54:in `block in find_public!'",
+        "org/jruby/RubyKernel.java:1940:in `tap'",
+        "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/services/post_service.rb:52:in `find_public!'"
+      ]
+    },
+    "run:ActiveRecord::RecordNotFound": {
+      "message": "could not find a post with id 1",
+      "frame": [
+        "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/services/post_service.rb:53:in `block in find_public!'",
+        "org/jruby/RubyKernel.java:1940:in `tap'",
+        "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/services/post_service.rb:52:in `find_public!'"
+      ]
+    }
+  },
+  "unflippable_pcs": {
+},
+  "sym_person_id_symbolic": true
+}

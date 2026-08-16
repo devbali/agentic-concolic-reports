@@ -1,0 +1,53 @@
+{
+  "dse0001": {
+    "seeds": {
+      "SIGNED_IN": true,
+      "USER_HAS_HIDDEN_SHAREABLES": true
+    },
+    "pcs": [
+      "F (len(SYM_RESULT_Anonymous_blocked_people_1) != 0)"
+    ],
+    "error": null
+  },
+  "dse0002": {
+    "seeds": {
+      "SIGNED_IN": true,
+      "USER_HAS_HIDDEN_SHAREABLES": true,
+      "len(SYM_RESULT_Anonymous_blocked_people_1)": 1
+    },
+    "pcs": [
+      "T (len(SYM_RESULT_Anonymous_blocked_people_1) != 0)",
+      "T (len(SYM_RESULT_Anonymous_blocked_people_1) != 0)"
+    ],
+    "error": null
+  },
+  "dse0004": {
+    "seeds": {
+      "SIGNED_IN": true
+    },
+    "pcs": [
+      "F (len(SYM_RESULT_Anonymous_blocked_people_1) != 0)"
+    ],
+    "error": null
+  },
+  "dse0005": {
+    "seeds": {
+      "SIGNED_IN": true,
+      "len(SYM_RESULT_Anonymous_blocked_people_1)": 1
+    },
+    "pcs": [
+      "T (len(SYM_RESULT_Anonymous_blocked_people_1) != 0)",
+      "T (len(SYM_RESULT_Anonymous_blocked_people_1) != 0)"
+    ],
+    "error": null
+  },
+  "dse0007": {
+    "seeds": {
+      "SIGNED_IN": false
+    },
+    "pcs": [
+
+    ],
+    "error": null
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "entrypoint": "tag_followings_create",
+  "strategy": "prefix-directed DSE (seed inheritance + single-branch flip), one root per request scenario",
+  "scenarios": [
+    {
+      "name": "named",
+      "params": "{:name=>\"cooltag\"}",
+      "format": "json",
+      "signed_in": true
+    },
+    {
+      "name": "blank",
+      "params": "{:name=>\"\"}",
+      "format": "json",
+      "signed_in": true
+    }
+  ],
+  "runs_executed": 4,
+  "distinct_paths": 3,
+  "seed_sets_tried": 4,
+  "stack_remaining": 0,
+  "worklist_exhausted": true,
+  "max_pcs_on_a_path": 1,
+  "max_runs": 400,
+  "time_budget": 400,
+  "elapsed_seconds": 0.1,
+  "run_errors": {
+},
+  "unflippable_pcs": {
+}
+}

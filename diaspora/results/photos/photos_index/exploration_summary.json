@@ -1,0 +1,34 @@
+{
+  "endpoint": "photos_index",
+  "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+  "configs": [
+    "signedin",
+    "anon"
+  ],
+  "runs_executed": 291,
+  "distinct_paths": 60,
+  "seed_sets_tried": 291,
+  "stack_remaining": 0,
+  "worklist_exhausted": true,
+  "stop_reason": "worklist_drained",
+  "max_runs": 1500,
+  "time_budget": 420,
+  "elapsed_seconds": 4.1,
+  "run_errors": {
+},
+  "unflippable_pcs": {
+    "(len(SYM_RESULT_ActiveRecord__Relation_records_1) != 0)": 2,
+    "(len(SYM_RESULT_ActiveRecord__Relation_records_2) != 0)": 2,
+    "(assoc_profile_birthday_year <= 1004)": 41
+  },
+  "per_config": {
+    "anon": {
+      "runs": 6,
+      "paths": 3
+    },
+    "signedin": {
+      "runs": 285,
+      "paths": 57
+    }
+  }
+}

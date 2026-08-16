@@ -1,0 +1,26 @@
+{
+  "entrypoint": "admin_user_search",
+  "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+  "param_variants": [
+    "{}",
+    "{:admins_controller_user_search=>{:username=>\"alice\"}}",
+    "{:admins_controller_user_search=>{:email=>\"a@b.c\"}}",
+    "{:admins_controller_user_search=>{:guid=>\"abc\"}}",
+    "{:admins_controller_user_search=>{:under13=>\"1\"}}",
+    "{:admins_controller_user_search=>{:username=>\"\"}}"
+  ],
+  "runs_executed": 18,
+  "distinct_paths": 2,
+  "total_path_conditions_in_written_dumps": 2,
+  "seed_sets_tried": 18,
+  "stack_remaining": 0,
+  "worklist_exhausted": true,
+  "stopped_by": null,
+  "max_runs": 40000,
+  "time_budget": 1200,
+  "elapsed_seconds": 0.2,
+  "run_errors": {
+},
+  "unflippable_pcs": {
+}
+}

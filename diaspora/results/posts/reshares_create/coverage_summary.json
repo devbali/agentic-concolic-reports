@@ -1,4 +1,3856 @@
 {
-  "complete": true,
-  "missing": []
+  "endpoint": "reshares_create",
+  "method": "assumption-pruned (see prune_reshares.py docstring)",
+  "coverage_complete": true,
+  "complete_over_tracked_action_decisions": true,
+  "genuine": true,
+  "dumps_on_disk": 26102,
+  "dumps_checked": 55,
+  "pruning_ratio": "55/26102",
+  "distinct_tracked_decision_signatures": 49,
+  "tree_nodes": 912,
+  "missing_branches": 288,
+  "blocking_missing_branches": 0,
+  "blocking_per_node_pass": 0,
+  "blocking_continuation_pass": 0,
+  "continuation_blockers_that_are_declared_untracked": 0,
+  "tracked_action_decisions": 6,
+  "untracked_presenter_decisions": 18,
+  "assumptions_used": 288,
+  "assumptions": [
+    {
+      "type": "UntrackedPathAssumption",
+      "description": "response-serialisation decision, untracked: (SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_1_row_guid == '')",
+      "agent_notes": "Only ever evaluated at/after the first PostPresenter frame, i.e. downstream of the action's only branch (rescue vs else). Observed BOTH ways across all 26102 explored paths.",
+      "source": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_1_row_guid == '')"
+    },
+    {
+      "type": "UntrackedPathAssumption",
+      "description": "response-serialisation decision, untracked: (SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+      "agent_notes": "Only ever evaluated at/after the first PostPresenter frame, i.e. downstream of the action's only branch (rescue vs else). Observed BOTH ways across all 26102 explored paths.",
+      "source": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)"
+    },
+    {
+      "type": "UntrackedPathAssumption",
+      "description": "response-serialisation decision, untracked: (SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found == True)",
+      "agent_notes": "Only ever evaluated at/after the first PostPresenter frame, i.e. downstream of the action's only branch (rescue vs else). Observed BOTH ways across all 26102 explored paths.",
+      "source": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found == True)"
+    },
+    {
+      "type": "UntrackedPathAssumption",
+      "description": "response-serialisation decision, untracked: (SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found == True)",
+      "agent_notes": "Only ever evaluated at/after the first PostPresenter frame, i.e. downstream of the action's only branch (rescue vs else). Observed BOTH ways across all 26102 explored paths.",
+      "source": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found == True)"
+    },
+    {
+      "type": "UntrackedPathAssumption",
+      "description": "response-serialisation decision, untracked: (SYM_RESULT_ActiveRecord__FinderMethods_find_by_5_not_found == True)",
+      "agent_notes": "Only ever evaluated at/after the first PostPresenter frame, i.e. downstream of the action's only branch (rescue vs else). Observed BOTH ways across all 26102 explored paths.",
+      "source": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_5_not_found == True)"
+    },
+    {
+      "type": "UntrackedPathAssumption",
+      "description": "response-serialisation decision, untracked: (SYM_RESULT_ActiveRecord__FinderMethods_find_by_6_not_found == True)",
+      "agent_notes": "Only ever evaluated at/after the first PostPresenter frame, i.e. downstream of the action's only branch (rescue vs else). Observed BOTH ways across all 26102 explored paths.",
+      "source": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_6_not_found == True)"
+    },
+    {
+      "type": "UntrackedPathAssumption",
+      "description": "response-serialisation decision, untracked: (SYM_RESULT_ActiveRecord__FinderMethods_find_by_7_not_found == True)",
+      "agent_notes": "Only ever evaluated at/after the first PostPresenter frame, i.e. downstream of the action's only branch (rescue vs else). Observed BOTH ways across all 26102 explored paths.",
+      "source": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_7_not_found == True)"
+    },
+    {
+      "type": "UntrackedPathAssumption",
+      "description": "response-serialisation decision, untracked: (SYM_RESULT_ActiveRecord__FinderMethods_find_by_8_not_found == True)",
+      "agent_notes": "Only ever evaluated at/after the first PostPresenter frame, i.e. downstream of the action's only branch (rescue vs else). Observed BOTH ways across all 26102 explored paths.",
+      "source": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_8_not_found == True)"
+    },
+    {
+      "type": "UntrackedPathAssumption",
+      "description": "response-serialisation decision, untracked: (SYM_RESULT_ActiveRecord__FinderMethods_find_by_9_not_found == True)",
+      "agent_notes": "Only ever evaluated at/after the first PostPresenter frame, i.e. downstream of the action's only branch (rescue vs else). Observed BOTH ways across all 26102 explored paths.",
+      "source": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_9_not_found == True)"
+    },
+    {
+      "type": "UntrackedPathAssumption",
+      "description": "response-serialisation decision, untracked: (SYM_RESULT_Anonymous_diaspora_initialize_1_guid == '')",
+      "agent_notes": "Only ever evaluated at/after the first PostPresenter frame, i.e. downstream of the action's only branch (rescue vs else). Observed BOTH ways across all 26102 explored paths.",
+      "source": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr": "(SYM_RESULT_Anonymous_diaspora_initialize_1_guid == '')"
+    },
+    {
+      "type": "UntrackedPathAssumption",
+      "description": "response-serialisation decision, untracked: (assoc_root_guid == '')",
+      "agent_notes": "Only ever evaluated at/after the first PostPresenter frame, i.e. downstream of the action's only branch (rescue vs else). Observed BOTH ways across all 26102 explored paths.",
+      "source": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr": "(assoc_root_guid == '')"
+    },
+    {
+      "type": "UntrackedPathAssumption",
+      "description": "response-serialisation decision, untracked: (assoc_root_text == '')",
+      "agent_notes": "Only ever evaluated at/after the first PostPresenter frame, i.e. downstream of the action's only branch (rescue vs else). Observed BOTH ways across all 26102 explored paths.",
+      "source": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr": "(assoc_root_text == '')"
+    },
+    {
+      "type": "UntrackedPathAssumption",
+      "description": "response-serialisation decision, untracked: (len(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_1_rows) != 0)",
+      "agent_notes": "Only ever evaluated at/after the first PostPresenter frame, i.e. downstream of the action's only branch (rescue vs else). Observed BOTH ways across all 26102 explored paths.",
+      "source": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr": "(len(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_1_rows) != 0)"
+    },
+    {
+      "type": "UntrackedPathAssumption",
+      "description": "response-serialisation decision, untracked: (len(SYM_RESULT_ActiveRecord__Relation_records_1_rows) != 0)",
+      "agent_notes": "Only ever evaluated at/after the first PostPresenter frame, i.e. downstream of the action's only branch (rescue vs else). Observed BOTH ways across all 26102 explored paths.",
+      "source": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr": "(len(SYM_RESULT_ActiveRecord__Relation_records_1_rows) != 0)"
+    },
+    {
+      "type": "UntrackedPathAssumption",
+      "description": "response-serialisation decision, untracked: (len(SYM_RESULT_ActiveRecord__Relation_records_2_rows) != 0)",
+      "agent_notes": "Only ever evaluated at/after the first PostPresenter frame, i.e. downstream of the action's only branch (rescue vs else). Observed BOTH ways across all 26102 explored paths.",
+      "source": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr": "(len(SYM_RESULT_ActiveRecord__Relation_records_2_rows) != 0)"
+    },
+    {
+      "type": "UntrackedPathAssumption",
+      "description": "response-serialisation decision, untracked: (len(SYM_RESULT_ActiveRecord__Relation_records_3_rows) != 0)",
+      "agent_notes": "Only ever evaluated at/after the first PostPresenter frame, i.e. downstream of the action's only branch (rescue vs else). Observed BOTH ways across all 26102 explored paths.",
+      "source": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr": "(len(SYM_RESULT_ActiveRecord__Relation_records_3_rows) != 0)"
+    },
+    {
+      "type": "UntrackedPathAssumption",
+      "description": "response-serialisation decision, untracked: (len(SYM_RESULT_Anonymous_people_from_string_3_people) != 0)",
+      "agent_notes": "Only ever evaluated at/after the first PostPresenter frame, i.e. downstream of the action's only branch (rescue vs else). Observed BOTH ways across all 26102 explored paths.",
+      "source": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr": "(len(SYM_RESULT_Anonymous_people_from_string_3_people) != 0)"
+    },
+    {
+      "type": "UntrackedPathAssumption",
+      "description": "response-serialisation decision, untracked: (len(SYM_RESULT_Anonymous_people_from_string_4_people) != 0)",
+      "agent_notes": "Only ever evaluated at/after the first PostPresenter frame, i.e. downstream of the action's only branch (rescue vs else). Observed BOTH ways across all 26102 explored paths.",
+      "source": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr": "(len(SYM_RESULT_Anonymous_people_from_string_4_people) != 0)"
+    }
+  ],
+  "solver_lost": 0,
+  "checker_elapsed_seconds": 25.2,
+  "dse_worklist_exhausted": false,
+  "dse_stop_reason": "MAX_RUNS cap (40000) + STACK_LIMIT truncation",
+  "dse_runs_executed": 40000,
+  "engine_defects": [
+    {
+      "where": "src/concolic_engine/coverage.py:532-582",
+      "what": "the strict-per-node continuation pass appended MissingCoverage without consulting _is_untracked / _is_side_untracked and without setting untracked=, so its findings blocked `complete` regardless of any assumption",
+      "measured_here": "0 of 55 continuation findings block, and 0 of those are expressions explicitly declared untracked",
+      "status": "FIXED 2026-08-16 (authorised src/ change); regression test test_assumptions.py::test_continuation_pass_honours_untracked"
+    },
+    {
+      "where": "src/concolic_engine/assumptions.py",
+      "what": "assumptions key on (file, lineno, function); every finder decision in this entrypoint records at concolic_targets.rb:331 in block in finder_mock, so the action's 404 lookup and the presenter's field lookups are indistinguishable to the assumption system. are_independent() also returns False for equal keys",
+      "workaround": "zone re-attribution performed by this script",
+      "status": "reported, NOT patched (src/ is raise-to-Bali)"
+    }
+  ],
+  "missing": [
+    {
+      "node_constraint": "(assoc_root_text == '')",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activesupport-5.2.4.3/lib/active_support/core_ext/object/blank.rb:126 in blank?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": true
+      }
+    },
+    {
+      "node_constraint": "(assoc_root_text == '')",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activesupport-5.2.4.3/lib/active_support/core_ext/object/blank.rb:126 in blank?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": false
+      }
+    },
+    {
+      "node_constraint": "(assoc_root_text == '')",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activesupport-5.2.4.3/lib/active_support/core_ext/object/blank.rb:126 in blank?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": true
+      }
+    },
+    {
+      "node_constraint": "(assoc_root_text == '')",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activesupport-5.2.4.3/lib/active_support/core_ext/object/blank.rb:126 in blank?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": false
+      }
+    },
+    {
+      "node_constraint": "(assoc_root_text == '')",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activesupport-5.2.4.3/lib/active_support/core_ext/object/blank.rb:126 in blank?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": false
+      }
+    },
+    {
+      "node_constraint": "(assoc_root_text == '')",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activesupport-5.2.4.3/lib/active_support/core_ext/object/blank.rb:126 in blank?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": false
+      }
+    },
+    {
+      "node_constraint": "(assoc_root_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "A",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(assoc_root_guid == '')",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(assoc_root_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "B",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(assoc_root_guid == '')",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(assoc_root_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "A",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(assoc_root_guid == '')",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(assoc_root_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "B",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(assoc_root_guid == '')",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(assoc_root_text == '')",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activesupport-5.2.4.3/lib/active_support/core_ext/object/blank.rb:126 in blank?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_3_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": true
+      }
+    },
+    {
+      "node_constraint": "(assoc_root_text == '')",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activesupport-5.2.4.3/lib/active_support/core_ext/object/blank.rb:126 in blank?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_3_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": false
+      }
+    },
+    {
+      "node_constraint": "(assoc_root_text == '')",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activesupport-5.2.4.3/lib/active_support/core_ext/object/blank.rb:126 in blank?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_3_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": true
+      }
+    },
+    {
+      "node_constraint": "(assoc_root_text == '')",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activesupport-5.2.4.3/lib/active_support/core_ext/object/blank.rb:126 in blank?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_3_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": false
+      }
+    },
+    {
+      "node_constraint": "(assoc_root_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "B",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(assoc_root_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "B",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(assoc_root_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "A",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(assoc_root_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "A",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(assoc_root_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "B",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(assoc_root_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "B",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "A",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "B",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "A",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "B",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(assoc_root_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "assoc_root_guid": "A",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(assoc_root_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "assoc_root_guid": "B",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(assoc_root_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "assoc_root_guid": "B",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(assoc_root_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "assoc_root_guid": "B",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(assoc_root_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "assoc_root_guid": "B",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(assoc_root_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "assoc_root_guid": "B",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(assoc_root_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_3_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "A",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(assoc_root_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_3_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "A",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(assoc_root_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_3_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "B",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(assoc_root_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_3_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "B",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(assoc_root_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_3_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "A",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(assoc_root_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_3_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "A",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(assoc_root_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_3_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "B",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(assoc_root_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_3_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "B",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_3_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_3_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_3_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(assoc_root_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "assoc_root_guid": "A",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(assoc_root_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "assoc_root_guid": "B",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(assoc_root_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "assoc_root_guid": "B",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(assoc_root_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "assoc_root_guid": "A",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(assoc_root_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "assoc_root_guid": "B",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(assoc_root_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "assoc_root_guid": "B",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(assoc_root_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "assoc_root_guid": "B",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "assoc_root_guid": "",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_3_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_3_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_3_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_3_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_3_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_3_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(assoc_root_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_3_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "assoc_root_guid": "B",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(assoc_root_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_3_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "assoc_root_guid": "B",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(assoc_root_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_3_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "assoc_root_guid": "B",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(assoc_root_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_3_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "assoc_root_guid": "B",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(assoc_root_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_3_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "assoc_root_guid": "B",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "assoc_root_guid": "",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "assoc_root_guid": "",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "A",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "B",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "A",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "B",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_3_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_3_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_3_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_3_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_Anonymous_diaspora_initialize_1_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "A",
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_Anonymous_diaspora_initialize_1_guid == '')",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "",
+        "assoc_author_id": 1,
+        "assoc_root_guid": "A",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_Anonymous_diaspora_initialize_1_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "B",
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_Anonymous_diaspora_initialize_1_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "B",
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_Anonymous_diaspora_initialize_1_guid == '')",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "",
+        "assoc_author_id": 1,
+        "assoc_root_guid": "B",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_Anonymous_diaspora_initialize_1_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "A",
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_Anonymous_diaspora_initialize_1_guid == '')",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "",
+        "assoc_author_id": 1,
+        "assoc_root_guid": "A",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_Anonymous_diaspora_initialize_1_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "B",
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_Anonymous_diaspora_initialize_1_guid == '')",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "",
+        "assoc_author_id": 1,
+        "assoc_root_guid": "B",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found == True)",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "assoc_root_guid": "",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found == True)",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found == True)",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found == True)",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found == True)",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found == True)",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_3_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_3_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_3_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_3_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_3_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_3_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_3_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_3_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_3_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_3_not_found": false,
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_Anonymous_diaspora_initialize_1_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "B",
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_Anonymous_diaspora_initialize_1_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "B",
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_Anonymous_diaspora_initialize_1_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "B",
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_Anonymous_diaspora_initialize_1_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "B",
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_Anonymous_diaspora_initialize_1_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "A",
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_Anonymous_diaspora_initialize_1_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "A",
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_Anonymous_diaspora_initialize_1_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "B",
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_Anonymous_diaspora_initialize_1_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "B",
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_Anonymous_diaspora_initialize_1_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "B",
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found == True)",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "assoc_root_guid": "",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found == True)",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found == True)",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found == True)",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "assoc_root_guid": "",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found == True)",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found == True)",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found == True)",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found == True)",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "",
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "B",
+        "assoc_author_id": 1,
+        "assoc_root_guid": "A",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found == True)",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "",
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found == True)",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "",
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found == True)",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "",
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "B",
+        "assoc_author_id": 1,
+        "assoc_root_guid": "A",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found == True)",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "",
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_Anonymous_diaspora_initialize_1_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "A",
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "assoc_root_guid": "",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_Anonymous_diaspora_initialize_1_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "B",
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_Anonymous_diaspora_initialize_1_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "B",
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_Anonymous_diaspora_initialize_1_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "B",
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_Anonymous_diaspora_initialize_1_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "B",
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_Anonymous_diaspora_initialize_1_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_3_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "A",
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_Anonymous_diaspora_initialize_1_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_3_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "A",
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_Anonymous_diaspora_initialize_1_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_3_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "B",
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_Anonymous_diaspora_initialize_1_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_3_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "B",
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_Anonymous_diaspora_initialize_1_guid == '')",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_3_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "",
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_Anonymous_diaspora_initialize_1_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_3_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "A",
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_Anonymous_diaspora_initialize_1_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_3_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "A",
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_Anonymous_diaspora_initialize_1_guid == '')",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_3_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "",
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_Anonymous_diaspora_initialize_1_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_3_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "B",
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_Anonymous_diaspora_initialize_1_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_3_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "B",
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found == True)",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_3_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found == True)",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_3_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found == True)",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_3_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found == True)",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_3_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found == True)",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_3_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found == True)",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_3_not_found": false,
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found == True)",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "",
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found == True)",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "",
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found == True)",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "",
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found == True)",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "",
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found == True)",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "",
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found == True)",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "",
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found == True)",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "",
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found == True)",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "",
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found == True)",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "",
+        "assoc_author_id": 1,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_Anonymous_diaspora_initialize_1_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "A",
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "assoc_root_guid": "",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_Anonymous_diaspora_initialize_1_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "B",
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_Anonymous_diaspora_initialize_1_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "B",
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_Anonymous_diaspora_initialize_1_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "A",
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "assoc_root_guid": "",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_Anonymous_diaspora_initialize_1_guid == '')",
+      "missing_branch": "taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "",
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_Anonymous_diaspora_initialize_1_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "B",
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_Anonymous_diaspora_initialize_1_guid == '')",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/attribute_methods.rb:375 in attribute_present?()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "B",
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": false,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found": true
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_5_not_found == True)",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "",
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "assoc_root_guid": "",
+        "assoc_root_text": "",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_5_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_5_not_found == True)",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "",
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_5_not_found": false
+      }
+    },
+    {
+      "node_constraint": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_5_not_found == True)",
+      "missing_branch": "not_taken",
+      "source_location": "/home/dev/project/reports/diaspora/concolic_targets.rb:331 in block in finder_mock()",
+      "untracked": true,
+      "pass": "per_node",
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": false,
+        "SYM_RESULT_Anonymous_diaspora_initialize_1_guid": "",
+        "assoc_author_id": 2,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found": true,
+        "assoc_root_guid": "",
+        "assoc_root_text": "A",
+        "assoc_profile_nsfw": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found": false,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_4_not_found": true,
+        "SYM_RESULT_ActiveRecord__FinderMethods_find_by_5_not_found": false
+      }
+    }
+  ]
 }

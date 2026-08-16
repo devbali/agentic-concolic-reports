@@ -1,0 +1,11 @@
+{
+  "endpoint": "invitations_edit",
+  "endpoint_absent_from_app": true,
+  "reason": "InvitationsController defines only #new and #create; there is no /users/invitation/accept route (routes.rb has users/invitations GET->new, POST->create). invitations_new is covered instead.",
+  "coverage_complete": false,
+  "tree_nodes": 0,
+  "missing_branches": 0,
+  "dumps_loaded": 0,
+  "path_conditions": 0,
+  "genuine": false
+}

@@ -1,0 +1,20 @@
+{
+  "entrypoint": "reshares_create",
+  "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+  "runs_executed": 40000,
+  "distinct_paths": 26102,
+  "seed_sets_tried": 40000,
+  "stack_remaining": 200000,
+  "frontier_entries_dropped": 336652,
+  "worklist_exhausted": false,
+  "stop_reason": "MAX_RUNS cap (40000) + STACK_LIMIT truncation",
+  "max_runs": 40000,
+  "time_budget": 1800,
+  "stack_limit": 200000,
+  "elapsed_seconds": 1756.5,
+  "run_errors": {
+},
+  "unflippable_pcs": {
+},
+  "scenario": "authenticated (symbolic current_user)"
+}

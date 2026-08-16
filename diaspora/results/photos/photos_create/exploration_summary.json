@@ -1,0 +1,36 @@
+{
+  "endpoint": "photos_create",
+  "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+  "configs": [
+    "plain",
+    "pending",
+    "setprof"
+  ],
+  "runs_executed": 288,
+  "distinct_paths": 66,
+  "seed_sets_tried": 288,
+  "stack_remaining": 0,
+  "worklist_exhausted": true,
+  "stop_reason": "worklist_drained",
+  "max_runs": 1500,
+  "time_budget": 420,
+  "elapsed_seconds": 2.0,
+  "run_errors": {
+},
+  "unflippable_pcs": {
+},
+  "per_config": {
+    "setprof": {
+      "runs": 286,
+      "paths": 64
+    },
+    "pending": {
+      "runs": 1,
+      "paths": 1
+    },
+    "plain": {
+      "runs": 1,
+      "paths": 1
+    }
+  }
+}

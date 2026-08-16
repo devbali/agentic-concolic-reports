@@ -1,0 +1,291 @@
+{
+  "batch": "notifications_tags",
+  "elapsed_seconds": 2.1,
+  "entrypoints": [
+    {
+      "entrypoint": "notifications_index",
+      "strategy": "prefix-directed DSE (seed inheritance + single-branch flip), one root per request scenario",
+      "scenarios": [
+        {
+          "name": "plain",
+          "params": "{}",
+          "format": "json",
+          "signed_in": true
+        },
+        {
+          "name": "typed",
+          "params": "{:type=>\"liked\"}",
+          "format": "json",
+          "signed_in": true
+        },
+        {
+          "name": "unread_only",
+          "params": "{:show=>\"unread\", :page=>2, :per_page=>5}",
+          "format": "json",
+          "signed_in": true
+        }
+      ],
+      "runs_executed": 3,
+      "distinct_paths": 3,
+      "seed_sets_tried": 3,
+      "stack_remaining": 0,
+      "worklist_exhausted": true,
+      "max_pcs_on_a_path": 0,
+      "max_runs": 400,
+      "time_budget": 400,
+      "elapsed_seconds": 0.3,
+      "run_errors": {
+},
+      "unflippable_pcs": {
+}
+    },
+    {
+      "entrypoint": "notifications_update",
+      "strategy": "prefix-directed DSE (seed inheritance + single-branch flip), one root per request scenario",
+      "scenarios": [
+        {
+          "name": "mark_read",
+          "params": "{:id=>1}",
+          "format": "json",
+          "signed_in": true
+        },
+        {
+          "name": "mark_unread",
+          "params": "{:id=>1, :set_unread=>\"true\"}",
+          "format": "json",
+          "signed_in": true
+        }
+      ],
+      "runs_executed": 6,
+      "distinct_paths": 4,
+      "seed_sets_tried": 6,
+      "stack_remaining": 0,
+      "worklist_exhausted": true,
+      "max_pcs_on_a_path": 1,
+      "max_runs": 400,
+      "time_budget": 400,
+      "elapsed_seconds": 0.2,
+      "run_errors": {
+},
+      "unflippable_pcs": {
+}
+    },
+    {
+      "entrypoint": "notifications_read_all",
+      "strategy": "prefix-directed DSE (seed inheritance + single-branch flip), one root per request scenario",
+      "scenarios": [
+        {
+          "name": "plain",
+          "params": "{}",
+          "format": "json",
+          "signed_in": true
+        },
+        {
+          "name": "typed",
+          "params": "{:type=>\"mentioned\"}",
+          "format": "json",
+          "signed_in": true
+        }
+      ],
+      "runs_executed": 6,
+      "distinct_paths": 4,
+      "seed_sets_tried": 6,
+      "stack_remaining": 0,
+      "worklist_exhausted": true,
+      "max_pcs_on_a_path": 1,
+      "max_runs": 400,
+      "time_budget": 400,
+      "elapsed_seconds": 0.2,
+      "run_errors": {
+},
+      "unflippable_pcs": {
+}
+    },
+    {
+      "entrypoint": "tags_index",
+      "strategy": "prefix-directed DSE (seed inheritance + single-branch flip), one root per request scenario",
+      "scenarios": [
+        {
+          "name": "query",
+          "params": "{:q=>\"ruby\"}",
+          "format": "json",
+          "signed_in": true
+        },
+        {
+          "name": "hash_query",
+          "params": "{:q=>\"#ruby\", :limit=>5}",
+          "format": "json",
+          "signed_in": true
+        },
+        {
+          "name": "short_query",
+          "params": "{:q=>\"r\"}",
+          "format": "json",
+          "signed_in": true
+        }
+      ],
+      "runs_executed": 3,
+      "distinct_paths": 3,
+      "seed_sets_tried": 3,
+      "stack_remaining": 0,
+      "worklist_exhausted": true,
+      "max_pcs_on_a_path": 0,
+      "max_runs": 400,
+      "time_budget": 400,
+      "elapsed_seconds": 0.1,
+      "run_errors": {
+},
+      "unflippable_pcs": {
+}
+    },
+    {
+      "entrypoint": "tags_show",
+      "strategy": "prefix-directed DSE (seed inheritance + single-branch flip), one root per request scenario",
+      "scenarios": [
+        {
+          "name": "lower",
+          "params": "{:name=>\"testtag\", :page=>1}",
+          "format": "json",
+          "signed_in": true
+        },
+        {
+          "name": "capitals",
+          "params": "{:name=>\"TestTag\", :page=>1}",
+          "format": "json",
+          "signed_in": true
+        },
+        {
+          "name": "anon",
+          "params": "{:name=>\"testtag\", :page=>1}",
+          "format": "json",
+          "signed_in": false
+        }
+      ],
+      "runs_executed": 10,
+      "distinct_paths": 6,
+      "seed_sets_tried": 10,
+      "stack_remaining": 0,
+      "worklist_exhausted": true,
+      "max_pcs_on_a_path": 3,
+      "max_runs": 400,
+      "time_budget": 400,
+      "elapsed_seconds": 0.9,
+      "run_errors": {
+},
+      "unflippable_pcs": {
+}
+    },
+    {
+      "entrypoint": "tag_followings_index",
+      "strategy": "prefix-directed DSE (seed inheritance + single-branch flip), one root per request scenario",
+      "scenarios": [
+        {
+          "name": "plain",
+          "params": "{}",
+          "format": "json",
+          "signed_in": true
+        }
+      ],
+      "runs_executed": 1,
+      "distinct_paths": 1,
+      "seed_sets_tried": 1,
+      "stack_remaining": 0,
+      "worklist_exhausted": true,
+      "max_pcs_on_a_path": 0,
+      "max_runs": 400,
+      "time_budget": 400,
+      "elapsed_seconds": 0.0,
+      "run_errors": {
+},
+      "unflippable_pcs": {
+}
+    },
+    {
+      "entrypoint": "tag_followings_create",
+      "strategy": "prefix-directed DSE (seed inheritance + single-branch flip), one root per request scenario",
+      "scenarios": [
+        {
+          "name": "named",
+          "params": "{:name=>\"cooltag\"}",
+          "format": "json",
+          "signed_in": true
+        },
+        {
+          "name": "blank",
+          "params": "{:name=>\"\"}",
+          "format": "json",
+          "signed_in": true
+        }
+      ],
+      "runs_executed": 4,
+      "distinct_paths": 3,
+      "seed_sets_tried": 4,
+      "stack_remaining": 0,
+      "worklist_exhausted": true,
+      "max_pcs_on_a_path": 1,
+      "max_runs": 400,
+      "time_budget": 400,
+      "elapsed_seconds": 0.1,
+      "run_errors": {
+},
+      "unflippable_pcs": {
+}
+    },
+    {
+      "entrypoint": "tag_followings_destroy",
+      "strategy": "prefix-directed DSE (seed inheritance + single-branch flip), one root per request scenario",
+      "scenarios": [
+        {
+          "name": "by_tag_id",
+          "params": "{:id=>\"1\"}",
+          "format": "json",
+          "signed_in": true
+        }
+      ],
+      "runs_executed": 3,
+      "distinct_paths": 2,
+      "seed_sets_tried": 3,
+      "stack_remaining": 0,
+      "worklist_exhausted": true,
+      "max_pcs_on_a_path": 1,
+      "max_runs": 400,
+      "time_budget": 400,
+      "elapsed_seconds": 0.1,
+      "run_errors": {
+},
+      "unflippable_pcs": {
+}
+    },
+    {
+      "entrypoint": "tag_followings_manage",
+      "strategy": "prefix-directed DSE (seed inheritance + single-branch flip), one root per request scenario",
+      "scenarios": [
+        {
+          "name": "html",
+          "params": "{}",
+          "format": "html",
+          "signed_in": true
+        },
+        {
+          "name": "mobile",
+          "params": "{}",
+          "format": "mobile",
+          "signed_in": true
+        }
+      ],
+      "runs_executed": 2,
+      "distinct_paths": 2,
+      "seed_sets_tried": 2,
+      "stack_remaining": 0,
+      "worklist_exhausted": true,
+      "max_pcs_on_a_path": 0,
+      "max_runs": 400,
+      "time_budget": 400,
+      "elapsed_seconds": 0.1,
+      "run_errors": {
+},
+      "unflippable_pcs": {
+}
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "entrypoint": "registrations_create",
+  "strategy": "prefix-directed DSE (seed inheritance + single-branch flip), CRASH-ISOLATED",
+  "driver": "run_registrations_isolated.rb + drive_registrations.py",
+  "runs_executed": 147,
+  "distinct_paths": 12,
+  "seed_sets_tried": 147,
+  "stack_remaining": 0,
+  "worklist_exhausted": true,
+  "stop_reason": "worklist_drained",
+  "max_runs": 400,
+  "runs_capped": false,
+  "time_budget": null,
+  "elapsed_seconds": 23.0,
+  "run_errors": {
+    "run:Module::DelegationError": 98
+  },
+  "unflippable_pcs": {},
+  "process_boots": 1,
+  "poisoned_seeds": [],
+  "note": "Explored with one execution at a time against durable on-disk worklist state. Before targets.rb \u00a715 this entrypoint aborted the JVM (SIGSEGV in JRuby FFI); the isolated driver attributed every abort to seeds with find_by_1_not_found=true (Person.by_account_identifier -> Person.find_or_fetch_by_identifier -> Discovery#fetch_and_save, a real webfinger over libcurl). With \u00a715 mocking that leaf the worklist drains in a single process with zero poisoned seeds. Re-run 2026-08-16 after targets.rb \u00a712b added regex predicates to TolerantSymbolicString, closing the last SymbolicString#=~ wall (ActiveModel's format validator on unconfirmed_email): 5 -> 12 distinct paths, still one boot, zero poisoned seeds."
+}

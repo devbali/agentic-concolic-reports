@@ -1,16 +1,27 @@
 {
-  "complete": true,
-  "dump_count": 2,
-  "dumps": [
-    {
-      "dump": "dump_aspects_show_default.json",
-      "pc_count": 1,
-      "error": true
-    },
-    {
-      "dump": "dump_aspects_show_notfound.json",
-      "pc_count": 1,
-      "error": true
-    }
-  ]
+  "endpoint": "aspects_show",
+  "coverage_complete": true,
+  "genuine": true,
+  "total_path_conditions": 2,
+  "tree_nodes": 1,
+  "missing_branches": 0,
+  "blocking_missing_branches": 0,
+  "total_runs": 2,
+  "dumps_loaded": 2,
+  "dumps_unparseable": [],
+  "dump_errors": {},
+  "solver_lost": 0,
+  "assumptions": [],
+  "assumptions_used": 0,
+  "checker_elapsed_seconds": 0.0,
+  "exploration": {
+    "runs_executed": 3,
+    "distinct_paths": 2,
+    "worklist_exhausted": true,
+    "stop_reason": "worklist_drained",
+    "elapsed_seconds": 0.0,
+    "run_errors": {},
+    "unflippable_pcs": {}
+  },
+  "missing": []
 }

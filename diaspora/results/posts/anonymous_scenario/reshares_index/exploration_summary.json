@@ -1,0 +1,22 @@
+{
+  "entrypoint": "reshares_index_anon",
+  "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+  "runs_executed": 10,
+  "distinct_paths": 4,
+  "seed_sets_tried": 10,
+  "stack_remaining": 0,
+  "frontier_entries_dropped": 0,
+  "worklist_exhausted": true,
+  "stop_reason": "worklist drained",
+  "max_runs": 40000,
+  "time_budget": 1800,
+  "stack_limit": 200000,
+  "elapsed_seconds": 0.0,
+  "run_errors": {
+    "run:Diaspora::NonPublic": 3,
+    "run:ActiveRecord::RecordNotFound": 3
+  },
+  "unflippable_pcs": {
+},
+  "scenario": "anonymous (current_user = nil)"
+}

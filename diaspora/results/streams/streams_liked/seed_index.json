@@ -1,0 +1,40 @@
+{
+  "dse0001": {
+    "seeds": {
+      "USER_HAS_HIDDEN_SHAREABLES": true
+    },
+    "pcs": [
+      "F (len(SYM_RESULT_Anonymous_blocked_people_1) != 0)"
+    ],
+    "error": null
+  },
+  "dse0002": {
+    "seeds": {
+      "USER_HAS_HIDDEN_SHAREABLES": true,
+      "len(SYM_RESULT_Anonymous_blocked_people_1)": 1
+    },
+    "pcs": [
+      "T (len(SYM_RESULT_Anonymous_blocked_people_1) != 0)",
+      "T (len(SYM_RESULT_Anonymous_blocked_people_1) != 0)"
+    ],
+    "error": null
+  },
+  "dse0004": {
+    "seeds": {
+},
+    "pcs": [
+      "F (len(SYM_RESULT_Anonymous_blocked_people_1) != 0)"
+    ],
+    "error": null
+  },
+  "dse0005": {
+    "seeds": {
+      "len(SYM_RESULT_Anonymous_blocked_people_1)": 1
+    },
+    "pcs": [
+      "T (len(SYM_RESULT_Anonymous_blocked_people_1) != 0)",
+      "T (len(SYM_RESULT_Anonymous_blocked_people_1) != 0)"
+    ],
+    "error": null
+  }
+}

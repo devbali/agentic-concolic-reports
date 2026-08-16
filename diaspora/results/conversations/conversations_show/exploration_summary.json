@@ -1,0 +1,21 @@
+{
+  "entrypoint": "conversations_show",
+  "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+  "request_variants": [
+    "json",
+    "html"
+  ],
+  "runs_executed": 162,
+  "distinct_paths": 14,
+  "path_conditions_written": 46,
+  "states_tried": 162,
+  "stack_remaining": 0,
+  "worklist_drained": true,
+  "max_runs_per_ep": 8000,
+  "elapsed_seconds": 1.2,
+  "run_errors": {
+    "run:ActionController::UnknownFormat": 27
+  },
+  "unflippable_pcs": {
+}
+}

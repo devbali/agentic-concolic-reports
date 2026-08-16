@@ -1,21 +1,31 @@
 {
-  "complete": true,
-  "dump_count": 3,
-  "dumps": [
-    {
-      "dump": "dump_aspects_update_order_default.json",
-      "pc_count": 2,
-      "error": true
+  "endpoint": "aspects_update_order",
+  "coverage_complete": true,
+  "genuine": true,
+  "total_path_conditions": 23,
+  "tree_nodes": 6,
+  "missing_branches": 0,
+  "blocking_missing_branches": 0,
+  "total_runs": 7,
+  "dumps_loaded": 7,
+  "dumps_unparseable": [],
+  "dump_errors": {
+    "ActiveRecord::RecordNotFound": 3
+  },
+  "solver_lost": 0,
+  "assumptions": [],
+  "assumptions_used": 0,
+  "checker_elapsed_seconds": 0.0,
+  "exploration": {
+    "runs_executed": 22,
+    "distinct_paths": 7,
+    "worklist_exhausted": true,
+    "stop_reason": "worklist_drained",
+    "elapsed_seconds": 0.1,
+    "run_errors": {
+      "run:ActiveRecord::RecordNotFound": 11
     },
-    {
-      "dump": "dump_aspects_update_order_find1nf.json",
-      "pc_count": 1,
-      "error": true
-    },
-    {
-      "dump": "dump_aspects_update_order_find2nf.json",
-      "pc_count": 2,
-      "error": true
-    }
-  ]
+    "unflippable_pcs": {}
+  },
+  "missing": []
 }

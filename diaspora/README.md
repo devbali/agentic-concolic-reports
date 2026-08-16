@@ -217,14 +217,18 @@ them into `ConcolicTargets.seed_overrides` for the next run. Verified cycle
 on posts#show: defaults → suggestions `not_found=True` / `public=True` →
 seeded runs → **coverage complete** (3 dumps).
 
-## Output structure (per batch)
+## Output structure (per entrypoint)
+
+Each entrypoint gets its own coverage check with all its runs. Coverage is
+**not** checked at the batch level — each `{entrypoint}/` subdir must be
+`complete=true` on its own.
 
 ```
 results/{batch}/
 ├── run_concolic.rb          ← the batch runner
-├── {entrypoint}/            ← one subdir per entrypoint
+├── {entrypoint}/            ← one subdir per entrypoint, each fully covered
 │   ├── dump_{label}.json    ← RunDump from CallInterceptor.instance.run
-│   └── coverage_summary.json ← CoverageChecker result
+│   └── coverage_summary.json ← CoverageChecker result (per-entrypoint)
 ├── elapsed_seconds.txt
 └── REPORT.md                ← optional per-batch prose report
 ```
@@ -294,7 +298,115 @@ silently patch):**
 Both the gap list and the engine-vs-runner format questions are `src/` concerns — raise to Bali
 before changing anything (per the source-discipline note above).
 
+### Symbolic entrypoint variables
+
+Entrypoint parameters (esp. `current_user.id` and `params[:id]`) should be **symbolic**
+whenever feasible, not hardcoded concrete values. A concrete `user.id` prevents the
+engine from exploring branches that depend on which user runs the query (e.g.
+`share_visibilities.user_id`, `people.owner_id`).
+
+- In `symbolic_user` (the runner's helper), **remove** any `define_singleton_method(:id) { 1 }`
+  override — the symbolic model instance already returns a `SymbolicInt` for the `id`
+  column via `symbolic_instance`. The override exists for legacy reasons (the old
+  `to_i` crash in `sql_for` before `$$(SYMNAME)` rendering) and is no longer needed.
+- Entrypoint kwargs passed to `interceptor.run(source, kwargs)` are automatically
+  wrapped as symbolic types (`SymbolicInt`, `SymbolicString`, `SymbolicBool`).
+- Runner-local concrete overrides (`ctrl.params = { id: 1 }`) are fine for the inner
+  params hash (it feeds `Post.find(1)` → mocked → symbolic instance); the `1` here is
+  a seed value for the mock, not a forced concrete variable.
+
 **Live status + per-batch numbers + operational notes:** see [`STATUS.md`](STATUS.md) in this
 directory (`reports/diaspora/STATUS.md`) for the current engine-verified completeness breakdown
 (40 genuine / 73 vacuous per entrypoint), batch dump counts, and how to resume work from a
 fresh session.
+
+## Coverage checking (per-endpoint)
+
+Run the coverage checker once per **endpoint** (not merged across the batch):
+
+```bash
+cd /home/dev/project
+PYTHONPATH=src python3 reports/diaspora/verify_gate1b.py posts
+```
+
+Each endpoint under `results/posts/` (e.g. `posts_show`, `reshares_create`) is checked
+independently — its `coverage_summary.json` reflects ONLY that endpoint's runs.
+
+### Semantics (strict-per-node, decision 2026-08-13)
+
+The `CoverageChecker` builds an execution tree from the runs' path conditions.
+Every distinct PC expression is a tree node with two children (`taken` / `not_taken`).
+
+- **Strict per node**: a node is covered only when BOTH its taken and not-taken
+  outcomes have been observed by some run.
+- **Nested PCs**: a PC that appears nested under another (observed in sequence after
+  it) is also demanded under BOTH branches of its parent — the checker checks via Z3
+  whether the continuation is reachable under the missing branch prefix, and if so,
+  reports it as additionally missing. (Guarded inner ifs — where the inner PC is
+  unreachable under the outer's false branch — are filtered as UNSAT by Z3.)
+- **Assumptions relax strictness**: an `IndependenceAssumption` between two PCs
+  promotes them to parallel roots, so the cross-branch requirement does not apply.
+  An `UntrackedPathAssumption` marks a PC as not-important — its missing side is
+  reported but does NOT block `complete`.
+
+### Declaring assumptions: key them by EXPRESSION, not by file:line
+
+Path conditions in this experiment are overwhelmingly recorded **at the mock
+boundary, by design**. A target standing in for a query decides its own outcome
+with an explicit symbolic compare inside the mock and returns a concrete value
+(`concolic_targets.rb:331`, `finder_mock`), because the app's own
+`rescue RecordNotFound` or bare `if row` is not interceptable — see the
+boundary-decided section of `src/TODO.txt`. That is how a *generic* interceptor
+is meant to work: one shared mock serving every finder in the app.
+
+Measured across all 13 batches:
+
+| where the PC is recorded | share | distinct sites |
+|---|---|---|
+| mocks (`concolic_targets.rb` / batch `targets.rb`) | **63.7%** | 10 |
+| framework internals (`blank.rb`, `core.rb`, …) | 34.7% | 9 |
+| a line of app source | **1.7%** | 14 |
+
+So one source line hosts many decisions: **129 of 146 distinct branch
+expressions (88%) share a site with at least one other expression.** All twelve
+finder decisions in `reshares_create` record at `concolic_targets.rb:331`.
+
+Therefore declare assumptions with `expr=` (or `expr_a=`/`expr_b=`):
+
+```python
+UntrackedPathAssumption(expr="(SYM_RESULT_..._find_by_5_not_found == True)")
+IndependenceAssumption(expr_a="(...)", expr_b="(...)")
+```
+
+`source=` is correct only where a site genuinely hosts one decision — typically
+a branch written in app code. Supplying both requires both to match. Supplying
+neither matches nothing: a blank assumption is inert, never a wildcard.
+
+**Caveat that comes with `expr`:** results are named with a per-run call ordinal
+(`SYM_RESULT_<func>_<idx>`), so the same expression can denote different calls in
+different runs. `reshares_create`'s `find_by_1` is the action's lookup in some
+runs and the presenter's in others. The execution tree is already keyed by
+expression so this is not new, but confirm the decision you name means the same
+thing in every run you feed the checker. Worked example:
+`results/posts/prune_reshares.py`.
+
+### Reading the summary
+
+```json
+{
+  "endpoint": "posts_show",
+  "coverage_complete": false,
+  "tree_nodes": 27,
+  "missing_branches": 35,
+  "assumptions": [],
+  "assumptions_used": 0
+}
+```
+
+- `complete=true` means every observed branch node has both sides covered (the
+  strict-per-node condition). This is **branch-coverage-complete**, not
+  query-set-complete.
+- `missing` lists each uncovered branch with Z3-suggested concrete values —
+  feed these as `seed_overrides` and re-run to close them.
+- `assumptions` lists every declared assumption with its source file/line —
+  empty when no assumptions were provided.

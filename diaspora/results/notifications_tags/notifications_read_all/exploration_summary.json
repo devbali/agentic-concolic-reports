@@ -1,0 +1,31 @@
+{
+  "entrypoint": "notifications_read_all",
+  "strategy": "prefix-directed DSE (seed inheritance + single-branch flip), one root per request scenario",
+  "scenarios": [
+    {
+      "name": "plain",
+      "params": "{}",
+      "format": "json",
+      "signed_in": true
+    },
+    {
+      "name": "typed",
+      "params": "{:type=>\"mentioned\"}",
+      "format": "json",
+      "signed_in": true
+    }
+  ],
+  "runs_executed": 6,
+  "distinct_paths": 4,
+  "seed_sets_tried": 6,
+  "stack_remaining": 0,
+  "worklist_exhausted": true,
+  "max_pcs_on_a_path": 1,
+  "max_runs": 400,
+  "time_budget": 400,
+  "elapsed_seconds": 0.2,
+  "run_errors": {
+},
+  "unflippable_pcs": {
+}
+}

@@ -1,214 +1,243 @@
-# REPORT — "likes" batch — diaspora concolic experiment
+# likes batch — concolic re-run (prefix-directed DSE + batch-local targets)
 
-Date: 2026-08-07 · Runtime: JRuby 9.3 + Java 21 · App `dse-apps/apps/diaspora`
-(Rails 5.2) · RAILS_ENV=concolic · Driver: `run_concolic.rb`.
+Batch 11: `LikesController#create/destroy/index`, driven through Rails' own
+`ActionController::TestCase` rig against the real app. Regenerated 2026-08-15
+with `run_dse.rb` + `targets.rb`.
 
-## Status summary
+- Runner: `run_dse.rb` (prefix-directed DSE, seed inheritance + single-branch flip)
+- Overlay: `targets.rb`, loaded AFTER `ConcolicTargets.install!`
+- `src/` untouched, shared `concolic_targets.rb` untouched, app source untouched
+- 18 dumps / 1161 executions / 15.2 s for the whole batch; every dump parses
 
-**All 3 entrypoints report `CoverageChecker.complete == true`.** Coverage was
-closed per README "Coverage loop (verified)": defaults → seed suggested
-`concrete_values` from CoverageChecker → re-run → recheck. **14 path
-conditions total** across the batch, all from real diaspora code branching on
-symbolic finder / predicate values.
+> **Provenance.** This report was reconstructed on 2026-08-15 from the batch
+> agent's own final report plus a re-measurement of the dumps on disk
+> (`reports/diaspora/batch_stats.py likes`). The agent finished its work and
+> delivered its findings, but was blocked from writing report `.md` files
+> itself; the coordinator session that would have saved this file died before
+> it got to this batch (dead provider pin — see the parent session's failure at
+> 01:12). Every number below was re-derived from the dumps, not copied.
 
-As with the proven siblings, `complete: true` is in the *checker's* sense
-(every observed, branchable path-condition node on both taken/not-taken sides
-has a PC), **not** "full app-path coverage." Two entrypoints crash deep in
-unsupported symbolic machinery or Rails controller-test render plumbing;
-those PCs-before-crash are preserved under each dump's `error` key *and*
-counted by CoverageChecker (README "report errors honestly"). One entrypoint
-(`likes_destroy`) records **0 PCs** because the `Like.find` primary-key call
-short-circuits through Rails' `StatementCache` into `find_by_sql` (intercepted
-→ `SymbolicList`) and the app's `.first` on it is an unsupported contents-op —
-a genuine runtime finding, documented below.
+## Results — BEFORE vs AFTER
 
-## Per-entrypoint
+BEFORE = `LIKES_WA_FIX=0 LIKES_WB_FIX=off` (shared targets only), which
+reproduces the previous round exactly.
 
-| Entrypoint | Dumps | PCs | complete | Notes |
+| entrypoint | dumps | PCs | nodes | missing | complete | genuine | **both sides seen** | clean dumps | runs | drained |
+|---|---|---|---|---|---|---|---|---|---|---|
+| `likes_create` BEFORE | 12 | 40 | 9 | 0 | true | genuine | 5 / 5 | 7 / 12 | 1125 | yes |
+| `likes_create` **AFTER** | 12 | 40 | 9 | 0 | true | genuine | **5 / 5** | **11 / 12** | 1125 | yes |
+| `likes_destroy` BEFORE/**AFTER** | 3 | 5 | 2 | 0 | true | genuine | 2 / 2 | 2 / 3 | 27 | yes |
+| `likes_index` BEFORE/**AFTER** | 3 | 5 | 2 | 0 | true | genuine | 2 / 2 | 1 / 3 | 9 | yes |
+| **total AFTER** | **18** | **50** | **13** | **0** | 3/3 | **3 genuine, 0 vacuous** | **9 / 9** | **14 / 18** | 1161 | 3/3 |
+
+3/3 complete, 3/3 genuine, 0 missing, every worklist drained to a true fixpoint
+(`stop_reason: worklist_drained`, no `MAX_RUNS`/`TIME_BUDGET` hit,
+`unflippable_pcs` empty everywhere). Batch wall clock 18.1 s → 15.2 s.
+
+**What the overlay bought:** every remaining `error` in the batch is now a real
+app outcome. Zero framework walls left (`NotImplementedError` ×4 → ×0).
+
+**What it did not buy: any new coverage.** PCs, nodes, dump labels and the
+distinct-PC vocabulary are identical across the two configurations. Both walls
+sat *after* the last branch on their path — `.next` is inside `like!`'s `tap`
+after every recorded decision, and `.to_i` is inside the JSON renderer after
+`respond_to` has dispatched. This was a wall-closing pass, not a coverage pass;
+the batch was already at its fixpoint before it.
+
+Cost: **+9,431 bytes across all 18 dumps (+2.6 %)**. Only the 4 previously
+crashed dumps grew (`html0002`/`0013`/`0020` +1,734 each, `json0001` +4,226);
+the ±2-byte wobble elsewhere is JRuby object-id noise in `inspect` strings,
+verified by diffing event streams.
+
+### `complete=true` is the weakest number in that table
+
+Per `COMPLETENESS_AUDIT.md`: the engine cannot parse `len(...)`, so a one-sided
+list-length node is reported identically to a covered one, and `solver_lost`
+stays 0 either way. The column that carries the weight here is **both sides
+seen — 9 / 9**, computed from the dumps and independent of the solver, together
+with the drained worklist and the empty `unflippable_pcs`.
+
+## `targets.rb` — what is in it and why
+
+| # | target | shape | why legal | bought |
 |---|---|---|---|---|
-| `likes_create` | 4 | 9 | ✅ | 3-deep `EvilQuery::VisibleShareableById#post!` `.first` chain closed; crashes on `SymbolicInt#to_i` in `Like::Generator#build` |
-| `likes_destroy` | 2 | 0 | ✅ | 0 PCs — `Like.find` StatementCache short-circuit → `SymbolicList#first` NotImplementedError (crash-before-PC) |
-| `likes_index` | 3 | 5 | ✅ | anonymous `find_public!` `.first` + `public?` predicate branches closed; crashes on `SymbolicList#each` in `as_api_response` |
+| W-A | `SuccIntValue < SymbolicInt` with `#next`/`#succ`/`#pred` | batch-local subclass, wired in by wrapping `ConcolicTargets.symbolic_instance` | `SymbolicInt#-@` (`int.rb:78`) is the precedent: derive a new named symbolic value, don't concretize | closed the `SymbolicInt#next` wall without a `src/` change |
+| W-B | `prepend` shim on `ActiveModel::Type::Integer#cast`/`#deserialize` | returns a `SymbolicInt` unchanged, `super` otherwise | pure type-cast plumbing; records nothing, issues no SQL | closed the `SymbolicInt#to_i` wall **while keeping the value symbolic** |
+| — | `SymbolicInt#to_i` (rejected default) | kept behind `LIKES_WB_FIX=to_i` | — | see the soundness measurement below |
 
-PCs counted across all dumps: **14**.
+Neither is a `declare_target` mock, so neither adds a `symbolic_call` event or
+an inert call-ordinal var to any dump.
 
-## Coverage loop (what was closed and how)
+### W-A — why no app-method mock was legal
 
-The finder target is `ActiveRecord::FinderMethods.first` (intercepted at
-`concolic_targets.rb:116`, the `finder_mock` block).
+`update_or_create_participation!` is the smallest enclosing method, but it
+issues SQL (`participations.find_by`), calls another declared target, and holds
+both of its own branches. Mocking it would have deleted the coverage along with
+the wall — the exact regression the wall-fixing discipline forbids. Everything
+further out issues more SQL. Hence the value-shaped fix.
 
-### likes#create
-`LikeService#create` → `PostService#find!` (authenticated) →
-`find_visible_shareable_by_id` → `EvilQuery::VisibleShareableById#post!`:
+**One wiring correction worth propagating to other batches:**
+`participation.count` does **not** reach `ActiveRecord::Calculations#count`.
+`symbolic_instance` installs a *singleton* reader per column
+(`concolic_targets.rb:229`) that shadows every class-level method, so the value
+comes straight from the instance's `concolic_attrs`. Hooking only
+`Calculations#count` — as `photos/targets.rb` §6c does — would not have closed
+this. The overlay wraps `symbolic_instance` batch-locally and re-wraps each
+integer column var as a `SuccIntValue` **with the same name, value and note**,
+so it stays the same seedable var; the `Calculations#count` override is kept for
+relation receivers. Also: `module_function` keeps **two** copies of a method and
+`ConcolicTargets`' internal callers use the singleton copy — a wrapper must
+replace both.
 
-```ruby
-def post!
-  querent_has_visibility.first || querent_is_author.first || public_post.first
-end
-```
+### W-B — the `declare_target` route was not merely expensive, it was unimplementable
 
-Three chained, non-raising `.first` finders (both share-visibility and
-author visibility are checked before falling back to the public post).
-`.first` is `raise_on_missing: false`, so a missing record yields `nil`
-(not `RecordNotFound`), and `||` falls through to the next finder.
-Coverage close:
+`declare_target` natively-converts args before the lambda sees them
+(`call_args[name] = to_native(val)`, `call_interceptor.rb:123`;
+`to_native(SymbolicInt) → Integer`, `symbolic_func.rb:177`), so a `cast_value`
+lambda receives `{"value" => 1}` and **cannot tell symbolic from plain**. Its
+return would then be re-wrapped as
+`to_symbolic(result, name: "SYM_RESULT_..._cast_value_<n>")`
+(`call_interceptor.rb:181`), minting an inert call-ordinal var on every integer
+attribute read and severing `like.author_id` from `SYM_PERSON_LKC_id`. The
+dump-bloat worry that motivated looking at it is moot — that route was never
+viable.
 
-- `likes_create_default` — nothing seeded → `querent_has_visibility.first`
-  found (PC: `first_1_not_found == False`).
-- `likes_create_post_notfound` — seed `first_1_not_found=True` →
-  `querent_has_visibility.first` missing → falls to `querent_is_author.first`
-  (PCs: `first_1 True`, `first_2 False`).
-- `likes_create_chain_notfound` — seed `first_1=True, first_2=True` → falls
-  to `public_post.first` (PCs: `first_1 True, first_2 True, first_3 False`).
-- `likes_create_leaf3_notfound` — seed `first_1=True, first_2=True,
-  first_3=True` (checker concrete_values) → all three missing → `post!`
-  returns `nil` → `find_non_public_by_guid_or_id_with_user!` *real* app
-  `raise ActiveRecord::RecordNotFound unless post` → rescued by the
-  controller's `rescue ActiveRecord::RecordNotFound, RecordInvalid` →
-  render status 422. Closes `first_3=True`.
+**The tiebreak between the two viable fixes is soundness, and it was measured**
+(probe: one boot per mode):
 
-All seed values came from `CoverageChecker.concrete_values`; no path
-condition was hand-fabricated.
+| mode | `like.author_id` after AR's cast | PCs from a later `like.author_id == 7` |
+|---|---|---|
+| `cast` (default) | `SuccIntValue` — still symbolic | **1** — `(SYM_PROBE_id == 7)` |
+| `to_i` | plain `Integer` — concretized | **0** — branch silently lost |
+| `off` | raises | 0 — lost loudly |
 
-### likes#index (anonymous)
-`LikeService#find_for_post` → `PostService#find!` with **nil** user →
-`find_public!` → `Post.where(...).first` (single finder) then
-`raise Diaspora::NonPublic unless post.public?`. Coverage close:
+`to_i` re-opens the implicit-concretization channel that `int.rb:25-32` closes
+deliberately, for *every* `.to_i` on those values. It costs `likes` nothing
+today only because nothing branches on `author_id` after the cast — luck, not
+design, and the failure mode is silent. **Verdict: `cast` is better; delivered
+as the default, `to_i` kept behind `LIKES_WB_FIX=to_i`.**
 
-- `likes_index_default` — found, `public?`=false → `Diaspora::NonPublic`
-  raised (PCs: `first_1_not_found False`, `first_1_public False`).
-  The controller's `rescue_from Diaspora::NonPublic { authenticate_user! }`
-  then triggers auth in the rig.
-- `likes_index_post_notfound` — seed `first_1_not_found=True` → `.first` nil
-  → `raise ActiveRecord::RecordNotFound` (PC: `first_1_not_found True`);
-  index has no rescue, so it propagates (crash recorded).
-- `likes_index_public` — seed `first_1_public=True` (checker concrete_values)
-  → `post.public?` true, no NonPublic → app proceeds to `post.likes`
-  (symbolic relation) `.includes(author: :profile).as_api_response(:backbone)`
-  → materializes via `SymbolicList` → `SymbolicList#each` crash. Closes
-  `first_1_public True`.
+This is the "don't mock away the branch" rule at *value* level: a value-shaped
+fix can swallow a branch just as thoroughly as a method-shaped one.
 
-### likes#destroy
-`LikeService#destroy` → `Like.find(like_id)` (raising finder). But on a
-primary-key `find`, Rails short-circuits through `StatementCache` →
-`find_by_sql` (intercepted at `concolic_targets.rb` → `SymbolicList`), so the
-`FinderMethods#find` target that would record the not-found PC is bypassed;
-the app's `.first` on the `SymbolicList` raises
-`SymbolicList#first` NotImplementedError before any `path_condition`. Both
-dumps (default + `find_1_not_found` seed, which can't take effect on this
-path) crash identically → **0 PCs, crash-before-PC**. This mirrors
-`messages_create` in the `conversations` batch (same StatementCache wall) and
-is reported as `complete: true` by the checker because no branchable finder
-node is captured in the crashed path. It is *not* claimed as "fully
-explored" — see Crashes.
+## W-C — `NoMethodError: post_id for #<Like>` is an app defect, kept
 
-## Crashes (honest accounting)
+`likes_controller.rb:26`: `format.mobile { redirect_to post_path(like.post_id) }`.
 
-All crashes are captured under each dump's `error` key with PCs-before-crash
-preserved and counted.
+Verified: `schema.rb:178-190` gives `likes` only `target_id`/`target_type`
+(polymorphic); `lib/diaspora/fields/target.rb` declares
+`belongs_to :target, polymorphic: true`; `like.rb` aliases only `parent` →
+`target`; grep over `app/` and `lib/` finds no `post_id` attribute, alias or
+method on `Like`. **This raises for every like, symbolic or real — the mobile
+branch of `likes#create` is dead code that 500s in production.**
 
-### `NotImplementedError` (unsupported symbolic op — strict runtime by design)
-- **`SymbolicInt#to_i`** — `likes_create` (all 4 dumps). Source:
-  `src/ruby_runtime/int.rb:30` (`to_i`), reached inside ActiveModel's
-  attribute assignment (`active_model/attribute_assignment.rb:44`) when
-  `Like::Generator#build` runs `Like.new(target: symbolic_post, ..., )` —
-  the belongs_to `target=` association setter coerces the symbolic Post's
-  `id` (SymInt) to an integer. So `like!` never returns and the 
-  `respond_to`/render in `likes#create` is never reached. The 1–3 `post!`
-  finder PCs are all recorded first.
-- **`SymbolicList#first`** — `likes_destroy` (both dumps). Source:
-  `src/ruby_runtime/list.rb:135` (`first`), reached from
-  `active_record/core.rb:175` `find` → `like_service.rb:14` `destroy` →
-  `likes_controller.rb:32`. The `Like.find(id)` StatementCache
-  short-circuit (see above) means no finder PC is ever recorded: genuine
-  **crash-before-PC**.
-- **`SymbolicList#each`** — `likes_index_public`. The app reached
-  `post.likes.includes(author: :profile).as_api_response(:backbone)`; acts_as_api
-  materializes the relation into a `SymbolicList` and iterates it (a
-  contents-op). Recorded after the `first_1` + `public?` PCs.
+Repro: `likes_create/dump_mobile0001.json`. Correct app fix would be
+`post_path(like.target_id)`. Not applied — app source is out of scope for a
+batch runner.
 
-### App-behavior exceptions (expected, not bugs)
-- `likes_index_post_notfound` — `ActiveRecord::RecordNotFound: could not find
-  a post with id 1` — the app's *intended* missing-post path on the seeded
-  `.first` (`find_public!` `raise unless post`); the `first_1` PC is
-  recorded.
-- `likes_index_default` — `Diaspora::NonPublic` — the app's intended
-  not-public path; `first_1` + `public?` PCs recorded, then the controller's
-  `rescue_from` triggers `authenticate_user!`.
-- `likes_create_leaf3_notfound` — `NoMethodError: undefined method
-  'to_hash' for nil:NilClass` — controller-test render boundary when the
-  controller renders `status: 422` with no live response body present in the
-  test rig (same class of response-plumbing crash seen across the
-  `posts`/`contacts_aspects_blocks`/`conversations` batches). `first_1..3`
-  PCs all recorded.
+## Termination fix — please port to the reference runner
 
-## Honest notes / un-recordable branches
+`run_dse.rb`'s `other_value` maps integer flips into **`{0, 1}`**, not `v + 1`.
 
-- **`likes#destroy` `user.owns?(like)` branch is not reachable in the
-  concolic rig**: `Like.find` never returns a finder-symbolic Like (StatementCache
-  wall), so we never reach `user.owns?(like)` / `user.retract(like)` at all.
-  This is a *real runtime limitation* (`find` on a PK bypasses the
-  `FinderMethods` target), reported as crash-before-PC, not hidden.
-- **Symbolic-user identity is concrete** (id / person_id / person.id = 1), the
-  proven pattern from the sibling batches — needed so
-  `EvilQuery::VisibleShareableById#post!` builds its WHERE clauses without
-  crashing on symbolic identity. Consequence: any app comparison of the form
-  `concrete == symbolic` (e.g. a hypothetical `person.id == like.author_id`)
-  would not emit a PC (concrete-arg gap, README "Ruby truthiness gap"). In
-  this batch the `owns?` branch is unreachable for the independent reason
-  above, so it did not arise.
+With `v + 1`, `likes_destroy`'s
+`(SYM_PERSON_LKD_id == SYM_RESULT_..._find_1_author_id)` — two *symbolic* vars —
+makes each generation seed a fresh integer, so the seed space is infinite over a
+3-path space: measured **4000 executions / 3 paths, worklist still growing**.
+With `{0, 1}` it drains in **375** (`likes_create`, per scenario) and **27**
+(`likes_destroy`).
+
+This is not a `likes` quirk — **any `VAR_A == VAR_B` PC triggers it**, and
+`tmp/reference/run_proper.rb`'s flip helper has the `v + 1` shape. Recommend
+porting.
+
+## Every `error` in every dump
+
+14 of 18 dumps are clean. All 4 errors are **real app outcomes**; there is no
+`NotImplementedError` anywhere in the batch.
+
+| error | dumps | where | classification |
+|---|---|---|---|
+| `NoMethodError` | 1 (`likes_create`, mobile) | `likes_controller.rb:26` | **app defect** — W-C above |
+| `ActiveRecord::RecordNotFound` | 1 (`likes_destroy`) | finder mock, real 404 path | real app outcome |
+| `Diaspora::NonPublic` | 1 (`likes_index`) | `find_public!` | real app outcome |
+| `ActiveRecord::RecordNotFound` | 1 (`likes_index`) | `find_public!` | real app outcome |
+
+Execution counts (350 / 9 / 4 / 3) exceed dump counts because DSE re-reaches
+known path signatures; only new ones are persisted.
+
+## Branches the runtime cannot record at all
+
+1. **Ruby truthiness gap** (`src/TODO.txt`) hides `foreign_key_present?` and
+   `participation.present?`. Their *decision* is still covered — via the
+   seedable `..._not_found` bool at the finder-mock boundary — but the `if`
+   itself contributes no node.
+2. **Concrete-receiver gap**: `SYM_PERSON=1` is required, or the batch's only
+   cross-var branch vanishes.
+3. `ctrl.send(action)` bypasses `process_action`, so `authenticate_user!` and
+   the `rescue_from Diaspora::NonPublic` handler never run — which is why
+   `NonPublic` surfaces as a dump error rather than a re-auth redirect.
+4. Format dispatch is request-driven, so the three `likes#create` formats are
+   separate worklists, not a flippable branch.
+
+## Inert shared mocks found (not blocking here, but they will block others)
+
+`concolic_targets.rb:508` returns `symbool("#{name}_#{m}_ok", true, ...)` for
+`save`/`save!`/`update`/`update!`/`destroy`/… **with no `seed_for`** — DSE can
+never flip a persistence outcome. Harmless in `likes` (`LikeService#destroy`
+returns literal booleans; no PC references an `_ok` var) but it is the same
+shape as the `Photo#url` anti-pattern and **would block any batch branching on
+a save result**. Lines 480 and 518 (`update_all`/`delete_all`/`count_by_sql`
+counts) share the missing `seed_for`.
+
+## Runner-local (deliberately not in the overlay)
+
+`run_dse.rb` clears `CallInterceptor#@all_calls` after each run. The interceptor
+appends a `TargetCall` per call and never trims, OOMing the JVM over thousands
+of executions. The dump is already built when `run()` returns, so no recorded
+output changes. This is a `src/` concern — reported, not patched.
+
+## `src/` gaps to raise to Bali (worked around batch-locally, NOT patched)
+
+1. `SymbolicInt` has no `#next`/`#succ` although `#-@` establishes the
+   derive-a-new-named-value pattern.
+2. Symbolic scalars are unquotable/uncastable by ActiveRecord — no
+   `#value_for_database`, and `Type::Integer#cast_value` calls `.to_i`.
+3. `declare_target` natively-converts args (`call_interceptor.rb:123`), so a
+   mock **cannot** distinguish a symbolic argument from a concrete one.
+4. Shared persistence mocks (`concolic_targets.rb:480/508/518`) never call
+   `seed_for`, making their results unflippable by construction.
+5. `CallInterceptor` retains `@all_calls` for the whole process.
+6. Engine: `len(X)` var decls fail to eval and `len(...)` constraints fail to
+   parse, and `coverage.py` treats "solver could not parse it" as "the missing
+   side is unsatisfiable".
+7. Ruby truthiness gap (`src/TODO.txt`).
 
 ## Files
 
-- `run_concolic.rb` — batch runner (3 entrypoints; defaults + checker-driven
-  seeded closes).
-- `likes_create/dump_*.json` — 4 dumps (9 PCs).
-- `likes_destroy/dump_*.json` — 2 dumps (0 PCs, crash-before-PC).
-- `likes_index/dump_*.json` — 3 dumps (5 PCs).
-- `{entrypoint}/coverage_summary.json` — `complete: true` each (regenerated
-  from the final dump set).
-- `elapsed_seconds.txt` — Ruby-level execution of the final runner (~0.2 s;
-  JRuby+RAILS boot not counted, same convention as siblings).
-- `run_output.log` — raw launcher output (all six PC/error summary lines).
+```
+results/likes/
+├── targets.rb                  BATCH-LOCAL overlay (LikesTargets.install!)
+├── run_dse.rb                  runner
+├── coverage_check.py           per-entrypoint checker (wraps concolic_engine)
+├── run_concolic.rb             previous-round runner, kept as input
+├── exploration_index.json      batch-level roll-up of the 3 DSE runs
+├── coverage_index.json         batch-level roll-up of the 3 coverage checks
+├── elapsed_seconds.txt
+└── <entrypoint>/
+    ├── dump_*.json             one per DISTINCT path (+ per format scenario)
+    ├── exploration_summary.json
+    └── coverage_summary.json   this entrypoint's runs ONLY
+```
 
-App and runtime source were **read-only**. The only runner-local plumbing is a
-`Post` prepend (`PostLikeAssociations`) giving *symbolic* (allocated) Post
-instances a `likes` association reader returning `Like.all`, guarded by
-`concolic_attrs` so real Posts are untouched — the identical pattern to the
-approved `ConvoSymAssociations` prepend in the conversations batch. Every
-`path_condition` in every dump comes from real diaspora code branching on
-symbolic finder/predicate values (`EvilQuery::VisibleShareableById#post!`
-`.first` chain, `PostService#find_public!` `public?` predicate).
-## Gate 1b addendum (2026-08-09)
+Reproduce:
 
-`symlist(..., representative:)` landed (both runtimes); no §8.3 call-site mock
-applies to likes beyond the unchanged finder path. Full batch re-run +
-CoverageChecker: **9 runs, 2 no-error, 7 crashed** — crash mix:
-SymbolicList#each×2 (`likes_index_public` — `as_api_response` gem iterates the
-collection: the row-14 wall, fires before render), SymbolicInt#to_i×3, and
-RecordNotFound / NonPublic. `likes_create_leaf3_notfound` and `likes_destroy`
-reach no-error. The `as_api_response` iteration (row 14) is the honest §8.3
-serialisation wall — representative can't clear it because map/each stay
-unimplemented. Crashed runs preserved.
+```
+scripts/diaspora-concolic /home/dev/project/reports/diaspora/results/likes/run_dse.rb
+cd /home/dev/project && PYTHONPATH=src python3 \
+    reports/diaspora/results/likes/coverage_check.py
+PYTHONPATH=src python3 reports/diaspora/batch_stats.py likes
+```
 
-## Gate 1b follow-up — sampled-content iteration (2026-08-09, Bali directive)
-
-`as_api_response` collection iteration now completes (each yields the rep);
-`likes_index_public` proceeds past collection iteration into the acts_as_api
-gem's per-field serialization, crashing at `api_template.rb:119 process_value`
-(`nil[]`) on a symbolic record's nil association reader — a per-field
-serialization/coercion wall (Gate 2/3), not sampling. CoverageChecker: 9 runs /
-2 ok / 7 crashed (SymbolicInt#to_i×3 coercion, RecordNotFound×2, NonPublic,
-nil[]). Genuine: likes_create_leaf3_notfound, likes_destroy_default.
-
----
-
-## Gate 1b FINAL (2026-08-10) — function-boundary splits
-
-**Approach (Bali directive):** the runtime/engine is UNTOUCHED and strict (`SymbolicList#each`/`#map` still raise). The intermediate sampled-content iteration change (2026-08-09 addendum, if present) was REVERTED. Remaining SQL-free iteration walls were cleared by behavior-preserving FUNCTION-BOUNDARY SPLITS in the app code (e.g. `Post.blocked_people`, `Stream::Base#post_ids` / `#attach_user_likes`, `StreamsController#decorated_stream_posts`) plus `declare_target` wraps in `concolic_targets.rb`. No method containing SQL is mocked; each split is behavior-identical in a normal run.
-
-**Final numbers (fresh `coverage_summary.json`, 2026-08-10 08:19):** runs=9, no-error=2, crashed=7, coverage_complete=False, missing_branches=1.
-crash_types: {"NotImplementedError": 4, "ActiveRecord::RecordNotFound": 2, "Diaspora::NonPublic": 1}
-
-Crashed runs are preserved, not dropped. Honest caveat: `complete=true` means no missing branches were found **on the recorded (sampled) paths**;
-entrypoints that crash before recording PCs stay vacuous/`incomplete`.
+Switches: `LIKES_WA_FIX=0`, `LIKES_WB_FIX=cast|to_i|off`, `OUT_DIR`, `EP`,
+`SYM_PERSON`. `LIKES_WA_FIX=0 LIKES_WB_FIX=off` reproduces the BEFORE column
+exactly.

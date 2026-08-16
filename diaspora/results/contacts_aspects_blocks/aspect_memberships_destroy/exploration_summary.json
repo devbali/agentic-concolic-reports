@@ -1,0 +1,20 @@
+{
+  "entrypoint": "aspect_memberships_destroy",
+  "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+  "runs_executed": 30,
+  "distinct_paths": 8,
+  "duplicate_path_runs": 22,
+  "seed_sets_tried": 30,
+  "stack_remaining": 0,
+  "worklist_exhausted": true,
+  "stop_reason": "worklist_drained",
+  "max_runs": 4000,
+  "time_budget": 600,
+  "elapsed_seconds": 0.3,
+  "run_errors": {
+    "run:ActiveRecord::RecordNotFound": 16,
+    "run:Diaspora::NotMine": 10
+  },
+  "unflippable_pcs": {
+}
+}

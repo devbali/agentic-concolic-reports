@@ -1,0 +1,21 @@
+{
+  "entrypoint": "posts_show",
+  "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+  "runs_executed": 14541,
+  "distinct_paths": 2113,
+  "seed_sets_tried": 14541,
+  "stack_remaining": 0,
+  "frontier_entries_dropped": 0,
+  "worklist_exhausted": true,
+  "stop_reason": "worklist drained",
+  "max_runs": 40000,
+  "time_budget": 1800,
+  "stack_limit": 200000,
+  "elapsed_seconds": 183.6,
+  "run_errors": {
+    "run:ActiveRecord::RecordNotFound": 4099
+  },
+  "unflippable_pcs": {
+},
+  "scenario": "authenticated (symbolic current_user)"
+}

@@ -1,0 +1,24 @@
+{
+  "entrypoint": "admin_stats",
+  "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+  "param_variants": [
+    "{}",
+    "{:range=>\"week\"}",
+    "{:range=>\"2weeks\"}",
+    "{:range=>\"month\"}"
+  ],
+  "runs_executed": 12,
+  "distinct_paths": 2,
+  "total_path_conditions_in_written_dumps": 2,
+  "seed_sets_tried": 12,
+  "stack_remaining": 0,
+  "worklist_exhausted": true,
+  "stopped_by": null,
+  "max_runs": 40000,
+  "time_budget": 1200,
+  "elapsed_seconds": 0.4,
+  "run_errors": {
+},
+  "unflippable_pcs": {
+}
+}

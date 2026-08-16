@@ -1,0 +1,35 @@
+{
+  "entrypoint": "streams_aspects",
+  "action": "aspects",
+  "format": "json",
+  "signed_in": true,
+  "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+  "roots": [
+    {
+},
+    {
+      "USER_HAS_HIDDEN_SHAREABLES": true
+    },
+    {
+      "SUBSTITUTE_USER_VISIBLE_QUERIES": true
+    },
+    {
+      "SUBSTITUTE_USER_VISIBLE_QUERIES": true,
+      "USER_HAS_HIDDEN_SHAREABLES": true
+    }
+  ],
+  "runs_executed": 22,
+  "distinct_paths": 12,
+  "seed_sets_tried": 22,
+  "stack_remaining": 0,
+  "worklist_exhausted": true,
+  "stopped_by": null,
+  "max_runs": 900,
+  "time_budget": 420,
+  "elapsed_seconds": 1.8,
+  "run_errors": {
+    "run:ActiveRecord::StatementInvalid": 6
+  },
+  "unflippable_pcs": {
+}
+}

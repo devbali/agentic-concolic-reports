@@ -1,21 +1,19 @@
 {
-  "entrypoint": "comments_create",
-  "complete": true,
-  "total_runs": 4,
-  "total_nodes": 3,
-  "total_path_conditions": 9,
-  "total_symbolic_calls": 7,
-  "missing": [],
-  "runs_with_errors": [
-    {
-      "dump": "dump_comments_create_r0.json",
-      "error_type": "NotImplementedError",
-      "message": "SymbolicInt#hash is not supported (symbolic values cannot be Hash keys)"
-    },
-    {
-      "dump": "dump_comments_create_r3.json",
-      "error_type": "NoMethodError",
-      "message": "undefined method `comment!' for nil:NilClass"
-    }
-  ]
+  "endpoint": "comments_create",
+  "coverage_complete": true,
+  "tree_nodes": 9,
+  "missing_branches": 0,
+  "blocking_missing_branches": 0,
+  "total_runs": 10,
+  "total_path_conditions": 36,
+  "genuine": true,
+  "vacuous": false,
+  "dumps_loaded": 10,
+  "dumps_unparseable": [],
+  "dump_errors": {},
+  "solver_lost": 0,
+  "assumptions": [],
+  "assumptions_used": 0,
+  "checker_elapsed_seconds": 0.0,
+  "missing": []
 }

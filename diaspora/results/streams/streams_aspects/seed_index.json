@@ -1,0 +1,136 @@
+{
+  "dse0001": {
+    "seeds": {
+      "SUBSTITUTE_USER_VISIBLE_QUERIES": true,
+      "USER_HAS_HIDDEN_SHAREABLES": true
+    },
+    "pcs": [
+      "T (SYM_RESULT_ActiveRecord__Relation_size_1_size == SYM_RESULT_ActiveRecord__Relation_size_2_size)",
+      "F (len(SYM_RESULT_Anonymous_blocked_people_1) != 0)"
+    ],
+    "error": null
+  },
+  "dse0002": {
+    "seeds": {
+      "SUBSTITUTE_USER_VISIBLE_QUERIES": true,
+      "USER_HAS_HIDDEN_SHAREABLES": true,
+      "len(SYM_RESULT_Anonymous_blocked_people_1)": 1
+    },
+    "pcs": [
+      "T (SYM_RESULT_ActiveRecord__Relation_size_1_size == SYM_RESULT_ActiveRecord__Relation_size_2_size)",
+      "T (len(SYM_RESULT_Anonymous_blocked_people_1) != 0)",
+      "T (len(SYM_RESULT_Anonymous_blocked_people_1) != 0)"
+    ],
+    "error": null
+  },
+  "dse0004": {
+    "seeds": {
+      "SUBSTITUTE_USER_VISIBLE_QUERIES": true,
+      "USER_HAS_HIDDEN_SHAREABLES": true,
+      "len(SYM_RESULT_Anonymous_blocked_people_1)": 1,
+      "SYM_RESULT_ActiveRecord__Relation_size_2_size": 2
+    },
+    "pcs": [
+      "F (SYM_RESULT_ActiveRecord__Relation_size_1_size == SYM_RESULT_ActiveRecord__Relation_size_2_size)",
+      "T (len(SYM_RESULT_Anonymous_blocked_people_1) != 0)",
+      "T (len(SYM_RESULT_Anonymous_blocked_people_1) != 0)"
+    ],
+    "error": null
+  },
+  "dse0005": {
+    "seeds": {
+      "SUBSTITUTE_USER_VISIBLE_QUERIES": true,
+      "USER_HAS_HIDDEN_SHAREABLES": true,
+      "len(SYM_RESULT_Anonymous_blocked_people_1)": 0,
+      "SYM_RESULT_ActiveRecord__Relation_size_2_size": 2
+    },
+    "pcs": [
+      "F (SYM_RESULT_ActiveRecord__Relation_size_1_size == SYM_RESULT_ActiveRecord__Relation_size_2_size)",
+      "F (len(SYM_RESULT_Anonymous_blocked_people_1) != 0)"
+    ],
+    "error": null
+  },
+  "dse0009": {
+    "seeds": {
+      "SUBSTITUTE_USER_VISIBLE_QUERIES": true
+    },
+    "pcs": [
+      "T (SYM_RESULT_ActiveRecord__Relation_size_1_size == SYM_RESULT_ActiveRecord__Relation_size_2_size)",
+      "F (len(SYM_RESULT_Anonymous_blocked_people_1) != 0)"
+    ],
+    "error": null
+  },
+  "dse0010": {
+    "seeds": {
+      "SUBSTITUTE_USER_VISIBLE_QUERIES": true,
+      "len(SYM_RESULT_Anonymous_blocked_people_1)": 1
+    },
+    "pcs": [
+      "T (SYM_RESULT_ActiveRecord__Relation_size_1_size == SYM_RESULT_ActiveRecord__Relation_size_2_size)",
+      "T (len(SYM_RESULT_Anonymous_blocked_people_1) != 0)",
+      "T (len(SYM_RESULT_Anonymous_blocked_people_1) != 0)"
+    ],
+    "error": null
+  },
+  "dse0012": {
+    "seeds": {
+      "SUBSTITUTE_USER_VISIBLE_QUERIES": true,
+      "len(SYM_RESULT_Anonymous_blocked_people_1)": 1,
+      "SYM_RESULT_ActiveRecord__Relation_size_2_size": 2
+    },
+    "pcs": [
+      "F (SYM_RESULT_ActiveRecord__Relation_size_1_size == SYM_RESULT_ActiveRecord__Relation_size_2_size)",
+      "T (len(SYM_RESULT_Anonymous_blocked_people_1) != 0)",
+      "T (len(SYM_RESULT_Anonymous_blocked_people_1) != 0)"
+    ],
+    "error": null
+  },
+  "dse0013": {
+    "seeds": {
+      "SUBSTITUTE_USER_VISIBLE_QUERIES": true,
+      "len(SYM_RESULT_Anonymous_blocked_people_1)": 0,
+      "SYM_RESULT_ActiveRecord__Relation_size_2_size": 2
+    },
+    "pcs": [
+      "F (SYM_RESULT_ActiveRecord__Relation_size_1_size == SYM_RESULT_ActiveRecord__Relation_size_2_size)",
+      "F (len(SYM_RESULT_Anonymous_blocked_people_1) != 0)"
+    ],
+    "error": null
+  },
+  "dse0017": {
+    "seeds": {
+      "USER_HAS_HIDDEN_SHAREABLES": true
+    },
+    "pcs": [
+      "T (SYM_RESULT_ActiveRecord__Relation_size_1_size == SYM_RESULT_ActiveRecord__Relation_size_2_size)"
+    ],
+    "error": "ActiveRecord::StatementInvalid"
+  },
+  "dse0018": {
+    "seeds": {
+      "USER_HAS_HIDDEN_SHAREABLES": true,
+      "SYM_RESULT_ActiveRecord__Relation_size_2_size": 2
+    },
+    "pcs": [
+      "F (SYM_RESULT_ActiveRecord__Relation_size_1_size == SYM_RESULT_ActiveRecord__Relation_size_2_size)"
+    ],
+    "error": "ActiveRecord::StatementInvalid"
+  },
+  "dse0020": {
+    "seeds": {
+},
+    "pcs": [
+      "T (SYM_RESULT_ActiveRecord__Relation_size_1_size == SYM_RESULT_ActiveRecord__Relation_size_2_size)"
+    ],
+    "error": "ActiveRecord::StatementInvalid"
+  },
+  "dse0021": {
+    "seeds": {
+      "SYM_RESULT_ActiveRecord__Relation_size_2_size": 2
+    },
+    "pcs": [
+      "F (SYM_RESULT_ActiveRecord__Relation_size_1_size == SYM_RESULT_ActiveRecord__Relation_size_2_size)"
+    ],
+    "error": "ActiveRecord::StatementInvalid"
+  }
+}

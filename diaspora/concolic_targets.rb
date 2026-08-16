@@ -24,6 +24,41 @@
 #   - Z3-safe SYM_RESULT names; run error capture
 # Verified end-to-end by scripts/test_framework_targets.rb (3 PCs from the
 # real PostService#find! path).
+#
+# ===========================================================================
+# MOCK CLASSIFICATION (two populations — see the numbered sections below)
+# ---------------------------------------------------------------------------
+# **Design mocks (ours — the SQL-query interceptions), numbered #1..#11:**
+#   These intercept ActiveRecord query entry points and return *symbolic*
+#   values (a symbolic model instance / SymbolicInt / SymbolicBool /
+#   SymbolicList) so real app code branches on them and records path
+#   conditions. They ARE the concolic query layer. Sections A..G, I, H.
+#
+#     #1  Single-record finders   (FinderMethods find/take/first/last/find_by)
+#     #2  Class-level finders     (Core::ClassMethods Model.find / find_by)
+#     #3  Existence / emptiness   (exists? any? none? one? many? empty?)
+#     #4  Collection materialize  (Relation#to_a / to_ary / records; size)
+#     #5  Calculations            (count / sum)
+#     #6  (unsupported contents ops: pluck/ids/average/... and Batches)
+#     #7  Relation DML            (update_all / delete_all / destroy_all)
+#     #8  Instance persistence    (save / update / destroy / touch)
+#     #9  Raw SQL entry points    (find_by_sql / count_by_sql)
+#     #10 Gate 1b call-site mocks (decorated_stream_posts, tag_ids, ...)
+#     #11 Redis / Sidekiq enqueue (Sidekiq::Client push / push_bulk)
+#
+# **Agent crash-stopper mocks (added to stop runs crashing — NOT query
+#    design):** sections Y, Z, W, and X/X6. These return nil / render markers /
+#    concrete stubs to clear nil-plumbing, render, and framework walls. They
+#    are intentionally NOT numbered with #1..#11 (they are workarounds, not
+#    the query layer). Their section comments keep their categories
+#    (Y=framework walls, Z=render boundary, W=crash-free walls round 2,
+#    X/X6=wall-fixing discipline mocks).
+#
+# Rule of thumb: a mock is a *design* (SQL-query) mock iff it returns a
+# symbolic value whose `note` carries the real SQL (`sql_for`) that app code
+# would have run; a mock is a *crash-stopper* iff it returns nil/concrete/
+# render-marker to get past a wall that would otherwise raise.
+# ===========================================================================
 
 module ConcolicTargets
   UNSUPPORTED = ->(op) {
@@ -364,7 +399,7 @@ module ConcolicTargets
     calc = ActiveRecord::Calculations
     batches = ActiveRecord::Batches
 
-    # --- A. Single-record finders -> symbolic model instance ---------------
+    # --- [ DESIGN #1 ] A. Single-record finders -> symbolic model instance --
     %i[find take! first! last! find_by!].each do |m|
       interceptor.declare_target(fm, m, returns: finder_mock(raise_on_missing: true))
     end
@@ -373,7 +408,7 @@ module ConcolicTargets
     end
     # Ordinal finders (second..forty_two) — declare only if diaspora uses them.
 
-    # --- A2. Single-id class-level finders (Core::ClassMethods overrides) ---
+    # --- [ DESIGN #2 ] A2. Single-id class-level finders (Core::ClassMethods) ---
     # Model.find(id) / Model.find_by(...) / Model.find_by!(...) are REAL
     # cached-statement methods on Core::ClassMethods (NOT Querying delegates),
     # so they bypass the FinderMethods relation mocks above and would route
@@ -388,7 +423,7 @@ module ConcolicTargets
     interceptor.declare_target(core, :find_by,  returns: finder_mock(raise_on_missing: false))
     interceptor.declare_target(core, :find_by!, returns: finder_mock(raise_on_missing: true))
 
-    # --- B. Existence / emptiness -> SymbolicBool ---------------------------
+    # --- [ DESIGN #3 ] B. Existence / emptiness -> SymbolicBool -------------
     # NOTE: `if Post.exists?(...)` hits the Ruby truthiness gap (TODO.txt) —
     # only explicit compares record PCs. Returned anyway per decision 2026-08-05.
     {
@@ -405,7 +440,7 @@ module ConcolicTargets
       end)
     end
 
-    # --- C. Collection materialization -> SymbolicList (length + rep, Gate 1b)
+    # --- [ DESIGN #4 ] C. Collection materialization -> SymbolicList (length + rep, Gate 1b)
     # `records` is REQUIRED: each/map route through it via Delegation, not to_a.
     # Gate 1b (Bali directive): attach a single representative model row so
     # SQL-free display/serialisation iteration completes (sampled-content);
@@ -423,7 +458,7 @@ module ConcolicTargets
       symint(vn, seed_for(vn, 1), note: sql_for(receiver, args))
     end)
 
-    # --- D. Calculations -> SymbolicInt (contents ops unsupported) ----------
+    # --- [ DESIGN #5 ] D. Calculations -> SymbolicInt -----------------------
     %i[count sum].each do |m|
       interceptor.declare_target(calc, m, returns: lambda do |receiver, args, name|
         vn = "#{name}_#{m}"
@@ -434,12 +469,12 @@ module ConcolicTargets
       interceptor.declare_target(calc, m, returns: ->(_r, _a, _n) { UNSUPPORTED.call("Calculations##{m}") })
     end
 
-    # --- Batches -> unsupported (iteration = contents) -----------------------
+    # --- [ DESIGN #6 ] Batches + contents ops -> unsupported ----------------
     %i[find_each find_in_batches in_batches].each do |m|
       interceptor.declare_target(batches, m, returns: ->(_r, _a, _n) { UNSUPPORTED.call("Batches##{m}") })
     end
 
-    # --- E. Relation-level DML ----------------------------------------------
+    # --- [ DESIGN #7 ] E. Relation-level DML --------------------------------
     %i[update_all delete_all].each do |m|
       interceptor.declare_target(rel, m, returns: lambda do |receiver, args, name|
         symint("#{name}_#{m}_count", 1, note: sql_for(receiver, args))
@@ -449,7 +484,7 @@ module ConcolicTargets
       SymbolicList.new(1, name: "#{name}_destroyed", note: sql_for(receiver, args))
     end)
 
-    # --- F. Instance persistence -> SymbolicBool -----------------------------
+    # --- [ DESIGN #8 ] F. Instance persistence -> SymbolicBool --------------
     # note = operation description (no relation to render for instance DML).
     #
     # Targeting ActiveRecord::Base (NOT ActiveRecord::Persistence): the mocks
@@ -474,7 +509,7 @@ module ConcolicTargets
       end)
     end
 
-    # --- G. Raw SQL entry points ---------------------------------------------
+    # --- [ DESIGN #9 ] G. Raw SQL entry points ------------------------------
     querying = ActiveRecord::Querying
     interceptor.declare_target(querying, :find_by_sql, returns: lambda do |receiver, args, name|
       SymbolicList.new(1, name: "#{name}_rows", note: args["sql"].to_s)
@@ -483,7 +518,7 @@ module ConcolicTargets
       symint("#{name}_count", 1, note: args["sql"].to_s)
     end)
 
-    # --- I. Gate 1b — sampled-content call-site mocks (SCSM) ---------------
+    # --- [ DESIGN #10 ] I. Gate 1b — sampled-content call-site mocks (SCSM) ---
     # Per DESIGN_sampled_content_list.md §8.3/§8.4 (Bali-approved). Each target
     # is declared on the smallest SQL-free enclosure whose RESULT is the
     # iterated collection, so the enclosing `.map`/`.each` in real app code
@@ -620,7 +655,7 @@ module ConcolicTargets
       end)
     end
 
-    # --- H. Redis / Sidekiq (Layer 3): enqueue is fire-and-forget, so
+    # --- [ DESIGN #11 ] H. Redis / Sidekiq enqueue (fire-and-forget) ---
     # intercepted as a symbolic no-op instead of hitting the real Redis
     # connection (which is not running in the rig -> Redis::CannotConnectError
     # in background_search / export_photos / ReportWorker / etc).
@@ -638,7 +673,7 @@ module ConcolicTargets
       interceptor.declare_target(Sidekiq::Client, :push_bulk, returns: ->(_r, _a, _n) { nil })
     end
 
-    # --- Y. Generic framework-level walls (crash-free mocking pass) ---
+    # --- [ CRASH-STOP (agent) ] Y. Generic framework-level walls ---
     # These kill the largest crash families at the framework boundary, before
     # any downstream symbolic op can fire. All are ignored-result (fire-and-
     # forget) or terminal markers; none carries app SQL, so no D7 violation.
@@ -686,7 +721,7 @@ module ConcolicTargets
       interceptor.declare_target(DeviseController, :assert_is_devise_resource!, returns: ->(_r, _a, _n) { true })
     end
 
-    # --- Z. Render boundary (decision A) — render is TERMINAL ----
+    # --- [ CRASH-STOP (agent) ] Z. Render boundary — render is TERMINAL ---
     # Treat reaching a render call as the completion signal and short-circuit
     # the real view/serialization machinery, which crashes on symbolic data
     # (template lookup, presenter each/map over SymbolicLists, status= on nil
@@ -715,7 +750,7 @@ module ConcolicTargets
       end)
     end
 
-    # --- W. Crash-free walls round 2 (per-site/generic callsite mocks) ---
+    # --- [ CRASH-STOP (agent) ] W. Crash-free walls round 2 ---
     # These close the biggest remaining families. See STATUS.md inventory.
 
     # W1. SymbolicInt#to_i via belongs_to association writers (~8 crashes).
@@ -833,7 +868,7 @@ module ConcolicTargets
                                  returns: ->(_r, _a, _n) { dev_stub })
     end
 
-    # --- X. Wall-fixing discipline mocks (posts batch) ---
+    # --- [ CRASH-STOP (agent) ] X. Wall-fixing discipline mocks (posts batch) ---
     # Systematic discipline (README "Wall-fixing discipline"): each target is
     # the SMALLEST method whose real body contains NO SQL and calls NO other
     # declared target. Mocking a unit that internally fires another target
@@ -925,7 +960,7 @@ module ConcolicTargets
                                  returns: ->(_r, _a, _n) { nil })
     end
 
-    # --- X6. posts batch round 2 walls (nil-@attributes family, render
+    # --- [ CRASH-STOP (agent) ] X6. posts batch round 2 walls (nil-@attributes family, render
     # plumbing, pure-iteration each). Same discipline: smallest SQL-free unit,
     # no other target called within the mocked body. ---
 

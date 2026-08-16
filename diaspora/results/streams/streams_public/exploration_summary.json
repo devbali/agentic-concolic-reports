@@ -1,0 +1,32 @@
+{
+  "entrypoint": "streams_public",
+  "action": "public",
+  "format": "json",
+  "signed_in": false,
+  "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+  "roots": [
+    {
+      "SIGNED_IN": false
+    },
+    {
+      "SIGNED_IN": true
+    },
+    {
+      "SIGNED_IN": true,
+      "USER_HAS_HIDDEN_SHAREABLES": true
+    }
+  ],
+  "runs_executed": 7,
+  "distinct_paths": 5,
+  "seed_sets_tried": 7,
+  "stack_remaining": 0,
+  "worklist_exhausted": true,
+  "stopped_by": null,
+  "max_runs": 900,
+  "time_budget": 420,
+  "elapsed_seconds": 0.2,
+  "run_errors": {
+},
+  "unflippable_pcs": {
+}
+}

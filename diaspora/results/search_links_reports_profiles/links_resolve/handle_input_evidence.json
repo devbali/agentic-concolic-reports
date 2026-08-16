@@ -1,0 +1,391 @@
+{
+  "schema_version": "1.0",
+  "label": "handle_input",
+  "symbolic_vars": [
+    {
+      "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_not_found",
+      "sort": "Bool",
+      "value": false,
+      "note": "Person query (class-level finder), args=args=nil"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_id",
+      "sort": "Int",
+      "value": 1,
+      "note": "Person query (class-level finder), args=args=nil"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_guid",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_guid_v",
+      "note": "Person query (class-level finder), args=args=nil"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_diaspora_handle",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_diaspora_handle_v",
+      "note": "Person query (class-level finder), args=args=nil"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_serialized_public_key",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_serialized_public_key_v",
+      "note": "Person query (class-level finder), args=args=nil"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_owner_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "Person query (class-level finder), args=args=nil"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_created_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_created_at_v",
+      "note": "Person query (class-level finder), args=args=nil"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_updated_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_updated_at_v",
+      "note": "Person query (class-level finder), args=args=nil"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_closed_account",
+      "sort": "Bool",
+      "value": false,
+      "note": "Person query (class-level finder), args=args=nil"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_fetch_status",
+      "sort": "Int",
+      "value": 0,
+      "note": "Person query (class-level finder), args=args=nil"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_pod_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "Person query (class-level finder), args=args=nil"
+    },
+    {
+      "name": "assoc_profile_id",
+      "sort": "Int",
+      "value": 1,
+      "note": "SingularAssociation#profile (Profile)"
+    },
+    {
+      "name": "assoc_profile_diaspora_handle",
+      "sort": "String",
+      "value": "assoc_profile_diaspora_handle_v",
+      "note": "SingularAssociation#profile (Profile)"
+    },
+    {
+      "name": "assoc_profile_first_name",
+      "sort": "String",
+      "value": "assoc_profile_first_name_v",
+      "note": "SingularAssociation#profile (Profile)"
+    },
+    {
+      "name": "assoc_profile_last_name",
+      "sort": "String",
+      "value": "assoc_profile_last_name_v",
+      "note": "SingularAssociation#profile (Profile)"
+    },
+    {
+      "name": "assoc_profile_image_url",
+      "sort": "String",
+      "value": "assoc_profile_image_url_v",
+      "note": "SingularAssociation#profile (Profile)"
+    },
+    {
+      "name": "assoc_profile_image_url_small",
+      "sort": "String",
+      "value": "assoc_profile_image_url_small_v",
+      "note": "SingularAssociation#profile (Profile)"
+    },
+    {
+      "name": "assoc_profile_image_url_medium",
+      "sort": "String",
+      "value": "assoc_profile_image_url_medium_v",
+      "note": "SingularAssociation#profile (Profile)"
+    },
+    {
+      "name": "assoc_profile_birthday",
+      "sort": "String",
+      "value": "assoc_profile_birthday_v",
+      "note": "SingularAssociation#profile (Profile)"
+    },
+    {
+      "name": "assoc_profile_gender",
+      "sort": "String",
+      "value": "assoc_profile_gender_v",
+      "note": "SingularAssociation#profile (Profile)"
+    },
+    {
+      "name": "assoc_profile_bio",
+      "sort": "String",
+      "value": "assoc_profile_bio_v",
+      "note": "SingularAssociation#profile (Profile)"
+    },
+    {
+      "name": "assoc_profile_searchable",
+      "sort": "Bool",
+      "value": false,
+      "note": "SingularAssociation#profile (Profile)"
+    },
+    {
+      "name": "assoc_profile_person_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SingularAssociation#profile (Profile)"
+    },
+    {
+      "name": "assoc_profile_created_at",
+      "sort": "String",
+      "value": "assoc_profile_created_at_v",
+      "note": "SingularAssociation#profile (Profile)"
+    },
+    {
+      "name": "assoc_profile_updated_at",
+      "sort": "String",
+      "value": "assoc_profile_updated_at_v",
+      "note": "SingularAssociation#profile (Profile)"
+    },
+    {
+      "name": "assoc_profile_location",
+      "sort": "String",
+      "value": "assoc_profile_location_v",
+      "note": "SingularAssociation#profile (Profile)"
+    },
+    {
+      "name": "assoc_profile_full_name",
+      "sort": "String",
+      "value": "assoc_profile_full_name_v",
+      "note": "SingularAssociation#profile (Profile)"
+    },
+    {
+      "name": "assoc_profile_nsfw",
+      "sort": "Bool",
+      "value": false,
+      "note": "SingularAssociation#profile (Profile)"
+    },
+    {
+      "name": "assoc_profile_public_details",
+      "sort": "Bool",
+      "value": false,
+      "note": "SingularAssociation#profile (Profile)"
+    }
+  ],
+  "events": [
+    {
+      "type": "call",
+      "target": "Gon::ControllerHelpers.gon",
+      "args": {
+},
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/application_controller.rb",
+      "lineno": 172,
+      "function": "gon_set_appconfig"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "Gon::ControllerHelpers.gon",
+      "args": {
+},
+      "result_name": "SYM_RESULT_Gon__ControllerHelpers_gon_1",
+      "result_value": "#<Object:0x2489ee11>",
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/application_controller.rb",
+      "lineno": 172,
+      "function": "gon_set_appconfig"
+    },
+    {
+      "type": "call",
+      "target": "Gon::ControllerHelpers.gon",
+      "args": {
+},
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/application_controller.rb",
+      "lineno": 191,
+      "function": "gon_set_preloads"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "Gon::ControllerHelpers.gon",
+      "args": {
+},
+      "result_name": "SYM_RESULT_Gon__ControllerHelpers_gon_2",
+      "result_value": "#<Object:0x2489ee11>",
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/application_controller.rb",
+      "lineno": 191,
+      "function": "gon_set_preloads"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::Core::ClassMethods.find_by",
+      "args": {
+        "args": null
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/models/person.rb",
+      "lineno": 331,
+      "function": "by_account_identifier"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::Core::ClassMethods.find_by",
+      "args": {
+        "args": null
+      },
+      "result_name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1",
+      "result_value": "#<Person:0x2fcc32ae>",
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/models/person.rb",
+      "lineno": 331,
+      "function": "by_account_identifier",
+      "note": "Person query (class-level finder), args=args=nil"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_not_found == True)",
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/concolic_targets.rb",
+      "lineno": 331,
+      "function": "block in finder_mock"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::Associations::SingularAssociation.find_target",
+      "args": {
+        "splat_args": null,
+        "kwargs": null,
+        "block": null
+      },
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations/association.rb",
+      "lineno": 159,
+      "function": "load_target"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::Associations::SingularAssociation.find_target",
+      "args": {
+        "splat_args": null,
+        "kwargs": null,
+        "block": null
+      },
+      "result_name": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1",
+      "result_value": "#<Profile:0x5ef53e42>",
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations/association.rb",
+      "lineno": 159,
+      "function": "load_target",
+      "note": "SingularAssociation#profile (Profile)"
+    },
+    {
+      "type": "call",
+      "target": "ActionDispatch::Routing::UrlFor.url_for",
+      "args": {
+        "options": "#<Person:0x2fcc32ae>"
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/links_controller.rb",
+      "lineno": 8,
+      "function": "resolve"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActionDispatch::Routing::UrlFor.url_for",
+      "args": {
+        "options": "#<Person:0x2fcc32ae>"
+      },
+      "result_name": "SYM_RESULT_ActionDispatch__Routing__UrlFor_url_for_1",
+      "result_value": "/concolic_url",
+      "result_sort": "String",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/links_controller.rb",
+      "lineno": 8,
+      "function": "resolve"
+    },
+    {
+      "type": "call",
+      "target": "ActionController::Instrumentation.redirect_to",
+      "args": {
+        "args": "/concolic_url"
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/links_controller.rb",
+      "lineno": 8,
+      "function": "resolve"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActionController::Instrumentation.redirect_to",
+      "args": {
+        "args": "/concolic_url"
+      },
+      "result_name": "SYM_RESULT_ActionController__Instrumentation_redirect_to_1",
+      "result_value": "redirect_reached",
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/links_controller.rb",
+      "lineno": 8,
+      "function": "resolve"
+    },
+    {
+      "type": "call",
+      "target": "ActionController::ImplicitRender.default_render",
+      "args": {
+        "args": null
+      },
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/basic_implicit_render.rb",
+      "lineno": 6,
+      "function": "block"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActionController::ImplicitRender.default_render",
+      "args": {
+        "args": null
+      },
+      "result_name": "SYM_RESULT_ActionController__ImplicitRender_default_render_1",
+      "result_value": "render_reached",
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/basic_implicit_render.rb",
+      "lineno": 6,
+      "function": "block in send_action"
+    }
+  ],
+  "symbolic_results": [
+    {
+      "name": "SYM_RESULT_Gon__ControllerHelpers_gon_1",
+      "sort": "Int",
+      "value": "#<Object:0x2489ee11>"
+    },
+    {
+      "name": "SYM_RESULT_Gon__ControllerHelpers_gon_2",
+      "sort": "Int",
+      "value": "#<Object:0x2489ee11>"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1",
+      "sort": "Int",
+      "value": "#<Person:0x2fcc32ae>"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1",
+      "sort": "Int",
+      "value": "#<Profile:0x5ef53e42>"
+    },
+    {
+      "name": "SYM_RESULT_ActionDispatch__Routing__UrlFor_url_for_1",
+      "sort": "String",
+      "value": "/concolic_url"
+    },
+    {
+      "name": "SYM_RESULT_ActionController__Instrumentation_redirect_to_1",
+      "sort": "Int",
+      "value": "redirect_reached"
+    },
+    {
+      "name": "SYM_RESULT_ActionController__ImplicitRender_default_render_1",
+      "sort": "Int",
+      "value": "render_reached"
+    }
+  ],
+  "script": "run_dse.rb"
+}

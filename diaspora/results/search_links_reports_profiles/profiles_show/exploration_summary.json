@@ -1,0 +1,26 @@
+{
+  "entrypoint": "profiles_show",
+  "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+  "runs_executed": 3,
+  "distinct_paths": 2,
+  "seed_sets_tried": 3,
+  "stack_remaining": 0,
+  "worklist_exhausted": true,
+  "stop_reason": "worklist drained (fixpoint)",
+  "max_runs": 400,
+  "time_budget": 300,
+  "elapsed_seconds": 0.2,
+  "run_errors": {
+    "run:ActiveRecord::RecordNotFound": 1
+  },
+  "run_error_samples": {
+    "run:ActiveRecord::RecordNotFound": "concolic: empty result for: Person query (class-level finder), args=args=nil @ /home/dev/project/reports/diaspora/concolic_targets.rb:332:in `block in finder_mock' <- /home/dev/project/src/ruby_runtime/call_interceptor.rb:147:in `block in find_by!'"
+  },
+  "unflippable_pcs": {
+},
+  "suppressed_flips": {
+},
+  "enriched_seeds": [
+
+  ]
+}

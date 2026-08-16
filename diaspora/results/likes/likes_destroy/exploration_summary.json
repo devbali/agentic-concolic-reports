@@ -1,0 +1,40 @@
+{
+  "endpoint": "likes_destroy",
+  "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+  "runs_executed": 27,
+  "dumps_written": 3,
+  "distinct_paths": 3,
+  "path_conditions_in_dumps": 5,
+  "scenarios": {
+    "html": {
+      "runs": 27,
+      "dumps_written": 3,
+      "seed_sets_tried": 27,
+      "stack_remaining": 0,
+      "worklist_exhausted": true
+    }
+  },
+  "seed_sets_tried": 27,
+  "stack_remaining": 0,
+  "worklist_exhausted": true,
+  "stop_reason": "worklist_drained",
+  "max_runs": 4000,
+  "time_budget": 900,
+  "elapsed_seconds": 0.1,
+  "run_errors": {
+    "run:ActiveRecord::RecordNotFound": 9
+  },
+  "run_error_examples": {
+    "run:ActiveRecord::RecordNotFound": {
+      "message": "concolic: empty result for: Like query (class-level finder), args=ids=1",
+      "frame": [
+        "/home/dev/project/reports/diaspora/concolic_targets.rb:332:in `block in finder_mock'",
+        "/home/dev/project/src/ruby_runtime/call_interceptor.rb:147:in `block in declare_target'",
+        "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/services/like_service.rb:14:in `destroy'"
+      ]
+    }
+  },
+  "unflippable_pcs": {
+},
+  "sym_person_id_symbolic": true
+}

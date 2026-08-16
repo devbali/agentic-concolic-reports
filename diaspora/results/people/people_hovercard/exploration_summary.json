@@ -1,0 +1,29 @@
+{
+  "entrypoint": "people_hovercard",
+  "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+  "scenarios": [
+    {
+      "name": "anon_json",
+      "action": "hovercard",
+      "params": {
+        "person_id": 1,
+        "username": "bob@example.org"
+      },
+      "format": "json",
+      "signed_in": false,
+      "method": "GET"
+    }
+  ],
+  "runs_executed": 4,
+  "distinct_paths": 3,
+  "seed_sets_tried": 4,
+  "worklist_exhausted": true,
+  "capped_by": null,
+  "max_runs": 400,
+  "time_budget": 600,
+  "elapsed_seconds": 0.1,
+  "run_errors": {
+},
+  "unflippable_pcs": {
+}
+}

@@ -1,0 +1,31 @@
+{
+  "entrypoint": "tag_followings_manage",
+  "strategy": "prefix-directed DSE (seed inheritance + single-branch flip), one root per request scenario",
+  "scenarios": [
+    {
+      "name": "html",
+      "params": "{}",
+      "format": "html",
+      "signed_in": true
+    },
+    {
+      "name": "mobile",
+      "params": "{}",
+      "format": "mobile",
+      "signed_in": true
+    }
+  ],
+  "runs_executed": 2,
+  "distinct_paths": 2,
+  "seed_sets_tried": 2,
+  "stack_remaining": 0,
+  "worklist_exhausted": true,
+  "max_pcs_on_a_path": 0,
+  "max_runs": 400,
+  "time_budget": 400,
+  "elapsed_seconds": 0.1,
+  "run_errors": {
+},
+  "unflippable_pcs": {
+}
+}

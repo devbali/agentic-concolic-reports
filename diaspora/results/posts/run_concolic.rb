@@ -52,7 +52,11 @@ def symbolic_user(tag)
   person = ConcolicTargets.symbolic_instance(Person, "SYM_PERSON_#{tag}", "Person (current user)")
   person.define_singleton_method(:id) { 1 } # concrete identity: WHERE build only
   user = ConcolicTargets.symbolic_instance(User, "SYM_USER_#{tag}", "User (current)")
-  user.define_singleton_method(:id) { 1 }
+  # id is SYMBOLIC (removed the old define_singleton_method(:id){1} override):
+  # the symbolic model instance already returns a SymbolicInt for the `id` column,
+  # and sql_for renders it as $$(SYM_USER_...) instead of crashing. This lets the
+  # engine explore branches depending on which user runs the query.
+  user.define_singleton_method(:guid) { "abc123" }
   user.define_singleton_method(:guid) { "abc123" }
   user.define_singleton_method(:person) { person }
   user.define_singleton_method(:person_id) { 1 }

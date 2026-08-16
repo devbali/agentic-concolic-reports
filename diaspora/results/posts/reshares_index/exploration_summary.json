@@ -1,0 +1,21 @@
+{
+  "entrypoint": "reshares_index",
+  "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+  "runs_executed": 22,
+  "distinct_paths": 7,
+  "seed_sets_tried": 22,
+  "stack_remaining": 0,
+  "frontier_entries_dropped": 0,
+  "worklist_exhausted": true,
+  "stop_reason": "worklist drained",
+  "max_runs": 40000,
+  "time_budget": 1800,
+  "stack_limit": 200000,
+  "elapsed_seconds": 0.1,
+  "run_errors": {
+    "run:ActiveRecord::RecordNotFound": 2
+  },
+  "unflippable_pcs": {
+},
+  "scenario": "authenticated (symbolic current_user)"
+}

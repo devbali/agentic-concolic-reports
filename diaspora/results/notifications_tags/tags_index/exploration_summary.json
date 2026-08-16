@@ -1,0 +1,37 @@
+{
+  "entrypoint": "tags_index",
+  "strategy": "prefix-directed DSE (seed inheritance + single-branch flip), one root per request scenario",
+  "scenarios": [
+    {
+      "name": "query",
+      "params": "{:q=>\"ruby\"}",
+      "format": "json",
+      "signed_in": true
+    },
+    {
+      "name": "hash_query",
+      "params": "{:q=>\"#ruby\", :limit=>5}",
+      "format": "json",
+      "signed_in": true
+    },
+    {
+      "name": "short_query",
+      "params": "{:q=>\"r\"}",
+      "format": "json",
+      "signed_in": true
+    }
+  ],
+  "runs_executed": 3,
+  "distinct_paths": 3,
+  "seed_sets_tried": 3,
+  "stack_remaining": 0,
+  "worklist_exhausted": true,
+  "max_pcs_on_a_path": 0,
+  "max_runs": 400,
+  "time_budget": 400,
+  "elapsed_seconds": 0.1,
+  "run_errors": {
+},
+  "unflippable_pcs": {
+}
+}

@@ -1,0 +1,28 @@
+{
+  "entrypoint": "people_refresh_search",
+  "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+  "scenarios": [
+    {
+      "name": "auth_handle",
+      "action": "refresh_search",
+      "params": {
+        "q": "bob@example.org"
+      },
+      "format": "",
+      "signed_in": true,
+      "method": "GET"
+    }
+  ],
+  "runs_executed": 1,
+  "distinct_paths": 1,
+  "seed_sets_tried": 1,
+  "worklist_exhausted": true,
+  "capped_by": null,
+  "max_runs": 400,
+  "time_budget": 600,
+  "elapsed_seconds": 0.0,
+  "run_errors": {
+},
+  "unflippable_pcs": {
+}
+}

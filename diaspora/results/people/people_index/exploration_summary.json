@@ -1,0 +1,28 @@
+{
+  "entrypoint": "people_index",
+  "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+  "scenarios": [
+    {
+      "name": "html_handle",
+      "action": "index",
+      "params": {
+        "q": "bob@example.org"
+      },
+      "format": "html",
+      "signed_in": true,
+      "method": "GET"
+    }
+  ],
+  "runs_executed": 80,
+  "distinct_paths": 25,
+  "seed_sets_tried": 80,
+  "worklist_exhausted": true,
+  "capped_by": null,
+  "max_runs": 400,
+  "time_budget": 600,
+  "elapsed_seconds": 4.1,
+  "run_errors": {
+},
+  "unflippable_pcs": {
+}
+}
