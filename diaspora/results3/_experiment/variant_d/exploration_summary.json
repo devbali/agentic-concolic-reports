@@ -1,0 +1,71 @@
+{
+  "entrypoint": "notifications_index",
+  "strategy": "prefix-directed DSE (seed inheritance + single-branch flip), one root per request scenario",
+  "scenarios": [
+    {
+      "name": "plain",
+      "type": null,
+      "show_default": "",
+      "page": null,
+      "per_page": null,
+      "show_param": "SYM_PARAM_show"
+    },
+    {
+      "name": "typed",
+      "type": "liked",
+      "show_default": "",
+      "page": null,
+      "per_page": null,
+      "show_param": "SYM_PARAM_show"
+    },
+    {
+      "name": "unread_only",
+      "type": null,
+      "show_default": "unread",
+      "page": 2,
+      "per_page": 5,
+      "show_param": "SYM_PARAM_show"
+    }
+  ],
+  "params": {
+    "show": {
+      "symbolic_name": "SYM_PARAM_show",
+      "type": "SymbolicString",
+      "note": "symbolic in all scenarios"
+    },
+    "type": {
+      "symbolic": false,
+      "reason": "Hash#eql? wall — types.has_key?(params[:type]); see REPORT.md"
+    },
+    "page": {
+      "symbolic": false,
+      "reason": "WillPaginate::PageNumber Integer()/#to_i wall; see REPORT.md"
+    },
+    "per_page": {
+      "symbolic": false,
+      "reason": "WillPaginate::Collection#total_entries= .to_i wall; see REPORT.md"
+    }
+  },
+  "user": {
+    "SYM_USER_NI_id": "current_user.id — PIN REMOVED, flows symbolic into recipient_id",
+    "SYM_PERSON_NI_id": "current_user.person.id — PIN REMOVED, flows symbolic (unreached on this entrypoint)",
+    "language": "pinned \"en\" — before_action plumbing, not identity (see symbolic_user comment)",
+    "gender": "pinned \"\" — before_action plumbing, not identity (see symbolic_user comment)"
+  },
+  "runs_executed": 11,
+  "distinct_paths": 11,
+  "seed_sets_tried": 11,
+  "stack_remaining": 0,
+  "worklist_exhausted": true,
+  "stop_reason": "worklist drained",
+  "max_pcs_on_a_path": 61,
+  "max_runs": 28,
+  "time_budget": 600,
+  "elapsed_seconds": 1.2,
+  "run_errors": {
+},
+  "unflippable_pcs": {
+    "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_1_row_id == SYM_PERSON_NI_id)": 11,
+    "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id == SYM_PERSON_NI_id)": 3
+  }
+}

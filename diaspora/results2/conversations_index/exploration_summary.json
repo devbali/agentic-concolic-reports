@@ -1,0 +1,76 @@
+{
+  "entrypoint": "conversations_index",
+  "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+  "signed_in": true,
+  "request_variants": {
+    "html_plain": {
+      "format": "html"
+    },
+    "html_withcid": {
+      "format": "html",
+      "with_cid": true
+    },
+    "json_plain": {
+      "format": "json"
+    },
+    "json_withcid": {
+      "format": "json",
+      "with_cid": true
+    }
+  },
+  "params": {
+    "conversation_id": {
+      "symbolic_name": "SYM_PARAM_conversation_id",
+      "seed": 1,
+      "present_in": [
+        "html_withcid",
+        "json_withcid"
+      ]
+    }
+  },
+  "user_identity": {
+    "user.id": "SYM_USER_CONV_id (symbolic, no pin)",
+    "person.id": "SYM_PERSON_CONV_id (symbolic, no pin)",
+    "user.person_id": "delegates to person.id (SYM_PERSON_CONV_id) — no pin",
+    "user.guid": "delegates to person.guid (SYM_PERSON_CONV_guid) — no pin",
+    "user.diaspora_handle": "delegates to person.diaspora_handle (SYM_PERSON_CONV_diaspora_handle) — no pin"
+  },
+  "runs_executed": 45,
+  "distinct_paths": 8,
+  "path_conditions_written": 26,
+  "states_tried": 45,
+  "stack_remaining": 0,
+  "worklist_exhausted": true,
+  "max_runs": 500,
+  "time_budget": 600,
+  "elapsed_seconds": 2.5,
+  "run_errors": {
+},
+  "unflippable_pcs": {
+},
+  "_note": "This file is overwritten by every run_dse.rb invocation, so the fields above reflect only the LAST process run (VARIANTS=json_plain, the final completion-pass invocation below). See completion_pass_2026_08_18 for the full multi-invocation history that produced the 96 dumps actually on disk.",
+  "completion_pass_2026_08_18": {
+    "context": "results2/COMPLETION_BRIEF.md combination-coverage completion pass, run against the pre-existing 96-dump baseline from the original results2/conversations_index exploration (see REPORT.md 'Honest exploration accounting' for that baseline's own history).",
+    "invocations": [
+      {
+        "purpose": "close missing {A,E,Pi} combos; isolate json_withcid from LIFO contention with other variants",
+        "env": "VARIANTS=json_withcid MAX_RUNS=1500 TIME_BUDGET=1200",
+        "runs_executed": 1500, "distinct_paths": 56, "worklist_exhausted": false, "stack_remaining": 648,
+        "outcome": "reproduced the same 56 json_withcid paths as the pre-existing baseline (deterministic replay from empty seeds) -- did not reach new A=True(conversation-not-found) states within budget; also first surfaced (via manual dump inspection, not this run's own accounting) that ConvoSymAssociations#conversation's SYM_RESULT ordinal collided with first_2/first_1 depending on prefix."
+      },
+      {
+        "purpose": "regenerate json_withcid dumps with the convidx_conv_lookup ordinal-collision fix (targets.rb)",
+        "env": "VARIANTS=json_plain,json_withcid MAX_RUNS=2000 TIME_BUDGET=1200",
+        "runs_executed": 2000, "distinct_paths": 56, "worklist_exhausted": false, "stack_remaining": "not drained",
+        "outcome": "LIFO stack starved json_plain entirely (0 runs) -- json_withcid (pushed last) popped first and consumed the whole MAX_RUNS budget alone, same 56-path fixpoint as the previous invocation. Confirms REPORT.md's pre-existing 'no fairness across variant roots' finding still holds within a single completion-pass invocation, not just across historical passes."
+      },
+      {
+        "purpose": "regenerate json_plain dumps (untouched by the previous invocation) with the same fix",
+        "env": "VARIANTS=json_plain MAX_RUNS=500 TIME_BUDGET=600",
+        "runs_executed": 45, "distinct_paths": 8, "worklist_exhausted": true, "stack_remaining": 0,
+        "outcome": "fully drained in isolation -- this is the invocation whose raw fields are recorded at the top level of this file."
+      }
+    ],
+    "final_state": "96 dumps on disk (40 html_plain/html_withcid untouched, byte-identical to the pre-existing baseline; 56 json_withcid + 8 json_plain regenerated -- deterministic replay from empty seeds reproduced the same 56/8 path set as the baseline, now carrying the convidx_conv_lookup fix instead of the collision-prone first_2/first_3 naming). CoverageChecker (max_missing_per_clique=256, 7 IndependenceAssumptions) reports coverage_complete=true, 0 blocking missing, 0 unevaluable_exprs, truncated=false, solver_lost=0 -- see coverage_summary.json. The json_withcid worklist never drained (648 states left unexplored at MAX_RUNS), but combination-coverage completeness was reached anyway: the remaining demand (the {A,convidx_conv_lookup_1,Pi} cliques with A=True) was already satisfied by paths the baseline exploration had already found (dse0184-0191, conversation-not-found + json format), which previously miscounted as {A,B/A} combos under the collision and now, correctly labeled, satisfy the {A,E,Pi} demand instead. No additional targeted runs beyond the 3 invocations above were needed."
+  }
+}

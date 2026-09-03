@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html dir='ltr' lang='en'>
+<head prefix='og: http://ogp.me/ns# article: http://ogp.me/ns/article# profile: http://ogp.me/ns/profile#'>
+<meta content='width=device-width, initial-scale=1' name='viewport'>
+<link rel="stylesheet" media="all" href="/stylesheets/color_themes/original/desktop.css" />
+<title>
+Conversations – Inbox
+
+</title>
+<meta charset='utf-8'>
+<meta name="description" content="diaspora* is the online social world where you are in control." />
+<meta property="description" content="diaspora* is the online social world where you are in control." />
+<meta property="og:site_name" content="diaspora* social network" />
+<meta property="og:url" content="http://diaspora.internal/" />
+<meta property="og:image" content="http://test.host/assets/branding/logos/asterisk.png" />
+<meta property="og:type" content="website" />
+<link href='/manifest.json' rel='manifest'>
+<!-- favicon -->
+<!-- For Apple devices -->
+<link href='/images/apple-touch-icon.png' rel='apple-touch-icon'>
+<!-- For Nokia devices -->
+<link href='/images/apple-touch-icon.png' rel='shortcut icon'>
+<!-- All others -->
+<link href='/images/favicon.png' rel='shortcut icon'>
+<script src="/javascripts/jquery3.js"></script>
+<script src="/javascripts/jquery_ujs.js"></script>
+<script nonce="Km4cZ6wj2UP0JUfHjSbxt0P319Sd/Q2/d2DnAQ584lg=">jQuery.ajaxSetup({'cache': false});</script>
+<script nonce="Km4cZ6wj2UP0JUfHjSbxt0P319Sd/Q2/d2DnAQ584lg=">
+//<![CDATA[
+window.gon={};gon.user={"id":1,"guid":"aliceguid","name":"Alice A","diaspora_id":"alice@localhost","avatar":{"small":"/images/user/default.png","medium":"/images/user/default.png","large":"/images/user/default.png"},"notifications_count":1,"unread_messages_count":0,"admin":true,"moderator":true,"aspects":[{"id":1,"name":"Friends","selected":true},{"id":2,"name":"Work","selected":true}],"services":[{"provider":"twitter"}],"following_count":1,"configured_services":["twitter"]};gon.appConfig={"chat":{"enabled":false},"settings":{"podname":"diaspora*"},"map":{"mapbox":{"enabled":false,"access_token":null,"style":"mapbox/streets-v9"}}};gon.preloads={};gon.contacts=[{"value":700,"name":"Bob B"}];
+//]]>
+</script>
+<script src="/javascripts/main.js"></script>
+<script nonce="Km4cZ6wj2UP0JUfHjSbxt0P319Sd/Q2/d2DnAQ584lg=">        Diaspora.I18n.load({"cancel":"Cancel","confirm_dialog":"Are you sure?","confirm_unload":"Please confirm that you want to leave this page. Data you have entered won’t be saved.","create":"Create","delete":"Delete","ignore":"Ignore","report":{"prompt":"Please enter a reason:","prompt_default":"e.g. offensive content","name":"Report","status":{"created":"The report has successfully been created","exists":"The report already exists"}},"ignore_user":"Ignore this user?","ignore_failed":"Unable to ignore this user","hide_post":"Hide this post?","hide_post_failed":"Unable to hide this post","remove_post":"Remove this post?","unblock_failed":"Unblocking this user has failed","and":"and","comma":",","edit":"Edit","no_results":"No results found","show_all":"Show all","admins":{"dashboard":{"up_to_date":"Your pod is up to date!","outdated":"Your pod is outdated.","compare_versions":"The latest diaspora* release is \u003c%= latestVersion %\u003e, your pod is running \u003c%= podVersion %\u003e.","error":"Unable to determine latest diaspora* version."}},"admin":{"pods":{"pod":"Pod","ssl":"SSL","ssl_enabled":"SSL enabled","ssl_disabled":"SSL disabled","added":"Added","status":"Status","states":{"unchecked":"Unchecked","no_errors":"OK","dns_failed":"Name resolution (DNS) failed","net_failed":"Connection attempt failed","ssl_failed":"Secure connection (SSL) failed","http_failed":"HTTP connection failed","version_failed":"Unable to retrieve software version","unknown_error":"An unspecified error has happened during the check"},"actions":"Actions","offline_since":"offline since:","last_check":"last check:","more_info":"show more information","check":"perform connection test","recheck":{"success":"The pod was just checked again.","failure":"The check was not performed."},"follow_link":"open link in browser","no_info":"No additional information available at this point","server_software":"Server software:","response_time":"Response time:","ms":{"one":"\u003c%= count %\u003ems","other":"\u003c%= count %\u003ems"},"unknown":"unknown","not_available":"not available","unchecked":{"one":"There is still one pod that hasn't been checked at all.","other":"There are still \u003c%= count %\u003e pods that haven't been checked at all."},"version_failed":{"one":"There is one pod that has no version (old pod, no NodeInfo).","other":"There are \u003c%= count %\u003e pods that have no version (old pods, no NodeInfo)."},"errors":{"one":"The connection test returned an error for one pod.","other":"The connection test returned an error for \u003c%= count %\u003e pods."}}},"aspects":{"name":"Name","create":{"add_a_new_aspect":"Add a new aspect","success":"Your new aspect \u003c%= name %\u003e was created","failure":"Aspect creation failed."}},"errors":{"connection":"Unable to connect to the server."},"timeago":{"prefixAgo":"","prefixFromNow":"","suffixAgo":"ago","suffixFromNow":"from now","inPast":"any moment now","seconds":"less than a minute","minute":"about a minute","minutes":{"one":"1 minute","other":"%d minutes"},"hour":"about an hour","hours":{"one":"about 1 hour","other":"about %d hours"},"day":"a day","days":{"one":"1 day","other":"%d days"},"month":"about a month","months":{"one":"1 month","other":"%d months"},"year":"about a year","years":{"one":"1 year","other":"%d years"},"wordSeparator":" "},"contacts":{"add_contact":"Add contact","aspect_chat_is_enabled":"Contacts in this aspect are able to chat with you.","aspect_chat_is_not_enabled":"Contacts in this aspect are not able to chat with you.","remove_contact":"Remove contact","error_add":"Couldn’t add \u003c%= name %\u003e to the aspect :(","error_remove":"Couldn’t remove \u003c%= name %\u003e from the aspect :(","search_no_results":"No contacts found"},"my_activity":"My activity","my_stream":"Stream","my_aspects":"My aspects","publisher":{"near_from":"Posted from: \u003c%= location %\u003e","option":"Answer","add_option":"Add an answer","question":"Question","markdown_editor":{"preview":"Preview","write":"Write","tooltips":{"bold":"Bold","italic":"Italic","heading":"Heading","insert_link":"Insert link","insert_image":"Insert image","insert_ordered_list":"Insert ordered list","insert_unordered_list":"Insert unordered list","preview":"Preview message","write":"Edit message","cancel":"Cancel message","quote":"Insert quotation","code":"Insert code"},"texts":{"strong":"strong text","italic":"italic text","heading":"heading text","insert_link_description_text":"enter link description here","insert_link_help_text":"Insert link here","insert_image_description_text":"enter image description here","insert_image_help_text":"Insert image link here","insert_image_title":"enter image title here","list":"list text here","quote":"quotation text here","code":"code here"}},"mention_success":"Successfully mentioned: \u003c%= names %\u003e"},"bookmarklet":{"post_something":"Post to diaspora*","post_submit":"Submitting post...","post_success":"Posted! Closing popup window..."},"aspect_dropdown":{"add_to_aspect":"Add contact","select_aspects":"Select aspects","all_aspects":"All aspects","updating":"updating...","mobile_row_checked":"\u003c%= name %\u003e (remove)","mobile_row_unchecked":"\u003c%= name %\u003e (add)","stopped_sharing_with":"You have stopped sharing with \u003c%= name %\u003e.","started_sharing_with":"You have started sharing with \u003c%= name %\u003e!","error":"Couldn’t start sharing with \u003c%= name %\u003e. Are you ignoring them?","error_remove":"Couldn’t remove \u003c%= name %\u003e from the aspect :(","toggle":{"one":"In \u003c%= count %\u003e aspect","other":"In \u003c%= count %\u003e aspects"}},"show_more":"Show more","failed_to_post_message":"Failed to post message!","failed_to_remove":"Failed to remove the entry!","comments":{"show":"Show all comments","hide":"Hide comments","no_comments":"There are no comments yet."},"reshares":{"successful":"The post was successfully reshared!","post":"Reshare \u003c%= name %\u003e’s post?"},"aspect_navigation":{"select_all":"Select all","deselect_all":"Deselect all","no_aspects":"No aspects selected","add_an_aspect":"+ Add an aspect"},"getting_started":{"hey":"Hey, \u003c%= name %\u003e!","no_tags":"Hey, you haven’t followed any tags! Continue anyway?","alright_ill_wait":"All right, I’ll wait.","preparing_your_stream":"Preparing your personalized stream..."},"photo_uploader":{"upload_photos":"Upload photos","looking_good":"OMG, you look awesome!","completed":"\u003c%= file %\u003e completed","error":"A problem occurred while uploading file \u003c%= file %\u003e","invalid_ext":"{file} has invalid extension. Only {extensions} are allowed.","size_error":"{file} is too large, maximum file size is {sizeLimit}.","empty":"{file} is empty, please select files again without it."},"tags":{"wasnt_that_interesting":"OK, I suppose #\u003c%= tagName %\u003e wasn’t all that interesting..."},"people":{"not_found":"... and no one was found","mention":"Mention","message":"Message","edit_my_profile":"Edit my profile","stop_ignoring":"Stop ignoring","helper":{"is_sharing":"\u003c%= name %\u003e is sharing with you","is_not_sharing":"\u003c%= name %\u003e is not sharing with you"}},"profile":{"edit":"Edit","add_some":"Add some","you_have_no_tags":"You have no tags!","bio":"Bio","location":"Location","gender":"Gender","born":"Birthday","photos":"Photos","posts":"Posts"},"conversation":{"create":{"no_recipient":"Hey, you need to add a recipient first!"},"new":{"no_contacts":"You need to add some contacts before you can start a conversation."}},"notifications":{"mark_read":"Mark read","mark_unread":"Mark unread","new_notifications":{"one":"You have \u003c%= count %\u003e unread notification","other":"You have \u003c%= count %\u003e unread notifications"}},"stream":{"hide":"Hide","public":"Public","limited":"Limited","like":"Like","unlike":"Unlike","reshare":"Reshare","comment":"Comment","original_post_deleted":"Original post deleted by author","show_nsfw_post":"Show post","show_nsfw_posts":"Show all","hide_nsfw_posts":"Hide #nsfw posts","follow":"Follow","unfollow":"Unfollow","enable_post_notifications":"Enable notifications for this post","disable_post_notifications":"Disable notifications for this post","permalink":"Permalink","via":"via \u003c%= provider %\u003e","no_posts_yet":"There are no posts to display here yet.","likes":{"zero":"\u003c%= count %\u003e Likes","one":"\u003c%= count %\u003e Like","other":"\u003c%= count %\u003e Likes"},"reshares":{"zero":"\u003c%= count %\u003e Reshares","one":"\u003c%= count %\u003e Reshare","other":"\u003c%= count %\u003e Reshares"},"comments":{"zero":"\u003c%= count %\u003e comments","one":"\u003c%= count %\u003e comment","other":"\u003c%= count %\u003e comments"},"more_comments":{"zero":"Show \u003c%= count %\u003e more comments","one":"Show \u003c%= count %\u003e more comment","other":"Show \u003c%= count %\u003e more comments"},"followed_tag":{"title":"#Followed tags","add_a_tag":"Add a tag","follow":"Follow"},"tags":{"follow":"Follow #\u003c%= tag %\u003e","following":"Following #\u003c%= tag %\u003e","stop_following":"Stop following #\u003c%= tag %\u003e","stop_following_confirm":"Stop following #\u003c%= tag %\u003e?","follow_error":"Couldn’t follow #\u003c%= tag %\u003e :(","stop_following_error":"Couldn’t stop following #\u003c%= tag %\u003e :("}},"header":{"home":"Home","profile":"Profile","contacts":"Contacts","settings":"Settings","help":"Help","admin":"Admin","moderator":"Moderator","log_out":"Log out","toggle_navigation":"Toggle navigation","switch_to_touch_optimized_mode":"Switch to touch-optimized mode","notifications":"Notifications","conversations":"Conversations","search":"Search","recent_notifications":"Recent notifications","mark_all_as_read":"Mark all as read","view_all":"View all","close":"Close"},"viewer":{"reshared":"Reshared"},"poll":{"vote":"Vote","go_to_original_post":"You can participate in this poll on the \u003c%= original_post_link %\u003e.","original_post":"original post","result":"Result","count":{"one":"1 vote so far","other":"\u003c%=count%\u003e votes so far"},"answer_count":{"zero":"0 votes","one":"1 vote","other":"\u003c%=count%\u003e votes"},"show_result":"Show result","close_result":"Hide result","your_vote":"Your vote"},"pluralization_rule":"(function(input) { var runtime = (function(){return this.buildArgsFor=function(t){return[this.n(t),this.i(t),this.f(t),this.t(t),this.v(t),this.w(t)]},this.n=function(t){return this.toNum(t.indexOf(\".\")\u003e-1?this._n(t).replace(/([0]+\\.$)/,\"\"):this._n(t))},this.i=function(t){return this.toNum(this._i(t))},this.f=function(t){return this.toNum(this._f(t))},this.t=function(t){return this.toNum(this._t(t))},this.v=function(t){return this.toNum(this._v(t))},this.w=function(t){return this.toNum(this._w(t))},this.toNum=function(t){return 0==t.length?0:t.indexOf(\".\")\u003e-1?parseFloat(t):parseInt(t)},this._n=function(t){return/(-)?(.*)/.exec(t)[2]},this._i=function(t){return/([\\d]+)(\\..*)?/.exec(this._n(t))[1]},this._f=function(t){return/([\\d]+\\.?)(.*)/.exec(this._n(t))[2]},this._t=function(t){return this._f(t).replace(/([0]+$)/,\"\")},this._v=function(t){return this._f(t).length.toString()},this._w=function(t){return this._t(t).length.toString()},this}).call({}); var num = input.toString(); var n = runtime.n(num); var i = runtime.i(num); var v = runtime.v(num); var w = runtime.w(num); var f = runtime.f(num); var t = runtime.t(num); return ((i == 1 \u0026\u0026 v == 0) ? 'one' : 'other'); })","pod_name":"diaspora*"},
+                           "en",
+                           {"cancel":"Cancel","confirm_dialog":"Are you sure?","confirm_unload":"Please confirm that you want to leave this page. Data you have entered won’t be saved.","create":"Create","delete":"Delete","ignore":"Ignore","report":{"prompt":"Please enter a reason:","prompt_default":"e.g. offensive content","name":"Report","status":{"created":"The report has successfully been created","exists":"The report already exists"}},"ignore_user":"Ignore this user?","ignore_failed":"Unable to ignore this user","hide_post":"Hide this post?","hide_post_failed":"Unable to hide this post","remove_post":"Remove this post?","unblock_failed":"Unblocking this user has failed","and":"and","comma":",","edit":"Edit","no_results":"No results found","show_all":"Show all","admins":{"dashboard":{"up_to_date":"Your pod is up to date!","outdated":"Your pod is outdated.","compare_versions":"The latest diaspora* release is \u003c%= latestVersion %\u003e, your pod is running \u003c%= podVersion %\u003e.","error":"Unable to determine latest diaspora* version."}},"admin":{"pods":{"pod":"Pod","ssl":"SSL","ssl_enabled":"SSL enabled","ssl_disabled":"SSL disabled","added":"Added","status":"Status","states":{"unchecked":"Unchecked","no_errors":"OK","dns_failed":"Name resolution (DNS) failed","net_failed":"Connection attempt failed","ssl_failed":"Secure connection (SSL) failed","http_failed":"HTTP connection failed","version_failed":"Unable to retrieve software version","unknown_error":"An unspecified error has happened during the check"},"actions":"Actions","offline_since":"offline since:","last_check":"last check:","more_info":"show more information","check":"perform connection test","recheck":{"success":"The pod was just checked again.","failure":"The check was not performed."},"follow_link":"open link in browser","no_info":"No additional information available at this point","server_software":"Server software:","response_time":"Response time:","ms":{"one":"\u003c%= count %\u003ems","other":"\u003c%= count %\u003ems"},"unknown":"unknown","not_available":"not available","unchecked":{"one":"There is still one pod that hasn't been checked at all.","other":"There are still \u003c%= count %\u003e pods that haven't been checked at all."},"version_failed":{"one":"There is one pod that has no version (old pod, no NodeInfo).","other":"There are \u003c%= count %\u003e pods that have no version (old pods, no NodeInfo)."},"errors":{"one":"The connection test returned an error for one pod.","other":"The connection test returned an error for \u003c%= count %\u003e pods."}}},"aspects":{"name":"Name","create":{"add_a_new_aspect":"Add a new aspect","success":"Your new aspect \u003c%= name %\u003e was created","failure":"Aspect creation failed."}},"errors":{"connection":"Unable to connect to the server."},"timeago":{"prefixAgo":"","prefixFromNow":"","suffixAgo":"ago","suffixFromNow":"from now","inPast":"any moment now","seconds":"less than a minute","minute":"about a minute","minutes":{"one":"1 minute","other":"%d minutes"},"hour":"about an hour","hours":{"one":"about 1 hour","other":"about %d hours"},"day":"a day","days":{"one":"1 day","other":"%d days"},"month":"about a month","months":{"one":"1 month","other":"%d months"},"year":"about a year","years":{"one":"1 year","other":"%d years"},"wordSeparator":" "},"contacts":{"add_contact":"Add contact","aspect_chat_is_enabled":"Contacts in this aspect are able to chat with you.","aspect_chat_is_not_enabled":"Contacts in this aspect are not able to chat with you.","remove_contact":"Remove contact","error_add":"Couldn’t add \u003c%= name %\u003e to the aspect :(","error_remove":"Couldn’t remove \u003c%= name %\u003e from the aspect :(","search_no_results":"No contacts found"},"my_activity":"My activity","my_stream":"Stream","my_aspects":"My aspects","publisher":{"near_from":"Posted from: \u003c%= location %\u003e","option":"Answer","add_option":"Add an answer","question":"Question","markdown_editor":{"preview":"Preview","write":"Write","tooltips":{"bold":"Bold","italic":"Italic","heading":"Heading","insert_link":"Insert link","insert_image":"Insert image","insert_ordered_list":"Insert ordered list","insert_unordered_list":"Insert unordered list","preview":"Preview message","write":"Edit message","cancel":"Cancel message","quote":"Insert quotation","code":"Insert code"},"texts":{"strong":"strong text","italic":"italic text","heading":"heading text","insert_link_description_text":"enter link description here","insert_link_help_text":"Insert link here","insert_image_description_text":"enter image description here","insert_image_help_text":"Insert image link here","insert_image_title":"enter image title here","list":"list text here","quote":"quotation text here","code":"code here"}},"mention_success":"Successfully mentioned: \u003c%= names %\u003e"},"bookmarklet":{"post_something":"Post to diaspora*","post_submit":"Submitting post...","post_success":"Posted! Closing popup window..."},"aspect_dropdown":{"add_to_aspect":"Add contact","select_aspects":"Select aspects","all_aspects":"All aspects","updating":"updating...","mobile_row_checked":"\u003c%= name %\u003e (remove)","mobile_row_unchecked":"\u003c%= name %\u003e (add)","stopped_sharing_with":"You have stopped sharing with \u003c%= name %\u003e.","started_sharing_with":"You have started sharing with \u003c%= name %\u003e!","error":"Couldn’t start sharing with \u003c%= name %\u003e. Are you ignoring them?","error_remove":"Couldn’t remove \u003c%= name %\u003e from the aspect :(","toggle":{"one":"In \u003c%= count %\u003e aspect","other":"In \u003c%= count %\u003e aspects"}},"show_more":"Show more","failed_to_post_message":"Failed to post message!","failed_to_remove":"Failed to remove the entry!","comments":{"show":"Show all comments","hide":"Hide comments","no_comments":"There are no comments yet."},"reshares":{"successful":"The post was successfully reshared!","post":"Reshare \u003c%= name %\u003e’s post?"},"aspect_navigation":{"select_all":"Select all","deselect_all":"Deselect all","no_aspects":"No aspects selected","add_an_aspect":"+ Add an aspect"},"getting_started":{"hey":"Hey, \u003c%= name %\u003e!","no_tags":"Hey, you haven’t followed any tags! Continue anyway?","alright_ill_wait":"All right, I’ll wait.","preparing_your_stream":"Preparing your personalized stream..."},"photo_uploader":{"upload_photos":"Upload photos","looking_good":"OMG, you look awesome!","completed":"\u003c%= file %\u003e completed","error":"A problem occurred while uploading file \u003c%= file %\u003e","invalid_ext":"{file} has invalid extension. Only {extensions} are allowed.","size_error":"{file} is too large, maximum file size is {sizeLimit}.","empty":"{file} is empty, please select files again without it."},"tags":{"wasnt_that_interesting":"OK, I suppose #\u003c%= tagName %\u003e wasn’t all that interesting..."},"people":{"not_found":"... and no one was found","mention":"Mention","message":"Message","edit_my_profile":"Edit my profile","stop_ignoring":"Stop ignoring","helper":{"is_sharing":"\u003c%= name %\u003e is sharing with you","is_not_sharing":"\u003c%= name %\u003e is not sharing with you"}},"profile":{"edit":"Edit","add_some":"Add some","you_have_no_tags":"You have no tags!","bio":"Bio","location":"Location","gender":"Gender","born":"Birthday","photos":"Photos","posts":"Posts"},"conversation":{"create":{"no_recipient":"Hey, you need to add a recipient first!"},"new":{"no_contacts":"You need to add some contacts before you can start a conversation."}},"notifications":{"mark_read":"Mark read","mark_unread":"Mark unread","new_notifications":{"one":"You have \u003c%= count %\u003e unread notification","other":"You have \u003c%= count %\u003e unread notifications"}},"stream":{"hide":"Hide","public":"Public","limited":"Limited","like":"Like","unlike":"Unlike","reshare":"Reshare","comment":"Comment","original_post_deleted":"Original post deleted by author","show_nsfw_post":"Show post","show_nsfw_posts":"Show all","hide_nsfw_posts":"Hide #nsfw posts","follow":"Follow","unfollow":"Unfollow","enable_post_notifications":"Enable notifications for this post","disable_post_notifications":"Disable notifications for this post","permalink":"Permalink","via":"via \u003c%= provider %\u003e","no_posts_yet":"There are no posts to display here yet.","likes":{"zero":"\u003c%= count %\u003e Likes","one":"\u003c%= count %\u003e Like","other":"\u003c%= count %\u003e Likes"},"reshares":{"zero":"\u003c%= count %\u003e Reshares","one":"\u003c%= count %\u003e Reshare","other":"\u003c%= count %\u003e Reshares"},"comments":{"zero":"\u003c%= count %\u003e comments","one":"\u003c%= count %\u003e comment","other":"\u003c%= count %\u003e comments"},"more_comments":{"zero":"Show \u003c%= count %\u003e more comments","one":"Show \u003c%= count %\u003e more comment","other":"Show \u003c%= count %\u003e more comments"},"followed_tag":{"title":"#Followed tags","add_a_tag":"Add a tag","follow":"Follow"},"tags":{"follow":"Follow #\u003c%= tag %\u003e","following":"Following #\u003c%= tag %\u003e","stop_following":"Stop following #\u003c%= tag %\u003e","stop_following_confirm":"Stop following #\u003c%= tag %\u003e?","follow_error":"Couldn’t follow #\u003c%= tag %\u003e :(","stop_following_error":"Couldn’t stop following #\u003c%= tag %\u003e :("}},"header":{"home":"Home","profile":"Profile","contacts":"Contacts","settings":"Settings","help":"Help","admin":"Admin","moderator":"Moderator","log_out":"Log out","toggle_navigation":"Toggle navigation","switch_to_touch_optimized_mode":"Switch to touch-optimized mode","notifications":"Notifications","conversations":"Conversations","search":"Search","recent_notifications":"Recent notifications","mark_all_as_read":"Mark all as read","view_all":"View all","close":"Close"},"viewer":{"reshared":"Reshared"},"poll":{"vote":"Vote","go_to_original_post":"You can participate in this poll on the \u003c%= original_post_link %\u003e.","original_post":"original post","result":"Result","count":{"one":"1 vote so far","other":"\u003c%=count%\u003e votes so far"},"answer_count":{"zero":"0 votes","one":"1 vote","other":"\u003c%=count%\u003e votes"},"show_result":"Show result","close_result":"Hide result","your_vote":"Your vote"},"pluralization_rule":"(function(input) { var runtime = (function(){return this.buildArgsFor=function(t){return[this.n(t),this.i(t),this.f(t),this.t(t),this.v(t),this.w(t)]},this.n=function(t){return this.toNum(t.indexOf(\".\")\u003e-1?this._n(t).replace(/([0]+\\.$)/,\"\"):this._n(t))},this.i=function(t){return this.toNum(this._i(t))},this.f=function(t){return this.toNum(this._f(t))},this.t=function(t){return this.toNum(this._t(t))},this.v=function(t){return this.toNum(this._v(t))},this.w=function(t){return this.toNum(this._w(t))},this.toNum=function(t){return 0==t.length?0:t.indexOf(\".\")\u003e-1?parseFloat(t):parseInt(t)},this._n=function(t){return/(-)?(.*)/.exec(t)[2]},this._i=function(t){return/([\\d]+)(\\..*)?/.exec(this._n(t))[1]},this._f=function(t){return/([\\d]+\\.?)(.*)/.exec(this._n(t))[2]},this._t=function(t){return this._f(t).replace(/([0]+$)/,\"\")},this._v=function(t){return this._f(t).length.toString()},this._w=function(t){return this._t(t).length.toString()},this}).call({}); var num = input.toString(); var n = runtime.n(num); var i = runtime.i(num); var v = runtime.v(num); var w = runtime.w(num); var f = runtime.f(num); var t = runtime.t(num); return ((i == 1 \u0026\u0026 v == 0) ? 'one' : 'other'); })","pod_name":"diaspora*"});
+        Diaspora.Page = "ConversationsIndex";
+</script>
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="YncEHskMBGIpKEj8YTtRxTK4crxC9atxV5tkNasfzIuIKSd6zpECqOlR6l1PDSkZGRfXXmvrrqrnyqI6VrRHfA==" />
+
+
+
+<style>        .translation_missing { color: purple; background-color: red; }
+</style>
+</head>
+<body class='page-conversations action-index'>
+<header>
+</header>
+
+
+<noscript>
+<div class='noscript'>
+<h3>This website requires JavaScript to function properly. If you disabled JavaScript, please enable it and refresh this page.</h3>
+</div>
+</noscript>
+<div class='container-fluid' id='conversations-container'>
+<div class='row'>
+<div class='col-md-4'>
+<div class='sidebar' id='left_pane'>
+<div class='sidebar-header clearfix' id='left_pane_header'>
+<div class='pull-right'>
+<a class="new-conversation-btn btn btn-default" href="/conversations">New conversation</a>
+</div>
+<h3>
+Inbox
+</h3>
+</div>
+<div class='conversation-inbox' id='conversation-inbox'>
+<div class='conversations-form-container stream conversations'>
+<div class='conversation-wrapper' data-conversation-path='/conversations/1'>
+<div class='conversation selected stream-element' data-guid='1'>
+<div class='media'>
+<div class='img'>
+<img alt="Bob B" class="avatar img-responsive center-block" title="Bob B" data-person_id="2" src="/images/user/default.png" />
+<div class='participants_count'>
+1
+</div>
+</div>
+<div class='bg'>
+<div class='badge badge-default message-count pull-right'>
+2
+</div>
+<div class='subject'>
+<div class='ltr'>
+hello alice
+</div>
+</div>
+<div class='timestamp'>
+<time datetime="2026-08-30T06:35:38Z" class="timeago" title="2026-08-30T06:35:38Z" data-time-ago="2026-08-30T06:35:38Z">2026-08-30</time>
+</div>
+<div class='last-author'>
+Alice A
+</div>
+<div class='last_message'>
+<em>
+hi bob @bob@remote.example reply
+</em>
+</div>
+<div class='participants'>
+<img alt="Carol C" class="avatar img-responsive center-block" title="Carol C" data-person_id="3" src="/images/user/default.png" />
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class='conversation-wrapper' data-conversation-path='/conversations/2'>
+<div class='conversation stream-element' data-guid='2'>
+<div class='media'>
+<div class='img'>
+<img alt="Bob B" class="avatar img-responsive center-block" title="Bob B" data-person_id="2" src="/images/user/default.png" />
+</div>
+<div class='bg'>
+<div class='badge badge-default message-count pull-right'>
+0
+</div>
+<div class='subject'>
+<div class='ltr'>
+No subject
+</div>
+</div>
+<div class='timestamp'>
+<time datetime="2026-08-30T06:35:38Z" class="timeago" title="2026-08-30T06:35:38Z" data-time-ago="2026-08-30T06:35:38Z">2026-08-30</time>
+</div>
+<div class='last-author'>
+</div>
+<div class='last_message'>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class='pagination-container'>
+
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class='col-md-8'>
+<div class='conversations-form-container stream-container'>
+<div class='' id='conversation-show'>
+<div class='conversation-participants framed-content clearfix'>
+<div class='control-icons pull-right'>
+<a data-confirm="Hide and mute conversation?" title="Hide and mute conversation" class="hide_conversation" rel="nofollow" data-method="delete" href="/conversations/1/visibility"><i class="entypo-cross"></i></a>
+</div>
+<h3 class='ltr'>
+hello alice
+</h3>
+<a href='/people/aliceguid' class=' self' >
+      <img alt="Alice A" class="avatar img-responsive center-block" title="Alice A" data-person_id="1" src="/images/user/default.png" />
+      </a>
+<a href='/people/bobguid' class=' hovercardable' >
+      <img alt="Bob B" class="avatar img-responsive center-block" title="Bob B" data-person_id="2" src="/images/user/default.png" />
+      </a>
+<a href='/people/carolguid' class=' hovercardable' >
+      <img alt="Carol C" class="avatar img-responsive center-block" title="Carol C" data-person_id="3" src="/images/user/default.png" />
+      </a>
+</div>
+<div class='stream'>
+<div class='stream-element message' data-guid='31' id=''>
+<div class='media'>
+<a href='/people/bobguid' class='img hovercardable' >
+      <img alt="Bob B" class="avatar img-responsive center-block" title="Bob B" data-person_id="2" src="/images/user/default.png" />
+      </a>
+<div class='bd'>
+<a data-hovercard='/people/bobguid' href='/people/bobguid' class='author from hovercardable'>Bob B</a>
+<time datetime="2026-08-30T06:35:38Z" class="timeago" title="2026-08-30T06:35:38Z" data-time-ago="2026-08-30T06:35:38Z">2026-08-30</time>
+<div class='ltr'>
+<div class='message-content'>
+hi alice, first message
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class='stream-element message' data-guid='32' id=''>
+<div class='media'>
+<a href='/people/aliceguid' class='img self' >
+      <img alt="Alice A" class="avatar img-responsive center-block" title="Alice A" data-person_id="1" src="/images/user/default.png" />
+      </a>
+<div class='bd'>
+<a data-hovercard='/people/aliceguid' href='/people/aliceguid' class='author from self'>Alice A</a>
+<time datetime="2026-08-30T06:35:38Z" class="timeago" title="2026-08-30T06:35:38Z" data-time-ago="2026-08-30T06:35:38Z">2026-08-30</time>
+<div class='ltr'>
+<div class='message-content'>
+hi bob @bob@remote.example reply
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class='stream-element new-message'>
+<div class='media'>
+<div class='media-left'>
+<img alt="Alice A" class="avatar img-responsive center-block" title="Alice A" data-person_id="1" src="/images/user/default.png" />
+</div>
+<div class='media-body'>
+<form class="control-group" id="response-message" action="/conversations/1/messages" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="TDOgJZi4Ulc85vDm9f3wx9wLDTGkH5wVvLFhE/t1cbBElwVM0MF8i2R0s1Wt3qejS2CN8xCTwAp9KnyV1xvYpg==" /><div class='form-group'>
+<label class='sr-only' for='response-message-text' id='message-label'>Message</label>
+<textarea rows="5" tabindex="1" id="response-message-text" class="form-control form-group conversation-message-text" aria-labelledby="message-label" name="message[text]">
+</textarea>
+</div>
+<input type="submit" name="commit" value="Reply" class="btn btn-primary pull-right" tabindex="2" data-disable-with="Replying..." />
+<div class='clearfix'></div>
+</form></div>
+</div>
+</div>
+</div>
+
+
+</div>
+<div class='framed-content clearfix hidden' id='conversation-new'>
+<div class='new-conversation'>
+<h3 class='text-center'>New conversation</h3>
+<div class='container-fluid'>
+<form class="new-conversation form-horizontal" id="new-conversation" action="/conversations" accept-charset="UTF-8" data-remote="true" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><div class='form-group'>
+<label for='contacts-search-input' id='to-label'>To</label>
+<div class='recipients-tag-list clearfix' id='recipients-tag-list'></div>
+<input type="text" name="contact_autocomplete" id="contacts-search-input" class="form-control" autocomplete="off" />
+<input type="hidden" name="person_ids" id="contact-ids" aria-labelledby="to-label" />
+</div>
+<div class='form-group'>
+<label for='conversation-subject' id='subject-label'>
+Subject
+</label>
+<input id="conversation-subject" class="input-block-level form-control" aria-labelledby="subject-label" value="" placeholder="No subject" type="text" name="conversation[subject]" />
+</div>
+<div class='form-group'>
+<label class='sr-only' for='new-message-text' id='message-label'>Message</label>
+<textarea name="conversation[text]" id="new-message-text" rows="5" class="conversation-message-text input-block-level form-control" aria-labelledby="message-label">
+</textarea>
+</div>
+<div class='form-group'>
+<input type="submit" name="commit" value="Send" class="btn btn-primary pull-right" data-disable-with="Sending..." />
+</div>
+</form></div>
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<footer class='footer'>
+<div class='container'>
+<div class='powered-by-diaspora pull-left'>
+<a href="https://diasporafoundation.org">Powered by diaspora*</a>
+</div>
+<ul class='pull-right' id='footer_nav'>
+<li><a href="https://discourse.diasporafoundation.org">Project discussions and support</a></li>
+<li><a href="https://github.com/diaspora/diaspora/blob/0760b6a22e113b74567330ff69ccc55a1d07022c/Changelog.md">What’s new?</a></li>
+<li><a title="Download the source code package" href="/source.tar.gz">Code 0.7.14.0</a></li>
+<li><a href="/statistics">Pod statistics</a></li>
+<li><a href="/mobile/toggle">Switch to touch-optimized mode</a></li>
+
+</ul>
+</div>
+</footer>
+
+
+<div class='blueimp-gallery blueimp-gallery-controls' id='blueimp-gallery'>
+<div class='slides'></div>
+<a class='prev'>
+<div class='entypo-chevron-small-left'></div>
+</a>
+<a class='next'>
+<div class='entypo-chevron-small-right'></div>
+</a>
+<a class='close'>
+<div class='entypo-cross'></div>
+</a>
+<a class='play-pause'></a>
+<ol class='indicator'></ol>
+</div>
+<div id='flash-container'></div>
+<a class='entypo-chevron-up back-to-top' href='#' id='back-to-top' title='Back to top'></a>
+</body>
+</html>
+
+

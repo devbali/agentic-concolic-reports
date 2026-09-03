@@ -1,0 +1,1 @@
+SELECT `people`.* FROM `people`;

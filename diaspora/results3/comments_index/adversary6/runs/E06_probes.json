@@ -1,0 +1,265 @@
+[
+  {
+    "name": "E06-probes",
+    "target_calls": [
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::SingularAssociation#find_target",
+        "depth": 0,
+        "args": [
+
+        ]
+      }
+    ],
+    "statements": [
+      {
+        "sql": "INSERT INTO mentions (id, mentions_container_id, mentions_container_type, person_id) VALUES (941, 890, 'Comment', 5)",
+        "under": null
+      },
+      {
+        "sql": "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = ? AND \"comments\".\"commentable_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" IN (?, ?)",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" IN (?, ?)",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"id\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "DELETE FROM profiles WHERE person_id = 5",
+        "under": null
+      },
+      {
+        "sql": "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = ? AND \"comments\".\"commentable_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" IN (?, ?)",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" IN (?, ?)",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "PRAGMA foreign_keys",
+        "under": null
+      },
+      {
+        "sql": "PRAGMA foreign_keys",
+        "under": null
+      },
+      {
+        "sql": "INSERT INTO posts (created_at, updated_at, id, author_id, guid, type, text, public, comments_count, root_guid) VALUES ('2026-08-29 04:08:42', '2026-08-29 04:08:42', 751, 2, 'e06guid751000000001', 'Reshare', 'r', 't', 0, 'nope0000000000000001')",
+        "under": null
+      },
+      {
+        "sql": "SELECT  \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = ? LIMIT ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT  \"posts\".* FROM \"posts\" WHERE \"posts\".\"guid\" = ? LIMIT ?",
+        "under": "ActiveRecord::Associations::SingularAssociation#find_target"
+      }
+    ],
+    "coverage": {
+},
+    "error": null
+  }
+]

@@ -1,0 +1,123 @@
+<div class='container-fluid' id='conversations-container'>
+<div class='row'>
+<div class='col-md-4'>
+<div class='sidebar' id='left_pane'>
+<div class='sidebar-header clearfix' id='left_pane_header'>
+<div class='pull-right'>
+<a class="new-conversation-btn btn btn-default" href="/conversations">New conversation</a>
+</div>
+<h3>
+Inbox
+</h3>
+</div>
+<div class='conversation-inbox' id='conversation-inbox'>
+<div class='conversations-form-container stream conversations'>
+<div class='conversation-wrapper' data-conversation-path='/conversations/1'>
+<div class='conversation stream-element unread' data-guid='1'>
+<div class='media'>
+<div class='img'>
+<img alt="Bob B" class="avatar img-responsive center-block" title="Bob B" data-person_id="2" src="/assets/user/default-2c878d1cd0171726fc490add065f342be5a959729df46a89807a4c18a8fc8d14.png" />
+<div class='participants_count'>
+1
+</div>
+</div>
+<div class='bg'>
+<div class='badge badge-default message-count pull-right'>
+2
+</div>
+<div class='badge badge-important unread-message-count pull-right'>
+1
+</div>
+<div class='subject'>
+<div class='ltr'>
+hello alice
+</div>
+</div>
+<div class='timestamp'>
+<time datetime="2026-08-29T08:44:51Z" class="timeago" title="2026-08-29T08:44:51Z" data-time-ago="2026-08-29T08:44:51Z">2026-08-29</time>
+</div>
+<div class='last-author'>
+Alice A
+</div>
+<div class='last_message'>
+<em>
+hi bob @bob@remote.example reply
+</em>
+</div>
+<div class='participants'>
+<img alt="Carol C" class="avatar img-responsive center-block" title="Carol C" data-person_id="3" src="/assets/user/default-2c878d1cd0171726fc490add065f342be5a959729df46a89807a4c18a8fc8d14.png" />
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class='conversation-wrapper' data-conversation-path='/conversations/2'>
+<div class='conversation stream-element' data-guid='2'>
+<div class='media'>
+<div class='img'>
+<img alt="Bob B" class="avatar img-responsive center-block" title="Bob B" data-person_id="2" src="/assets/user/default-2c878d1cd0171726fc490add065f342be5a959729df46a89807a4c18a8fc8d14.png" />
+</div>
+<div class='bg'>
+<div class='badge badge-default message-count pull-right'>
+0
+</div>
+<div class='subject'>
+<div class='ltr'>
+No subject
+</div>
+</div>
+<div class='timestamp'>
+<time datetime="2026-08-29T08:44:51Z" class="timeago" title="2026-08-29T08:44:51Z" data-time-ago="2026-08-29T08:44:51Z">2026-08-29</time>
+</div>
+<div class='last-author'>
+</div>
+<div class='last_message'>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class='pagination-container'>
+
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class='col-md-8'>
+<div class='conversations-form-container stream-container'>
+<div class='hidden' id='conversation-show'>
+</div>
+<div class='framed-content clearfix' id='conversation-new'>
+<div class='new-conversation'>
+<h3 class='text-center'>New conversation</h3>
+<div class='container-fluid'>
+<form class="new-conversation form-horizontal" id="new-conversation" action="/conversations" accept-charset="UTF-8" data-remote="true" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><div class='form-group'>
+<label for='contacts-search-input' id='to-label'>To</label>
+<div class='recipients-tag-list clearfix' id='recipients-tag-list'></div>
+<input type="text" name="contact_autocomplete" id="contacts-search-input" class="form-control" autocomplete="off" />
+<input type="hidden" name="person_ids" id="contact-ids" aria-labelledby="to-label" />
+</div>
+<div class='form-group'>
+<label for='conversation-subject' id='subject-label'>
+Subject
+</label>
+<input id="conversation-subject" class="input-block-level form-control" aria-labelledby="subject-label" value="" placeholder="No subject" type="text" name="conversation[subject]" />
+</div>
+<div class='form-group'>
+<label class='sr-only' for='new-message-text' id='message-label'>Message</label>
+<textarea name="conversation[text]" id="new-message-text" rows="5" class="conversation-message-text input-block-level form-control" aria-labelledby="message-label">
+</textarea>
+</div>
+<div class='form-group'>
+<input type="submit" name="commit" value="Send" class="btn btn-primary pull-right" data-disable-with="Sending..." />
+</div>
+</form></div>
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>

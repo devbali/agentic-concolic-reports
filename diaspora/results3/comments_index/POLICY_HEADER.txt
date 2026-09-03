@@ -1,0 +1,77 @@
+-- comments_index — CommentsController#index  (GET /posts/:post_id/comments)
+--
+-- CANONICAL HEADER. This text is maintained at
+-- reports/diaspora/results3/comments_index/POLICY_HEADER.txt and MUST be
+-- re-applied to the top of this file by every extraction. Under the M-17
+-- resolution below, the declaration IS the safeguard: a policy file that
+-- simply stops at the wall is indistinguishable from one that covers
+-- everything, so the exclusion may not live only in a report.
+--
+-- SCOPE (DISCIPLINE §15): the entrypoint is the POST-AUTH action with a
+-- SYMBOLIC principal. The authentication stages run ABOVE the entrypoint and
+-- are not part of this file; the endpoint's complete policy is THIS FILE
+-- UNION §2 of results3/_auth_boundary/BOUNDARY_POLICY.md. On this controller
+-- `authenticate_user!` is `except: :index`, so the principal is fetched
+-- lazily by `set_locale`/`user_signed_in?` rather than by the Devise filter —
+-- the same statements and hooks, so the boundary artifact applies unchanged —
+-- and an ANONYMOUS request touches no authentication stage at all.
+--
+-- ============================================================================
+-- COMPLETENESS OF THIS POLICY, AND THE ONE PLACE IT STOPS  (M-17, cycle 12)
+-- ============================================================================
+-- This file describes the endpoint's data access on EVERY PATH A REAL REQUEST
+-- IN THIS ENVIRONMENT CAN TAKE.
+--
+-- There is exactly one place where the description ends before the
+-- application does. Rendering a person's name calls `Person#name`
+-- (app/models/person.rb:249), which on a person with no `profiles` row calls
+-- `Person#fix_profile` (:373), which calls
+-- `DiasporaFederation::Discovery::Discovery#fetch_and_save`. That method has
+-- two arms:
+--
+--   * the RAISING arm — modelled here in full. Reached by a
+--     `people.diaspora_handle` whose domain is not a legal URI host: Faraday
+--     parses the URL with `URI.parse` before the adapter, raises
+--     `URI::InvalidURIError` in pure Ruby, and `fetch_and_save` converts it to
+--     `DiscoveryError`. It issues no SQL before raising. The reads that
+--     precede it and the resulting terminal ARE in this file.
+--
+--   * the SUCCESS arm — UNREACHABLE in this environment, and therefore
+--     DECLARED UNMODELLED, NOT SHOWN ABSENT. Returning normally requires two
+--     live HTTP fetches (`discovery.rb:73` `webfinger`, `discovery.rb:84`
+--     `hcard`, both `HttpClient.get`; the gem class has no local-pod,
+--     cached-hcard or caller-supplied-entity short circuit). This
+--     JRuby/typhoeus/JFFI stack SIGSEGVs on any parseable URL — measured, unit
+--     exit status 134, in
+--     reports/diaspora/results3/comments_index/_c12/probe_parseable.log (and
+--     _c11/probe_parseable.log), against exit 0 for the URI-hostile handle in
+--     the matching probe_uri_hostile.log.
+--
+-- SO: THE ABSENCE OF DISCOVERY-SUCCESS STATEMENTS BELOW IS A DECLARED GAP, NOT
+-- A FINDING THAT THE PATH READS NOTHING. If that arm ever becomes reachable
+-- (a working HTTP adapter), the policy GAINS, from the application's own
+-- `:save_person_after_webfinger` callback
+-- (config/initializers/diaspora_federation.rb:59-77):
+--
+--     writes : INSERT INTO people, INSERT INTO profiles, UPDATE profiles
+--     reads  : pods (by host, and by id), tags JOIN taggings,
+--              people by diaspora_handle, people by guid (uniqueness probes),
+--              and a `people.diaspora_handle` PLUCK
+--
+-- measured by this batch, with no network, by running the app's own callback
+-- directly:
+--     evidence : reports/diaspora/results3/comments_index/_c12/_discovery_gap_evidence.json
+--     probe    : reports/diaspora/results3/comments_index/_c12/discovery_gap_probe.rb
+--     result   : new-person branch 17 statements, 13 of them data access;
+--                existing-person branch did NOT complete under this batch's
+--                fixture (ActiveRecord::RecordInvalid: "Specify an owner or a
+--                pod, not both" — the person.rb owner_xor_pod validation)
+--                after issuing the people read, the profiles read, INSERT INTO
+--                profiles, the tags JOIN taggings read and both uniqueness
+--                probes, then ROLLBACK.
+--
+-- Those statements are NOT asserted in this file, because no real run of this
+-- endpoint in this environment can issue them and this project verifies every
+-- note against a real endpoint statement. They are recorded here so a consumer
+-- knows the boundary of what is claimed.
+-- ============================================================================

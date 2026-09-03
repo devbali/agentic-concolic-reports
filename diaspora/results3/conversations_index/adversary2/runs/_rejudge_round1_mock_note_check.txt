@@ -1,0 +1,78 @@
+##### A01_mobile_session
+== mock_note_check: 5 target frames issued real SELECTs; 11 targets carry corpus notes ==
+-- statements OUTSIDE any target frame (2) — each needs a declared target or a waiver (evidence minted nowhere):
+NOTE-OK       ActiveRecord::Associations::SingularAssociation.find_target  (3 real shapes matched)
+NOTE-OK       ActiveRecord::Calculations.count  (3 real shapes matched)
+NOTE-OK       ActiveRecord::Calculations.pluck  (2 real shapes matched)
+NOTE-OK       ActiveRecord::Relation.records  (8 real shapes matched)
+RESULT: RED — target mocks with missing/mismatched notes above.
+##### A02_mobile_header
+== mock_note_check: 5 target frames issued real SELECTs; 11 targets carry corpus notes ==
+-- statements OUTSIDE any target frame (2) — each needs a declared target or a waiver (evidence minted nowhere):
+NOTE-OK       ActiveRecord::Associations::SingularAssociation.find_target  (3 real shapes matched)
+NOTE-OK       ActiveRecord::Calculations.count  (3 real shapes matched)
+NOTE-OK       ActiveRecord::Calculations.pluck  (2 real shapes matched)
+NOTE-OK       ActiveRecord::Relation.records  (8 real shapes matched)
+RESULT: RED — target mocks with missing/mismatched notes above.
+##### A04_noprofile_participant
+== mock_note_check: 6 target frames issued real SELECTs; 11 targets carry corpus notes ==
+NOTE-OK       ActiveRecord::Associations::CollectionProxy.load_target  (1 real shapes matched)
+NOTE-OK       ActiveRecord::Associations::SingularAssociation.find_target  (3 real shapes matched)
+NOTE-OK       ActiveRecord::Calculations.count  (2 real shapes matched)
+NOTE-OK       ActiveRecord::Calculations.pluck  (1 real shapes matched)
+NOTE-OK       ActiveRecord::Relation.empty?  (1 real shapes matched)
+NOTE-OK       ActiveRecord::Relation.records  (8 real shapes matched)
+RESULT: every SQL-issuing target's notes match its real statements.
+##### A05_solo_conversation
+== mock_note_check: 6 target frames issued real SELECTs; 11 targets carry corpus notes ==
+NOTE-OK       ActiveRecord::Associations::CollectionProxy.load_target  (1 real shapes matched)
+NOTE-OK       ActiveRecord::Associations::SingularAssociation.find_target  (3 real shapes matched)
+NOTE-OK       ActiveRecord::Calculations.count  (2 real shapes matched)
+NOTE-OK       ActiveRecord::Calculations.pluck  (1 real shapes matched)
+NOTE-OK       ActiveRecord::Relation.empty?  (1 real shapes matched)
+NOTE-OK       ActiveRecord::Relation.records  (8 real shapes matched)
+RESULT: every SQL-issuing target's notes match its real statements.
+##### A06_pagination_16
+== mock_note_check: 6 target frames issued real SELECTs; 11 targets carry corpus notes ==
+NOTE-OK       ActiveRecord::Associations::CollectionProxy.load_target  (1 real shapes matched)
+NOTE-OK       ActiveRecord::Associations::SingularAssociation.find_target  (3 real shapes matched)
+NOTE-OK       ActiveRecord::Calculations.count  (1 real shapes matched)
+NOTE-OK       ActiveRecord::Calculations.pluck  (1 real shapes matched)
+NOTE-OK       ActiveRecord::Relation.empty?  (1 real shapes matched)
+NOTE-OK       ActiveRecord::Relation.records  (5 real shapes matched)
+RESULT: every SQL-issuing target's notes match its real statements.
+##### A07_js_and_empty
+== mock_note_check: 5 target frames issued real SELECTs; 11 targets carry corpus notes ==
+NOTE-OK       ActiveRecord::Associations::SingularAssociation.find_target  (1 real shapes matched)
+NOTE-OK       ActiveRecord::Calculations.count  (1 real shapes matched)
+NOTE-OK       ActiveRecord::Calculations.pluck  (1 real shapes matched)
+NOTE-OK       ActiveRecord::Relation.empty?  (1 real shapes matched)
+NOTE-OK       ActiveRecord::Relation.records  (2 real shapes matched)
+RESULT: every SQL-issuing target's notes match its real statements.
+##### A08_edge_control
+== mock_note_check: 6 target frames issued real SELECTs; 11 targets carry corpus notes ==
+NOTE-OK       ActiveRecord::Associations::CollectionProxy.load_target  (1 real shapes matched)
+NOTE-OK       ActiveRecord::Associations::SingularAssociation.find_target  (3 real shapes matched)
+NOTE-OK       ActiveRecord::Calculations.count  (2 real shapes matched)
+NOTE-OK       ActiveRecord::Calculations.pluck  (1 real shapes matched)
+NOTE-OK       ActiveRecord::Relation.empty?  (1 real shapes matched)
+NOTE-OK       ActiveRecord::Relation.records  (8 real shapes matched)
+RESULT: every SQL-issuing target's notes match its real statements.
+##### A09_lang_pl
+== mock_note_check: 6 target frames issued real SELECTs; 11 targets carry corpus notes ==
+NOTE-OK       ActiveRecord::Associations::CollectionProxy.load_target  (1 real shapes matched)
+NOTE-OK       ActiveRecord::Associations::SingularAssociation.find_target  (3 real shapes matched)
+NOTE-OK       ActiveRecord::Calculations.count  (1 real shapes matched)
+NOTE-OK       ActiveRecord::Calculations.pluck  (1 real shapes matched)
+NOTE-OK       ActiveRecord::Relation.empty?  (1 real shapes matched)
+NOTE-OK       ActiveRecord::Relation.records  (5 real shapes matched)
+RESULT: every SQL-issuing target's notes match its real statements.
+##### A10_cid_variants
+== mock_note_check: 6 target frames issued real SELECTs; 11 targets carry corpus notes ==
+NOTE-OK       ActiveRecord::Associations::CollectionProxy.load_target  (1 real shapes matched)
+NOTE-OK       ActiveRecord::Associations::SingularAssociation.find_target  (3 real shapes matched)
+NOTE-OK       ActiveRecord::Calculations.count  (1 real shapes matched)
+NOTE-OK       ActiveRecord::Calculations.pluck  (1 real shapes matched)
+NOTE-OK       ActiveRecord::Relation.empty?  (1 real shapes matched)
+NOTE-OK       ActiveRecord::Relation.records  (9 real shapes matched)
+RESULT: every SQL-issuing target's notes match its real statements.

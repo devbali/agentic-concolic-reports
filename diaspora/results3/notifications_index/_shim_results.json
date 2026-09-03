@@ -1,0 +1,505 @@
+[
+  {
+    "owner": "helper_proxy.singleton_class",
+    "method": "DYNAMIC",
+    "kind": "dynamic",
+    "module": "asset_shim",
+    "file": "targets.rb",
+    "line": 280,
+    "note": "dynamically-named define_method — engine requires manual entry or waiver",
+    "key": "helper_proxy.singleton_class.DYNAMIC",
+    "verdict": "PASS",
+    "targets_reached": [
+
+    ],
+    "targets_declared": [
+
+    ],
+    "coverage_pct": 100.0,
+    "invoked": true,
+    "generated": false,
+    "coverage_waiver": null,
+    "missed_lines": [
+
+    ]
+  },
+  {
+    "owner": "ActionView::Base",
+    "method": "DYNAMIC",
+    "kind": "dynamic",
+    "module": "asset_shim",
+    "file": "targets.rb",
+    "line": 289,
+    "note": "dynamically-named define_method — engine requires manual entry or waiver",
+    "key": "ActionView::Base.DYNAMIC",
+    "verdict": "PASS",
+    "targets_reached": [
+
+    ],
+    "targets_declared": [
+
+    ],
+    "coverage_pct": 100.0,
+    "invoked": true,
+    "generated": false,
+    "coverage_waiver": null,
+    "missed_lines": [
+
+    ]
+  },
+  {
+    "owner": "obj",
+    "method": "type",
+    "kind": "rep_plumbing",
+    "file": "targets.rb",
+    "line": 1263,
+    "key": "obj.type",
+    "verdict": "PROTOCOL",
+    "detail": "Notification#type is defined by the AR/Ruby protocol — verified against the real class"
+  },
+  {
+    "owner": "obj",
+    "method": "mentions_container_type",
+    "kind": "rep_plumbing",
+    "file": "targets.rb",
+    "line": 1308,
+    "key": "obj.mentions_container_type",
+    "verdict": "PROTOCOL",
+    "detail": "Mention#mentions_container_type is defined by the AR/Ruby protocol — verified against the real class"
+  },
+  {
+    "owner": "obj",
+    "method": "guid",
+    "kind": "rep_plumbing",
+    "file": "targets.rb",
+    "line": 1318,
+    "key": "obj.guid",
+    "verdict": "PROTOCOL",
+    "detail": "Post#guid is defined by the AR/Ruby protocol — verified against the real class"
+  },
+  {
+    "owner": "obj",
+    "method": "language",
+    "kind": "rep_plumbing",
+    "file": "targets.rb",
+    "line": 1361,
+    "key": "obj.language",
+    "verdict": "PROTOCOL",
+    "detail": "User#language is defined by the AR/Ruby protocol — verified against the real class"
+  },
+  {
+    "owner": "obj",
+    "method": "commentable_type",
+    "kind": "rep_plumbing",
+    "file": "targets.rb",
+    "line": 1384,
+    "key": "obj.commentable_type",
+    "verdict": "PROTOCOL",
+    "detail": "Comment#commentable_type is defined by the AR/Ruby protocol — verified against the real class"
+  },
+  {
+    "owner": "obj",
+    "method": "guid",
+    "kind": "rep_plumbing",
+    "file": "targets.rb",
+    "line": 1394,
+    "key": "obj.guid",
+    "verdict": "PROTOCOL",
+    "detail": "Post#guid is defined by the AR/Ruby protocol — verified against the real class"
+  },
+  {
+    "owner": "::Gon.singleton_class",
+    "method": "DYNAMIC",
+    "kind": "dynamic",
+    "module": "gon_shim",
+    "file": "targets.rb",
+    "line": 1586,
+    "note": "dynamically-named define_method — engine requires manual entry or waiver",
+    "key": "::Gon.singleton_class.DYNAMIC",
+    "verdict": "PASS",
+    "targets_reached": [
+
+    ],
+    "targets_declared": [
+
+    ],
+    "coverage_pct": 100.0,
+    "invoked": true,
+    "generated": false,
+    "coverage_waiver": null,
+    "missed_lines": [
+
+    ]
+  },
+  {
+    "owner": "ActiveRecord::Associations::CollectionAssociation",
+    "method": "size",
+    "kind": "prepend",
+    "module": "shim",
+    "file": "targets.rb",
+    "line": 1619,
+    "key": "ActiveRecord::Associations::CollectionAssociation.size",
+    "verdict": "PASS",
+    "targets_reached": [
+
+    ],
+    "targets_declared": [
+
+    ],
+    "coverage_pct": 100.0,
+    "invoked": true,
+    "generated": false,
+    "coverage_waiver": null,
+    "missed_lines": [
+
+    ]
+  },
+  {
+    "owner": "ActiveRecord::Relation",
+    "method": "pluck",
+    "kind": "prepend",
+    "module": "pluck_args",
+    "file": "targets.rb",
+    "line": 1675,
+    "key": "ActiveRecord::Relation.pluck",
+    "verdict": "PASS",
+    "targets_reached": [
+
+    ],
+    "targets_declared": [
+
+    ],
+    "coverage_pct": 100.0,
+    "invoked": true,
+    "generated": false,
+    "coverage_waiver": null,
+    "missed_lines": [
+
+    ]
+  },
+  {
+    "owner": "u",
+    "method": "persisted?",
+    "kind": "rep_plumbing",
+    "file": "targets.rb",
+    "line": 1760,
+    "key": "u.persisted?",
+    "verdict": "PASS",
+    "targets_reached": [
+
+    ],
+    "targets_declared": [
+
+    ],
+    "coverage_pct": 100.0,
+    "invoked": false,
+    "generated": true,
+    "coverage_waiver": null,
+    "missed_lines": [
+
+    ]
+  },
+  {
+    "owner": "u",
+    "method": "new_record?",
+    "kind": "rep_plumbing",
+    "file": "targets.rb",
+    "line": 1761,
+    "key": "u.new_record?",
+    "verdict": "PASS",
+    "targets_reached": [
+
+    ],
+    "targets_declared": [
+
+    ],
+    "coverage_pct": 100.0,
+    "invoked": false,
+    "generated": true,
+    "coverage_waiver": null,
+    "missed_lines": [
+
+    ]
+  },
+  {
+    "owner": "u",
+    "method": "unread_notifications",
+    "kind": "rep_plumbing",
+    "file": "targets.rb",
+    "line": 1768,
+    "key": "u.unread_notifications",
+    "verdict": "PASS",
+    "targets_reached": [
+
+    ],
+    "targets_declared": [
+
+    ],
+    "coverage_pct": 100.0,
+    "invoked": false,
+    "generated": true,
+    "coverage_waiver": null,
+    "missed_lines": [
+
+    ]
+  },
+  {
+    "owner": "User",
+    "method": "authenticatable_salt",
+    "kind": "prepend",
+    "module": "salt_shim",
+    "file": "targets.rb",
+    "line": 1807,
+    "key": "User.authenticatable_salt",
+    "verdict": "PASS",
+    "targets_reached": [
+
+    ],
+    "targets_declared": [
+
+    ],
+    "coverage_pct": 100.0,
+    "invoked": true,
+    "generated": false,
+    "coverage_waiver": null,
+    "missed_lines": [
+
+    ]
+  },
+  {
+    "owner": "OrmAdapter::ActiveRecord",
+    "method": "DYNAMIC",
+    "kind": "dynamic",
+    "module": "OrmAdapterGetNaming",
+    "file": "targets.rb",
+    "line": 1812,
+    "note": "dynamically-named define_method — engine requires manual entry or waiver",
+    "key": "OrmAdapter::ActiveRecord.DYNAMIC",
+    "verdict": "PASS",
+    "targets_reached": [
+
+    ],
+    "targets_declared": [
+
+    ],
+    "coverage_pct": 100.0,
+    "invoked": true,
+    "generated": false,
+    "coverage_waiver": null,
+    "missed_lines": [
+
+    ]
+  },
+  {
+    "owner": "obj",
+    "method": "read_attribute",
+    "kind": "rep_plumbing",
+    "file": "concolic_targets.rb",
+    "line": 596,
+    "key": "obj.read_attribute",
+    "verdict": "PROTOCOL",
+    "detail": "runtime rep machinery: the real class defines this only through the AR/Ruby protocol (or not at all) — no app body to run against"
+  },
+  {
+    "owner": "obj",
+    "method": "_read_attribute",
+    "kind": "rep_plumbing",
+    "file": "concolic_targets.rb",
+    "line": 597,
+    "key": "obj._read_attribute",
+    "verdict": "PROTOCOL",
+    "detail": "runtime rep machinery: the real class defines this only through the AR/Ruby protocol (or not at all) — no app body to run against"
+  },
+  {
+    "owner": "obj",
+    "method": "concolic_attrs",
+    "kind": "rep_plumbing",
+    "file": "concolic_targets.rb",
+    "line": 598,
+    "key": "obj.concolic_attrs",
+    "verdict": "PROTOCOL",
+    "detail": "runtime rep machinery: the real class defines this only through the AR/Ruby protocol (or not at all) — no app body to run against"
+  },
+  {
+    "owner": "obj",
+    "method": "concolic_note",
+    "kind": "rep_plumbing",
+    "file": "concolic_targets.rb",
+    "line": 602,
+    "key": "obj.concolic_note",
+    "verdict": "PROTOCOL",
+    "detail": "runtime rep machinery: the real class defines this only through the AR/Ruby protocol (or not at all) — no app body to run against"
+  },
+  {
+    "owner": "obj",
+    "method": "attributes",
+    "kind": "rep_plumbing",
+    "file": "concolic_targets.rb",
+    "line": 610,
+    "key": "obj.attributes",
+    "verdict": "PROTOCOL",
+    "detail": "runtime rep machinery: the real class defines this only through the AR/Ruby protocol (or not at all) — no app body to run against"
+  },
+  {
+    "owner": "obj",
+    "method": "write_attribute",
+    "kind": "rep_plumbing",
+    "file": "concolic_targets.rb",
+    "line": 611,
+    "key": "obj.write_attribute",
+    "verdict": "PROTOCOL",
+    "detail": "runtime rep machinery: the real class defines this only through the AR/Ruby protocol (or not at all) — no app body to run against"
+  },
+  {
+    "owner": "obj",
+    "method": "_write_attribute",
+    "kind": "rep_plumbing",
+    "file": "concolic_targets.rb",
+    "line": 612,
+    "key": "obj._write_attribute",
+    "verdict": "PROTOCOL",
+    "detail": "runtime rep machinery: the real class defines this only through the AR/Ruby protocol (or not at all) — no app body to run against"
+  },
+  {
+    "owner": "obj",
+    "method": "image_url",
+    "kind": "rep_plumbing",
+    "file": "concolic_targets.rb",
+    "line": 619,
+    "key": "obj.image_url",
+    "verdict": "PROTOCOL",
+    "detail": "Profile#image_url is defined by the AR/Ruby protocol — verified against the real class"
+  },
+  {
+    "owner": "obj",
+    "method": "hidden_shareables",
+    "kind": "rep_plumbing",
+    "file": "concolic_targets.rb",
+    "line": 629,
+    "key": "obj.hidden_shareables",
+    "verdict": "PROTOCOL",
+    "detail": "User#hidden_shareables is defined by the AR/Ruby protocol — verified against the real class"
+  },
+  {
+    "owner": "obj",
+    "method": "post_location",
+    "kind": "rep_plumbing",
+    "file": "concolic_targets.rb",
+    "line": 638,
+    "key": "obj.post_location",
+    "verdict": "PROTOCOL",
+    "detail": "Post#post_location is defined by the AR/Ruby protocol — verified against the real class"
+  },
+  {
+    "owner": "obj",
+    "method": "inspect",
+    "kind": "rep_plumbing",
+    "file": "concolic_targets.rb",
+    "line": 644,
+    "key": "obj.inspect",
+    "verdict": "PROTOCOL",
+    "detail": "runtime rep machinery: the real class defines this only through the AR/Ruby protocol (or not at all) — no app body to run against"
+  },
+  {
+    "owner": "obj",
+    "method": "persisted?",
+    "kind": "rep_plumbing",
+    "file": "concolic_targets.rb",
+    "line": 690,
+    "key": "obj.persisted?",
+    "verdict": "PROTOCOL",
+    "detail": "runtime rep machinery: the real class defines this only through the AR/Ruby protocol (or not at all) — no app body to run against"
+  },
+  {
+    "owner": "obj",
+    "method": "new_record?",
+    "kind": "rep_plumbing",
+    "file": "concolic_targets.rb",
+    "line": 691,
+    "key": "obj.new_record?",
+    "verdict": "PROTOCOL",
+    "detail": "runtime rep machinery: the real class defines this only through the AR/Ruby protocol (or not at all) — no app body to run against"
+  },
+  {
+    "owner": "Person.singleton_class",
+    "method": "name_from_attrs",
+    "kind": "prepend",
+    "module": "shim",
+    "file": "concolic_targets.rb",
+    "line": 1710,
+    "key": "Person.singleton_class.name_from_attrs",
+    "verdict": "PASS",
+    "targets_reached": [
+
+    ],
+    "targets_declared": [
+
+    ],
+    "coverage_pct": 100.0,
+    "invoked": true,
+    "generated": false,
+    "coverage_waiver": null,
+    "missed_lines": [
+
+    ]
+  },
+  {
+    "owner": "ActionDispatch::Journey::Router::Utils.singleton_class",
+    "method": "escape_segment",
+    "kind": "prepend",
+    "module": "EscapeSegmentShim",
+    "file": "concolic_targets.rb",
+    "line": 1899,
+    "key": "ActionDispatch::Journey::Router::Utils.singleton_class.escape_segment",
+    "verdict": "PASS",
+    "targets_reached": [
+
+    ],
+    "targets_declared": [
+
+    ],
+    "coverage_pct": 100.0,
+    "invoked": true,
+    "generated": false,
+    "coverage_waiver": null,
+    "missed_lines": [
+
+    ]
+  },
+  {
+    "owner": "ActiveRecord::Base.singleton_class",
+    "method": "DYNAMIC",
+    "kind": "value_class",
+    "module": "ConcolicKwargsToPositional",
+    "file": "concolic_targets.rb",
+    "line": 1964,
+    "note": "dynamically-named define_method — engine requires manual entry or waiver",
+    "key": "ActiveRecord::Base.singleton_class.DYNAMIC",
+    "verdict": "PASS",
+    "targets_reached": [
+
+    ],
+    "targets_declared": [
+
+    ],
+    "coverage_pct": 90.0,
+    "invoked": true,
+    "generated": true,
+    "coverage_waiver": null,
+    "missed_lines": [
+      1951
+    ]
+  },
+  {
+    "owner": "ActiveRecord::Relation",
+    "method": "DYNAMIC",
+    "kind": "value_class",
+    "module": "ConcolicKwargsToPositional",
+    "file": "concolic_targets.rb",
+    "line": 1965,
+    "note": "dynamically-named define_method — engine requires manual entry or waiver",
+    "key": "ActiveRecord::Relation.DYNAMIC",
+    "verdict": "PROTOCOL",
+    "detail": "runtime rep machinery: the real class defines this only through the AR/Ruby protocol (or not at all) — no app body to run against"
+  }
+]

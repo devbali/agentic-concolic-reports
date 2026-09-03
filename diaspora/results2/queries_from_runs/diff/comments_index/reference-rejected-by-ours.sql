@@ -1,0 +1,18 @@
+-- reference queries NOT answerable from our generated query set
+-- 8 queries
+
+SELECT `people`.`id` AS `id2`, `people`.`guid` AS `guid1`, `people`.`diaspora_handle`, `people`.`serialized_public_key`, `people`.`owner_id`, `people`.`created_at` AS `created_at1`, `people`.`updated_at` AS `updated_at1`, `people`.`closed_account`, `people`.`fetch_status`, `people`.`pod_id`, `comments`.`commentable_id` FROM `posts`,     `share_visibilities`,     `comments`,     `people` WHERE `people`.`id` = `comments`.`author_id` AND (`comments`.`commentable_type` = 'Post' AND `share_visibilities`.`shareable_id` = `posts`.`id`) AND (`share_visibilities`.`shareable_type` = 'Post' AND (`share_visibilities`.`user_id` = _MY_UID AND `comments`.`commentable_id` = `posts`.`id`));
+
+SELECT `comments`.`id` AS `id1`, `comments`.`text` AS `text0`, `comments`.`commentable_id`, `comments`.`author_id` AS `author_id0`, `comments`.`guid` AS `guid0`, `comments`.`created_at` AS `created_at0`, `comments`.`updated_at` AS `updated_at0`, `comments`.`likes_count` AS `likes_count0`, `comments`.`commentable_type` FROM `posts`,     `share_visibilities`,     `comments` WHERE `comments`.`commentable_type` = 'Post' AND `share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post' AND `share_visibilities`.`user_id` = _MY_UID AND `comments`.`commentable_id` = `posts`.`id`;
+
+SELECT `profiles`.`id`, `profiles`.`diaspora_handle`, `profiles`.`first_name`, `profiles`.`last_name`, `profiles`.`image_url`, `profiles`.`image_url_small`, `profiles`.`image_url_medium`, `profiles`.`searchable`, `profiles`.`person_id`, `profiles`.`created_at`, `profiles`.`updated_at`, `profiles`.`full_name`, `profiles`.`nsfw`, `profiles`.`public_details`, `comments`.`commentable_id` FROM `posts`,     `comments`,     `profiles` WHERE `profiles`.`person_id` = `comments`.`author_id` AND `comments`.`commentable_type` = 'Post' AND `posts`.`public` = TRUE AND `comments`.`commentable_id` = `posts`.`id`;
+
+SELECT `people`.`id` AS `id1`, `people`.`guid` AS `guid1`, `people`.`diaspora_handle`, `people`.`serialized_public_key`, `people`.`owner_id`, `people`.`created_at` AS `created_at1`, `people`.`updated_at` AS `updated_at1`, `people`.`closed_account`, `people`.`fetch_status`, `people`.`pod_id`, `comments`.`commentable_id` FROM `posts`,     `comments`,     `people` WHERE `people`.`id` = `comments`.`author_id` AND `comments`.`commentable_type` = 'Post' AND `posts`.`public` = TRUE AND `comments`.`commentable_id` = `posts`.`id`;
+
+SELECT `comments`.`id` AS `id1`, `comments`.`text` AS `text0`, `comments`.`commentable_id`, `comments`.`author_id` AS `author_id0`, `comments`.`guid` AS `guid1`, `comments`.`created_at` AS `created_at1`, `comments`.`updated_at` AS `updated_at1`, `comments`.`likes_count` AS `likes_count0`, `comments`.`commentable_type` FROM `people`,     `posts`,     `comments` WHERE `comments`.`commentable_type` = 'Post' AND `posts`.`author_id` = `people`.`id` AND `people`.`owner_id` = _MY_UID AND `comments`.`commentable_id` = `posts`.`id`;
+
+SELECT `posts`.`id`, `posts`.`author_id`, `posts`.`public`, `posts`.`guid`, `posts`.`type`, `posts`.`text`, `posts`.`created_at`, `posts`.`updated_at`, `posts`.`provider_display_name`, `posts`.`root_guid`, `posts`.`likes_count`, `posts`.`comments_count`, `posts`.`o_embed_cache_id`, `posts`.`reshares_count`, `posts`.`interacted_at`, `posts`.`tweet_id`, `posts`.`open_graph_cache_id`, `posts`.`tumblr_ids` FROM `posts`,     `share_visibilities` WHERE `share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post' AND `share_visibilities`.`user_id` = _MY_UID;
+
+SELECT * FROM `people` WHERE `owner_id` = _MY_UID;
+
+SELECT * FROM `users` WHERE `id` = _MY_UID;

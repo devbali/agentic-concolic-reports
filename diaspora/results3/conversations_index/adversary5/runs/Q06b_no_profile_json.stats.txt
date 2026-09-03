@@ -1,0 +1,5 @@
+== Q06_noprofile_json [json_plain] statements=4 (+0 tx) error=None
+    1 corpus[json_plain]max=1 all=1                select users.* from users where users.id = @ order by users.id asc limit @
+    1 corpus[json_plain]max=1 all=1                select people.* from people where people.owner_id = @ limit @
+    1 corpus[json_plain]max=1 all=1                select contacts.id, profiles.first_name, profiles.last_name, people.diaspora_handle from contacts inner join people on people.id =
+    1 corpus[json_plain]max=1 all=1                select conversation_visibilities.id as t0_r0, conversation_visibilities.conversation_id as t0_r1, conversation_visibilities.person

@@ -1,0 +1,338 @@
+[
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_last_1_id == SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_person_id)",
+    "verdict": "PASS",
+    "detail": "mutually exclusive: both recorded, never co-evaluated in any run"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_profile_first_name == StringVal(''))",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_last_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "mutually exclusive: both recorded, never co-evaluated in any run"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_profile_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_last_1_id == SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_person_id)",
+    "verdict": "PASS",
+    "detail": "mutually exclusive: both recorded, never co-evaluated in any run"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_profile_first_name == StringVal(''))",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_last_1_guid == '')",
+    "verdict": "PASS",
+    "detail": "mutually exclusive: both recorded, never co-evaluated in any run"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Relation_to_ary_1_row_target_mentions_container_author_profile_last_name == StringVal(''))",
+    "verdict": "PASS",
+    "detail": "mutually exclusive: both recorded, never co-evaluated in any run"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_sharing == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Relation_to_ary_1_row_target_mentions_container_commentable_author_profile_last_name == StringVal(''))",
+    "verdict": "PASS",
+    "detail": "mutually exclusive: both recorded, never co-evaluated in any run"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Relation_to_ary_1_row_target_mentions_container_author_profile_first_name == StringVal(''))",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Relation_to_ary_1_row_target_mentions_container_commentable_text_has_mention == True)",
+    "verdict": "PASS",
+    "detail": "mutually exclusive: both recorded, never co-evaluated in any run"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_3_row_id == SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_person_id)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Relation_to_ary_1_row_target_mentions_container_commentable_persisted == True)",
+    "verdict": "PASS",
+    "detail": "mutually exclusive: both recorded, never co-evaluated in any run"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_POST_STI == 1)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_3_row_guid == '')",
+    "verdict": "PASS",
+    "detail": "mutually exclusive: both recorded, never co-evaluated in any run"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_NOTE_TYPE_PROFILE == 3)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Relation_to_ary_1_row_target_text_nil == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_html_typed_dse0002_dshtm.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_NOTE_TYPE_PROFILE == 4)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_last_1_guid == '')",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_mobile_typed_dse0002_dsmob.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_NOTE_TYPE_PROFILE == 7)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_html_typed_dse0002_dshtm.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_NOTE_TYPE_PROFILE == 4)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Relation_to_ary_1_row_target_mentions_container_author_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_html_plain_dse0065_cphtm.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_POST_STI == 0)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Relation_to_ary_1_row_target_guid == '')",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_html_plain_dse0002_dshtm.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_NOTE_TYPE_PROFILE == 2)",
+    "expr_b": "(SYM_POST_STI == 1)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_html_typed_dse0002_dshtm.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_NOTE_TYPE_PROFILE == 0)",
+    "expr_b": "(SYM_POST_STI == 1)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_html_typed_dse0002_dshtm.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_NOTE_TYPE_PROFILE == 3)",
+    "expr_b": "(SYM_POST_STI == 1)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_html_typed_dse0002_dshtm.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_NOTE_TYPE_PROFILE == 2)",
+    "expr_b": "(SYM_POST_STI == 0)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_html_typed_dse0002_dshtm.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Relation_to_ary_1_row_target_text_nil == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Relation_to_ary_1_row_target_guid == '')",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_html_plain_dse0002_dshtm.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Relation_to_ary_1_row_target_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Relation_to_ary_1_row_target_guid == '')",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_html_plain_dse0002_dshtm.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Relation_to_ary_1_row_target_mentions_container_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Relation_to_ary_1_row_target_mentions_container_guid == '')",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_html_plain_dse0069_cphtm.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Relation_to_ary_1_row_target_mentions_container_commentable_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Relation_to_ary_1_row_target_mentions_container_commentable_guid == '')",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_html_plain_dse0085_cphtm.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Relation_to_ary_1_row_target_mentions_container_text_nil == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Relation_to_ary_1_row_target_mentions_container_guid == '')",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_html_plain_dse0069_cphtm.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Relation_to_ary_1_row_target_mentions_container_commentable_text_nil == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Relation_to_ary_1_row_target_mentions_container_commentable_guid == '')",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_html_plain_dse0085_cphtm.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_last_1_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_last_1_id == SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_person_id)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_mobile_typed_dse0002_dsmob.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_last_1_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_last_1_profile_last_name == StringVal(''))",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_mobile_typed_dse0002_dsmob.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_last_1_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_last_1_guid == '')",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_mobile_typed_dse0002_dsmob.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Relation_to_ary_1_row_target_text_nil == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Relation_to_ary_1_row_target_text_has_mention == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_html_typed_dse0002_dshtm.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_profile_birthday_year <= 1004)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_html_plain_dse0097_cphtm.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Relation_to_ary_1_row_target_mentions_container_text_nil == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Relation_to_ary_1_row_target_mentions_container_text_has_mention == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_html_plain_dse0067_cphtm.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_2_row_guid != StringVal(''))",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_2_row_text_has_mention == True)",
+    "verdict": "PASS",
+    "detail": "mutually exclusive: both recorded, never co-evaluated in any run"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Relation_to_ary_1_row_target_mentions_container_guid == '')",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Relation_to_ary_1_row_target_mentions_container_mention_inline_name == True)",
+    "verdict": "PASS",
+    "detail": "mutually exclusive: both recorded, never co-evaluated in any run"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Calculations_count_3_count < 4)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Calculations_count_3_count == 1)",
+    "verdict": "PASS",
+    "detail": "mutually exclusive: both recorded, never co-evaluated in any run"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_2_row_guid != StringVal(''))",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_2_row_text_nil == True)",
+    "verdict": "PASS",
+    "detail": "mutually exclusive: both recorded, never co-evaluated in any run"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Relation_to_ary_1_row_target_mentions_container_guid == '')",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Relation_to_ary_1_row_target_mentions_container_text_has_mention == True)",
+    "verdict": "PASS",
+    "detail": "mutually exclusive: both recorded, never co-evaluated in any run"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Relation_to_ary_1_row_target_guid == '')",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Relation_to_ary_1_row_target_text_has_mention == True)",
+    "verdict": "PASS",
+    "detail": "mutually exclusive: both recorded, never co-evaluated in any run"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_2_row_guid == '')",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_2_row_text_nil == True)",
+    "verdict": "PASS",
+    "detail": "mutually exclusive: both recorded, never co-evaluated in any run"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Relation_to_ary_1_row_target_mentions_container_commentable_guid == '')",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Relation_to_ary_1_row_target_mentions_container_commentable_text_has_mention == True)",
+    "verdict": "PASS",
+    "detail": "mutually exclusive: both recorded, never co-evaluated in any run"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Relation_to_ary_1_row_target_mentions_container_author_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Relation_to_ary_1_row_target_mentions_container_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_html_plain_dse0065_cphtm.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_PARAM_show == StringVal('unread'))",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_sharing == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_html_typed_dse0114_g2htm.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_3_not_found == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_html_plain_dse0097_cphtm.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Calculations_count_3_count < 4)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_html_plain_dse0097_cphtm.json)"
+  },
+  {
+    "type": "UntrackedPathAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_profile_first_name == StringVal(''))",
+    "expr_b": null,
+    "verdict": "PASS",
+    "detail": "access trace identical on both sides"
+  },
+  {
+    "type": "UntrackedPathAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_last_1_profile_first_name == StringVal(''))",
+    "expr_b": null,
+    "verdict": "PASS",
+    "detail": "access trace identical on both sides"
+  },
+  {
+    "type": "UntrackedPathAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_2_row_profile_first_name == StringVal(''))",
+    "expr_b": null,
+    "verdict": "PASS",
+    "detail": "access trace identical on both sides"
+  },
+  {
+    "type": "UntrackedPathAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_profile_first_name == StringVal(''))",
+    "expr_b": null,
+    "verdict": "PASS",
+    "detail": "access trace identical on both sides"
+  },
+  {
+    "type": "UntrackedPathAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_2_row_text_has_mention == True)",
+    "expr_b": null,
+    "verdict": "PASS",
+    "detail": "access trace identical on both sides"
+  },
+  {
+    "type": "UntrackedPathAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Relation_to_ary_1_row_target_author_profile_last_name == StringVal(''))",
+    "expr_b": null,
+    "verdict": "PASS",
+    "detail": "access trace identical on both sides"
+  }
+]

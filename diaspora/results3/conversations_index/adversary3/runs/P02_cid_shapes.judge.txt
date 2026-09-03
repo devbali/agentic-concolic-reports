@@ -1,0 +1,56 @@
+### mock_note_check
+== mock_note_check: 6 target frames issued real SELECTs; 13 targets carry corpus notes ==
+
+NOTE-OK       ActiveRecord::Associations::CollectionProxy.load_target  (1 real shapes matched)
+NOTE-OK       ActiveRecord::Associations::SingularAssociation.find_target  (3 real shapes matched)
+NOTE-OK       ActiveRecord::Calculations.count  (3 real shapes matched)
+NOTE-OK       ActiveRecord::Calculations.pluck  (2 real shapes matched)
+NOTE-OK       ActiveRecord::FinderMethods.exists?  (1 real shapes matched)
+NOTE-OK       ActiveRecord::Relation.records  (10 real shapes matched)
+
+RESULT: every SQL-issuing target's notes match its real statements.
+EXIT=0
+
+### note_fidelity_audit
+== note_fidelity_audit: 1 run file(s), 20 distinct real SELECTs under 6 frames; 13 targets carry notes ==
+
+-- wildcard notes per target (corpus) --
+   ActiveRecord::Associations::SingularAssociation.find_target            notes=17   star=17
+   ActiveRecord::Base.reload                                              notes=4    star=4
+   ActiveRecord::Calculations.count                                       notes=6    agg=6
+   ActiveRecord::Calculations.pluck                                       notes=3    cols=3
+   ActiveRecord::FinderMethods.devise_user_first                          notes=1    star=1
+   ActiveRecord::FinderMethods.exists?                                    notes=3    cols=3
+   ActiveRecord::FinderMethods.find_by                                    notes=3    star=3
+   ActiveRecord::FinderMethods.first                                      notes=2    star=2
+   ActiveRecord::Relation.empty?                                          notes=1    cols=1
+   ActiveRecord::Relation.records                                         notes=5    cols=2 star=3
+   ActiveRecord::Relation.to_a                                            notes=3    cols=2 star=1
+   ActiveRecord::Relation.to_ary                                          notes=2    star=2
+   Anonymous.load_intermediate                                            notes=3    star=3
+
+-- MISSING: 0 --
+
+-- STAR-OVER: 0 --
+
+-- AGG-COLLAPSE: 0 --
+
+-- PROJ-DIFF: 0 --
+
+-- PRED-OP-DIFF: 2 --
+   ActiveRecord::Relation.records  [P02_cid_shapes.json:P02_array_1_2, P02_cid_shapes.json:P02_array_json, P02_cid_shapes.json:P02_array_miss]
+      real: SELECT "conversations".* FROM "conversations" INNER JOIN "conversation_visibilities" ON "conversation_visibilities"."conversation_id" = "conversations
+      note: SELECT "conversation_visibilities"."id" AS t0_r0, "conversation_visibilities"."conversation_id" AS t0_r1, "conversation_visibilities"."person_id" AS t
+   ActiveRecord::Relation.records  [P02_cid_shapes.json:P02_array_3]
+      real: SELECT "conversations".* FROM "conversations" INNER JOIN "conversation_visibilities" ON "conversation_visibilities"."conversation_id" = "conversations
+      note: SELECT "conversation_visibilities"."id" AS t0_r0, "conversation_visibilities"."conversation_id" AS t0_r1, "conversation_visibilities"."person_id" AS t
+
+-- LIMIT-DIFF: 0 --
+
+-- ORDER-DIFF: 0 --
+
+-- PRED-DIFF: 0 --
+
+-- EXACT: 18 --
+RESULT: RED — 2 real statement(s) whose note is unfaithful in projection or missing.
+EXIT=1

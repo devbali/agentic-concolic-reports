@@ -1,0 +1,1 @@
+SELECT `photos`.* FROM `photos`;

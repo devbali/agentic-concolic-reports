@@ -1,0 +1,1192 @@
+[
+  {
+    "klass": "ActionController::Metal",
+    "method": "status=",
+    "tag": "Y1",
+    "source_location": [
+      "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal.rb",
+      150
+    ],
+    "body_lines_range": [
+      150,
+      151
+    ],
+    "body_text": "    delegate :headers, :status=, :location=, :content_type=,\n             :status, :location, :content_type, to: \"@_response\"\n",
+    "fixtures": [
+      {
+        "label": "nil-ish",
+        "args": [
+          "nil"
+        ],
+        "exception": null,
+        "target_calls": [
+
+        ],
+        "connection_touch": false,
+        "connection_touch_detail": [
+
+        ],
+        "application_data_touch": false
+      },
+      {
+        "label": "typical",
+        "args": [
+          "200"
+        ],
+        "exception": null,
+        "target_calls": [
+
+        ],
+        "connection_touch": false,
+        "connection_touch_detail": [
+
+        ],
+        "application_data_touch": false
+      },
+      {
+        "label": "boundary",
+        "args": [
+          ":not_found"
+        ],
+        "exception": null,
+        "target_calls": [
+
+        ],
+        "connection_touch": false,
+        "connection_touch_detail": [
+
+        ],
+        "application_data_touch": false
+      }
+    ],
+    "target_calls_total": [
+
+    ],
+    "connection_touch_any": false,
+    "application_data_touch_any": false,
+    "body_lines": 1,
+    "covered_lines": 1,
+    "coverage_pct": 100.0,
+    "uncovered_line_numbers": [
+
+    ],
+    "verdict": "PASS"
+  },
+  {
+    "klass": "ActionController::Redirecting",
+    "method": "redirect_to",
+    "tag": "Y3a",
+    "source_location": [
+      "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/redirecting.rb",
+      58
+    ],
+    "body_lines_range": [
+      58,
+      65
+    ],
+    "body_text": "    def redirect_to(options = {}, response_status = {})\n      raise ActionControllerError.new(\"Cannot redirect to nil!\") unless options\n      raise AbstractController::DoubleRenderError if response_body\n\n      self.status        = _extract_redirect_to_status(options, response_status)\n      self.location      = _compute_redirect_to_location(request, options)\n      self.response_body = \"<html><body>You are being <a href=\\\"#{ERB::Util.unwrapped_html_escape(response.location)}\\\">redirected</a>.</body></html>\"\n    end\n",
+    "fixtures": [
+      {
+        "label": "nil-ish (options=nil, raise-branch 1)",
+        "args": [
+          "nil"
+        ],
+        "exception": {
+          "class": "ActionController::ActionControllerError",
+          "message": "Cannot redirect to nil!"
+        },
+        "target_calls": [
+
+        ],
+        "connection_touch": false,
+        "connection_touch_detail": [
+
+        ],
+        "application_data_touch": false
+      },
+      {
+        "label": "boundary (response_body already set, raise-branch 2)",
+        "args": [
+          "\"/foo\""
+        ],
+        "exception": {
+          "class": "AbstractController::DoubleRenderError",
+          "message": "Render and/or redirect were called multiple times in this action. Please note that you may only call render OR redirect, and at most once per action. Also note that neither redirect nor render terminate execution of the action, so if you want to exit an action after redirecting, you need to do somet"
+        },
+        "target_calls": [
+
+        ],
+        "connection_touch": false,
+        "connection_touch_detail": [
+
+        ],
+        "application_data_touch": false
+      },
+      {
+        "label": "typical (clean state, full body)",
+        "args": [
+          "\"/foo\""
+        ],
+        "exception": null,
+        "target_calls": [
+          "ActionController::Metal.status="
+        ],
+        "connection_touch": false,
+        "connection_touch_detail": [
+
+        ],
+        "application_data_touch": false
+      }
+    ],
+    "target_calls_total": [
+      "ActionController::Metal.status="
+    ],
+    "connection_touch_any": false,
+    "application_data_touch_any": false,
+    "body_lines": 6,
+    "covered_lines": 6,
+    "coverage_pct": 100.0,
+    "uncovered_line_numbers": [
+
+    ],
+    "verdict": "FAIL (target_calls=[\"ActionController::Metal.status=\"] app_data_touch=false raw_conn_touch=false)"
+  },
+  {
+    "klass": "ActionDispatch::Routing::UrlFor",
+    "method": "url_for",
+    "tag": "Y3b",
+    "source_location": [
+      "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_dispatch/routing/url_for.rb",
+      168
+    ],
+    "body_lines_range": [
+      168,
+      170
+    ],
+    "body_text": "      def url_for(options = nil)\n        full_url_for(options)\n      end\n",
+    "fixtures": [
+      {
+        "label": "nil-ish",
+        "args": [
+          "nil"
+        ],
+        "exception": {
+          "class": "ActionController::UrlGenerationError",
+          "message": "No route matches {}"
+        },
+        "target_calls": [
+
+        ],
+        "connection_touch": false,
+        "connection_touch_detail": [
+
+        ],
+        "application_data_touch": false
+      },
+      {
+        "label": "typical",
+        "args": [
+          "{:controller=>\"notifications\", :action=>\"index\"}"
+        ],
+        "exception": null,
+        "target_calls": [
+
+        ],
+        "connection_touch": false,
+        "connection_touch_detail": [
+
+        ],
+        "application_data_touch": false
+      },
+      {
+        "label": "boundary (string)",
+        "args": [
+          "\"/already/a/path\""
+        ],
+        "exception": null,
+        "target_calls": [
+
+        ],
+        "connection_touch": false,
+        "connection_touch_detail": [
+
+        ],
+        "application_data_touch": false
+      }
+    ],
+    "target_calls_total": [
+
+    ],
+    "connection_touch_any": false,
+    "application_data_touch_any": false,
+    "body_lines": 2,
+    "covered_lines": 2,
+    "coverage_pct": 100.0,
+    "uncovered_line_numbers": [
+
+    ],
+    "verdict": "PASS"
+  },
+  {
+    "klass": "DeviseController",
+    "method": "assert_is_devise_resource!",
+    "tag": "Y4",
+    "source_location": [
+      "/home/dev/.gem/jruby/2.6.0/gems/devise-4.7.1/app/controllers/devise_controller.rb",
+      64
+    ],
+    "body_lines_range": [
+      64,
+      81
+    ],
+    "body_text": "  def assert_is_devise_resource! #:nodoc:\n    unknown_action! <<-MESSAGE unless devise_mapping\nCould not find devise mapping for path #{request.fullpath.inspect}.\nThis may happen for two reasons:\n\n1) You forgot to wrap your route inside the scope block. For example:\n\n  devise_scope :user do\n    get \"/some/route\" => \"some_devise_controller\"\n  end\n\n2) You are testing a Devise controller bypassing the router.\n   If so, you can explicitly tell Devise which mapping to use:\n\n   @request.env[\"devise.mapping\"] = Devise.mappings[:user]\n\nMESSAGE\n  end\n",
+    "fixtures": [
+      {
+        "label": "nil-ish (devise_mapping falsy -> raise branch)",
+        "args": [
+
+        ],
+        "exception": {
+          "class": "AbstractController::ActionNotFound",
+          "message": "Could not find devise mapping for path \"/\".\nThis may happen for two reasons:\n\n1) You forgot to wrap your route inside the scope block. For example:\n\n  devise_scope :user do\n    get \"/some/route\" => \"some_devise_controller\"\n  end\n\n2) You are testing a Devise controller bypassing the router.\n   If so,"
+        },
+        "target_calls": [
+
+        ],
+        "connection_touch": false,
+        "connection_touch_detail": [
+
+        ],
+        "application_data_touch": false
+      },
+      {
+        "label": "typical (devise_mapping truthy -> no raise)",
+        "args": [
+
+        ],
+        "exception": null,
+        "target_calls": [
+
+        ],
+        "connection_touch": false,
+        "connection_touch_detail": [
+
+        ],
+        "application_data_touch": false
+      }
+    ],
+    "target_calls_total": [
+
+    ],
+    "connection_touch_any": false,
+    "application_data_touch_any": false,
+    "body_lines": 3,
+    "covered_lines": 3,
+    "coverage_pct": 100.0,
+    "uncovered_line_numbers": [
+
+    ],
+    "verdict": "PASS"
+  },
+  {
+    "klass": "ActiveRecord::Associations::SingularAssociation",
+    "method": "writer",
+    "tag": "W1",
+    "source_location": [
+      "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations/singular_association.rb",
+      16
+    ],
+    "body_lines_range": [
+      16,
+      18
+    ],
+    "body_text": "      def writer(record)\n        replace(record)\n      end\n",
+    "fixtures": [
+      {
+        "label": "nil-ish (unset)",
+        "args": [
+          "nil"
+        ],
+        "exception": null,
+        "target_calls": [
+
+        ],
+        "connection_touch": true,
+        "connection_touch_detail": [
+          {
+            "method": "exec_query",
+            "sql": "SELECT name FROM sqlite_master WHERE name <> 'sqlite_sequence' AND type IN ('table','view')"
+          },
+          {
+            "method": "exec_query",
+            "sql": "SELECT name FROM sqlite_master WHERE name <> 'sqlite_sequence' AND type IN ('table','view')"
+          },
+          {
+            "method": "exec_query",
+            "sql": "PRAGMA table_info(\"comments\")"
+          },
+          {
+            "method": "exec_query",
+            "sql": "PRAGMA table_info(\"comments\")"
+          },
+          {
+            "method": "exec_query",
+            "sql": "            SELECT sql FROM\n              (SELECT * FROM sqlite_master UNION ALL\n               SELECT * FROM sqlite_temp_master)\n            WHERE type = 'table' AND name = 'comments'\n"
+          },
+          {
+            "method": "exec_query",
+            "sql": "            SELECT sql FROM\n              (SELECT * FROM sqlite_master UNION ALL\n               SELECT * FROM sqlite_temp_master)\n            WHERE type = 'table' AND name = 'comments'\n"
+          }
+        ],
+        "application_data_touch": false
+      },
+      {
+        "label": "typical (new record)",
+        "args": [
+          "#<Person id: nil, guid: \"969c65807dc7013f7001518ff3a98bad\", diaspora_handle: nil"
+        ],
+        "exception": null,
+        "target_calls": [
+          "ActiveRecord::Associations::SingularAssociation.writer"
+        ],
+        "connection_touch": true,
+        "connection_touch_detail": [
+          {
+            "method": "exec_query",
+            "sql": "PRAGMA table_info(\"people\")"
+          },
+          {
+            "method": "exec_query",
+            "sql": "PRAGMA table_info(\"people\")"
+          },
+          {
+            "method": "exec_query",
+            "sql": "            SELECT sql FROM\n              (SELECT * FROM sqlite_master UNION ALL\n               SELECT * FROM sqlite_temp_master)\n            WHERE type = 'table' AND name = 'people'\n"
+          },
+          {
+            "method": "exec_query",
+            "sql": "            SELECT sql FROM\n              (SELECT * FROM sqlite_master UNION ALL\n               SELECT * FROM sqlite_temp_master)\n            WHERE type = 'table' AND name = 'people'\n"
+          },
+          {
+            "method": "exec_query",
+            "sql": "PRAGMA table_info(\"profiles\")"
+          },
+          {
+            "method": "exec_query",
+            "sql": "PRAGMA table_info(\"profiles\")"
+          },
+          {
+            "method": "exec_query",
+            "sql": "            SELECT sql FROM\n              (SELECT * FROM sqlite_master UNION ALL\n               SELECT * FROM sqlite_temp_master)\n            WHERE type = 'table' AND name = 'profiles'\n"
+          },
+          {
+            "method": "exec_query",
+            "sql": "            SELECT sql FROM\n              (SELECT * FROM sqlite_master UNION ALL\n               SELECT * FROM sqlite_temp_master)\n            WHERE type = 'table' AND name = 'profiles'\n"
+          }
+        ],
+        "application_data_touch": false
+      },
+      {
+        "label": "boundary (same assoc replace-with-nil-again)",
+        "args": [
+          "nil"
+        ],
+        "exception": null,
+        "target_calls": [
+
+        ],
+        "connection_touch": false,
+        "connection_touch_detail": [
+
+        ],
+        "application_data_touch": false
+      }
+    ],
+    "target_calls_total": [
+      "ActiveRecord::Associations::SingularAssociation.writer"
+    ],
+    "connection_touch_any": true,
+    "application_data_touch_any": false,
+    "body_lines": 2,
+    "covered_lines": 2,
+    "coverage_pct": 100.0,
+    "uncovered_line_numbers": [
+
+    ],
+    "verdict": "FAIL (target_calls=[\"ActiveRecord::Associations::SingularAssociation.writer\"] app_data_touch=false raw_conn_touch=true)"
+  },
+  {
+    "klass": "ActiveRecord::Associations::SingularAssociation",
+    "method": "find_target",
+    "tag": "W3",
+    "source_location": [
+      "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations/singular_association.rb",
+      38
+    ],
+    "body_lines_range": [
+      38,
+      54
+    ],
+    "body_text": "        def find_target\n          scope = self.scope\n          return scope.take if skip_statement_cache?(scope)\n\n          conn = klass.connection\n          sc = reflection.association_scope_cache(conn, owner) do |params|\n            as = AssociationScope.create { params.bind }\n            target_scope.merge!(as.scope(self)).limit(1)\n          end\n\n          binds = AssociationScope.get_bind_values(owner, reflection.chain)\n          sc.execute(binds, conn) do |record|\n            set_inverse_instance record\n          end.first\n        rescue ::RangeError\n          nil\n        end\n",
+    "fixtures": [
+      {
+        "label": "typical (unsaved owner, belongs_to)",
+        "args": [
+
+        ],
+        "exception": {
+          "class": "NotImplementedError",
+          "message": "SymbolicList#first is not supported without a representative or for a multi-element take (contents out of scope). Supply representative: to a SymbolicList to read its first row."
+        },
+        "target_calls": [
+          "ActiveRecord::Querying.find_by_sql"
+        ],
+        "connection_touch": false,
+        "connection_touch_detail": [
+
+        ],
+        "application_data_touch": false
+      }
+    ],
+    "target_calls_total": [
+      "ActiveRecord::Querying.find_by_sql"
+    ],
+    "connection_touch_any": false,
+    "application_data_touch_any": false,
+    "body_lines": 12,
+    "covered_lines": 9,
+    "coverage_pct": 75.0,
+    "uncovered_line_numbers": [
+      49,
+      50,
+      53
+    ],
+    "verdict": "FAIL (target_calls=[\"ActiveRecord::Querying.find_by_sql\"] app_data_touch=false raw_conn_touch=false)"
+  },
+  {
+    "klass": "ActiveRecord::Associations::BelongsToPolymorphicAssociation",
+    "method": "find_target",
+    "tag": "W3b",
+    "source_location": [
+      "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations/singular_association.rb",
+      38
+    ],
+    "body_lines_range": [
+      38,
+      54
+    ],
+    "body_text": "        def find_target\n          scope = self.scope\n          return scope.take if skip_statement_cache?(scope)\n\n          conn = klass.connection\n          sc = reflection.association_scope_cache(conn, owner) do |params|\n            as = AssociationScope.create { params.bind }\n            target_scope.merge!(as.scope(self)).limit(1)\n          end\n\n          binds = AssociationScope.get_bind_values(owner, reflection.chain)\n          sc.execute(binds, conn) do |record|\n            set_inverse_instance record\n          end.first\n        rescue ::RangeError\n          nil\n        end\n",
+    "fixtures": [
+      {
+        "label": "typical (unsaved owner, polymorphic belongs_to, target_type set)",
+        "args": [
+
+        ],
+        "exception": {
+          "class": "NotImplementedError",
+          "message": "SymbolicList#first is not supported without a representative or for a multi-element take (contents out of scope). Supply representative: to a SymbolicList to read its first row."
+        },
+        "target_calls": [
+          "ActiveRecord::Querying.find_by_sql"
+        ],
+        "connection_touch": true,
+        "connection_touch_detail": [
+          {
+            "method": "exec_query",
+            "sql": "PRAGMA table_info(\"notifications\")"
+          },
+          {
+            "method": "exec_query",
+            "sql": "PRAGMA table_info(\"notifications\")"
+          },
+          {
+            "method": "exec_query",
+            "sql": "            SELECT sql FROM\n              (SELECT * FROM sqlite_master UNION ALL\n               SELECT * FROM sqlite_temp_master)\n            WHERE type = 'table' AND name = 'notifications'\n"
+          },
+          {
+            "method": "exec_query",
+            "sql": "            SELECT sql FROM\n              (SELECT * FROM sqlite_master UNION ALL\n               SELECT * FROM sqlite_temp_master)\n            WHERE type = 'table' AND name = 'notifications'\n"
+          },
+          {
+            "method": "exec_query",
+            "sql": "PRAGMA table_info(\"posts\")"
+          },
+          {
+            "method": "exec_query",
+            "sql": "PRAGMA table_info(\"posts\")"
+          },
+          {
+            "method": "exec_query",
+            "sql": "            SELECT sql FROM\n              (SELECT * FROM sqlite_master UNION ALL\n               SELECT * FROM sqlite_temp_master)\n            WHERE type = 'table' AND name = 'posts'\n"
+          },
+          {
+            "method": "exec_query",
+            "sql": "            SELECT sql FROM\n              (SELECT * FROM sqlite_master UNION ALL\n               SELECT * FROM sqlite_temp_master)\n            WHERE type = 'table' AND name = 'posts'\n"
+          }
+        ],
+        "application_data_touch": false
+      }
+    ],
+    "target_calls_total": [
+      "ActiveRecord::Querying.find_by_sql"
+    ],
+    "connection_touch_any": true,
+    "application_data_touch_any": false,
+    "body_lines": 12,
+    "covered_lines": 10,
+    "coverage_pct": 83.3,
+    "uncovered_line_numbers": [
+      50,
+      53
+    ],
+    "verdict": "FAIL (target_calls=[\"ActiveRecord::Querying.find_by_sql\"] app_data_touch=false raw_conn_touch=true)"
+  },
+  {
+    "klass": "ActionController::Rendering",
+    "method": "_set_rendered_content_type",
+    "tag": "W4",
+    "source_location": [
+      "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/rendering.rb",
+      75
+    ],
+    "body_lines_range": [
+      75,
+      79
+    ],
+    "body_text": "      def _set_rendered_content_type(format)\n        if format && !response.content_type\n          self.content_type = format.to_s\n        end\n      end\n",
+    "fixtures": [
+      {
+        "label": "nil-ish (format nil)",
+        "args": [
+          "nil"
+        ],
+        "exception": null,
+        "target_calls": [
+
+        ],
+        "connection_touch": false,
+        "connection_touch_detail": [
+
+        ],
+        "application_data_touch": false
+      },
+      {
+        "label": "typical (content_type unset)",
+        "args": [
+          "#<Mime::Type:0x1f481ec3 @symbol=:html, @hash=383393837600479525, @synonyms=[\"app"
+        ],
+        "exception": null,
+        "target_calls": [
+
+        ],
+        "connection_touch": false,
+        "connection_touch_detail": [
+
+        ],
+        "application_data_touch": false
+      },
+      {
+        "label": "boundary (content_type already set)",
+        "args": [
+          "#<Mime::Type:0x1f481ec3 @symbol=:html, @hash=383393837600479525, @synonyms=[\"app"
+        ],
+        "exception": null,
+        "target_calls": [
+
+        ],
+        "connection_touch": false,
+        "connection_touch_detail": [
+
+        ],
+        "application_data_touch": false
+      }
+    ],
+    "target_calls_total": [
+
+    ],
+    "connection_touch_any": false,
+    "application_data_touch_any": false,
+    "body_lines": 3,
+    "covered_lines": 3,
+    "coverage_pct": 100.0,
+    "uncovered_line_numbers": [
+
+    ],
+    "verdict": "PASS"
+  },
+  {
+    "klass": "DeviseController",
+    "method": "devise_mapping",
+    "tag": "W7",
+    "source_location": [
+      "/home/dev/.gem/jruby/2.6.0/gems/devise-4.7.1/app/controllers/devise_controller.rb",
+      59
+    ],
+    "body_lines_range": [
+      59,
+      61
+    ],
+    "body_text": "  def devise_mapping\n    @devise_mapping ||= request.env[\"devise.mapping\"]\n  end\n",
+    "fixtures": [
+      {
+        "label": "nil-ish (env empty)",
+        "args": [
+
+        ],
+        "exception": null,
+        "target_calls": [
+
+        ],
+        "connection_touch": false,
+        "connection_touch_detail": [
+
+        ],
+        "application_data_touch": false
+      },
+      {
+        "label": "typical (env has mapping)",
+        "args": [
+
+        ],
+        "exception": null,
+        "target_calls": [
+
+        ],
+        "connection_touch": false,
+        "connection_touch_detail": [
+
+        ],
+        "application_data_touch": false
+      },
+      {
+        "label": "boundary (memoized already set)",
+        "args": [
+
+        ],
+        "exception": null,
+        "target_calls": [
+
+        ],
+        "connection_touch": false,
+        "connection_touch_detail": [
+
+        ],
+        "application_data_touch": false
+      }
+    ],
+    "target_calls_total": [
+
+    ],
+    "connection_touch_any": false,
+    "application_data_touch_any": false,
+    "body_lines": 2,
+    "covered_lines": 2,
+    "coverage_pct": 100.0,
+    "uncovered_line_numbers": [
+
+    ],
+    "verdict": "PASS"
+  },
+  {
+    "klass": "ActiveRecord::Base",
+    "method": "to_param",
+    "tag": "5i",
+    "source_location": [
+      "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/integration.rb",
+      49
+    ],
+    "body_lines_range": [
+      49,
+      52
+    ],
+    "body_text": "    def to_param\n      # We can't use alias_method here, because method 'id' optimizes itself on the fly.\n      id && id.to_s # Be sure to stringify the id for routes\n    end\n",
+    "fixtures": [
+      {
+        "label": "nil-ish (id nil)",
+        "args": [
+
+        ],
+        "exception": null,
+        "target_calls": [
+
+        ],
+        "connection_touch": false,
+        "connection_touch_detail": [
+
+        ],
+        "application_data_touch": false
+      },
+      {
+        "label": "typical (id=5)",
+        "args": [
+
+        ],
+        "exception": null,
+        "target_calls": [
+
+        ],
+        "connection_touch": false,
+        "connection_touch_detail": [
+
+        ],
+        "application_data_touch": false
+      },
+      {
+        "label": "boundary (id=0)",
+        "args": [
+
+        ],
+        "exception": null,
+        "target_calls": [
+
+        ],
+        "connection_touch": false,
+        "connection_touch_detail": [
+
+        ],
+        "application_data_touch": false
+      }
+    ],
+    "target_calls_total": [
+
+    ],
+    "connection_touch_any": false,
+    "application_data_touch_any": false,
+    "body_lines": 2,
+    "covered_lines": 2,
+    "coverage_pct": 100.0,
+    "uncovered_line_numbers": [
+
+    ],
+    "verdict": "PASS"
+  },
+  {
+    "klass": "ActionController::Instrumentation",
+    "method": "redirect_to",
+    "tag": "X6g",
+    "source_location": [
+      "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/instrumentation.rb",
+      64
+    ],
+    "body_lines_range": [
+      64,
+      71
+    ],
+    "body_text": "    def redirect_to(*args)\n      ActiveSupport::Notifications.instrument(\"redirect_to.action_controller\") do |payload|\n        result = super\n        payload[:status]   = response.status\n        payload[:location] = response.filtered_location\n        result\n      end\n    end\n",
+    "fixtures": [
+      {
+        "label": "typical",
+        "args": [
+          "\"/foo\""
+        ],
+        "exception": {
+          "class": "NoMethodError",
+          "message": "super: no superclass method `redirect_to' for #<NotificationsController:0x3b086139>\nDid you mean?  redirect_back"
+        },
+        "target_calls": [
+
+        ],
+        "connection_touch": false,
+        "connection_touch_detail": [
+
+        ],
+        "application_data_touch": false
+      }
+    ],
+    "target_calls_total": [
+
+    ],
+    "connection_touch_any": false,
+    "application_data_touch_any": false,
+    "body_lines": 6,
+    "covered_lines": 3,
+    "coverage_pct": 50.0,
+    "uncovered_line_numbers": [
+      67,
+      68,
+      69
+    ],
+    "verdict": "FAIL-COVERAGE (50.0% of body lines)"
+  },
+  {
+    "klass": "ActionController::Head",
+    "method": "head",
+    "tag": "W2_actual",
+    "source_location": [
+      "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/head.rb",
+      21
+    ],
+    "body_lines_range": [
+      21,
+      46
+    ],
+    "body_text": "    def head(status, options = {})\n      if status.is_a?(Hash)\n        raise ArgumentError, \"#{status.inspect} is not a valid value for `status`.\"\n      end\n\n      status ||= :ok\n\n      location = options.delete(:location)\n      content_type = options.delete(:content_type)\n\n      options.each do |key, value|\n        headers[key.to_s.dasherize.split(\"-\").each { |v| v[0] = v[0].chr.upcase }.join(\"-\")] = value.to_s\n      end\n\n      self.status = status\n      self.location = url_for(location) if location\n\n      self.response_body = \"\"\n\n      if include_content?(response_code)\n        self.content_type = content_type || (Mime[formats.first] if formats)\n        response.charset = false\n      end\n\n      true\n    end\n",
+    "fixtures": [
+      {
+        "label": "nil-ish",
+        "args": [
+          "nil"
+        ],
+        "exception": null,
+        "target_calls": [
+          "ActionController::Metal.status="
+        ],
+        "connection_touch": false,
+        "connection_touch_detail": [
+
+        ],
+        "application_data_touch": false
+      },
+      {
+        "label": "typical (symbol)",
+        "args": [
+          ":not_found"
+        ],
+        "exception": null,
+        "target_calls": [
+          "ActionController::Metal.status="
+        ],
+        "connection_touch": false,
+        "connection_touch_detail": [
+
+        ],
+        "application_data_touch": false
+      },
+      {
+        "label": "boundary (integer)",
+        "args": [
+          "204"
+        ],
+        "exception": null,
+        "target_calls": [
+          "ActionController::Metal.status="
+        ],
+        "connection_touch": false,
+        "connection_touch_detail": [
+
+        ],
+        "application_data_touch": false
+      }
+    ],
+    "target_calls_total": [
+      "ActionController::Metal.status="
+    ],
+    "connection_touch_any": false,
+    "application_data_touch_any": false,
+    "body_lines": 15,
+    "covered_lines": 13,
+    "coverage_pct": 86.7,
+    "uncovered_line_numbers": [
+      23,
+      32
+    ],
+    "verdict": "FAIL (target_calls=[\"ActionController::Metal.status=\"] app_data_touch=false raw_conn_touch=false)"
+  },
+  {
+    "klass": "ActiveRecord::FinderMethods",
+    "method": "find_by",
+    "tag": "design#1",
+    "source_location": [
+      "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/relation/finder_methods.rb",
+      80
+    ],
+    "body_lines_range": [
+      80,
+      84
+    ],
+    "body_text": "    def find_by(arg, *args)\n      where(arg, *args).take\n    rescue ::RangeError\n      nil\n    end\n",
+    "fixtures": [
+      {
+        "label": "typical (concrete id)",
+        "args": [
+          "{:id=>999999999}"
+        ],
+        "exception": null,
+        "target_calls": [
+          "ActiveRecord::FinderMethods.take"
+        ],
+        "connection_touch": false,
+        "connection_touch_detail": [
+
+        ],
+        "application_data_touch": false
+      }
+    ],
+    "target_calls_total": [
+      "ActiveRecord::FinderMethods.take"
+    ],
+    "connection_touch_any": false,
+    "application_data_touch_any": false,
+    "body_lines": 3,
+    "covered_lines": 2,
+    "coverage_pct": 66.7,
+    "uncovered_line_numbers": [
+      83
+    ],
+    "verdict": "INFO-SQL-BOUNDARY-CONFIRMED (target_calls=[\"ActiveRecord::FinderMethods.take\"] app_data_touch=false)"
+  },
+  {
+    "klass": "ActiveRecord::Calculations",
+    "method": "count",
+    "tag": "design#5",
+    "source_location": [
+      "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/relation/calculations.rb",
+      41
+    ],
+    "body_lines_range": [
+      41,
+      53
+    ],
+    "body_text": "    def count(column_name = nil)\n      if block_given?\n        unless column_name.nil?\n          ActiveSupport::Deprecation.warn \\\n            \"When `count' is called with a block, it ignores other arguments. \" \\\n            \"This behavior is now deprecated and will result in an ArgumentError in Rails 6.0.\"\n        end\n\n        return super()\n      end\n\n      calculate(:count, column_name)\n    end\n",
+    "fixtures": [
+      {
+        "label": "typical",
+        "args": [
+
+        ],
+        "exception": {
+          "class": "NotImplementedError",
+          "message": "unimplemented concolic operation: Calculations#calculate (contents out of scope)"
+        },
+        "target_calls": [
+          "ActiveRecord::Calculations.calculate"
+        ],
+        "connection_touch": false,
+        "connection_touch_detail": [
+
+        ],
+        "application_data_touch": false
+      }
+    ],
+    "target_calls_total": [
+      "ActiveRecord::Calculations.calculate"
+    ],
+    "connection_touch_any": false,
+    "application_data_touch_any": false,
+    "body_lines": 6,
+    "covered_lines": 3,
+    "coverage_pct": 50.0,
+    "uncovered_line_numbers": [
+      43,
+      44,
+      49
+    ],
+    "verdict": "INFO-SQL-BOUNDARY-CONFIRMED (target_calls=[\"ActiveRecord::Calculations.calculate\"] app_data_touch=false)"
+  },
+  {
+    "klass": "ActiveRecord::Relation",
+    "method": "update_all",
+    "tag": "design#7",
+    "source_location": [
+      "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/relation.rb",
+      315
+    ],
+    "body_lines_range": [
+      315,
+      338
+    ],
+    "body_text": "    def update_all(updates)\n      raise ArgumentError, \"Empty list of attributes to change\" if updates.blank?\n\n      if eager_loading?\n        relation = apply_join_dependency\n        return relation.update_all(updates)\n      end\n\n      stmt = Arel::UpdateManager.new\n\n      stmt.set Arel.sql(@klass.sanitize_sql_for_assignment(updates))\n      stmt.table(table)\n\n      if has_join_values? || offset_value\n        @klass.connection.join_to_update(stmt, arel, arel_attribute(primary_key))\n      else\n        stmt.key = arel_attribute(primary_key)\n        stmt.take(arel.limit)\n        stmt.order(*arel.orders)\n        stmt.wheres = arel.constraints\n      end\n\n      @klass.connection.update stmt, \"#{@klass} Update All\"\n    end\n",
+    "fixtures": [
+      {
+        "label": "typical (0-row scope, still issues SQL)",
+        "args": [
+          "{:updated_at=>2026-08-19 06:46:10 +0000}"
+        ],
+        "exception": {
+          "class": "ConcolicLeafProbeViolation",
+          "message": "connection#exec_update touched: UPDATE \"people\" SET \"updated_at\" = '2026-08-19 06:46:10.945067' WHERE (1=0)"
+        },
+        "target_calls": [
+
+        ],
+        "connection_touch": true,
+        "connection_touch_detail": [
+          {
+            "method": "exec_update",
+            "sql": "UPDATE \"people\" SET \"updated_at\" = '2026-08-19 06:46:10.945067' WHERE (1=0)"
+          }
+        ],
+        "application_data_touch": true
+      }
+    ],
+    "target_calls_total": [
+
+    ],
+    "connection_touch_any": true,
+    "application_data_touch_any": true,
+    "body_lines": 15,
+    "covered_lines": 12,
+    "coverage_pct": 80.0,
+    "uncovered_line_numbers": [
+      319,
+      320,
+      329
+    ],
+    "verdict": "INFO-SQL-BOUNDARY-CONFIRMED (target_calls=[] app_data_touch=true)"
+  },
+  {
+    "klass": "ActiveRecord::Querying",
+    "method": "find_by_sql",
+    "tag": "design#9",
+    "source_location": [
+      "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/querying.rb",
+      40
+    ],
+    "body_lines_range": [
+      40,
+      54
+    ],
+    "body_text": "    def find_by_sql(sql, binds = [], preparable: nil, &block)\n      result_set = connection.select_all(sanitize_sql(sql), \"#{name} Load\", binds, preparable: preparable)\n      column_types = result_set.column_types.dup\n      attribute_types.each_key { |k| column_types.delete k }\n      message_bus = ActiveSupport::Notifications.instrumenter\n\n      payload = {\n        record_count: result_set.length,\n        class_name: name\n      }\n\n      message_bus.instrument(\"instantiation.active_record\", payload) do\n        result_set.map { |record| instantiate(record, column_types, &block) }\n      end\n    end\n",
+    "fixtures": [
+      {
+        "label": "typical (literal SQL)",
+        "args": [
+          "\"SELECT 1 AS one WHERE 1=0\""
+        ],
+        "exception": {
+          "class": "ConcolicLeafProbeViolation",
+          "message": "connection#exec_query touched: SELECT 1 AS one WHERE 1=0"
+        },
+        "target_calls": [
+
+        ],
+        "connection_touch": true,
+        "connection_touch_detail": [
+          {
+            "method": "exec_query",
+            "sql": "SELECT 1 AS one WHERE 1=0"
+          }
+        ],
+        "application_data_touch": true
+      }
+    ],
+    "target_calls_total": [
+
+    ],
+    "connection_touch_any": true,
+    "application_data_touch_any": true,
+    "body_lines": 8,
+    "covered_lines": 2,
+    "coverage_pct": 25.0,
+    "uncovered_line_numbers": [
+      42,
+      43,
+      44,
+      46,
+      51,
+      52
+    ],
+    "verdict": "INFO-SQL-BOUNDARY-CONFIRMED (target_calls=[] app_data_touch=true)"
+  },
+  {
+    "klass": "User",
+    "method": "blocks",
+    "tag": "design#User_blocks",
+    "source_location": [
+      "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations/builder/association.rb",
+      107
+    ],
+    "body_lines_range": [
+      107,
+      109
+    ],
+    "body_text": "        def #{name}\n          association(:#{name}).reader\n        end\n",
+    "fixtures": [
+      {
+        "label": "typical (persisted-shaped receiver)",
+        "args": [
+
+        ],
+        "exception": null,
+        "target_calls": [
+
+        ],
+        "connection_touch": true,
+        "connection_touch_detail": [
+          {
+            "method": "exec_query",
+            "sql": "PRAGMA table_info(\"users\")"
+          },
+          {
+            "method": "exec_query",
+            "sql": "PRAGMA table_info(\"users\")"
+          },
+          {
+            "method": "exec_query",
+            "sql": "            SELECT sql FROM\n              (SELECT * FROM sqlite_master UNION ALL\n               SELECT * FROM sqlite_temp_master)\n            WHERE type = 'table' AND name = 'users'\n"
+          },
+          {
+            "method": "exec_query",
+            "sql": "            SELECT sql FROM\n              (SELECT * FROM sqlite_master UNION ALL\n               SELECT * FROM sqlite_temp_master)\n            WHERE type = 'table' AND name = 'users'\n"
+          }
+        ],
+        "application_data_touch": false
+      }
+    ],
+    "target_calls_total": [
+
+    ],
+    "connection_touch_any": true,
+    "application_data_touch_any": false,
+    "body_lines": 2,
+    "covered_lines": 0,
+    "coverage_pct": 0.0,
+    "uncovered_line_numbers": [
+      107,
+      108
+    ],
+    "verdict": "INFO-UNEXPECTED-NO-SQL (design mock's real body reached neither app SQL nor another target -- worth a second look)"
+  },
+  {
+    "klass": "ActiveRecord::Calculations",
+    "method": "pluck",
+    "tag": "design#pluck",
+    "source_location": [
+      "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/relation/calculations.rb",
+      185
+    ],
+    "body_lines_range": [
+      185,
+      200
+    ],
+    "body_text": "    def pluck(*column_names)\n      if loaded? && (column_names.map(&:to_s) - @klass.attribute_names - @klass.attribute_aliases.keys).empty?\n        return records.pluck(*column_names)\n      end\n\n      if has_include?(column_names.first)\n        relation = apply_join_dependency\n        relation.pluck(*column_names)\n      else\n        klass.enforce_raw_sql_whitelist(column_names)\n        relation = spawn\n        relation.select_values = column_names\n        result = skip_query_cache_if_necessary { klass.connection.select_all(relation.arel, nil) }\n        result.cast_values(klass.attribute_types)\n      end\n    end\n",
+    "fixtures": [
+      {
+        "label": "typical",
+        "args": [
+          ":id"
+        ],
+        "exception": {
+          "class": "ConcolicLeafProbeViolation",
+          "message": "connection#exec_query touched: SELECT \"people\".\"id\" FROM \"people\" WHERE (1=1)"
+        },
+        "target_calls": [
+
+        ],
+        "connection_touch": true,
+        "connection_touch_detail": [
+          {
+            "method": "exec_query",
+            "sql": "SELECT \"people\".\"id\" FROM \"people\" WHERE (1=1)"
+          }
+        ],
+        "application_data_touch": true
+      }
+    ],
+    "target_calls_total": [
+
+    ],
+    "connection_touch_any": true,
+    "application_data_touch_any": true,
+    "body_lines": 11,
+    "covered_lines": 7,
+    "coverage_pct": 63.6,
+    "uncovered_line_numbers": [
+      187,
+      191,
+      192,
+      198
+    ],
+    "verdict": "INFO-SQL-BOUNDARY-CONFIRMED (target_calls=[] app_data_touch=true)"
+  }
+]

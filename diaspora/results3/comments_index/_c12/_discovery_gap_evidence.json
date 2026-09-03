@@ -1,0 +1,59 @@
+{
+  "existing_person_no_profile": {
+    "ok": false,
+    "error": "ActiveRecord::RecordInvalid: Validation failed: Specify an owner or a pod, not both",
+    "n": 27,
+    "statements": [
+      "PRAGMA table_info(\"people\")",
+      "SELECT sql FROM (SELECT * FROM sqlite_master UNION ALL SELECT * FROM sqlite_temp_master) WHERE type = 'table' AND name = 'people'",
+      "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"diaspora_handle\" = ? LIMIT ?",
+      "SELECT name FROM sqlite_master WHERE name <> 'sqlite_sequence' AND type IN ('table','view')",
+      "PRAGMA table_info(\"people\")",
+      "SELECT sql FROM (SELECT * FROM sqlite_master UNION ALL SELECT * FROM sqlite_temp_master) WHERE type = 'table' AND name = 'people'",
+      "PRAGMA table_info(\"profiles\")",
+      "SELECT sql FROM (SELECT * FROM sqlite_master UNION ALL SELECT * FROM sqlite_temp_master) WHERE type = 'table' AND name = 'profiles'",
+      "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = ? LIMIT ?",
+      "PRAGMA table_info(\"profiles\")",
+      "SELECT sql FROM (SELECT * FROM sqlite_master UNION ALL SELECT * FROM sqlite_temp_master) WHERE type = 'table' AND name = 'profiles'",
+      "BEGIN TRANSACTION",
+      "PRAGMA table_info(\"tags\")",
+      "SELECT sql FROM (SELECT * FROM sqlite_master UNION ALL SELECT * FROM sqlite_temp_master) WHERE type = 'table' AND name = 'tags'",
+      "PRAGMA table_info(\"taggings\")",
+      "SELECT sql FROM (SELECT * FROM sqlite_master UNION ALL SELECT * FROM sqlite_temp_master) WHERE type = 'table' AND name = 'taggings'",
+      "PRAGMA table_info(\"tags\")",
+      "SELECT sql FROM (SELECT * FROM sqlite_master UNION ALL SELECT * FROM sqlite_temp_master) WHERE type = 'table' AND name = 'tags'",
+      "PRAGMA table_info(\"taggings\")",
+      "SELECT sql FROM (SELECT * FROM sqlite_master UNION ALL SELECT * FROM sqlite_temp_master) WHERE type = 'table' AND name = 'taggings'",
+      "INSERT INTO \"profiles\" (\"person_id\", \"created_at\", \"updated_at\", \"full_name\") VALUES (?, ?, ?, ?)",
+      "SELECT \"tags\".* FROM \"tags\" INNER JOIN \"taggings\" ON \"tags\".\"id\" = \"taggings\".\"tag_id\" WHERE \"taggings\".\"taggable_id\" = ? AND \"taggings\".\"taggable_type\" = ? AND (taggings.context = 'tags' AND taggings.tagger_id IS NULL) ORDER BY taggings.id",
+      "COMMIT TRANSACTION",
+      "BEGIN TRANSACTION",
+      "SELECT 1 AS one FROM \"people\" WHERE \"people\".\"guid\" = ? AND \"people\".\"id\" != ? LIMIT ?",
+      "SELECT 1 AS one FROM \"people\" WHERE \"people\".\"diaspora_handle\" = ? AND \"people\".\"id\" != ? LIMIT ?",
+      "ROLLBACK TRANSACTION"
+    ]
+  },
+  "new_person": {
+    "ok": true,
+    "n": 17,
+    "statements": [
+      "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"diaspora_handle\" = ? LIMIT ?",
+      "PRAGMA table_info(\"pods\")",
+      "SELECT sql FROM (SELECT * FROM sqlite_master UNION ALL SELECT * FROM sqlite_temp_master) WHERE type = 'table' AND name = 'pods'",
+      "SELECT \"pods\".* FROM \"pods\" WHERE \"pods\".\"host\" = ? AND \"pods\".\"port\" IS NULL LIMIT ?",
+      "PRAGMA table_info(\"pods\")",
+      "SELECT sql FROM (SELECT * FROM sqlite_master UNION ALL SELECT * FROM sqlite_temp_master) WHERE type = 'table' AND name = 'pods'",
+      "BEGIN TRANSACTION",
+      "INSERT INTO \"pods\" (\"host\", \"ssl\", \"created_at\", \"updated_at\") VALUES (?, ?, ?, ?)",
+      "COMMIT TRANSACTION",
+      "BEGIN TRANSACTION",
+      "SELECT 1 AS one FROM \"people\" WHERE \"people\".\"guid\" = ? LIMIT ?",
+      "SELECT \"people\".\"diaspora_handle\" FROM \"people\" WHERE \"people\".\"guid\" = ? AND \"people\".\"diaspora_handle\" != ?",
+      "SELECT 1 AS one FROM \"people\" WHERE \"people\".\"diaspora_handle\" = ? LIMIT ?",
+      "INSERT INTO \"people\" (\"guid\", \"diaspora_handle\", \"serialized_public_key\", \"created_at\", \"updated_at\", \"pod_id\") VALUES (?, ?, ?, ?, ?, ?)",
+      "INSERT INTO \"profiles\" (\"first_name\", \"last_name\", \"image_url\", \"image_url_small\", \"image_url_medium\", \"person_id\", \"created_at\", \"updated_at\", \"full_name\") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      "SELECT \"tags\".* FROM \"tags\" INNER JOIN \"taggings\" ON \"tags\".\"id\" = \"taggings\".\"tag_id\" WHERE \"taggings\".\"taggable_id\" = ? AND \"taggings\".\"taggable_type\" = ? AND (taggings.context = 'tags' AND taggings.tagger_id IS NULL) ORDER BY taggings.id",
+      "COMMIT TRANSACTION"
+    ]
+  }
+}

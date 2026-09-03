@@ -1,0 +1,1201 @@
+[
+  {
+    "name": "r5-preload-one-distinct-key",
+    "target_calls": [
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActionController::Metal#status=",
+        "depth": 0,
+        "args": [
+          "200"
+        ]
+      },
+      {
+        "target": "ActionController::Rendering#_set_rendered_content_type",
+        "depth": 0,
+        "args": [
+          "#<Mime::Type:0x5132ea9b @symbol=:json, @hash=446008275414618"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 7,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 9,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 11,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 6,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 13,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 7,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 15,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 8,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 17,
+        "args": [
+
+        ]
+      }
+    ],
+    "statements": [
+      {
+        "sql": "SELECT  \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = ? ORDER BY \"posts\".\"id\" ASC LIMIT ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = ? AND \"comments\".\"commentable_type\" = ? ORDER BY created_at ASC",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      }
+    ],
+    "coverage": {
+},
+    "error": null
+  },
+  {
+    "name": "r5-preload-two-distinct-keys",
+    "target_calls": [
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 6,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActionController::Metal#status=",
+        "depth": 0,
+        "args": [
+          "200"
+        ]
+      },
+      {
+        "target": "ActionController::Rendering#_set_rendered_content_type",
+        "depth": 0,
+        "args": [
+          "#<Mime::Type:0x5132ea9b @symbol=:json, @hash=446008275414618"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 6,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 8,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 10,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 12,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 6,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 14,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 7,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 16,
+        "args": [
+
+        ]
+      }
+    ],
+    "statements": [
+      {
+        "sql": "SELECT  \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = ? ORDER BY \"posts\".\"id\" ASC LIMIT ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = ? AND \"comments\".\"commentable_type\" = ? ORDER BY created_at ASC",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" IN (?, ?)",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" IN (?, ?)",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      }
+    ],
+    "coverage": {
+},
+    "error": null
+  },
+  {
+    "name": "r5-nested-shrinks-dangling",
+    "target_calls": [
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 8,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActionController::Metal#status=",
+        "depth": 0,
+        "args": [
+          "200"
+        ]
+      },
+      {
+        "target": "ActionController::Rendering#_set_rendered_content_type",
+        "depth": 0,
+        "args": [
+          "#<Mime::Type:0x5132ea9b @symbol=:json, @hash=446008275414618"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 7,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 9,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 11,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 13,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 6,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 15,
+        "args": [
+
+        ]
+      }
+    ],
+    "statements": [
+      {
+        "sql": "SELECT  \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = ? ORDER BY \"posts\".\"id\" ASC LIMIT ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = ? AND \"comments\".\"commentable_type\" = ? ORDER BY created_at ASC",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" IN (?, ?)",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" IN (?, ?)",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      }
+    ],
+    "coverage": {
+},
+    "error": null
+  },
+  {
+    "name": "r5-nested-both-loaded",
+    "target_calls": [
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 6,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 10,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActionController::Metal#status=",
+        "depth": 0,
+        "args": [
+          "200"
+        ]
+      },
+      {
+        "target": "ActionController::Rendering#_set_rendered_content_type",
+        "depth": 0,
+        "args": [
+          "#<Mime::Type:0x5132ea9b @symbol=:json, @hash=446008275414618"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 8,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 10,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 12,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 14,
+        "args": [
+
+        ]
+      }
+    ],
+    "statements": [
+      {
+        "sql": "SELECT  \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = ? ORDER BY \"posts\".\"id\" ASC LIMIT ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = ? AND \"comments\".\"commentable_type\" = ? ORDER BY created_at ASC",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" IN (?, ?)",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" IN (?, ?)",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" IN (?, ?)",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" IN (?, ?)",
+        "under": "ActiveRecord::Relation#records"
+      }
+    ],
+    "coverage": {
+},
+    "error": null
+  },
+  {
+    "name": "r5-format-js-undeclared",
+    "target_calls": [
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 6,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 7,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 12,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 9,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 11,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 13,
+        "args": [
+
+        ]
+      }
+    ],
+    "statements": [
+      {
+        "sql": "SELECT  \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = ? ORDER BY \"posts\".\"id\" ASC LIMIT ?",
+        "under": "ActiveRecord::Relation#records"
+      }
+    ],
+    "coverage": {
+},
+    "error": null
+  },
+  {
+    "name": "r5-format-xml-undeclared",
+    "target_calls": [
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 7,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 8,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 14,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 10,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 12,
+        "args": [
+
+        ]
+      }
+    ],
+    "statements": [
+      {
+        "sql": "SELECT  \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = ? ORDER BY \"posts\".\"id\" ASC LIMIT ?",
+        "under": "ActiveRecord::Relation#records"
+      }
+    ],
+    "coverage": {
+},
+    "error": null
+  },
+  {
+    "name": "r5-format-html-declared-templateless",
+    "target_calls": [
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 8,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 9,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 16,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 11,
+        "args": [
+
+        ]
+      }
+    ],
+    "statements": [
+      {
+        "sql": "SELECT  \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = ? ORDER BY \"posts\".\"id\" ASC LIMIT ?",
+        "under": "ActiveRecord::Relation#records"
+      }
+    ],
+    "coverage": {
+},
+    "error": null
+  },
+  {
+    "name": "r5-finder-miss-404",
+    "target_calls": [
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 9,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 10,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 18,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActionController::Metal#status=",
+        "depth": 0,
+        "args": [
+          ":not_found"
+        ]
+      }
+    ],
+    "statements": [
+      {
+        "sql": "SELECT  \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = ? ORDER BY \"posts\".\"id\" ASC LIMIT ?",
+        "under": "ActiveRecord::Relation#records"
+      }
+    ],
+    "coverage": {
+},
+    "error": null
+  }
+]

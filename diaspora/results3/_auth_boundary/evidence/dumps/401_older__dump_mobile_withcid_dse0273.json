@@ -1,0 +1,479 @@
+{
+  "schema_version": "1.0",
+  "label": "mobile_withcid_dse0273",
+  "symbolic_vars": [
+    {
+      "name": "SYM_USER_CONV_id",
+      "sort": "Int",
+      "value": 1
+    },
+    {
+      "name": "SYM_PARAM_via_cookie",
+      "sort": "Bool",
+      "value": true
+    },
+    {
+      "name": "SYM_PARAM_cookie_expired",
+      "sort": "Bool",
+      "value": false
+    },
+    {
+      "name": "SYM_PARAM_cookie_older",
+      "sort": "Bool",
+      "value": true
+    },
+    {
+      "name": "SYM_PARAM_ip_spoof",
+      "sort": "Bool",
+      "value": false
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_not_found",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id",
+      "sort": "Int",
+      "value": 1,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_username",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_username_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_serialized_private_key",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_serialized_private_key_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_getting_started",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_disable_mail",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_language",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_language_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_email",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_email_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_encrypted_password",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_encrypted_password_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_created_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_created_at_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_updated_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_updated_at_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_locked_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_locked_at_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_sign_in_count",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_current_sign_in_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_current_sign_in_at_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_last_sign_in_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_last_sign_in_at_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_current_sign_in_ip",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_current_sign_in_ip_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_last_sign_in_ip",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_last_sign_in_ip_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_hidden_shareables",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_hidden_shareables_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_reset_password_sent_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_reset_password_sent_at_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_last_seen",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_last_seen_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_remove_after",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_remove_after_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_export",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_export_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_exported_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_exported_at_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_exporting",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_strip_exif",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_exported_photos_file",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_exported_photos_file_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_exported_photos_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_exported_photos_at_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_exporting_photos",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_color_theme",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_color_theme_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_post_default_public",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_auto_follow_back",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_auto_follow_back_aspect_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_show_community_spotlight_in_stream",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_otp_required_for_login",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_otp_backup_codes",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_otp_backup_codes_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_plain_otp_secret",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_plain_otp_secret_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_reset_password_token",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_reset_password_token_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_remember_created_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_remember_created_at_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_invited_by_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_authentication_token",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_authentication_token_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_persisted",
+      "sort": "Bool",
+      "value": true,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_created_at_year",
+      "sort": "Int",
+      "value": 1990,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_updated_at_year",
+      "sort": "Int",
+      "value": 1990,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_locked_at_year",
+      "sort": "Int",
+      "value": 1990,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_current_sign_in_at_year",
+      "sort": "Int",
+      "value": 1990,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_last_sign_in_at_year",
+      "sort": "Int",
+      "value": 1990,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_reset_password_sent_at_year",
+      "sort": "Int",
+      "value": 1990,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_last_seen_year",
+      "sort": "Int",
+      "value": 1990,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_remove_after_year",
+      "sort": "Int",
+      "value": 1990,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_exported_at_year",
+      "sort": "Int",
+      "value": 1990,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_exported_photos_at_year",
+      "sort": "Int",
+      "value": 1990,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_remember_created_at_year",
+      "sort": "Int",
+      "value": 1990,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_last_seen_stale",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_locked",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_remembered",
+      "sort": "Bool",
+      "value": true,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    }
+  ],
+  "events": [
+    {
+      "type": "path_condition",
+      "expr": "(SYM_PARAM_via_cookie == True)",
+      "taken": true,
+      "file": "/home/dev/project/reports/diaspora/results3/conversations_index/run_dse.rb",
+      "lineno": 443,
+      "function": "block in run_one"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_PARAM_cookie_expired == True)",
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/results3/conversations_index/run_dse.rb",
+      "lineno": 456,
+      "function": "block in run_one"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_PARAM_cookie_older == True)",
+      "taken": true,
+      "file": "/home/dev/project/reports/diaspora/results3/conversations_index/run_dse.rb",
+      "lineno": 457,
+      "function": "block in run_one"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_PARAM_ip_spoof == True)",
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/results3/conversations_index/run_dse.rb",
+      "lineno": 473,
+      "function": "block in run_one"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::FinderMethods.devise_user_first",
+      "args": {
+        "splat_args": null,
+        "kwargs": null,
+        "block": null
+      },
+      "file": "/home/dev/project/reports/diaspora/results3/conversations_index/targets.rb",
+      "lineno": 2270,
+      "function": "get"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::FinderMethods.devise_user_first",
+      "args": {
+        "splat_args": null,
+        "kwargs": null,
+        "block": null
+      },
+      "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1",
+      "result_value": "#<User:0x6a59bbf0>",
+      "result_sort": "Int",
+      "file": "/home/dev/project/reports/diaspora/results3/conversations_index/targets.rb",
+      "lineno": 2270,
+      "function": "get",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_not_found == True)",
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/results3/conversations_index/targets.rb",
+      "lineno": 2133,
+      "function": "block in install!"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_last_seen_stale == True)",
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/results3/conversations_index/targets.rb",
+      "lineno": 2150,
+      "function": "block in install!"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_locked == True)",
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/results3/conversations_index/targets.rb",
+      "lineno": 2157,
+      "function": "block in install!"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_remembered == True)",
+      "taken": true,
+      "file": "/home/dev/project/reports/diaspora/results3/conversations_index/targets.rb",
+      "lineno": 2175,
+      "function": "block in install!"
+    }
+  ],
+  "symbolic_results": [
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1",
+      "sort": "Int",
+      "value": "#<User:0x6a59bbf0>"
+    }
+  ],
+  "script": "run_dse.rb",
+  "error": {
+    "type": "WardenThrow401",
+    "message": "concolic: warden threw {:scope=>:user} (401 before the action)",
+    "traceback": "/home/dev/project/reports/diaspora/results3/conversations_index/run_dse.rb:493:in `block in run_one'\n/home/dev/project/src/ruby_runtime/call_interceptor.rb:314:in `run'\n/home/dev/project/reports/diaspora/results3/conversations_index/run_dse.rb:551:in `run_one'\n/home/dev/project/reports/diaspora/results3/conversations_index/run_dse.rb:286:in `run_one'\n/home/dev/project/reports/diaspora/results3/conversations_index/run_dse.rb:737:in `<main>'"
+  },
+  "concolic_seeds": {
+    "SYM_PARAM_via_cookie": true,
+    "SYM_PARAM_cookie_older": true,
+    "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_last_seen_stale": false,
+    "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_remembered": true
+  },
+  "concolic_scenario": {
+    "name": "mobile_withcid",
+    "format": "mobile",
+    "conversation_id": true
+  }
+}

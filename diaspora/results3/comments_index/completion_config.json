@@ -1,0 +1,67 @@
+{
+  "batch_dir": "/home/dev/project/reports/diaspora/results3/comments_index",
+  "workdir": "/home/dev/project",
+  "extract_cmd": "ruby /home/dev/project/src/ruby_runtime/completion_checker/shim_extractor.rb /home/dev/project/reports/diaspora/results3/comments_index/targets.rb /home/dev/project/reports/diaspora/results3/comments_index/concolic_targets.rb",
+  "test_cmd": "/home/dev/project/reports/diaspora/tools/slot scripts/diaspora-concolic /home/dev/project/src/ruby_runtime/completion_checker/shim_test_runner.rb {shims} {tests} {out}",
+  "test_env": {
+    "JRUBY_OPTS": "--debug"
+  },
+  "shim_tests": "/home/dev/project/reports/diaspora/results3/comments_index/shim_tests.rb",
+  "concrete_run": "/home/dev/project/reports/diaspora/results3/comments_index/concrete_run.json",
+  "note_check_cmd": "python3 /home/dev/project/src/end_to_end_completion_checker/mock/mock_note_check.py {run} {batch} --aliases /home/dev/project/reports/diaspora/results3/comments_index/concrete_aliases.json",
+  "assumption_cfg": "/home/dev/project/reports/diaspora/results3/comments_index/assumption_manifest.json",
+  "assumption_cmd": "/home/dev/project/reports/diaspora/results3/comments_index/_c12/gate_wrapper.sh {cfg} {declared} {out}",
+  "pc_gate_columns": [
+    "public",
+    "diaspora_handle",
+    "author_id",
+    "person_id",
+    "language",
+    "type"
+  ],
+  "extra_audit_cmds": [
+    {
+      "name": "format_coverage",
+      "cmd": "python3 /home/dev/project/reports/diaspora/results3/comments_index/format_coverage_audit.py {batch} --controller /home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/comments_controller.rb --action index"
+    },
+    {
+      "name": "note_fidelity",
+      "cmd": "PYTHONPATH=/home/dev/project/src /home/dev/project/venvs/queries_from_runs/bin/python /home/dev/project/reports/diaspora/tools/note_fidelity_audit.py {batch} /home/dev/project/reports/diaspora/results3/comments_index/concrete_run.json --aliases /home/dev/project/reports/diaspora/results3/comments_index/concrete_aliases.json"
+    },
+    {
+      "name": "empty_relation_emission",
+      "cmd": "PYTHONPATH=/home/dev/project/src python3 /home/dev/project/src/queries_from_runs/audits/empty_relation_emission_audit.py {batch}"
+    }
+  ],
+  "env": {
+    "JAVA_TOOL_OPTIONS": ""
+  },
+  "pc_pin_ledger": [
+    "persisted",
+    "guid",
+    "commentable_type",
+    "mentions_container_type",
+    "shareable_type",
+    "text",
+    "gender",
+    "reload_not_found"
+  ],
+  "multiset_out_of_domain": [
+    {
+      "match": "select posts.* from posts where posts.id in (@",
+      "reason": "array-valued params[:post_id]: ADVERSARY_REPORT_2.md D1 measured with a real ActionDispatch probe (Rack::MockRequest.env_for + routes.recognize_path + Request#parameters) that `post_id` is a PATH parameter of /posts/:post_id/comments and Rails merges path params LAST, so ?post_id[]=1&post_id[]=2 reaches the action as the String \"100\". The corpus's array family was REMOVED as over-emission in cycle 3; A04's IN(...) statement comes from the adversary calling the action directly with an Array, a value the route cannot deliver."
+    },
+    {
+      "match": "select posts.* from posts where posts.guid in (@",
+      "reason": "same family as posts.id IN (...): the array-valued params[:post_id] whose to_s is >= 16 chars takes the guid arm. Unreachable through the route (ADVERSARY_REPORT_2.md D1, real ActionDispatch probe)."
+    }
+  ],
+  "_assumption_cmd_orig": "python3 /home/dev/project/src/end_to_end_completion_checker/assumption/assumption_checker.py {cfg} --declared {declared} --json-out {out}",
+  "_h6_answered_retired_cycle12": [
+    {
+      "match": "ActiveRecord::Base.reload",
+      "reason": "RE-DERIVED cycle 11 (2026-09-01) after adversary R8 / M-15 REFUTED this waiver's previous reason. The old reason said 'every path into fix_profile aborts the JVM on the first FFI call, so no real run on any rig can reach it'. That is FALSE: a fixture people.diaspora_handle whose DOMAIN is not a legal URI host makes Faraday parse the URL with URI.parse BEFORE the adapter, so URI::InvalidURIError is raised in pure Ruby and fix_profile IS entered (R8 measured 31 depth-0 calls, 0 aborts). Re-measured here on this batch's own evidence, each probe in its own systemd unit so an abort names itself: _c11/probe_uri_hostile.log -- 'wraith@ba[d.example' and 'ghost@ex ample.com' both return DiscoveryError, unit exit 0, JVM alive; _c11/probe_parseable.log -- 'ghost@example.invalid' reaches libcurl and the JVM dies with SIGSEGV, unit status 134; Faraday.default_adapter == :typhoeus in both. THE TRUE REASON reload is never issued: reload's only call site on this endpoint is Person#fix_profile (person.rb:371-375), which runs it ONLY after fetch_and_save RETURNS A VALUE, and every fixture-reachable fetch_and_save RAISES -- the URI-hostile arm in Ruby, the parseable arm by killing the process -- so it never returns. Returning normally needs TWO successful live HTTP fetches (discovery.rb:73 webfinger and :84 hcard, both HttpClient.get; no local short circuit exists in that class), which this JRuby/typhoeus/JFFI stack cannot perform. Corroborated by R8's own count: reload appears in 0 of all 31 real fix_profile calls. NOTE THE SCOPE: this is an ENVIRONMENT bound, not an app property -- on a deployed pod the success arm is reachable and writes."
+    }
+  ],
+  "h6_answered": []
+}

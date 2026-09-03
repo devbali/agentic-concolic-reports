@@ -1,0 +1,377 @@
+{
+ "ref": {
+  "SELECT `people`.`id` AS `id4`, `people`.`guid` AS `guid2`, `people`.`diaspora_handle`, `people`.`serialized_public_key`, `people`.`owner_id`, `people`.`created_at` AS `created_at3`, `people`.`updated_at` AS `updated_at3`, `people`.`closed_account`, `people`.`fetch_status`, `people`.`pod_id` FROM `notifications`,     `mentions`,     `comments`,     `posts`,     `photos`,     `people` WHERE `people`.`id` = `posts`.`author_id` AND `posts`.`type` = 'StatusMessage' AND (`photos`.`status_message_guid` = `posts`.`guid` AND `posts`.`text` IS NULL) AND (`posts`.`id` = `comments`.`commentable_id` AND `comments`.`id` = `mentions`.`mentions_container_id` AND (`mentions`.`id` = `notifications`.`target_id` AND ('Notifications::MentionedInComment' = `notifications`.`type` AND `notifications`.`recipient_id` = _MY_UID)))": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 30000
+  },
+  "SELECT `people`.`id` AS `id4`, `people`.`guid` AS `guid1`, `people`.`diaspora_handle`, `people`.`serialized_public_key`, `people`.`owner_id`, `people`.`created_at` AS `created_at2`, `people`.`updated_at` AS `updated_at2`, `people`.`closed_account`, `people`.`fetch_status`, `people`.`pod_id` FROM `notifications`,     `mentions`,     `comments`,     `posts`,     `mentions` AS `mentions0`,     `people` WHERE `people`.`id` = `mentions0`.`person_id` AND `posts`.`type` = 'StatusMessage' AND (`mentions0`.`mentions_container_id` = `comments`.`commentable_id` AND `mentions0`.`mentions_container_type` = 'Post') AND (`posts`.`id` = `comments`.`commentable_id` AND `comments`.`id` = `mentions`.`mentions_container_id` AND (`mentions`.`id` = `notifications`.`target_id` AND ('Notifications::MentionedInComment' = `notifications`.`type` AND `notifications`.`recipient_id` = _MY_UID)))": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `profiles`.`id`, `profiles`.`diaspora_handle`, `profiles`.`first_name`, `profiles`.`last_name`, `profiles`.`image_url`, `profiles`.`image_url_small`, `profiles`.`image_url_medium`, `profiles`.`searchable`, `profiles`.`person_id`, `profiles`.`created_at`, `profiles`.`updated_at`, `profiles`.`full_name`, `profiles`.`nsfw`, `profiles`.`public_details` FROM `notifications`,     `mentions`,     `comments`,     `posts`,     `photos`,     `profiles` WHERE `profiles`.`person_id` = `posts`.`author_id` AND `posts`.`type` = 'StatusMessage' AND (`photos`.`status_message_guid` = `posts`.`guid` AND `posts`.`text` IS NULL) AND (`posts`.`id` = `comments`.`commentable_id` AND `comments`.`id` = `mentions`.`mentions_container_id` AND (`mentions`.`id` = `notifications`.`target_id` AND ('Notifications::MentionedInComment' = `notifications`.`type` AND `notifications`.`recipient_id` = _MY_UID)))": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `profiles`.`id`, `profiles`.`diaspora_handle`, `profiles`.`first_name`, `profiles`.`last_name`, `profiles`.`image_url`, `profiles`.`image_url_small`, `profiles`.`image_url_medium`, `profiles`.`searchable`, `profiles`.`person_id`, `profiles`.`created_at`, `profiles`.`updated_at`, `profiles`.`full_name`, `profiles`.`nsfw`, `profiles`.`public_details` FROM `notifications`,     `mentions`,     `comments`,     `posts`,     `mentions` AS `mentions0`,     `profiles` WHERE `profiles`.`person_id` = `mentions0`.`person_id` AND `posts`.`type` = 'StatusMessage' AND (`mentions0`.`mentions_container_id` = `comments`.`commentable_id` AND `mentions0`.`mentions_container_type` = 'Post') AND (`posts`.`id` = `comments`.`commentable_id` AND `comments`.`id` = `mentions`.`mentions_container_id` AND (`mentions`.`id` = `notifications`.`target_id` AND ('Notifications::MentionedInComment' = `notifications`.`type` AND `notifications`.`recipient_id` = _MY_UID)))": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `mentions0`.`id` AS `id3`, `mentions0`.`mentions_container_id` AS `mentions_container_id0`, `mentions0`.`person_id` AS `person_id0`, `mentions0`.`mentions_container_type` AS `mentions_container_type0` FROM `notifications`,     `mentions`,     `comments`,     `posts`,     `mentions` AS `mentions0` WHERE `mentions0`.`mentions_container_id` = `comments`.`commentable_id` AND `mentions0`.`mentions_container_type` = 'Post' AND (`posts`.`type` = 'StatusMessage' AND `posts`.`id` = `comments`.`commentable_id`) AND (`comments`.`id` = `mentions`.`mentions_container_id` AND `mentions`.`id` = `notifications`.`target_id` AND ('Notifications::MentionedInComment' = `notifications`.`type` AND `notifications`.`recipient_id` = _MY_UID))": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `photos`.`id` AS `id3`, `photos`.`author_id` AS `author_id1`, `photos`.`public` AS `public0`, `photos`.`guid` AS `guid1`, `photos`.`pending`, `photos`.`text` AS `text1`, `photos`.`remote_photo_path`, `photos`.`remote_photo_name`, `photos`.`random_string`, `photos`.`processed_image`, `photos`.`created_at` AS `created_at2`, `photos`.`updated_at` AS `updated_at2`, `photos`.`unprocessed_image`, `photos`.`status_message_guid`, `photos`.`comments_count` AS `comments_count0`, `photos`.`height`, `photos`.`width` FROM `notifications`,     `mentions`,     `comments`,     `posts`,     `photos` WHERE `photos`.`status_message_guid` = `posts`.`guid` AND `posts`.`type` = 'StatusMessage' AND (`posts`.`text` IS NULL AND `posts`.`id` = `comments`.`commentable_id`) AND (`comments`.`id` = `mentions`.`mentions_container_id` AND `mentions`.`id` = `notifications`.`target_id` AND ('Notifications::MentionedInComment' = `notifications`.`type` AND `notifications`.`recipient_id` = _MY_UID))": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `people`.`id` AS `id3`, `people`.`guid` AS `guid1`, `people`.`diaspora_handle`, `people`.`serialized_public_key`, `people`.`owner_id`, `people`.`created_at` AS `created_at2`, `people`.`updated_at` AS `updated_at2`, `people`.`closed_account`, `people`.`fetch_status`, `people`.`pod_id` FROM `notifications`,     `mentions`,     `comments`,     `posts`,     `people` WHERE `people`.`id` = `posts`.`author_id` AND ('Reshare' = `posts`.`type` AND `posts`.`id` = `comments`.`commentable_id`) AND (`comments`.`id` = `mentions`.`mentions_container_id` AND `mentions`.`id` = `notifications`.`target_id` AND ('Notifications::MentionedInComment' = `notifications`.`type` AND `notifications`.`recipient_id` = _MY_UID))": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `tags`.`name`, `taggings`.`id` FROM `notifications`,     `contacts`,     `profiles`,     `tags`,     `taggings` WHERE `tags`.`id` = `taggings`.`tag_id` AND `taggings`.`taggable_id` = `profiles`.`id` AND (`taggings`.`taggable_type` = 'Profile' AND `taggings`.`context` = 'tags') AND (`notifications`.`type` = 'Notifications::StartedSharing' AND `profiles`.`person_id` = `notifications`.`target_id` AND (`contacts`.`user_id` = _MY_UID AND (`contacts`.`person_id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = _MY_UID)))": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 30000
+  },
+  "SELECT `profiles`.`id`, `profiles`.`diaspora_handle`, `profiles`.`first_name`, `profiles`.`last_name`, `profiles`.`image_url`, `profiles`.`image_url_small`, `profiles`.`image_url_medium`, `profiles`.`searchable`, `profiles`.`person_id`, `profiles`.`created_at`, `profiles`.`updated_at`, `profiles`.`full_name`, `profiles`.`nsfw`, `profiles`.`public_details` FROM `notifications`,     `mentions`,     `posts`,     `mentions` AS `mentions0`,     `profiles` WHERE `profiles`.`person_id` = `mentions0`.`person_id` AND `posts`.`type` = 'StatusMessage' AND (`mentions0`.`mentions_container_id` = `mentions`.`mentions_container_id` AND `mentions0`.`mentions_container_type` = 'Post') AND (`posts`.`id` = `mentions`.`mentions_container_id` AND `mentions`.`id` = `notifications`.`target_id` AND ('Notifications::MentionedInPost' = `notifications`.`type` AND `notifications`.`recipient_id` = _MY_UID))": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `people`.`id` AS `id3`, `people`.`guid` AS `guid1`, `people`.`diaspora_handle`, `people`.`serialized_public_key`, `people`.`owner_id`, `people`.`created_at` AS `created_at2`, `people`.`updated_at` AS `updated_at2`, `people`.`closed_account`, `people`.`fetch_status`, `people`.`pod_id` FROM `notifications`,     `mentions`,     `posts`,     `photos`,     `people` WHERE `people`.`id` = `posts`.`author_id` AND `posts`.`type` = 'StatusMessage' AND (`photos`.`status_message_guid` = `posts`.`guid` AND `posts`.`text` IS NULL) AND (`posts`.`id` = `mentions`.`mentions_container_id` AND `mentions`.`id` = `notifications`.`target_id` AND ('Notifications::MentionedInPost' = `notifications`.`type` AND `notifications`.`recipient_id` = _MY_UID))": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `profiles`.`id`, `profiles`.`diaspora_handle`, `profiles`.`first_name`, `profiles`.`last_name`, `profiles`.`image_url`, `profiles`.`image_url_small`, `profiles`.`image_url_medium`, `profiles`.`searchable`, `profiles`.`person_id`, `profiles`.`created_at`, `profiles`.`updated_at`, `profiles`.`full_name`, `profiles`.`nsfw`, `profiles`.`public_details` FROM `notifications`,     `mentions`,     `comments`,     `posts`,     `profiles` WHERE `profiles`.`person_id` = `posts`.`author_id` AND ('Reshare' = `posts`.`type` AND `posts`.`id` = `comments`.`commentable_id`) AND (`comments`.`id` = `mentions`.`mentions_container_id` AND `mentions`.`id` = `notifications`.`target_id` AND ('Notifications::MentionedInComment' = `notifications`.`type` AND `notifications`.`recipient_id` = _MY_UID))": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `people`.`id` AS `id3`, `people`.`guid` AS `guid0`, `people`.`diaspora_handle`, `people`.`serialized_public_key`, `people`.`owner_id`, `people`.`created_at` AS `created_at1`, `people`.`updated_at` AS `updated_at1`, `people`.`closed_account`, `people`.`fetch_status`, `people`.`pod_id` FROM `notifications`,     `mentions`,     `posts`,     `mentions` AS `mentions0`,     `people` WHERE `people`.`id` = `mentions0`.`person_id` AND `posts`.`type` = 'StatusMessage' AND (`mentions0`.`mentions_container_id` = `mentions`.`mentions_container_id` AND `mentions0`.`mentions_container_type` = 'Post') AND (`posts`.`id` = `mentions`.`mentions_container_id` AND `mentions`.`id` = `notifications`.`target_id` AND ('Notifications::MentionedInPost' = `notifications`.`type` AND `notifications`.`recipient_id` = _MY_UID))": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `profiles`.`id`, `profiles`.`diaspora_handle`, `profiles`.`first_name`, `profiles`.`last_name`, `profiles`.`image_url`, `profiles`.`image_url_small`, `profiles`.`image_url_medium`, `profiles`.`searchable`, `profiles`.`person_id`, `profiles`.`created_at`, `profiles`.`updated_at`, `profiles`.`full_name`, `profiles`.`nsfw`, `profiles`.`public_details` FROM `notifications`,     `mentions`,     `posts`,     `photos`,     `profiles` WHERE `profiles`.`person_id` = `posts`.`author_id` AND `posts`.`type` = 'StatusMessage' AND (`photos`.`status_message_guid` = `posts`.`guid` AND `posts`.`text` IS NULL) AND (`posts`.`id` = `mentions`.`mentions_container_id` AND `mentions`.`id` = `notifications`.`target_id` AND ('Notifications::MentionedInPost' = `notifications`.`type` AND `notifications`.`recipient_id` = _MY_UID))": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `people`.`id` AS `id2`, `people`.`guid` AS `guid0`, `people`.`diaspora_handle`, `people`.`serialized_public_key`, `people`.`owner_id`, `people`.`created_at` AS `created_at1`, `people`.`updated_at` AS `updated_at1`, `people`.`closed_account`, `people`.`fetch_status`, `people`.`pod_id` FROM `notifications`,     `posts`,     `mentions`,     `people` WHERE `people`.`id` = `mentions`.`person_id` AND (`posts`.`type` = 'StatusMessage' AND `mentions`.`mentions_container_id` = `notifications`.`target_id`) AND (`mentions`.`mentions_container_type` = 'Post' AND `posts`.`id` = `notifications`.`target_id` AND ('Notifications::Liked' = `notifications`.`type` AND `notifications`.`recipient_id` = _MY_UID))": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 30000
+  },
+  "SELECT `people`.`id` AS `id2`, `people`.`guid` AS `guid0`, `people`.`diaspora_handle`, `people`.`serialized_public_key`, `people`.`owner_id`, `people`.`created_at` AS `created_at1`, `people`.`updated_at` AS `updated_at1`, `people`.`closed_account`, `people`.`fetch_status`, `people`.`pod_id` FROM `notifications`,     `posts`,     `mentions`,     `people` WHERE `people`.`id` = `mentions`.`person_id` AND (`posts`.`type` = 'StatusMessage' AND `mentions`.`mentions_container_id` = `notifications`.`target_id`) AND (`mentions`.`mentions_container_type` = 'Post' AND `posts`.`id` = `notifications`.`target_id` AND ('Notifications::AlsoCommented' = `notifications`.`type` AND `notifications`.`recipient_id` = _MY_UID))": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 30000
+  },
+  "SELECT `profiles`.`id`, `profiles`.`diaspora_handle`, `profiles`.`first_name`, `profiles`.`last_name`, `profiles`.`image_url`, `profiles`.`image_url_small`, `profiles`.`image_url_medium`, `profiles`.`searchable`, `profiles`.`person_id`, `profiles`.`created_at`, `profiles`.`updated_at`, `profiles`.`full_name`, `profiles`.`nsfw`, `profiles`.`public_details` FROM `notifications`,     `mentions`,     `posts`,     `profiles` WHERE `profiles`.`person_id` = `posts`.`author_id` AND ('Reshare' = `posts`.`type` AND `posts`.`id` = `mentions`.`mentions_container_id`) AND (`mentions`.`id` = `notifications`.`target_id` AND ('Notifications::MentionedInPost' = `notifications`.`type` AND `notifications`.`recipient_id` = _MY_UID))": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `people`.`id` AS `id2`, `people`.`guid` AS `guid0`, `people`.`diaspora_handle`, `people`.`serialized_public_key`, `people`.`owner_id`, `people`.`created_at` AS `created_at1`, `people`.`updated_at` AS `updated_at1`, `people`.`closed_account`, `people`.`fetch_status`, `people`.`pod_id` FROM `notifications`,     `posts`,     `mentions`,     `people` WHERE `people`.`id` = `mentions`.`person_id` AND (`posts`.`type` = 'StatusMessage' AND `mentions`.`mentions_container_id` = `notifications`.`target_id`) AND (`mentions`.`mentions_container_type` = 'Post' AND `posts`.`id` = `notifications`.`target_id` AND ('Notifications::CommentOnPost' = `notifications`.`type` AND `notifications`.`recipient_id` = _MY_UID))": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `photos`.`id` AS `id2`, `photos`.`author_id` AS `author_id0`, `photos`.`public` AS `public0`, `photos`.`guid` AS `guid0`, `photos`.`pending`, `photos`.`text` AS `text0`, `photos`.`remote_photo_path`, `photos`.`remote_photo_name`, `photos`.`random_string`, `photos`.`processed_image`, `photos`.`created_at` AS `created_at1`, `photos`.`updated_at` AS `updated_at1`, `photos`.`unprocessed_image`, `photos`.`status_message_guid`, `photos`.`comments_count` AS `comments_count0`, `photos`.`height`, `photos`.`width` FROM `notifications`,     `mentions`,     `posts`,     `photos` WHERE `photos`.`status_message_guid` = `posts`.`guid` AND (`posts`.`type` = 'StatusMessage' AND `posts`.`text` IS NULL) AND (`posts`.`id` = `mentions`.`mentions_container_id` AND `mentions`.`id` = `notifications`.`target_id` AND ('Notifications::MentionedInPost' = `notifications`.`type` AND `notifications`.`recipient_id` = _MY_UID))": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `people`.`id` AS `id2`, `people`.`guid` AS `guid0`, `people`.`diaspora_handle`, `people`.`serialized_public_key`, `people`.`owner_id`, `people`.`created_at` AS `created_at1`, `people`.`updated_at` AS `updated_at1`, `people`.`closed_account`, `people`.`fetch_status`, `people`.`pod_id` FROM `notifications`,     `posts`,     `mentions`,     `people` WHERE `people`.`id` = `mentions`.`person_id` AND (`posts`.`type` = 'StatusMessage' AND `mentions`.`mentions_container_id` = `notifications`.`target_id`) AND (`mentions`.`mentions_container_type` = 'Post' AND `posts`.`id` = `notifications`.`target_id` AND ('Notifications::Reshared' = `notifications`.`type` AND `notifications`.`recipient_id` = _MY_UID))": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `profiles`.`id`, `profiles`.`diaspora_handle`, `profiles`.`first_name`, `profiles`.`last_name`, `profiles`.`image_url`, `profiles`.`image_url_small`, `profiles`.`image_url_medium`, `profiles`.`searchable`, `profiles`.`person_id`, `profiles`.`created_at`, `profiles`.`updated_at`, `profiles`.`full_name`, `profiles`.`nsfw`, `profiles`.`public_details` FROM `notifications`,     `posts`,     `mentions`,     `profiles` WHERE `profiles`.`person_id` = `mentions`.`person_id` AND (`posts`.`type` = 'StatusMessage' AND `mentions`.`mentions_container_id` = `notifications`.`target_id`) AND (`mentions`.`mentions_container_type` = 'Post' AND `posts`.`id` = `notifications`.`target_id` AND ('Notifications::AlsoCommented' = `notifications`.`type` AND `notifications`.`recipient_id` = _MY_UID))": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `posts`.`id` AS `id2`, `posts`.`author_id` AS `author_id0`, `posts`.`public`, `posts`.`guid` AS `guid0`, `posts`.`type` AS `type0`, `posts`.`text` AS `text0`, `posts`.`created_at` AS `created_at1`, `posts`.`updated_at` AS `updated_at1`, `posts`.`provider_display_name`, `posts`.`root_guid`, `posts`.`likes_count` AS `likes_count0`, `posts`.`comments_count`, `posts`.`o_embed_cache_id`, `posts`.`reshares_count`, `posts`.`interacted_at`, `posts`.`tweet_id`, `posts`.`open_graph_cache_id`, `posts`.`tumblr_ids` FROM `notifications`,     `mentions`,     `comments`,     `posts` WHERE `posts`.`id` = `comments`.`commentable_id` AND `comments`.`id` = `mentions`.`mentions_container_id` AND `mentions`.`id` = `notifications`.`target_id` AND 'Notifications::MentionedInComment' = `notifications`.`type` AND `notifications`.`recipient_id` = _MY_UID": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `people`.`id` AS `id2`, `people`.`guid` AS `guid0`, `people`.`diaspora_handle`, `people`.`serialized_public_key`, `people`.`owner_id`, `people`.`created_at` AS `created_at1`, `people`.`updated_at` AS `updated_at1`, `people`.`closed_account`, `people`.`fetch_status`, `people`.`pod_id` FROM `notifications`,     `mentions`,     `posts`,     `people` WHERE `people`.`id` = `posts`.`author_id` AND ('Reshare' = `posts`.`type` AND `posts`.`id` = `mentions`.`mentions_container_id`) AND (`mentions`.`id` = `notifications`.`target_id` AND ('Notifications::MentionedInPost' = `notifications`.`type` AND `notifications`.`recipient_id` = _MY_UID))": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `profiles`.`id`, `profiles`.`diaspora_handle`, `profiles`.`first_name`, `profiles`.`last_name`, `profiles`.`image_url`, `profiles`.`image_url_small`, `profiles`.`image_url_medium`, `profiles`.`searchable`, `profiles`.`person_id`, `profiles`.`created_at`, `profiles`.`updated_at`, `profiles`.`full_name`, `profiles`.`nsfw`, `profiles`.`public_details` FROM `notifications`,     `posts`,     `mentions`,     `profiles` WHERE `profiles`.`person_id` = `mentions`.`person_id` AND (`posts`.`type` = 'StatusMessage' AND `mentions`.`mentions_container_id` = `notifications`.`target_id`) AND (`mentions`.`mentions_container_type` = 'Post' AND `posts`.`id` = `notifications`.`target_id` AND ('Notifications::Reshared' = `notifications`.`type` AND `notifications`.`recipient_id` = _MY_UID))": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `profiles`.`id`, `profiles`.`diaspora_handle`, `profiles`.`first_name`, `profiles`.`last_name`, `profiles`.`image_url`, `profiles`.`image_url_small`, `profiles`.`image_url_medium`, `profiles`.`searchable`, `profiles`.`person_id`, `profiles`.`created_at`, `profiles`.`updated_at`, `profiles`.`full_name`, `profiles`.`nsfw`, `profiles`.`public_details` FROM `notifications`,     `posts`,     `mentions`,     `profiles` WHERE `profiles`.`person_id` = `mentions`.`person_id` AND (`posts`.`type` = 'StatusMessage' AND `mentions`.`mentions_container_id` = `notifications`.`target_id`) AND (`mentions`.`mentions_container_type` = 'Post' AND `posts`.`id` = `notifications`.`target_id` AND ('Notifications::CommentOnPost' = `notifications`.`type` AND `notifications`.`recipient_id` = _MY_UID))": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `profiles`.`id`, `profiles`.`diaspora_handle`, `profiles`.`first_name`, `profiles`.`last_name`, `profiles`.`image_url`, `profiles`.`image_url_small`, `profiles`.`image_url_medium`, `profiles`.`searchable`, `profiles`.`person_id`, `profiles`.`created_at`, `profiles`.`updated_at`, `profiles`.`full_name`, `profiles`.`nsfw`, `profiles`.`public_details` FROM `notifications`,     `posts`,     `mentions`,     `profiles` WHERE `profiles`.`person_id` = `mentions`.`person_id` AND (`posts`.`type` = 'StatusMessage' AND `mentions`.`mentions_container_id` = `notifications`.`target_id`) AND (`mentions`.`mentions_container_type` = 'Post' AND `posts`.`id` = `notifications`.`target_id` AND ('Notifications::Liked' = `notifications`.`type` AND `notifications`.`recipient_id` = _MY_UID))": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `people`.`id` AS `id1`, `people`.`guid` AS `guid0`, `people`.`diaspora_handle`, `people`.`serialized_public_key`, `people`.`owner_id`, `people`.`created_at` AS `created_at1`, `people`.`updated_at` AS `updated_at1`, `people`.`closed_account`, `people`.`fetch_status`, `people`.`pod_id` FROM `notifications`,     `posts`,     `people` WHERE `people`.`id` = `posts`.`author_id` AND `posts`.`id` = `notifications`.`target_id` AND 'Notifications::AlsoCommented' = `notifications`.`type` AND `notifications`.`recipient_id` = _MY_UID": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `people`.`id` AS `id1`, `people`.`guid`, `people`.`diaspora_handle`, `people`.`serialized_public_key`, `people`.`owner_id`, `people`.`created_at` AS `created_at1`, `people`.`updated_at` AS `updated_at1`, `people`.`closed_account`, `people`.`fetch_status`, `people`.`pod_id` FROM `notifications`,     `notification_actors`,     `people` WHERE `people`.`id` = `notification_actors`.`person_id` AND `notification_actors`.`notification_id` = `notifications`.`id` AND `notifications`.`recipient_id` = _MY_UID": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `mentions0`.`id` AS `id2`, `mentions0`.`mentions_container_id` AS `mentions_container_id0`, `mentions0`.`person_id` AS `person_id0`, `mentions0`.`mentions_container_type` AS `mentions_container_type0` FROM `notifications`,     `mentions`,     `posts`,     `mentions` AS `mentions0` WHERE `mentions0`.`mentions_container_id` = `mentions`.`mentions_container_id` AND (`mentions0`.`mentions_container_type` = 'Post' AND `posts`.`type` = 'StatusMessage') AND (`posts`.`id` = `mentions`.`mentions_container_id` AND `mentions`.`id` = `notifications`.`target_id` AND ('Notifications::MentionedInPost' = `notifications`.`type` AND `notifications`.`recipient_id` = _MY_UID))": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `people`.`id` AS `id1`, `people`.`guid` AS `guid0`, `people`.`diaspora_handle`, `people`.`serialized_public_key`, `people`.`owner_id`, `people`.`created_at` AS `created_at1`, `people`.`updated_at` AS `updated_at1`, `people`.`closed_account`, `people`.`fetch_status`, `people`.`pod_id` FROM `notifications`,     `posts`,     `people` WHERE `people`.`id` = `posts`.`author_id` AND `posts`.`id` = `notifications`.`target_id` AND 'Notifications::Reshared' = `notifications`.`type` AND `notifications`.`recipient_id` = _MY_UID": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `people`.`id` AS `id1`, `people`.`guid` AS `guid0`, `people`.`diaspora_handle`, `people`.`serialized_public_key`, `people`.`owner_id`, `people`.`created_at` AS `created_at1`, `people`.`updated_at` AS `updated_at1`, `people`.`closed_account`, `people`.`fetch_status`, `people`.`pod_id` FROM `notifications`,     `posts`,     `people` WHERE `people`.`id` = `posts`.`author_id` AND `posts`.`id` = `notifications`.`target_id` AND 'Notifications::CommentOnPost' = `notifications`.`type` AND `notifications`.`recipient_id` = _MY_UID": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `profiles`.`id`, `profiles`.`diaspora_handle`, `profiles`.`first_name`, `profiles`.`last_name`, `profiles`.`image_url`, `profiles`.`image_url_small`, `profiles`.`image_url_medium`, `profiles`.`searchable`, `profiles`.`person_id`, `profiles`.`created_at`, `profiles`.`updated_at`, `profiles`.`full_name`, `profiles`.`nsfw`, `profiles`.`public_details` FROM `notifications`,     `contacts`,     `profiles` WHERE `profiles`.`person_id` = `notifications`.`target_id` AND `notifications`.`type` = 'Notifications::StartedSharing' AND `contacts`.`user_id` = _MY_UID AND `contacts`.`person_id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = _MY_UID": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `profiles`.`id`, `profiles`.`diaspora_handle`, `profiles`.`first_name`, `profiles`.`last_name`, `profiles`.`image_url`, `profiles`.`image_url_small`, `profiles`.`image_url_medium`, `profiles`.`searchable`, `profiles`.`person_id`, `profiles`.`created_at`, `profiles`.`updated_at`, `profiles`.`full_name`, `profiles`.`nsfw`, `profiles`.`public_details` FROM `notifications`,     `notification_actors`,     `profiles` WHERE `profiles`.`person_id` = `notification_actors`.`person_id` AND `notification_actors`.`notification_id` = `notifications`.`id` AND `notifications`.`recipient_id` = _MY_UID": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `people`.`id` AS `id1`, `people`.`guid` AS `guid0`, `people`.`diaspora_handle`, `people`.`serialized_public_key`, `people`.`owner_id`, `people`.`created_at` AS `created_at1`, `people`.`updated_at` AS `updated_at1`, `people`.`closed_account`, `people`.`fetch_status`, `people`.`pod_id` FROM `notifications`,     `posts`,     `people` WHERE `people`.`id` = `posts`.`author_id` AND `posts`.`id` = `notifications`.`target_id` AND 'Notifications::Liked' = `notifications`.`type` AND `notifications`.`recipient_id` = _MY_UID": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `comments`.`id` AS `id1`, `comments`.`text`, `comments`.`commentable_id`, `comments`.`author_id`, `comments`.`guid`, `comments`.`created_at` AS `created_at0`, `comments`.`updated_at` AS `updated_at0`, `comments`.`likes_count`, `comments`.`commentable_type` FROM `notifications`,     `mentions`,     `comments` WHERE `comments`.`id` = `mentions`.`mentions_container_id` AND `mentions`.`id` = `notifications`.`target_id` AND 'Notifications::MentionedInComment' = `notifications`.`type` AND `notifications`.`recipient_id` = _MY_UID": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `profiles`.`id`, `profiles`.`diaspora_handle`, `profiles`.`first_name`, `profiles`.`last_name`, `profiles`.`image_url`, `profiles`.`image_url_small`, `profiles`.`image_url_medium`, `profiles`.`searchable`, `profiles`.`person_id`, `profiles`.`created_at`, `profiles`.`updated_at`, `profiles`.`full_name`, `profiles`.`nsfw`, `profiles`.`public_details` FROM `notifications`,     `posts`,     `profiles` WHERE `profiles`.`person_id` = `posts`.`author_id` AND `posts`.`id` = `notifications`.`target_id` AND 'Notifications::AlsoCommented' = `notifications`.`type` AND `notifications`.`recipient_id` = _MY_UID": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `profiles`.`id`, `profiles`.`diaspora_handle`, `profiles`.`first_name`, `profiles`.`last_name`, `profiles`.`image_url`, `profiles`.`image_url_small`, `profiles`.`image_url_medium`, `profiles`.`searchable`, `profiles`.`person_id`, `profiles`.`created_at`, `profiles`.`updated_at`, `profiles`.`full_name`, `profiles`.`nsfw`, `profiles`.`public_details` FROM `notifications`,     `posts`,     `profiles` WHERE `profiles`.`person_id` = `posts`.`author_id` AND `posts`.`id` = `notifications`.`target_id` AND 'Notifications::CommentOnPost' = `notifications`.`type` AND `notifications`.`recipient_id` = _MY_UID": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `blocks`.`id` AS `id1`, `blocks`.`user_id` AS `user_id0`, `blocks`.`person_id` AS `person_id0` FROM `notifications`,     `contacts`,     `blocks` WHERE `blocks`.`user_id` = _MY_UID AND (`blocks`.`person_id` = `notifications`.`target_id` AND `notifications`.`type` = 'Notifications::StartedSharing') AND (`contacts`.`user_id` = _MY_UID AND (`contacts`.`person_id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = _MY_UID))": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `mentions`.`id` AS `id1`, `mentions`.`mentions_container_id`, `mentions`.`person_id`, `mentions`.`mentions_container_type` FROM `notifications`,     `posts`,     `mentions` WHERE `mentions`.`mentions_container_id` = `notifications`.`target_id` AND (`mentions`.`mentions_container_type` = 'Post' AND `posts`.`type` = 'StatusMessage') AND (`posts`.`id` = `notifications`.`target_id` AND ('Notifications::CommentOnPost' = `notifications`.`type` AND `notifications`.`recipient_id` = _MY_UID))": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `photos`.`id` AS `id1`, `photos`.`author_id` AS `author_id0`, `photos`.`public` AS `public0`, `photos`.`guid` AS `guid0`, `photos`.`pending`, `photos`.`text` AS `text0`, `photos`.`remote_photo_path`, `photos`.`remote_photo_name`, `photos`.`random_string`, `photos`.`processed_image`, `photos`.`created_at` AS `created_at1`, `photos`.`updated_at` AS `updated_at1`, `photos`.`unprocessed_image`, `photos`.`status_message_guid`, `photos`.`comments_count` AS `comments_count0`, `photos`.`height`, `photos`.`width` FROM `notifications`,     `posts`,     `photos` WHERE `photos`.`status_message_guid` = `posts`.`guid` AND (`posts`.`type` = 'StatusMessage' AND `posts`.`text` IS NULL) AND (`posts`.`id` = `notifications`.`target_id` AND ('Notifications::CommentOnPost' = `notifications`.`type` AND `notifications`.`recipient_id` = _MY_UID))": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `photos`.`id` AS `id1`, `photos`.`author_id` AS `author_id0`, `photos`.`public` AS `public0`, `photos`.`guid` AS `guid0`, `photos`.`pending`, `photos`.`text` AS `text0`, `photos`.`remote_photo_path`, `photos`.`remote_photo_name`, `photos`.`random_string`, `photos`.`processed_image`, `photos`.`created_at` AS `created_at1`, `photos`.`updated_at` AS `updated_at1`, `photos`.`unprocessed_image`, `photos`.`status_message_guid`, `photos`.`comments_count` AS `comments_count0`, `photos`.`height`, `photos`.`width` FROM `notifications`,     `posts`,     `photos` WHERE `photos`.`status_message_guid` = `posts`.`guid` AND (`posts`.`type` = 'StatusMessage' AND `posts`.`text` IS NULL) AND (`posts`.`id` = `notifications`.`target_id` AND ('Notifications::AlsoCommented' = `notifications`.`type` AND `notifications`.`recipient_id` = _MY_UID))": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `mentions`.`id` AS `id1`, `mentions`.`mentions_container_id`, `mentions`.`person_id`, `mentions`.`mentions_container_type` FROM `notifications`,     `posts`,     `mentions` WHERE `mentions`.`mentions_container_id` = `notifications`.`target_id` AND (`mentions`.`mentions_container_type` = 'Post' AND `posts`.`type` = 'StatusMessage') AND (`posts`.`id` = `notifications`.`target_id` AND ('Notifications::Reshared' = `notifications`.`type` AND `notifications`.`recipient_id` = _MY_UID))": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `mentions`.`id` AS `id1`, `mentions`.`mentions_container_id`, `mentions`.`person_id`, `mentions`.`mentions_container_type` FROM `notifications`,     `posts`,     `mentions` WHERE `mentions`.`mentions_container_id` = `notifications`.`target_id` AND (`mentions`.`mentions_container_type` = 'Post' AND `posts`.`type` = 'StatusMessage') AND (`posts`.`id` = `notifications`.`target_id` AND ('Notifications::AlsoCommented' = `notifications`.`type` AND `notifications`.`recipient_id` = _MY_UID))": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `aspect_memberships`.`id` AS `id1`, `aspect_memberships`.`aspect_id`, `aspect_memberships`.`contact_id`, `aspect_memberships`.`created_at` AS `created_at1`, `aspect_memberships`.`updated_at` AS `updated_at1` FROM `notifications`,     `contacts`,     `aspect_memberships` WHERE `aspect_memberships`.`contact_id` = `contacts`.`id` AND `notifications`.`type` = 'Notifications::StartedSharing' AND `contacts`.`user_id` = _MY_UID AND `contacts`.`person_id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = _MY_UID": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `mentions`.`id` AS `id1`, `mentions`.`mentions_container_id`, `mentions`.`person_id`, `mentions`.`mentions_container_type` FROM `notifications`,     `posts`,     `mentions` WHERE `mentions`.`mentions_container_id` = `notifications`.`target_id` AND (`mentions`.`mentions_container_type` = 'Post' AND `posts`.`type` = 'StatusMessage') AND (`posts`.`id` = `notifications`.`target_id` AND ('Notifications::Liked' = `notifications`.`type` AND `notifications`.`recipient_id` = _MY_UID))": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `posts`.`id` AS `id1`, `posts`.`author_id`, `posts`.`public`, `posts`.`guid`, `posts`.`type` AS `type0`, `posts`.`text`, `posts`.`created_at` AS `created_at0`, `posts`.`updated_at` AS `updated_at0`, `posts`.`provider_display_name`, `posts`.`root_guid`, `posts`.`likes_count`, `posts`.`comments_count`, `posts`.`o_embed_cache_id`, `posts`.`reshares_count`, `posts`.`interacted_at`, `posts`.`tweet_id`, `posts`.`open_graph_cache_id`, `posts`.`tumblr_ids` FROM `notifications`,     `mentions`,     `posts` WHERE `posts`.`id` = `mentions`.`mentions_container_id` AND `mentions`.`id` = `notifications`.`target_id` AND 'Notifications::MentionedInPost' = `notifications`.`type` AND `notifications`.`recipient_id` = _MY_UID": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `photos`.`id` AS `id1`, `photos`.`author_id` AS `author_id0`, `photos`.`public` AS `public0`, `photos`.`guid` AS `guid0`, `photos`.`pending`, `photos`.`text` AS `text0`, `photos`.`remote_photo_path`, `photos`.`remote_photo_name`, `photos`.`random_string`, `photos`.`processed_image`, `photos`.`created_at` AS `created_at1`, `photos`.`updated_at` AS `updated_at1`, `photos`.`unprocessed_image`, `photos`.`status_message_guid`, `photos`.`comments_count` AS `comments_count0`, `photos`.`height`, `photos`.`width` FROM `notifications`,     `posts`,     `photos` WHERE `photos`.`status_message_guid` = `posts`.`guid` AND (`posts`.`type` = 'StatusMessage' AND `posts`.`text` IS NULL) AND (`posts`.`id` = `notifications`.`target_id` AND ('Notifications::Liked' = `notifications`.`type` AND `notifications`.`recipient_id` = _MY_UID))": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `photos`.`id` AS `id1`, `photos`.`author_id` AS `author_id0`, `photos`.`public` AS `public0`, `photos`.`guid` AS `guid0`, `photos`.`pending`, `photos`.`text` AS `text0`, `photos`.`remote_photo_path`, `photos`.`remote_photo_name`, `photos`.`random_string`, `photos`.`processed_image`, `photos`.`created_at` AS `created_at1`, `photos`.`updated_at` AS `updated_at1`, `photos`.`unprocessed_image`, `photos`.`status_message_guid`, `photos`.`comments_count` AS `comments_count0`, `photos`.`height`, `photos`.`width` FROM `notifications`,     `posts`,     `photos` WHERE `photos`.`status_message_guid` = `posts`.`guid` AND (`posts`.`type` = 'StatusMessage' AND `posts`.`text` IS NULL) AND (`posts`.`id` = `notifications`.`target_id` AND ('Notifications::Reshared' = `notifications`.`type` AND `notifications`.`recipient_id` = _MY_UID))": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `profiles`.`id`, `profiles`.`diaspora_handle`, `profiles`.`first_name`, `profiles`.`last_name`, `profiles`.`image_url`, `profiles`.`image_url_small`, `profiles`.`image_url_medium`, `profiles`.`searchable`, `profiles`.`person_id`, `profiles`.`created_at`, `profiles`.`updated_at`, `profiles`.`full_name`, `profiles`.`nsfw`, `profiles`.`public_details` FROM `notifications`,     `posts`,     `profiles` WHERE `profiles`.`person_id` = `posts`.`author_id` AND `posts`.`id` = `notifications`.`target_id` AND 'Notifications::Reshared' = `notifications`.`type` AND `notifications`.`recipient_id` = _MY_UID": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `profiles`.`id` AS `id1`, `profiles`.`diaspora_handle`, `profiles`.`first_name`, `profiles`.`last_name`, `profiles`.`image_url`, `profiles`.`image_url_small`, `profiles`.`image_url_medium`, `profiles`.`birthday`, `profiles`.`gender`, `profiles`.`bio`, `profiles`.`searchable`, `profiles`.`person_id` AS `person_id0`, `profiles`.`created_at` AS `created_at1`, `profiles`.`updated_at` AS `updated_at1`, `profiles`.`location`, `profiles`.`full_name`, `profiles`.`nsfw`, `profiles`.`public_details` FROM `notifications`,     `contacts`,     `profiles` WHERE `notifications`.`type` = 'Notifications::StartedSharing' AND (`profiles`.`public_details` = TRUE AND `profiles`.`person_id` = `notifications`.`target_id`) AND (`contacts`.`user_id` = _MY_UID AND `contacts`.`person_id` = `notifications`.`target_id` AND (`notifications`.`recipient_id` = _MY_UID AND `contacts`.`sharing` = FALSE))": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `profiles`.`id`, `profiles`.`diaspora_handle`, `profiles`.`first_name`, `profiles`.`last_name`, `profiles`.`image_url`, `profiles`.`image_url_small`, `profiles`.`image_url_medium`, `profiles`.`searchable`, `profiles`.`person_id`, `profiles`.`created_at`, `profiles`.`updated_at`, `profiles`.`full_name`, `profiles`.`nsfw`, `profiles`.`public_details` FROM `notifications`,     `posts`,     `profiles` WHERE `profiles`.`person_id` = `posts`.`author_id` AND `posts`.`id` = `notifications`.`target_id` AND 'Notifications::Liked' = `notifications`.`type` AND `notifications`.`recipient_id` = _MY_UID": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `conversation_visibilities`.`unread` FROM `people`,     `conversation_visibilities` WHERE `conversation_visibilities`.`person_id` = `people`.`id` AND `people`.`owner_id` = _MY_UID": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `posts`.`id` AS `id0`, `posts`.`author_id`, `posts`.`public`, `posts`.`guid`, `posts`.`type` AS `type0`, `posts`.`text`, `posts`.`created_at` AS `created_at0`, `posts`.`updated_at` AS `updated_at0`, `posts`.`provider_display_name`, `posts`.`root_guid`, `posts`.`likes_count`, `posts`.`comments_count`, `posts`.`o_embed_cache_id`, `posts`.`reshares_count`, `posts`.`interacted_at`, `posts`.`tweet_id`, `posts`.`open_graph_cache_id`, `posts`.`tumblr_ids` FROM `notifications`,     `posts` WHERE `posts`.`id` = `notifications`.`target_id` AND 'Notifications::Liked' = `notifications`.`type` AND `notifications`.`recipient_id` = _MY_UID": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT 1 AS `one` FROM `people`,     `roles` WHERE `roles`.`name` IN ('admin', 'moderator') AND `roles`.`person_id` = `people`.`id` AND `people`.`owner_id` = _MY_UID": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT 1 AS `one` FROM `people`,     `roles` WHERE `roles`.`person_id` = `people`.`id` AND `roles`.`name` = 'admin' AND `people`.`owner_id` = _MY_UID": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `posts`.`id` AS `id0`, `posts`.`author_id`, `posts`.`public`, `posts`.`guid`, `posts`.`type` AS `type0`, `posts`.`text`, `posts`.`created_at` AS `created_at0`, `posts`.`updated_at` AS `updated_at0`, `posts`.`provider_display_name`, `posts`.`root_guid`, `posts`.`likes_count`, `posts`.`comments_count`, `posts`.`o_embed_cache_id`, `posts`.`reshares_count`, `posts`.`interacted_at`, `posts`.`tweet_id`, `posts`.`open_graph_cache_id`, `posts`.`tumblr_ids` FROM `notifications`,     `posts` WHERE `posts`.`id` = `notifications`.`target_id` AND 'Notifications::CommentOnPost' = `notifications`.`type` AND `notifications`.`recipient_id` = _MY_UID": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `notification_actors`.`id` AS `id0`, `notification_actors`.`notification_id`, `notification_actors`.`person_id`, `notification_actors`.`created_at` AS `created_at0`, `notification_actors`.`updated_at` AS `updated_at0` FROM `notifications`,     `notification_actors` WHERE `notification_actors`.`notification_id` = `notifications`.`id` AND `notifications`.`recipient_id` = _MY_UID": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `profiles`.`id`, `profiles`.`diaspora_handle`, `profiles`.`first_name`, `profiles`.`last_name`, `profiles`.`image_url`, `profiles`.`image_url_small`, `profiles`.`image_url_medium`, `profiles`.`searchable`, `profiles`.`person_id`, `profiles`.`created_at`, `profiles`.`updated_at`, `profiles`.`full_name`, `profiles`.`nsfw`, `profiles`.`public_details` FROM `people`,     `profiles` WHERE `profiles`.`person_id` = `people`.`id` AND `people`.`owner_id` = _MY_UID": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `profiles`.`id` AS `id1`, `profiles`.`diaspora_handle`, `profiles`.`first_name`, `profiles`.`last_name`, `profiles`.`image_url`, `profiles`.`image_url_small`, `profiles`.`image_url_medium`, `profiles`.`birthday`, `profiles`.`gender`, `profiles`.`bio`, `profiles`.`searchable`, `profiles`.`person_id` AS `person_id0`, `profiles`.`created_at` AS `created_at1`, `profiles`.`updated_at` AS `updated_at1`, `profiles`.`location`, `profiles`.`full_name`, `profiles`.`nsfw`, `profiles`.`public_details` FROM `notifications`,     `contacts`,     `profiles` WHERE `notifications`.`type` = 'Notifications::StartedSharing' AND (`contacts`.`sharing` = TRUE AND `profiles`.`person_id` = `notifications`.`target_id`) AND (`contacts`.`user_id` = _MY_UID AND (`contacts`.`person_id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = _MY_UID))": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `mentions`.`id` AS `id0`, `mentions`.`mentions_container_id`, `mentions`.`person_id`, `mentions`.`mentions_container_type` FROM `notifications`,     `mentions` WHERE `mentions`.`id` = `notifications`.`target_id` AND 'Notifications::MentionedInPost' = `notifications`.`type` AND `notifications`.`recipient_id` = _MY_UID": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `people`.`id` AS `id0`, `people`.`guid`, `people`.`diaspora_handle`, `people`.`serialized_public_key`, `people`.`owner_id`, `people`.`created_at` AS `created_at0`, `people`.`updated_at` AS `updated_at0`, `people`.`closed_account`, `people`.`fetch_status`, `people`.`pod_id` FROM `notifications`,     `people` WHERE `people`.`id` = `notifications`.`target_id` AND 'Notifications::ContactsBirthday' = `notifications`.`type` AND `notifications`.`recipient_id` = _MY_UID": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `mentions`.`id` AS `id0`, `mentions`.`mentions_container_id`, `mentions`.`person_id`, `mentions`.`mentions_container_type` FROM `notifications`,     `mentions` WHERE `mentions`.`id` = `notifications`.`target_id` AND 'Notifications::MentionedInComment' = `notifications`.`type` AND `notifications`.`recipient_id` = _MY_UID": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `posts`.`id` AS `id0`, `posts`.`author_id`, `posts`.`public`, `posts`.`guid`, `posts`.`type` AS `type0`, `posts`.`text`, `posts`.`created_at` AS `created_at0`, `posts`.`updated_at` AS `updated_at0`, `posts`.`provider_display_name`, `posts`.`root_guid`, `posts`.`likes_count`, `posts`.`comments_count`, `posts`.`o_embed_cache_id`, `posts`.`reshares_count`, `posts`.`interacted_at`, `posts`.`tweet_id`, `posts`.`open_graph_cache_id`, `posts`.`tumblr_ids` FROM `notifications`,     `posts` WHERE `posts`.`id` = `notifications`.`target_id` AND 'Notifications::AlsoCommented' = `notifications`.`type` AND `notifications`.`recipient_id` = _MY_UID": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `posts`.`id` AS `id0`, `posts`.`author_id`, `posts`.`public`, `posts`.`guid`, `posts`.`type` AS `type0`, `posts`.`text`, `posts`.`created_at` AS `created_at0`, `posts`.`updated_at` AS `updated_at0`, `posts`.`provider_display_name`, `posts`.`root_guid`, `posts`.`likes_count`, `posts`.`comments_count`, `posts`.`o_embed_cache_id`, `posts`.`reshares_count`, `posts`.`interacted_at`, `posts`.`tweet_id`, `posts`.`open_graph_cache_id`, `posts`.`tumblr_ids` FROM `notifications`,     `posts` WHERE `posts`.`id` = `notifications`.`target_id` AND 'Notifications::Reshared' = `notifications`.`type` AND `notifications`.`recipient_id` = _MY_UID": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT * FROM `services` WHERE `user_id` = _MY_UID": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT * FROM `people` WHERE `owner_id` = _MY_UID": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT * FROM `notifications` WHERE `recipient_id` = _MY_UID": {
+   "verdict": "covered",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `people`.`id` AS `id0`, `people`.`guid`, `people`.`diaspora_handle`, `people`.`serialized_public_key`, `people`.`owner_id`, `people`.`created_at` AS `created_at0`, `people`.`updated_at` AS `updated_at0`, `people`.`closed_account`, `people`.`fetch_status`, `people`.`pod_id` FROM `notifications`,     `people` WHERE `people`.`id` = `notifications`.`target_id` AND `notifications`.`type` = 'Notifications::StartedSharing' AND `notifications`.`recipient_id` = _MY_UID": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT * FROM `users` WHERE `id` = _MY_UID": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `contacts`.`id` AS `id0`, `contacts`.`user_id`, `contacts`.`person_id`, `contacts`.`created_at` AS `created_at0`, `contacts`.`updated_at` AS `updated_at0`, `contacts`.`sharing`, `contacts`.`receiving` FROM `notifications`,     `contacts` WHERE `contacts`.`user_id` = _MY_UID AND `contacts`.`person_id` = `notifications`.`target_id` AND `notifications`.`type` = 'Notifications::StartedSharing' AND `notifications`.`recipient_id` = _MY_UID": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT * FROM `contacts` WHERE `user_id` = _MY_UID AND `receiving` = TRUE": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT * FROM `aspects` WHERE `user_id` = _MY_UID": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  }
+ },
+ "ours": {
+  "SELECT `notifications`.* FROM `notifications`": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `notifications`.* FROM `notifications` WHERE `notifications`.`recipient_id` = 1": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `notifications`.* FROM `notifications` WHERE `notifications`.`recipient_id` = 25": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  }
+ },
+ "view_errors": {}
+}

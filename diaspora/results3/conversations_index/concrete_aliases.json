@@ -1,0 +1,38 @@
+{
+  "ActiveRecord::FinderMethods.first": [
+    "ActiveRecord::FinderMethods.devise_user_first"
+  ],
+  "ActiveRecord::Relation.records": [
+    "ActiveRecord::Relation.to_a",
+    "ActiveRecord::Relation.to_ary",
+    "ActiveRecord::FinderMethods.first",
+    "ActiveRecord::FinderMethods.find_by",
+    "ActiveRecord::FinderMethods.last",
+    "ActiveRecord::FinderMethods.take",
+    "ActiveRecord::FinderMethods.find",
+    "ActiveRecord::FinderMethods.devise_user_first",
+    "Anonymous.load_intermediate"
+  ],
+  "ActiveRecord::Associations::CollectionProxy.records": [
+    "ActiveRecord::Relation.records",
+    "ActiveRecord::Relation.to_a",
+    "ActiveRecord::Relation.to_ary"
+  ],
+  "ActiveRecord::Associations::CollectionProxy.load_target": [
+    "ActiveRecord::Relation.records",
+    "ActiveRecord::Relation.to_a",
+    "ActiveRecord::Relation.to_ary"
+  ],
+  "ActiveRecord::Associations::SingularAssociation.find_target": [
+    "Anonymous.load_intermediate"
+  ],
+  "ActiveRecord::Base.save": [
+    "Anonymous.load_intermediate"
+  ],
+  "ActiveRecord::FinderMethods.exists?": [
+    "ActiveRecord::Relation.empty?",
+    "ActiveRecord::Relation.any?",
+    "ActiveRecord::Relation.none?",
+    "ActiveRecord::FinderMethods.exists?"
+  ]
+}

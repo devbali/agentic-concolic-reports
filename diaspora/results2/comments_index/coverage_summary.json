@@ -1,0 +1,24 @@
+{
+ "endpoint": "comments_index",
+ "coverage_complete": true,
+ "tree_nodes": 3,
+ "missing_branches": 0,
+ "truncated": false,
+ "solver_lost": 0,
+ "unevaluable_exprs": [],
+ "total_runs": 6,
+ "total_path_conditions": 16,
+ "dump_errors": {},
+ "assumptions": [
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "post_service.rb#find_public! (lines 51-55): `unless post` (not_found==True) raises RecordNotFound and returns before `post.public?` (line 54) is ever reached, and the mocked finder (concolic_target..."
+  }
+ ],
+ "assumptions_used": 1,
+ "missing": []
+}

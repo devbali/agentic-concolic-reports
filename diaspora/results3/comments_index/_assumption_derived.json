@@ -1,0 +1,1262 @@
+[
+  {
+    "type": "UntrackedPathAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_text_has_mention == True)",
+    "expr_b": null,
+    "verdict": "PASS",
+    "detail": "access trace identical on both sides"
+  },
+  {
+    "type": "UntrackedPathAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_text_has_mention == True)",
+    "expr_b": null,
+    "verdict": "PASS",
+    "detail": "access trace identical on both sides"
+  },
+  {
+    "type": "UntrackedPathAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_text_has_mention == True)",
+    "expr_b": null,
+    "verdict": "PASS",
+    "detail": "access trace identical on both sides"
+  },
+  {
+    "type": "UntrackedPathAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_text_has_mention == True)",
+    "expr_b": null,
+    "verdict": "PASS",
+    "detail": "access trace identical on both sides"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(Length(SYM_PARAM_post_id) < 16)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+    "verdict": "NOT-TESTABLE",
+    "detail": "cannot derive seed dimensions from exprs"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(Length(SYM_PARAM_post_id) < 16)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_public == True)",
+    "verdict": "NOT-TESTABLE",
+    "detail": "cannot derive seed dimensions from exprs"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(Length(SYM_PARAM_post_id) < 16)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_persisted == True)",
+    "verdict": "NOT-TESTABLE",
+    "detail": "cannot derive seed dimensions from exprs"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(Length(SYM_PARAM_post_id) < 16)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_not_found == True)",
+    "verdict": "NOT-TESTABLE",
+    "detail": "cannot derive seed dimensions from exprs"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(Length(SYM_PARAM_post_id) < 16)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_persisted == True)",
+    "verdict": "NOT-TESTABLE",
+    "detail": "cannot derive seed dimensions from exprs"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(Length(SYM_PARAM_post_id) < 16)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_not_found == True)",
+    "verdict": "NOT-TESTABLE",
+    "detail": "cannot derive seed dimensions from exprs"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(Length(SYM_PARAM_post_id) < 16)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_persisted == True)",
+    "verdict": "NOT-TESTABLE",
+    "detail": "cannot derive seed dimensions from exprs"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(Length(SYM_PARAM_post_id) < 16)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_not_found == True)",
+    "verdict": "NOT-TESTABLE",
+    "detail": "cannot derive seed dimensions from exprs"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(Length(SYM_PARAM_post_id) < 16)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_persisted == True)",
+    "verdict": "NOT-TESTABLE",
+    "detail": "cannot derive seed dimensions from exprs"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(Length(SYM_PARAM_post_id) < 16)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_text_has_mention == True)",
+    "verdict": "NOT-TESTABLE",
+    "detail": "cannot derive seed dimensions from exprs"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(Length(SYM_PARAM_post_id) < 16)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_persisted == True)",
+    "verdict": "NOT-TESTABLE",
+    "detail": "cannot derive seed dimensions from exprs"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(Length(SYM_PARAM_post_id) < 16)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_persisted == True)",
+    "verdict": "NOT-TESTABLE",
+    "detail": "cannot derive seed dimensions from exprs"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(Length(SYM_PARAM_post_id) < 16)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_3_row_person_persisted == True)",
+    "verdict": "NOT-TESTABLE",
+    "detail": "cannot derive seed dimensions from exprs"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(Length(SYM_PARAM_post_id) < 16)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_not_found == True)",
+    "verdict": "NOT-TESTABLE",
+    "detail": "cannot derive seed dimensions from exprs"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(Length(SYM_PARAM_post_id) < 16)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_persisted == True)",
+    "verdict": "NOT-TESTABLE",
+    "detail": "cannot derive seed dimensions from exprs"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(Length(SYM_PARAM_post_id) < 16)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_retry_1_not_found == True)",
+    "verdict": "NOT-TESTABLE",
+    "detail": "cannot derive seed dimensions from exprs"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(Length(SYM_PARAM_post_id) < 16)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_not_found == True)",
+    "verdict": "NOT-TESTABLE",
+    "detail": "cannot derive seed dimensions from exprs"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(Length(SYM_PARAM_post_id) < 16)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_persisted == True)",
+    "verdict": "NOT-TESTABLE",
+    "detail": "cannot derive seed dimensions from exprs"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(Length(SYM_PARAM_post_id) < 16)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_not_found == True)",
+    "verdict": "NOT-TESTABLE",
+    "detail": "cannot derive seed dimensions from exprs"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(Length(SYM_PARAM_post_id) < 16)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_persisted == True)",
+    "verdict": "NOT-TESTABLE",
+    "detail": "cannot derive seed dimensions from exprs"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "mutually exclusive: never co-evaluated in any run"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "mutually exclusive: never co-evaluated in any run"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "mutually exclusive: never co-evaluated in any run"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "mutually exclusive: never co-evaluated in any run"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "mutually exclusive: never co-evaluated in any run"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "mutually exclusive: never co-evaluated in any run"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_public == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "mutually exclusive: never co-evaluated in any run"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_public == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "mutually exclusive: never co-evaluated in any run"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_public == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "mutually exclusive: never co-evaluated in any run"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_public == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "mutually exclusive: never co-evaluated in any run"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_public == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "mutually exclusive: never co-evaluated in any run"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_public == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "mutually exclusive: never co-evaluated in any run"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "mutually exclusive: never co-evaluated in any run"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "mutually exclusive: never co-evaluated in any run"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "mutually exclusive: never co-evaluated in any run"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "mutually exclusive: never co-evaluated in any run"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "mutually exclusive: never co-evaluated in any run"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "mutually exclusive: never co-evaluated in any run"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_public == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_dse0597.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_dse0597.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_text_has_mention == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_dse0597.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_dse0597.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_dse0597.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_3_row_person_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_dse0146.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_dse0597.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_dse0535.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_retry_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_dse0597.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_dse0597.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_dse0460.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_dse0597.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_dse0535.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_public == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_dse0597.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_public == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_text_has_mention == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_dse0597.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_public == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_dse0597.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_public == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_dse0597.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_public == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_3_row_person_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_dse0146.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_public == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_dse0597.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_public == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_dse0535.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_public == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_retry_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_dse0597.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_public == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_dse0597.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_public == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_dse0460.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_public == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_dse0597.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_public == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_dse0535.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_text_has_mention == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_dse0597.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_dse0597.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_dse0597.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_3_row_person_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_dse0146.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_dse0597.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_dse0535.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_retry_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_dse0597.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_dse0597.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_dse0460.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_dse0597.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_dse0535.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1645.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1017.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1017.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1173.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1173.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1017.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1173.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1173.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1173.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_text_has_mention == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1173.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1173.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1173.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_3_row_person_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse0407.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1173.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1319.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_retry_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1173.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1173.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1328.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1173.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1173.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "mutually exclusive: never co-evaluated in any run"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "mutually exclusive: never co-evaluated in any run"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "mutually exclusive: never co-evaluated in any run"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "mutually exclusive: never co-evaluated in any run"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "mutually exclusive: never co-evaluated in any run"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "mutually exclusive: never co-evaluated in any run"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_text_has_mention == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1645.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1645.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1645.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_3_row_person_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse0592.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1645.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1710.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_retry_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1645.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1645.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1710.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1645.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1645.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_text_has_mention == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1017.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1017.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1017.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_3_row_person_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse0494.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1017.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse0863.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_retry_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1017.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1017.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1518.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1017.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1500.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_text_has_mention == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1173.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1173.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1173.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_3_row_person_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse0407.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1173.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1319.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_retry_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1173.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1173.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1328.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1173.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1173.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_3_row_person_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse0592.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1017.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse0863.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_retry_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1017.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1017.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1710.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1017.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1173.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_text_has_mention == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1017.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_text_has_mention == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse0863.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_text_has_mention == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_retry_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1017.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_text_has_mention == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1017.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_text_has_mention == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1710.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_text_has_mention == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1017.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_text_has_mention == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1173.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse0863.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_retry_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "mutually exclusive: never co-evaluated in any run"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1710.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "mutually exclusive: never co-evaluated in any run"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1173.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "mutually exclusive: never co-evaluated in any run"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_retry_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1017.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1017.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1173.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Relation_records_3_row_person_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "mutually exclusive: never co-evaluated in any run"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Relation_records_3_row_person_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "mutually exclusive: never co-evaluated in any run"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Relation_records_3_row_person_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_retry_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "mutually exclusive: never co-evaluated in any run"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Relation_records_3_row_person_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "mutually exclusive: never co-evaluated in any run"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Relation_records_3_row_person_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "mutually exclusive: never co-evaluated in any run"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Relation_records_3_row_person_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "mutually exclusive: never co-evaluated in any run"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Relation_records_3_row_person_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "mutually exclusive: never co-evaluated in any run"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1017.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1710.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1017.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1173.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse0863.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1710.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse0863.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_persisted == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse0863.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_retry_1_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1017.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_retry_1_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse0819.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_retry_1_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1017.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_retry_1_not_found == True)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1173.json)"
+  }
+]

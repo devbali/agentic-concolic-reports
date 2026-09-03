@@ -1,0 +1,4525 @@
+{
+  "endpoint": "comments_index",
+  "coverage_complete": true,
+  "tree_nodes": 25,
+  "missing_branches": 0,
+  "truncated": false,
+  "solver_lost": 0,
+  "unevaluable_exprs": [],
+  "total_runs": 1608,
+  "total_path_conditions": 20828,
+  "dump_errors": {},
+  "assumptions": [
+    {
+      "type": "UntrackedPathAssumption",
+      "description": "The Post instance returned by find_public! never has its `text` column read anywhere on comments#index's call path; the flag is minted unconditionally by the generic text-identity shim.",
+      "agent_notes": "Verified by source grep (cycle 1 re-check: unchanged).",
+      "source": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_text_has_mention == True)"
+    },
+    {
+      "type": "UntrackedPathAssumption",
+      "description": "The Post instance returned by querent_has_visibility never has its `text` column read anywhere on comments#index's call path; the flag is minted unconditionally by the generic text-identity shim.",
+      "agent_notes": "Verified by source grep (cycle 1 re-check: unchanged).",
+      "source": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_text_has_mention == True)"
+    },
+    {
+      "type": "UntrackedPathAssumption",
+      "description": "The Post instance returned by querent_is_author never has its `text` column read anywhere on comments#index's call path; the flag is minted unconditionally by the generic text-identity shim.",
+      "agent_notes": "Verified by source grep (cycle 1 re-check: unchanged).",
+      "source": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_text_has_mention == True)"
+    },
+    {
+      "type": "UntrackedPathAssumption",
+      "description": "The Post instance returned by public_post never has its `text` column read anywhere on comments#index's call path; the flag is minted unconditionally by the generic text-identity shim.",
+      "agent_notes": "Verified by source grep (cycle 1 re-check: unchanged).",
+      "source": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_text_has_mention == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:64 post_key selects only the WHERE column (id vs guid) of the same finder call; it does not gate reachability of, or change the argument shape of, any downstream target call.",
+      "agent_notes": "Both length outcomes co-occur with every downstream state in both scenarios.",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(Length(SYM_PARAM_post_id) < 16)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:64 post_key selects only the WHERE column (id vs guid) of the same finder call; it does not gate reachability of, or change the argument shape of, any downstream target call.",
+      "agent_notes": "Both length outcomes co-occur with every downstream state in both scenarios.",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(Length(SYM_PARAM_post_id) < 16)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_public == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:64 post_key selects only the WHERE column (id vs guid) of the same finder call; it does not gate reachability of, or change the argument shape of, any downstream target call.",
+      "agent_notes": "Both length outcomes co-occur with every downstream state in both scenarios.",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(Length(SYM_PARAM_post_id) < 16)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:64 post_key selects only the WHERE column (id vs guid) of the same finder call; it does not gate reachability of, or change the argument shape of, any downstream target call.",
+      "agent_notes": "Both length outcomes co-occur with every downstream state in both scenarios.",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(Length(SYM_PARAM_post_id) < 16)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:64 post_key selects only the WHERE column (id vs guid) of the same finder call; it does not gate reachability of, or change the argument shape of, any downstream target call.",
+      "agent_notes": "Both length outcomes co-occur with every downstream state in both scenarios.",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(Length(SYM_PARAM_post_id) < 16)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:64 post_key selects only the WHERE column (id vs guid) of the same finder call; it does not gate reachability of, or change the argument shape of, any downstream target call.",
+      "agent_notes": "Both length outcomes co-occur with every downstream state in both scenarios.",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(Length(SYM_PARAM_post_id) < 16)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:64 post_key selects only the WHERE column (id vs guid) of the same finder call; it does not gate reachability of, or change the argument shape of, any downstream target call.",
+      "agent_notes": "Both length outcomes co-occur with every downstream state in both scenarios.",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(Length(SYM_PARAM_post_id) < 16)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:64 post_key selects only the WHERE column (id vs guid) of the same finder call; it does not gate reachability of, or change the argument shape of, any downstream target call.",
+      "agent_notes": "Both length outcomes co-occur with every downstream state in both scenarios.",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(Length(SYM_PARAM_post_id) < 16)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:64 post_key selects only the WHERE column (id vs guid) of the same finder call; it does not gate reachability of, or change the argument shape of, any downstream target call.",
+      "agent_notes": "Both length outcomes co-occur with every downstream state in both scenarios.",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(Length(SYM_PARAM_post_id) < 16)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:64 post_key selects only the WHERE column (id vs guid) of the same finder call; it does not gate reachability of, or change the argument shape of, any downstream target call.",
+      "agent_notes": "Both length outcomes co-occur with every downstream state in both scenarios.",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(Length(SYM_PARAM_post_id) < 16)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_text_has_mention == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:64 post_key selects only the WHERE column (id vs guid) of the same finder call; it does not gate reachability of, or change the argument shape of, any downstream target call.",
+      "agent_notes": "Both length outcomes co-occur with every downstream state in both scenarios.",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(Length(SYM_PARAM_post_id) < 16)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:64 post_key selects only the WHERE column (id vs guid) of the same finder call; it does not gate reachability of, or change the argument shape of, any downstream target call.",
+      "agent_notes": "Both length outcomes co-occur with every downstream state in both scenarios.",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(Length(SYM_PARAM_post_id) < 16)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:64 post_key selects only the WHERE column (id vs guid) of the same finder call; it does not gate reachability of, or change the argument shape of, any downstream target call.",
+      "agent_notes": "Both length outcomes co-occur with every downstream state in both scenarios.",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(Length(SYM_PARAM_post_id) < 16)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_3_row_person_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:64 post_key selects only the WHERE column (id vs guid) of the same finder call; it does not gate reachability of, or change the argument shape of, any downstream target call.",
+      "agent_notes": "Both length outcomes co-occur with every downstream state in both scenarios.",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(Length(SYM_PARAM_post_id) < 16)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:64 post_key selects only the WHERE column (id vs guid) of the same finder call; it does not gate reachability of, or change the argument shape of, any downstream target call.",
+      "agent_notes": "Both length outcomes co-occur with every downstream state in both scenarios.",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(Length(SYM_PARAM_post_id) < 16)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:64 post_key selects only the WHERE column (id vs guid) of the same finder call; it does not gate reachability of, or change the argument shape of, any downstream target call.",
+      "agent_notes": "Both length outcomes co-occur with every downstream state in both scenarios.",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(Length(SYM_PARAM_post_id) < 16)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_retry_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:64 post_key selects only the WHERE column (id vs guid) of the same finder call; it does not gate reachability of, or change the argument shape of, any downstream target call.",
+      "agent_notes": "Both length outcomes co-occur with every downstream state in both scenarios.",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(Length(SYM_PARAM_post_id) < 16)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:64 post_key selects only the WHERE column (id vs guid) of the same finder call; it does not gate reachability of, or change the argument shape of, any downstream target call.",
+      "agent_notes": "Both length outcomes co-occur with every downstream state in both scenarios.",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(Length(SYM_PARAM_post_id) < 16)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:64 post_key selects only the WHERE column (id vs guid) of the same finder call; it does not gate reachability of, or change the argument shape of, any downstream target call.",
+      "agent_notes": "Both length outcomes co-occur with every downstream state in both scenarios.",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(Length(SYM_PARAM_post_id) < 16)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:64 post_key selects only the WHERE column (id vs guid) of the same finder call; it does not gate reachability of, or change the argument shape of, any downstream target call.",
+      "agent_notes": "Both length outcomes co-occur with every downstream state in both scenarios.",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(Length(SYM_PARAM_post_id) < 16)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:17-23 PostService#find! branches on `user`: the anon finder (find_public! -> first_1) and the signed-in EvilQuery chain (ci_vis/author/public_first) are mutually exclusive scenarios; no run evaluates both families.",
+      "agent_notes": "Scenario tag concolic_scenario.name = anon | auth on every dump.",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:17-23 PostService#find! branches on `user`: the anon finder (find_public! -> first_1) and the signed-in EvilQuery chain (ci_vis/author/public_first) are mutually exclusive scenarios; no run evaluates both families.",
+      "agent_notes": "Scenario tag concolic_scenario.name = anon | auth on every dump.",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:17-23 PostService#find! branches on `user`: the anon finder (find_public! -> first_1) and the signed-in EvilQuery chain (ci_vis/author/public_first) are mutually exclusive scenarios; no run evaluates both families.",
+      "agent_notes": "Scenario tag concolic_scenario.name = anon | auth on every dump.",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:17-23 PostService#find! branches on `user`: the anon finder (find_public! -> first_1) and the signed-in EvilQuery chain (ci_vis/author/public_first) are mutually exclusive scenarios; no run evaluates both families.",
+      "agent_notes": "Scenario tag concolic_scenario.name = anon | auth on every dump.",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:17-23 PostService#find! branches on `user`: the anon finder (find_public! -> first_1) and the signed-in EvilQuery chain (ci_vis/author/public_first) are mutually exclusive scenarios; no run evaluates both families.",
+      "agent_notes": "Scenario tag concolic_scenario.name = anon | auth on every dump.",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:17-23 PostService#find! branches on `user`: the anon finder (find_public! -> first_1) and the signed-in EvilQuery chain (ci_vis/author/public_first) are mutually exclusive scenarios; no run evaluates both families.",
+      "agent_notes": "Scenario tag concolic_scenario.name = anon | auth on every dump.",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:17-23 PostService#find! branches on `user`: the anon finder (find_public! -> first_1) and the signed-in EvilQuery chain (ci_vis/author/public_first) are mutually exclusive scenarios; no run evaluates both families.",
+      "agent_notes": "Scenario tag concolic_scenario.name = anon | auth on every dump.",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_public == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:17-23 PostService#find! branches on `user`: the anon finder (find_public! -> first_1) and the signed-in EvilQuery chain (ci_vis/author/public_first) are mutually exclusive scenarios; no run evaluates both families.",
+      "agent_notes": "Scenario tag concolic_scenario.name = anon | auth on every dump.",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_public == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:17-23 PostService#find! branches on `user`: the anon finder (find_public! -> first_1) and the signed-in EvilQuery chain (ci_vis/author/public_first) are mutually exclusive scenarios; no run evaluates both families.",
+      "agent_notes": "Scenario tag concolic_scenario.name = anon | auth on every dump.",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_public == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:17-23 PostService#find! branches on `user`: the anon finder (find_public! -> first_1) and the signed-in EvilQuery chain (ci_vis/author/public_first) are mutually exclusive scenarios; no run evaluates both families.",
+      "agent_notes": "Scenario tag concolic_scenario.name = anon | auth on every dump.",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_public == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:17-23 PostService#find! branches on `user`: the anon finder (find_public! -> first_1) and the signed-in EvilQuery chain (ci_vis/author/public_first) are mutually exclusive scenarios; no run evaluates both families.",
+      "agent_notes": "Scenario tag concolic_scenario.name = anon | auth on every dump.",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_public == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:17-23 PostService#find! branches on `user`: the anon finder (find_public! -> first_1) and the signed-in EvilQuery chain (ci_vis/author/public_first) are mutually exclusive scenarios; no run evaluates both families.",
+      "agent_notes": "Scenario tag concolic_scenario.name = anon | auth on every dump.",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_public == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:17-23 PostService#find! branches on `user`: the anon finder (find_public! -> first_1) and the signed-in EvilQuery chain (ci_vis/author/public_first) are mutually exclusive scenarios; no run evaluates both families.",
+      "agent_notes": "Scenario tag concolic_scenario.name = anon | auth on every dump.",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:17-23 PostService#find! branches on `user`: the anon finder (find_public! -> first_1) and the signed-in EvilQuery chain (ci_vis/author/public_first) are mutually exclusive scenarios; no run evaluates both families.",
+      "agent_notes": "Scenario tag concolic_scenario.name = anon | auth on every dump.",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:17-23 PostService#find! branches on `user`: the anon finder (find_public! -> first_1) and the signed-in EvilQuery chain (ci_vis/author/public_first) are mutually exclusive scenarios; no run evaluates both families.",
+      "agent_notes": "Scenario tag concolic_scenario.name = anon | auth on every dump.",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:17-23 PostService#find! branches on `user`: the anon finder (find_public! -> first_1) and the signed-in EvilQuery chain (ci_vis/author/public_first) are mutually exclusive scenarios; no run evaluates both families.",
+      "agent_notes": "Scenario tag concolic_scenario.name = anon | auth on every dump.",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:17-23 PostService#find! branches on `user`: the anon finder (find_public! -> first_1) and the signed-in EvilQuery chain (ci_vis/author/public_first) are mutually exclusive scenarios; no run evaluates both families.",
+      "agent_notes": "Scenario tag concolic_scenario.name = anon | auth on every dump.",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:17-23 PostService#find! branches on `user`: the anon finder (find_public! -> first_1) and the signed-in EvilQuery chain (ci_vis/author/public_first) are mutually exclusive scenarios; no run evaluates both families.",
+      "agent_notes": "Scenario tag concolic_scenario.name = anon | auth on every dump.",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:51-55 find_public!: not_found==True raises RecordNotFound -> rescue_from -> head :not_found; post.public?, the post's persisted decision and the whole comment level exist only when the post was found.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_public == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:51-55 find_public!: not_found==True raises RecordNotFound -> rescue_from -> head :not_found; post.public?, the post's persisted decision and the whole comment level exist only when the post was found.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:51-55 find_public!: not_found==True raises RecordNotFound -> rescue_from -> head :not_found; post.public?, the post's persisted decision and the whole comment level exist only when the post was found.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_text_has_mention == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:51-55 find_public!: not_found==True raises RecordNotFound -> rescue_from -> head :not_found; post.public?, the post's persisted decision and the whole comment level exist only when the post was found.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:51-55 find_public!: not_found==True raises RecordNotFound -> rescue_from -> head :not_found; post.public?, the post's persisted decision and the whole comment level exist only when the post was found.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:51-55 find_public!: not_found==True raises RecordNotFound -> rescue_from -> head :not_found; post.public?, the post's persisted decision and the whole comment level exist only when the post was found.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_3_row_person_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:51-55 find_public!: not_found==True raises RecordNotFound -> rescue_from -> head :not_found; post.public?, the post's persisted decision and the whole comment level exist only when the post was found.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:51-55 find_public!: not_found==True raises RecordNotFound -> rescue_from -> head :not_found; post.public?, the post's persisted decision and the whole comment level exist only when the post was found.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:51-55 find_public!: not_found==True raises RecordNotFound -> rescue_from -> head :not_found; post.public?, the post's persisted decision and the whole comment level exist only when the post was found.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_retry_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:51-55 find_public!: not_found==True raises RecordNotFound -> rescue_from -> head :not_found; post.public?, the post's persisted decision and the whole comment level exist only when the post was found.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:51-55 find_public!: not_found==True raises RecordNotFound -> rescue_from -> head :not_found; post.public?, the post's persisted decision and the whole comment level exist only when the post was found.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:51-55 find_public!: not_found==True raises RecordNotFound -> rescue_from -> head :not_found; post.public?, the post's persisted decision and the whole comment level exist only when the post was found.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:51-55 find_public!: not_found==True raises RecordNotFound -> rescue_from -> head :not_found; post.public?, the post's persisted decision and the whole comment level exist only when the post was found.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:54 `raise Diaspora::NonPublic unless post.public?` -> rescue_from -> authenticate_user!: public==False ends the action before CommentService#find_for_post; the comment level exists only for public==True.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_public == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:54 `raise Diaspora::NonPublic unless post.public?` -> rescue_from -> authenticate_user!: public==False ends the action before CommentService#find_for_post; the comment level exists only for public==True.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_public == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_text_has_mention == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:54 `raise Diaspora::NonPublic unless post.public?` -> rescue_from -> authenticate_user!: public==False ends the action before CommentService#find_for_post; the comment level exists only for public==True.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_public == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:54 `raise Diaspora::NonPublic unless post.public?` -> rescue_from -> authenticate_user!: public==False ends the action before CommentService#find_for_post; the comment level exists only for public==True.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_public == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:54 `raise Diaspora::NonPublic unless post.public?` -> rescue_from -> authenticate_user!: public==False ends the action before CommentService#find_for_post; the comment level exists only for public==True.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_public == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_3_row_person_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:54 `raise Diaspora::NonPublic unless post.public?` -> rescue_from -> authenticate_user!: public==False ends the action before CommentService#find_for_post; the comment level exists only for public==True.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_public == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:54 `raise Diaspora::NonPublic unless post.public?` -> rescue_from -> authenticate_user!: public==False ends the action before CommentService#find_for_post; the comment level exists only for public==True.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_public == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:54 `raise Diaspora::NonPublic unless post.public?` -> rescue_from -> authenticate_user!: public==False ends the action before CommentService#find_for_post; the comment level exists only for public==True.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_public == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_retry_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:54 `raise Diaspora::NonPublic unless post.public?` -> rescue_from -> authenticate_user!: public==False ends the action before CommentService#find_for_post; the comment level exists only for public==True.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_public == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:54 `raise Diaspora::NonPublic unless post.public?` -> rescue_from -> authenticate_user!: public==False ends the action before CommentService#find_for_post; the comment level exists only for public==True.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_public == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:54 `raise Diaspora::NonPublic unless post.public?` -> rescue_from -> authenticate_user!: public==False ends the action before CommentService#find_for_post; the comment level exists only for public==True.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_public == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:54 `raise Diaspora::NonPublic unless post.public?` -> rescue_from -> authenticate_user!: public==False ends the action before CommentService#find_for_post; the comment level exists only for public==True.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_public == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "collection_association.rb:292 null_scope?: an UNPERSISTED post owner makes `post.comments` a NullRelation (`1=0`, no comment rows), so no comment rep and no comment-level decision exists on the persisted==False side.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_text_has_mention == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "collection_association.rb:292 null_scope?: an UNPERSISTED post owner makes `post.comments` a NullRelation (`1=0`, no comment rows), so no comment rep and no comment-level decision exists on the persisted==False side.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "collection_association.rb:292 null_scope?: an UNPERSISTED post owner makes `post.comments` a NullRelation (`1=0`, no comment rows), so no comment rep and no comment-level decision exists on the persisted==False side.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "collection_association.rb:292 null_scope?: an UNPERSISTED post owner makes `post.comments` a NullRelation (`1=0`, no comment rows), so no comment rep and no comment-level decision exists on the persisted==False side.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_3_row_person_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "collection_association.rb:292 null_scope?: an UNPERSISTED post owner makes `post.comments` a NullRelation (`1=0`, no comment rows), so no comment rep and no comment-level decision exists on the persisted==False side.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "collection_association.rb:292 null_scope?: an UNPERSISTED post owner makes `post.comments` a NullRelation (`1=0`, no comment rows), so no comment rep and no comment-level decision exists on the persisted==False side.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "collection_association.rb:292 null_scope?: an UNPERSISTED post owner makes `post.comments` a NullRelation (`1=0`, no comment rows), so no comment rep and no comment-level decision exists on the persisted==False side.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_retry_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "collection_association.rb:292 null_scope?: an UNPERSISTED post owner makes `post.comments` a NullRelation (`1=0`, no comment rows), so no comment rep and no comment-level decision exists on the persisted==False side.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "collection_association.rb:292 null_scope?: an UNPERSISTED post owner makes `post.comments` a NullRelation (`1=0`, no comment rows), so no comment rep and no comment-level decision exists on the persisted==False side.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "collection_association.rb:292 null_scope?: an UNPERSISTED post owner makes `post.comments` a NullRelation (`1=0`, no comment rows), so no comment rep and no comment-level decision exists on the persisted==False side.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "collection_association.rb:292 null_scope?: an UNPERSISTED post owner makes `post.comments` a NullRelation (`1=0`, no comment rows), so no comment rep and no comment-level decision exists on the persisted==False side.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "evil_query.rb:104: the share-visibility post's persisted decision is only evaluated when that lookup FOUND a post (V==False); on V==True the `||` chain moves to the author lookup and that rep never exists.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_not_found == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "evil_query.rb:104 `||` short-circuit: querent_is_author.first and public_post.first (and their reps) are evaluated only when the share-visibility lookup came back not_found (V==True).",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_not_found == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "evil_query.rb:104 `||` short-circuit: querent_is_author.first and public_post.first (and their reps) are evaluated only when the share-visibility lookup came back not_found (V==True).",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_not_found == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "evil_query.rb:104 `||` short-circuit: querent_is_author.first and public_post.first (and their reps) are evaluated only when the share-visibility lookup came back not_found (V==True).",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_not_found == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "evil_query.rb:104 `||` short-circuit: querent_is_author.first and public_post.first (and their reps) are evaluated only when the share-visibility lookup came back not_found (V==True).",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_not_found == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "evil_query.rb:104: the author post's persisted decision exists only when the author lookup found a post (AU==False).",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_not_found == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "evil_query.rb:104 `||` short-circuit: public_post.first is evaluated only when the author lookup came back not_found (AU==True).",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_not_found == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "evil_query.rb:104 `||` short-circuit: public_post.first is evaluated only when the author lookup came back not_found (AU==True).",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_not_found == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:57-60 find_non_public_by_guid_or_id_with_user!: when all three lookups miss (PU==True) RecordNotFound -> head :not_found; the public post's persisted decision and the comment level exist only for PU==False.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_not_found == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:57-60 find_non_public_by_guid_or_id_with_user!: when all three lookups miss (PU==True) RecordNotFound -> head :not_found; the public post's persisted decision and the comment level exist only for PU==False.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_not_found == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_text_has_mention == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:57-60 find_non_public_by_guid_or_id_with_user!: when all three lookups miss (PU==True) RecordNotFound -> head :not_found; the public post's persisted decision and the comment level exist only for PU==False.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_not_found == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:57-60 find_non_public_by_guid_or_id_with_user!: when all three lookups miss (PU==True) RecordNotFound -> head :not_found; the public post's persisted decision and the comment level exist only for PU==False.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_not_found == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:57-60 find_non_public_by_guid_or_id_with_user!: when all three lookups miss (PU==True) RecordNotFound -> head :not_found; the public post's persisted decision and the comment level exist only for PU==False.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_not_found == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_3_row_person_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:57-60 find_non_public_by_guid_or_id_with_user!: when all three lookups miss (PU==True) RecordNotFound -> head :not_found; the public post's persisted decision and the comment level exist only for PU==False.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_not_found == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:57-60 find_non_public_by_guid_or_id_with_user!: when all three lookups miss (PU==True) RecordNotFound -> head :not_found; the public post's persisted decision and the comment level exist only for PU==False.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_not_found == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:57-60 find_non_public_by_guid_or_id_with_user!: when all three lookups miss (PU==True) RecordNotFound -> head :not_found; the public post's persisted decision and the comment level exist only for PU==False.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_not_found == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_retry_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:57-60 find_non_public_by_guid_or_id_with_user!: when all three lookups miss (PU==True) RecordNotFound -> head :not_found; the public post's persisted decision and the comment level exist only for PU==False.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_not_found == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:57-60 find_non_public_by_guid_or_id_with_user!: when all three lookups miss (PU==True) RecordNotFound -> head :not_found; the public post's persisted decision and the comment level exist only for PU==False.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_not_found == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:57-60 find_non_public_by_guid_or_id_with_user!: when all three lookups miss (PU==True) RecordNotFound -> head :not_found; the public post's persisted decision and the comment level exist only for PU==False.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_not_found == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "post_service.rb:57-60 find_non_public_by_guid_or_id_with_user!: when all three lookups miss (PU==True) RecordNotFound -> head :not_found; the public post's persisted decision and the comment level exist only for PU==False.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_not_found == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "evil_query.rb:104: VP exists only on V==False, where the author/public lookups are never reached; never co-evaluated.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "evil_query.rb:104: VP exists only on V==False, where the author/public lookups are never reached; never co-evaluated.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "evil_query.rb:104: VP exists only on V==False, where the author/public lookups are never reached; never co-evaluated.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "evil_query.rb:104: VP exists only on V==False, where the author/public lookups are never reached; never co-evaluated.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "evil_query.rb:104: AUP exists only on AU==False, where public_post.first is never reached; never co-evaluated.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "evil_query.rb:104: AUP exists only on AU==False, where public_post.first is never reached; never co-evaluated.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "collection_association.rb:292 null_scope?: an UNPERSISTED share-visibility post owner makes `post.comments` a NullRelation (`1=0`, no comment rows); the comment level exists only on its persisted==True side.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_text_has_mention == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "collection_association.rb:292 null_scope?: an UNPERSISTED share-visibility post owner makes `post.comments` a NullRelation (`1=0`, no comment rows); the comment level exists only on its persisted==True side.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "collection_association.rb:292 null_scope?: an UNPERSISTED share-visibility post owner makes `post.comments` a NullRelation (`1=0`, no comment rows); the comment level exists only on its persisted==True side.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "collection_association.rb:292 null_scope?: an UNPERSISTED share-visibility post owner makes `post.comments` a NullRelation (`1=0`, no comment rows); the comment level exists only on its persisted==True side.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_3_row_person_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "collection_association.rb:292 null_scope?: an UNPERSISTED share-visibility post owner makes `post.comments` a NullRelation (`1=0`, no comment rows); the comment level exists only on its persisted==True side.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "collection_association.rb:292 null_scope?: an UNPERSISTED share-visibility post owner makes `post.comments` a NullRelation (`1=0`, no comment rows); the comment level exists only on its persisted==True side.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "collection_association.rb:292 null_scope?: an UNPERSISTED share-visibility post owner makes `post.comments` a NullRelation (`1=0`, no comment rows); the comment level exists only on its persisted==True side.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_retry_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "collection_association.rb:292 null_scope?: an UNPERSISTED share-visibility post owner makes `post.comments` a NullRelation (`1=0`, no comment rows); the comment level exists only on its persisted==True side.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "collection_association.rb:292 null_scope?: an UNPERSISTED share-visibility post owner makes `post.comments` a NullRelation (`1=0`, no comment rows); the comment level exists only on its persisted==True side.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "collection_association.rb:292 null_scope?: an UNPERSISTED share-visibility post owner makes `post.comments` a NullRelation (`1=0`, no comment rows); the comment level exists only on its persisted==True side.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "collection_association.rb:292 null_scope?: an UNPERSISTED share-visibility post owner makes `post.comments` a NullRelation (`1=0`, no comment rows); the comment level exists only on its persisted==True side.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "collection_association.rb:292 null_scope?: an UNPERSISTED author post owner makes `post.comments` a NullRelation (`1=0`, no comment rows); the comment level exists only on its persisted==True side.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_text_has_mention == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "collection_association.rb:292 null_scope?: an UNPERSISTED author post owner makes `post.comments` a NullRelation (`1=0`, no comment rows); the comment level exists only on its persisted==True side.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "collection_association.rb:292 null_scope?: an UNPERSISTED author post owner makes `post.comments` a NullRelation (`1=0`, no comment rows); the comment level exists only on its persisted==True side.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "collection_association.rb:292 null_scope?: an UNPERSISTED author post owner makes `post.comments` a NullRelation (`1=0`, no comment rows); the comment level exists only on its persisted==True side.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_3_row_person_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "collection_association.rb:292 null_scope?: an UNPERSISTED author post owner makes `post.comments` a NullRelation (`1=0`, no comment rows); the comment level exists only on its persisted==True side.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "collection_association.rb:292 null_scope?: an UNPERSISTED author post owner makes `post.comments` a NullRelation (`1=0`, no comment rows); the comment level exists only on its persisted==True side.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "collection_association.rb:292 null_scope?: an UNPERSISTED author post owner makes `post.comments` a NullRelation (`1=0`, no comment rows); the comment level exists only on its persisted==True side.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_retry_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "collection_association.rb:292 null_scope?: an UNPERSISTED author post owner makes `post.comments` a NullRelation (`1=0`, no comment rows); the comment level exists only on its persisted==True side.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "collection_association.rb:292 null_scope?: an UNPERSISTED author post owner makes `post.comments` a NullRelation (`1=0`, no comment rows); the comment level exists only on its persisted==True side.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "collection_association.rb:292 null_scope?: an UNPERSISTED author post owner makes `post.comments` a NullRelation (`1=0`, no comment rows); the comment level exists only on its persisted==True side.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "collection_association.rb:292 null_scope?: an UNPERSISTED author post owner makes `post.comments` a NullRelation (`1=0`, no comment rows); the comment level exists only on its persisted==True side.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "collection_association.rb:292 null_scope?: an UNPERSISTED public post owner makes `post.comments` a NullRelation (`1=0`, no comment rows); the comment level exists only on its persisted==True side.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_text_has_mention == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "collection_association.rb:292 null_scope?: an UNPERSISTED public post owner makes `post.comments` a NullRelation (`1=0`, no comment rows); the comment level exists only on its persisted==True side.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "collection_association.rb:292 null_scope?: an UNPERSISTED public post owner makes `post.comments` a NullRelation (`1=0`, no comment rows); the comment level exists only on its persisted==True side.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "collection_association.rb:292 null_scope?: an UNPERSISTED public post owner makes `post.comments` a NullRelation (`1=0`, no comment rows); the comment level exists only on its persisted==True side.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_3_row_person_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "collection_association.rb:292 null_scope?: an UNPERSISTED public post owner makes `post.comments` a NullRelation (`1=0`, no comment rows); the comment level exists only on its persisted==True side.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "collection_association.rb:292 null_scope?: an UNPERSISTED public post owner makes `post.comments` a NullRelation (`1=0`, no comment rows); the comment level exists only on its persisted==True side.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "collection_association.rb:292 null_scope?: an UNPERSISTED public post owner makes `post.comments` a NullRelation (`1=0`, no comment rows); the comment level exists only on its persisted==True side.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_retry_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "collection_association.rb:292 null_scope?: an UNPERSISTED public post owner makes `post.comments` a NullRelation (`1=0`, no comment rows); the comment level exists only on its persisted==True side.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "collection_association.rb:292 null_scope?: an UNPERSISTED public post owner makes `post.comments` a NullRelation (`1=0`, no comment rows); the comment level exists only on its persisted==True side.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "collection_association.rb:292 null_scope?: an UNPERSISTED public post owner makes `post.comments` a NullRelation (`1=0`, no comment rows); the comment level exists only on its persisted==True side.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "collection_association.rb:292 null_scope?: an UNPERSISTED public post owner makes `post.comments` a NullRelation (`1=0`, no comment rows); the comment level exists only on its persisted==True side.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "mentions_container.rb:17-18: the mentioned person rep (records_3_row_person, the json-site mentions load) exists only on the persisted branch (CP==True).",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_3_row_person_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "mentions_container.rb:19-20: people_from_string (and every mention_lookup_* decision) runs only on the UNPERSISTED branch (CP==False).",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "mentions_container.rb:19-20: people_from_string (and every mention_lookup_* decision) runs only on the UNPERSISTED branch (CP==False).",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "mentions_container.rb:19-20: people_from_string (and every mention_lookup_* decision) runs only on the UNPERSISTED branch (CP==False).",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_retry_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "mentions_container.rb:19-20: people_from_string (and every mention_lookup_* decision) runs only on the UNPERSISTED branch (CP==False).",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "mentions_container.rb:19-20: people_from_string (and every mention_lookup_* decision) runs only on the UNPERSISTED branch (CP==False).",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "mentions_container.rb:19-20: people_from_string (and every mention_lookup_* decision) runs only on the UNPERSISTED branch (CP==False).",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "mentions_container.rb:19-20: people_from_string (and every mention_lookup_* decision) runs only on the UNPERSISTED branch (CP==False).",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "mentionable.rb:46-49: `.scan(REGEX)` on a mention-free text returns [] and `.map` never calls find_or_fetch_person_by_identifier \u2014 no mention_lookup call exists when the comment's has_mention flag is False.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_text_has_mention == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "mentionable.rb:46-49: `.scan(REGEX)` on a mention-free text returns [] and `.map` never calls find_or_fetch_person_by_identifier \u2014 no mention_lookup call exists when the comment's has_mention flag is False.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_text_has_mention == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "mentionable.rb:46-49: `.scan(REGEX)` on a mention-free text returns [] and `.map` never calls find_or_fetch_person_by_identifier \u2014 no mention_lookup call exists when the comment's has_mention flag is False.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_text_has_mention == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_retry_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "mentionable.rb:46-49: `.scan(REGEX)` on a mention-free text returns [] and `.map` never calls find_or_fetch_person_by_identifier \u2014 no mention_lookup call exists when the comment's has_mention flag is False.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_text_has_mention == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "mentionable.rb:46-49: `.scan(REGEX)` on a mention-free text returns [] and `.map` never calls find_or_fetch_person_by_identifier \u2014 no mention_lookup call exists when the comment's has_mention flag is False.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_text_has_mention == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "mentionable.rb:46-49: `.scan(REGEX)` on a mention-free text returns [] and `.map` never calls find_or_fetch_person_by_identifier \u2014 no mention_lookup call exists when the comment's has_mention flag is False.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_text_has_mention == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "mentionable.rb:46-49: `.scan(REGEX)` on a mention-free text returns [] and `.map` never calls find_or_fetch_person_by_identifier \u2014 no mention_lookup call exists when the comment's has_mention flag is False.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_text_has_mention == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "person.rb:318-321 (msg site): the found person's persisted decision is evaluated by `person.profile` only when the first attempt found a row (first_not_found==False).",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_not_found == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "person.rb:319 (msg site): on the persisted side `person.profile.present?` holds and the method returns early \u2014 the retry attempt exists only when the first person was unpersisted (profile nil) or not found.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_retry_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "person.rb:318-321 (json site): the found person's persisted decision is evaluated by `person.profile` only when the first attempt found a row (first_not_found==False).",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_not_found == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "person.rb:319 (json site): on the persisted side `person.profile.present?` holds and the method returns early \u2014 the retry attempt exists only when the first person was unpersisted (profile nil) or not found.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "person.rb:327 -> comment_presenter.rb (json site): the retried person's persisted decision is read by as_api_response(:backbone)'s profile access only when the retry found a person (retry_not_found==False).",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_not_found == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "person.rb:319-327 (json site): on JFP==True the method returns early and no retry person exists; JRP exists only under JFP==False (or JF==True).",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "person.rb:318-321 msg site: mention_lookup_msg_retry is reached only when the first attempt was not_found (the profile load always returns a rep, so a found person short-circuits before the retry).",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_not_found == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_retry_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "person.rb:318-327 json site: mention_lookup_json_retry (and its retried person's persisted decision JRP) is reached only when the first attempt was not_found \u2014 a found person short-circuits before retry.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_not_found == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "person.rb:318-327 json site: mention_lookup_json_retry (and its retried person's persisted decision JRP) is reached only when the first attempt was not_found \u2014 a found person short-circuits before retry.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_not_found == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "mentions_container.rb:16-21: records_3 (persisted branch, mentions.includes preload) and the mention_lookup_* family (unpersisted branch, people_from_string) are on mutually exclusive sides of the comment rep's persisted decision (CP); never co-evaluated.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__Relation_records_3_row_person_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "mentions_container.rb:16-21: records_3 (persisted branch, mentions.includes preload) and the mention_lookup_* family (unpersisted branch, people_from_string) are on mutually exclusive sides of the comment rep's persisted decision (CP); never co-evaluated.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__Relation_records_3_row_person_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "mentions_container.rb:16-21: records_3 (persisted branch, mentions.includes preload) and the mention_lookup_* family (unpersisted branch, people_from_string) are on mutually exclusive sides of the comment rep's persisted decision (CP); never co-evaluated.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__Relation_records_3_row_person_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_retry_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "mentions_container.rb:16-21: records_3 (persisted branch, mentions.includes preload) and the mention_lookup_* family (unpersisted branch, people_from_string) are on mutually exclusive sides of the comment rep's persisted decision (CP); never co-evaluated.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__Relation_records_3_row_person_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "mentions_container.rb:16-21: records_3 (persisted branch, mentions.includes preload) and the mention_lookup_* family (unpersisted branch, people_from_string) are on mutually exclusive sides of the comment rep's persisted decision (CP); never co-evaluated.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__Relation_records_3_row_person_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "mentions_container.rb:16-21: records_3 (persisted branch, mentions.includes preload) and the mention_lookup_* family (unpersisted branch, people_from_string) are on mutually exclusive sides of the comment rep's persisted decision (CP); never co-evaluated.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__Relation_records_3_row_person_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "mentions_container.rb:16-21: records_3 (persisted branch, mentions.includes preload) and the mention_lookup_* family (unpersisted branch, people_from_string) are on mutually exclusive sides of the comment rep's persisted decision (CP); never co-evaluated.",
+      "agent_notes": "",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__Relation_records_3_row_person_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "comment_presenter.rb as_json: the text: (msg) and mentioned_people: (json) call sites both run in every unpersisted-with-mention run; each site's find_by outcomes are independently seeded mock decisions with no engine-tracked data dependency between the sites.",
+      "agent_notes": "Sibling-decision independence (assumptions.py rule 2).",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_not_found == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "comment_presenter.rb as_json: the text: (msg) and mentioned_people: (json) call sites both run in every unpersisted-with-mention run; each site's find_by outcomes are independently seeded mock decisions with no engine-tracked data dependency between the sites.",
+      "agent_notes": "Sibling-decision independence (assumptions.py rule 2).",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_not_found == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "comment_presenter.rb as_json: the text: (msg) and mentioned_people: (json) call sites both run in every unpersisted-with-mention run; each site's find_by outcomes are independently seeded mock decisions with no engine-tracked data dependency between the sites.",
+      "agent_notes": "Sibling-decision independence (assumptions.py rule 2).",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_not_found == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "comment_presenter.rb as_json: the text: (msg) and mentioned_people: (json) call sites both run in every unpersisted-with-mention run; each site's find_by outcomes are independently seeded mock decisions with no engine-tracked data dependency between the sites.",
+      "agent_notes": "Sibling-decision independence (assumptions.py rule 2).",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_not_found == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "comment_presenter.rb as_json: the text: (msg) and mentioned_people: (json) call sites both run in every unpersisted-with-mention run; each site's find_by outcomes are independently seeded mock decisions with no engine-tracked data dependency between the sites.",
+      "agent_notes": "Sibling-decision independence (assumptions.py rule 2).",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "comment_presenter.rb as_json: the text: (msg) and mentioned_people: (json) call sites both run in every unpersisted-with-mention run; each site's find_by outcomes are independently seeded mock decisions with no engine-tracked data dependency between the sites.",
+      "agent_notes": "Sibling-decision independence (assumptions.py rule 2).",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "comment_presenter.rb as_json: the text: (msg) and mentioned_people: (json) call sites both run in every unpersisted-with-mention run; each site's find_by outcomes are independently seeded mock decisions with no engine-tracked data dependency between the sites.",
+      "agent_notes": "Sibling-decision independence (assumptions.py rule 2).",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "comment_presenter.rb as_json: the text: (msg) and mentioned_people: (json) call sites both run in every unpersisted-with-mention run; each site's find_by outcomes are independently seeded mock decisions with no engine-tracked data dependency between the sites.",
+      "agent_notes": "Sibling-decision independence (assumptions.py rule 2).",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_persisted == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "comment_presenter.rb as_json: the text: (msg) and mentioned_people: (json) call sites both run in every unpersisted-with-mention run; each site's find_by outcomes are independently seeded mock decisions with no engine-tracked data dependency between the sites.",
+      "agent_notes": "Sibling-decision independence (assumptions.py rule 2).",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_retry_1_not_found == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "comment_presenter.rb as_json: the text: (msg) and mentioned_people: (json) call sites both run in every unpersisted-with-mention run; each site's find_by outcomes are independently seeded mock decisions with no engine-tracked data dependency between the sites.",
+      "agent_notes": "Sibling-decision independence (assumptions.py rule 2).",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_retry_1_not_found == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_persisted == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "comment_presenter.rb as_json: the text: (msg) and mentioned_people: (json) call sites both run in every unpersisted-with-mention run; each site's find_by outcomes are independently seeded mock decisions with no engine-tracked data dependency between the sites.",
+      "agent_notes": "Sibling-decision independence (assumptions.py rule 2).",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_retry_1_not_found == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_not_found == True)"
+    },
+    {
+      "type": "IndependenceAssumption",
+      "description": "comment_presenter.rb as_json: the text: (msg) and mentioned_people: (json) call sites both run in every unpersisted-with-mention run; each site's find_by outcomes are independently seeded mock decisions with no engine-tracked data dependency between the sites.",
+      "agent_notes": "Sibling-decision independence (assumptions.py rule 2).",
+      "source_a": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "source_b": {
+        "file": "",
+        "lineno": 0,
+        "col_offset": 0,
+        "function": "",
+        "snippet": "",
+        "str": ":0"
+      },
+      "expr_a": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_retry_1_not_found == True)",
+      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_persisted == True)"
+    }
+  ],
+  "assumptions_used": 180,
+  "missing": [],
+  "completion": {
+    "shims_extracted": 26,
+    "shims": [
+      {
+        "owner": "h",
+        "method": "image_path",
+        "kind": "singleton",
+        "file": "targets.rb",
+        "line": 507,
+        "key": "h.image_path",
+        "verdict": "PASS",
+        "targets_reached": [],
+        "coverage_pct": 100.0,
+        "coverage_waiver": "framework body (sprockets); zero-target probe is the contract",
+        "missed_lines": []
+      },
+      {
+        "owner": "h",
+        "method": "path_to_image",
+        "kind": "singleton",
+        "file": "targets.rb",
+        "line": 508,
+        "key": "h.path_to_image",
+        "verdict": "PASS",
+        "targets_reached": [],
+        "coverage_pct": 100.0,
+        "coverage_waiver": "framework body (alias of image_path); zero-target probe is the contract",
+        "missed_lines": []
+      },
+      {
+        "owner": "Person",
+        "method": "name_from_attrs",
+        "kind": "singleton",
+        "file": "targets.rb",
+        "line": 531,
+        "key": "Person.name_from_attrs",
+        "verdict": "PASS",
+        "targets_reached": [],
+        "coverage_pct": 100.0,
+        "coverage_waiver": null,
+        "missed_lines": []
+      },
+      {
+        "owner": "EvilQuery::VisibleShareableById",
+        "method": "post!",
+        "kind": "prepend",
+        "module": "PostBangNaming",
+        "file": "targets.rb",
+        "line": 580,
+        "key": "EvilQuery::VisibleShareableById.post!",
+        "verdict": "WAIVED",
+        "detail": "call-site-stable naming prepend; byte-faithful to evil_query.rb:102-105 (vis.first || author.first || public.first); reaches targets BY DESIGN (the aliased .first calls ARE the declared ci_*_first targets)"
+      },
+      {
+        "owner": "u",
+        "method": "persisted?",
+        "kind": "singleton",
+        "file": "targets.rb",
+        "line": 643,
+        "key": "u.persisted?",
+        "verdict": "WAIVED",
+        "detail": "session-user resolution pin: Devise middleware guarantees a persisted user reaches the action (a missing session 401s upstream); pure boolean literal, reaches no target, consumes no endpoint branch"
+      },
+      {
+        "owner": "u",
+        "method": "new_record?",
+        "kind": "singleton",
+        "file": "targets.rb",
+        "line": 644,
+        "key": "u.new_record?",
+        "verdict": "WAIVED",
+        "detail": "session-user resolution pin (negation of u.persisted?); see u.persisted?"
+      },
+      {
+        "owner": "User",
+        "method": "authenticatable_salt",
+        "kind": "prepend",
+        "module": "salt_shim",
+        "file": "targets.rb",
+        "line": 661,
+        "key": "User.authenticatable_salt",
+        "verdict": "WAIVED",
+        "detail": "leaf shim: Devise's real body is a pure encrypted_password[0,29] string slice, reaches no target function; same T1 leaf classification as the federation leaves; validated in notifications_index"
+      },
+      {
+        "owner": "OrmAdapter::ActiveRecord",
+        "method": "get",
+        "kind": "prepend",
+        "module": "OrmAdapterGetNaming",
+        "file": "targets.rb",
+        "line": 667,
+        "key": "OrmAdapter::ActiveRecord.get",
+        "verdict": "WAIVED",
+        "detail": "call-site-stable naming prepend; byte-faithful to orm_adapter-0.5.0 #get (klass.where(pk=>id).first); routes the ONE .first to the devise_user_first declared target BY DESIGN (the aliased finder IS the target that mints the users note)"
+      },
+      {
+        "owner": "Person.singleton_class",
+        "method": "DYNAMIC",
+        "kind": "dynamic",
+        "module": "kw_fix",
+        "file": "targets.rb",
+        "line": 824,
+        "note": "dynamically-named define_method \u2014 engine requires manual entry or waiver",
+        "key": "Person.singleton_class.DYNAMIC",
+        "verdict": "WAIVED",
+        "detail": "kwargs-capture wrappers over the aliased find_bys (violation-6 fix); no body of their own"
+      },
+      {
+        "owner": "Person.singleton_class",
+        "method": "find_or_fetch_by_identifier",
+        "kind": "prepend",
+        "module": "PersonFindOrFetchNaming",
+        "file": "targets.rb",
+        "line": 828,
+        "key": "Person.singleton_class.find_or_fetch_by_identifier",
+        "verdict": "WAIVED",
+        "detail": "call-site-stable naming prepend; byte-faithful to person.rb:318-328; reaches targets BY DESIGN (the aliased find_bys are the declared targets)"
+      },
+      {
+        "owner": "CommentPresenter",
+        "method": "as_json",
+        "kind": "prepend",
+        "module": "CommentPresenterContextTag",
+        "file": "targets.rb",
+        "line": 838,
+        "key": "CommentPresenter.as_json",
+        "verdict": "WAIVED",
+        "detail": "context-tagging prepend; byte-faithful to comment_presenter.rb; naming only"
+      },
+      {
+        "owner": "obj",
+        "method": "read_attribute",
+        "kind": "singleton",
+        "file": "concolic_targets.rb",
+        "line": 356,
+        "key": "obj.read_attribute",
+        "verdict": "WAIVED",
+        "detail": "rep attribute plumbing (symbolic var minting); evidence = attr vars"
+      },
+      {
+        "owner": "obj",
+        "method": "_read_attribute",
+        "kind": "singleton",
+        "file": "concolic_targets.rb",
+        "line": 357,
+        "key": "obj._read_attribute",
+        "verdict": "WAIVED",
+        "detail": "rep attribute plumbing; see obj.read_attribute"
+      },
+      {
+        "owner": "obj",
+        "method": "concolic_attrs",
+        "kind": "singleton",
+        "file": "concolic_targets.rb",
+        "line": 358,
+        "key": "obj.concolic_attrs",
+        "verdict": "WAIVED",
+        "detail": "rep introspection accessor (runtime-internal, no app counterpart)"
+      },
+      {
+        "owner": "obj",
+        "method": "concolic_note",
+        "kind": "singleton",
+        "file": "concolic_targets.rb",
+        "line": 362,
+        "key": "obj.concolic_note",
+        "verdict": "WAIVED",
+        "detail": "rep introspection accessor (runtime-internal)"
+      },
+      {
+        "owner": "obj",
+        "method": "attributes",
+        "kind": "singleton",
+        "file": "concolic_targets.rb",
+        "line": 370,
+        "key": "obj.attributes",
+        "verdict": "WAIVED",
+        "detail": "rep attribute plumbing; see obj.read_attribute"
+      },
+      {
+        "owner": "obj",
+        "method": "write_attribute",
+        "kind": "singleton",
+        "file": "concolic_targets.rb",
+        "line": 371,
+        "key": "obj.write_attribute",
+        "verdict": "WAIVED",
+        "detail": "rep attribute plumbing (write side; endpoint is read-only)"
+      },
+      {
+        "owner": "obj",
+        "method": "_write_attribute",
+        "kind": "singleton",
+        "file": "concolic_targets.rb",
+        "line": 372,
+        "key": "obj._write_attribute",
+        "verdict": "WAIVED",
+        "detail": "rep attribute plumbing (write side)"
+      },
+      {
+        "owner": "obj",
+        "method": "image_url",
+        "kind": "singleton",
+        "file": "concolic_targets.rb",
+        "line": 379,
+        "key": "obj.image_url",
+        "verdict": "PASS",
+        "targets_reached": [],
+        "coverage_pct": 100.0,
+        "coverage_waiver": null,
+        "missed_lines": []
+      },
+      {
+        "owner": "obj",
+        "method": "hidden_shareables",
+        "kind": "singleton",
+        "file": "concolic_targets.rb",
+        "line": 389,
+        "key": "obj.hidden_shareables",
+        "verdict": "WAIVED",
+        "detail": "serialized-column default ({}); real body is a serialize cast, no target functions; T1c ledger entry in batch header"
+      },
+      {
+        "owner": "obj",
+        "method": "post_location",
+        "kind": "singleton",
+        "file": "concolic_targets.rb",
+        "line": 398,
+        "key": "obj.post_location",
+        "verdict": "WAIVED",
+        "detail": "presenter display hash; pure; batch header documents"
+      },
+      {
+        "owner": "obj",
+        "method": "inspect",
+        "kind": "singleton",
+        "file": "concolic_targets.rb",
+        "line": 404,
+        "key": "obj.inspect",
+        "verdict": "WAIVED",
+        "detail": "debug rendering only; no evidence, no branches consumed"
+      },
+      {
+        "owner": "obj",
+        "method": "persisted?",
+        "kind": "singleton",
+        "file": "concolic_targets.rb",
+        "line": 445,
+        "key": "obj.persisted?",
+        "verdict": "WAIVED",
+        "detail": "seeded PC-recorded boundary decision (evidence = the _persisted PC); AR state reader, not app logic"
+      },
+      {
+        "owner": "obj",
+        "method": "new_record?",
+        "kind": "singleton",
+        "file": "concolic_targets.rb",
+        "line": 446,
+        "key": "obj.new_record?",
+        "verdict": "WAIVED",
+        "detail": "same decision as obj.persisted? (negated reader over the ONE _persisted var)"
+      },
+      {
+        "owner": "ActiveRecord::Base.singleton_class",
+        "method": "DYNAMIC",
+        "kind": "value_class",
+        "module": "ConcolicKwargsToPositional",
+        "file": "concolic_targets.rb",
+        "line": 1483,
+        "note": "dynamically-named define_method \u2014 engine requires manual entry or waiver",
+        "key": "ActiveRecord::Base.singleton_class.DYNAMIC",
+        "verdict": "WAIVED",
+        "detail": "shared ConcolicKwargsToPositional prepend (kwargs re-pack + thread-local stash)"
+      },
+      {
+        "owner": "ActiveRecord::Relation",
+        "method": "DYNAMIC",
+        "kind": "value_class",
+        "module": "ConcolicKwargsToPositional",
+        "file": "concolic_targets.rb",
+        "line": 1484,
+        "note": "dynamically-named define_method \u2014 engine requires manual entry or waiver",
+        "key": "ActiveRecord::Relation.DYNAMIC",
+        "verdict": "WAIVED",
+        "detail": "shared ConcolicKwargsToPositional prepend (Relation copy)"
+      }
+    ],
+    "shim_verdict_counts": {
+      "PASS": 4,
+      "WAIVED": 22
+    },
+    "note_check": {
+      "exit": 0,
+      "green": true,
+      "output": "== mock_note_check: 2 target frames issued real SELECTs; 12 targets carry corpus notes ==\n\nNOTE-OK       ActiveRecord::Associations::SingularAssociation.find_target  (1 real shapes matched)\nNOTE-OK*      ActiveRecord::Relation.records  (8 shape(s) matched under a DIFFERENT target \u2014 frame nesting)\n\nRESULT: every SQL-issuing target's notes match its real statements.\n"
+    },
+    "assumptions": {
+      "declared": 180,
+      "distinct_tested": 180,
+      "verdict_counts": {
+        "PASS": 167,
+        "FAIL": 13
+      },
+      "failures": [
+        {
+          "type": "IndependenceAssumption",
+          "expr": "(Length(SYM_PARAM_post_id) < 16)",
+          "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_not_found == True)",
+          "detail": "combination (flip both) produced 1 target-call shape(s) absent from base/flip-A/flip-B: ActiveRecord::FinderMethods.ci_vis_first SELECT posts.* FROM \"posts\" INNER JOIN \"share_visibilities\" "
+        },
+        {
+          "type": "IndependenceAssumption",
+          "expr": "(Length(SYM_PARAM_post_id) < 16)",
+          "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_not_found == True)",
+          "detail": "combination (flip both) produced 1 target-call shape(s) absent from base/flip-A/flip-B: ActiveRecord::FinderMethods.ci_public_first SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = ? AND \"po"
+        },
+        {
+          "type": "IndependenceAssumption",
+          "expr": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_not_found == True)",
+          "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_persisted == True)",
+          "detail": "combination (flip both) produced 1 target-call shape(s) absent from base/flip-A/flip-B: ActiveRecord::FinderMethods.devise_user_first SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = ?"
+        },
+        {
+          "type": "IndependenceAssumption",
+          "expr": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_not_found == True)",
+          "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_retry_1_not_found == True)",
+          "detail": "combination (flip both) produced 1 target-call shape(s) absent from base/flip-A/flip-B: ActiveRecord::FinderMethods.devise_user_first SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = ?"
+        },
+        {
+          "type": "IndependenceAssumption",
+          "expr": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_not_found == True)",
+          "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_not_found == True)",
+          "detail": "combination (flip both) produced 1 target-call shape(s) absent from base/flip-A/flip-B: ActiveRecord::FinderMethods.devise_user_first SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = ?"
+        },
+        {
+          "type": "IndependenceAssumption",
+          "expr": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_not_found == True)",
+          "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_persisted == True)",
+          "detail": "combination (flip both) produced 1 target-call shape(s) absent from base/flip-A/flip-B: ActiveRecord::FinderMethods.devise_user_first SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = ?"
+        },
+        {
+          "type": "IndependenceAssumption",
+          "expr": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_not_found == True)",
+          "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_not_found == True)",
+          "detail": "combination (flip both) produced 1 target-call shape(s) absent from base/flip-A/flip-B: ActiveRecord::FinderMethods.devise_user_first SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = ?"
+        },
+        {
+          "type": "IndependenceAssumption",
+          "expr": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_not_found == True)",
+          "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_not_found == True)",
+          "detail": "combination (flip both) produced 1 target-call shape(s) absent from base/flip-A/flip-B: ActiveRecord::FinderMethods.devise_user_first SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = ?"
+        },
+        {
+          "type": "IndependenceAssumption",
+          "expr": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_not_found == True)",
+          "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_persisted == True)",
+          "detail": "combination (flip both) produced 1 target-call shape(s) absent from base/flip-A/flip-B: ActiveRecord::FinderMethods.devise_user_first SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = ?"
+        },
+        {
+          "type": "IndependenceAssumption",
+          "expr": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_persisted == True)",
+          "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_persisted == True)",
+          "detail": "combination (flip both) produced 1 target-call shape(s) absent from base/flip-A/flip-B: ActiveRecord::FinderMethods.devise_user_first SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = ?"
+        },
+        {
+          "type": "IndependenceAssumption",
+          "expr": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_retry_1_not_found == True)",
+          "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_not_found == True)",
+          "detail": "combination (flip both) produced 1 target-call shape(s) absent from base/flip-A/flip-B: ActiveRecord::FinderMethods.devise_user_first SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = ?"
+        },
+        {
+          "type": "IndependenceAssumption",
+          "expr": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_retry_1_not_found == True)",
+          "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_not_found == True)",
+          "detail": "combination (flip both) produced 1 target-call shape(s) absent from base/flip-A/flip-B: ActiveRecord::FinderMethods.devise_user_first SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = ?"
+        },
+        {
+          "type": "IndependenceAssumption",
+          "expr": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_retry_1_not_found == True)",
+          "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_persisted == True)",
+          "detail": "combination (flip both) produced 1 target-call shape(s) absent from base/flip-A/flip-B: ActiveRecord::FinderMethods.devise_user_first SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = ?"
+        }
+      ],
+      "driver_exit": 1,
+      "output_tail": "\n      combination (flip both) produced 1 target-call shape(s) absent from base/flip-A/flip-B: ActiveRecord::FinderMethods.devise_user_first SELECT \"users\".* FROM \"use\n  PASS          IndependenceAssumption           (SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_ || (SYM_RESULT_ActiveRecord__Core__ClassMethods_menti\n      no combination-only access shapes (snapshot dump_auth_dse0863.json)\n  PASS          IndependenceAssumption           (SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_ || (SYM_RESULT_ActiveRecord__Core__ClassMethods_menti\n      no combination-only access shapes (snapshot dump_auth_dse0863.json)\n  FAIL          IndependenceAssumption           (SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_retry_ || (SYM_RESULT_ActiveRecord__Core__ClassMethods_menti\n      combination (flip both) produced 1 target-call shape(s) absent from base/flip-A/flip-B: ActiveRecord::FinderMethods.devise_user_first SELECT \"users\".* FROM \"use\n  PASS          IndependenceAssumption           (SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_retry_ || (SYM_RESULT_ActiveRecord__Core__ClassMethods_menti\n      no combination-only access shapes (snapshot dump_auth_dse0819.json)\n  FAIL          IndependenceAssumption           (SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_retry_ || (SYM_RESULT_ActiveRecord__Core__ClassMethods_menti\n      combination (flip both) produced 1 target-call shape(s) absent from base/flip-A/flip-B: ActiveRecord::FinderMethods.devise_user_first SELECT \"users\".* FROM \"use\n  FAIL          IndependenceAssumption           (SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_retry_ || (SYM_RESULT_ActiveRecord__Core__ClassMethods_menti\n      combination (flip both) produced 1 target-call shape(s) absent from base/flip-A/flip-B: ActiveRecord::FinderMethods.devise_user_first SELECT \"users\".* FROM \"use\n\nRESULT: 180 distinct tested \u2014 PASS 167, FAIL 13, NOT-TESTABLE 0\n",
+      "green": false
+    },
+    "complete": false,
+    "blocking": [
+      "assumption FAIL (IndependenceAssumption): (Length(SYM_PARAM_post_id) < 16)",
+      "assumption FAIL (IndependenceAssumption): (Length(SYM_PARAM_post_id) < 16)",
+      "assumption FAIL (IndependenceAssumption): (SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_retry_1_not_fou",
+      "assumption FAIL (IndependenceAssumption): (SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_not_foun",
+      "assumption FAIL (IndependenceAssumption): (SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_not_fou",
+      "assumption FAIL (IndependenceAssumption): (SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_json_first_1_not_fou",
+      "assumption FAIL (IndependenceAssumption): (SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_not_foun",
+      "assumption FAIL (IndependenceAssumption): (SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_not_foun",
+      "assumption FAIL (IndependenceAssumption): (SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_not_foun",
+      "assumption FAIL (IndependenceAssumption): (SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_first_1_persiste",
+      "assumption FAIL (IndependenceAssumption): (SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_retry_1_not_foun",
+      "assumption FAIL (IndependenceAssumption): (SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_retry_1_not_foun",
+      "assumption FAIL (IndependenceAssumption): (SYM_RESULT_ActiveRecord__Core__ClassMethods_mention_lookup_msg_retry_1_not_foun"
+    ]
+  },
+  "complete": false
+}

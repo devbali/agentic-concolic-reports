@@ -1,0 +1,53 @@
+### mock_note_check
+== mock_note_check: 6 target frames issued real SELECTs; 16 targets carry corpus notes ==
+
+NOTE-OK       ActiveRecord::Associations::CollectionProxy.load_target  (1 real shapes matched)
+NOTE-OK       ActiveRecord::Associations::SingularAssociation.find_target  (3 real shapes matched)
+NOTE-OK       ActiveRecord::Calculations.count  (3 real shapes matched)
+NOTE-OK       ActiveRecord::Calculations.pluck  (2 real shapes matched)
+NOTE-OK       ActiveRecord::FinderMethods.exists?  (1 real shapes matched)
+NOTE-OK       ActiveRecord::Relation.records  (8 real shapes matched)
+
+RESULT: every SQL-issuing target's notes match its real statements.
+EXIT=0
+
+### note_fidelity_audit
+== note_fidelity_audit: 1 run file(s), 18 distinct real SELECTs under 6 frames; 16 targets carry notes ==
+
+-- wildcard notes per target (corpus) --
+   ActiveRecord::Associations::CollectionProxy.records                    notes=2    star=2
+   ActiveRecord::Associations::SingularAssociation.find_target            notes=17   star=17
+   ActiveRecord::Base.reload                                              notes=5    star=5
+   ActiveRecord::Calculations.count                                       notes=8    agg=8
+   ActiveRecord::Calculations.pluck                                       notes=3    cols=3
+   ActiveRecord::Calculations.sum                                         notes=1    agg=1
+   ActiveRecord::FinderMethods.devise_user_first                          notes=1    star=1
+   ActiveRecord::FinderMethods.exists?                                    notes=5    cols=5
+   ActiveRecord::FinderMethods.find_by                                    notes=3    star=3
+   ActiveRecord::FinderMethods.first                                      notes=3    star=3
+   ActiveRecord::FinderMethods.take                                       notes=2    cols=2
+   ActiveRecord::Relation.empty?                                          notes=1    cols=1
+   ActiveRecord::Relation.records                                         notes=5    cols=2 star=3
+   ActiveRecord::Relation.to_a                                            notes=3    cols=2 star=1
+   ActiveRecord::Relation.to_ary                                          notes=2    star=2
+   Anonymous.load_intermediate                                            notes=3    star=3
+
+-- MISSING: 0 --
+
+-- STAR-OVER: 0 --
+
+-- AGG-COLLAPSE: 0 --
+
+-- PROJ-DIFF: 0 --
+
+-- PRED-OP-DIFF: 0 --
+
+-- LIMIT-DIFF: 0 --
+
+-- ORDER-DIFF: 0 --
+
+-- PRED-DIFF: 0 --
+
+-- EXACT: 18 --
+RESULT: every real statement has a projection-faithful note.
+EXIT=0

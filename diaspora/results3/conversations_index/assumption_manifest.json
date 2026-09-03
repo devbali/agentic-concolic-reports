@@ -1,0 +1,52 @@
+{
+  "batch_dir": "/home/dev/project/reports/diaspora/results3/conversations_index",
+  "runner": "/home/dev/project/reports/diaspora/tools/slot scripts/diaspora-concolic /home/dev/project/reports/diaspora/results3/conversations_index/run_dse.rb",
+  "workdir": "/home/dev/project",
+  "assumptions": [
+    {
+      "name": "conversation-not-found-foreclosure",
+      "kind": "foreclosure",
+      "dimension": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found",
+      "expect_pc_substring": "_first_1_not_found ==",
+      "snapshot_scenario": "html_withcid",
+      "note": "A gates the whole `if @conversation` block (controller:20-23) and index.haml's right column"
+    },
+    {
+      "name": "visibility-not-found-foreclosure",
+      "kind": "foreclosure",
+      "dimension": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found",
+      "expect_pc_substring": "_first_2_not_found ==",
+      "snapshot_scenario": "html_withcid",
+      "note": "B gates conversation.rb:33 messages.to_a[-unread] (to_a_1 family)"
+    },
+    {
+      "name": "sidebar-empty-foreclosure",
+      "kind": "foreclosure",
+      "dimension": "SYM_RESULT_ActiveRecord__Calculations_count_1_count",
+      "flip_to": 0,
+      "expect_pc_substring": "_count_1_count > 0",
+      "snapshot_scenario": "html_plain",
+      "note": "K gates index.haml:16's per-visibility partial collection render"
+    }
+  ],
+  "env_by_scenario": {
+    "html_plain": {
+      "VARIANTS": "html_plain"
+    },
+    "html_withcid": {
+      "VARIANTS": "html_withcid"
+    },
+    "json_plain": {
+      "VARIANTS": "json_plain"
+    },
+    "json_withcid": {
+      "VARIANTS": "json_withcid"
+    }
+  },
+  "env": {
+    "JAVA_TOOL_OPTIONS": ""
+  },
+  "_withdrawn_2026_08_28_cycle5": {
+    "visibility-conversation-not-found-foreclosure": "WITHDRAWN (cycle 5, M-3 regression check). `SYM_RESULT_ActiveRecord__Relation_convidx_conv_lookup_1_not_found` occurs in 0 of 20242 dumps: every ConversationVisibility rep on this endpoint reaches `visibility.conversation` with the association ALREADY LOADED \u2014 @visibilities is `ConversationVisibility.includes(:conversation)` (eager LEFT OUTER JOIN, tagged by tag_loaded_assocs) and the visibilities read through `conversation.conversation_visibilities` carry the automatic inverse_of. The unloaded lookup (targets.rb ConvoSymAssociations#conversation) is therefore unreachable on this endpoint and its not_found decision is dead code, so a foreclosure manifest entry over that dimension can never be probed (`pick_snapshot` -> 'no dump seeds this dimension'). The real belongs_to not-found question is answered by the schema, not by this decision: every belongs_to FK column on this path is NOT NULL with an ON DELETE CASCADE foreign key (db/schema.rb 626-628, 632-633) -- see AGENT_RUN cycle 5."
+  }
+}

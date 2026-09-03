@@ -1,0 +1,8 @@
+== mock_note_check: 3 target frames issued real SELECTs; 13 targets carry corpus notes ==
+
+NOTE-OK       ActiveRecord::Associations::SingularAssociation.find_target  (4 real shapes matched)
+NOTE-OK       ActiveRecord::Calculations.count  (3 real shapes matched)
+NOTE-MISMATCH ActiveRecord::Relation.records  <-- RED: 1 real statement shape(s) with NO corpus note anywhere
+     real: SELECT "conversations".* FROM "conversations" WHERE "conversations"."id" = ?
+
+RESULT: RED — target mocks with missing/mismatched notes above.

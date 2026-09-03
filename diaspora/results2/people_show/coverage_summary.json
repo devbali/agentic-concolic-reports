@@ -1,0 +1,246 @@
+{
+ "endpoint": "people_show",
+ "coverage_complete": true,
+ "tree_nodes": 9,
+ "missing_branches": 0,
+ "truncated": false,
+ "solver_lost": 0,
+ "unevaluable_exprs": [],
+ "total_runs": 10,
+ "total_path_conditions": 50,
+ "dump_errors": {},
+ "assumptions": [
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_DECISION_diaspora_id_username == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "mutually exclusive per app control flow \u2014 see agent_notes"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_DECISION_diaspora_id_username == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_closed_account == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "mutually exclusive per app control flow \u2014 see agent_notes"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_DECISION_diaspora_id_username == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "mutually exclusive per app control flow \u2014 see agent_notes"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_DECISION_diaspora_id_username == True)",
+   "expr_b": "(SYM_PERSON_via_user_closed_account == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "mutually exclusive per app control flow \u2014 see agent_notes"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_closed_account == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "mutually exclusive per app control flow \u2014 see agent_notes"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_not_found == True)",
+   "expr_b": "(SYM_PERSON_via_user_closed_account == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "mutually exclusive per app control flow \u2014 see agent_notes"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "mutually exclusive per app control flow \u2014 see agent_notes"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+   "expr_b": "(SYM_PERSON_via_user_closed_account == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "mutually exclusive per app control flow \u2014 see agent_notes"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_closed_account == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "mutually exclusive per app control flow \u2014 see agent_notes"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_closed_account == True)",
+   "expr_b": "(SYM_PERSON_via_user_closed_account == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "mutually exclusive per app control flow \u2014 see agent_notes"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+   "expr_b": "(SYM_PROFILE_PERSON_public_details == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "mutually exclusive per app control flow \u2014 see agent_notes"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+   "expr_b": "(SYM_PROFILE_PERSON_birthday_year <= 1004)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "mutually exclusive per app control flow \u2014 see agent_notes"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+   "expr_b": "(SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1 != 0)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "mutually exclusive per app control flow \u2014 see agent_notes"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+   "expr_b": "(SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2 != 0)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "mutually exclusive per app control flow \u2014 see agent_notes"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_closed_account == True)",
+   "expr_b": "(SYM_PROFILE_PERSON_public_details == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "mutually exclusive per app control flow \u2014 see agent_notes"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_closed_account == True)",
+   "expr_b": "(SYM_PROFILE_PERSON_birthday_year <= 1004)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "mutually exclusive per app control flow \u2014 see agent_notes"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_closed_account == True)",
+   "expr_b": "(SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1 != 0)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "mutually exclusive per app control flow \u2014 see agent_notes"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_closed_account == True)",
+   "expr_b": "(SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2 != 0)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "mutually exclusive per app control flow \u2014 see agent_notes"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_not_found == True)",
+   "expr_b": "(SYM_PROFILE_PERSON_public_details == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "mutually exclusive per app control flow \u2014 see agent_notes"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_not_found == True)",
+   "expr_b": "(SYM_PROFILE_PERSON_birthday_year <= 1004)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "mutually exclusive per app control flow \u2014 see agent_notes"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_not_found == True)",
+   "expr_b": "(SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1 != 0)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "mutually exclusive per app control flow \u2014 see agent_notes"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_not_found == True)",
+   "expr_b": "(SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2 != 0)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "mutually exclusive per app control flow \u2014 see agent_notes"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_PERSON_via_user_closed_account == True)",
+   "expr_b": "(SYM_PROFILE_PERSON_public_details == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "mutually exclusive per app control flow \u2014 see agent_notes"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_PERSON_via_user_closed_account == True)",
+   "expr_b": "(SYM_PROFILE_PERSON_birthday_year <= 1004)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "mutually exclusive per app control flow \u2014 see agent_notes"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_PERSON_via_user_closed_account == True)",
+   "expr_b": "(SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1 != 0)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "mutually exclusive per app control flow \u2014 see agent_notes"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_PERSON_via_user_closed_account == True)",
+   "expr_b": "(SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2 != 0)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "mutually exclusive per app control flow \u2014 see agent_notes"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_PROFILE_PERSON_public_details == True)",
+   "expr_b": "(SYM_PROFILE_PERSON_birthday_year <= 1004)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "mutually exclusive per app control flow \u2014 see agent_notes"
+  },
+  {
+   "type": "OneSideUntrackedPathAssumption",
+   "expr": "(SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1 != 0)",
+   "tracked_side": "not_taken",
+   "source": ":0",
+   "description": "non-empty side proven unreachable by direct DSE probe (NullRelation)"
+  },
+  {
+   "type": "OneSideUntrackedPathAssumption",
+   "expr": "(SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2 != 0)",
+   "tracked_side": "not_taken",
+   "source": ":0",
+   "description": "non-empty side proven unreachable by direct DSE probe (NullRelation)"
+  }
+ ],
+ "assumptions_used": 29,
+ "missing": []
+}

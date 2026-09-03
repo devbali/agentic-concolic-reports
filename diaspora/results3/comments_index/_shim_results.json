@@ -1,0 +1,554 @@
+[
+  {
+    "owner": "h",
+    "method": "image_path",
+    "kind": "rep_plumbing",
+    "file": "targets.rb",
+    "line": 1393,
+    "key": "h.image_path",
+    "verdict": "PASS",
+    "targets_reached": [
+
+    ],
+    "targets_declared": [
+
+    ],
+    "coverage_pct": 100.0,
+    "invoked": true,
+    "generated": false,
+    "coverage_waiver": null,
+    "missed_lines": [
+
+    ]
+  },
+  {
+    "owner": "h",
+    "method": "path_to_image",
+    "kind": "rep_plumbing",
+    "file": "targets.rb",
+    "line": 1394,
+    "key": "h.path_to_image",
+    "verdict": "PASS",
+    "targets_reached": [
+
+    ],
+    "targets_declared": [
+
+    ],
+    "coverage_pct": 100.0,
+    "invoked": false,
+    "generated": false,
+    "coverage_waiver": null,
+    "missed_lines": [
+
+    ]
+  },
+  {
+    "owner": "Person",
+    "method": "name_from_attrs",
+    "kind": "rep_plumbing",
+    "file": "targets.rb",
+    "line": 1417,
+    "key": "Person.name_from_attrs",
+    "verdict": "PASS",
+    "targets_reached": [
+
+    ],
+    "targets_declared": [
+
+    ],
+    "coverage_pct": 100.0,
+    "invoked": true,
+    "generated": false,
+    "coverage_waiver": null,
+    "missed_lines": [
+
+    ]
+  },
+  {
+    "owner": "receiver",
+    "method": "concolic_note",
+    "kind": "rep_plumbing",
+    "file": "targets.rb",
+    "line": 1579,
+    "key": "receiver.concolic_note",
+    "verdict": "PROTOCOL",
+    "detail": "runtime rep machinery: the real class defines this only through the AR/Ruby protocol (or not at all) — no app body to run against"
+  },
+  {
+    "owner": "DiasporaFederation::Discovery::Discovery.singleton_class",
+    "method": "DYNAMIC",
+    "kind": "value_class",
+    "module": "ConcolicDiscoveryNewShim",
+    "file": "targets.rb",
+    "line": 1737,
+    "note": "dynamically-named define_method — engine requires manual entry or waiver",
+    "key": "DiasporaFederation::Discovery::Discovery.singleton_class.DYNAMIC",
+    "verdict": "PASS",
+    "targets_reached": [
+
+    ],
+    "targets_declared": [
+
+    ],
+    "coverage_pct": 100.0,
+    "invoked": true,
+    "generated": false,
+    "coverage_waiver": null,
+    "missed_lines": [
+
+    ]
+  },
+  {
+    "owner": "ActiveRecord::Base",
+    "method": "to_param",
+    "kind": "prepend",
+    "module": "to_param_shim",
+    "file": "targets.rb",
+    "line": 1786,
+    "key": "ActiveRecord::Base.to_param",
+    "verdict": "PASS",
+    "targets_reached": [
+
+    ],
+    "targets_declared": [
+
+    ],
+    "coverage_pct": 100.0,
+    "invoked": true,
+    "generated": false,
+    "coverage_waiver": null,
+    "missed_lines": [
+
+    ]
+  },
+  {
+    "owner": "EvilQuery::VisibleShareableById",
+    "method": "post!",
+    "kind": "prepend",
+    "module": "PostBangNaming",
+    "file": "targets.rb",
+    "line": 1834,
+    "key": "EvilQuery::VisibleShareableById.post!",
+    "verdict": "PASS",
+    "targets_reached": [
+      "ActiveRecord::FinderMethods#first"
+    ],
+    "targets_declared": [
+      "ActiveRecord::FinderMethods#first"
+    ],
+    "coverage_pct": 100.0,
+    "invoked": true,
+    "generated": false,
+    "coverage_waiver": null,
+    "missed_lines": [
+
+    ]
+  },
+  {
+    "owner": "u",
+    "method": "persisted?",
+    "kind": "rep_plumbing",
+    "file": "targets.rb",
+    "line": 1897,
+    "key": "u.persisted?",
+    "verdict": "PASS",
+    "targets_reached": [
+
+    ],
+    "targets_declared": [
+
+    ],
+    "coverage_pct": 100.0,
+    "invoked": true,
+    "generated": false,
+    "coverage_waiver": null,
+    "missed_lines": [
+
+    ]
+  },
+  {
+    "owner": "u",
+    "method": "new_record?",
+    "kind": "rep_plumbing",
+    "file": "targets.rb",
+    "line": 1898,
+    "key": "u.new_record?",
+    "verdict": "PASS",
+    "targets_reached": [
+
+    ],
+    "targets_declared": [
+
+    ],
+    "coverage_pct": 100.0,
+    "invoked": true,
+    "generated": false,
+    "coverage_waiver": null,
+    "missed_lines": [
+
+    ]
+  },
+  {
+    "owner": "User",
+    "method": "authenticatable_salt",
+    "kind": "prepend",
+    "module": "salt_shim",
+    "file": "targets.rb",
+    "line": 1915,
+    "key": "User.authenticatable_salt",
+    "verdict": "PASS",
+    "targets_reached": [
+
+    ],
+    "targets_declared": [
+
+    ],
+    "coverage_pct": 100.0,
+    "invoked": true,
+    "generated": false,
+    "coverage_waiver": null,
+    "missed_lines": [
+
+    ]
+  },
+  {
+    "owner": "OrmAdapter::ActiveRecord",
+    "method": "get",
+    "kind": "prepend",
+    "module": "OrmAdapterGetNaming",
+    "file": "targets.rb",
+    "line": 1921,
+    "key": "OrmAdapter::ActiveRecord.get",
+    "verdict": "PASS",
+    "targets_reached": [
+      "ActiveRecord::FinderMethods#first"
+    ],
+    "targets_declared": [
+      "ActiveRecord::FinderMethods#first"
+    ],
+    "coverage_pct": 100.0,
+    "invoked": true,
+    "generated": false,
+    "coverage_waiver": null,
+    "missed_lines": [
+
+    ]
+  },
+  {
+    "owner": "Person.singleton_class",
+    "method": "DYNAMIC",
+    "kind": "dynamic",
+    "module": "kw_fix",
+    "file": "targets.rb",
+    "line": 2082,
+    "note": "dynamically-named define_method — engine requires manual entry or waiver",
+    "key": "Person.singleton_class.DYNAMIC",
+    "verdict": "PASS",
+    "targets_reached": [
+      "ActiveRecord::FinderMethods#find_by"
+    ],
+    "targets_declared": [
+      "ActiveRecord::FinderMethods#find_by"
+    ],
+    "coverage_pct": 100.0,
+    "invoked": true,
+    "generated": false,
+    "coverage_waiver": null,
+    "missed_lines": [
+
+    ]
+  },
+  {
+    "owner": "Person.singleton_class",
+    "method": "find_or_fetch_by_identifier",
+    "kind": "prepend",
+    "module": "PersonFindOrFetchNaming",
+    "file": "targets.rb",
+    "line": 2086,
+    "key": "Person.singleton_class.find_or_fetch_by_identifier",
+    "verdict": "PASS",
+    "targets_reached": [
+      "ActiveRecord::Associations::SingularAssociation#find_target",
+      "ActiveRecord::Core::ClassMethods#find_by"
+    ],
+    "targets_declared": [
+      "ActiveRecord::Associations::SingularAssociation#find_target",
+      "ActiveRecord::Core::ClassMethods#find_by"
+    ],
+    "coverage_pct": 100.0,
+    "invoked": true,
+    "generated": false,
+    "coverage_waiver": null,
+    "missed_lines": [
+
+    ]
+  },
+  {
+    "owner": "CommentPresenter",
+    "method": "as_json",
+    "kind": "prepend",
+    "module": "CommentPresenterContextTag",
+    "file": "targets.rb",
+    "line": 2096,
+    "key": "CommentPresenter.as_json",
+    "verdict": "PASS",
+    "targets_reached": [
+      "ActiveRecord::Associations::SingularAssociation#find_target",
+      "ActiveRecord::Relation#records"
+    ],
+    "targets_declared": [
+      "ActiveRecord::Associations::SingularAssociation#find_target",
+      "ActiveRecord::Relation#records"
+    ],
+    "coverage_pct": 28.6,
+    "invoked": true,
+    "generated": false,
+    "coverage_waiver": null,
+    "missed_lines": [
+      11,
+      12,
+      13,
+      14,
+      15
+    ]
+  },
+  {
+    "owner": "obj",
+    "method": "read_attribute",
+    "kind": "rep_plumbing",
+    "file": "concolic_targets.rb",
+    "line": 382,
+    "key": "obj.read_attribute",
+    "verdict": "PROTOCOL",
+    "detail": "runtime rep machinery: the real class defines this only through the AR/Ruby protocol (or not at all) — no app body to run against"
+  },
+  {
+    "owner": "obj",
+    "method": "_read_attribute",
+    "kind": "rep_plumbing",
+    "file": "concolic_targets.rb",
+    "line": 383,
+    "key": "obj._read_attribute",
+    "verdict": "PROTOCOL",
+    "detail": "runtime rep machinery: the real class defines this only through the AR/Ruby protocol (or not at all) — no app body to run against"
+  },
+  {
+    "owner": "obj",
+    "method": "concolic_attrs",
+    "kind": "rep_plumbing",
+    "file": "concolic_targets.rb",
+    "line": 384,
+    "key": "obj.concolic_attrs",
+    "verdict": "PROTOCOL",
+    "detail": "runtime rep machinery: the real class defines this only through the AR/Ruby protocol (or not at all) — no app body to run against"
+  },
+  {
+    "owner": "obj",
+    "method": "concolic_note",
+    "kind": "rep_plumbing",
+    "file": "concolic_targets.rb",
+    "line": 388,
+    "key": "obj.concolic_note",
+    "verdict": "PROTOCOL",
+    "detail": "runtime rep machinery: the real class defines this only through the AR/Ruby protocol (or not at all) — no app body to run against"
+  },
+  {
+    "owner": "obj",
+    "method": "attributes",
+    "kind": "rep_plumbing",
+    "file": "concolic_targets.rb",
+    "line": 396,
+    "key": "obj.attributes",
+    "verdict": "PROTOCOL",
+    "detail": "runtime rep machinery: the real class defines this only through the AR/Ruby protocol (or not at all) — no app body to run against"
+  },
+  {
+    "owner": "obj",
+    "method": "write_attribute",
+    "kind": "rep_plumbing",
+    "file": "concolic_targets.rb",
+    "line": 397,
+    "key": "obj.write_attribute",
+    "verdict": "PROTOCOL",
+    "detail": "runtime rep machinery: the real class defines this only through the AR/Ruby protocol (or not at all) — no app body to run against"
+  },
+  {
+    "owner": "obj",
+    "method": "_write_attribute",
+    "kind": "rep_plumbing",
+    "file": "concolic_targets.rb",
+    "line": 398,
+    "key": "obj._write_attribute",
+    "verdict": "PROTOCOL",
+    "detail": "runtime rep machinery: the real class defines this only through the AR/Ruby protocol (or not at all) — no app body to run against"
+  },
+  {
+    "owner": "obj",
+    "method": "image_url",
+    "kind": "rep_plumbing",
+    "file": "concolic_targets.rb",
+    "line": 405,
+    "key": "obj.image_url",
+    "verdict": "PASS",
+    "targets_reached": [
+
+    ],
+    "targets_declared": [
+
+    ],
+    "coverage_pct": 100.0,
+    "invoked": true,
+    "generated": false,
+    "coverage_waiver": null,
+    "missed_lines": [
+
+    ]
+  },
+  {
+    "owner": "obj",
+    "method": "hidden_shareables",
+    "kind": "rep_plumbing",
+    "file": "concolic_targets.rb",
+    "line": 415,
+    "key": "obj.hidden_shareables",
+    "verdict": "PASS",
+    "targets_reached": [
+
+    ],
+    "targets_declared": [
+
+    ],
+    "coverage_pct": 100.0,
+    "invoked": true,
+    "generated": false,
+    "coverage_waiver": null,
+    "missed_lines": [
+
+    ]
+  },
+  {
+    "owner": "obj",
+    "method": "post_location",
+    "kind": "rep_plumbing",
+    "file": "concolic_targets.rb",
+    "line": 424,
+    "key": "obj.post_location",
+    "verdict": "PASS",
+    "targets_reached": [
+      "ActiveRecord::Associations::SingularAssociation#find_target"
+    ],
+    "targets_declared": [
+      "ActiveRecord::Associations::SingularAssociation#find_target"
+    ],
+    "coverage_pct": 50.0,
+    "invoked": true,
+    "generated": false,
+    "coverage_waiver": null,
+    "missed_lines": [
+      101,
+      102
+    ]
+  },
+  {
+    "owner": "obj",
+    "method": "inspect",
+    "kind": "rep_plumbing",
+    "file": "concolic_targets.rb",
+    "line": 430,
+    "key": "obj.inspect",
+    "verdict": "PROTOCOL",
+    "detail": "runtime rep machinery: the real class defines this only through the AR/Ruby protocol (or not at all) — no app body to run against"
+  },
+  {
+    "owner": "obj",
+    "method": "persisted?",
+    "kind": "rep_plumbing",
+    "file": "concolic_targets.rb",
+    "line": 468,
+    "key": "obj.persisted?",
+    "verdict": "PROTOCOL",
+    "detail": "runtime rep machinery: the real class defines this only through the AR/Ruby protocol (or not at all) — no app body to run against"
+  },
+  {
+    "owner": "obj",
+    "method": "new_record?",
+    "kind": "rep_plumbing",
+    "file": "concolic_targets.rb",
+    "line": 469,
+    "key": "obj.new_record?",
+    "verdict": "PROTOCOL",
+    "detail": "runtime rep machinery: the real class defines this only through the AR/Ruby protocol (or not at all) — no app body to run against"
+  },
+  {
+    "owner": "ActionDispatch::Journey::Router::Utils.singleton_class",
+    "method": "escape_segment",
+    "kind": "value_class",
+    "module": "ConcolicEscapeSegmentShim",
+    "file": "concolic_targets.rb",
+    "line": 1470,
+    "key": "ActionDispatch::Journey::Router::Utils.singleton_class.escape_segment",
+    "verdict": "PASS",
+    "targets_reached": [
+
+    ],
+    "targets_declared": [
+
+    ],
+    "coverage_pct": 100.0,
+    "invoked": true,
+    "generated": false,
+    "coverage_waiver": null,
+    "missed_lines": [
+
+    ]
+  },
+  {
+    "owner": "ActiveRecord::Base.singleton_class",
+    "method": "DYNAMIC",
+    "kind": "value_class",
+    "module": "ConcolicKwargsToPositional",
+    "file": "concolic_targets.rb",
+    "line": 1517,
+    "note": "dynamically-named define_method — engine requires manual entry or waiver",
+    "key": "ActiveRecord::Base.singleton_class.DYNAMIC",
+    "verdict": "PASS",
+    "targets_reached": [
+      "ActiveRecord::Core::ClassMethods#find_by!"
+    ],
+    "targets_declared": [
+      "ActiveRecord::Core::ClassMethods#find_by!"
+    ],
+    "coverage_pct": 100.0,
+    "invoked": true,
+    "generated": false,
+    "coverage_waiver": null,
+    "missed_lines": [
+
+    ]
+  },
+  {
+    "owner": "ActiveRecord::Relation",
+    "method": "DYNAMIC",
+    "kind": "value_class",
+    "module": "ConcolicKwargsToPositional",
+    "file": "concolic_targets.rb",
+    "line": 1518,
+    "note": "dynamically-named define_method — engine requires manual entry or waiver",
+    "key": "ActiveRecord::Relation.DYNAMIC",
+    "verdict": "PASS",
+    "targets_reached": [
+      "ActiveRecord::FinderMethods#find_by"
+    ],
+    "targets_declared": [
+      "ActiveRecord::FinderMethods#find_by"
+    ],
+    "coverage_pct": 100.0,
+    "invoked": true,
+    "generated": false,
+    "coverage_waiver": null,
+    "missed_lines": [
+
+    ]
+  }
+]

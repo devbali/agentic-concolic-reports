@@ -1,0 +1,137 @@
+{
+ "ref": {
+  "SELECT `people`.`id` AS `id3`, `people`.`guid` AS `guid1`, `people`.`diaspora_handle`, `people`.`serialized_public_key`, `people`.`owner_id`, `people`.`created_at` AS `created_at1`, `people`.`updated_at` AS `updated_at1`, `people`.`closed_account`, `people`.`fetch_status`, `people`.`pod_id`, `comments`.`commentable_id` FROM `posts`,     `share_visibilities`,     `comments`,     `mentions`,     `people` WHERE `people`.`id` = `mentions`.`person_id` AND `mentions`.`mentions_container_id` = `comments`.`id` AND (`mentions`.`mentions_container_type` = 'Comment' AND `comments`.`commentable_type` = 'Post') AND (`share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post' AND (`share_visibilities`.`user_id` = _MY_UID AND `comments`.`commentable_id` = `posts`.`id`))": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `profiles`.`id`, `profiles`.`diaspora_handle`, `profiles`.`first_name`, `profiles`.`last_name`, `profiles`.`image_url`, `profiles`.`image_url_small`, `profiles`.`image_url_medium`, `profiles`.`searchable`, `profiles`.`person_id`, `profiles`.`created_at`, `profiles`.`updated_at`, `profiles`.`full_name`, `profiles`.`nsfw`, `profiles`.`public_details`, `comments`.`commentable_id` FROM `people`,     `posts`,     `comments`,     `mentions`,     `profiles` WHERE `profiles`.`person_id` = `mentions`.`person_id` AND (`mentions`.`mentions_container_id` = `comments`.`id` AND `mentions`.`mentions_container_type` = 'Comment') AND (`comments`.`commentable_type` = 'Post' AND `posts`.`author_id` = `people`.`id` AND (`people`.`owner_id` = _MY_UID AND `comments`.`commentable_id` = `posts`.`id`))": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `people0`.`id` AS `id3`, `people0`.`guid` AS `guid2`, `people0`.`diaspora_handle` AS `diaspora_handle0`, `people0`.`serialized_public_key` AS `serialized_public_key0`, `people0`.`owner_id` AS `owner_id0`, `people0`.`created_at` AS `created_at2`, `people0`.`updated_at` AS `updated_at2`, `people0`.`closed_account` AS `closed_account0`, `people0`.`fetch_status` AS `fetch_status0`, `people0`.`pod_id` AS `pod_id0`, `comments`.`commentable_id` FROM `people`,     `posts`,     `comments`,     `mentions`,     `people` AS `people0` WHERE `people0`.`id` = `mentions`.`person_id` AND (`mentions`.`mentions_container_id` = `comments`.`id` AND `mentions`.`mentions_container_type` = 'Comment') AND (`comments`.`commentable_type` = 'Post' AND `posts`.`author_id` = `people`.`id` AND (`people`.`owner_id` = _MY_UID AND `comments`.`commentable_id` = `posts`.`id`))": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `profiles`.`id`, `profiles`.`diaspora_handle`, `profiles`.`first_name`, `profiles`.`last_name`, `profiles`.`image_url`, `profiles`.`image_url_small`, `profiles`.`image_url_medium`, `profiles`.`searchable`, `profiles`.`person_id`, `profiles`.`created_at`, `profiles`.`updated_at`, `profiles`.`full_name`, `profiles`.`nsfw`, `profiles`.`public_details`, `comments`.`commentable_id` FROM `posts`,     `share_visibilities`,     `comments`,     `mentions`,     `profiles` WHERE `profiles`.`person_id` = `mentions`.`person_id` AND `mentions`.`mentions_container_id` = `comments`.`id` AND (`mentions`.`mentions_container_type` = 'Comment' AND `comments`.`commentable_type` = 'Post') AND (`share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post' AND (`share_visibilities`.`user_id` = _MY_UID AND `comments`.`commentable_id` = `posts`.`id`))": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `people`.`id` AS `id2`, `people`.`guid` AS `guid1`, `people`.`diaspora_handle`, `people`.`serialized_public_key`, `people`.`owner_id`, `people`.`created_at` AS `created_at1`, `people`.`updated_at` AS `updated_at1`, `people`.`closed_account`, `people`.`fetch_status`, `people`.`pod_id`, `comments`.`commentable_id` FROM `posts`,     `comments`,     `mentions`,     `people` WHERE `people`.`id` = `mentions`.`person_id` AND (`mentions`.`mentions_container_id` = `comments`.`id` AND `mentions`.`mentions_container_type` = 'Comment') AND (`comments`.`commentable_type` = 'Post' AND (`posts`.`public` = TRUE AND `comments`.`commentable_id` = `posts`.`id`))": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `mentions`.`id` AS `id2`, `mentions`.`mentions_container_id`, `mentions`.`person_id`, `mentions`.`mentions_container_type`, `comments`.`commentable_id` FROM `people`,     `posts`,     `comments`,     `mentions` WHERE `mentions`.`mentions_container_id` = `comments`.`id` AND (`mentions`.`mentions_container_type` = 'Comment' AND `comments`.`commentable_type` = 'Post') AND (`posts`.`author_id` = `people`.`id` AND (`people`.`owner_id` = _MY_UID AND `comments`.`commentable_id` = `posts`.`id`))": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `profiles`.`id`, `profiles`.`diaspora_handle`, `profiles`.`first_name`, `profiles`.`last_name`, `profiles`.`image_url`, `profiles`.`image_url_small`, `profiles`.`image_url_medium`, `profiles`.`searchable`, `profiles`.`person_id`, `profiles`.`created_at`, `profiles`.`updated_at`, `profiles`.`full_name`, `profiles`.`nsfw`, `profiles`.`public_details`, `comments`.`commentable_id` FROM `posts`,     `share_visibilities`,     `comments`,     `profiles` WHERE `profiles`.`person_id` = `comments`.`author_id` AND (`comments`.`commentable_type` = 'Post' AND `share_visibilities`.`shareable_id` = `posts`.`id`) AND (`share_visibilities`.`shareable_type` = 'Post' AND (`share_visibilities`.`user_id` = _MY_UID AND `comments`.`commentable_id` = `posts`.`id`))": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `profiles`.`id`, `profiles`.`diaspora_handle`, `profiles`.`first_name`, `profiles`.`last_name`, `profiles`.`image_url`, `profiles`.`image_url_small`, `profiles`.`image_url_medium`, `profiles`.`searchable`, `profiles`.`person_id`, `profiles`.`created_at`, `profiles`.`updated_at`, `profiles`.`full_name`, `profiles`.`nsfw`, `profiles`.`public_details`, `comments`.`commentable_id` FROM `posts`,     `comments`,     `mentions`,     `profiles` WHERE `profiles`.`person_id` = `mentions`.`person_id` AND (`mentions`.`mentions_container_id` = `comments`.`id` AND `mentions`.`mentions_container_type` = 'Comment') AND (`comments`.`commentable_type` = 'Post' AND (`posts`.`public` = TRUE AND `comments`.`commentable_id` = `posts`.`id`))": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `people`.`id` AS `id2`, `people`.`guid` AS `guid1`, `people`.`diaspora_handle`, `people`.`serialized_public_key`, `people`.`owner_id`, `people`.`created_at` AS `created_at1`, `people`.`updated_at` AS `updated_at1`, `people`.`closed_account`, `people`.`fetch_status`, `people`.`pod_id`, `comments`.`commentable_id` FROM `posts`,     `share_visibilities`,     `comments`,     `people` WHERE `people`.`id` = `comments`.`author_id` AND (`comments`.`commentable_type` = 'Post' AND `share_visibilities`.`shareable_id` = `posts`.`id`) AND (`share_visibilities`.`shareable_type` = 'Post' AND (`share_visibilities`.`user_id` = _MY_UID AND `comments`.`commentable_id` = `posts`.`id`))": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `profiles`.`id`, `profiles`.`diaspora_handle`, `profiles`.`first_name`, `profiles`.`last_name`, `profiles`.`image_url`, `profiles`.`image_url_small`, `profiles`.`image_url_medium`, `profiles`.`searchable`, `profiles`.`person_id`, `profiles`.`created_at`, `profiles`.`updated_at`, `profiles`.`full_name`, `profiles`.`nsfw`, `profiles`.`public_details`, `comments`.`commentable_id` FROM `people`,     `posts`,     `comments`,     `profiles` WHERE `profiles`.`person_id` = `comments`.`author_id` AND `comments`.`commentable_type` = 'Post' AND `posts`.`author_id` = `people`.`id` AND `people`.`owner_id` = _MY_UID AND `comments`.`commentable_id` = `posts`.`id`": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `people0`.`id` AS `id2`, `people0`.`guid` AS `guid2`, `people0`.`diaspora_handle` AS `diaspora_handle0`, `people0`.`serialized_public_key` AS `serialized_public_key0`, `people0`.`owner_id` AS `owner_id0`, `people0`.`created_at` AS `created_at2`, `people0`.`updated_at` AS `updated_at2`, `people0`.`closed_account` AS `closed_account0`, `people0`.`fetch_status` AS `fetch_status0`, `people0`.`pod_id` AS `pod_id0`, `comments`.`commentable_id` FROM `people`,     `posts`,     `comments`,     `people` AS `people0` WHERE `people0`.`id` = `comments`.`author_id` AND `comments`.`commentable_type` = 'Post' AND `posts`.`author_id` = `people`.`id` AND `people`.`owner_id` = _MY_UID AND `comments`.`commentable_id` = `posts`.`id`": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `mentions`.`id` AS `id2`, `mentions`.`mentions_container_id`, `mentions`.`person_id`, `mentions`.`mentions_container_type`, `comments`.`commentable_id` FROM `posts`,     `share_visibilities`,     `comments`,     `mentions` WHERE `mentions`.`mentions_container_id` = `comments`.`id` AND (`mentions`.`mentions_container_type` = 'Comment' AND `comments`.`commentable_type` = 'Post') AND (`share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post' AND (`share_visibilities`.`user_id` = _MY_UID AND `comments`.`commentable_id` = `posts`.`id`))": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `mentions`.`id` AS `id1`, `mentions`.`mentions_container_id`, `mentions`.`person_id`, `mentions`.`mentions_container_type`, `comments`.`commentable_id` FROM `posts`,     `comments`,     `mentions` WHERE `mentions`.`mentions_container_id` = `comments`.`id` AND `mentions`.`mentions_container_type` = 'Comment' AND `comments`.`commentable_type` = 'Post' AND `posts`.`public` = TRUE AND `comments`.`commentable_id` = `posts`.`id`": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `comments`.`id` AS `id1`, `comments`.`text` AS `text0`, `comments`.`commentable_id`, `comments`.`author_id` AS `author_id0`, `comments`.`guid` AS `guid0`, `comments`.`created_at` AS `created_at0`, `comments`.`updated_at` AS `updated_at0`, `comments`.`likes_count` AS `likes_count0`, `comments`.`commentable_type` FROM `posts`,     `share_visibilities`,     `comments` WHERE `comments`.`commentable_type` = 'Post' AND `share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post' AND `share_visibilities`.`user_id` = _MY_UID AND `comments`.`commentable_id` = `posts`.`id`": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `profiles`.`id`, `profiles`.`diaspora_handle`, `profiles`.`first_name`, `profiles`.`last_name`, `profiles`.`image_url`, `profiles`.`image_url_small`, `profiles`.`image_url_medium`, `profiles`.`searchable`, `profiles`.`person_id`, `profiles`.`created_at`, `profiles`.`updated_at`, `profiles`.`full_name`, `profiles`.`nsfw`, `profiles`.`public_details`, `comments`.`commentable_id` FROM `posts`,     `comments`,     `profiles` WHERE `profiles`.`person_id` = `comments`.`author_id` AND `comments`.`commentable_type` = 'Post' AND `posts`.`public` = TRUE AND `comments`.`commentable_id` = `posts`.`id`": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `people`.`id` AS `id1`, `people`.`guid` AS `guid1`, `people`.`diaspora_handle`, `people`.`serialized_public_key`, `people`.`owner_id`, `people`.`created_at` AS `created_at1`, `people`.`updated_at` AS `updated_at1`, `people`.`closed_account`, `people`.`fetch_status`, `people`.`pod_id`, `comments`.`commentable_id` FROM `posts`,     `comments`,     `people` WHERE `people`.`id` = `comments`.`author_id` AND `comments`.`commentable_type` = 'Post' AND `posts`.`public` = TRUE AND `comments`.`commentable_id` = `posts`.`id`": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `comments`.`id` AS `id1`, `comments`.`text` AS `text0`, `comments`.`commentable_id`, `comments`.`author_id` AS `author_id0`, `comments`.`guid` AS `guid1`, `comments`.`created_at` AS `created_at1`, `comments`.`updated_at` AS `updated_at1`, `comments`.`likes_count` AS `likes_count0`, `comments`.`commentable_type` FROM `people`,     `posts`,     `comments` WHERE `comments`.`commentable_type` = 'Post' AND `posts`.`author_id` = `people`.`id` AND `people`.`owner_id` = _MY_UID AND `comments`.`commentable_id` = `posts`.`id`": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 30000
+  },
+  "SELECT `posts`.`id`, `posts`.`author_id`, `posts`.`public`, `posts`.`guid`, `posts`.`type`, `posts`.`text`, `posts`.`created_at`, `posts`.`updated_at`, `posts`.`provider_display_name`, `posts`.`root_guid`, `posts`.`likes_count`, `posts`.`comments_count`, `posts`.`o_embed_cache_id`, `posts`.`reshares_count`, `posts`.`interacted_at`, `posts`.`tweet_id`, `posts`.`open_graph_cache_id`, `posts`.`tumblr_ids` FROM `posts`,     `share_visibilities` WHERE `share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post' AND `share_visibilities`.`user_id` = _MY_UID": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `posts`.`id` AS `id0`, `posts`.`author_id`, `posts`.`public`, `posts`.`guid` AS `guid0`, `posts`.`type`, `posts`.`text`, `posts`.`created_at` AS `created_at0`, `posts`.`updated_at` AS `updated_at0`, `posts`.`provider_display_name`, `posts`.`root_guid`, `posts`.`likes_count`, `posts`.`comments_count`, `posts`.`o_embed_cache_id`, `posts`.`reshares_count`, `posts`.`interacted_at`, `posts`.`tweet_id`, `posts`.`open_graph_cache_id`, `posts`.`tumblr_ids` FROM `people`,     `posts` WHERE `posts`.`author_id` = `people`.`id` AND `people`.`owner_id` = _MY_UID": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `comments`.`id` AS `id0`, `comments`.`text` AS `text0`, `comments`.`commentable_id`, `comments`.`author_id` AS `author_id0`, `comments`.`guid` AS `guid0`, `comments`.`created_at` AS `created_at0`, `comments`.`updated_at` AS `updated_at0`, `comments`.`likes_count` AS `likes_count0`, `comments`.`commentable_type` FROM `posts`,     `comments` WHERE `comments`.`commentable_type` = 'Post' AND `posts`.`public` = TRUE AND `comments`.`commentable_id` = `posts`.`id`": {
+   "verdict": "covered",
+   "reason": "",
+   "timeout_ms": 30000
+  },
+  "SELECT * FROM `posts` WHERE `public` = TRUE": {
+   "verdict": "covered",
+   "reason": "",
+   "timeout_ms": 30000
+  },
+  "SELECT * FROM `people` WHERE `owner_id` = _MY_UID": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 30000
+  },
+  "SELECT * FROM `users` WHERE `id` = _MY_UID": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 30000
+  }
+ },
+ "ours": {
+  "SELECT `comments`.* FROM `comments`, `posts` WHERE `comments`.`commentable_id` = `posts`.`id` AND `comments`.`commentable_type` = 'Post' AND `posts`.`public` = TRUE": {
+   "verdict": "covered",
+   "reason": "",
+   "timeout_ms": 30000
+  },
+  "SELECT `posts`.* FROM `posts` WHERE `posts`.`public` = TRUE": {
+   "verdict": "covered",
+   "reason": "",
+   "timeout_ms": 30000
+  },
+  "SELECT `posts`.* FROM `posts` WHERE `posts`.`public` = FALSE": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  }
+ },
+ "view_errors": {}
+}

@@ -30,3 +30,8 @@ Thumbs.db
 # reference examples — they stay tracked.
 # ---------------------------------------------------------------------------
 diaspora/results/**/dump_*.json
+# results2/results3 run dumps — same convention: raw DSE output, regenerated
+# by the per-endpoint runners (run_dse.rb). Analysis products (coverage_*.json,
+# *_summary.json, REPORT.md, targets.rb, run_dse.rb) remain tracked.
+diaspora/results2/**/dump_*.json
+diaspora/results3/**/dump_*.json

@@ -1,0 +1,68 @@
+### mock_note_check
+== mock_note_check: 6 target frames issued real SELECTs; 11 targets carry corpus notes ==
+
+NOTE-OK       ActiveRecord::Associations::CollectionProxy.load_target  (1 real shapes matched)
+NOTE-OK       ActiveRecord::Associations::SingularAssociation.find_target  (3 real shapes matched)
+NOTE-OK       ActiveRecord::Calculations.count  (2 real shapes matched)
+NOTE-OK       ActiveRecord::Calculations.pluck  (1 real shapes matched)
+NOTE-MISSING  ActiveRecord::FinderMethods.exists?  <-- RED: issues real SQL, zero SQL-shaped corpus notes
+     real: SELECT  1 AS one FROM "contacts" WHERE "contacts"."user_id" = ? AND "contacts"."sharing" = ? AND "contacts"."r
+
+NOTE-OK       ActiveRecord::Relation.records  (8 real shapes matched)
+
+RESULT: RED — target mocks with missing/mismatched notes above.
+EXIT=1
+
+### note_fidelity_audit
+== note_fidelity_audit: 1 run file(s), 16 distinct real SELECTs under 6 frames; 11 targets carry notes ==
+
+-- wildcard notes per target (corpus) --
+   ActiveRecord::Associations::SingularAssociation.find_target            notes=17   star=17
+   ActiveRecord::Calculations.count                                       notes=6    agg=6
+   ActiveRecord::Calculations.pluck                                       notes=3    cols=3
+   ActiveRecord::FinderMethods.devise_user_first                          notes=1    star=1
+   ActiveRecord::FinderMethods.find_by                                    notes=4    star=4
+   ActiveRecord::FinderMethods.first                                      notes=2    star=2
+   ActiveRecord::Relation.empty?                                          notes=1    cols=1
+   ActiveRecord::Relation.records                                         notes=4    cols=1 star=3
+   ActiveRecord::Relation.to_a                                            notes=2    cols=1 star=1
+   ActiveRecord::Relation.to_ary                                          notes=2    star=2
+   Anonymous.load_intermediate                                            notes=7    star=7
+
+-- MISSING: 0 --
+
+-- STAR-OVER: 0 --
+
+-- AGG-COLLAPSE: 0 --
+
+-- PROJ-DIFF: 0 --
+
+-- PRED-DIFF: 0 --
+
+-- EXACT: 16 --
+RESULT: every real statement has a projection-faithful note.
+EXIT=0
+
+### depth0_targets
+== scenario N05_pagination_15_boundary error= None
+   ActionController::Metal.status=                                        top x1   nested x0   present (24 corpus events)
+   ActiveRecord::Associations::CollectionProxy.load_target                top x30  nested x153 present via alias ActiveRecord::Relation.records (18753)
+   ActiveRecord::Associations::CollectionProxy.records                    top x91  nested x62  present via alias ActiveRecord::Relation.records (18753)
+   ActiveRecord::Associations::CollectionProxy.to_a                       top x2   nested x0   METHOD-NAME MATCH only: corpus has ActiveRecord::Relation.to_a
+   ActiveRecord::Associations::SingularAssociation.find_target            top x66  nested x1   present (69587 corpus events)
+   ActiveRecord::Base.save                                                top x1   nested x0   present (8266 corpus events)
+   ActiveRecord::Base.to_param                                            top x32  nested x0   present (29823 corpus events)
+   ActiveRecord::Calculations.count                                       top x11  nested x11  present (44872 corpus events)
+   ActiveRecord::Calculations.pluck                                       top x36  nested x36  present (17027 corpus events)
+   ActiveRecord::FinderMethods.exists?                                    top x0   nested x4   ABSENT FROM CORPUS
+   ActiveRecord::FinderMethods.find_by                                    top x31  nested x31  present (20068 corpus events)
+   ActiveRecord::FinderMethods.first                                      top x3   nested x3   present (21535 corpus events)
+   ActiveRecord::Relation.empty?                                          top x4   nested x0   present (10846 corpus events)
+   ActiveRecord::Relation.records                                         top x1   nested x201 present (18753 corpus events)
+   ActiveRecord::Relation.to_a                                            top x5   nested x77  present (23093 corpus events)
+   ActiveRecord::Relation.to_ary                                          top x30  nested x30  present (10315 corpus events)
+   Gon::ControllerHelpers.gon                                             top x25  nested x0   present (13569 corpus events)
+   statements: 223 outside any frame: 0
+== scenario _cumulative_coverage error= None
+   statements: 0 outside any frame: 0
+EXIT=0

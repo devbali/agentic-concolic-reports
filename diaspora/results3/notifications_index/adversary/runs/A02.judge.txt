@@ -1,0 +1,10 @@
+== mock_note_check: 3 target frames issued real SELECTs; 13 targets carry corpus notes ==
+
+NOTE-MISMATCH ActiveRecord::Associations::SingularAssociation.find_target  <-- RED: 1 real statement shape(s) with NO corpus note anywhere
+     real: SELECT  "posts".* FROM "posts" WHERE "posts"."type" IN ('StatusMessage') AND "posts"."guid" = ? LIMIT ?
+NOTE-OK       ActiveRecord::Calculations.count  (2 real shapes matched)
+NOTE-MISMATCH ActiveRecord::Relation.records  <-- RED: 2 real statement shape(s) with NO corpus note anywhere
+     real: SELECT "photos".* FROM "photos" WHERE "photos"."id" IN (?, ?)
+     real: SELECT "photos".* FROM "photos" WHERE "photos"."id" = ?
+
+RESULT: RED — target mocks with missing/mismatched notes above.

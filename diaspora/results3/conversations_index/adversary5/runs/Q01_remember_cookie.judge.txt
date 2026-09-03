@@ -1,0 +1,83 @@
+### mock_note_check
+== mock_note_check: 8 target frames issued real SELECTs; 17 targets carry corpus notes ==
+
+NOTE-OK*      ActiveRecord::Associations::CollectionProxy.load_target  (1 shape(s) matched under a DIFFERENT target — frame nesting)
+NOTE-OK       ActiveRecord::Associations::SingularAssociation.find_target  (3 real shapes matched)
+NOTE-MISMATCH ActiveRecord::Base.save  <-- RED: 4 real statement shape(s) with NO corpus note anywhere
+     real: UPDATE "users" SET "sign_in_count" = ?, "current_sign_in_at" = ?, "updated_at" = ? WHERE "users"."id" = ?
+     real: UPDATE "users" SET "updated_at" = ?, "last_seen" = ? WHERE "users"."id" = ?
+     real: UPDATE "users" SET "sign_in_count" = ?, "current_sign_in_at" = ?, "last_sign_in_at" = ?, "last_sign_in_ip" = ?
+     real: UPDATE "users" SET "sign_in_count" = ?, "current_sign_in_at" = ?, "last_sign_in_at" = ?, "current_sign_in_ip" 
+NOTE-OK       ActiveRecord::Calculations.count  (3 real shapes matched)
+NOTE-OK       ActiveRecord::Calculations.pluck  (1 real shapes matched)
+NOTE-OK       ActiveRecord::Calculations.sum  (1 real shapes matched)
+NOTE-OK       ActiveRecord::FinderMethods.exists?  (3 real shapes matched)
+NOTE-OK*      ActiveRecord::Relation.records  (2 shape(s) matched under a DIFFERENT target — frame nesting)
+
+RESULT: RED — target mocks with missing/mismatched notes above.
+EXIT=1
+
+### note_fidelity_audit
+== note_fidelity_audit: 1 run file(s), 26 distinct real SELECTs under 8 frames; 17 targets carry notes ==
+
+-- wildcard notes per target (corpus) --
+   ActiveRecord::Associations::CollectionProxy.records                    notes=3    star=3
+   ActiveRecord::Associations::SingularAssociation.find_target            notes=17   star=17
+   ActiveRecord::Base.reload                                              notes=5    star=5
+   ActiveRecord::Base.save                                                notes=3    cols=3
+   ActiveRecord::Calculations.count                                       notes=9    agg=9
+   ActiveRecord::Calculations.pluck                                       notes=3    cols=3
+   ActiveRecord::Calculations.sum                                         notes=1    agg=1
+   ActiveRecord::FinderMethods.devise_user_first                          notes=1    star=1
+   ActiveRecord::FinderMethods.exists?                                    notes=5    cols=5
+   ActiveRecord::FinderMethods.find_by                                    notes=3    star=3
+   ActiveRecord::FinderMethods.first                                      notes=3    star=3
+   ActiveRecord::FinderMethods.take                                       notes=2    cols=2
+   ActiveRecord::Relation.empty?                                          notes=1    cols=1
+   ActiveRecord::Relation.records                                         notes=5    cols=2 star=3
+   ActiveRecord::Relation.to_a                                            notes=3    cols=2 star=1
+   ActiveRecord::Relation.to_ary                                          notes=2    star=2
+   Anonymous.load_intermediate                                            notes=3    star=3
+
+-- MISSING: 4 --
+   ActiveRecord::Base.save  [Q01_remember_cookie.json:Q01_alice_cookie_stale_html, Q01_remember_cookie.json:Q01_erin_cookie_fresh_json, Q01_remember_cookie.json:Q01_fay_cookie_expired_html]
+      real: UPDATE "users" SET "sign_in_count" = ?, "current_sign_in_at" = ?, "last_sign_in_at" = ?, "current_sign_in_ip" = ?, "last_sign_in_ip" = ?, "updated_at"
+   ActiveRecord::Base.save  [Q01_remember_cookie.json:Q01_alice_cookie_fresh_html]
+      real: UPDATE "users" SET "sign_in_count" = ?, "current_sign_in_at" = ?, "last_sign_in_at" = ?, "last_sign_in_ip" = ?, "updated_at" = ? WHERE "users"."id" = 
+   ActiveRecord::Base.save  [Q01_remember_cookie.json:Q01_lee_cookie_cid1_html]
+      real: UPDATE "users" SET "sign_in_count" = ?, "current_sign_in_at" = ?, "updated_at" = ? WHERE "users"."id" = ?
+   ActiveRecord::Base.save  [Q01_remember_cookie.json:Q01_alice_cookie_stale_html, Q01_remember_cookie.json:Q01_fay_cookie_expired_html, Q01_remember_cookie.json:Q01_kim_stale_session_cookie]
+      real: UPDATE "users" SET "updated_at" = ?, "last_seen" = ? WHERE "users"."id" = ?
+
+-- STAR-OVER: 0 --
+
+-- AGG-COLLAPSE: 0 --
+
+-- PROJ-DIFF: 0 --
+
+-- PRED-OP-DIFF: 0 --
+
+-- LIMIT-DIFF: 0 --
+
+-- ORDER-DIFF: 0 --
+
+-- PRED-DIFF: 0 --
+
+-- EXACT: 22 --
+RESULT: RED — 4 real statement(s) whose note is unfaithful in projection or missing.
+EXIT=1
+
+### _multiset_counts (batch judge, write-aware)
+== multiset_counts: 13 real requests, 24020 dumps ==
+  UNDER  real x1 corpus max x0  update users set sign_in_count = @, current_sign_in_at = @, last_sign_in_at = @, current_sign_in_ip = @, last_
+  UNDER  real x1 corpus max x0  update users set sign_in_count = @, current_sign_in_at = @, last_sign_in_at = @, last_sign_in_ip = @, updated_
+  UNDER  real x1 corpus max x0  update users set sign_in_count = @, current_sign_in_at = @, updated_at = @ where users.id = @
+  UNDER  real x1 corpus max x0  update users set updated_at = @, last_seen = @ where users.id = @
+  OVER   corpus x3 real max x2  select count(*) from notifications where notifications.recipient_id = @ and notifications.unread = @
+  OVER   corpus x6 real max x3  select people.* from people where people.id = @ limit @
+  OVER   corpus x5 real max x4  select profiles.* from profiles where profiles.person_id = @ limit @
+  OVER   corpus x3 real max x2  select sum(conversation_visibilities.unread) from conversation_visibilities where conversation_visibilities.pe
+
+count-exact real requests reproduced by some dump: 6/13
+RESULT: RED — per-request shapes under-emitted 4, over-emitted 4; per-row shapes at the one-representative limit 0 (known, not judged)
+EXIT=1

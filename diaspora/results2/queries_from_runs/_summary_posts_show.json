@@ -1,0 +1,37 @@
+{
+ "posts_show": {
+  "endpoint": "posts_show",
+  "out_path": "reports/diaspora/results2/queries_from_runs/posts_show.sql",
+  "n_dumps": 4278,
+  "n_runs_loaded": 4278,
+  "n_queries_raw": 18162,
+  "n_queries_deduped": 54,
+  "n_queries_final": 50,
+  "n_subsumed_dropped": 4,
+  "placeholders": [],
+  "flags": {
+   "unscoped": 50,
+   "type-mismatched-join": 7552
+  },
+  "skipped_pc_shapes": {
+   "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_N_not_found == True)": 8448,
+   "(Length(SYM_PARAM_id) < N)": 4278,
+   "(assoc_profile_nsfw == True)": 4272,
+   "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_N_not_found == True)": 4226,
+   "(SYM_RESULT_ActiveRecord__Relation_evilq_like_vis_N_not_found == True)": 4224,
+   "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_N_not_found == True)": 4032,
+   "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_N_not_found == True)": 2880,
+   "(SYM_RESULT_ActiveRecord__Relation_evilq_like_author_N_not_found == True)": 2880,
+   "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_N_not_found == True)": 2818,
+   "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_N_not_found == True)": 1728,
+   "(SYM_RESULT_ActiveRecord__Relation_evilq_like_public_N_not_found == True)": 1536,
+   "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_N_not_found == True)": 1410,
+   "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_N_not_found == True)": 52,
+   "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_N_not_found == True)": 48,
+   "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_N_not_found == True)": 32
+  },
+  "errors": [],
+  "subsume_errors": {},
+  "subsume_ran": true
+ }
+}

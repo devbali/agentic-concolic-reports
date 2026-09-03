@@ -1,0 +1,80 @@
+== Q07_alice_cookie_generated_3weeks_ago [html_plain] statements=1 (+0 tx) error=None
+    1 corpus[html_plain]max=1 all=1                select users.* from users where users.id = @ order by users.id asc limit @
+   -- corpus-usual shape not issued: select people.* from people where people.owner_id = @ limit @
+   -- corpus-usual shape not issued: select contacts.id, profiles.first_name, profiles.last_name, people.diaspora_handle from contacts inner join p
+   -- corpus-usual shape not issued: select @ as one from contacts where contacts.user_id = @ and contacts.sharing = @ and contacts.receiving = @ l
+   -- corpus-usual shape not issued: select count(*) from (select distinct conversation_visibilities.id from conversation_visibilities left outer j
+   -- corpus-usual shape not issued: select conversation_visibilities.id as t0_r0, conversation_visibilities.conversation_id as t0_r1, conversation
+   -- corpus-usual shape not issued: select messages.* from messages where messages.conversation_id = @ order by created_at asc
+   -- corpus-usual shape not issued: select people.* from people inner join conversation_visibilities on people.id = conversation_visibilities.pers
+   -- corpus-usual shape not issued: select profiles.* from profiles where profiles.person_id = @ limit @
+   -- corpus-usual shape not issued: select count(*) from notifications where notifications.recipient_id = @ and notifications.unread = @
+   -- corpus-usual shape not issued: select sum(conversation_visibilities.unread) from conversation_visibilities where conversation_visibilities.pe
+   -- corpus-usual shape not issued: select @ as one from roles where roles.person_id = @ and roles.name = @ limit @
+   -- corpus-usual shape not issued: select @ as one from roles where roles.name in (@,@+) and roles.person_id = @ limit @
+   -- corpus-usual shape not issued: select aspects.* from aspects where aspects.user_id = @ order by order_id asc
+   -- corpus-usual shape not issued: select services.* from services where services.user_id = @
+   -- corpus-usual shape not issued: select count(*) from contacts where contacts.user_id = @ and contacts.receiving = @
+== Q07_erin_cookie_invalid_locale [html_plain] statements=3 (+4 tx) error=None
+    1 corpus[html_plain]max=1 all=1                select users.* from users where users.id = @ order by users.id asc limit @
+    1 corpus[html_plain]max=- all=- ABSENT-CORPUS  update users set sign_in_count = @, current_sign_in_at = @, last_sign_in_at = @, current_sign_in_ip = @, last_sign_in_ip = @, upda
+    1 corpus[html_plain]max=- all=- ABSENT-CORPUS  update users set updated_at = @, last_seen = @ where users.id = @
+   -- corpus-usual shape not issued: select people.* from people where people.owner_id = @ limit @
+   -- corpus-usual shape not issued: select contacts.id, profiles.first_name, profiles.last_name, people.diaspora_handle from contacts inner join p
+   -- corpus-usual shape not issued: select @ as one from contacts where contacts.user_id = @ and contacts.sharing = @ and contacts.receiving = @ l
+   -- corpus-usual shape not issued: select count(*) from (select distinct conversation_visibilities.id from conversation_visibilities left outer j
+   -- corpus-usual shape not issued: select conversation_visibilities.id as t0_r0, conversation_visibilities.conversation_id as t0_r1, conversation
+   -- corpus-usual shape not issued: select messages.* from messages where messages.conversation_id = @ order by created_at asc
+   -- corpus-usual shape not issued: select people.* from people inner join conversation_visibilities on people.id = conversation_visibilities.pers
+   -- corpus-usual shape not issued: select profiles.* from profiles where profiles.person_id = @ limit @
+   -- corpus-usual shape not issued: select count(*) from notifications where notifications.recipient_id = @ and notifications.unread = @
+   -- corpus-usual shape not issued: select sum(conversation_visibilities.unread) from conversation_visibilities where conversation_visibilities.pe
+   -- corpus-usual shape not issued: select @ as one from roles where roles.person_id = @ and roles.name = @ limit @
+   -- corpus-usual shape not issued: select @ as one from roles where roles.name in (@,@+) and roles.person_id = @ limit @
+   -- corpus-usual shape not issued: select aspects.* from aspects where aspects.user_id = @ order by order_id asc
+   -- corpus-usual shape not issued: select services.* from services where services.user_id = @
+   -- corpus-usual shape not issued: select count(*) from contacts where contacts.user_id = @ and contacts.receiving = @
+== Q07_fay_cookie_page0 [html_plain] statements=4 (+4 tx) error=None
+    1 corpus[html_plain]max=1 all=1                select users.* from users where users.id = @ order by users.id asc limit @
+    1 corpus[html_plain]max=- all=- ABSENT-CORPUS  update users set sign_in_count = @, current_sign_in_at = @, last_sign_in_at = @, current_sign_in_ip = @, last_sign_in_ip = @, upda
+    1 corpus[html_plain]max=- all=- ABSENT-CORPUS  update users set updated_at = @, last_seen = @ where users.id = @
+    1 corpus[html_plain]max=1 all=1                select people.* from people where people.owner_id = @ limit @
+   -- corpus-usual shape not issued: select contacts.id, profiles.first_name, profiles.last_name, people.diaspora_handle from contacts inner join p
+   -- corpus-usual shape not issued: select @ as one from contacts where contacts.user_id = @ and contacts.sharing = @ and contacts.receiving = @ l
+   -- corpus-usual shape not issued: select count(*) from (select distinct conversation_visibilities.id from conversation_visibilities left outer j
+   -- corpus-usual shape not issued: select conversation_visibilities.id as t0_r0, conversation_visibilities.conversation_id as t0_r1, conversation
+   -- corpus-usual shape not issued: select messages.* from messages where messages.conversation_id = @ order by created_at asc
+   -- corpus-usual shape not issued: select people.* from people inner join conversation_visibilities on people.id = conversation_visibilities.pers
+   -- corpus-usual shape not issued: select profiles.* from profiles where profiles.person_id = @ limit @
+   -- corpus-usual shape not issued: select count(*) from notifications where notifications.recipient_id = @ and notifications.unread = @
+   -- corpus-usual shape not issued: select sum(conversation_visibilities.unread) from conversation_visibilities where conversation_visibilities.pe
+   -- corpus-usual shape not issued: select @ as one from roles where roles.person_id = @ and roles.name = @ limit @
+   -- corpus-usual shape not issued: select @ as one from roles where roles.name in (@,@+) and roles.person_id = @ limit @
+   -- corpus-usual shape not issued: select aspects.* from aspects where aspects.user_id = @ order by order_id asc
+   -- corpus-usual shape not issued: select services.* from services where services.user_id = @
+   -- corpus-usual shape not issued: select count(*) from contacts where contacts.user_id = @ and contacts.receiving = @
+== Q07_gus_cookie_js [html_plain] statements=11 (+4 tx) error=None
+    4 corpus[html_plain]max=1 all=1 OVER x4>1      select conversation_visibilities.id as t0_r0, conversation_visibilities.conversation_id as t0_r1, conversation_visibilities.person
+    2 corpus[html_plain]max=2 all=2                select count(*) from (select distinct conversation_visibilities.id from conversation_visibilities left outer join conversations on
+    1 corpus[html_plain]max=1 all=1                select users.* from users where users.id = @ order by users.id asc limit @
+    1 corpus[html_plain]max=- all=- ABSENT-CORPUS  update users set sign_in_count = @, current_sign_in_at = @, last_sign_in_at = @, current_sign_in_ip = @, last_sign_in_ip = @, upda
+    1 corpus[html_plain]max=- all=- ABSENT-CORPUS  update users set updated_at = @, last_seen = @ where users.id = @
+    1 corpus[html_plain]max=1 all=1                select people.* from people where people.owner_id = @ limit @
+    1 corpus[html_plain]max=1 all=1                select contacts.id, profiles.first_name, profiles.last_name, people.diaspora_handle from contacts inner join people on people.id =
+   -- corpus-usual shape not issued: select @ as one from contacts where contacts.user_id = @ and contacts.sharing = @ and contacts.receiving = @ l
+   -- corpus-usual shape not issued: select messages.* from messages where messages.conversation_id = @ order by created_at asc
+   -- corpus-usual shape not issued: select people.* from people inner join conversation_visibilities on people.id = conversation_visibilities.pers
+   -- corpus-usual shape not issued: select profiles.* from profiles where profiles.person_id = @ limit @
+   -- corpus-usual shape not issued: select count(*) from notifications where notifications.recipient_id = @ and notifications.unread = @
+   -- corpus-usual shape not issued: select sum(conversation_visibilities.unread) from conversation_visibilities where conversation_visibilities.pe
+   -- corpus-usual shape not issued: select @ as one from roles where roles.person_id = @ and roles.name = @ limit @
+   -- corpus-usual shape not issued: select @ as one from roles where roles.name in (@,@+) and roles.person_id = @ limit @
+   -- corpus-usual shape not issued: select aspects.* from aspects where aspects.user_id = @ order by order_id asc
+   -- corpus-usual shape not issued: select services.* from services where services.user_id = @
+   -- corpus-usual shape not issued: select count(*) from contacts where contacts.user_id = @ and contacts.receiving = @
+== Q07_hal_cookie_xml [xml_plain] statements=5 (+4 tx) error=None
+    1 corpus[xml_plain]max=1 all=1                select users.* from users where users.id = @ order by users.id asc limit @
+    1 corpus[xml_plain]max=- all=- ABSENT-CORPUS  update users set sign_in_count = @, current_sign_in_at = @, last_sign_in_at = @, current_sign_in_ip = @, last_sign_in_ip = @, upda
+    1 corpus[xml_plain]max=- all=- ABSENT-CORPUS  update users set updated_at = @, last_seen = @ where users.id = @
+    1 corpus[xml_plain]max=1 all=1                select people.* from people where people.owner_id = @ limit @
+    1 corpus[xml_plain]max=1 all=1                select contacts.id, profiles.first_name, profiles.last_name, people.diaspora_handle from contacts inner join people on people.id =

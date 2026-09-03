@@ -1,0 +1,1 @@
+SELECT `aspects`.* FROM `aspects`;

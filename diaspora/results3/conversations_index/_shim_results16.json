@@ -1,0 +1,345 @@
+[
+  {
+    "owner": "conv",
+    "method": "id",
+    "kind": "rep_plumbing",
+    "file": "targets.rb",
+    "line": 465,
+    "key": "conv.id",
+    "verdict": "PROTOCOL",
+    "detail": "runtime rep machinery: the real class defines this only through the AR/Ruby protocol (or not at all) — no app body to run against"
+  },
+  {
+    "owner": "k",
+    "method": "conversation_visibilities",
+    "kind": "prepend",
+    "module": "ConvoSymAssociations",
+    "file": "targets.rb",
+    "line": 1030,
+    "key": "k.conversation_visibilities",
+    "verdict": "PASS",
+    "targets_reached": [
+
+    ],
+    "targets_declared": [
+
+    ],
+    "coverage_pct": 0.0,
+    "invoked": true,
+    "generated": true,
+    "coverage_waiver": null,
+    "missed_lines": [
+      107,
+      108
+    ]
+  },
+  {
+    "owner": "rel",
+    "method": "pluck",
+    "kind": "prepend",
+    "module": "ConvLoadedRelation",
+    "file": "targets.rb",
+    "line": 1112,
+    "key": "rel.pluck",
+    "verdict": "PASS",
+    "targets_reached": [
+      "ActiveRecord::Calculations#pluck",
+      "ActiveRecord::Relation#records"
+    ],
+    "targets_declared": [
+      "ActiveRecord::Calculations#pluck",
+      "ActiveRecord::Relation#records"
+    ],
+    "coverage_pct": 100.0,
+    "invoked": true,
+    "generated": false,
+    "coverage_waiver": null,
+    "missed_lines": [
+
+    ]
+  },
+  {
+    "owner": "wp",
+    "method": "total_entries",
+    "kind": "prepend",
+    "module": "ConvPaginatedTotal",
+    "file": "targets.rb",
+    "line": 1115,
+    "key": "wp.total_entries",
+    "verdict": "PASS",
+    "targets_reached": [
+      "ActiveRecord::Calculations#count"
+    ],
+    "targets_declared": [
+      "ActiveRecord::Calculations#count"
+    ],
+    "coverage_pct": 100.0,
+    "invoked": true,
+    "generated": false,
+    "coverage_waiver": null,
+    "missed_lines": [
+
+    ]
+  },
+  {
+    "owner": "cp",
+    "method": "loaded?",
+    "kind": "prepend",
+    "module": "ConvLoadedProxy",
+    "file": "targets.rb",
+    "line": 1273,
+    "key": "cp.loaded?",
+    "verdict": "PASS",
+    "targets_reached": [
+      "ActiveRecord::Associations::CollectionProxy#records",
+      "ActiveRecord::Relation#to_a"
+    ],
+    "targets_declared": [
+      "ActiveRecord::Associations::CollectionProxy#records",
+      "ActiveRecord::Relation#to_a"
+    ],
+    "coverage_pct": 100.0,
+    "invoked": true,
+    "generated": false,
+    "coverage_waiver": null,
+    "missed_lines": [
+
+    ]
+  },
+  {
+    "owner": "obj",
+    "method": "convidx_dirty",
+    "kind": "rep_plumbing",
+    "file": "targets.rb",
+    "line": 1476,
+    "key": "obj.convidx_dirty",
+    "verdict": "PROTOCOL",
+    "detail": "runtime rep machinery: the real class defines this only through the AR/Ruby protocol (or not at all) — no app body to run against"
+  },
+  {
+    "owner": "obj",
+    "method": "guid",
+    "kind": "rep_plumbing",
+    "file": "targets.rb",
+    "line": 1522,
+    "key": "obj.guid",
+    "verdict": "PROTOCOL",
+    "detail": "Message#guid is defined by the AR/Ruby protocol — verified against the real class"
+  },
+  {
+    "owner": "obj",
+    "method": "hash",
+    "kind": "rep_plumbing",
+    "file": "targets.rb",
+    "line": 1549,
+    "key": "obj.hash",
+    "verdict": "PROTOCOL",
+    "detail": "runtime rep machinery: the real class defines this only through the AR/Ruby protocol (or not at all) — no app body to run against"
+  },
+  {
+    "owner": "obj",
+    "method": "text",
+    "kind": "rep_plumbing",
+    "file": "targets.rb",
+    "line": 1602,
+    "key": "obj.text",
+    "verdict": "PROTOCOL",
+    "detail": "Message#text is defined by the AR/Ruby protocol — verified against the real class"
+  },
+  {
+    "owner": "obj",
+    "method": "name",
+    "kind": "rep_plumbing",
+    "file": "targets.rb",
+    "line": 1619,
+    "key": "obj.name",
+    "verdict": "PROTOCOL",
+    "detail": "Aspect#name is defined by the AR/Ruby protocol — verified against the real class"
+  },
+  {
+    "owner": "Person",
+    "method": "name_from_attrs",
+    "kind": "rep_plumbing",
+    "file": "targets.rb",
+    "line": 1653,
+    "key": "Person.name_from_attrs",
+    "verdict": "PASS",
+    "targets_reached": [
+
+    ],
+    "targets_declared": [
+
+    ],
+    "coverage_pct": 100.0,
+    "invoked": true,
+    "generated": false,
+    "coverage_waiver": null,
+    "missed_lines": [
+
+    ]
+  },
+  {
+    "owner": "receiver",
+    "method": "concolic_note",
+    "kind": "rep_plumbing",
+    "file": "targets.rb",
+    "line": 1857,
+    "key": "receiver.concolic_note",
+    "verdict": "PROTOCOL",
+    "detail": "runtime rep machinery: the real class defines this only through the AR/Ruby protocol (or not at all) — no app body to run against"
+  },
+  {
+    "owner": "h",
+    "method": "image_path",
+    "kind": "rep_plumbing",
+    "file": "targets.rb",
+    "line": 1908,
+    "key": "h.image_path",
+    "verdict": "PASS",
+    "targets_reached": [
+
+    ],
+    "targets_declared": [
+
+    ],
+    "coverage_pct": 100.0,
+    "invoked": true,
+    "generated": false,
+    "coverage_waiver": null,
+    "missed_lines": [
+
+    ]
+  },
+  {
+    "owner": "h",
+    "method": "path_to_image",
+    "kind": "rep_plumbing",
+    "file": "targets.rb",
+    "line": 1909,
+    "key": "h.path_to_image",
+    "verdict": "PASS",
+    "targets_reached": [
+
+    ],
+    "targets_declared": [
+
+    ],
+    "coverage_pct": 100.0,
+    "invoked": false,
+    "generated": false,
+    "coverage_waiver": null,
+    "missed_lines": [
+
+    ]
+  },
+  {
+    "owner": "u",
+    "method": "persisted?",
+    "kind": "rep_plumbing",
+    "file": "targets.rb",
+    "line": 1993,
+    "key": "u.persisted?",
+    "verdict": "PROTOCOL",
+    "detail": "runtime rep machinery: the real class defines this only through the AR/Ruby protocol (or not at all) — no app body to run against"
+  },
+  {
+    "owner": "u",
+    "method": "new_record?",
+    "kind": "rep_plumbing",
+    "file": "targets.rb",
+    "line": 1994,
+    "key": "u.new_record?",
+    "verdict": "PROTOCOL",
+    "detail": "runtime rep machinery: the real class defines this only through the AR/Ruby protocol (or not at all) — no app body to run against"
+  },
+  {
+    "owner": "u",
+    "method": "last_seen",
+    "kind": "rep_plumbing",
+    "file": "targets.rb",
+    "line": 2006,
+    "key": "u.last_seen",
+    "verdict": "PROTOCOL",
+    "detail": "User#last_seen is defined by the AR/Ruby protocol — verified against the real class"
+  },
+  {
+    "owner": "u",
+    "method": "locked_at",
+    "kind": "rep_plumbing",
+    "file": "targets.rb",
+    "line": 2013,
+    "key": "u.locked_at",
+    "verdict": "PROTOCOL",
+    "detail": "User#locked_at is defined by the AR/Ruby protocol — verified against the real class"
+  },
+  {
+    "owner": "u",
+    "method": "remember_created_at",
+    "kind": "rep_plumbing",
+    "file": "targets.rb",
+    "line": 2019,
+    "key": "u.remember_created_at",
+    "verdict": "PROTOCOL",
+    "detail": "User#remember_created_at is defined by the AR/Ruby protocol — verified against the real class"
+  },
+  {
+    "owner": "u",
+    "method": "username",
+    "kind": "rep_plumbing",
+    "file": "targets.rb",
+    "line": 2027,
+    "key": "u.username",
+    "verdict": "PROTOCOL",
+    "detail": "User#username is defined by the AR/Ruby protocol — verified against the real class"
+  },
+  {
+    "owner": "User",
+    "method": "authenticatable_salt",
+    "kind": "prepend",
+    "module": "salt_shim",
+    "file": "targets.rb",
+    "line": 2050,
+    "key": "User.authenticatable_salt",
+    "verdict": "PASS",
+    "targets_reached": [
+
+    ],
+    "targets_declared": [
+
+    ],
+    "coverage_pct": 100.0,
+    "invoked": true,
+    "generated": false,
+    "coverage_waiver": null,
+    "missed_lines": [
+
+    ]
+  },
+  {
+    "owner": "OrmAdapter::ActiveRecord",
+    "method": "get",
+    "kind": "prepend",
+    "module": "OrmAdapterGetNaming",
+    "file": "targets.rb",
+    "line": 2056,
+    "key": "OrmAdapter::ActiveRecord.get",
+    "verdict": "PASS",
+    "targets_reached": [
+      "ActiveRecord::FinderMethods#first",
+      "ActiveRecord::Relation#records",
+      "ActiveRecord::Relation#to_a"
+    ],
+    "targets_declared": [
+      "ActiveRecord::FinderMethods#first",
+      "ActiveRecord::Relation#records",
+      "ActiveRecord::Relation#to_a"
+    ],
+    "coverage_pct": 100.0,
+    "invoked": true,
+    "generated": false,
+    "coverage_waiver": null,
+    "missed_lines": [
+
+    ]
+  }
+]

@@ -1,0 +1,39 @@
+### mock_note_check
+== mock_note_check: 2 target frames issued real SELECTs; 12 targets carry corpus notes ==
+
+NOTE-OK       ActiveRecord::Associations::SingularAssociation.find_target  (1 real shapes matched)
+NOTE-OK*      ActiveRecord::Relation.records  (7 shape(s) matched under a DIFFERENT target — frame nesting)
+
+RESULT: every SQL-issuing target's notes match its real statements.
+EXIT=0
+
+### note_fidelity_audit
+== note_fidelity_audit: 1 run file(s), 10 distinct real SELECTs under 2 frames; 12 targets carry notes ==
+
+-- wildcard notes per target (corpus) --
+   ActiveRecord::Associations::SingularAssociation.find_target            notes=9    star=9
+   ActiveRecord::Core::ClassMethods.mention_lookup_json_first             notes=1    star=1
+   ActiveRecord::Core::ClassMethods.mention_lookup_json_retry             notes=1    star=1
+   ActiveRecord::Core::ClassMethods.mention_lookup_msg_first              notes=1    star=1
+   ActiveRecord::Core::ClassMethods.mention_lookup_msg_retry              notes=1    star=1
+   ActiveRecord::FinderMethods.ci_author_first                            notes=2    star=2
+   ActiveRecord::FinderMethods.ci_public_first                            notes=2    star=2
+   ActiveRecord::FinderMethods.ci_vis_first                               notes=2    star=2
+   ActiveRecord::FinderMethods.devise_user_first                          notes=1    star=1
+   ActiveRecord::FinderMethods.first                                      notes=2    star=2
+   ActiveRecord::Relation.records                                         notes=5    star=5
+   Anonymous.load_intermediate                                            notes=6    star=6
+
+-- MISSING: 0 --
+
+-- STAR-OVER: 0 --
+
+-- AGG-COLLAPSE: 0 --
+
+-- PROJ-DIFF: 0 --
+
+-- PRED-DIFF: 0 --
+
+-- EXACT: 10 --
+RESULT: every real statement has a projection-faithful note.
+EXIT=0

@@ -1,0 +1,2008 @@
+{
+ "n_runs": 6874,
+ "foreclosures": [
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 0)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_2_row_guid != StringVal(''))",
+   "n_guard_side": 3966,
+   "n_other_side_with_B": 176,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 0)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_2_row_guid == '')",
+   "n_guard_side": 3966,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 0)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_2_row_id == SYM_PERSON_NI_id)",
+   "n_guard_side": 3966,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 0)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_2_row_persisted == True)",
+   "n_guard_side": 3966,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 0)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found == True)",
+   "n_guard_side": 3966,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 0)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_persisted == True)",
+   "n_guard_side": 3966,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 0)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+   "n_guard_side": 3966,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 0)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_SYM_RESULT_User_blocks_1_find_by_1_not_found == True)",
+   "n_guard_side": 3966,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 0)",
+   "guard_side": true,
+   "foreclosed": "(assoc_commentable_persisted == True)",
+   "n_guard_side": 3966,
+   "n_other_side_with_B": 435,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 0)",
+   "guard_side": true,
+   "foreclosed": "(assoc_commentable_text_has_mention == True)",
+   "n_guard_side": 3966,
+   "n_other_side_with_B": 435,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 0)",
+   "guard_side": true,
+   "foreclosed": "(assoc_mentions_container_persisted == True)",
+   "n_guard_side": 3966,
+   "n_other_side_with_B": 428,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 0)",
+   "guard_side": true,
+   "foreclosed": "(assoc_mentions_container_text_has_mention == True)",
+   "n_guard_side": 3966,
+   "n_other_side_with_B": 863,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 0)",
+   "guard_side": true,
+   "foreclosed": "(assoc_person_id == SYM_PERSON_NI_id)",
+   "n_guard_side": 3966,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 0)",
+   "guard_side": true,
+   "foreclosed": "(assoc_person_persisted == True)",
+   "n_guard_side": 3966,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 0)",
+   "guard_side": true,
+   "foreclosed": "(assoc_profile_birthday_year <= 1004)",
+   "n_guard_side": 3966,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 0)",
+   "guard_side": true,
+   "foreclosed": "(assoc_profile_persisted == True)",
+   "n_guard_side": 3966,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 0)",
+   "guard_side": true,
+   "foreclosed": "(assoc_profile_public_details == True)",
+   "n_guard_side": 3966,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 1)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_1_row_guid != StringVal(''))",
+   "n_guard_side": 441,
+   "n_other_side_with_B": 2330,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 1)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_2_row_guid != StringVal(''))",
+   "n_guard_side": 441,
+   "n_other_side_with_B": 176,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 1)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_2_row_guid == '')",
+   "n_guard_side": 441,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 1)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_2_row_id == SYM_PERSON_NI_id)",
+   "n_guard_side": 441,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 1)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_2_row_persisted == True)",
+   "n_guard_side": 441,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 1)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found == True)",
+   "n_guard_side": 441,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 1)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_persisted == True)",
+   "n_guard_side": 441,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 1)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+   "n_guard_side": 441,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 1)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid != StringVal(''))",
+   "n_guard_side": 441,
+   "n_other_side_with_B": 2514,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 1)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_SYM_RESULT_User_blocks_1_find_by_1_not_found == True)",
+   "n_guard_side": 441,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 1)",
+   "guard_side": true,
+   "foreclosed": "(assoc_commentable_persisted == True)",
+   "n_guard_side": 441,
+   "n_other_side_with_B": 435,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 1)",
+   "guard_side": true,
+   "foreclosed": "(assoc_commentable_text_has_mention == True)",
+   "n_guard_side": 441,
+   "n_other_side_with_B": 435,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 1)",
+   "guard_side": true,
+   "foreclosed": "(assoc_mentions_container_persisted == True)",
+   "n_guard_side": 441,
+   "n_other_side_with_B": 428,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 1)",
+   "guard_side": true,
+   "foreclosed": "(assoc_mentions_container_text_has_mention == True)",
+   "n_guard_side": 441,
+   "n_other_side_with_B": 863,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 1)",
+   "guard_side": true,
+   "foreclosed": "(assoc_person_id == SYM_PERSON_NI_id)",
+   "n_guard_side": 441,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 1)",
+   "guard_side": true,
+   "foreclosed": "(assoc_person_persisted == True)",
+   "n_guard_side": 441,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 1)",
+   "guard_side": true,
+   "foreclosed": "(assoc_profile_birthday_year <= 1004)",
+   "n_guard_side": 441,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 1)",
+   "guard_side": true,
+   "foreclosed": "(assoc_profile_persisted == True)",
+   "n_guard_side": 441,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 1)",
+   "guard_side": true,
+   "foreclosed": "(assoc_profile_public_details == True)",
+   "n_guard_side": 441,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 2)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_1_row_guid != StringVal(''))",
+   "n_guard_side": 441,
+   "n_other_side_with_B": 2330,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 2)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_2_row_guid != StringVal(''))",
+   "n_guard_side": 441,
+   "n_other_side_with_B": 176,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 2)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_2_row_guid == '')",
+   "n_guard_side": 441,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 2)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_2_row_id == SYM_PERSON_NI_id)",
+   "n_guard_side": 441,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 2)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_2_row_persisted == True)",
+   "n_guard_side": 441,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 2)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found == True)",
+   "n_guard_side": 441,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 2)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_persisted == True)",
+   "n_guard_side": 441,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 2)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+   "n_guard_side": 441,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 2)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid != StringVal(''))",
+   "n_guard_side": 441,
+   "n_other_side_with_B": 2514,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 2)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_SYM_RESULT_User_blocks_1_find_by_1_not_found == True)",
+   "n_guard_side": 441,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 2)",
+   "guard_side": true,
+   "foreclosed": "(assoc_commentable_persisted == True)",
+   "n_guard_side": 441,
+   "n_other_side_with_B": 435,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 2)",
+   "guard_side": true,
+   "foreclosed": "(assoc_commentable_text_has_mention == True)",
+   "n_guard_side": 441,
+   "n_other_side_with_B": 435,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 2)",
+   "guard_side": true,
+   "foreclosed": "(assoc_mentions_container_persisted == True)",
+   "n_guard_side": 441,
+   "n_other_side_with_B": 428,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 2)",
+   "guard_side": true,
+   "foreclosed": "(assoc_mentions_container_text_has_mention == True)",
+   "n_guard_side": 441,
+   "n_other_side_with_B": 863,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 2)",
+   "guard_side": true,
+   "foreclosed": "(assoc_person_id == SYM_PERSON_NI_id)",
+   "n_guard_side": 441,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 2)",
+   "guard_side": true,
+   "foreclosed": "(assoc_person_persisted == True)",
+   "n_guard_side": 441,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 2)",
+   "guard_side": true,
+   "foreclosed": "(assoc_profile_birthday_year <= 1004)",
+   "n_guard_side": 441,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 2)",
+   "guard_side": true,
+   "foreclosed": "(assoc_profile_persisted == True)",
+   "n_guard_side": 441,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 2)",
+   "guard_side": true,
+   "foreclosed": "(assoc_profile_public_details == True)",
+   "n_guard_side": 441,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 3)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_1_row_guid != StringVal(''))",
+   "n_guard_side": 441,
+   "n_other_side_with_B": 2330,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 3)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_2_row_guid != StringVal(''))",
+   "n_guard_side": 441,
+   "n_other_side_with_B": 176,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 3)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_2_row_guid == '')",
+   "n_guard_side": 441,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 3)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_2_row_id == SYM_PERSON_NI_id)",
+   "n_guard_side": 441,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 3)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_2_row_persisted == True)",
+   "n_guard_side": 441,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 3)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found == True)",
+   "n_guard_side": 441,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 3)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_persisted == True)",
+   "n_guard_side": 441,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 3)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+   "n_guard_side": 441,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 3)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid != StringVal(''))",
+   "n_guard_side": 441,
+   "n_other_side_with_B": 2514,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 3)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_SYM_RESULT_User_blocks_1_find_by_1_not_found == True)",
+   "n_guard_side": 441,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 3)",
+   "guard_side": true,
+   "foreclosed": "(assoc_commentable_persisted == True)",
+   "n_guard_side": 441,
+   "n_other_side_with_B": 435,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 3)",
+   "guard_side": true,
+   "foreclosed": "(assoc_commentable_text_has_mention == True)",
+   "n_guard_side": 441,
+   "n_other_side_with_B": 435,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 3)",
+   "guard_side": true,
+   "foreclosed": "(assoc_mentions_container_persisted == True)",
+   "n_guard_side": 441,
+   "n_other_side_with_B": 428,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 3)",
+   "guard_side": true,
+   "foreclosed": "(assoc_mentions_container_text_has_mention == True)",
+   "n_guard_side": 441,
+   "n_other_side_with_B": 863,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 3)",
+   "guard_side": true,
+   "foreclosed": "(assoc_person_id == SYM_PERSON_NI_id)",
+   "n_guard_side": 441,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 3)",
+   "guard_side": true,
+   "foreclosed": "(assoc_person_persisted == True)",
+   "n_guard_side": 441,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 3)",
+   "guard_side": true,
+   "foreclosed": "(assoc_profile_birthday_year <= 1004)",
+   "n_guard_side": 441,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 3)",
+   "guard_side": true,
+   "foreclosed": "(assoc_profile_persisted == True)",
+   "n_guard_side": 441,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 3)",
+   "guard_side": true,
+   "foreclosed": "(assoc_profile_public_details == True)",
+   "n_guard_side": 441,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 4)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_2_row_guid != StringVal(''))",
+   "n_guard_side": 428,
+   "n_other_side_with_B": 176,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 4)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_2_row_guid == '')",
+   "n_guard_side": 428,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 4)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_2_row_id == SYM_PERSON_NI_id)",
+   "n_guard_side": 428,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 4)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_2_row_persisted == True)",
+   "n_guard_side": 428,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 4)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found == True)",
+   "n_guard_side": 428,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 4)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_persisted == True)",
+   "n_guard_side": 428,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 4)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+   "n_guard_side": 428,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 4)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid != StringVal(''))",
+   "n_guard_side": 428,
+   "n_other_side_with_B": 2514,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 4)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_SYM_RESULT_User_blocks_1_find_by_1_not_found == True)",
+   "n_guard_side": 428,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 4)",
+   "guard_side": true,
+   "foreclosed": "(assoc_author_persisted == True)",
+   "n_guard_side": 428,
+   "n_other_side_with_B": 5289,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 4)",
+   "guard_side": true,
+   "foreclosed": "(assoc_commentable_persisted == True)",
+   "n_guard_side": 428,
+   "n_other_side_with_B": 435,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 4)",
+   "guard_side": true,
+   "foreclosed": "(assoc_commentable_text_has_mention == True)",
+   "n_guard_side": 428,
+   "n_other_side_with_B": 435,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 4)",
+   "guard_side": false,
+   "foreclosed": "(assoc_mentions_container_persisted == True)",
+   "n_guard_side": 6446,
+   "n_other_side_with_B": 428,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 4)",
+   "guard_side": true,
+   "foreclosed": "(assoc_person_id == SYM_PERSON_NI_id)",
+   "n_guard_side": 428,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 4)",
+   "guard_side": true,
+   "foreclosed": "(assoc_person_persisted == True)",
+   "n_guard_side": 428,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 4)",
+   "guard_side": true,
+   "foreclosed": "(assoc_profile_birthday_year <= 1004)",
+   "n_guard_side": 428,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 4)",
+   "guard_side": true,
+   "foreclosed": "(assoc_profile_persisted == True)",
+   "n_guard_side": 428,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 4)",
+   "guard_side": true,
+   "foreclosed": "(assoc_profile_public_details == True)",
+   "n_guard_side": 428,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 4)",
+   "guard_side": true,
+   "foreclosed": "(assoc_target_persisted == True)",
+   "n_guard_side": 428,
+   "n_other_side_with_B": 5289,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 4)",
+   "guard_side": true,
+   "foreclosed": "(assoc_target_text_has_mention == True)",
+   "n_guard_side": 428,
+   "n_other_side_with_B": 5289,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 5)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_1_row_guid != StringVal(''))",
+   "n_guard_side": 435,
+   "n_other_side_with_B": 2330,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 5)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_2_row_guid != StringVal(''))",
+   "n_guard_side": 435,
+   "n_other_side_with_B": 176,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 5)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_2_row_guid == '')",
+   "n_guard_side": 435,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 5)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_2_row_id == SYM_PERSON_NI_id)",
+   "n_guard_side": 435,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 5)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_2_row_persisted == True)",
+   "n_guard_side": 435,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 5)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found == True)",
+   "n_guard_side": 435,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 5)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_persisted == True)",
+   "n_guard_side": 435,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 5)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+   "n_guard_side": 435,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 5)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid != StringVal(''))",
+   "n_guard_side": 435,
+   "n_other_side_with_B": 2514,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 5)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_SYM_RESULT_User_blocks_1_find_by_1_not_found == True)",
+   "n_guard_side": 435,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 5)",
+   "guard_side": true,
+   "foreclosed": "(assoc_author_persisted == True)",
+   "n_guard_side": 435,
+   "n_other_side_with_B": 5289,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 5)",
+   "guard_side": false,
+   "foreclosed": "(assoc_commentable_persisted == True)",
+   "n_guard_side": 6439,
+   "n_other_side_with_B": 435,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 5)",
+   "guard_side": false,
+   "foreclosed": "(assoc_commentable_text_has_mention == True)",
+   "n_guard_side": 6439,
+   "n_other_side_with_B": 435,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 5)",
+   "guard_side": true,
+   "foreclosed": "(assoc_mentions_container_persisted == True)",
+   "n_guard_side": 435,
+   "n_other_side_with_B": 428,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 5)",
+   "guard_side": true,
+   "foreclosed": "(assoc_person_id == SYM_PERSON_NI_id)",
+   "n_guard_side": 435,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 5)",
+   "guard_side": true,
+   "foreclosed": "(assoc_person_persisted == True)",
+   "n_guard_side": 435,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 5)",
+   "guard_side": true,
+   "foreclosed": "(assoc_profile_birthday_year <= 1004)",
+   "n_guard_side": 435,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 5)",
+   "guard_side": true,
+   "foreclosed": "(assoc_profile_persisted == True)",
+   "n_guard_side": 435,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 5)",
+   "guard_side": true,
+   "foreclosed": "(assoc_profile_public_details == True)",
+   "n_guard_side": 435,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 5)",
+   "guard_side": true,
+   "foreclosed": "(assoc_target_persisted == True)",
+   "n_guard_side": 435,
+   "n_other_side_with_B": 5289,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 5)",
+   "guard_side": true,
+   "foreclosed": "(assoc_target_text_has_mention == True)",
+   "n_guard_side": 435,
+   "n_other_side_with_B": 5289,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 6)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_1_row_guid != StringVal(''))",
+   "n_guard_side": 361,
+   "n_other_side_with_B": 2330,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 6)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_1_row_guid == '')",
+   "n_guard_side": 361,
+   "n_other_side_with_B": 6513,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 6)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_1_row_id == SYM_PERSON_NI_id)",
+   "n_guard_side": 361,
+   "n_other_side_with_B": 6513,
+   "B_sides_observed": [
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 6)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_1_row_persisted == True)",
+   "n_guard_side": 361,
+   "n_other_side_with_B": 6513,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 6)",
+   "guard_side": false,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_2_row_guid != StringVal(''))",
+   "n_guard_side": 6513,
+   "n_other_side_with_B": 176,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 6)",
+   "guard_side": false,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_2_row_guid == '')",
+   "n_guard_side": 6513,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 6)",
+   "guard_side": false,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_2_row_id == SYM_PERSON_NI_id)",
+   "n_guard_side": 6513,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 6)",
+   "guard_side": false,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_2_row_persisted == True)",
+   "n_guard_side": 6513,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 6)",
+   "guard_side": false,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found == True)",
+   "n_guard_side": 6513,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 6)",
+   "guard_side": false,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_persisted == True)",
+   "n_guard_side": 6513,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 6)",
+   "guard_side": false,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+   "n_guard_side": 6513,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 6)",
+   "guard_side": false,
+   "foreclosed": "(SYM_RESULT_SYM_RESULT_User_blocks_1_find_by_1_not_found == True)",
+   "n_guard_side": 6513,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 6)",
+   "guard_side": true,
+   "foreclosed": "(assoc_author_persisted == True)",
+   "n_guard_side": 361,
+   "n_other_side_with_B": 5289,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 6)",
+   "guard_side": true,
+   "foreclosed": "(assoc_commentable_persisted == True)",
+   "n_guard_side": 361,
+   "n_other_side_with_B": 435,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 6)",
+   "guard_side": true,
+   "foreclosed": "(assoc_commentable_text_has_mention == True)",
+   "n_guard_side": 361,
+   "n_other_side_with_B": 435,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 6)",
+   "guard_side": true,
+   "foreclosed": "(assoc_mentions_container_persisted == True)",
+   "n_guard_side": 361,
+   "n_other_side_with_B": 428,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 6)",
+   "guard_side": true,
+   "foreclosed": "(assoc_mentions_container_text_has_mention == True)",
+   "n_guard_side": 361,
+   "n_other_side_with_B": 863,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 6)",
+   "guard_side": false,
+   "foreclosed": "(assoc_person_id == SYM_PERSON_NI_id)",
+   "n_guard_side": 6513,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 6)",
+   "guard_side": false,
+   "foreclosed": "(assoc_person_persisted == True)",
+   "n_guard_side": 6513,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 6)",
+   "guard_side": false,
+   "foreclosed": "(assoc_profile_birthday_year <= 1004)",
+   "n_guard_side": 6513,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 6)",
+   "guard_side": false,
+   "foreclosed": "(assoc_profile_persisted == True)",
+   "n_guard_side": 6513,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 6)",
+   "guard_side": false,
+   "foreclosed": "(assoc_profile_public_details == True)",
+   "n_guard_side": 6513,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 6)",
+   "guard_side": true,
+   "foreclosed": "(assoc_target_persisted == True)",
+   "n_guard_side": 361,
+   "n_other_side_with_B": 5289,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 6)",
+   "guard_side": true,
+   "foreclosed": "(assoc_target_text_has_mention == True)",
+   "n_guard_side": 361,
+   "n_other_side_with_B": 5289,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 7)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_2_row_guid != StringVal(''))",
+   "n_guard_side": 361,
+   "n_other_side_with_B": 176,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 7)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_2_row_guid == '')",
+   "n_guard_side": 361,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 7)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_2_row_id == SYM_PERSON_NI_id)",
+   "n_guard_side": 361,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 7)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_2_row_persisted == True)",
+   "n_guard_side": 361,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 7)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found == True)",
+   "n_guard_side": 361,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 7)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_persisted == True)",
+   "n_guard_side": 361,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 7)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+   "n_guard_side": 361,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 7)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_SYM_RESULT_User_blocks_1_find_by_1_not_found == True)",
+   "n_guard_side": 361,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 7)",
+   "guard_side": true,
+   "foreclosed": "(assoc_author_persisted == True)",
+   "n_guard_side": 361,
+   "n_other_side_with_B": 5289,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 7)",
+   "guard_side": true,
+   "foreclosed": "(assoc_commentable_persisted == True)",
+   "n_guard_side": 361,
+   "n_other_side_with_B": 435,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 7)",
+   "guard_side": true,
+   "foreclosed": "(assoc_commentable_text_has_mention == True)",
+   "n_guard_side": 361,
+   "n_other_side_with_B": 435,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 7)",
+   "guard_side": true,
+   "foreclosed": "(assoc_mentions_container_persisted == True)",
+   "n_guard_side": 361,
+   "n_other_side_with_B": 428,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 7)",
+   "guard_side": true,
+   "foreclosed": "(assoc_mentions_container_text_has_mention == True)",
+   "n_guard_side": 361,
+   "n_other_side_with_B": 863,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 7)",
+   "guard_side": true,
+   "foreclosed": "(assoc_person_id == SYM_PERSON_NI_id)",
+   "n_guard_side": 361,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 7)",
+   "guard_side": true,
+   "foreclosed": "(assoc_person_persisted == True)",
+   "n_guard_side": 361,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 7)",
+   "guard_side": true,
+   "foreclosed": "(assoc_profile_birthday_year <= 1004)",
+   "n_guard_side": 361,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 7)",
+   "guard_side": true,
+   "foreclosed": "(assoc_profile_persisted == True)",
+   "n_guard_side": 361,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 7)",
+   "guard_side": true,
+   "foreclosed": "(assoc_profile_public_details == True)",
+   "n_guard_side": 361,
+   "n_other_side_with_B": 361,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 7)",
+   "guard_side": true,
+   "foreclosed": "(assoc_target_persisted == True)",
+   "n_guard_side": 361,
+   "n_other_side_with_B": 5289,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_NOTE_TYPE_PROFILE == 7)",
+   "guard_side": true,
+   "foreclosed": "(assoc_target_text_has_mention == True)",
+   "n_guard_side": 361,
+   "n_other_side_with_B": 5289,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_1_row_guid == '')",
+   "guard_side": false,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_1_row_guid != StringVal(''))",
+   "n_guard_side": 4183,
+   "n_other_side_with_B": 2330,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_1_row_guid == '')",
+   "guard_side": true,
+   "foreclosed": "(assoc_commentable_persisted == True)",
+   "n_guard_side": 2330,
+   "n_other_side_with_B": 435,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_1_row_guid == '')",
+   "guard_side": true,
+   "foreclosed": "(assoc_commentable_text_has_mention == True)",
+   "n_guard_side": 2330,
+   "n_other_side_with_B": 435,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_2_row_guid == '')",
+   "guard_side": false,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_2_row_guid != StringVal(''))",
+   "n_guard_side": 185,
+   "n_other_side_with_B": 176,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_RESULT_ActiveRecord__Calculations_count_3_count == 0)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__Calculations_count_4_count == 0)",
+   "n_guard_side": 482,
+   "n_other_side_with_B": 5464,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_RESULT_ActiveRecord__Calculations_count_3_count == 0)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__Calculations_count_4_count == 1)",
+   "n_guard_side": 482,
+   "n_other_side_with_B": 3640,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_RESULT_ActiveRecord__Calculations_count_3_count == 0)",
+   "guard_side": true,
+   "foreclosed": "(assoc_commentable_persisted == True)",
+   "n_guard_side": 482,
+   "n_other_side_with_B": 371,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_RESULT_ActiveRecord__Calculations_count_3_count == 0)",
+   "guard_side": true,
+   "foreclosed": "(assoc_commentable_text_has_mention == True)",
+   "n_guard_side": 482,
+   "n_other_side_with_B": 371,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_RESULT_ActiveRecord__Calculations_count_3_count == 0)",
+   "guard_side": true,
+   "foreclosed": "(assoc_mentions_container_persisted == True)",
+   "n_guard_side": 482,
+   "n_other_side_with_B": 364,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_RESULT_ActiveRecord__Calculations_count_3_count == 0)",
+   "guard_side": true,
+   "foreclosed": "(assoc_mentions_container_text_has_mention == True)",
+   "n_guard_side": 482,
+   "n_other_side_with_B": 735,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_RESULT_ActiveRecord__Calculations_count_4_count == 0)",
+   "guard_side": true,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__Calculations_count_4_count == 1)",
+   "n_guard_side": 1824,
+   "n_other_side_with_B": 3640,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid == '')",
+   "guard_side": false,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid != StringVal(''))",
+   "n_guard_side": 4360,
+   "n_other_side_with_B": 2514,
+   "B_sides_observed": [
+    false
+   ]
+  },
+  {
+   "guard": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid == '')",
+   "guard_side": true,
+   "foreclosed": "(assoc_commentable_persisted == True)",
+   "n_guard_side": 2514,
+   "n_other_side_with_B": 435,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid == '')",
+   "guard_side": true,
+   "foreclosed": "(assoc_commentable_text_has_mention == True)",
+   "n_guard_side": 2514,
+   "n_other_side_with_B": 435,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid == '')",
+   "guard_side": true,
+   "foreclosed": "(assoc_mentions_container_persisted == True)",
+   "n_guard_side": 2514,
+   "n_other_side_with_B": 428,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid == '')",
+   "guard_side": true,
+   "foreclosed": "(assoc_mentions_container_text_has_mention == True)",
+   "n_guard_side": 2514,
+   "n_other_side_with_B": 863,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_persisted == True)",
+   "guard_side": false,
+   "foreclosed": "(assoc_commentable_persisted == True)",
+   "n_guard_side": 2128,
+   "n_other_side_with_B": 435,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_persisted == True)",
+   "guard_side": false,
+   "foreclosed": "(assoc_commentable_text_has_mention == True)",
+   "n_guard_side": 2128,
+   "n_other_side_with_B": 435,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_persisted == True)",
+   "guard_side": false,
+   "foreclosed": "(assoc_mentions_container_persisted == True)",
+   "n_guard_side": 2128,
+   "n_other_side_with_B": 428,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_persisted == True)",
+   "guard_side": false,
+   "foreclosed": "(assoc_mentions_container_text_has_mention == True)",
+   "n_guard_side": 2128,
+   "n_other_side_with_B": 863,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_RESULT_ActiveRecord__Relation_to_ary_1_row_persisted == True)",
+   "guard_side": false,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__Calculations_count_3_count < 4)",
+   "n_guard_side": 928,
+   "n_other_side_with_B": 5946,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_RESULT_ActiveRecord__Relation_to_ary_1_row_persisted == True)",
+   "guard_side": false,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__Calculations_count_3_count == 0)",
+   "n_guard_side": 928,
+   "n_other_side_with_B": 5946,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_RESULT_ActiveRecord__Relation_to_ary_1_row_persisted == True)",
+   "guard_side": false,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__Calculations_count_4_count == 0)",
+   "n_guard_side": 928,
+   "n_other_side_with_B": 5464,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  },
+  {
+   "guard": "(SYM_RESULT_ActiveRecord__Relation_to_ary_1_row_persisted == True)",
+   "guard_side": false,
+   "foreclosed": "(SYM_RESULT_ActiveRecord__Calculations_count_4_count == 1)",
+   "n_guard_side": 928,
+   "n_other_side_with_B": 3640,
+   "B_sides_observed": [
+    false,
+    true
+   ]
+  }
+ ],
+ "one_sided": [
+  {
+   "expr": "(SYM_PARAM_show == StringVal('unread'))",
+   "only_side": false,
+   "n": 6874
+  },
+  {
+   "expr": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_1_row_guid != StringVal(''))",
+   "only_side": false,
+   "n": 2330
+  },
+  {
+   "expr": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_1_row_id == SYM_PERSON_NI_id)",
+   "only_side": true,
+   "n": 6513
+  },
+  {
+   "expr": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_2_row_guid != StringVal(''))",
+   "only_side": false,
+   "n": 176
+  },
+  {
+   "expr": "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_2_row_id == SYM_PERSON_NI_id)",
+   "only_side": true,
+   "n": 361
+  },
+  {
+   "expr": "(SYM_RESULT_ActiveRecord__Calculations_count_2_count > 0)",
+   "only_side": true,
+   "n": 6874
+  },
+  {
+   "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found == True)",
+   "only_side": false,
+   "n": 361
+  },
+  {
+   "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_persisted == True)",
+   "only_side": true,
+   "n": 361
+  },
+  {
+   "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+   "only_side": false,
+   "n": 361
+  },
+  {
+   "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid != StringVal(''))",
+   "only_side": false,
+   "n": 2514
+  },
+  {
+   "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id == SYM_PERSON_NI_id)",
+   "only_side": true,
+   "n": 6874
+  },
+  {
+   "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+   "only_side": false,
+   "n": 6874
+  },
+  {
+   "expr": "(SYM_RESULT_SYM_RESULT_User_blocks_1_find_by_1_not_found == True)",
+   "only_side": false,
+   "n": 361
+  },
+  {
+   "expr": "(assoc_person_id == SYM_PERSON_NI_id)",
+   "only_side": true,
+   "n": 361
+  },
+  {
+   "expr": "(assoc_person_persisted == True)",
+   "only_side": true,
+   "n": 361
+  },
+  {
+   "expr": "(assoc_profile_birthday_year <= 1004)",
+   "only_side": false,
+   "n": 361
+  },
+  {
+   "expr": "(assoc_profile_persisted == True)",
+   "only_side": true,
+   "n": 361
+  },
+  {
+   "expr": "(assoc_profile_public_details == True)",
+   "only_side": false,
+   "n": 361
+  }
+ ]
+}

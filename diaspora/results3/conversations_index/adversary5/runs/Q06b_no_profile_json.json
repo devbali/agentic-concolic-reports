@@ -1,0 +1,153 @@
+[
+  {
+    "name": "Q06_noprofile_json",
+    "target_calls": [
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::SingularAssociation#find_target",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#pluck",
+        "depth": 0,
+        "args": [
+          "\"contacts.id\"",
+          "\"profiles.first_name\"",
+          "\"profiles.last_name\"",
+          "\"people.diaspora_handle\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#pluck",
+        "depth": 1,
+        "args": [
+          "\"contacts.id\"",
+          "\"profiles.first_name\"",
+          "\"profiles.last_name\"",
+          "\"people.diaspora_handle\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActionController::Metal#status=",
+        "depth": 0,
+        "args": [
+          "200"
+        ]
+      }
+    ],
+    "statements": [
+      {
+        "sql": "SELECT  \"users\".* FROM \"users\" WHERE \"users\".\"id\" = ? ORDER BY \"users\".\"id\" ASC LIMIT ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT  \"people\".* FROM \"people\" WHERE \"people\".\"owner_id\" = ? LIMIT ?",
+        "under": "ActiveRecord::Associations::SingularAssociation#find_target"
+      },
+      {
+        "sql": "SELECT contacts.id, profiles.first_name, profiles.last_name, people.diaspora_handle FROM \"contacts\" INNER JOIN \"people\" ON \"people\".\"id\" = \"contacts\".\"person_id\" INNER JOIN \"profiles\" ON \"profiles\".\"person_id\" = \"people\".\"id\" WHERE \"contacts\".\"user_id\" = ? AND \"contacts\".\"sharing\" = ? AND \"contacts\".\"receiving\" = ?",
+        "under": "ActiveRecord::Calculations#pluck"
+      },
+      {
+        "sql": "SELECT  \"conversation_visibilities\".\"id\" AS t0_r0, \"conversation_visibilities\".\"conversation_id\" AS t0_r1, \"conversation_visibilities\".\"person_id\" AS t0_r2, \"conversation_visibilities\".\"unread\" AS t0_r3, \"conversation_visibilities\".\"created_at\" AS t0_r4, \"conversation_visibilities\".\"updated_at\" AS t0_r5, \"conversations\".\"id\" AS t1_r0, \"conversations\".\"subject\" AS t1_r1, \"conversations\".\"guid\" AS t1_r2, \"conversations\".\"author_id\" AS t1_r3, \"conversations\".\"created_at\" AS t1_r4, \"conversations\".\"updated_at\" AS t1_r5 FROM \"conversation_visibilities\" LEFT OUTER JOIN \"conversations\" ON \"conversations\".\"id\" = \"conversation_visibilities\".\"conversation_id\" WHERE \"conversation_visibilities\".\"person_id\" = ? ORDER BY conversations.updated_at DESC LIMIT ? OFFSET ?",
+        "under": "ActiveRecord::Relation#records"
+      }
+    ],
+    "coverage": {
+},
+    "error": null
+  }
+]

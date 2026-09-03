@@ -1,0 +1,4518 @@
+[
+  {
+    "name": "H04-mention-fix-profile",
+    "target_calls": [
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"840\""
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"json\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Person#fix_profile",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "DiasporaFederation::Discovery::Discovery.new",
+        "depth": 1,
+        "args": [
+          "\"wraith@ba[d.example\""
+        ]
+      },
+      {
+        "target": "DiasporaFederation::Discovery::Discovery#fetch_and_save",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"840\""
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"mobile\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"bobguid0000000002\""
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"bobguid0000000002\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"wraithguid0000008\""
+        ]
+      },
+      {
+        "target": "Person#fix_profile",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "DiasporaFederation::Discovery::Discovery.new",
+        "depth": 1,
+        "args": [
+          "\"wraith@ba[d.example\""
+        ]
+      },
+      {
+        "target": "DiasporaFederation::Discovery::Discovery#fetch_and_save",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"841\""
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"json\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Person#fix_profile",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "DiasporaFederation::Discovery::Discovery.new",
+        "depth": 1,
+        "args": [
+          "\"wraith@ba[d.example\""
+        ]
+      },
+      {
+        "target": "DiasporaFederation::Discovery::Discovery#fetch_and_save",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"841\""
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"mobile\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"bobguid0000000002\""
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"bobguid0000000002\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"wraithguid0000008\""
+        ]
+      },
+      {
+        "target": "ActionController::Rendering#_set_rendered_content_type",
+        "depth": 0,
+        "args": [
+          "#<Mime::Type:0x407ed4ce @symbol=:mobile, @hash=7521411187524"
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"842\""
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"json\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Person#fix_profile",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "DiasporaFederation::Discovery::Discovery.new",
+        "depth": 1,
+        "args": [
+          "\"wraith@ba[d.example\""
+        ]
+      },
+      {
+        "target": "DiasporaFederation::Discovery::Discovery#fetch_and_save",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"842\""
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"mobile\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"bobguid0000000002\""
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"bobguid0000000002\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"eringuid000000005\""
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"wraithguid0000008\""
+        ]
+      },
+      {
+        "target": "Person#fix_profile",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "DiasporaFederation::Discovery::Discovery.new",
+        "depth": 1,
+        "args": [
+          "\"wraith@ba[d.example\""
+        ]
+      },
+      {
+        "target": "DiasporaFederation::Discovery::Discovery#fetch_and_save",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"843\""
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"json\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Person#fix_profile",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "DiasporaFederation::Discovery::Discovery.new",
+        "depth": 1,
+        "args": [
+          "\"wraith@ba[d.example\""
+        ]
+      },
+      {
+        "target": "DiasporaFederation::Discovery::Discovery#fetch_and_save",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"843\""
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"mobile\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"bobguid0000000002\""
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"bobguid0000000002\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"wraithguid0000008\""
+        ]
+      },
+      {
+        "target": "Person#fix_profile",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "DiasporaFederation::Discovery::Discovery.new",
+        "depth": 1,
+        "args": [
+          "\"wraith@ba[d.example\""
+        ]
+      },
+      {
+        "target": "DiasporaFederation::Discovery::Discovery#fetch_and_save",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"844\""
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"json\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActionController::Metal#status=",
+        "depth": 0,
+        "args": [
+          "200"
+        ]
+      },
+      {
+        "target": "ActionController::Rendering#_set_rendered_content_type",
+        "depth": 0,
+        "args": [
+          "#<Mime::Type:0x7123a28f @symbol=:json, @hash=207734431634209"
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"844\""
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"mobile\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"bobguid0000000002\""
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"bobguid0000000002\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActionController::Rendering#_set_rendered_content_type",
+        "depth": 0,
+        "args": [
+          "#<Mime::Type:0x407ed4ce @symbol=:mobile, @hash=7521411187524"
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"845\""
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"json\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActionController::Metal#status=",
+        "depth": 0,
+        "args": [
+          "200"
+        ]
+      },
+      {
+        "target": "ActionController::Rendering#_set_rendered_content_type",
+        "depth": 0,
+        "args": [
+          "#<Mime::Type:0x7123a28f @symbol=:json, @hash=207734431634209"
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"845\""
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"mobile\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"bobguid0000000002\""
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"bobguid0000000002\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"eringuid000000005\""
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"eringuid000000005\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActionController::Rendering#_set_rendered_content_type",
+        "depth": 0,
+        "args": [
+          "#<Mime::Type:0x407ed4ce @symbol=:mobile, @hash=7521411187524"
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"846\""
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"json\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActionController::Metal#status=",
+        "depth": 0,
+        "args": [
+          "200"
+        ]
+      },
+      {
+        "target": "ActionController::Rendering#_set_rendered_content_type",
+        "depth": 0,
+        "args": [
+          "#<Mime::Type:0x7123a28f @symbol=:json, @hash=207734431634209"
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"846\""
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"mobile\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"bobguid0000000002\""
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"bobguid0000000002\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"eringuid000000005\""
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"eringuid000000005\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"ivyguid00000010\""
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"ivyguid00000010\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActionController::Rendering#_set_rendered_content_type",
+        "depth": 0,
+        "args": [
+          "#<Mime::Type:0x407ed4ce @symbol=:mobile, @hash=7521411187524"
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"847\""
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"json\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActionController::Metal#status=",
+        "depth": 0,
+        "args": [
+          "200"
+        ]
+      },
+      {
+        "target": "ActionController::Rendering#_set_rendered_content_type",
+        "depth": 0,
+        "args": [
+          "#<Mime::Type:0x7123a28f @symbol=:json, @hash=207734431634209"
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"847\""
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"mobile\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"bobguid0000000002\""
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"bobguid0000000002\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"eringuid000000005\""
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"eringuid000000005\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"ivyguid00000010\""
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"ivyguid00000010\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"jonguid00000011\""
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"jonguid00000011\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActionController::Rendering#_set_rendered_content_type",
+        "depth": 0,
+        "args": [
+          "#<Mime::Type:0x407ed4ce @symbol=:mobile, @hash=7521411187524"
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"848\""
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"json\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActionController::Metal#status=",
+        "depth": 0,
+        "args": [
+          "200"
+        ]
+      },
+      {
+        "target": "ActionController::Rendering#_set_rendered_content_type",
+        "depth": 0,
+        "args": [
+          "#<Mime::Type:0x7123a28f @symbol=:json, @hash=207734431634209"
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"848\""
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"mobile\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"bobguid0000000002\""
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"bobguid0000000002\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"eringuid000000005\""
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"ivyguid00000010\""
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"jonguid00000011\""
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"kimguid00000012\""
+        ]
+      },
+      {
+        "target": "ActionController::Rendering#_set_rendered_content_type",
+        "depth": 0,
+        "args": [
+          "#<Mime::Type:0x407ed4ce @symbol=:mobile, @hash=7521411187524"
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"849\""
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"json\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActionController::Metal#status=",
+        "depth": 0,
+        "args": [
+          "200"
+        ]
+      },
+      {
+        "target": "ActionController::Rendering#_set_rendered_content_type",
+        "depth": 0,
+        "args": [
+          "#<Mime::Type:0x7123a28f @symbol=:json, @hash=207734431634209"
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"849\""
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"mobile\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"bobguid0000000002\""
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"bobguid0000000002\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"eringuid000000005\""
+        ]
+      },
+      {
+        "target": "ActionDispatch::Journey::Router::Utils.escape_segment",
+        "depth": 0,
+        "args": [
+          "\"ivyguid00000010\""
+        ]
+      }
+    ],
+    "statements": [
+      {
+        "sql": "SELECT  \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = ? ORDER BY \"posts\".\"id\" ASC LIMIT ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = ? AND \"comments\".\"commentable_type\" = ? ORDER BY created_at ASC",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT  \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = ? ORDER BY \"posts\".\"id\" ASC LIMIT ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = ? AND \"comments\".\"commentable_type\" = ? ORDER BY created_at ASC",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT  \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = ? ORDER BY \"posts\".\"id\" ASC LIMIT ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = ? AND \"comments\".\"commentable_type\" = ? ORDER BY created_at ASC",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT  \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = ? ORDER BY \"posts\".\"id\" ASC LIMIT ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = ? AND \"comments\".\"commentable_type\" = ? ORDER BY created_at ASC",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT  \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = ? ORDER BY \"posts\".\"id\" ASC LIMIT ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = ? AND \"comments\".\"commentable_type\" = ? ORDER BY created_at ASC",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" IN (?, ?)",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" IN (?, ?)",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" IN (?, ?)",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" IN (?, ?)",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT  \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = ? ORDER BY \"posts\".\"id\" ASC LIMIT ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = ? AND \"comments\".\"commentable_type\" = ? ORDER BY created_at ASC",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" IN (?, ?)",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" IN (?, ?)",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT  \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = ? ORDER BY \"posts\".\"id\" ASC LIMIT ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = ? AND \"comments\".\"commentable_type\" = ? ORDER BY created_at ASC",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" IN (?, ?)",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" IN (?, ?)",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" IN (?, ?)",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" IN (?, ?)",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT  \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = ? ORDER BY \"posts\".\"id\" ASC LIMIT ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = ? AND \"comments\".\"commentable_type\" = ? ORDER BY created_at ASC",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" IN (?, ?)",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" IN (?, ?)",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT  \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = ? ORDER BY \"posts\".\"id\" ASC LIMIT ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = ? AND \"comments\".\"commentable_type\" = ? ORDER BY created_at ASC",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT  \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = ? ORDER BY \"posts\".\"id\" ASC LIMIT ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = ? AND \"comments\".\"commentable_type\" = ? ORDER BY created_at ASC",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT  \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = ? ORDER BY \"posts\".\"id\" ASC LIMIT ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = ? AND \"comments\".\"commentable_type\" = ? ORDER BY created_at ASC",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" IN (?, ?)",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" IN (?, ?)",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT  \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = ? ORDER BY \"posts\".\"id\" ASC LIMIT ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = ? AND \"comments\".\"commentable_type\" = ? ORDER BY created_at ASC",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" IN (?, ?)",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" IN (?, ?)",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT  \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = ? ORDER BY \"posts\".\"id\" ASC LIMIT ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = ? AND \"comments\".\"commentable_type\" = ? ORDER BY created_at ASC",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" IN (?, ?, ?)",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" IN (?, ?, ?)",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT  \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = ? ORDER BY \"posts\".\"id\" ASC LIMIT ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = ? AND \"comments\".\"commentable_type\" = ? ORDER BY created_at ASC",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" IN (?, ?, ?)",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" IN (?, ?, ?)",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT  \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = ? ORDER BY \"posts\".\"id\" ASC LIMIT ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = ? AND \"comments\".\"commentable_type\" = ? ORDER BY created_at ASC",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" IN (?, ?, ?, ?)",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" IN (?, ?, ?, ?)",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT  \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = ? ORDER BY \"posts\".\"id\" ASC LIMIT ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = ? AND \"comments\".\"commentable_type\" = ? ORDER BY created_at ASC",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" IN (?, ?, ?, ?)",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" IN (?, ?, ?, ?)",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT  \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = ? ORDER BY \"posts\".\"id\" ASC LIMIT ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = ? AND \"comments\".\"commentable_type\" = ? ORDER BY created_at ASC",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" IN (?, ?, ?, ?)",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" IN (?, ?, ?, ?)",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" IN (?, ?, ?, ?)",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" IN (?, ?, ?, ?)",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT  \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = ? ORDER BY \"posts\".\"id\" ASC LIMIT ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = ? AND \"comments\".\"commentable_type\" = ? ORDER BY created_at ASC",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" IN (?, ?, ?, ?)",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" IN (?, ?, ?, ?)",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT  \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = ? ORDER BY \"posts\".\"id\" ASC LIMIT ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = ? AND \"comments\".\"commentable_type\" = ? ORDER BY created_at ASC",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" IN (?, ?, ?, ?)",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" IN (?, ?)",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" IN (?, ?, ?, ?)",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" IN (?, ?)",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT  \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = ? ORDER BY \"posts\".\"id\" ASC LIMIT ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = ? AND \"comments\".\"commentable_type\" = ? ORDER BY created_at ASC",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" IN (?, ?, ?, ?)",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" IN (?, ?)",
+        "under": "ActiveRecord::Relation#records"
+      }
+    ],
+    "coverage": {
+},
+    "error": null
+  }
+]

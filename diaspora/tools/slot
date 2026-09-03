@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# Take whichever JRuby slot is free, then exec the command.
+#
+# The engine takes no machine-wide lock (assumption_checker.py's comment: a
+# deployment expresses serialisation IN the runner). This wrapper IS that
+# expression for this host: N slots instead of one mutex, so the assumption
+# gate can keep N JRubys busy. Memory, not cores, sets N — each JRuby peaks
+# ~1.2 GB on a 7.9 GB box. Default 2 (Bali, 2026-09-01).
+#
+# usage: tools/slot <command> [args...]      env: CONCOLIC_SLOTS (default 2)
+set -u
+N="${CONCOLIC_SLOTS:-2}"
+while true; do
+  for i in $(seq 1 "$N"); do
+    exec 9>"/tmp/concolic-slot-$i.lock" || continue
+    if flock -n 9; then
+      exec "$@"          # fd 9 stays open across exec: the lock is held for
+    fi                   # the command's whole life and released when it exits
+  done
+  sleep 1
+done

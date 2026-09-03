@@ -1,0 +1,76 @@
+SELECT `people`.* FROM `people`, `mentions`, `comments`, `posts`, `people` AS `people0`, `users` WHERE `people`.`id` = `mentions`.`person_id` AND `mentions`.`mentions_container_id` = `comments`.`id` AND `mentions`.`mentions_container_type` = 'Comment' AND `comments`.`commentable_id` = `posts`.`id` AND `comments`.`commentable_type` = 'Post' AND `posts`.`author_id` = `people0`.`id` AND `people0`.`owner_id` = `users`.`id` AND `users`.`id` = _MY_UID;
+
+
+SELECT `people`.* FROM `people`, `mentions`, `comments`, `posts`, `share_visibilities`, `users` WHERE `people`.`id` = `mentions`.`person_id` AND `mentions`.`mentions_container_id` = `comments`.`id` AND `mentions`.`mentions_container_type` = 'Comment' AND `comments`.`commentable_id` = `posts`.`id` AND `comments`.`commentable_type` = 'Post' AND `share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post' AND `share_visibilities`.`user_id` = `users`.`id` AND `users`.`id` = _MY_UID;
+
+
+SELECT `profiles`.* FROM `profiles`, `mentions`, `comments`, `posts`, `people`, `users` WHERE `profiles`.`person_id` = `mentions`.`person_id` AND `mentions`.`mentions_container_id` = `comments`.`id` AND `mentions`.`mentions_container_type` = 'Comment' AND `comments`.`commentable_id` = `posts`.`id` AND `comments`.`commentable_type` = 'Post' AND `posts`.`author_id` = `people`.`id` AND `people`.`owner_id` = `users`.`id` AND `users`.`id` = _MY_UID;
+
+
+SELECT `profiles`.* FROM `profiles`, `mentions`, `comments`, `posts`, `share_visibilities`, `users` WHERE `profiles`.`person_id` = `mentions`.`person_id` AND `mentions`.`mentions_container_id` = `comments`.`id` AND `mentions`.`mentions_container_type` = 'Comment' AND `comments`.`commentable_id` = `posts`.`id` AND `comments`.`commentable_type` = 'Post' AND `share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post' AND `share_visibilities`.`user_id` = `users`.`id` AND `users`.`id` = _MY_UID;
+
+
+SELECT `mentions`.* FROM `mentions`, `comments`, `posts`, `people`, `users` WHERE `mentions`.`mentions_container_id` = `comments`.`id` AND `mentions`.`mentions_container_type` = 'Comment' AND `comments`.`commentable_id` = `posts`.`id` AND `comments`.`commentable_type` = 'Post' AND `posts`.`author_id` = `people`.`id` AND `people`.`owner_id` = `users`.`id` AND `users`.`id` = _MY_UID;
+
+
+SELECT `mentions`.* FROM `mentions`, `comments`, `posts`, `share_visibilities`, `users` WHERE `mentions`.`mentions_container_id` = `comments`.`id` AND `mentions`.`mentions_container_type` = 'Comment' AND `comments`.`commentable_id` = `posts`.`id` AND `comments`.`commentable_type` = 'Post' AND `share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post' AND `share_visibilities`.`user_id` = `users`.`id` AND `users`.`id` = _MY_UID;
+
+
+SELECT `people`.* FROM `people`, `comments`, `posts`, `people` AS `people0`, `users` WHERE `people`.`id` = `comments`.`author_id` AND `comments`.`commentable_id` = `posts`.`id` AND `comments`.`commentable_type` = 'Post' AND `posts`.`author_id` = `people0`.`id` AND `people0`.`owner_id` = `users`.`id` AND `users`.`id` = _MY_UID;
+
+
+SELECT `people`.* FROM `people`, `comments`, `posts`, `share_visibilities`, `users` WHERE `people`.`id` = `comments`.`author_id` AND `comments`.`commentable_id` = `posts`.`id` AND `comments`.`commentable_type` = 'Post' AND `share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post' AND `share_visibilities`.`user_id` = `users`.`id` AND `users`.`id` = _MY_UID;
+
+
+SELECT `profiles`.* FROM `profiles`, `comments`, `posts`, `people`, `users` WHERE `profiles`.`person_id` = `comments`.`author_id` AND `comments`.`commentable_id` = `posts`.`id` AND `comments`.`commentable_type` = 'Post' AND `posts`.`author_id` = `people`.`id` AND `people`.`owner_id` = `users`.`id` AND `users`.`id` = _MY_UID;
+
+
+SELECT `profiles`.* FROM `profiles`, `comments`, `posts`, `share_visibilities`, `users` WHERE `profiles`.`person_id` = `comments`.`author_id` AND `comments`.`commentable_id` = `posts`.`id` AND `comments`.`commentable_type` = 'Post' AND `share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post' AND `share_visibilities`.`user_id` = `users`.`id` AND `users`.`id` = _MY_UID;
+
+
+SELECT `comments`.* FROM `comments`, `posts`, `people`, `users` WHERE `comments`.`commentable_id` = `posts`.`id` AND `comments`.`commentable_type` = 'Post' AND `posts`.`author_id` = `people`.`id` AND `people`.`owner_id` = `users`.`id` AND `users`.`id` = _MY_UID;
+
+
+SELECT `comments`.* FROM `comments`, `posts`, `share_visibilities`, `users` WHERE `comments`.`commentable_id` = `posts`.`id` AND `comments`.`commentable_type` = 'Post' AND `share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post' AND `share_visibilities`.`user_id` = `users`.`id` AND `users`.`id` = _MY_UID;
+
+
+SELECT `people`.* FROM `people`, `mentions`, `comments`, `posts` WHERE `people`.`id` = `mentions`.`person_id` AND `mentions`.`mentions_container_id` = `comments`.`id` AND `mentions`.`mentions_container_type` = 'Comment' AND `comments`.`commentable_id` = `posts`.`id` AND `comments`.`commentable_type` = 'Post' AND `posts`.`public` = TRUE;
+
+
+SELECT `profiles`.* FROM `profiles`, `mentions`, `comments`, `posts` WHERE `profiles`.`person_id` = `mentions`.`person_id` AND `mentions`.`mentions_container_id` = `comments`.`id` AND `mentions`.`mentions_container_type` = 'Comment' AND `comments`.`commentable_id` = `posts`.`id` AND `comments`.`commentable_type` = 'Post' AND `posts`.`public` = TRUE;
+
+
+SELECT `mentions`.* FROM `mentions`, `comments`, `posts` WHERE `mentions`.`mentions_container_id` = `comments`.`id` AND `mentions`.`mentions_container_type` = 'Comment' AND `comments`.`commentable_id` = `posts`.`id` AND `comments`.`commentable_type` = 'Post' AND `posts`.`public` = TRUE;
+
+
+SELECT `people`.* FROM `people`, `comments`, `posts` WHERE `people`.`id` = `comments`.`author_id` AND `comments`.`commentable_id` = `posts`.`id` AND `comments`.`commentable_type` = 'Post' AND `posts`.`public` = TRUE;
+
+
+SELECT `posts`.* FROM `posts` INNER JOIN `share_visibilities` ON `share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post', `users` WHERE `share_visibilities`.`user_id` = `users`.`id` AND `users`.`id` = _MY_UID;
+
+
+SELECT `posts`.* FROM `posts`, `people`, `users` WHERE `posts`.`author_id` = `people`.`id` AND `people`.`owner_id` = `users`.`id` AND `users`.`id` = _MY_UID;
+
+
+SELECT `profiles`.* FROM `profiles`, `comments`, `posts` WHERE `profiles`.`person_id` = `comments`.`author_id` AND `comments`.`commentable_id` = `posts`.`id` AND `comments`.`commentable_type` = 'Post' AND `posts`.`public` = TRUE;
+
+
+SELECT `comments`.* FROM `comments`, `posts` WHERE `comments`.`commentable_id` = `posts`.`id` AND `comments`.`commentable_type` = 'Post' AND `posts`.`public` = TRUE;
+
+
+SELECT `people`.* FROM `people`, `users` WHERE `people`.`owner_id` = `users`.`id` AND `users`.`id` = _MY_UID;
+
+
+SELECT `profiles`.* FROM `profiles`, `people` WHERE `profiles`.`person_id` = `people`.`id` AND `people`.`diaspora_handle` = 'concolic_mention@example.org';
+
+
+SELECT `people`.* FROM `people` WHERE `people`.`diaspora_handle` = 'concolic_mention@example.org';
+
+
+SELECT `posts`.* FROM `posts`;
+
+
+SELECT `posts`.* FROM `posts` WHERE `posts`.`public` = TRUE;
+
+
+SELECT `users`.* FROM `users` WHERE `users`.`id` = _MY_UID;

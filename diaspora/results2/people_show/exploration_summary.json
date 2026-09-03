@@ -1,0 +1,30 @@
+{
+  "entrypoint": "people_show",
+  "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+  "scenario": {
+    "name": "anon_handle",
+    "action": "show",
+    "params": {
+      "username": {
+        "symbolic_name": "SYM_PARAM_username",
+        "seed": "bob@example.org",
+        "type": "SymbolicString (SymUsernameString)"
+      }
+    },
+    "format": "nil (html/format.all)",
+    "signed_in": false,
+    "method": "GET"
+  },
+  "runs_executed": 28,
+  "distinct_paths": 10,
+  "seed_sets_tried": 28,
+  "worklist_exhausted": true,
+  "capped_by": null,
+  "max_runs": 300,
+  "time_budget": 1200,
+  "elapsed_seconds": 1.0,
+  "run_errors": {
+},
+  "unflippable_pcs": {
+}
+}

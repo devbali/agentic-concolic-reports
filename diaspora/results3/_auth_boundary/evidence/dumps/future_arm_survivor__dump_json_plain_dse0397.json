@@ -1,0 +1,1121 @@
+{
+  "schema_version": "1.0",
+  "label": "json_plain_dse0397",
+  "symbolic_vars": [
+    {
+      "name": "SYM_USER_CONV_id",
+      "sort": "Int",
+      "value": 1
+    },
+    {
+      "name": "SYM_PARAM_via_cookie",
+      "sort": "Bool",
+      "value": true
+    },
+    {
+      "name": "SYM_PARAM_cookie_expired",
+      "sort": "Bool",
+      "value": false
+    },
+    {
+      "name": "SYM_PARAM_cookie_older",
+      "sort": "Bool",
+      "value": false
+    },
+    {
+      "name": "SYM_PARAM_cookie_future",
+      "sort": "Bool",
+      "value": true
+    },
+    {
+      "name": "SYM_PARAM_ip_spoof",
+      "sort": "Bool",
+      "value": false
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_not_found",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id",
+      "sort": "Int",
+      "value": 1,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_username",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_username_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_serialized_private_key",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_serialized_private_key_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_getting_started",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_disable_mail",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_language",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_language_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_email",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_email_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_encrypted_password",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_encrypted_password_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_created_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_created_at_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_updated_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_updated_at_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_locked_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_locked_at_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_sign_in_count",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_current_sign_in_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_current_sign_in_at_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_last_sign_in_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_last_sign_in_at_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_current_sign_in_ip",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_current_sign_in_ip_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_last_sign_in_ip",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_last_sign_in_ip_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_hidden_shareables",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_hidden_shareables_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_reset_password_sent_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_reset_password_sent_at_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_last_seen",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_last_seen_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_remove_after",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_remove_after_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_export",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_export_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_exported_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_exported_at_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_exporting",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_strip_exif",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_exported_photos_file",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_exported_photos_file_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_exported_photos_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_exported_photos_at_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_exporting_photos",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_color_theme",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_color_theme_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_post_default_public",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_auto_follow_back",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_auto_follow_back_aspect_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_show_community_spotlight_in_stream",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_otp_required_for_login",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_otp_backup_codes",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_otp_backup_codes_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_plain_otp_secret",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_plain_otp_secret_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_reset_password_token",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_reset_password_token_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_remember_created_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_remember_created_at_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_invited_by_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_authentication_token",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_authentication_token_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_persisted",
+      "sort": "Bool",
+      "value": true,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_created_at_year",
+      "sort": "Int",
+      "value": 1990,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_updated_at_year",
+      "sort": "Int",
+      "value": 1990,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_locked_at_year",
+      "sort": "Int",
+      "value": 1990,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_current_sign_in_at_year",
+      "sort": "Int",
+      "value": 1990,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_last_sign_in_at_year",
+      "sort": "Int",
+      "value": 1990,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_reset_password_sent_at_year",
+      "sort": "Int",
+      "value": 1990,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_last_seen_year",
+      "sort": "Int",
+      "value": 1990,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_remove_after_year",
+      "sort": "Int",
+      "value": 1990,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_exported_at_year",
+      "sort": "Int",
+      "value": 1990,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_exported_photos_at_year",
+      "sort": "Int",
+      "value": 1990,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_remember_created_at_year",
+      "sort": "Int",
+      "value": 1990,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_last_seen_stale",
+      "sort": "Bool",
+      "value": true,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_locked",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_remembered",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Base_save_1_save_ok",
+      "sort": "Bool",
+      "value": true,
+      "note": "UPDATE \"users\" SET \"remember_created_at\" = ?, \"updated_at\" = ? WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id)"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_prev_login_first",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Base_save_2_save_ok",
+      "sort": "Bool",
+      "value": true,
+      "note": "UPDATE \"users\" SET \"sign_in_count\" = ?, \"current_sign_in_at\" = ?, \"last_sign_in_at\" = ?, \"current_sign_in_ip\" = ?, \"last_sign_in_ip\" = ?, \"updated_at\" = ? WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id)"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Base_save_3_save_ok",
+      "sort": "Bool",
+      "value": true,
+      "note": "UPDATE \"users\" SET \"updated_at\" = ?, \"last_seen\" = ? WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id)"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Base_update_attribute_1_update_attribute_ok",
+      "sort": "Bool",
+      "value": true,
+      "note": "User#update_attribute(\"last_seen\") -> save (statement carried by the save event) (value lost by the interceptor: write assumed)"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_language_available",
+      "sort": "Bool",
+      "value": true,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_PARAM_page_beyond",
+      "sort": "Bool",
+      "value": true
+    },
+    {
+      "name": "SYM_PARAM_page_invalid",
+      "sort": "Bool",
+      "value": false
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_person_id",
+      "sort": "Int",
+      "value": 1,
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"owner_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_person_guid",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_person_guid_v",
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"owner_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_person_diaspora_handle",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_person_diaspora_handle_v",
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"owner_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_person_serialized_public_key",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_person_serialized_public_key_v",
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"owner_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_person_owner_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"owner_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_person_created_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_person_created_at_v",
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"owner_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_person_updated_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_person_updated_at_v",
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"owner_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_person_closed_account",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"owner_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_person_fetch_status",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"owner_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_person_pod_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"owner_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_person_persisted",
+      "sort": "Bool",
+      "value": true,
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"owner_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_person_created_at_year",
+      "sort": "Int",
+      "value": 1990,
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"owner_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_person_updated_at_year",
+      "sort": "Int",
+      "value": 1990,
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"owner_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Calculations_pluck_1_pluck0_id",
+      "sort": "Int",
+      "value": 1,
+      "note": "SELECT \"contacts\".\"id\", \"profiles\".\"first_name\", \"profiles\".\"last_name\", \"people\".\"diaspora_handle\" FROM \"contacts\" INNER JOIN \"people\" ON \"people\".\"id\" = \"contacts\".\"person_id\" INNER JOIN \"profiles\" ON \"profiles\".\"person_id\" = \"people\".\"id\" WHERE \"contacts\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"contacts\".\"sharing\" = true AND \"contacts\".\"receiving\" = true"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Calculations_pluck_1_pluck1_first_name",
+      "sort": "String",
+      "value": "sym_first_name",
+      "note": "SELECT \"contacts\".\"id\", \"profiles\".\"first_name\", \"profiles\".\"last_name\", \"people\".\"diaspora_handle\" FROM \"contacts\" INNER JOIN \"people\" ON \"people\".\"id\" = \"contacts\".\"person_id\" INNER JOIN \"profiles\" ON \"profiles\".\"person_id\" = \"people\".\"id\" WHERE \"contacts\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"contacts\".\"sharing\" = true AND \"contacts\".\"receiving\" = true"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Calculations_pluck_1_pluck2_last_name",
+      "sort": "String",
+      "value": "sym_last_name",
+      "note": "SELECT \"contacts\".\"id\", \"profiles\".\"first_name\", \"profiles\".\"last_name\", \"people\".\"diaspora_handle\" FROM \"contacts\" INNER JOIN \"people\" ON \"people\".\"id\" = \"contacts\".\"person_id\" INNER JOIN \"profiles\" ON \"profiles\".\"person_id\" = \"people\".\"id\" WHERE \"contacts\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"contacts\".\"sharing\" = true AND \"contacts\".\"receiving\" = true"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Calculations_pluck_1_pluck3_diaspora_handle",
+      "sort": "String",
+      "value": "sym_diaspora_handle",
+      "note": "SELECT \"contacts\".\"id\", \"profiles\".\"first_name\", \"profiles\".\"last_name\", \"people\".\"diaspora_handle\" FROM \"contacts\" INNER JOIN \"people\" ON \"people\".\"id\" = \"contacts\".\"person_id\" INNER JOIN \"profiles\" ON \"profiles\".\"person_id\" = \"people\".\"id\" WHERE \"contacts\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"contacts\".\"sharing\" = true AND \"contacts\".\"receiving\" = true"
+    },
+    {
+      "name": "len(SYM_RESULT_ActiveRecord__Calculations_pluck_1_plucked)",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"contacts\".\"id\", \"profiles\".\"first_name\", \"profiles\".\"last_name\", \"people\".\"diaspora_handle\" FROM \"contacts\" INNER JOIN \"people\" ON \"people\".\"id\" = \"contacts\".\"person_id\" INNER JOIN \"profiles\" ON \"profiles\".\"person_id\" = \"people\".\"id\" WHERE \"contacts\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"contacts\".\"sharing\" = true AND \"contacts\".\"receiving\" = true"
+    },
+    {
+      "name": "len(SYM_RESULT_ActiveRecord__Relation_records_1_rows_beyond)",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT  \"conversation_visibilities\".\"id\" AS t0_r0, \"conversation_visibilities\".\"conversation_id\" AS t0_r1, \"conversation_visibilities\".\"person_id\" AS t0_r2, \"conversation_visibilities\".\"unread\" AS t0_r3, \"conversation_visibilities\".\"created_at\" AS t0_r4, \"conversation_visibilities\".\"updated_at\" AS t0_r5, \"conversations\".\"id\" AS t1_r0, \"conversations\".\"subject\" AS t1_r1, \"conversations\".\"guid\" AS t1_r2, \"conversations\".\"author_id\" AS t1_r3, \"conversations\".\"created_at\" AS t1_r4, \"conversations\".\"updated_at\" AS t1_r5 FROM \"conversation_visibilities\" LEFT OUTER JOIN \"conversations\" ON \"conversations\".\"id\" = \"conversation_visibilities\".\"conversation_id\" WHERE \"conversation_visibilities\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_person_id) ORDER BY conversations.updated_at DESC LIMIT 15 OFFSET 15"
+    },
+    {
+      "name": "len(SYM_RESULT_ActionController__Rendering__set_rendered_content_type_1)",
+      "sort": "Int",
+      "value": 1
+    }
+  ],
+  "events": [
+    {
+      "type": "path_condition",
+      "expr": "(SYM_PARAM_via_cookie == True)",
+      "taken": true,
+      "file": "/home/dev/project/reports/diaspora/results3/conversations_index/run_dse.rb",
+      "lineno": 443,
+      "function": "block in run_one"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_PARAM_cookie_expired == True)",
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/results3/conversations_index/run_dse.rb",
+      "lineno": 456,
+      "function": "block in run_one"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_PARAM_cookie_older == True)",
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/results3/conversations_index/run_dse.rb",
+      "lineno": 457,
+      "function": "block in run_one"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_PARAM_cookie_future == True)",
+      "taken": true,
+      "file": "/home/dev/project/reports/diaspora/results3/conversations_index/run_dse.rb",
+      "lineno": 458,
+      "function": "block in run_one"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_PARAM_ip_spoof == True)",
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/results3/conversations_index/run_dse.rb",
+      "lineno": 473,
+      "function": "block in run_one"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::FinderMethods.devise_user_first",
+      "args": {
+        "splat_args": null,
+        "kwargs": null,
+        "block": null
+      },
+      "file": "/home/dev/project/reports/diaspora/results3/conversations_index/targets.rb",
+      "lineno": 2270,
+      "function": "get"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::FinderMethods.devise_user_first",
+      "args": {
+        "splat_args": null,
+        "kwargs": null,
+        "block": null
+      },
+      "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1",
+      "result_value": "#<User:0x67cd2d0a>",
+      "result_sort": "Int",
+      "file": "/home/dev/project/reports/diaspora/results3/conversations_index/targets.rb",
+      "lineno": 2270,
+      "function": "get",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CONV_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_not_found == True)",
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/results3/conversations_index/targets.rb",
+      "lineno": 2133,
+      "function": "block in install!"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_last_seen_stale == True)",
+      "taken": true,
+      "file": "/home/dev/project/reports/diaspora/results3/conversations_index/targets.rb",
+      "lineno": 2150,
+      "function": "block in install!"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_locked == True)",
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/results3/conversations_index/targets.rb",
+      "lineno": 2157,
+      "function": "block in install!"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_remembered == True)",
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/results3/conversations_index/targets.rb",
+      "lineno": 2175,
+      "function": "block in install!"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::Base.save",
+      "args": {
+        "splat_args": null,
+        "kwargs": null,
+        "block": null
+      },
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/devise-4.7.1/lib/devise/models/rememberable.rb",
+      "lineno": 53,
+      "function": "remember_me!"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::Base.save",
+      "args": {
+        "splat_args": null,
+        "kwargs": null,
+        "block": null
+      },
+      "result_name": "SYM_RESULT_ActiveRecord__Base_save_1",
+      "result_value": true,
+      "result_sort": "Bool",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/devise-4.7.1/lib/devise/models/rememberable.rb",
+      "lineno": 53,
+      "function": "remember_me!",
+      "note": "UPDATE \"users\" SET \"remember_created_at\" = ?, \"updated_at\" = ? WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id)"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_prev_login_first == True)",
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/results3/conversations_index/targets.rb",
+      "lineno": 2217,
+      "function": "block in install!"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_last_sign_in_ip == SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_current_sign_in_ip)",
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/results3/conversations_index/targets.rb",
+      "lineno": 1575,
+      "function": "block in symbolic_instance"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_current_sign_in_ip == StringVal('0.0.0.0'))",
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/results3/conversations_index/targets.rb",
+      "lineno": 1575,
+      "function": "block in symbolic_instance"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::Base.save",
+      "args": {
+        "splat_args": null,
+        "kwargs": null,
+        "block": null
+      },
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/devise-4.7.1/lib/devise/models/trackable.rb",
+      "lineno": 40,
+      "function": "update_tracked_fields!"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::Base.save",
+      "args": {
+        "splat_args": null,
+        "kwargs": null,
+        "block": null
+      },
+      "result_name": "SYM_RESULT_ActiveRecord__Base_save_2",
+      "result_value": true,
+      "result_sort": "Bool",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/devise-4.7.1/lib/devise/models/trackable.rb",
+      "lineno": 40,
+      "function": "update_tracked_fields!",
+      "note": "UPDATE \"users\" SET \"sign_in_count\" = ?, \"current_sign_in_at\" = ?, \"last_sign_in_at\" = ?, \"current_sign_in_ip\" = ?, \"last_sign_in_ip\" = ?, \"updated_at\" = ? WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id)"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::Base.update_attribute",
+      "args": {
+        "splat_args": "last_seen",
+        "kwargs": "2026-08-30T13:20:19+00:00",
+        "block": null
+      },
+      "file": "/home/dev/.gem/jruby/2.6.0/bundler/gems/devise_lastseenable-dc003d84c532/lib/devise_lastseenable/model.rb",
+      "lineno": 8,
+      "function": "stamp!"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::Base.save",
+      "args": {
+        "splat_args": null,
+        "kwargs": null,
+        "block": null
+      },
+      "result_name": "SYM_RESULT_ActiveRecord__Base_save_3",
+      "result_value": true,
+      "result_sort": "Bool",
+      "file": "/home/dev/project/reports/diaspora/results3/conversations_index/targets.rb",
+      "lineno": 1958,
+      "function": "block in install!",
+      "note": "UPDATE \"users\" SET \"updated_at\" = ?, \"last_seen\" = ? WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id)"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::Base.save",
+      "args": {
+        "splat_args": null,
+        "kwargs": null,
+        "block": null
+      },
+      "file": "/home/dev/project/reports/diaspora/results3/conversations_index/targets.rb",
+      "lineno": 1958,
+      "function": "block"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::Base.update_attribute",
+      "args": {
+        "splat_args": "last_seen",
+        "kwargs": "2026-08-30T13:20:19+00:00",
+        "block": null
+      },
+      "result_name": "SYM_RESULT_ActiveRecord__Base_update_attribute_1",
+      "result_value": true,
+      "result_sort": "Bool",
+      "file": "/home/dev/.gem/jruby/2.6.0/bundler/gems/devise_lastseenable-dc003d84c532/lib/devise_lastseenable/model.rb",
+      "lineno": 8,
+      "function": "stamp!",
+      "note": "User#update_attribute(\"last_seen\") -> save (statement carried by the save event) (value lost by the interceptor: write assumed)"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_language_available == True)",
+      "taken": true,
+      "file": "/home/dev/project/reports/diaspora/results3/conversations_index/run_dse.rb",
+      "lineno": 501,
+      "function": "block in run_one"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_PARAM_page_beyond == True)",
+      "taken": true,
+      "file": "/home/dev/project/reports/diaspora/results3/conversations_index/run_dse.rb",
+      "lineno": 505,
+      "function": "block in run_one"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_PARAM_page_invalid == True)",
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/results3/conversations_index/run_dse.rb",
+      "lineno": 509,
+      "function": "block in run_one"
+    },
+    {
+      "type": "call",
+      "target": "Gon::ControllerHelpers.gon",
+      "args": {
+        "splat_args": null,
+        "kwargs": null,
+        "block": null
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/application_controller.rb",
+      "lineno": 187,
+      "function": "gon_set_current_user"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "Gon::ControllerHelpers.gon",
+      "args": {
+        "splat_args": null,
+        "kwargs": null,
+        "block": null
+      },
+      "result_name": "SYM_RESULT_Gon__ControllerHelpers_gon_1",
+      "result_value": "Gon",
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/application_controller.rb",
+      "lineno": 187,
+      "function": "gon_set_current_user"
+    },
+    {
+      "type": "call",
+      "target": "Gon::ControllerHelpers.gon",
+      "args": {
+        "splat_args": null,
+        "kwargs": null,
+        "block": null
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/application_controller.rb",
+      "lineno": 172,
+      "function": "gon_set_appconfig"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "Gon::ControllerHelpers.gon",
+      "args": {
+        "splat_args": null,
+        "kwargs": null,
+        "block": null
+      },
+      "result_name": "SYM_RESULT_Gon__ControllerHelpers_gon_2",
+      "result_value": "Gon",
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/application_controller.rb",
+      "lineno": 172,
+      "function": "gon_set_appconfig"
+    },
+    {
+      "type": "call",
+      "target": "Gon::ControllerHelpers.gon",
+      "args": {
+        "splat_args": null,
+        "kwargs": null,
+        "block": null
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/application_controller.rb",
+      "lineno": 191,
+      "function": "gon_set_preloads"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "Gon::ControllerHelpers.gon",
+      "args": {
+        "splat_args": null,
+        "kwargs": null,
+        "block": null
+      },
+      "result_name": "SYM_RESULT_Gon__ControllerHelpers_gon_3",
+      "result_value": "Gon",
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/application_controller.rb",
+      "lineno": 191,
+      "function": "gon_set_preloads"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::Associations::SingularAssociation.find_target",
+      "args": {
+        "splat_args": null,
+        "kwargs": null,
+        "block": null
+      },
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations/association.rb",
+      "lineno": 159,
+      "function": "load_target"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::Associations::SingularAssociation.find_target",
+      "args": {
+        "splat_args": null,
+        "kwargs": null,
+        "block": null
+      },
+      "result_name": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1",
+      "result_value": "#<Person:0x48d2adc2>",
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations/association.rb",
+      "lineno": 159,
+      "function": "load_target",
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"owner_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) LIMIT 1"
+    },
+    {
+      "type": "call",
+      "target": "Gon::ControllerHelpers.gon",
+      "args": {
+        "splat_args": null,
+        "kwargs": null,
+        "block": null
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/conversations_controller.rb",
+      "lineno": 26,
+      "function": "index"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "Gon::ControllerHelpers.gon",
+      "args": {
+        "splat_args": null,
+        "kwargs": null,
+        "block": null
+      },
+      "result_name": "SYM_RESULT_Gon__ControllerHelpers_gon_4",
+      "result_value": "Gon",
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/conversations_controller.rb",
+      "lineno": 26,
+      "function": "index"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::Calculations.pluck",
+      "args": {
+        "splat_args": "contacts.id",
+        "kwargs": "profiles.first_name",
+        "block": "profiles.last_name"
+      },
+      "file": "/home/dev/project/reports/diaspora/results3/conversations_index/targets.rb",
+      "lineno": 260,
+      "function": "pluck"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::Calculations.pluck",
+      "args": {
+        "splat_args": "contacts.id",
+        "kwargs": "profiles.first_name",
+        "block": "profiles.last_name"
+      },
+      "result_name": "SYM_RESULT_ActiveRecord__Calculations_pluck_1",
+      "result_value": 0,
+      "result_sort": "Int",
+      "file": "/home/dev/project/reports/diaspora/results3/conversations_index/targets.rb",
+      "lineno": 260,
+      "function": "pluck",
+      "note": "SELECT \"contacts\".\"id\", \"profiles\".\"first_name\", \"profiles\".\"last_name\", \"people\".\"diaspora_handle\" FROM \"contacts\" INNER JOIN \"people\" ON \"people\".\"id\" = \"contacts\".\"person_id\" INNER JOIN \"profiles\" ON \"profiles\".\"person_id\" = \"people\".\"id\" WHERE \"contacts\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"contacts\".\"sharing\" = true AND \"contacts\".\"receiving\" = true"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(len(SYM_RESULT_ActiveRecord__Calculations_pluck_1_plucked) != 0)",
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/results3/conversations_index/targets.rb",
+      "lineno": 122,
+      "function": "sampled_rows"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::Relation.records",
+      "args": {
+},
+      "file": "/home/dev/project/reports/diaspora/results3/conversations_index/targets.rb",
+      "lineno": 310,
+      "function": "records"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::Relation.records",
+      "args": {
+},
+      "result_name": "SYM_RESULT_ActiveRecord__Relation_records_1",
+      "result_value": 0,
+      "result_sort": "Int",
+      "file": "/home/dev/project/reports/diaspora/results3/conversations_index/targets.rb",
+      "lineno": 310,
+      "function": "records",
+      "note": "SELECT  \"conversation_visibilities\".\"id\" AS t0_r0, \"conversation_visibilities\".\"conversation_id\" AS t0_r1, \"conversation_visibilities\".\"person_id\" AS t0_r2, \"conversation_visibilities\".\"unread\" AS t0_r3, \"conversation_visibilities\".\"created_at\" AS t0_r4, \"conversation_visibilities\".\"updated_at\" AS t0_r5, \"conversations\".\"id\" AS t1_r0, \"conversations\".\"subject\" AS t1_r1, \"conversations\".\"guid\" AS t1_r2, \"conversations\".\"author_id\" AS t1_r3, \"conversations\".\"created_at\" AS t1_r4, \"conversations\".\"updated_at\" AS t1_r5 FROM \"conversation_visibilities\" LEFT OUTER JOIN \"conversations\" ON \"conversations\".\"id\" = \"conversation_visibilities\".\"conversation_id\" WHERE \"conversation_visibilities\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_person_id) ORDER BY conversations.updated_at DESC LIMIT 15 OFFSET 15"
+    },
+    {
+      "type": "call",
+      "target": "ActionController::Metal.status=",
+      "args": {
+        "arg": 200
+      },
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/rendering.rb",
+      "lineno": 115,
+      "function": "_process_options"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActionController::Metal.status=",
+      "args": {
+        "arg": 200
+      },
+      "result_name": "SYM_RESULT_ActionController__Metal_status__1",
+      "result_value": null,
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/rendering.rb",
+      "lineno": 115,
+      "function": "_process_options"
+    },
+    {
+      "type": "call",
+      "target": "ActionController::Rendering._set_rendered_content_type",
+      "args": {
+        "format": "application/json"
+      },
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/abstract_controller/rendering.rb",
+      "lineno": 29,
+      "function": "render"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActionController::Rendering._set_rendered_content_type",
+      "args": {
+        "format": "application/json"
+      },
+      "result_name": "SYM_RESULT_ActionController__Rendering__set_rendered_content_type_1",
+      "result_value": {
+        "format": "application/json"
+      },
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/abstract_controller/rendering.rb",
+      "lineno": 29,
+      "function": "render"
+    }
+  ],
+  "symbolic_results": [
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1",
+      "sort": "Int",
+      "value": "#<User:0x67cd2d0a>"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Base_save_1",
+      "sort": "Bool",
+      "value": true
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Base_save_2",
+      "sort": "Bool",
+      "value": true
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Base_save_3",
+      "sort": "Bool",
+      "value": true
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Base_update_attribute_1",
+      "sort": "Bool",
+      "value": true
+    },
+    {
+      "name": "SYM_RESULT_Gon__ControllerHelpers_gon_1",
+      "sort": "Int",
+      "value": "Gon"
+    },
+    {
+      "name": "SYM_RESULT_Gon__ControllerHelpers_gon_2",
+      "sort": "Int",
+      "value": "Gon"
+    },
+    {
+      "name": "SYM_RESULT_Gon__ControllerHelpers_gon_3",
+      "sort": "Int",
+      "value": "Gon"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1",
+      "sort": "Int",
+      "value": "#<Person:0x48d2adc2>"
+    },
+    {
+      "name": "SYM_RESULT_Gon__ControllerHelpers_gon_4",
+      "sort": "Int",
+      "value": "Gon"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Calculations_pluck_1",
+      "sort": "Int",
+      "value": 0
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Relation_records_1",
+      "sort": "Int",
+      "value": 0
+    },
+    {
+      "name": "SYM_RESULT_ActionController__Metal_status__1",
+      "sort": "Int",
+      "value": null
+    },
+    {
+      "name": "SYM_RESULT_ActionController__Rendering__set_rendered_content_type_1",
+      "sort": "Int",
+      "value": {
+        "format": "application/json"
+      }
+    }
+  ],
+  "script": "run_dse.rb",
+  "concolic_seeds": {
+    "SYM_PARAM_via_cookie": true,
+    "SYM_PARAM_cookie_future": true,
+    "SYM_PARAM_page_beyond": true,
+    "len(SYM_RESULT_ActiveRecord__Calculations_pluck_1_plucked)": 0
+  },
+  "concolic_scenario": {
+    "name": "json_plain",
+    "format": "json",
+    "conversation_id": false
+  }
+}

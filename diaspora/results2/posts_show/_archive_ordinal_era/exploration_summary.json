@@ -1,0 +1,62 @@
+{
+  "entrypoint": "posts_show",
+  "params": {
+    "id": {
+      "symbolic_name": "SYM_PARAM_id",
+      "seed": "1",
+      "type": "SymbolicString"
+    }
+  },
+  "user": {
+    "SYM_USER_PO_id": "current_user.id — PIN REMOVED, flows symbolic",
+    "SYM_PERSON_PO_id": "current_user.person.id — PIN REMOVED, flows symbolic",
+    "SYM_USER_PO_guid": "current_user.guid (delegated to person) — PIN REMOVED, flows symbolic via person.guid",
+    "SYM_USER_PO_person_id": "current_user.person_id (real users column) — PIN REMOVED, flows symbolic (independent symbol from SYM_PERSON_PO_id, see REPORT.md)"
+  },
+  "scenarios": [
+    {
+      "scenario": "auth",
+      "description": "authenticated (symbolic current_user, SYM_USER_PO_id unpinned)",
+      "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+      "runs_executed": 10000,
+      "distinct_paths": 4226,
+      "seed_sets_tried": 10000,
+      "stack_remaining": 29453,
+      "frontier_entries_dropped": 0,
+      "worklist_exhausted": false,
+      "stop_reason": "MAX_RUNS cap (10000)",
+      "max_runs": 10000,
+      "time_budget": 1200,
+      "stack_limit": 50000,
+      "elapsed_seconds": 512.2,
+      "run_errors": {
+        "run:ActiveRecord::RecordNotFound": 2556
+      },
+      "unflippable_pcs": {
+}
+    },
+    {
+      "scenario": "anon",
+      "description": "anonymous (current_user = nil)",
+      "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+      "runs_executed": 313,
+      "distinct_paths": 52,
+      "seed_sets_tried": 313,
+      "stack_remaining": 0,
+      "frontier_entries_dropped": 0,
+      "worklist_exhausted": true,
+      "stop_reason": "worklist drained",
+      "max_runs": 10000,
+      "time_budget": 1200,
+      "stack_limit": 50000,
+      "elapsed_seconds": 5.2,
+      "run_errors": {
+        "run:Diaspora::NonPublic": 128,
+        "run:ActiveRecord::RecordNotFound": 141
+      },
+      "unflippable_pcs": {
+}
+    }
+  ],
+  "total_elapsed_seconds": 517.3
+}

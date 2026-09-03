@@ -1,0 +1,205 @@
+{
+  "shims": [
+    {
+      "owner": "h",
+      "method": "image_path",
+      "kind": "singleton",
+      "file": "targets.rb",
+      "line": 504,
+      "key": "h.image_path",
+      "verdict": "PASS",
+      "targets_reached": [],
+      "coverage_pct": 100.0,
+      "coverage_waiver": "framework body (sprockets); zero-target probe is the contract",
+      "missed_lines": []
+    },
+    {
+      "owner": "h",
+      "method": "path_to_image",
+      "kind": "singleton",
+      "file": "targets.rb",
+      "line": 505,
+      "key": "h.path_to_image",
+      "verdict": "PASS",
+      "targets_reached": [],
+      "coverage_pct": 100.0,
+      "coverage_waiver": "framework body (alias of image_path); zero-target probe is the contract",
+      "missed_lines": []
+    },
+    {
+      "owner": "Person.singleton_class",
+      "method": "DYNAMIC",
+      "kind": "dynamic",
+      "module": "kw_fix",
+      "file": "targets.rb",
+      "line": 658,
+      "note": "dynamically-named define_method \u2014 engine requires manual entry or waiver",
+      "key": "Person.singleton_class.DYNAMIC",
+      "verdict": "WAIVED",
+      "detail": "kwargs-capture wrappers over the aliased find_bys (violation-6 fix); no body of their own"
+    },
+    {
+      "owner": "Person.singleton_class",
+      "method": "find_or_fetch_by_identifier",
+      "kind": "prepend",
+      "module": "PersonFindOrFetchNaming",
+      "file": "targets.rb",
+      "line": 662,
+      "key": "Person.singleton_class.find_or_fetch_by_identifier",
+      "verdict": "WAIVED",
+      "detail": "call-site-stable naming prepend; byte-faithful to person.rb:318-328; reaches targets BY DESIGN (the aliased find_bys are the declared targets)"
+    },
+    {
+      "owner": "CommentPresenter",
+      "method": "as_json",
+      "kind": "prepend",
+      "module": "CommentPresenterContextTag",
+      "file": "targets.rb",
+      "line": 672,
+      "key": "CommentPresenter.as_json",
+      "verdict": "WAIVED",
+      "detail": "context-tagging prepend; byte-faithful to comment_presenter.rb; naming only"
+    },
+    {
+      "owner": "obj",
+      "method": "read_attribute",
+      "kind": "singleton",
+      "file": "concolic_targets.rb",
+      "line": 356,
+      "key": "obj.read_attribute",
+      "verdict": "WAIVED",
+      "detail": "rep attribute plumbing (symbolic var minting); evidence = attr vars"
+    },
+    {
+      "owner": "obj",
+      "method": "_read_attribute",
+      "kind": "singleton",
+      "file": "concolic_targets.rb",
+      "line": 357,
+      "key": "obj._read_attribute",
+      "verdict": "WAIVED",
+      "detail": "rep attribute plumbing; see obj.read_attribute"
+    },
+    {
+      "owner": "obj",
+      "method": "concolic_attrs",
+      "kind": "singleton",
+      "file": "concolic_targets.rb",
+      "line": 358,
+      "key": "obj.concolic_attrs",
+      "verdict": "WAIVED",
+      "detail": "rep introspection accessor (runtime-internal, no app counterpart)"
+    },
+    {
+      "owner": "obj",
+      "method": "concolic_note",
+      "kind": "singleton",
+      "file": "concolic_targets.rb",
+      "line": 362,
+      "key": "obj.concolic_note",
+      "verdict": "WAIVED",
+      "detail": "rep introspection accessor (runtime-internal)"
+    },
+    {
+      "owner": "obj",
+      "method": "attributes",
+      "kind": "singleton",
+      "file": "concolic_targets.rb",
+      "line": 370,
+      "key": "obj.attributes",
+      "verdict": "WAIVED",
+      "detail": "rep attribute plumbing; see obj.read_attribute"
+    },
+    {
+      "owner": "obj",
+      "method": "write_attribute",
+      "kind": "singleton",
+      "file": "concolic_targets.rb",
+      "line": 371,
+      "key": "obj.write_attribute",
+      "verdict": "WAIVED",
+      "detail": "rep attribute plumbing (write side; endpoint is read-only)"
+    },
+    {
+      "owner": "obj",
+      "method": "_write_attribute",
+      "kind": "singleton",
+      "file": "concolic_targets.rb",
+      "line": 372,
+      "key": "obj._write_attribute",
+      "verdict": "WAIVED",
+      "detail": "rep attribute plumbing (write side)"
+    },
+    {
+      "owner": "obj",
+      "method": "image_url",
+      "kind": "singleton",
+      "file": "concolic_targets.rb",
+      "line": 379,
+      "key": "obj.image_url",
+      "verdict": "PASS",
+      "targets_reached": [],
+      "coverage_pct": 100.0,
+      "coverage_waiver": null,
+      "missed_lines": []
+    },
+    {
+      "owner": "obj",
+      "method": "hidden_shareables",
+      "kind": "singleton",
+      "file": "concolic_targets.rb",
+      "line": 389,
+      "key": "obj.hidden_shareables",
+      "verdict": "WAIVED",
+      "detail": "serialized-column default ({}); real body is a serialize cast, no target functions; T1c ledger entry in batch header"
+    },
+    {
+      "owner": "obj",
+      "method": "post_location",
+      "kind": "singleton",
+      "file": "concolic_targets.rb",
+      "line": 398,
+      "key": "obj.post_location",
+      "verdict": "WAIVED",
+      "detail": "presenter display hash; pure; batch header documents"
+    },
+    {
+      "owner": "obj",
+      "method": "inspect",
+      "kind": "singleton",
+      "file": "concolic_targets.rb",
+      "line": 404,
+      "key": "obj.inspect",
+      "verdict": "WAIVED",
+      "detail": "debug rendering only; no evidence, no branches consumed"
+    },
+    {
+      "owner": "ActiveRecord::Base.singleton_class",
+      "method": "DYNAMIC",
+      "kind": "value_class",
+      "module": "ConcolicKwargsToPositional",
+      "file": "concolic_targets.rb",
+      "line": 1463,
+      "note": "dynamically-named define_method \u2014 engine requires manual entry or waiver",
+      "key": "ActiveRecord::Base.singleton_class.DYNAMIC",
+      "verdict": "WAIVED",
+      "detail": "shared ConcolicKwargsToPositional prepend (kwargs re-pack + thread-local stash)"
+    },
+    {
+      "owner": "ActiveRecord::Relation",
+      "method": "DYNAMIC",
+      "kind": "value_class",
+      "module": "ConcolicKwargsToPositional",
+      "file": "concolic_targets.rb",
+      "line": 1464,
+      "note": "dynamically-named define_method \u2014 engine requires manual entry or waiver",
+      "key": "ActiveRecord::Relation.DYNAMIC",
+      "verdict": "WAIVED",
+      "detail": "shared ConcolicKwargsToPositional prepend (Relation copy)"
+    }
+  ],
+  "note_check": {
+    "exit": 1,
+    "output": "== mock_note_check: 1 target frames issued real SELECTs; 8 targets carry corpus notes ==\n\nNOTE-OK*      ActiveRecord::Relation.records  (3 shape(s) matched under a DIFFERENT target \u2014 frame nesting)\nNOTE-MISMATCH ActiveRecord::Relation.records  <-- RED: 1 real statement shape(s) with NO corpus note anywhere\n     real: SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_cont\n\nRESULT: RED \u2014 target mocks with missing/mismatched notes above.\n"
+  }
+}

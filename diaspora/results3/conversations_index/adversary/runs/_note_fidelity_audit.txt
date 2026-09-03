@@ -1,0 +1,45 @@
+== note_fidelity_audit: 10 run file(s), 20 distinct real SELECTs under 7 frames; 11 targets carry notes ==
+
+-- wildcard notes per target (corpus) --
+   ActiveRecord::Associations::SingularAssociation.find_target            notes=13   star=13
+   ActiveRecord::Calculations.count                                       notes=2    agg=2
+   ActiveRecord::Calculations.pluck                                       notes=1    cols=1
+   ActiveRecord::FinderMethods.devise_user_first                          notes=1    star=1
+   ActiveRecord::FinderMethods.find_by                                    notes=2    star=2
+   ActiveRecord::FinderMethods.first                                      notes=2    star=2
+   ActiveRecord::Relation.empty?                                          notes=1    star=1
+   ActiveRecord::Relation.records                                         notes=4    cols=1 star=3
+   ActiveRecord::Relation.to_a                                            notes=2    cols=1 star=1
+   ActiveRecord::Relation.to_ary                                          notes=2    star=2
+   Anonymous.load_intermediate                                            notes=2    star=2
+
+-- MISSING: 0 --
+
+-- STAR-OVER: 2 --
+   ActiveRecord::Calculations.pluck  [A01_mobile_session.json:A01_mobile_session, A02_mobile_header.json:A02_mobile_header]
+      real: SELECT "messages"."author_id" FROM "messages" WHERE "messages"."conversation_id" = ? ORDER BY created_at ASC
+      note: SELECT "messages".* FROM "messages" WHERE "messages"."conversation_id" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id) ORDER BY created_at ASC
+   ActiveRecord::Relation.empty?  [A04_noprofile_participant.json:A04_noprofile_participant, A05_solo_conversation.json:A05_solo_conversation, A06_pagination_16.json:A06_pagination_16]
+      real: SELECT 1 AS one FROM "contacts" WHERE "contacts"."user_id" = ? AND "contacts"."sharing" = ? AND "contacts"."receiving" = ? LIMIT ?
+      note: SELECT "contacts".* FROM "contacts" WHERE "contacts"."user_id" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND "contacts"."sha
+
+-- AGG-COLLAPSE: 1 --
+   ActiveRecord::Calculations.count  [A01_mobile_session.json:A01_mobile_session, A02_mobile_header.json:A02_mobile_header]
+      real: SELECT COUNT(*) FROM "messages" WHERE "messages"."conversation_id" = ?
+      note: SELECT "messages".* FROM "messages" WHERE "messages"."conversation_id" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id) ORDER BY created_at ASC
+
+-- PROJ-DIFF: 0 --
+
+-- PRED-DIFF: 3 --
+   ActiveRecord::Calculations.count  [A01_mobile_session.json:A01_mobile_session, A02_mobile_header.json:A02_mobile_header, A04_noprofile_participant.json:A04_noprofile_participant]
+      real: SELECT COUNT(*) FROM (SELECT DISTINCT "conversation_visibilities"."id" FROM "conversation_visibilities" LEFT OUTER JOIN "conversations" ON "conversati
+      note: SELECT COUNT(*) FROM "conversation_visibilities" LEFT OUTER JOIN "conversations" ON "conversations"."id" = "conversation_visibilities"."conversation_i
+   ActiveRecord::Relation.records  [A01_mobile_session.json:A01_mobile_session, A02_mobile_header.json:A02_mobile_header, A04_noprofile_participant.json:A04_noprofile_participant]
+      real: SELECT "conversations".* FROM "conversations" INNER JOIN "conversation_visibilities" ON "conversation_visibilities"."conversation_id" = "conversations
+      note: SELECT "conversation_visibilities"."id" AS t0_r0, "conversation_visibilities"."conversation_id" AS t0_r1, "conversation_visibilities"."person_id" AS t
+   ActiveRecord::Relation.records  [A10_cid_variants.json:A10_cid_variants]
+      real: SELECT "conversations".* FROM "conversations" INNER JOIN "conversation_visibilities" ON "conversation_visibilities"."conversation_id" = "conversations
+      note: SELECT "conversation_visibilities"."id" AS t0_r0, "conversation_visibilities"."conversation_id" AS t0_r1, "conversation_visibilities"."person_id" AS t
+
+-- EXACT: 13 --
+RESULT: RED — 3 real statement(s) whose note is unfaithful in projection or missing.

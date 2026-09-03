@@ -1,0 +1,57 @@
+{
+  "entrypoint": "conversations_index",
+  "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+  "signed_in": true,
+  "request_variants": {
+    "html_plain": {
+      "format": "html"
+    },
+    "html_withcid": {
+      "format": "html",
+      "with_cid": true
+    },
+    "json_plain": {
+      "format": "json"
+    },
+    "json_withcid": {
+      "format": "json",
+      "with_cid": true
+    },
+    "mobile_plain": {
+      "format": "mobile"
+    },
+    "mobile_withcid": {
+      "format": "mobile",
+      "with_cid": true
+    }
+  },
+  "params": {
+    "conversation_id": {
+      "symbolic_name": "SYM_PARAM_conversation_id",
+      "seed": 1,
+      "present_in": [
+        "html_withcid",
+        "json_withcid",
+        "mobile_withcid"
+      ]
+    }
+  },
+  "user_identity": {
+    "session key": "SYM_USER_CONV_id (symbolic; real Devise serialize_from_session -> devise_user_first)",
+    "user.person": "real has_one :person (SingularAssociation#find_target, owner_id = $$(devise_user_first_1_id))",
+    "anon scenario": "none — before_action :authenticate_user! with no except:"
+  },
+  "runs_executed": 3059,
+  "distinct_paths": 328,
+  "path_conditions_written": 4698,
+  "states_tried": 3059,
+  "stack_remaining": 0,
+  "worklist_exhausted": true,
+  "max_runs": 12000,
+  "time_budget": 5400,
+  "elapsed_seconds": 51.8,
+  "run_errors": {
+},
+  "unflippable_pcs": {
+}
+}

@@ -1,0 +1,52 @@
+{
+ "variant_d": {
+  "endpoint": "variant_d",
+  "out_path": "reports/diaspora/results3/_experiment/variant_d/queries_out/variant_d.sql",
+  "n_dumps": 6885,
+  "n_runs_loaded": 6885,
+  "n_queries_raw": 94700,
+  "n_queries_deduped": 60,
+  "n_queries_final": 30,
+  "n_subsumed_dropped": 30,
+  "placeholders": [],
+  "flags": {
+   "finder-without-where": 2527,
+   "unscoped": 722
+  },
+  "skipped_pc_shapes": {
+   "(SYM_NOTE_TYPE_PROFILE == N)": 110160,
+   "(SYM_PARAM_show == StringVal('unread'))": 82620,
+   "(SYM_RESULT_ActiveRecord__Relation_to_ary_N_row_persisted == True)": 40346,
+   "(SYM_RESULT_ActiveRecord__Calculations_count_N_count == N)": 28367,
+   "(assoc_profile_first_name == StringVal(''))": 19423,
+   "(assoc_profile_last_name == StringVal(''))": 19423,
+   "(SYM_RESULT_ActiveRecord__Calculations_count_N_count > N)": 13770,
+   "(assoc_target_persisted == True)": 7954,
+   "(SYM_RESULT_ActiveRecord__FinderMethods_first_N_not_found == True)": 6885,
+   "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_N_row_id == SYM_PERSON_NI_id)": 6885,
+   "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_N_row_persisted == True)": 6885,
+   "(SYM_RESULT_ActiveRecord__FinderMethods_first_N_persisted == True)": 6877,
+   "(SYM_RESULT_ActiveRecord__FinderMethods_first_N_id == SYM_PERSON_NI_id)": 6877,
+   "(SYM_RESULT_ActiveRecord__Calculations_count_N_count < N)": 5957,
+   "(assoc_target_text_has_mention == True)": 5300,
+   "(assoc_author_persisted == True)": 5300,
+   "(SYM_RESULT_ActiveRecord__Associations__CollectionProxy_records_N_row_guid != StringVal(''))": 2514,
+   "(SYM_RESULT_ActiveRecord__FinderMethods_first_N_guid != StringVal(''))": 2514,
+   "(assoc_person_id == SYM_PERSON_NI_id)": 1083,
+   "(assoc_mentions_container_text_has_mention == True)": 863,
+   "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_N_not_found == True)": 722,
+   "(assoc_profile_persisted == True)": 722,
+   "(assoc_commentable_persisted == True)": 652,
+   "(assoc_mentions_container_persisted == True)": 643,
+   "(assoc_commentable_text_has_mention == True)": 435,
+   "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_N_persisted == True)": 361,
+   "(assoc_person_persisted == True)": 361,
+   "(SYM_RESULT_SYM_RESULT_User_blocks_N_find_by_N_not_found == True)": 361,
+   "(assoc_profile_public_details == True)": 361,
+   "(assoc_profile_birthday_year <= N)": 361
+  },
+  "errors": [],
+  "subsume_errors": {},
+  "subsume_ran": true
+ }
+}

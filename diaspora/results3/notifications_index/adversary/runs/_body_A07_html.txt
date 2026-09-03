@@ -1,0 +1,210 @@
+<div class='container-fluid' id='notifications_container'>
+<div class='row'>
+<div class='col-md-3'>
+<div class='sidebar'>
+<div class='sidebar-header clearfix'>
+<h3>
+Notifications
+</h3>
+</div>
+<div class='list-group'>
+<a class='active list-group-item' data-type='all' href='/notifications'>
+<span class='badge hidden pull-right'>
+0
+</span>
+All notifications
+</a>
+<a class='list-group-item' data-type='also_commented' href='/notifications?type=also_commented'>
+<span class='badge hidden pull-right'>
+0
+</span>
+<i class='entypo-comment'></i>
+Also commented
+</a>
+<a class='list-group-item' data-type='comment_on_post' href='/notifications?type=comment_on_post'>
+<span class='badge hidden pull-right'>
+0
+</span>
+<i class='entypo-comment'></i>
+Comment on post
+</a>
+<a class='list-group-item' data-type='liked' href='/notifications?type=liked'>
+<span class='badge hidden pull-right'>
+0
+</span>
+<i class='entypo-heart'></i>
+Liked
+</a>
+<a class='list-group-item' data-type='mentioned' href='/notifications?type=mentioned'>
+<span class='badge hidden pull-right'>
+0
+</span>
+<span class='mentionIcon'>
+@
+</span>
+Mentioned in post
+</a>
+<a class='list-group-item' data-type='mentioned_in_comment' href='/notifications?type=mentioned_in_comment'>
+<span class='badge hidden pull-right'>
+0
+</span>
+<span class='mentionIcon'>
+@
+</span>
+Mentioned in comment
+</a>
+<a class='list-group-item' data-type='reshared' href='/notifications?type=reshared'>
+<span class='badge hidden pull-right'>
+0
+</span>
+<i class='entypo-reshare'></i>
+Reshared
+</a>
+<a class='list-group-item' data-type='started_sharing' href='/notifications?type=started_sharing'>
+<span class='badge hidden pull-right'>
+0
+</span>
+<i class='entypo-add-user'></i>
+Started sharing
+</a>
+<a class='list-group-item' data-type='contacts_birthday' href='/notifications?type=contacts_birthday'>
+<span class='badge hidden pull-right'>
+0
+</span>
+<i class='entypo-calendar'></i>
+Birthday
+</a>
+</div>
+</div>
+</div>
+<div class='col-md-9 stream notifications'>
+<div class='framed-content'>
+<div class='row'>
+<div class='col-md-12'>
+<div class='header clearfix'>
+<div class='btn-toolbar pull-right'>
+<div class='btn-group'>
+<a class='active btn btn-default' href='/notifications'>
+Show all
+</a>
+<a class='btn btn-default' href='/notifications?show=unread'>
+Show unread
+</a>
+</div>
+<a class='btn btn-default btn-group disabled' href='/notifications/read_all'>
+Mark all as read
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class='day_group row'>
+<div class='date col-md-2'>
+<div class='day'>27</div>
+<div class='month'>August</div>
+</div>
+<div class='notifications_for_day col-md-10'>
+<div class='media stream-element unread' data-guid='540' data-type='liked'>
+<div class='unread-toggle pull-right'>
+<i class='entypo-eye' title='Mark read'></i>
+</div>
+<div class='media-object pull-left'>
+<a href='/people/bobguid' class='hovercardable hovercardable' >
+      <img alt="Bob B" class="avatar img-responsive center-block" title="Bob B" data-person_id="2" src="/assets/user/default-2c878d1cd0171726fc490add065f342be5a959729df46a89807a4c18a8fc8d14.png" />
+      </a>
+</div>
+<div class='media-body'>
+<a data-hovercard='/people/bobguid' href='/people/bobguid' class='hovercardable hovercardable'>Bob B</a>, <a data-hovercard='/people/advpersonguid3' href='/people/advpersonguid3' class='hovercardable hovercardable'>P3 L3</a>, <a data-hovercard='/people/advpersonguid4' href='/people/advpersonguid4' class='hovercardable hovercardable'>P4 L4</a>,<a class='more' href='#'> and one more</a><span class='hidden'>  and <a data-hovercard='/people/advpersonguid5' href='/people/advpersonguid5' class='hovercardable hovercardable'>P5 L5</a> </span> have liked your post <a data-ref="101" class="hard_object_link" href="/posts/101">a post</a>.
+<div>
+<time datetime="2026-08-27T20:24:52Z" class="timeago" title="2026-08-27T20:24:52Z" data-time-ago="2026-08-27T20:24:52Z">2026-08-27</time>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+<div class='day_group row'>
+<div class='date col-md-2'>
+<div class='day'>26</div>
+<div class='month'>August</div>
+</div>
+<div class='notifications_for_day col-md-10'>
+<div class='media stream-element unread' data-guid='541' data-type='liked'>
+<div class='unread-toggle pull-right'>
+<i class='entypo-eye' title='Mark read'></i>
+</div>
+<div class='media-object pull-left'>
+<a href='/people/bobguid' class='hovercardable hovercardable' >
+      <img alt="Bob B" class="avatar img-responsive center-block" title="Bob B" data-person_id="2" src="/assets/user/default-2c878d1cd0171726fc490add065f342be5a959729df46a89807a4c18a8fc8d14.png" />
+      </a>
+</div>
+<div class='media-body'>
+<a data-hovercard='/people/bobguid' href='/people/bobguid' class='hovercardable hovercardable'>Bob B</a>, <a data-hovercard='/people/advpersonguid3' href='/people/advpersonguid3' class='hovercardable hovercardable'>P3 L3</a>, <a data-hovercard='/people/advpersonguid4' href='/people/advpersonguid4' class='hovercardable hovercardable'>P4 L4</a>,<a class='more' href='#'> and 2 others</a><span class='hidden'> <a data-hovercard='/people/advpersonguid5' href='/people/advpersonguid5' class='hovercardable hovercardable'>P5 L5</a> and <a data-hovercard='/people/advpersonguid6' href='/people/advpersonguid6' class='hovercardable hovercardable'>p6@remote.example</a> </span> have liked your post <a data-ref="101" class="hard_object_link" href="/posts/101">a post</a>.
+<div>
+<time datetime="2026-08-26T20:24:52Z" class="timeago" title="2026-08-26T20:24:52Z" data-time-ago="2026-08-26T20:24:52Z">2026-08-26</time>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+<div class='day_group row'>
+<div class='date col-md-2'>
+<div class='day'>25</div>
+<div class='month'>August</div>
+</div>
+<div class='notifications_for_day col-md-10'>
+<div class='media read stream-element' data-guid='543' data-type='reshared'>
+<div class='unread-toggle pull-right'>
+<i class='entypo-eye' title='Mark unread'></i>
+</div>
+<div class='media-object pull-left'>
+<a href='/people/bobguid' class='hovercardable hovercardable' >
+      <img alt="Bob B" class="avatar img-responsive center-block" title="Bob B" data-person_id="2" src="/assets/user/default-2c878d1cd0171726fc490add065f342be5a959729df46a89807a4c18a8fc8d14.png" />
+      </a>
+</div>
+<div class='media-body'>
+<a data-hovercard='/people/bobguid' href='/people/bobguid' class='hovercardable hovercardable'>Bob B</a>, <a data-hovercard='/people/advpersonguid3' href='/people/advpersonguid3' class='hovercardable hovercardable'>P3 L3</a>, and <a data-hovercard='/people/advpersonguid4' href='/people/advpersonguid4' class='hovercardable hovercardable'>P4 L4</a> have reshared your post <a data-ref="101" class="hard_object_link" href="/posts/101">a post</a>.
+<div>
+<time datetime="2026-08-25T20:24:52Z" class="timeago" title="2026-08-25T20:24:52Z" data-time-ago="2026-08-25T20:24:52Z">2026-08-25</time>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+<div class='row year_container'>
+<div class='col-md-4 col-md-offset-4 year'>2025</div>
+</div>
+<div class='day_group row'>
+<div class='date col-md-2'>
+<div class='day'>23</div>
+<div class='month'>July</div>
+</div>
+<div class='notifications_for_day col-md-10'>
+<div class='media read stream-element' data-guid='542' data-type='liked'>
+<div class='unread-toggle pull-right'>
+<i class='entypo-eye' title='Mark unread'></i>
+</div>
+<div class='media-object pull-left'>
+<a href='/people/advpersonguid7' class='hovercardable hovercardable' >
+      <img alt="P7 L7" class="avatar img-responsive center-block" title="P7 L7" data-person_id="7" src="https://remote.example/a.jpg" />
+      </a>
+</div>
+<div class='media-body'>
+<a data-hovercard='/people/advpersonguid7' href='/people/advpersonguid7' class='hovercardable hovercardable'>P7 L7</a> has liked your post <a data-ref="101" class="hard_object_link" href="/posts/101">a post</a>.
+<div>
+<time datetime="2025-07-23T20:24:52Z" class="timeago" title="2025-07-23T20:24:52Z" data-time-ago="2025-07-23T20:24:52Z">2025-07-23</time>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+<div class='center-block text-center'>
+
+</div>
+</div>
+</div>
+</div>
+</div>

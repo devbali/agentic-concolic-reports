@@ -1,0 +1,871 @@
+{
+ "ref": {
+  "SELECT `mentions`.`id`, `comments`.`commentable_id` FROM `people`,     `posts`,     `mentions`,     `comments` WHERE `mentions`.`mentions_container_id` = `comments`.`id` AND (`mentions`.`mentions_container_type` = 'Comment' AND `comments`.`commentable_type` = 'Post') AND (`posts`.`author_id` = `people`.`id` AND (`people`.`owner_id` = _MY_UID AND `comments`.`commentable_id` = `posts`.`id`))": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `poll_participations`.`id` AS `id3`, `poll_participations`.`poll_answer_id`, `poll_participations`.`author_id` AS `author_id0`, `poll_participations`.`poll_id`, `poll_participations`.`guid` AS `guid2`, `poll_participations`.`created_at` AS `created_at2`, `poll_participations`.`updated_at` AS `updated_at2`, `polls`.`status_message_id` FROM `posts`,     `share_visibilities`,     `people`,     `polls`,     `poll_participations` WHERE `poll_participations`.`poll_id` = `polls`.`id` AND `poll_participations`.`author_id` = `people`.`id` AND (`posts`.`type` = 'StatusMessage' AND `people`.`owner_id` = _MY_UID) AND (`share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post' AND (`share_visibilities`.`user_id` = _MY_UID AND `polls`.`status_message_id` = `posts`.`id`))": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `tags`.`id`, `tags`.`name`, `tags`.`taggings_count`, `taggings`.`taggable_id` FROM `posts`,     `share_visibilities`,     `tags`,     `taggings` WHERE `tags`.`id` = `taggings`.`tag_id` AND `taggings`.`taggable_type` = 'Post' AND (`taggings`.`context` = 'tags' AND `posts`.`type` = 'StatusMessage') AND (`share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post' AND (`share_visibilities`.`user_id` = _MY_UID AND `posts`.`id` = `taggings`.`taggable_id`))": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `poll_answers`.`id` AS `id2`, `poll_answers`.`answer`, `poll_answers`.`poll_id`, `poll_answers`.`guid` AS `guid1`, `poll_answers`.`vote_count`, `polls`.`status_message_id` FROM `posts`,     `share_visibilities`,     `polls`,     `poll_answers` WHERE `poll_answers`.`poll_id` = `polls`.`id` AND (`posts`.`type` = 'StatusMessage' AND `share_visibilities`.`shareable_id` = `posts`.`id`) AND (`share_visibilities`.`shareable_type` = 'Post' AND (`share_visibilities`.`user_id` = _MY_UID AND `polls`.`status_message_id` = `posts`.`id`))": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `profiles`.`id`, `profiles`.`diaspora_handle`, `profiles`.`first_name`, `profiles`.`last_name`, `profiles`.`image_url`, `profiles`.`image_url_small`, `profiles`.`image_url_medium`, `profiles`.`searchable`, `profiles`.`person_id`, `profiles`.`created_at`, `profiles`.`updated_at`, `profiles`.`full_name`, `profiles`.`nsfw`, `profiles`.`public_details`, `posts`.`id` FROM `posts`,     `share_visibilities`,     `people`,     `profiles` WHERE `profiles`.`person_id` = `people`.`id` AND `people`.`owner_id` = _MY_UID AND `share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post' AND `share_visibilities`.`user_id` = _MY_UID": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT 1 AS `one`, `participations`.`target_id` FROM `posts`,     `share_visibilities`,     `people`,     `participations` WHERE `participations`.`author_id` = `people`.`id` AND (`people`.`owner_id` = _MY_UID AND `share_visibilities`.`shareable_id` = `posts`.`id`) AND (`share_visibilities`.`shareable_type` = 'Post' AND (`share_visibilities`.`user_id` = _MY_UID AND `posts`.`id` = `participations`.`target_id`))": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `people`.`id` AS `id2`, `people`.`guid` AS `guid0`, `people`.`diaspora_handle`, `people`.`serialized_public_key`, `people`.`owner_id`, `people`.`created_at` AS `created_at0`, `people`.`updated_at` AS `updated_at0`, `people`.`closed_account`, `people`.`fetch_status`, `people`.`pod_id`, `mentions`.`mentions_container_id` FROM `posts`,     `share_visibilities`,     `mentions`,     `people` WHERE `people`.`id` = `mentions`.`person_id` AND (`posts`.`type` = 'StatusMessage' AND `mentions`.`mentions_container_type` = 'Post') AND (`share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post' AND (`share_visibilities`.`user_id` = _MY_UID AND `mentions`.`mentions_container_id` = `posts`.`id`))": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `profiles`.`id`, `profiles`.`diaspora_handle`, `profiles`.`first_name`, `profiles`.`last_name`, `profiles`.`image_url`, `profiles`.`image_url_small`, `profiles`.`image_url_medium`, `profiles`.`searchable`, `profiles`.`person_id`, `profiles`.`created_at`, `profiles`.`updated_at`, `profiles`.`full_name`, `profiles`.`nsfw`, `profiles`.`public_details`, `likes`.`target_id` FROM `posts`,     `share_visibilities`,     `likes`,     `profiles` WHERE `profiles`.`person_id` = `likes`.`author_id` AND (`likes`.`target_type` = 'Post' AND `likes`.`positive` = TRUE) AND (`share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post' AND (`share_visibilities`.`user_id` = _MY_UID AND `posts`.`id` = `likes`.`target_id`))": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `mentions`.`id`, `comments`.`commentable_id` FROM `posts`,     `share_visibilities`,     `mentions`,     `comments` WHERE `mentions`.`mentions_container_id` = `comments`.`id` AND (`mentions`.`mentions_container_type` = 'Comment' AND `comments`.`commentable_type` = 'Post') AND (`share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post' AND (`share_visibilities`.`user_id` = _MY_UID AND `comments`.`commentable_id` = `posts`.`id`))": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `profiles`.`id`, `profiles`.`diaspora_handle`, `profiles`.`first_name`, `profiles`.`last_name`, `profiles`.`image_url`, `profiles`.`image_url_small`, `profiles`.`image_url_medium`, `profiles`.`searchable`, `profiles`.`person_id`, `profiles`.`created_at`, `profiles`.`updated_at`, `profiles`.`full_name`, `profiles`.`nsfw`, `profiles`.`public_details`, `likes`.`target_id` FROM `people`,     `posts`,     `likes`,     `profiles` WHERE `profiles`.`person_id` = `likes`.`author_id` AND (`likes`.`target_type` = 'Post' AND `likes`.`positive` = TRUE) AND (`posts`.`author_id` = `people`.`id` AND (`people`.`owner_id` = _MY_UID AND `posts`.`id` = `likes`.`target_id`))": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `profiles`.`id`, `profiles`.`diaspora_handle`, `profiles`.`first_name`, `profiles`.`last_name`, `profiles`.`image_url`, `profiles`.`image_url_small`, `profiles`.`image_url_medium`, `profiles`.`searchable`, `profiles`.`person_id`, `profiles`.`created_at`, `profiles`.`updated_at`, `profiles`.`full_name`, `profiles`.`nsfw`, `profiles`.`public_details`, `mentions`.`mentions_container_id` FROM `people`,     `posts`,     `mentions`,     `profiles` WHERE `profiles`.`person_id` = `mentions`.`person_id` AND (`posts`.`type` = 'StatusMessage' AND `mentions`.`mentions_container_type` = 'Post') AND (`posts`.`author_id` = `people`.`id` AND (`people`.`owner_id` = _MY_UID AND `mentions`.`mentions_container_id` = `posts`.`id`))": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `people`.`id` AS `id2`, `people`.`guid` AS `guid1`, `people`.`diaspora_handle`, `people`.`serialized_public_key`, `people`.`owner_id`, `people`.`created_at` AS `created_at1`, `people`.`updated_at` AS `updated_at1`, `people`.`closed_account`, `people`.`fetch_status`, `people`.`pod_id`, `mentions`.`mentions_container_id` FROM `posts`,     `posts` AS `posts0`,     `mentions`,     `people` WHERE `people`.`id` = `mentions`.`person_id` AND (`mentions`.`mentions_container_type` = 'Post' AND 'Reshare' = `posts0`.`type`) AND (`posts0`.`guid` = `posts`.`root_guid` AND 'Reshare' = `posts`.`type` AND (`posts`.`public` = TRUE AND `mentions`.`mentions_container_id` = `posts`.`id`))": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `profiles`.`id`, `profiles`.`diaspora_handle`, `profiles`.`first_name`, `profiles`.`last_name`, `profiles`.`image_url`, `profiles`.`image_url_small`, `profiles`.`image_url_medium`, `profiles`.`searchable`, `profiles`.`person_id`, `profiles`.`created_at`, `profiles`.`updated_at`, `profiles`.`full_name`, `profiles`.`nsfw`, `profiles`.`public_details`, `posts`.`id` AS `id0` FROM `people`,     `posts`,     `photos`,     `profiles` WHERE `profiles`.`person_id` = `photos`.`author_id` AND `posts`.`type` = 'StatusMessage' AND `photos`.`status_message_guid` = `posts`.`guid` AND `posts`.`author_id` = `people`.`id` AND `people`.`owner_id` = _MY_UID": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT 1 AS `one`, `posts`.`id` FROM `posts`,     `share_visibilities`,     `people`,     `roles` WHERE `roles`.`person_id` = `people`.`id` AND (`roles`.`name` = 'admin' AND `people`.`owner_id` = _MY_UID) AND (`share_visibilities`.`shareable_id` = `posts`.`id` AND (`share_visibilities`.`shareable_type` = 'Post' AND `share_visibilities`.`user_id` = _MY_UID))": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `conversation_visibilities`.`unread`, `posts`.`id` FROM `posts`,     `share_visibilities`,     `people`,     `conversation_visibilities` WHERE `conversation_visibilities`.`person_id` = `people`.`id` AND `people`.`owner_id` = _MY_UID AND `share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post' AND `share_visibilities`.`user_id` = _MY_UID": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `people`.`id` AS `id2`, `people`.`guid` AS `guid1`, `people`.`diaspora_handle`, `people`.`serialized_public_key`, `people`.`owner_id`, `people`.`created_at` AS `created_at1`, `people`.`updated_at` AS `updated_at1`, `people`.`closed_account`, `people`.`fetch_status`, `people`.`pod_id`, `likes`.`target_id` FROM `posts`,     `share_visibilities`,     `likes`,     `people` WHERE `people`.`id` = `likes`.`author_id` AND (`likes`.`target_type` = 'Post' AND `likes`.`positive` = TRUE) AND (`share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post' AND (`share_visibilities`.`user_id` = _MY_UID AND `posts`.`id` = `likes`.`target_id`))": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `poll_answers`.`id` AS `id2`, `poll_answers`.`answer`, `poll_answers`.`poll_id`, `poll_answers`.`guid` AS `guid2`, `poll_answers`.`vote_count`, `polls`.`status_message_id` FROM `people`,     `posts`,     `polls`,     `poll_answers` WHERE `poll_answers`.`poll_id` = `polls`.`id` AND `posts`.`type` = 'StatusMessage' AND `posts`.`author_id` = `people`.`id` AND `people`.`owner_id` = _MY_UID AND `polls`.`status_message_id` = `posts`.`id`": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT 1 AS `one`, `posts`.`id` FROM `posts`,     `share_visibilities`,     `people`,     `roles` WHERE `roles`.`name` IN ('admin', 'moderator') AND (`roles`.`person_id` = `people`.`id` AND `people`.`owner_id` = _MY_UID) AND (`share_visibilities`.`shareable_id` = `posts`.`id` AND (`share_visibilities`.`shareable_type` = 'Post' AND `share_visibilities`.`user_id` = _MY_UID))": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `mentions`.`id`, `mentions`.`mentions_container_id` FROM `posts`,     `share_visibilities`,     `people`,     `mentions` WHERE `mentions`.`mentions_container_type` = 'Post' AND (`mentions`.`person_id` = `people`.`id` AND `people`.`owner_id` = _MY_UID) AND (`share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post' AND (`share_visibilities`.`user_id` = _MY_UID AND `mentions`.`mentions_container_id` = `posts`.`id`))": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `poll_participations`.`id` AS `id2`, `poll_participations`.`poll_answer_id`, `poll_participations`.`author_id` AS `author_id0`, `poll_participations`.`poll_id`, `poll_participations`.`guid` AS `guid2`, `poll_participations`.`created_at` AS `created_at2`, `poll_participations`.`updated_at` AS `updated_at2`, `polls`.`status_message_id` FROM `people`,     `posts`,     `polls`,     `poll_participations` WHERE `poll_participations`.`poll_id` = `polls`.`id` AND (`poll_participations`.`author_id` = `people`.`id` AND `posts`.`type` = 'StatusMessage') AND (`posts`.`author_id` = `people`.`id` AND (`people`.`owner_id` = _MY_UID AND `polls`.`status_message_id` = `posts`.`id`))": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `profiles`.`id`, `profiles`.`diaspora_handle`, `profiles`.`first_name`, `profiles`.`last_name`, `profiles`.`image_url`, `profiles`.`image_url_small`, `profiles`.`image_url_medium`, `profiles`.`searchable`, `profiles`.`person_id`, `profiles`.`created_at`, `profiles`.`updated_at`, `profiles`.`full_name`, `profiles`.`nsfw`, `profiles`.`public_details`, `mentions`.`mentions_container_id` FROM `posts`,     `posts` AS `posts0`,     `mentions`,     `profiles` WHERE `profiles`.`person_id` = `mentions`.`person_id` AND (`mentions`.`mentions_container_type` = 'Post' AND 'Reshare' = `posts0`.`type`) AND (`posts0`.`guid` = `posts`.`root_guid` AND 'Reshare' = `posts`.`type` AND (`posts`.`public` = TRUE AND `mentions`.`mentions_container_id` = `posts`.`id`))": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `people0`.`id` AS `id2`, `people0`.`guid` AS `guid2`, `people0`.`diaspora_handle` AS `diaspora_handle0`, `people0`.`serialized_public_key` AS `serialized_public_key0`, `people0`.`owner_id` AS `owner_id0`, `people0`.`created_at` AS `created_at2`, `people0`.`updated_at` AS `updated_at2`, `people0`.`closed_account` AS `closed_account0`, `people0`.`fetch_status` AS `fetch_status0`, `people0`.`pod_id` AS `pod_id0`, `posts`.`id` AS `id0` FROM `people`,     `posts`,     `photos`,     `people` AS `people0` WHERE `people0`.`id` = `photos`.`author_id` AND `posts`.`type` = 'StatusMessage' AND `photos`.`status_message_guid` = `posts`.`guid` AND `posts`.`author_id` = `people`.`id` AND `people`.`owner_id` = _MY_UID": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `tags`.`id`, `tags`.`name`, `tags`.`taggings_count`, `taggings`.`taggable_id` FROM `people`,     `posts`,     `tags`,     `taggings` WHERE `tags`.`id` = `taggings`.`tag_id` AND (`taggings`.`taggable_type` = 'Post' AND `taggings`.`context` = 'tags') AND (`posts`.`type` = 'StatusMessage' AND `posts`.`author_id` = `people`.`id` AND (`people`.`owner_id` = _MY_UID AND `posts`.`id` = `taggings`.`taggable_id`))": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `profiles`.`id`, `profiles`.`diaspora_handle`, `profiles`.`first_name`, `profiles`.`last_name`, `profiles`.`image_url`, `profiles`.`image_url_small`, `profiles`.`image_url_medium`, `profiles`.`searchable`, `profiles`.`person_id`, `profiles`.`created_at`, `profiles`.`updated_at`, `profiles`.`full_name`, `profiles`.`nsfw`, `profiles`.`public_details`, `mentions`.`mentions_container_id` FROM `posts`,     `share_visibilities`,     `mentions`,     `profiles` WHERE `profiles`.`person_id` = `mentions`.`person_id` AND (`posts`.`type` = 'StatusMessage' AND `mentions`.`mentions_container_type` = 'Post') AND (`share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post' AND (`share_visibilities`.`user_id` = _MY_UID AND `mentions`.`mentions_container_id` = `posts`.`id`))": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `people0`.`id` AS `id2`, `people0`.`guid` AS `guid1`, `people0`.`diaspora_handle` AS `diaspora_handle0`, `people0`.`serialized_public_key` AS `serialized_public_key0`, `people0`.`owner_id` AS `owner_id0`, `people0`.`created_at` AS `created_at1`, `people0`.`updated_at` AS `updated_at1`, `people0`.`closed_account` AS `closed_account0`, `people0`.`fetch_status` AS `fetch_status0`, `people0`.`pod_id` AS `pod_id0`, `mentions`.`mentions_container_id` FROM `people`,     `posts`,     `mentions`,     `people` AS `people0` WHERE `people0`.`id` = `mentions`.`person_id` AND (`posts`.`type` = 'StatusMessage' AND `mentions`.`mentions_container_type` = 'Post') AND (`posts`.`author_id` = `people`.`id` AND (`people`.`owner_id` = _MY_UID AND `mentions`.`mentions_container_id` = `posts`.`id`))": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `people`.`id` AS `id2`, `people`.`guid` AS `guid1`, `people`.`diaspora_handle`, `people`.`serialized_public_key`, `people`.`owner_id`, `people`.`created_at` AS `created_at1`, `people`.`updated_at` AS `updated_at1`, `people`.`closed_account`, `people`.`fetch_status`, `people`.`pod_id`, `posts`.`id` FROM `posts`,     `share_visibilities`,     `photos`,     `people` WHERE `people`.`id` = `photos`.`author_id` AND (`posts`.`type` = 'StatusMessage' AND `photos`.`status_message_guid` = `posts`.`guid`) AND (`share_visibilities`.`shareable_id` = `posts`.`id` AND (`share_visibilities`.`shareable_type` = 'Post' AND `share_visibilities`.`user_id` = _MY_UID))": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `profiles`.`id`, `profiles`.`diaspora_handle`, `profiles`.`first_name`, `profiles`.`last_name`, `profiles`.`image_url`, `profiles`.`image_url_small`, `profiles`.`image_url_medium`, `profiles`.`searchable`, `profiles`.`person_id`, `profiles`.`created_at`, `profiles`.`updated_at`, `profiles`.`full_name`, `profiles`.`nsfw`, `profiles`.`public_details`, `posts`.`id` FROM `posts`,     `share_visibilities`,     `photos`,     `profiles` WHERE `profiles`.`person_id` = `photos`.`author_id` AND (`posts`.`type` = 'StatusMessage' AND `photos`.`status_message_guid` = `posts`.`guid`) AND (`share_visibilities`.`shareable_id` = `posts`.`id` AND (`share_visibilities`.`shareable_type` = 'Post' AND `share_visibilities`.`user_id` = _MY_UID))": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `people0`.`id` AS `id2`, `people0`.`guid` AS `guid2`, `people0`.`diaspora_handle` AS `diaspora_handle0`, `people0`.`serialized_public_key` AS `serialized_public_key0`, `people0`.`owner_id` AS `owner_id0`, `people0`.`created_at` AS `created_at2`, `people0`.`updated_at` AS `updated_at2`, `people0`.`closed_account` AS `closed_account0`, `people0`.`fetch_status` AS `fetch_status0`, `people0`.`pod_id` AS `pod_id0`, `likes`.`target_id` FROM `people`,     `posts`,     `likes`,     `people` AS `people0` WHERE `people0`.`id` = `likes`.`author_id` AND (`likes`.`target_type` = 'Post' AND `likes`.`positive` = TRUE) AND (`posts`.`author_id` = `people`.`id` AND (`people`.`owner_id` = _MY_UID AND `posts`.`id` = `likes`.`target_id`))": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `poll_participations`.`id` AS `id2`, `poll_participations`.`poll_answer_id`, `poll_participations`.`author_id` AS `author_id0`, `poll_participations`.`poll_id`, `poll_participations`.`guid` AS `guid2`, `poll_participations`.`created_at` AS `created_at2`, `poll_participations`.`updated_at` AS `updated_at2`, `polls`.`status_message_id` FROM `people`,     `posts`,     `polls`,     `poll_participations` WHERE `poll_participations`.`poll_id` = `polls`.`id` AND (`poll_participations`.`author_id` = `people`.`id` AND `posts`.`type` = 'StatusMessage') AND (`posts`.`public` = TRUE AND (`people`.`owner_id` = _MY_UID AND `polls`.`status_message_id` = `posts`.`id`))": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `services`.`id` AS `id1`, `services`.`type` AS `type0`, `services`.`user_id` AS `user_id0`, `services`.`uid`, `services`.`access_token`, `services`.`access_secret`, `services`.`nickname`, `services`.`created_at` AS `created_at0`, `services`.`updated_at` AS `updated_at0`, `posts`.`id` FROM `posts`,     `share_visibilities`,     `services` WHERE `services`.`user_id` = _MY_UID AND `share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post' AND `share_visibilities`.`user_id` = _MY_UID": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `conversation_visibilities`.`unread`, `posts`.`id` AS `id0` FROM `people`,     `posts`,     `conversation_visibilities` WHERE `conversation_visibilities`.`person_id` = `people`.`id` AND `posts`.`public` = TRUE AND `people`.`owner_id` = _MY_UID": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `aspects`.`id` AS `id1`, `aspects`.`name`, `aspects`.`user_id`, `aspects`.`created_at` AS `created_at1`, `aspects`.`updated_at` AS `updated_at1`, `aspects`.`order_id`, `aspects`.`chat_enabled`, `aspects`.`post_default`, `posts`.`id` AS `id0` FROM `people`,     `posts`,     `aspects` WHERE `aspects`.`user_id` = _MY_UID AND `posts`.`author_id` = `people`.`id` AND `people`.`owner_id` = _MY_UID": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `profiles`.`id`, `profiles`.`diaspora_handle`, `profiles`.`first_name`, `profiles`.`last_name`, `profiles`.`image_url`, `profiles`.`image_url_small`, `profiles`.`image_url_medium`, `profiles`.`searchable`, `profiles`.`person_id`, `profiles`.`created_at`, `profiles`.`updated_at`, `profiles`.`full_name`, `profiles`.`nsfw`, `profiles`.`public_details`, `posts`.`id` FROM `posts`,     `share_visibilities`,     `profiles` WHERE `profiles`.`person_id` = `posts`.`author_id` AND `share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post' AND `share_visibilities`.`user_id` = _MY_UID": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `poll_answers`.`id` AS `id1`, `poll_answers`.`answer`, `poll_answers`.`poll_id`, `poll_answers`.`guid` AS `guid1`, `poll_answers`.`vote_count`, `polls`.`status_message_id` FROM `posts`,     `polls`,     `poll_answers` WHERE `poll_answers`.`poll_id` = `polls`.`id` AND `posts`.`type` = 'StatusMessage' AND `posts`.`public` = TRUE AND `polls`.`status_message_id` = `posts`.`id`": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT 1 AS `one`, `posts`.`id` AS `id0` FROM `people`,     `posts`,     `roles` WHERE `roles`.`person_id` = `people`.`id` AND `roles`.`name` = 'admin' AND `posts`.`public` = TRUE AND `people`.`owner_id` = _MY_UID": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT 1 AS `one`, `participations`.`target_id` FROM `people`,     `posts`,     `participations` WHERE `participations`.`author_id` = `people`.`id` AND `posts`.`author_id` = `people`.`id` AND `people`.`owner_id` = _MY_UID AND `posts`.`id` = `participations`.`target_id`": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `locations`.`id` AS `id1`, `locations`.`address`, `locations`.`lat`, `locations`.`lng`, `locations`.`status_message_id`, `locations`.`created_at` AS `created_at1`, `locations`.`updated_at` AS `updated_at1` FROM `people`,     `posts`,     `locations` WHERE `posts`.`type` = 'StatusMessage' AND `posts`.`author_id` = `people`.`id` AND `people`.`owner_id` = _MY_UID AND `posts`.`id` = `locations`.`status_message_id`": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT 1 AS `one`, `posts`.`id` AS `id0` FROM `people`,     `posts`,     `roles` WHERE `roles`.`person_id` = `people`.`id` AND `roles`.`name` = 'admin' AND `posts`.`author_id` = `people`.`id` AND `people`.`owner_id` = _MY_UID": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `people`.`id` AS `id1`, `people`.`guid` AS `guid0`, `people`.`diaspora_handle`, `people`.`serialized_public_key`, `people`.`owner_id`, `people`.`created_at` AS `created_at0`, `people`.`updated_at` AS `updated_at0`, `people`.`closed_account`, `people`.`fetch_status`, `people`.`pod_id`, `posts`.`id` FROM `posts`,     `share_visibilities`,     `people` WHERE `people`.`id` = `posts`.`author_id` AND `share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post' AND `share_visibilities`.`user_id` = _MY_UID": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `likes`.`id` AS `id1`, `likes`.`positive`, `likes`.`target_id`, `likes`.`author_id` AS `author_id0`, `likes`.`guid` AS `guid0`, `likes`.`created_at` AS `created_at0`, `likes`.`updated_at` AS `updated_at0`, `likes`.`target_type` FROM `posts`,     `share_visibilities`,     `likes` WHERE `likes`.`target_type` = 'Post' AND (`likes`.`positive` = TRUE AND `share_visibilities`.`shareable_id` = `posts`.`id`) AND (`share_visibilities`.`shareable_type` = 'Post' AND (`share_visibilities`.`user_id` = _MY_UID AND `posts`.`id` = `likes`.`target_id`))": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `profiles`.`id`, `profiles`.`diaspora_handle`, `profiles`.`first_name`, `profiles`.`last_name`, `profiles`.`image_url`, `profiles`.`image_url_small`, `profiles`.`image_url_medium`, `profiles`.`searchable`, `profiles`.`person_id`, `profiles`.`created_at`, `profiles`.`updated_at`, `profiles`.`full_name`, `profiles`.`nsfw`, `profiles`.`public_details`, `posts`.`id` AS `id0` FROM `people`,     `posts`,     `profiles` WHERE `profiles`.`person_id` = `people`.`id` AND `posts`.`public` = TRUE AND `people`.`owner_id` = _MY_UID": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `o_embed_caches`.`id` AS `id1`, `o_embed_caches`.`url`, `o_embed_caches`.`data`, `posts`.`id` AS `id0` FROM `people`,     `posts`,     `o_embed_caches` WHERE `o_embed_caches`.`id` = `posts`.`o_embed_cache_id` AND `posts`.`type` = 'StatusMessage' AND `posts`.`author_id` = `people`.`id` AND `people`.`owner_id` = _MY_UID": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `mentions`.`id` AS `id1`, `mentions`.`mentions_container_id`, `mentions`.`person_id`, `mentions`.`mentions_container_type` FROM `people`,     `posts`,     `mentions` WHERE `mentions`.`mentions_container_type` = 'Post' AND `posts`.`type` = 'StatusMessage' AND `posts`.`author_id` = `people`.`id` AND `people`.`owner_id` = _MY_UID AND `mentions`.`mentions_container_id` = `posts`.`id`": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `locations`.`id` AS `id1`, `locations`.`address`, `locations`.`lat`, `locations`.`lng`, `locations`.`status_message_id`, `locations`.`created_at` AS `created_at0`, `locations`.`updated_at` AS `updated_at0` FROM `posts`,     `share_visibilities`,     `locations` WHERE `posts`.`type` = 'StatusMessage' AND `share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post' AND `share_visibilities`.`user_id` = _MY_UID AND `posts`.`id` = `locations`.`status_message_id`": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `people`.`id` AS `id1`, `people`.`guid` AS `guid1`, `people`.`diaspora_handle`, `people`.`serialized_public_key`, `people`.`owner_id`, `people`.`created_at` AS `created_at1`, `people`.`updated_at` AS `updated_at1`, `people`.`closed_account`, `people`.`fetch_status`, `people`.`pod_id`, `likes`.`target_id` FROM `posts`,     `likes`,     `people` WHERE `people`.`id` = `likes`.`author_id` AND `likes`.`target_type` = 'Post' AND `likes`.`positive` = TRUE AND `posts`.`public` = TRUE AND `posts`.`id` = `likes`.`target_id`": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `contacts`.`id` AS `id1`, `contacts`.`user_id` AS `user_id0`, `contacts`.`person_id`, `contacts`.`created_at` AS `created_at0`, `contacts`.`updated_at` AS `updated_at0`, `contacts`.`sharing`, `contacts`.`receiving`, `posts`.`id` FROM `posts`,     `share_visibilities`,     `contacts` WHERE `contacts`.`user_id` = _MY_UID AND `contacts`.`receiving` = TRUE AND `share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post' AND `share_visibilities`.`user_id` = _MY_UID": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `mentions`.`id`, `comments`.`commentable_id` FROM `posts`,     `mentions`,     `comments` WHERE `mentions`.`mentions_container_id` = `comments`.`id` AND `mentions`.`mentions_container_type` = 'Comment' AND `comments`.`commentable_type` = 'Post' AND `posts`.`public` = TRUE AND `comments`.`commentable_id` = `posts`.`id`": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `aspects`.`id` AS `id1`, `aspects`.`name`, `aspects`.`user_id` AS `user_id0`, `aspects`.`created_at` AS `created_at0`, `aspects`.`updated_at` AS `updated_at0`, `aspects`.`order_id`, `aspects`.`chat_enabled`, `aspects`.`post_default`, `posts`.`id` FROM `posts`,     `share_visibilities`,     `aspects` WHERE `aspects`.`user_id` = _MY_UID AND `share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post' AND `share_visibilities`.`user_id` = _MY_UID": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `photos`.`id` AS `id1`, `photos`.`author_id` AS `author_id0`, `photos`.`public` AS `public0`, `photos`.`guid` AS `guid1`, `photos`.`pending`, `photos`.`text` AS `text0`, `photos`.`remote_photo_path`, `photos`.`remote_photo_name`, `photos`.`random_string`, `photos`.`processed_image`, `photos`.`created_at` AS `created_at1`, `photos`.`updated_at` AS `updated_at1`, `photos`.`unprocessed_image`, `photos`.`status_message_guid`, `photos`.`comments_count` AS `comments_count0`, `photos`.`height`, `photos`.`width`, `posts`.`id` AS `id0` FROM `people`,     `posts`,     `photos` WHERE `photos`.`status_message_guid` = `posts`.`guid` AND `posts`.`type` = 'StatusMessage' AND `posts`.`author_id` = `people`.`id` AND `people`.`owner_id` = _MY_UID": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `people`.`id` AS `id1`, `people`.`guid` AS `guid0`, `people`.`diaspora_handle`, `people`.`serialized_public_key`, `people`.`owner_id`, `people`.`created_at` AS `created_at0`, `people`.`updated_at` AS `updated_at0`, `people`.`closed_account`, `people`.`fetch_status`, `people`.`pod_id`, `mentions`.`mentions_container_id` FROM `posts`,     `mentions`,     `people` WHERE `people`.`id` = `mentions`.`person_id` AND `posts`.`type` = 'StatusMessage' AND `mentions`.`mentions_container_type` = 'Post' AND `posts`.`public` = TRUE AND `mentions`.`mentions_container_id` = `posts`.`id`": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `profiles`.`id`, `profiles`.`diaspora_handle`, `profiles`.`first_name`, `profiles`.`last_name`, `profiles`.`image_url`, `profiles`.`image_url_small`, `profiles`.`image_url_medium`, `profiles`.`searchable`, `profiles`.`person_id`, `profiles`.`created_at`, `profiles`.`updated_at`, `profiles`.`full_name`, `profiles`.`nsfw`, `profiles`.`public_details`, `likes`.`target_id` FROM `posts`,     `likes`,     `profiles` WHERE `profiles`.`person_id` = `likes`.`author_id` AND `likes`.`target_type` = 'Post' AND `likes`.`positive` = TRUE AND `posts`.`public` = TRUE AND `posts`.`id` = `likes`.`target_id`": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `profiles`.`id`, `profiles`.`diaspora_handle`, `profiles`.`first_name`, `profiles`.`last_name`, `profiles`.`image_url`, `profiles`.`image_url_small`, `profiles`.`image_url_medium`, `profiles`.`searchable`, `profiles`.`person_id`, `profiles`.`created_at`, `profiles`.`updated_at`, `profiles`.`full_name`, `profiles`.`nsfw`, `profiles`.`public_details`, `mentions`.`mentions_container_id` FROM `posts`,     `mentions`,     `profiles` WHERE `profiles`.`person_id` = `mentions`.`person_id` AND `posts`.`type` = 'StatusMessage' AND `mentions`.`mentions_container_type` = 'Post' AND `posts`.`public` = TRUE AND `mentions`.`mentions_container_id` = `posts`.`id`": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `conversation_visibilities`.`unread`, `posts`.`id` AS `id0` FROM `people`,     `posts`,     `conversation_visibilities` WHERE `conversation_visibilities`.`person_id` = `people`.`id` AND `posts`.`author_id` = `people`.`id` AND `people`.`owner_id` = _MY_UID": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `notifications`.`id` AS `id1`, `notifications`.`target_type`, `notifications`.`target_id`, `notifications`.`recipient_id`, `notifications`.`unread`, `notifications`.`created_at` AS `created_at1`, `notifications`.`updated_at` AS `updated_at1`, `notifications`.`type` AS `type0`, `posts`.`id` AS `id0` FROM `people`,     `posts`,     `notifications` WHERE `notifications`.`recipient_id` = _MY_UID AND `notifications`.`unread` = TRUE AND `posts`.`author_id` = `people`.`id` AND `people`.`owner_id` = _MY_UID": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `people`.`id` AS `id1`, `people`.`guid` AS `guid1`, `people`.`diaspora_handle`, `people`.`serialized_public_key`, `people`.`owner_id`, `people`.`created_at` AS `created_at1`, `people`.`updated_at` AS `updated_at1`, `people`.`closed_account`, `people`.`fetch_status`, `people`.`pod_id`, `posts`.`id` FROM `posts`,     `photos`,     `people` WHERE `people`.`id` = `photos`.`author_id` AND `posts`.`type` = 'StatusMessage' AND `photos`.`status_message_guid` = `posts`.`guid` AND `posts`.`public` = TRUE": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `polls`.`id` AS `id1`, `polls`.`question`, `polls`.`status_message_id`, `polls`.`status`, `polls`.`guid` AS `guid1`, `polls`.`created_at` AS `created_at1`, `polls`.`updated_at` AS `updated_at1` FROM `people`,     `posts`,     `polls` WHERE `posts`.`type` = 'StatusMessage' AND `posts`.`author_id` = `people`.`id` AND `people`.`owner_id` = _MY_UID AND `polls`.`status_message_id` = `posts`.`id`": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `o_embed_caches`.`id` AS `id1`, `o_embed_caches`.`url`, `o_embed_caches`.`data`, `posts`.`id` FROM `posts`,     `share_visibilities`,     `o_embed_caches` WHERE `o_embed_caches`.`id` = `posts`.`o_embed_cache_id` AND `posts`.`type` = 'StatusMessage' AND `share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post' AND `share_visibilities`.`user_id` = _MY_UID": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `notifications`.`id` AS `id1`, `notifications`.`target_type`, `notifications`.`target_id`, `notifications`.`recipient_id`, `notifications`.`unread`, `notifications`.`created_at` AS `created_at0`, `notifications`.`updated_at` AS `updated_at0`, `notifications`.`type` AS `type0`, `posts`.`id` FROM `posts`,     `share_visibilities`,     `notifications` WHERE `notifications`.`recipient_id` = _MY_UID AND `notifications`.`unread` = TRUE AND `share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post' AND `share_visibilities`.`user_id` = _MY_UID": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `photos`.`id` AS `id1`, `photos`.`author_id` AS `author_id0`, `photos`.`public` AS `public0`, `photos`.`guid` AS `guid0`, `photos`.`pending`, `photos`.`text` AS `text0`, `photos`.`remote_photo_path`, `photos`.`remote_photo_name`, `photos`.`random_string`, `photos`.`processed_image`, `photos`.`created_at` AS `created_at0`, `photos`.`updated_at` AS `updated_at0`, `photos`.`unprocessed_image`, `photos`.`status_message_guid`, `photos`.`comments_count` AS `comments_count0`, `photos`.`height`, `photos`.`width`, `posts`.`id` FROM `posts`,     `share_visibilities`,     `photos` WHERE `photos`.`status_message_guid` = `posts`.`guid` AND `posts`.`type` = 'StatusMessage' AND `share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post' AND `share_visibilities`.`user_id` = _MY_UID": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `profiles`.`id`, `profiles`.`diaspora_handle`, `profiles`.`first_name`, `profiles`.`last_name`, `profiles`.`image_url`, `profiles`.`image_url_small`, `profiles`.`image_url_medium`, `profiles`.`searchable`, `profiles`.`person_id`, `profiles`.`created_at`, `profiles`.`updated_at`, `profiles`.`full_name`, `profiles`.`nsfw`, `profiles`.`public_details`, `posts`.`id` FROM `posts`,     `photos`,     `profiles` WHERE `profiles`.`person_id` = `photos`.`author_id` AND `posts`.`type` = 'StatusMessage' AND `photos`.`status_message_guid` = `posts`.`guid` AND `posts`.`public` = TRUE": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `open_graph_caches`.`id` AS `id1`, `open_graph_caches`.`title`, `open_graph_caches`.`ob_type`, `open_graph_caches`.`image`, `open_graph_caches`.`url`, `open_graph_caches`.`description`, `open_graph_caches`.`video_url`, `posts`.`id` AS `id0` FROM `people`,     `posts`,     `open_graph_caches` WHERE `open_graph_caches`.`id` = `posts`.`open_graph_cache_id` AND `posts`.`type` = 'StatusMessage' AND `posts`.`author_id` = `people`.`id` AND `people`.`owner_id` = _MY_UID": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `services`.`id` AS `id1`, `services`.`type` AS `type0`, `services`.`user_id`, `services`.`uid`, `services`.`access_token`, `services`.`access_secret`, `services`.`nickname`, `services`.`created_at` AS `created_at1`, `services`.`updated_at` AS `updated_at1`, `posts`.`id` AS `id0` FROM `people`,     `posts`,     `services` WHERE `services`.`user_id` = _MY_UID AND `posts`.`author_id` = `people`.`id` AND `people`.`owner_id` = _MY_UID": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `open_graph_caches`.`id` AS `id1`, `open_graph_caches`.`title`, `open_graph_caches`.`ob_type`, `open_graph_caches`.`image`, `open_graph_caches`.`url`, `open_graph_caches`.`description`, `open_graph_caches`.`video_url`, `posts`.`id` FROM `posts`,     `share_visibilities`,     `open_graph_caches` WHERE `open_graph_caches`.`id` = `posts`.`open_graph_cache_id` AND `posts`.`type` = 'StatusMessage' AND `share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post' AND `share_visibilities`.`user_id` = _MY_UID": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `likes`.`id` AS `id1`, `likes`.`positive`, `likes`.`target_id`, `likes`.`author_id` AS `author_id0`, `likes`.`guid` AS `guid1`, `likes`.`created_at` AS `created_at1`, `likes`.`updated_at` AS `updated_at1`, `likes`.`target_type` FROM `people`,     `posts`,     `likes` WHERE `likes`.`target_type` = 'Post' AND `likes`.`positive` = TRUE AND `posts`.`author_id` = `people`.`id` AND `people`.`owner_id` = _MY_UID AND `posts`.`id` = `likes`.`target_id`": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `profiles`.`id`, `profiles`.`diaspora_handle`, `profiles`.`first_name`, `profiles`.`last_name`, `profiles`.`image_url`, `profiles`.`image_url_small`, `profiles`.`image_url_medium`, `profiles`.`searchable`, `profiles`.`person_id`, `profiles`.`created_at`, `profiles`.`updated_at`, `profiles`.`full_name`, `profiles`.`nsfw`, `profiles`.`public_details`, `posts`.`id` AS `id0` FROM `people`,     `posts`,     `profiles` WHERE `profiles`.`person_id` = `people`.`id` AND `posts`.`author_id` = `people`.`id` AND `people`.`owner_id` = _MY_UID": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `tags`.`id`, `tags`.`name`, `tags`.`taggings_count`, `taggings`.`taggable_id` FROM `posts`,     `tags`,     `taggings` WHERE `tags`.`id` = `taggings`.`tag_id` AND (`taggings`.`taggable_type` = 'Post' AND `taggings`.`context` = 'tags') AND (`posts`.`type` = 'StatusMessage' AND (`posts`.`public` = TRUE AND `posts`.`id` = `taggings`.`taggable_id`))": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `contacts`.`id` AS `id1`, `contacts`.`user_id`, `contacts`.`person_id`, `contacts`.`created_at` AS `created_at1`, `contacts`.`updated_at` AS `updated_at1`, `contacts`.`sharing`, `contacts`.`receiving`, `posts`.`id` AS `id0` FROM `people`,     `posts`,     `contacts` WHERE `contacts`.`user_id` = _MY_UID AND `contacts`.`receiving` = TRUE AND `posts`.`author_id` = `people`.`id` AND `people`.`owner_id` = _MY_UID": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT 1 AS `one`, `posts`.`id` AS `id0` FROM `people`,     `posts`,     `roles` WHERE `roles`.`name` IN ('admin', 'moderator') AND `roles`.`person_id` = `people`.`id` AND `posts`.`public` = TRUE AND `people`.`owner_id` = _MY_UID": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT 1 AS `one`, `posts`.`id` AS `id0` FROM `people`,     `posts`,     `roles` WHERE `roles`.`name` IN ('admin', 'moderator') AND `roles`.`person_id` = `people`.`id` AND `posts`.`author_id` = `people`.`id` AND `people`.`owner_id` = _MY_UID": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT 1 AS `one`, `participations`.`target_id` FROM `people`,     `posts`,     `participations` WHERE `participations`.`author_id` = `people`.`id` AND `posts`.`public` = TRUE AND `people`.`owner_id` = _MY_UID AND `posts`.`id` = `participations`.`target_id`": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `mentions`.`id` AS `id1`, `mentions`.`mentions_container_id`, `mentions`.`person_id`, `mentions`.`mentions_container_type` FROM `posts`,     `share_visibilities`,     `mentions` WHERE `mentions`.`mentions_container_type` = 'Post' AND (`posts`.`type` = 'StatusMessage' AND `share_visibilities`.`shareable_id` = `posts`.`id`) AND (`share_visibilities`.`shareable_type` = 'Post' AND (`share_visibilities`.`user_id` = _MY_UID AND `mentions`.`mentions_container_id` = `posts`.`id`))": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `mentions`.`id` AS `id1`, `mentions`.`mentions_container_id`, `mentions`.`person_id`, `mentions`.`mentions_container_type` FROM `posts`,     `posts` AS `posts0`,     `mentions` WHERE `mentions`.`mentions_container_type` = 'Post' AND ('Reshare' = `posts0`.`type` AND `posts0`.`guid` = `posts`.`root_guid`) AND ('Reshare' = `posts`.`type` AND (`posts`.`public` = TRUE AND `mentions`.`mentions_container_id` = `posts`.`id`))": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `mentions`.`id`, `mentions`.`mentions_container_id` FROM `people`,     `posts`,     `mentions` WHERE `mentions`.`mentions_container_type` = 'Post' AND `mentions`.`person_id` = `people`.`id` AND `posts`.`public` = TRUE AND `people`.`owner_id` = _MY_UID AND `mentions`.`mentions_container_id` = `posts`.`id`": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `mentions`.`id`, `mentions`.`mentions_container_id` FROM `people`,     `posts`,     `mentions` WHERE `mentions`.`mentions_container_type` = 'Post' AND `mentions`.`person_id` = `people`.`id` AND `posts`.`author_id` = `people`.`id` AND `people`.`owner_id` = _MY_UID AND `mentions`.`mentions_container_id` = `posts`.`id`": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `polls`.`id` AS `id1`, `polls`.`question`, `polls`.`status_message_id`, `polls`.`status`, `polls`.`guid` AS `guid0`, `polls`.`created_at` AS `created_at0`, `polls`.`updated_at` AS `updated_at0` FROM `posts`,     `share_visibilities`,     `polls` WHERE `posts`.`type` = 'StatusMessage' AND `share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post' AND `share_visibilities`.`user_id` = _MY_UID AND `polls`.`status_message_id` = `posts`.`id`": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `polls`.`id` AS `id0`, `polls`.`question`, `polls`.`status_message_id`, `polls`.`status`, `polls`.`guid` AS `guid0`, `polls`.`created_at` AS `created_at0`, `polls`.`updated_at` AS `updated_at0` FROM `posts`,     `polls` WHERE `posts`.`type` = 'StatusMessage' AND `posts`.`public` = TRUE AND `polls`.`status_message_id` = `posts`.`id`": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `aspects`.`id` AS `id0`, `aspects`.`name`, `aspects`.`user_id`, `aspects`.`created_at` AS `created_at0`, `aspects`.`updated_at` AS `updated_at0`, `aspects`.`order_id`, `aspects`.`chat_enabled`, `aspects`.`post_default`, `posts`.`id` FROM `posts`,     `aspects` WHERE `aspects`.`user_id` = _MY_UID AND `posts`.`public` = TRUE": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `profiles`.`id`, `profiles`.`diaspora_handle`, `profiles`.`first_name`, `profiles`.`last_name`, `profiles`.`image_url`, `profiles`.`image_url_small`, `profiles`.`image_url_medium`, `profiles`.`searchable`, `profiles`.`person_id`, `profiles`.`created_at`, `profiles`.`updated_at`, `profiles`.`full_name`, `profiles`.`nsfw`, `profiles`.`public_details`, `posts`.`id` FROM `posts`,     `profiles` WHERE `profiles`.`person_id` = `posts`.`author_id` AND `posts`.`public` = TRUE": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `contacts`.`id` AS `id0`, `contacts`.`user_id`, `contacts`.`person_id`, `contacts`.`created_at` AS `created_at0`, `contacts`.`updated_at` AS `updated_at0`, `contacts`.`sharing`, `contacts`.`receiving`, `posts`.`id` FROM `posts`,     `contacts` WHERE `contacts`.`user_id` = _MY_UID AND `contacts`.`receiving` = TRUE AND `posts`.`public` = TRUE": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `posts`.`id`, `posts`.`author_id`, `posts`.`public`, `posts`.`guid`, `posts`.`type`, `posts`.`text`, `posts`.`created_at`, `posts`.`updated_at`, `posts`.`provider_display_name`, `posts`.`root_guid`, `posts`.`likes_count`, `posts`.`comments_count`, `posts`.`o_embed_cache_id`, `posts`.`reshares_count`, `posts`.`interacted_at`, `posts`.`tweet_id`, `posts`.`open_graph_cache_id`, `posts`.`tumblr_ids` FROM `posts`,     `share_visibilities` WHERE `share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post' AND `share_visibilities`.`user_id` = _MY_UID": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `mentions`.`id` AS `id0`, `mentions`.`mentions_container_id`, `mentions`.`person_id`, `mentions`.`mentions_container_type` FROM `posts`,     `mentions` WHERE `mentions`.`mentions_container_type` = 'Post' AND `posts`.`type` = 'StatusMessage' AND `posts`.`public` = TRUE AND `mentions`.`mentions_container_id` = `posts`.`id`": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `open_graph_caches`.`id` AS `id0`, `open_graph_caches`.`title`, `open_graph_caches`.`ob_type`, `open_graph_caches`.`image`, `open_graph_caches`.`url`, `open_graph_caches`.`description`, `open_graph_caches`.`video_url`, `posts`.`id` FROM `posts`,     `open_graph_caches` WHERE `open_graph_caches`.`id` = `posts`.`open_graph_cache_id` AND `posts`.`type` = 'StatusMessage' AND `posts`.`public` = TRUE": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `locations`.`id` AS `id0`, `locations`.`address`, `locations`.`lat`, `locations`.`lng`, `locations`.`status_message_id`, `locations`.`created_at` AS `created_at0`, `locations`.`updated_at` AS `updated_at0` FROM `posts`,     `locations` WHERE `posts`.`type` = 'StatusMessage' AND `posts`.`public` = TRUE AND `posts`.`id` = `locations`.`status_message_id`": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `people`.`id` AS `id0`, `people`.`guid` AS `guid0`, `people`.`diaspora_handle`, `people`.`serialized_public_key`, `people`.`owner_id`, `people`.`created_at` AS `created_at0`, `people`.`updated_at` AS `updated_at0`, `people`.`closed_account`, `people`.`fetch_status`, `people`.`pod_id`, `posts`.`id` FROM `posts`,     `people` WHERE `people`.`id` = `posts`.`author_id` AND `posts`.`public` = TRUE": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `o_embed_caches`.`id` AS `id0`, `o_embed_caches`.`url`, `o_embed_caches`.`data`, `posts`.`id` FROM `posts`,     `o_embed_caches` WHERE `o_embed_caches`.`id` = `posts`.`o_embed_cache_id` AND `posts`.`type` = 'StatusMessage' AND `posts`.`public` = TRUE": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `photos`.`id` AS `id0`, `photos`.`author_id` AS `author_id0`, `photos`.`public` AS `public0`, `photos`.`guid` AS `guid0`, `photos`.`pending`, `photos`.`text` AS `text0`, `photos`.`remote_photo_path`, `photos`.`remote_photo_name`, `photos`.`random_string`, `photos`.`processed_image`, `photos`.`created_at` AS `created_at0`, `photos`.`updated_at` AS `updated_at0`, `photos`.`unprocessed_image`, `photos`.`status_message_guid`, `photos`.`comments_count` AS `comments_count0`, `photos`.`height`, `photos`.`width`, `posts`.`id` FROM `posts`,     `photos` WHERE `photos`.`status_message_guid` = `posts`.`guid` AND `posts`.`type` = 'StatusMessage' AND `posts`.`public` = TRUE": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `notifications`.`id` AS `id0`, `notifications`.`target_type`, `notifications`.`target_id`, `notifications`.`recipient_id`, `notifications`.`unread`, `notifications`.`created_at` AS `created_at0`, `notifications`.`updated_at` AS `updated_at0`, `notifications`.`type` AS `type0`, `posts`.`id` FROM `posts`,     `notifications` WHERE `notifications`.`recipient_id` = _MY_UID AND `notifications`.`unread` = TRUE AND `posts`.`public` = TRUE": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `posts`.`id` AS `id0`, `posts`.`author_id`, `posts`.`public`, `posts`.`guid` AS `guid0`, `posts`.`type`, `posts`.`text`, `posts`.`created_at` AS `created_at0`, `posts`.`updated_at` AS `updated_at0`, `posts`.`provider_display_name`, `posts`.`root_guid`, `posts`.`likes_count`, `posts`.`comments_count`, `posts`.`o_embed_cache_id`, `posts`.`reshares_count`, `posts`.`interacted_at`, `posts`.`tweet_id`, `posts`.`open_graph_cache_id`, `posts`.`tumblr_ids` FROM `people`,     `posts` WHERE `posts`.`author_id` = `people`.`id` AND `people`.`owner_id` = _MY_UID": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `services`.`id` AS `id0`, `services`.`type` AS `type0`, `services`.`user_id`, `services`.`uid`, `services`.`access_token`, `services`.`access_secret`, `services`.`nickname`, `services`.`created_at` AS `created_at0`, `services`.`updated_at` AS `updated_at0`, `posts`.`id` FROM `posts`,     `services` WHERE `services`.`user_id` = _MY_UID AND `posts`.`public` = TRUE": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT * FROM `posts` WHERE `public` = TRUE": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT * FROM `users` WHERE `id` = _MY_UID": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT * FROM `people` WHERE `owner_id` = _MY_UID": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `likes`.`id` AS `id0`, `likes`.`positive`, `likes`.`target_id`, `likes`.`author_id` AS `author_id0`, `likes`.`guid` AS `guid0`, `likes`.`created_at` AS `created_at0`, `likes`.`updated_at` AS `updated_at0`, `likes`.`target_type` FROM `posts`,     `likes` WHERE `likes`.`target_type` = 'Post' AND `likes`.`positive` = TRUE AND `posts`.`public` = TRUE AND `posts`.`id` = `likes`.`target_id`": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  }
+ },
+ "ours": {
+  "SELECT `posts`.* FROM `posts` INNER JOIN `share_visibilities` ON `share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post', `posts` AS `posts0`, `people` WHERE `posts`.`guid` = `posts0`.`id` AND `share_visibilities`.`user_id` = _MY_UID AND `people`.`owner_id` = _MY_UID AND `posts0`.`author_id` = `people`.`id` AND `posts0`.`guid` <> '' AND `posts0`.`text` <> ''": {
+   "verdict": "unknown",
+   "reason": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "timeout_ms": 120000
+  },
+  "SELECT `posts`.* FROM `posts` INNER JOIN `share_visibilities` ON `share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post', `posts` AS `posts0`, `people` WHERE `posts`.`guid` = `posts0`.`id` AND `share_visibilities`.`user_id` = _MY_UID AND `people`.`owner_id` = _MY_UID AND `posts0`.`author_id` = `people`.`id` AND `posts0`.`guid` <> '' AND `posts0`.`text` = ''": {
+   "verdict": "unknown",
+   "reason": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "timeout_ms": 120000
+  },
+  "SELECT `posts`.* FROM `posts` INNER JOIN `share_visibilities` ON `share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post', `posts` AS `posts0`, `people` WHERE `posts`.`guid` = `posts0`.`id` AND `share_visibilities`.`user_id` = _MY_UID AND `people`.`owner_id` = _MY_UID AND `posts0`.`author_id` = `people`.`id` AND `posts0`.`guid` = '' AND `posts0`.`text` <> ''": {
+   "verdict": "unknown",
+   "reason": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "timeout_ms": 120000
+  },
+  "SELECT `posts`.* FROM `posts` INNER JOIN `share_visibilities` ON `share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post', `posts` AS `posts0`, `people` WHERE `posts`.`guid` = `posts0`.`id` AND `share_visibilities`.`user_id` = _MY_UID AND `people`.`owner_id` = _MY_UID AND `posts0`.`author_id` = `people`.`id` AND `posts0`.`guid` = '' AND `posts0`.`text` = ''": {
+   "verdict": "unknown",
+   "reason": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "timeout_ms": 120000
+  },
+  "SELECT `posts`.* FROM `posts` INNER JOIN `share_visibilities` ON `share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post', `posts` AS `posts0`, `share_visibilities` AS `share_visibilities0` WHERE `posts`.`guid` = `posts0`.`id` AND `share_visibilities`.`user_id` = _MY_UID AND `share_visibilities0`.`shareable_id` = `posts0`.`id` AND `share_visibilities0`.`shareable_type` = 'Post' AND `share_visibilities0`.`user_id` = _MY_UID AND `posts0`.`guid` <> '' AND `posts0`.`text` <> ''": {
+   "verdict": "unknown",
+   "reason": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "timeout_ms": 120000
+  },
+  "SELECT `posts`.* FROM `posts` INNER JOIN `share_visibilities` ON `share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post', `posts` AS `posts0`, `share_visibilities` AS `share_visibilities0` WHERE `posts`.`guid` = `posts0`.`id` AND `share_visibilities`.`user_id` = _MY_UID AND `share_visibilities0`.`shareable_id` = `posts0`.`id` AND `share_visibilities0`.`shareable_type` = 'Post' AND `share_visibilities0`.`user_id` = _MY_UID AND `posts0`.`guid` <> '' AND `posts0`.`text` = ''": {
+   "verdict": "unknown",
+   "reason": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "timeout_ms": 120000
+  },
+  "SELECT `posts`.* FROM `posts` INNER JOIN `share_visibilities` ON `share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post', `posts` AS `posts0`, `share_visibilities` AS `share_visibilities0` WHERE `posts`.`guid` = `posts0`.`id` AND `share_visibilities`.`user_id` = _MY_UID AND `share_visibilities0`.`shareable_id` = `posts0`.`id` AND `share_visibilities0`.`shareable_type` = 'Post' AND `share_visibilities0`.`user_id` = _MY_UID AND `posts0`.`guid` = '' AND `posts0`.`text` <> ''": {
+   "verdict": "unknown",
+   "reason": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "timeout_ms": 120000
+  },
+  "SELECT `posts`.* FROM `posts` INNER JOIN `share_visibilities` ON `share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post', `posts` AS `posts0`, `share_visibilities` AS `share_visibilities0` WHERE `posts`.`guid` = `posts0`.`id` AND `share_visibilities`.`user_id` = _MY_UID AND `share_visibilities0`.`shareable_id` = `posts0`.`id` AND `share_visibilities0`.`shareable_type` = 'Post' AND `share_visibilities0`.`user_id` = _MY_UID AND `posts0`.`guid` = '' AND `posts0`.`text` = ''": {
+   "verdict": "unknown",
+   "reason": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "timeout_ms": 120000
+  },
+  "SELECT `posts`.* FROM `posts`, `posts` AS `posts0`, `share_visibilities`, `people` WHERE `posts`.`guid` = `posts0`.`id` AND `posts`.`author_id` = `people`.`id` AND `share_visibilities`.`shareable_id` = `posts0`.`id` AND `share_visibilities`.`shareable_type` = 'Post' AND `share_visibilities`.`user_id` = _MY_UID AND `people`.`owner_id` = _MY_UID AND `posts0`.`guid` <> '' AND `posts0`.`text` <> ''": {
+   "verdict": "unknown",
+   "reason": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "timeout_ms": 120000
+  },
+  "SELECT `posts`.* FROM `posts`, `posts` AS `posts0`, `share_visibilities`, `people` WHERE `posts`.`guid` = `posts0`.`id` AND `posts`.`author_id` = `people`.`id` AND `share_visibilities`.`shareable_id` = `posts0`.`id` AND `share_visibilities`.`shareable_type` = 'Post' AND `share_visibilities`.`user_id` = _MY_UID AND `people`.`owner_id` = _MY_UID AND `posts0`.`guid` <> '' AND `posts0`.`text` = ''": {
+   "verdict": "unknown",
+   "reason": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "timeout_ms": 120000
+  },
+  "SELECT `posts`.* FROM `posts`, `posts` AS `posts0`, `share_visibilities`, `people` WHERE `posts`.`guid` = `posts0`.`id` AND `posts`.`author_id` = `people`.`id` AND `share_visibilities`.`shareable_id` = `posts0`.`id` AND `share_visibilities`.`shareable_type` = 'Post' AND `share_visibilities`.`user_id` = _MY_UID AND `people`.`owner_id` = _MY_UID AND `posts0`.`guid` = '' AND `posts0`.`text` <> ''": {
+   "verdict": "unknown",
+   "reason": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "timeout_ms": 120000
+  },
+  "SELECT `posts`.* FROM `posts`, `posts` AS `posts0`, `share_visibilities`, `people` WHERE `posts`.`guid` = `posts0`.`id` AND `posts`.`author_id` = `people`.`id` AND `share_visibilities`.`shareable_id` = `posts0`.`id` AND `share_visibilities`.`shareable_type` = 'Post' AND `share_visibilities`.`user_id` = _MY_UID AND `people`.`owner_id` = _MY_UID AND `posts0`.`guid` = '' AND `posts0`.`text` = ''": {
+   "verdict": "unknown",
+   "reason": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "timeout_ms": 120000
+  },
+  "SELECT `likes`.* FROM `likes`, `posts`, `people` WHERE `likes`.`target_id` = `posts`.`id` AND `likes`.`target_type` = 'Post' AND `likes`.`positive` = TRUE AND `people`.`owner_id` = _MY_UID AND `posts`.`author_id` = `people`.`id` AND `posts`.`guid` <> '' AND `posts`.`text` <> ''": {
+   "verdict": "covered",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `likes`.* FROM `likes`, `posts`, `people` WHERE `likes`.`target_id` = `posts`.`id` AND `likes`.`target_type` = 'Post' AND `likes`.`positive` = TRUE AND `people`.`owner_id` = _MY_UID AND `posts`.`author_id` = `people`.`id` AND `posts`.`guid` <> '' AND `posts`.`text` = ''": {
+   "verdict": "covered",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `likes`.* FROM `likes`, `posts`, `people` WHERE `likes`.`target_id` = `posts`.`id` AND `likes`.`target_type` = 'Post' AND `likes`.`positive` = TRUE AND `people`.`owner_id` = _MY_UID AND `posts`.`author_id` = `people`.`id` AND `posts`.`guid` = '' AND `posts`.`text` <> ''": {
+   "verdict": "covered",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `likes`.* FROM `likes`, `posts`, `people` WHERE `likes`.`target_id` = `posts`.`id` AND `likes`.`target_type` = 'Post' AND `likes`.`positive` = TRUE AND `people`.`owner_id` = _MY_UID AND `posts`.`author_id` = `people`.`id` AND `posts`.`guid` = '' AND `posts`.`text` = ''": {
+   "verdict": "covered",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `likes`.* FROM `likes`, `posts`, `share_visibilities` WHERE `likes`.`target_id` = `posts`.`id` AND `likes`.`target_type` = 'Post' AND `likes`.`positive` = TRUE AND `share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post' AND `share_visibilities`.`user_id` = _MY_UID AND `posts`.`guid` <> '' AND `posts`.`text` <> ''": {
+   "verdict": "covered",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `likes`.* FROM `likes`, `posts`, `share_visibilities` WHERE `likes`.`target_id` = `posts`.`id` AND `likes`.`target_type` = 'Post' AND `likes`.`positive` = TRUE AND `share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post' AND `share_visibilities`.`user_id` = _MY_UID AND `posts`.`guid` <> '' AND `posts`.`text` = ''": {
+   "verdict": "covered",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `likes`.* FROM `likes`, `posts`, `share_visibilities` WHERE `likes`.`target_id` = `posts`.`id` AND `likes`.`target_type` = 'Post' AND `likes`.`positive` = TRUE AND `share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post' AND `share_visibilities`.`user_id` = _MY_UID AND `posts`.`guid` = '' AND `posts`.`text` <> ''": {
+   "verdict": "covered",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `likes`.* FROM `likes`, `posts`, `share_visibilities` WHERE `likes`.`target_id` = `posts`.`id` AND `likes`.`target_type` = 'Post' AND `likes`.`positive` = TRUE AND `share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post' AND `share_visibilities`.`user_id` = _MY_UID AND `posts`.`guid` = '' AND `posts`.`text` = ''": {
+   "verdict": "covered",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `participations`.* FROM `participations`, `posts`, `people` WHERE `participations`.`target_id` = `posts`.`id` AND `people`.`owner_id` = _MY_UID AND `posts`.`author_id` = `people`.`id` AND `posts`.`guid` <> '' AND `posts`.`text` <> ''": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `participations`.* FROM `participations`, `posts`, `people` WHERE `participations`.`target_id` = `posts`.`id` AND `people`.`owner_id` = _MY_UID AND `posts`.`author_id` = `people`.`id` AND `posts`.`guid` = '' AND `posts`.`text` <> ''": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `participations`.* FROM `participations`, `posts`, `people` WHERE `participations`.`target_id` = `posts`.`id` AND `people`.`owner_id` = _MY_UID AND `posts`.`author_id` = `people`.`id` AND `posts`.`guid` = '' AND `posts`.`text` = ''": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `participations`.* FROM `participations`, `posts`, `people` WHERE `participations`.`target_id` = `posts`.`id` AND `people`.`owner_id` = _MY_UID AND `posts`.`author_id` = `people`.`id` AND `posts`.`guid` <> '' AND `posts`.`text` = ''": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `participations`.* FROM `participations`, `posts`, `share_visibilities` WHERE `participations`.`target_id` = `posts`.`id` AND `share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post' AND `share_visibilities`.`user_id` = _MY_UID AND `posts`.`guid` <> '' AND `posts`.`text` <> ''": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `participations`.* FROM `participations`, `posts`, `share_visibilities` WHERE `participations`.`target_id` = `posts`.`id` AND `share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post' AND `share_visibilities`.`user_id` = _MY_UID AND `posts`.`guid` <> '' AND `posts`.`text` = ''": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `participations`.* FROM `participations`, `posts`, `share_visibilities` WHERE `participations`.`target_id` = `posts`.`id` AND `share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post' AND `share_visibilities`.`user_id` = _MY_UID AND `posts`.`guid` = '' AND `posts`.`text` = ''": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `posts`.* FROM `posts` INNER JOIN `share_visibilities` ON `share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post', `posts` AS `posts0` WHERE `posts`.`guid` = `posts0`.`id` AND `share_visibilities`.`user_id` = _MY_UID AND `posts0`.`public` = TRUE AND `posts0`.`guid` <> '' AND `posts0`.`text` <> ''": {
+   "verdict": "unknown",
+   "reason": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "timeout_ms": 120000
+  },
+  "SELECT `posts`.* FROM `posts` INNER JOIN `share_visibilities` ON `share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post', `posts` AS `posts0` WHERE `posts`.`guid` = `posts0`.`id` AND `share_visibilities`.`user_id` = _MY_UID AND `posts0`.`public` = TRUE AND `posts0`.`guid` <> '' AND `posts0`.`text` = ''": {
+   "verdict": "unknown",
+   "reason": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "timeout_ms": 120000
+  },
+  "SELECT `posts`.* FROM `posts` INNER JOIN `share_visibilities` ON `share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post', `posts` AS `posts0` WHERE `posts`.`guid` = `posts0`.`id` AND `share_visibilities`.`user_id` = _MY_UID AND `posts0`.`public` = TRUE AND `posts0`.`guid` = '' AND `posts0`.`text` <> ''": {
+   "verdict": "unknown",
+   "reason": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "timeout_ms": 120000
+  },
+  "SELECT `posts`.* FROM `posts` INNER JOIN `share_visibilities` ON `share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post', `posts` AS `posts0` WHERE `posts`.`guid` = `posts0`.`id` AND `share_visibilities`.`user_id` = _MY_UID AND `posts0`.`public` = TRUE AND `posts0`.`guid` = '' AND `posts0`.`text` = ''": {
+   "verdict": "unknown",
+   "reason": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "timeout_ms": 120000
+  },
+  "SELECT `posts`.* FROM `posts`, `posts` AS `posts0`, `people` WHERE `posts`.`guid` = `posts0`.`id` AND `posts`.`author_id` = `people`.`id` AND `people`.`owner_id` = _MY_UID AND `posts0`.`author_id` = `people`.`id` AND `posts0`.`guid` <> '' AND `posts0`.`text` <> ''": {
+   "verdict": "unknown",
+   "reason": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "timeout_ms": 120000
+  },
+  "SELECT `posts`.* FROM `posts`, `posts` AS `posts0`, `people` WHERE `posts`.`guid` = `posts0`.`id` AND `posts`.`author_id` = `people`.`id` AND `people`.`owner_id` = _MY_UID AND `posts0`.`author_id` = `people`.`id` AND `posts0`.`guid` <> '' AND `posts0`.`text` = ''": {
+   "verdict": "unknown",
+   "reason": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "timeout_ms": 120000
+  },
+  "SELECT `posts`.* FROM `posts`, `posts` AS `posts0`, `people` WHERE `posts`.`guid` = `posts0`.`id` AND `posts`.`author_id` = `people`.`id` AND `people`.`owner_id` = _MY_UID AND `posts0`.`author_id` = `people`.`id` AND `posts0`.`guid` = '' AND `posts0`.`text` <> ''": {
+   "verdict": "unknown",
+   "reason": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "timeout_ms": 120000
+  },
+  "SELECT `posts`.* FROM `posts`, `posts` AS `posts0`, `people` WHERE `posts`.`guid` = `posts0`.`id` AND `posts`.`author_id` = `people`.`id` AND `people`.`owner_id` = _MY_UID AND `posts0`.`author_id` = `people`.`id` AND `posts0`.`guid` = '' AND `posts0`.`text` = ''": {
+   "verdict": "unknown",
+   "reason": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "timeout_ms": 120000
+  },
+  "SELECT `posts`.* FROM `posts`, `posts` AS `posts0`, `people` WHERE `posts`.`guid` = `posts0`.`id` AND `posts`.`author_id` = `people`.`id` AND `posts0`.`public` = TRUE AND `people`.`owner_id` = _MY_UID AND `posts0`.`guid` <> '' AND `posts0`.`text` <> ''": {
+   "verdict": "unknown",
+   "reason": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "timeout_ms": 120000
+  },
+  "SELECT `posts`.* FROM `posts`, `posts` AS `posts0`, `people` WHERE `posts`.`guid` = `posts0`.`id` AND `posts`.`author_id` = `people`.`id` AND `posts0`.`public` = TRUE AND `people`.`owner_id` = _MY_UID AND `posts0`.`guid` <> '' AND `posts0`.`text` = ''": {
+   "verdict": "unknown",
+   "reason": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "timeout_ms": 120000
+  },
+  "SELECT `posts`.* FROM `posts`, `posts` AS `posts0`, `people` WHERE `posts`.`guid` = `posts0`.`id` AND `posts`.`author_id` = `people`.`id` AND `posts0`.`public` = TRUE AND `people`.`owner_id` = _MY_UID AND `posts0`.`guid` = '' AND `posts0`.`text` <> ''": {
+   "verdict": "unknown",
+   "reason": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "timeout_ms": 120000
+  },
+  "SELECT `posts`.* FROM `posts`, `posts` AS `posts0`, `people` WHERE `posts`.`guid` = `posts0`.`id` AND `posts`.`author_id` = `people`.`id` AND `posts0`.`public` = TRUE AND `people`.`owner_id` = _MY_UID AND `posts0`.`guid` = '' AND `posts0`.`text` = ''": {
+   "verdict": "unknown",
+   "reason": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "timeout_ms": 120000
+  },
+  "SELECT `participations`.* FROM `participations`, `posts`, `share_visibilities` WHERE `participations`.`target_id` = `posts`.`id` AND `share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post' AND `share_visibilities`.`user_id` = _MY_UID AND `posts`.`guid` = '' AND `posts`.`text` <> ''": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `posts`.* FROM `posts`, `posts` AS `posts0`, `people` WHERE `posts`.`guid` = `posts0`.`id` AND `posts`.`public` = TRUE AND `people`.`owner_id` = _MY_UID AND `posts0`.`author_id` = `people`.`id` AND `posts0`.`guid` <> '' AND `posts0`.`text` <> ''": {
+   "verdict": "unknown",
+   "reason": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "timeout_ms": 120000
+  },
+  "SELECT `posts`.* FROM `posts`, `posts` AS `posts0`, `people` WHERE `posts`.`guid` = `posts0`.`id` AND `posts`.`public` = TRUE AND `people`.`owner_id` = _MY_UID AND `posts0`.`author_id` = `people`.`id` AND `posts0`.`guid` <> '' AND `posts0`.`text` = ''": {
+   "verdict": "unknown",
+   "reason": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "timeout_ms": 120000
+  },
+  "SELECT `posts`.* FROM `posts`, `posts` AS `posts0`, `people` WHERE `posts`.`guid` = `posts0`.`id` AND `posts`.`public` = TRUE AND `people`.`owner_id` = _MY_UID AND `posts0`.`author_id` = `people`.`id` AND `posts0`.`guid` = '' AND `posts0`.`text` <> ''": {
+   "verdict": "unknown",
+   "reason": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "timeout_ms": 120000
+  },
+  "SELECT `posts`.* FROM `posts`, `posts` AS `posts0`, `people` WHERE `posts`.`guid` = `posts0`.`id` AND `posts`.`public` = TRUE AND `people`.`owner_id` = _MY_UID AND `posts0`.`author_id` = `people`.`id` AND `posts0`.`guid` = '' AND `posts0`.`text` = ''": {
+   "verdict": "unknown",
+   "reason": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "timeout_ms": 120000
+  },
+  "SELECT `posts`.* FROM `posts`, `posts` AS `posts0`, `share_visibilities` WHERE `posts`.`guid` = `posts0`.`id` AND `posts`.`public` = TRUE AND `share_visibilities`.`shareable_id` = `posts0`.`id` AND `share_visibilities`.`shareable_type` = 'Post' AND `share_visibilities`.`user_id` = _MY_UID AND `posts0`.`guid` <> '' AND `posts0`.`text` <> ''": {
+   "verdict": "unknown",
+   "reason": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "timeout_ms": 120000
+  },
+  "SELECT `posts`.* FROM `posts`, `posts` AS `posts0`, `share_visibilities` WHERE `posts`.`guid` = `posts0`.`id` AND `posts`.`public` = TRUE AND `share_visibilities`.`shareable_id` = `posts0`.`id` AND `share_visibilities`.`shareable_type` = 'Post' AND `share_visibilities`.`user_id` = _MY_UID AND `posts0`.`guid` <> '' AND `posts0`.`text` = ''": {
+   "verdict": "unknown",
+   "reason": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "timeout_ms": 120000
+  },
+  "SELECT `posts`.* FROM `posts`, `posts` AS `posts0`, `share_visibilities` WHERE `posts`.`guid` = `posts0`.`id` AND `posts`.`public` = TRUE AND `share_visibilities`.`shareable_id` = `posts0`.`id` AND `share_visibilities`.`shareable_type` = 'Post' AND `share_visibilities`.`user_id` = _MY_UID AND `posts0`.`guid` = '' AND `posts0`.`text` <> ''": {
+   "verdict": "unknown",
+   "reason": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "timeout_ms": 120000
+  },
+  "SELECT `posts`.* FROM `posts`, `posts` AS `posts0`, `share_visibilities` WHERE `posts`.`guid` = `posts0`.`id` AND `posts`.`public` = TRUE AND `share_visibilities`.`shareable_id` = `posts0`.`id` AND `share_visibilities`.`shareable_type` = 'Post' AND `share_visibilities`.`user_id` = _MY_UID AND `posts0`.`guid` = '' AND `posts0`.`text` = ''": {
+   "verdict": "unknown",
+   "reason": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "timeout_ms": 120000
+  },
+  "SELECT `likes`.* FROM `likes`, `posts` WHERE `likes`.`target_id` = `posts`.`id` AND `likes`.`target_type` = 'Post' AND `likes`.`positive` = TRUE AND `posts`.`public` = TRUE AND `posts`.`guid` <> '' AND `posts`.`text` <> ''": {
+   "verdict": "covered",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `likes`.* FROM `likes`, `posts` WHERE `likes`.`target_id` = `posts`.`id` AND `likes`.`target_type` = 'Post' AND `likes`.`positive` = TRUE AND `posts`.`public` = TRUE AND `posts`.`guid` = '' AND `posts`.`text` <> ''": {
+   "verdict": "covered",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `likes`.* FROM `likes`, `posts` WHERE `likes`.`target_id` = `posts`.`id` AND `likes`.`target_type` = 'Post' AND `likes`.`positive` = TRUE AND `posts`.`public` = TRUE AND `posts`.`guid` <> '' AND `posts`.`text` = ''": {
+   "verdict": "covered",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `likes`.* FROM `likes`, `posts` WHERE `likes`.`target_id` = `posts`.`id` AND `likes`.`target_type` = 'Post' AND `likes`.`positive` = TRUE AND `posts`.`public` = TRUE AND `posts`.`guid` = '' AND `posts`.`text` = ''": {
+   "verdict": "covered",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `participations`.* FROM `participations`, `posts` WHERE `participations`.`target_id` = `posts`.`id` AND `posts`.`public` = TRUE AND `posts`.`guid` <> '' AND `posts`.`text` = ''": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `participations`.* FROM `participations`, `posts` WHERE `participations`.`target_id` = `posts`.`id` AND `posts`.`public` = TRUE AND `posts`.`guid` <> '' AND `posts`.`text` <> ''": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `participations`.* FROM `participations`, `posts` WHERE `participations`.`target_id` = `posts`.`id` AND `posts`.`public` = TRUE AND `posts`.`guid` = '' AND `posts`.`text` <> ''": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `posts`.* FROM `posts` INNER JOIN `share_visibilities` ON `share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post' WHERE `share_visibilities`.`user_id` = _MY_UID AND `posts`.`guid` <> '' AND `posts`.`text` <> ''": {
+   "verdict": "covered",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `posts`.* FROM `posts` INNER JOIN `share_visibilities` ON `share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post' WHERE `share_visibilities`.`user_id` = _MY_UID AND `posts`.`guid` <> '' AND `posts`.`text` = ''": {
+   "verdict": "covered",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `posts`.* FROM `posts` INNER JOIN `share_visibilities` ON `share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post' WHERE `share_visibilities`.`user_id` = _MY_UID AND `posts`.`guid` = '' AND `posts`.`text` <> ''": {
+   "verdict": "covered",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `posts`.* FROM `posts` INNER JOIN `share_visibilities` ON `share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post' WHERE `share_visibilities`.`user_id` = _MY_UID AND `posts`.`guid` = '' AND `posts`.`text` = ''": {
+   "verdict": "covered",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `posts`.* FROM `posts`, `people` WHERE `posts`.`author_id` = `people`.`id` AND `people`.`owner_id` = _MY_UID AND `posts`.`guid` <> '' AND `posts`.`text` <> ''": {
+   "verdict": "covered",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `participations`.* FROM `participations`, `posts` WHERE `participations`.`target_id` = `posts`.`id` AND `posts`.`public` = TRUE AND `posts`.`guid` = '' AND `posts`.`text` = ''": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `posts`.* FROM `posts`, `people` WHERE `posts`.`author_id` = `people`.`id` AND `people`.`owner_id` = _MY_UID AND `posts`.`guid` <> '' AND `posts`.`text` = ''": {
+   "verdict": "covered",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `posts`.* FROM `posts`, `people` WHERE `posts`.`author_id` = `people`.`id` AND `people`.`owner_id` = _MY_UID AND `posts`.`guid` = '' AND `posts`.`text` <> ''": {
+   "verdict": "covered",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `posts`.* FROM `posts`, `people` WHERE `posts`.`author_id` = `people`.`id` AND `people`.`owner_id` = _MY_UID AND `posts`.`guid` = '' AND `posts`.`text` = ''": {
+   "verdict": "covered",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `posts`.* FROM `posts`, `posts` AS `posts0` WHERE `posts`.`guid` = `posts0`.`id` AND `posts`.`public` = TRUE AND `posts0`.`public` = TRUE AND `posts0`.`guid` <> '' AND `posts0`.`text` <> ''": {
+   "verdict": "unknown",
+   "reason": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "timeout_ms": 120000
+  },
+  "SELECT `posts`.* FROM `posts`, `posts` AS `posts0` WHERE `posts`.`guid` = `posts0`.`id` AND `posts`.`public` = TRUE AND `posts0`.`public` = TRUE AND `posts0`.`guid` <> '' AND `posts0`.`text` = ''": {
+   "verdict": "unknown",
+   "reason": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "timeout_ms": 120000
+  },
+  "SELECT `posts`.* FROM `posts`, `posts` AS `posts0` WHERE `posts`.`guid` = `posts0`.`id` AND `posts`.`public` = TRUE AND `posts0`.`public` = TRUE AND `posts0`.`guid` = '' AND `posts0`.`text` <> ''": {
+   "verdict": "unknown",
+   "reason": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "timeout_ms": 120000
+  },
+  "SELECT `posts`.* FROM `posts`, `posts` AS `posts0` WHERE `posts`.`guid` = `posts0`.`id` AND `posts`.`public` = TRUE AND `posts0`.`public` = TRUE AND `posts0`.`guid` = '' AND `posts0`.`text` = ''": {
+   "verdict": "unknown",
+   "reason": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "timeout_ms": 120000
+  },
+  "SELECT `posts`.* FROM `posts` WHERE `posts`.`public` = TRUE AND `posts`.`guid` <> '' AND `posts`.`text` <> ''": {
+   "verdict": "covered",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `posts`.* FROM `posts` WHERE `posts`.`public` = TRUE AND `posts`.`guid` <> '' AND `posts`.`text` = ''": {
+   "verdict": "covered",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `posts`.* FROM `posts` WHERE `posts`.`public` = TRUE AND `posts`.`guid` = '' AND `posts`.`text` <> ''": {
+   "verdict": "covered",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `posts`.* FROM `posts` WHERE `posts`.`public` = TRUE AND `posts`.`guid` = '' AND `posts`.`text` = ''": {
+   "verdict": "covered",
+   "reason": "",
+   "timeout_ms": 120000
+  }
+ },
+ "view_errors": {
+  "ref": {
+   "0": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "1": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "2": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "3": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "4": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "5": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "6": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "7": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "8": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "9": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "10": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "11": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "28": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "29": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "30": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "31": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "32": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "33": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "34": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "35": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "36": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "37": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "38": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "39": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "40": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "41": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "42": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "43": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "44": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "45": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "46": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "47": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "64": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "65": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "66": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible",
+   "67": "rejected by solver-type probe: Z3Exception: Sorts CS!STRING and CS!INT are incompatible"
+  }
+ }
+}

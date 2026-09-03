@@ -1,0 +1,229 @@
+{
+  "batch_dir": "/home/dev/project/reports/diaspora/results3/comments_index",
+  "runner": "/home/dev/project/reports/diaspora/tools/slot scripts/diaspora-concolic /home/dev/project/reports/diaspora/results3/comments_index/run_dse.rb",
+  "workdir": "/home/dev/project",
+  "assumptions": [
+    {
+      "name": "post-key-length-dispatch",
+      "kind": "independence",
+      "dimension": "SYM_PARAM_post_id",
+      "note": "L independent of everything: flip to an 18-char id takes the guid branch of post_key; every other PC/note must be unchanged (the posts note mentions the dimension and is excluded on both sides)",
+      "flip_to": "gggggggggggggggggg"
+    },
+    {
+      "name": "post-not-found-foreclosure",
+      "kind": "foreclosure",
+      "dimension": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found",
+      "expect_pc_substring": "_first_1_not_found =="
+    },
+    {
+      "name": "post-nonpublic-foreclosure",
+      "kind": "foreclosure",
+      "dimension": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_public",
+      "expect_pc_substring": "_first_1_public =="
+    },
+    {
+      "name": "vis-not-found-foreclosure",
+      "kind": "foreclosure",
+      "dimension": "SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_not_found",
+      "expect_pc_substring": "ci_vis_first_1_not_found ==",
+      "note": "V gates VP and the author/public lookups"
+    },
+    {
+      "name": "author-not-found-foreclosure",
+      "kind": "foreclosure",
+      "dimension": "SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_not_found",
+      "expect_pc_substring": "ci_author_first_1_not_found ==",
+      "note": "AU gates AUP and the public lookup"
+    },
+    {
+      "name": "public-not-found-foreclosure",
+      "kind": "foreclosure",
+      "dimension": "SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_not_found",
+      "expect_pc_substring": "ci_public_first_1_not_found ==",
+      "note": "PU==True -> 404: gates PUP and the comment level"
+    },
+    {
+      "name": "comment-mention-free-foreclosure",
+      "kind": "foreclosure",
+      "dimension": "SYM_RESULT_ActiveRecord__Relation_records_1_row_text_has_mention",
+      "expect_pc_substring": "_row_text_has_mention ==",
+      "note": "HM gates the mention_lookup_* family (unpersisted side)"
+    },
+    {
+      "name": "comment-link-free-foreclosure",
+      "kind": "foreclosure",
+      "dimension": "SYM_RESULT_ActiveRecord__Relation_records_1_row_text_has_dlink",
+      "expect_pc_substring": "_text_has_dlink ==",
+      "note": "HD gates the whole diaspora:// link family: no link -> no entity compare, no link-count chain, no Post.exists? probe (message_renderer.rb:118-123)"
+    },
+    {
+      "name": "link-entity-foreclosure",
+      "kind": "foreclosure",
+      "dimension": "SYM_RESULT_ActiveRecord__Relation_records_1_row_text_dlink_is_post",
+      "expect_pc_substring": "_text_dlink_is_post ==",
+      "note": "the FIRST link's entity: `comment` issues no query (message_renderer.rb:121 `Regexp.last_match(2) == \"post\"`)"
+    },
+    {
+      "name": "link-count-ge2-foreclosure",
+      "kind": "foreclosure",
+      "dimension": "SYM_RESULT_ActiveRecord__Relation_records_1_row_text_dlink_ge2",
+      "expect_pc_substring": "_text_dlink_ge2 ==",
+      "note": "N3-2 cardinality chain: no 2nd link -> no 2nd exists? probe and no ge3 decision"
+    },
+    {
+      "name": "link-count-ge3-foreclosure",
+      "kind": "foreclosure",
+      "dimension": "SYM_RESULT_ActiveRecord__Relation_records_1_row_text_dlink_ge3",
+      "expect_pc_substring": "_text_dlink_ge3 ==",
+      "note": "N3-2 cardinality chain: no 3rd link -> no 3rd exists? probe and no ge4 decision"
+    },
+    {
+      "name": "link-count-ge4-foreclosure",
+      "kind": "foreclosure",
+      "dimension": "SYM_RESULT_ActiveRecord__Relation_records_1_row_text_dlink_ge4",
+      "expect_pc_substring": "_text_dlink_ge4 ==",
+      "note": "N3-2 cardinality chain: no 4th link -> no 4th exists? probe (4 = the modelled 'four or more')"
+    },
+    {
+      "name": "mention-display-name-foreclosure",
+      "kind": "foreclosure",
+      "dimension": "SYM_RESULT_ActiveRecord__Relation_records_1_row_text_mention_has_name",
+      "expect_pc_substring": "_text_mention_has_name ==",
+      "note": "N3-3: with a display name PeopleHelper#person_link never calls Person#name, so the name -> fix_profile -> Discovery -> reload chain of the mention rep is closed (people_helper.rb:28-33)"
+    },
+    {
+      "name": "mention-person-missing-foreclosure",
+      "kind": "foreclosure",
+      "dimension": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_not_found",
+      "expect_pc_substring": "_row_person_not_found ==",
+      "note": "M-3: mentions.person_id has NO foreign key (schema.rb:202-209). Not found -> the preload issues the people SELECT and STOPS: no profiles step, no decisions of that rep; json renders [null], mobile 500s"
+    },
+    {
+      "name": "mention-person-profile-missing-foreclosure",
+      "kind": "foreclosure",
+      "dimension": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_not_found",
+      "expect_pc_substring": "_person_profile_not_found ==",
+      "note": "has_one :profile of a mentioned person: found -> no fix_profile/discovery/reload for that rep"
+    },
+    {
+      "name": "author-profile-missing-foreclosure",
+      "kind": "foreclosure",
+      "dimension": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_not_found",
+      "expect_pc_substring": "_author_profile_not_found ==",
+      "note": "has_one :profile of the comment author: found -> no fix_profile/discovery/reload for that rep"
+    },
+    {
+      "name": "comment-collection-empty-foreclosure",
+      "kind": "foreclosure",
+      "dimension": "len(SYM_RESULT_ActiveRecord__Relation_records_1_rows)",
+      "expect_pc_substring": "_records_1_rows) != 0",
+      "note": "M-4: an EMPTY comments relation issues nothing below itself \u2014 no representative row, no includes preload, no per-comment decision (Associations::Preloader#preload returns early on zero records; real run r3-empty-collection-*: 2 statements total) (round 4: flip_to is pinned to 0 because the length domain is now {0,1,MANY} and the richest snapshot seeds 2 \u2014 the auto int flip would give 3, which is outside the domain and evidence-identical to 2)",
+      "flip_to": 0
+    },
+    {
+      "name": "principal-person-missing-foreclosure",
+      "kind": "foreclosure",
+      "dimension": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_person_not_found",
+      "expect_pc_substring": "_person_not_found ==",
+      "note": "D5: people.owner_id has no FK; a signed-in user with no people row 500s at evil_query.rb:116 after the vis SELECT (and, under an inflected locale, in set_grammatical_gender before it)"
+    },
+    {
+      "name": "principal-profile-missing-foreclosure",
+      "kind": "foreclosure",
+      "dimension": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_person_profile_not_found",
+      "expect_pc_substring": "_person_profile_not_found ==",
+      "note": "N3-1: the principal's has_one :profile, read by set_grammatical_gender; missing -> Module::DelegationError in the callback, before the action body"
+    },
+    {
+      "name": "principal-locale-inflected-foreclosure",
+      "kind": "foreclosure",
+      "dimension": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_language",
+      "expect_pc_substring": "_language ==",
+      "note": "N3-1 / Rule G: users.language decides whether set_grammatical_gender runs at all. Not inflected -> no profiles read on the principal (adversary B09 `pl` vs B11 `en`). Corpus seeds this dimension only to 'pl', so the auto string flip ('pl' -> '') is the real non-inflected arm"
+    },
+    {
+      "name": "mention-discovery-failed-foreclosure",
+      "kind": "foreclosure",
+      "dimension": "SYM_RESULT_ActiveRecord__Relation_records_3_row_person_discovery_failed",
+      "expect_pc_substring": "_discovery_failed ==",
+      "note": "targets.rb 8e: DiscoveryError -> fix_profile propagates (500 terminal) / find_or_fetch rescues to nil (no retry lookup)"
+    },
+    {
+      "name": "sti-out-of-tree-foreclosure",
+      "kind": "foreclosure",
+      "dimension": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_type",
+      "flip_to": "StatusMessage",
+      "expect_pc_substring": "_type ==",
+      "note": "M-6: posts.type outside the Post STI tree. AR raises SubclassNotFound while INSTANTIATING the row the finder returned, so the post finder is the last statement \u2014 no comments SELECT, no preloads, no exists? probes. Real run concrete_manifest_r4.rb r4-sti-out-of-tree-anon-json: one `posts` statement per request"
+    },
+    {
+      "name": "sti-out-of-tree-vis-foreclosure",
+      "kind": "foreclosure",
+      "dimension": "SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_type",
+      "flip_to": "StatusMessage",
+      "expect_pc_substring": "_type ==",
+      "note": "M-6 on the signed-in visibility finder: whichever of the three finders returns the row is the one that raises; the comment level is never reached (r4-sti-out-of-tree-auth-json)"
+    },
+    {
+      "name": "principal-locale-invalid-foreclosure",
+      "kind": "foreclosure",
+      "dimension": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_language",
+      "flip_to": "xx",
+      "expect_pc_substring": "_language ==",
+      "note": "M-5: a non-nil users.language that is not an available locale makes set_locale raise I18n::InvalidLocale BEFORE the action body \u2014 the whole data access is the `users` SELECT (r4-locale-invalid). Corpus seeds this dimension mostly to 'pl', so flipping TO 'xx' is the real third arm; NULL is not it (r4-locale-null-control 200s)"
+    },
+    {
+      "name": "comment-collection-many-foreclosure",
+      "kind": "foreclosure",
+      "dimension": "len(SYM_RESULT_ActiveRecord__Relation_records_1_rows)",
+      "flip_to": 1,
+      "expect_pc_substring": "_records_1_rows) > 1",
+      "note": "N4-3: the 1-vs-MANY half of the collection length. The real Preloader emits `col = ?` for one owner row and `col IN (?, \u2026)` for two or more \u2014 both shapes measured in r4-preload-one-author / r4-preload-three-authors \u2014 so the flip must change the preload notes' predicate operator"
+    },
+    {
+      "name": "author-preload-keys-many-foreclosure",
+      "kind": "foreclosure",
+      "dimension": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_keys_many",
+      "expect_pc_substring": "_author_keys_many ==",
+      "note": "M-7: the preload binds the DISTINCT author ids, so ten comments by one author give `people.id = ?` and two authors give `IN (?, ?)` (real runs r5-preload-one-distinct-key / -two-distinct-keys). One distinct key also forecloses the step's second-key outcome"
+    },
+    {
+      "name": "mention-preload-keys-many-foreclosure",
+      "kind": "foreclosure",
+      "dimension": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_keys_many",
+      "expect_pc_substring": "_person_keys_many ==",
+      "note": "M-7 on the mentions chain: the person step binds the distinct mentions.person_id values"
+    },
+    {
+      "name": "mention-preload-second-key-missing-foreclosure",
+      "kind": "foreclosure",
+      "dimension": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_k2_not_found",
+      "expect_pc_substring": "_person_k2_not_found ==",
+      "note": "M-8: the NESTED step binds the parents ACTUALLY LOADED \u2014 two mentions with one dangling give `people.id IN (?, ?)` then `profiles.person_id = ?` (real run r5-nested-shrinks-dangling), while two live ones give IN then IN (r5-nested-both-loaded)"
+    }
+  ],
+  "env_by_scenario": {
+    "anon_json": {
+      "VARIANT": "anon_json"
+    },
+    "auth_json": {
+      "VARIANT": "auth_json"
+    },
+    "anon_mobile": {
+      "VARIANT": "anon_mobile"
+    },
+    "auth_mobile": {
+      "VARIANT": "auth_mobile"
+    },
+    "anon": {
+      "VARIANT": "anon_json"
+    },
+    "auth": {
+      "VARIANT": "auth_json"
+    }
+  },
+  "env": {
+    "JAVA_TOOL_OPTIONS": ""
+  }
+}

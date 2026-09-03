@@ -1,0 +1,514 @@
+[
+  {
+    "name": "Q05_noperson_html",
+    "target_calls": [
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::SingularAssociation#find_target",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 8,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 7,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 11,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 9,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 14,
+        "args": [
+
+        ]
+      }
+    ],
+    "statements": [
+      {
+        "sql": "SELECT  \"users\".* FROM \"users\" WHERE \"users\".\"id\" = ? ORDER BY \"users\".\"id\" ASC LIMIT ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT  \"people\".* FROM \"people\" WHERE \"people\".\"owner_id\" = ? LIMIT ?",
+        "under": "ActiveRecord::Associations::SingularAssociation#find_target"
+      }
+    ],
+    "coverage": {
+},
+    "error": null
+  },
+  {
+    "name": "Q05_noperson_json",
+    "target_calls": [
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 6,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 7,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::SingularAssociation#find_target",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 6,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 10,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 8,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 13,
+        "args": [
+
+        ]
+      }
+    ],
+    "statements": [
+      {
+        "sql": "SELECT  \"users\".* FROM \"users\" WHERE \"users\".\"id\" = ? ORDER BY \"users\".\"id\" ASC LIMIT ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT  \"people\".* FROM \"people\" WHERE \"people\".\"owner_id\" = ? LIMIT ?",
+        "under": "ActiveRecord::Associations::SingularAssociation#find_target"
+      }
+    ],
+    "coverage": {
+},
+    "error": null
+  },
+  {
+    "name": "Q05_noperson_mobile",
+    "target_calls": [
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 8,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 9,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::SingularAssociation#find_target",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 7,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 12,
+        "args": [
+
+        ]
+      }
+    ],
+    "statements": [
+      {
+        "sql": "SELECT  \"users\".* FROM \"users\" WHERE \"users\".\"id\" = ? ORDER BY \"users\".\"id\" ASC LIMIT ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT  \"people\".* FROM \"people\" WHERE \"people\".\"owner_id\" = ? LIMIT ?",
+        "under": "ActiveRecord::Associations::SingularAssociation#find_target"
+      }
+    ],
+    "coverage": {
+},
+    "error": null
+  },
+  {
+    "name": "Q05_noperson_stale_html",
+    "target_calls": [
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 6,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 10,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 11,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Base#update_attribute",
+        "depth": 0,
+        "args": [
+          ":last_seen",
+          "Sun, 30 Aug 2026 06:42:33 +0000"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Base#save",
+        "depth": 1,
+        "args": [
+          "{:validate=>false}"
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::SingularAssociation#find_target",
+        "depth": 0,
+        "args": [
+
+        ]
+      }
+    ],
+    "statements": [
+      {
+        "sql": "SELECT  \"users\".* FROM \"users\" WHERE \"users\".\"id\" = ? ORDER BY \"users\".\"id\" ASC LIMIT ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "BEGIN TRANSACTION",
+        "under": "ActiveRecord::Base#save"
+      },
+      {
+        "sql": "UPDATE \"users\" SET \"last_seen\" = ?, \"updated_at\" = ? WHERE \"users\".\"id\" = ?",
+        "under": "ActiveRecord::Base#save"
+      },
+      {
+        "sql": "COMMIT TRANSACTION",
+        "under": "ActiveRecord::Base#save"
+      },
+      {
+        "sql": "SELECT  \"people\".* FROM \"people\" WHERE \"people\".\"owner_id\" = ? LIMIT ?",
+        "under": "ActiveRecord::Associations::SingularAssociation#find_target"
+      }
+    ],
+    "coverage": {
+},
+    "error": null
+  }
+]

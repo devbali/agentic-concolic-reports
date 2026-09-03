@@ -1,0 +1,3779 @@
+{
+ "endpoint": "posts_show",
+ "coverage_complete": true,
+ "tree_nodes": 30,
+ "missing_branches": 0,
+ "truncated": false,
+ "solver_lost": 0,
+ "unevaluable_exprs": [],
+ "total_runs": 4278,
+ "total_path_conditions": 54946,
+ "dump_errors": {
+  "Diaspora::NonPublic": 18,
+  "ActiveRecord::RecordNotFound": 788
+ },
+ "assumptions": [
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_text == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_text == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_text == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_text == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_text == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_text == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_text == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_text == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_text == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_text == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_text == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_author_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_author_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_author_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_text == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_author_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_author_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_author_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_author_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_author_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_public_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_public_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_public_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_text == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_public_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_public_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_public_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_public_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_public_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_text == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_text == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_text == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_text == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_text == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_text == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_text == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "scenario exclusivity: auth-only expr vs anon-only expr"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "findpublic_act: not_found vs public \u2014 attribute PC only fires in finder_mock's 'found' branch"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_text == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "findpublic_act: not_found vs text \u2014 attribute PC only fires in finder_mock's 'found' branch"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "findpublic_like: not_found vs public \u2014 attribute PC only fires in finder_mock's 'found' branch"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "findpublic_reshare: not_found vs public \u2014 attribute PC only fires in finder_mock's 'found' branch"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "findpublic_reshare: not_found vs guid \u2014 attribute PC only fires in finder_mock's 'found' branch"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_text == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "evilq_act_vis: not_found vs text \u2014 attribute PC only fires in finder_mock's 'found' branch"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "evilq_act_vis: not_found vs guid \u2014 attribute PC only fires in finder_mock's 'found' branch"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "evilq_reshare_vis: not_found vs guid \u2014 attribute PC only fires in finder_mock's 'found' branch"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "evilq_reshare_author: not_found vs guid \u2014 attribute PC only fires in finder_mock's 'found' branch"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "evilq_reshare_public: not_found vs guid \u2014 attribute PC only fires in finder_mock's 'found' branch"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_text == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "evilq_act_author: not_found vs text \u2014 attribute PC only fires in finder_mock's 'found' branch"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "evilq_act_author: not_found vs guid \u2014 attribute PC only fires in finder_mock's 'found' branch"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_text == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "evilq_act_public: not_found vs text \u2014 attribute PC only fires in finder_mock's 'found' branch"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "evilq_act_public: not_found vs guid \u2014 attribute PC only fires in finder_mock's 'found' branch"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_public == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_text == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "findpublic_act: public vs text \u2014 text only read after find_public!'s public? guard passes"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_public == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "findpublic_reshare: public vs guid \u2014 guid only read after find_public!'s public? guard passes"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_text == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "evilq_act_vis family || evilq_act_author family \u2014 `||`-chained attempts, mutually exclusive per run"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "evilq_act_vis family || evilq_act_author family \u2014 `||`-chained attempts, mutually exclusive per run"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "evilq_act_vis family || evilq_act_author family \u2014 `||`-chained attempts, mutually exclusive per run"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_text == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "evilq_act_vis family || evilq_act_author family \u2014 `||`-chained attempts, mutually exclusive per run"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "evilq_act_vis family || evilq_act_author family \u2014 `||`-chained attempts, mutually exclusive per run"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "evilq_act_vis family || evilq_act_author family \u2014 `||`-chained attempts, mutually exclusive per run"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_text == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "evilq_act_vis family || evilq_act_author family \u2014 `||`-chained attempts, mutually exclusive per run"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "evilq_act_vis family || evilq_act_author family \u2014 `||`-chained attempts, mutually exclusive per run"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "evilq_act_vis family || evilq_act_author family \u2014 `||`-chained attempts, mutually exclusive per run"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_text == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "evilq_act_vis family || evilq_act_public family \u2014 `||`-chained attempts, mutually exclusive per run"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "evilq_act_vis family || evilq_act_public family \u2014 `||`-chained attempts, mutually exclusive per run"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "evilq_act_vis family || evilq_act_public family \u2014 `||`-chained attempts, mutually exclusive per run"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_text == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "evilq_act_vis family || evilq_act_public family \u2014 `||`-chained attempts, mutually exclusive per run"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "evilq_act_vis family || evilq_act_public family \u2014 `||`-chained attempts, mutually exclusive per run"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "evilq_act_vis family || evilq_act_public family \u2014 `||`-chained attempts, mutually exclusive per run"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_text == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "evilq_act_vis family || evilq_act_public family \u2014 `||`-chained attempts, mutually exclusive per run"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "evilq_act_vis family || evilq_act_public family \u2014 `||`-chained attempts, mutually exclusive per run"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "evilq_act_vis family || evilq_act_public family \u2014 `||`-chained attempts, mutually exclusive per run"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_text == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "evilq_act_author family || evilq_act_public family \u2014 `||`-chained attempts, mutually exclusive per run"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "evilq_act_author family || evilq_act_public family \u2014 `||`-chained attempts, mutually exclusive per run"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "evilq_act_author family || evilq_act_public family \u2014 `||`-chained attempts, mutually exclusive per run"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_text == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "evilq_act_author family || evilq_act_public family \u2014 `||`-chained attempts, mutually exclusive per run"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "evilq_act_author family || evilq_act_public family \u2014 `||`-chained attempts, mutually exclusive per run"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "evilq_act_author family || evilq_act_public family \u2014 `||`-chained attempts, mutually exclusive per run"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_text == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "evilq_act_author family || evilq_act_public family \u2014 `||`-chained attempts, mutually exclusive per run"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "evilq_act_author family || evilq_act_public family \u2014 `||`-chained attempts, mutually exclusive per run"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "evilq_act_author family || evilq_act_public family \u2014 `||`-chained attempts, mutually exclusive per run"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_author_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "evilq_like_vis family || evilq_like_author family \u2014 `||`-chained attempts, mutually exclusive per run"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_public_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "evilq_like_vis family || evilq_like_public family \u2014 `||`-chained attempts, mutually exclusive per run"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_author_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_public_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "evilq_like_author family || evilq_like_public family \u2014 `||`-chained attempts, mutually exclusive per run"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "evilq_reshare_vis family || evilq_reshare_author family \u2014 `||`-chained attempts, mutually exclusive per run"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "evilq_reshare_vis family || evilq_reshare_author family \u2014 `||`-chained attempts, mutually exclusive per run"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "evilq_reshare_vis family || evilq_reshare_author family \u2014 `||`-chained attempts, mutually exclusive per run"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "evilq_reshare_vis family || evilq_reshare_author family \u2014 `||`-chained attempts, mutually exclusive per run"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "evilq_reshare_vis family || evilq_reshare_public family \u2014 `||`-chained attempts, mutually exclusive per run"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "evilq_reshare_vis family || evilq_reshare_public family \u2014 `||`-chained attempts, mutually exclusive per run"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "evilq_reshare_vis family || evilq_reshare_public family \u2014 `||`-chained attempts, mutually exclusive per run"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "evilq_reshare_vis family || evilq_reshare_public family \u2014 `||`-chained attempts, mutually exclusive per run"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "evilq_reshare_author family || evilq_reshare_public family \u2014 `||`-chained attempts, mutually exclusive per run"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "evilq_reshare_author family || evilq_reshare_public family \u2014 `||`-chained attempts, mutually exclusive per run"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "evilq_reshare_author family || evilq_reshare_public family \u2014 `||`-chained attempts, mutually exclusive per run"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "evilq_reshare_author family || evilq_reshare_public family \u2014 `||`-chained attempts, mutually exclusive per run"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_vis_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_author_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_public_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_public == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_public == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_public == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_vis_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_public == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_author_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_public == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_public_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_vis_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_author_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_public_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_vis_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_author_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_public_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_vis_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_author_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_public_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_vis_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_author_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_public_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_vis_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_author_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_public_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_vis_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_author_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_public_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_vis_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_author_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_public_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_vis_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_author_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_public_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_vis_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_author_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_public_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_vis_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_author_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_public_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || like family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_public == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_public == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_public == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_public == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_public == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_public == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_public == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_public == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_public == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_text == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_guid == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: act family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: like family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: like family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: like family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: like family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: like family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: like family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: like family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: like family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: like family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_public == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: like family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_public == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: like family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_public == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: like family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_public == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: like family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_public == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: like family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_public == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: like family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_public == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: like family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_public == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: like family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_findpublic_like_1_public == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: like family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: like family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: like family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: like family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: like family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: like family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: like family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: like family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: like family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_vis_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: like family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_author_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: like family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_author_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: like family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_author_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: like family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_author_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: like family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_author_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: like family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_author_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: like family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_author_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: like family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_author_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: like family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_author_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: like family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_public_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: like family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_public_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: like family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_public_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_reshare_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: like family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_public_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: like family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_public_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_vis_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: like family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_public_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: like family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_public_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_author_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: like family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_public_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: like family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Relation_evilq_like_public_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_reshare_public_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "context foreclosure: like family || reshare family"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "presenter field vs act-family finder \u2014 presenter runs only once act's lookup succeeded (any attempt)"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "presenter field vs act-family finder \u2014 presenter runs only once act's lookup succeeded (any attempt)"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_text == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "presenter field vs act-family finder \u2014 presenter runs only once act's lookup succeeded (any attempt)"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "presenter field vs act-family finder \u2014 presenter runs only once act's lookup succeeded (any attempt)"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_text == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "presenter field vs act-family finder \u2014 presenter runs only once act's lookup succeeded (any attempt)"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "presenter field vs act-family finder \u2014 presenter runs only once act's lookup succeeded (any attempt)"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "presenter field vs act-family finder \u2014 presenter runs only once act's lookup succeeded (any attempt)"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_text == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "presenter field vs act-family finder \u2014 presenter runs only once act's lookup succeeded (any attempt)"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "presenter field vs act-family finder \u2014 presenter runs only once act's lookup succeeded (any attempt)"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "presenter field vs act-family finder \u2014 presenter runs only once act's lookup succeeded (any attempt)"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_text == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "presenter field vs act-family finder \u2014 presenter runs only once act's lookup succeeded (any attempt)"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "presenter field vs act-family finder \u2014 presenter runs only once act's lookup succeeded (any attempt)"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "presenter field vs act-family finder \u2014 presenter runs only once act's lookup succeeded (any attempt)"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "presenter field vs act-family finder \u2014 presenter runs only once act's lookup succeeded (any attempt)"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_text == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "presenter field vs act-family finder \u2014 presenter runs only once act's lookup succeeded (any attempt)"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "presenter field vs act-family finder \u2014 presenter runs only once act's lookup succeeded (any attempt)"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_text == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "presenter field vs act-family finder \u2014 presenter runs only once act's lookup succeeded (any attempt)"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "presenter field vs act-family finder \u2014 presenter runs only once act's lookup succeeded (any attempt)"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "presenter field vs act-family finder \u2014 presenter runs only once act's lookup succeeded (any attempt)"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_text == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "presenter field vs act-family finder \u2014 presenter runs only once act's lookup succeeded (any attempt)"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "presenter field vs act-family finder \u2014 presenter runs only once act's lookup succeeded (any attempt)"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "presenter field vs act-family finder \u2014 presenter runs only once act's lookup succeeded (any attempt)"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_text == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "presenter field vs act-family finder \u2014 presenter runs only once act's lookup succeeded (any attempt)"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "presenter field vs act-family finder \u2014 presenter runs only once act's lookup succeeded (any attempt)"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(assoc_profile_nsfw == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "presenter field vs act-family finder \u2014 presenter runs only once act's lookup succeeded (any attempt)"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(assoc_profile_nsfw == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_public == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "presenter field vs act-family finder \u2014 presenter runs only once act's lookup succeeded (any attempt)"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(assoc_profile_nsfw == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_findpublic_act_1_text == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "presenter field vs act-family finder \u2014 presenter runs only once act's lookup succeeded (any attempt)"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(assoc_profile_nsfw == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "presenter field vs act-family finder \u2014 presenter runs only once act's lookup succeeded (any attempt)"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(assoc_profile_nsfw == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_text == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "presenter field vs act-family finder \u2014 presenter runs only once act's lookup succeeded (any attempt)"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(assoc_profile_nsfw == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "presenter field vs act-family finder \u2014 presenter runs only once act's lookup succeeded (any attempt)"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(assoc_profile_nsfw == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "presenter field vs act-family finder \u2014 presenter runs only once act's lookup succeeded (any attempt)"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(assoc_profile_nsfw == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_text == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "presenter field vs act-family finder \u2014 presenter runs only once act's lookup succeeded (any attempt)"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(assoc_profile_nsfw == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "presenter field vs act-family finder \u2014 presenter runs only once act's lookup succeeded (any attempt)"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(assoc_profile_nsfw == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "presenter field vs act-family finder \u2014 presenter runs only once act's lookup succeeded (any attempt)"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(assoc_profile_nsfw == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_text == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "presenter field vs act-family finder \u2014 presenter runs only once act's lookup succeeded (any attempt)"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(assoc_profile_nsfw == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1_guid == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "presenter field vs act-family finder \u2014 presenter runs only once act's lookup succeeded (any attempt)"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "like_for (post.rb:143) vs reshare_for (post.rb:138) \u2014 independent finds in the same unconditional hash literal"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(assoc_profile_nsfw == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "Post#nsfw (author's profile) vs like_for \u2014 disjoint models"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(assoc_profile_nsfw == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "Post#nsfw (author's profile) vs reshare_for \u2014 disjoint models"
+  }
+ ],
+ "assumptions_used": 371,
+ "missing": []
+}

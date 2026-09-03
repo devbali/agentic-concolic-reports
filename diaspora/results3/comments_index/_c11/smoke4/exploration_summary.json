@@ -1,0 +1,27 @@
+{
+  "entrypoint": "comments_index",
+  "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+  "signed_in": false,
+  "variant": "anon_json",
+  "format": "json",
+  "app_error_terminals": "ActionView::Template::Error(nil NoMethodError|DiscoveryError), DiscoveryError — recorded outcomes",
+  "params": {
+    "post_id": {
+      "symbolic_name": "SYM_PARAM_post_id",
+      "seed": "5"
+    }
+  },
+  "request_format": "json",
+  "runs_executed": 2500,
+  "distinct_paths": 1016,
+  "seed_sets_tried": 2500,
+  "stack_remaining": 22074,
+  "worklist_exhausted": false,
+  "max_runs": 2500,
+  "time_budget": 900,
+  "elapsed_seconds": 27.0,
+  "run_errors": {
+},
+  "unflippable_pcs": {
+}
+}

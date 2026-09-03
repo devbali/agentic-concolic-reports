@@ -1,0 +1,86 @@
+[
+  {
+    "type": "UntrackedPathAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_text_has_mention == True)",
+    "expr_b": null,
+    "verdict": "PASS",
+    "detail": "access trace identical on both sides"
+  },
+  {
+    "type": "UntrackedPathAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_text_has_mention == True)",
+    "expr_b": null,
+    "verdict": "PASS",
+    "detail": "access trace identical on both sides"
+  },
+  {
+    "type": "UntrackedPathAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_text_has_mention == True)",
+    "expr_b": null,
+    "verdict": "PASS",
+    "detail": "access trace identical on both sides"
+  },
+  {
+    "type": "UntrackedPathAssumption",
+    "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_text_has_mention == True)",
+    "expr_b": null,
+    "verdict": "PASS",
+    "detail": "access trace identical on both sides"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(Length(SYM_PARAM_post_id) < 16)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_dse0285.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(Length(SYM_PARAM_post_id) < 16)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_public == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_dse0285.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(Length(SYM_PARAM_post_id) < 16)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_dse0285.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(Length(SYM_PARAM_post_id) < 16)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_vis_first_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse0694.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(Length(SYM_PARAM_post_id) < 16)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_author_first_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse0855.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(Length(SYM_PARAM_post_id) < 16)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_ci_public_first_1_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse1045.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(Length(SYM_PARAM_post_id) < 16)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_text_has_mention == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse0694.json)"
+  },
+  {
+    "type": "IndependenceAssumption",
+    "expr": "(Length(SYM_PARAM_post_id) < 16)",
+    "expr_b": "(SYM_RESULT_ActiveRecord__Relation_records_1_row_persisted == True)",
+    "verdict": "PASS",
+    "detail": "no combination-only access shapes (snapshot dump_auth_dse0694.json)"
+  }
+]

@@ -1,0 +1,76 @@
+[
+  {
+    "name": "person-name_from_attrs",
+    "kind": "shim",
+    "pass": true,
+    "target_calls": [
+
+    ],
+    "coverage": "100% (2 lines)"
+  },
+  {
+    "name": "mention-lookup-find_by",
+    "kind": "target_note",
+    "pass": true,
+    "real": {
+      "tables": [
+        "people"
+      ],
+      "cols": [
+        "people.diaspora_handle"
+      ]
+    },
+    "note": {
+      "tables": [
+        "people"
+      ],
+      "cols": [
+        "people.diaspora_handle"
+      ]
+    }
+  },
+  {
+    "name": "post-fetch-by-id",
+    "kind": "target_note",
+    "pass": true,
+    "real": {
+      "tables": [
+        "posts"
+      ],
+      "cols": [
+        "posts.id"
+      ]
+    },
+    "note": {
+      "tables": [
+        "posts"
+      ],
+      "cols": [
+        "posts.id"
+      ]
+    }
+  },
+  {
+    "name": "comments-for-post",
+    "kind": "target_note",
+    "pass": true,
+    "real": {
+      "tables": [
+        "comments"
+      ],
+      "cols": [
+        "comments.commentable_id",
+        "comments.commentable_type"
+      ]
+    },
+    "note": {
+      "tables": [
+        "comments"
+      ],
+      "cols": [
+        "comments.commentable_id",
+        "comments.commentable_type"
+      ]
+    }
+  }
+]

@@ -1,0 +1,74 @@
+{
+ "run": "T3 repair loop, first live run (2026-08-20), coordinator-executed",
+ "entries": [
+  {
+   "method": "DeviseController#assert_is_devise_resource!",
+   "witness": {
+    "verdict": "FAIL",
+    "target_calls": [
+     "DeviseController.devise_mapping"
+    ],
+    "coverage_pct": 10.0,
+    "corpus_calls": 0,
+    "corpus_dumps_scanned": 7837
+   },
+   "repair_chain": [
+    {
+     "revision": "REMOVE declaration (Y4) \u2014 callee is a PASS leaf; class not in this endpoint's MRO",
+     "retest": "corpus call-absence 0/7837 + deterministic main-round regen reproduced 3966 paths / 0 errors"
+    }
+   ],
+   "terminal": "REMOVED (proven no-op for this endpoint)"
+  },
+  {
+   "method": "ActionController::Metal#head (W2)",
+   "witness": {
+    "verdict": "DEAD_DECLARATION",
+    "reason": "head not on Metal in Rails 5.2 \u2014 guard never fired (probe-sweep finding)"
+   },
+   "repair_chain": [
+    {
+     "revision": "REMOVE dead code",
+     "retest": "same regen proof"
+    }
+   ],
+   "terminal": "REMOVED"
+  },
+  {
+   "method": "ActionController::Head#head (X6a)",
+   "witness": {
+    "verdict": "FAIL",
+    "target_calls": [
+     "ActionController::Metal.status=",
+     "ActionController::Metal.status=",
+     "ActionDispatch::Routing::UrlFor.url_for"
+    ],
+    "coverage_pct": 57.1,
+    "corpus_calls": 0,
+    "corpus_dumps_scanned": 7837
+   },
+   "repair_chain": [
+    {
+     "revision": "REMOVE declaration \u2014 violating calls all land in independently PASS-verified leaf mocks (descended state pre-exists)",
+     "retest": "corpus call-absence 0/7837 + deterministic regen 3966 paths / 0 errors"
+    }
+   ],
+   "terminal": "REMOVED (redundant cover; re-descend at any batch whose endpoint actually calls head)"
+  },
+  {
+   "method": "ActionController::Rendering#_set_rendered_content_type",
+   "witness": {
+    "verdict": "FAIL_COVERAGE",
+    "coverage_pct": 50.0,
+    "uncovered_reason": "fixture 2 crashed on nil @_response before line 2"
+   },
+   "repair_chain": [
+    {
+     "revision": "fixture repair pending \u2014 add a fixture with a real ActionDispatch::Response so line 2 executes",
+     "retest": "PENDING re-probe (harness: _experiment/variant_a/_leaf_probe.rb single-method mode)"
+    }
+   ],
+   "terminal": "OPEN (mock KEPT \u2014 0 target_calls / 0 SQL already proven; only the coverage metric outstanding)"
+  }
+ ]
+}

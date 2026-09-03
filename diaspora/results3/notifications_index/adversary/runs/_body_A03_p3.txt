@@ -1,0 +1,109 @@
+<div class='container-fluid' id='notifications_container'>
+<div class='row'>
+<div class='col-md-3'>
+<div class='sidebar'>
+<div class='sidebar-header clearfix'>
+<h3>
+Notifications
+</h3>
+</div>
+<div class='list-group'>
+<a class='active list-group-item' data-type='all' href='/notifications'>
+<span class='badge hidden pull-right'>
+0
+</span>
+All notifications
+</a>
+<a class='list-group-item' data-type='also_commented' href='/notifications?type=also_commented'>
+<span class='badge hidden pull-right'>
+0
+</span>
+<i class='entypo-comment'></i>
+Also commented
+</a>
+<a class='list-group-item' data-type='comment_on_post' href='/notifications?type=comment_on_post'>
+<span class='badge hidden pull-right'>
+0
+</span>
+<i class='entypo-comment'></i>
+Comment on post
+</a>
+<a class='list-group-item' data-type='liked' href='/notifications?type=liked'>
+<span class='badge hidden pull-right'>
+0
+</span>
+<i class='entypo-heart'></i>
+Liked
+</a>
+<a class='list-group-item' data-type='mentioned' href='/notifications?type=mentioned'>
+<span class='badge hidden pull-right'>
+0
+</span>
+<span class='mentionIcon'>
+@
+</span>
+Mentioned in post
+</a>
+<a class='list-group-item' data-type='mentioned_in_comment' href='/notifications?type=mentioned_in_comment'>
+<span class='badge hidden pull-right'>
+0
+</span>
+<span class='mentionIcon'>
+@
+</span>
+Mentioned in comment
+</a>
+<a class='list-group-item' data-type='reshared' href='/notifications?type=reshared'>
+<span class='badge hidden pull-right'>
+0
+</span>
+<i class='entypo-reshare'></i>
+Reshared
+</a>
+<a class='list-group-item' data-type='started_sharing' href='/notifications?type=started_sharing'>
+<span class='badge hidden pull-right'>
+0
+</span>
+<i class='entypo-add-user'></i>
+Started sharing
+</a>
+<a class='list-group-item' data-type='contacts_birthday' href='/notifications?type=contacts_birthday'>
+<span class='badge hidden pull-right'>
+0
+</span>
+<i class='entypo-calendar'></i>
+Birthday
+</a>
+</div>
+</div>
+</div>
+<div class='col-md-9 stream notifications'>
+<div class='framed-content'>
+<div class='row'>
+<div class='col-md-12'>
+<div class='header clearfix'>
+<div class='btn-toolbar pull-right'>
+<div class='btn-group'>
+<a class='active btn btn-default' href='/notifications'>
+Show all
+</a>
+<a class='btn btn-default' href='/notifications?show=unread'>
+Show unread
+</a>
+</div>
+<a class='btn btn-default btn-group disabled' href='/notifications/read_all'>
+Mark all as read
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class='no-notifications well'>
+<h4>
+You don&#39;t have any notifications yet.
+</h4>
+</div>
+</div>
+</div>
+</div>
+</div>

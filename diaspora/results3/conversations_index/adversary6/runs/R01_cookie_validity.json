@@ -1,0 +1,5004 @@
+[
+  {
+    "name": "R01_alice_remembered_cookie_older",
+    "target_calls": [
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 8,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 7,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 11,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#pluck",
+        "depth": 3,
+        "args": [
+          "\"contacts.id\"",
+          "\"profiles.first_name\"",
+          "\"profiles.last_name\"",
+          "\"people.diaspora_handle\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 3,
+        "args": [
+          ":all"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 3,
+        "args": [
+          ":all"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#sum",
+        "depth": 3,
+        "args": [
+          ":unread"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 3,
+        "args": [
+          "{:person_id=>21, :name=>\"admin\"}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 3,
+        "args": [
+          "{:person_id=>21}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 8,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 12,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 9,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 14,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#pluck",
+        "depth": 4,
+        "args": [
+          "\"contacts.id\"",
+          "\"profiles.first_name\"",
+          "\"profiles.last_name\"",
+          "\"people.diaspora_handle\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 4,
+        "args": [
+          ":all"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 4,
+        "args": [
+          ":all"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#sum",
+        "depth": 4,
+        "args": [
+          ":unread"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 4,
+        "args": [
+          "{:person_id=>22, :name=>\"admin\"}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 4,
+        "args": [
+          "{:person_id=>22}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 10,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 15,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 11,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 17,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#pluck",
+        "depth": 5,
+        "args": [
+          "\"contacts.id\"",
+          "\"profiles.first_name\"",
+          "\"profiles.last_name\"",
+          "\"people.diaspora_handle\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 6,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 5,
+        "args": [
+          ":all"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 5,
+        "args": [
+          ":all"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#sum",
+        "depth": 5,
+        "args": [
+          ":unread"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 5,
+        "args": [
+          "{:person_id=>23, :name=>\"admin\"}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 5,
+        "args": [
+          "{:person_id=>23}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 12,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 18,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 7,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 15,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 23,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 8,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 17,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 26,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#pluck",
+        "depth": 8,
+        "args": [
+          "\"contacts.id\"",
+          "\"profiles.first_name\"",
+          "\"profiles.last_name\"",
+          "\"people.diaspora_handle\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 9,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 8,
+        "args": [
+          ":all"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 8,
+        "args": [
+          ":all"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 8,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#sum",
+        "depth": 8,
+        "args": [
+          ":unread"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 8,
+        "args": [
+          "{:person_id=>26, :name=>\"admin\"}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 8,
+        "args": [
+          "{:person_id=>26}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 8,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 18,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 27,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 8,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 8,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 8,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 9,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 19,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 29,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 9,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 19,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 29,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 10,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 21,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 32,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#pluck",
+        "depth": 10,
+        "args": [
+          "\"contacts.id\"",
+          "\"profiles.first_name\"",
+          "\"profiles.last_name\"",
+          "\"people.diaspora_handle\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 10,
+        "args": [
+
+        ]
+      }
+    ],
+    "statements": [
+      {
+        "sql": "SELECT  \"users\".* FROM \"users\" WHERE \"users\".\"id\" = ? ORDER BY \"users\".\"id\" ASC LIMIT ?",
+        "under": "ActiveRecord::Relation#records"
+      }
+    ],
+    "coverage": {
+},
+    "error": null
+  },
+  {
+    "name": "R01_brian_remembered_cookie_expired",
+    "target_calls": [
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 6,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 7,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 6,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 10,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#pluck",
+        "depth": 2,
+        "args": [
+          "\"contacts.id\"",
+          "\"profiles.first_name\"",
+          "\"profiles.last_name\"",
+          "\"people.diaspora_handle\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 2,
+        "args": [
+          ":all"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 2,
+        "args": [
+          ":all"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#sum",
+        "depth": 2,
+        "args": [
+          ":unread"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 2,
+        "args": [
+          "{:person_id=>21, :name=>\"admin\"}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 2,
+        "args": [
+          "{:person_id=>21}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 7,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 11,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 8,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 13,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#pluck",
+        "depth": 3,
+        "args": [
+          "\"contacts.id\"",
+          "\"profiles.first_name\"",
+          "\"profiles.last_name\"",
+          "\"people.diaspora_handle\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 3,
+        "args": [
+          ":all"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 3,
+        "args": [
+          ":all"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#sum",
+        "depth": 3,
+        "args": [
+          ":unread"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 3,
+        "args": [
+          "{:person_id=>22, :name=>\"admin\"}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 3,
+        "args": [
+          "{:person_id=>22}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 9,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 14,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 10,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 16,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#pluck",
+        "depth": 4,
+        "args": [
+          "\"contacts.id\"",
+          "\"profiles.first_name\"",
+          "\"profiles.last_name\"",
+          "\"people.diaspora_handle\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 4,
+        "args": [
+          ":all"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 4,
+        "args": [
+          ":all"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#sum",
+        "depth": 4,
+        "args": [
+          ":unread"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 4,
+        "args": [
+          "{:person_id=>23, :name=>\"admin\"}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 4,
+        "args": [
+          "{:person_id=>23}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 11,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 17,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 6,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 14,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 22,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 7,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 16,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 25,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#pluck",
+        "depth": 7,
+        "args": [
+          "\"contacts.id\"",
+          "\"profiles.first_name\"",
+          "\"profiles.last_name\"",
+          "\"people.diaspora_handle\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 8,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 7,
+        "args": [
+          ":all"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 7,
+        "args": [
+          ":all"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 7,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#sum",
+        "depth": 7,
+        "args": [
+          ":unread"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 7,
+        "args": [
+          "{:person_id=>26, :name=>\"admin\"}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 7,
+        "args": [
+          "{:person_id=>26}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 7,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 17,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 26,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 7,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 7,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 7,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 8,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 18,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 28,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 8,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 18,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 28,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 9,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 20,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 31,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#pluck",
+        "depth": 9,
+        "args": [
+          "\"contacts.id\"",
+          "\"profiles.first_name\"",
+          "\"profiles.last_name\"",
+          "\"people.diaspora_handle\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 9,
+        "args": [
+
+        ]
+      }
+    ],
+    "statements": [
+      {
+        "sql": "SELECT  \"users\".* FROM \"users\" WHERE \"users\".\"id\" = ? ORDER BY \"users\".\"id\" ASC LIMIT ?",
+        "under": "ActiveRecord::Relation#records"
+      }
+    ],
+    "coverage": {
+},
+    "error": null
+  },
+  {
+    "name": "R01_carl_notremembered_future_cookie",
+    "target_calls": [
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 8,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 9,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Base#save",
+        "depth": 0,
+        "args": [
+          "{:validate=>false}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Base#save",
+        "depth": 0,
+        "args": [
+          "{:validate=>false}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Base#update_attribute",
+        "depth": 0,
+        "args": [
+          ":last_seen",
+          "Sun, 30 Aug 2026 12:40:44 +0000"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Base#save",
+        "depth": 1,
+        "args": [
+          "{:validate=>false}"
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::SingularAssociation#find_target",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#pluck",
+        "depth": 0,
+        "args": [
+          "\"contacts.id\"",
+          "\"profiles.first_name\"",
+          "\"profiles.last_name\"",
+          "\"people.diaspora_handle\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#pluck",
+        "depth": 1,
+        "args": [
+          "\"contacts.id\"",
+          "\"profiles.first_name\"",
+          "\"profiles.last_name\"",
+          "\"people.diaspora_handle\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#empty?",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 0,
+        "args": [
+          ":all"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 1,
+        "args": [
+          ":all"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 0,
+        "args": [
+          ":all"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 1,
+        "args": [
+          ":all"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::SingularAssociation#find_target",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#sum",
+        "depth": 0,
+        "args": [
+          ":unread"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#sum",
+        "depth": 1,
+        "args": [
+          ":unread"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 0,
+        "args": [
+          "{:person_id=>21, :name=>\"admin\"}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 1,
+        "args": [
+          "{:person_id=>21, :name=>\"admin\"}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 0,
+        "args": [
+          "{:person_id=>21}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 1,
+        "args": [
+          "{:person_id=>21}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#load_target",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 6,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 9,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 10,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#load_target",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#load_target",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 7,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 12,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#pluck",
+        "depth": 2,
+        "args": [
+          "\"contacts.id\"",
+          "\"profiles.first_name\"",
+          "\"profiles.last_name\"",
+          "\"people.diaspora_handle\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 2,
+        "args": [
+          ":all"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 2,
+        "args": [
+          ":all"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#sum",
+        "depth": 2,
+        "args": [
+          ":unread"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 2,
+        "args": [
+          "{:person_id=>22, :name=>\"admin\"}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 2,
+        "args": [
+          "{:person_id=>22}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 8,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 13,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 9,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 15,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#pluck",
+        "depth": 3,
+        "args": [
+          "\"contacts.id\"",
+          "\"profiles.first_name\"",
+          "\"profiles.last_name\"",
+          "\"people.diaspora_handle\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 3,
+        "args": [
+          ":all"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 3,
+        "args": [
+          ":all"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#sum",
+        "depth": 3,
+        "args": [
+          ":unread"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 3,
+        "args": [
+          "{:person_id=>23, :name=>\"admin\"}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 3,
+        "args": [
+          "{:person_id=>23}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 10,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 16,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 13,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 21,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 6,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 15,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 24,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#pluck",
+        "depth": 6,
+        "args": [
+          "\"contacts.id\"",
+          "\"profiles.first_name\"",
+          "\"profiles.last_name\"",
+          "\"people.diaspora_handle\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 7,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 6,
+        "args": [
+          ":all"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 6,
+        "args": [
+          ":all"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 6,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#sum",
+        "depth": 6,
+        "args": [
+          ":unread"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 6,
+        "args": [
+          "{:person_id=>26, :name=>\"admin\"}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 6,
+        "args": [
+          "{:person_id=>26}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 6,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 16,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 25,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 6,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 6,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 6,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 7,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 17,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 27,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 7,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 17,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 27,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 8,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 19,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 30,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#pluck",
+        "depth": 8,
+        "args": [
+          "\"contacts.id\"",
+          "\"profiles.first_name\"",
+          "\"profiles.last_name\"",
+          "\"people.diaspora_handle\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 8,
+        "args": [
+
+        ]
+      }
+    ],
+    "statements": [
+      {
+        "sql": "SELECT  \"users\".* FROM \"users\" WHERE \"users\".\"id\" = ? ORDER BY \"users\".\"id\" ASC LIMIT ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "BEGIN TRANSACTION",
+        "under": "ActiveRecord::Base#save"
+      },
+      {
+        "sql": "UPDATE \"users\" SET \"remember_created_at\" = ?, \"updated_at\" = ? WHERE \"users\".\"id\" = ?",
+        "under": "ActiveRecord::Base#save"
+      },
+      {
+        "sql": "COMMIT TRANSACTION",
+        "under": "ActiveRecord::Base#save"
+      },
+      {
+        "sql": "BEGIN TRANSACTION",
+        "under": "ActiveRecord::Base#save"
+      },
+      {
+        "sql": "UPDATE \"users\" SET \"sign_in_count\" = ?, \"current_sign_in_at\" = ?, \"last_sign_in_at\" = ?, \"current_sign_in_ip\" = ?, \"last_sign_in_ip\" = ?, \"updated_at\" = ? WHERE \"users\".\"id\" = ?",
+        "under": "ActiveRecord::Base#save"
+      },
+      {
+        "sql": "COMMIT TRANSACTION",
+        "under": "ActiveRecord::Base#save"
+      },
+      {
+        "sql": "BEGIN TRANSACTION",
+        "under": "ActiveRecord::Base#save"
+      },
+      {
+        "sql": "UPDATE \"users\" SET \"updated_at\" = ?, \"last_seen\" = ? WHERE \"users\".\"id\" = ?",
+        "under": "ActiveRecord::Base#save"
+      },
+      {
+        "sql": "COMMIT TRANSACTION",
+        "under": "ActiveRecord::Base#save"
+      },
+      {
+        "sql": "SELECT  \"people\".* FROM \"people\" WHERE \"people\".\"owner_id\" = ? LIMIT ?",
+        "under": "ActiveRecord::Associations::SingularAssociation#find_target"
+      },
+      {
+        "sql": "SELECT contacts.id, profiles.first_name, profiles.last_name, people.diaspora_handle FROM \"contacts\" INNER JOIN \"people\" ON \"people\".\"id\" = \"contacts\".\"person_id\" INNER JOIN \"profiles\" ON \"profiles\".\"person_id\" = \"people\".\"id\" WHERE \"contacts\".\"user_id\" = ? AND \"contacts\".\"sharing\" = ? AND \"contacts\".\"receiving\" = ?",
+        "under": "ActiveRecord::Calculations#pluck"
+      },
+      {
+        "sql": "SELECT  1 AS one FROM \"contacts\" WHERE \"contacts\".\"user_id\" = ? AND \"contacts\".\"sharing\" = ? AND \"contacts\".\"receiving\" = ? LIMIT ?",
+        "under": "ActiveRecord::FinderMethods#exists?"
+      },
+      {
+        "sql": "SELECT COUNT(*) FROM (SELECT DISTINCT \"conversation_visibilities\".\"id\" FROM \"conversation_visibilities\" LEFT OUTER JOIN \"conversations\" ON \"conversations\".\"id\" = \"conversation_visibilities\".\"conversation_id\" WHERE \"conversation_visibilities\".\"person_id\" = ?) subquery_for_count",
+        "under": "ActiveRecord::Calculations#count"
+      },
+      {
+        "sql": "SELECT COUNT(*) FROM (SELECT DISTINCT \"conversation_visibilities\".\"id\" FROM \"conversation_visibilities\" LEFT OUTER JOIN \"conversations\" ON \"conversations\".\"id\" = \"conversation_visibilities\".\"conversation_id\" WHERE \"conversation_visibilities\".\"person_id\" = ?) subquery_for_count",
+        "under": "ActiveRecord::Calculations#count"
+      },
+      {
+        "sql": "SELECT  \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = ? LIMIT ?",
+        "under": "ActiveRecord::Associations::SingularAssociation#find_target"
+      },
+      {
+        "sql": "SELECT COUNT(*) FROM \"notifications\" WHERE \"notifications\".\"recipient_id\" = ? AND \"notifications\".\"unread\" = ?",
+        "under": "ActiveRecord::Calculations#count"
+      },
+      {
+        "sql": "SELECT SUM(\"conversation_visibilities\".\"unread\") FROM \"conversation_visibilities\" WHERE \"conversation_visibilities\".\"person_id\" = ?",
+        "under": "ActiveRecord::Calculations#sum"
+      },
+      {
+        "sql": "SELECT  1 AS one FROM \"roles\" WHERE \"roles\".\"person_id\" = ? AND \"roles\".\"name\" = ? LIMIT ?",
+        "under": "ActiveRecord::FinderMethods#exists?"
+      },
+      {
+        "sql": "SELECT  1 AS one FROM \"roles\" WHERE \"roles\".\"name\" IN (?, ?) AND \"roles\".\"person_id\" = ? LIMIT ?",
+        "under": "ActiveRecord::FinderMethods#exists?"
+      },
+      {
+        "sql": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = ? ORDER BY order_id ASC",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"services\".* FROM \"services\" WHERE \"services\".\"user_id\" = ?",
+        "under": "ActiveRecord::Associations::CollectionProxy#load_target"
+      },
+      {
+        "sql": "SELECT COUNT(*) FROM \"contacts\" WHERE \"contacts\".\"user_id\" = ? AND \"contacts\".\"receiving\" = ?",
+        "under": "ActiveRecord::Calculations#count"
+      }
+    ],
+    "coverage": {
+},
+    "error": null
+  },
+  {
+    "name": "R01_dan_sameSecond_ipsDiffer_sameIp",
+    "target_calls": [
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 6,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 10,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 11,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Base#save",
+        "depth": 0,
+        "args": [
+          "{:validate=>false}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Base#update_attribute",
+        "depth": 0,
+        "args": [
+          ":last_seen",
+          "Sun, 30 Aug 2026 12:40:45 +0000"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Base#save",
+        "depth": 1,
+        "args": [
+          "{:validate=>false}"
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::SingularAssociation#find_target",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#pluck",
+        "depth": 0,
+        "args": [
+          "\"contacts.id\"",
+          "\"profiles.first_name\"",
+          "\"profiles.last_name\"",
+          "\"people.diaspora_handle\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#pluck",
+        "depth": 1,
+        "args": [
+          "\"contacts.id\"",
+          "\"profiles.first_name\"",
+          "\"profiles.last_name\"",
+          "\"people.diaspora_handle\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#empty?",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 0,
+        "args": [
+          ":all"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 1,
+        "args": [
+          ":all"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 0,
+        "args": [
+          ":all"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 1,
+        "args": [
+          ":all"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::SingularAssociation#find_target",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#sum",
+        "depth": 0,
+        "args": [
+          ":unread"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#sum",
+        "depth": 1,
+        "args": [
+          ":unread"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 0,
+        "args": [
+          "{:person_id=>22, :name=>\"admin\"}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 1,
+        "args": [
+          "{:person_id=>22, :name=>\"admin\"}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 0,
+        "args": [
+          "{:person_id=>22}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 1,
+        "args": [
+          "{:person_id=>22}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#load_target",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 6,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 7,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 11,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 12,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#load_target",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#load_target",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 8,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 14,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#pluck",
+        "depth": 2,
+        "args": [
+          "\"contacts.id\"",
+          "\"profiles.first_name\"",
+          "\"profiles.last_name\"",
+          "\"people.diaspora_handle\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 2,
+        "args": [
+          ":all"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 2,
+        "args": [
+          ":all"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#sum",
+        "depth": 2,
+        "args": [
+          ":unread"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 2,
+        "args": [
+          "{:person_id=>23, :name=>\"admin\"}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 2,
+        "args": [
+          "{:person_id=>23}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 9,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 15,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 12,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 20,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 14,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 23,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#pluck",
+        "depth": 5,
+        "args": [
+          "\"contacts.id\"",
+          "\"profiles.first_name\"",
+          "\"profiles.last_name\"",
+          "\"people.diaspora_handle\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 6,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 5,
+        "args": [
+          ":all"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 5,
+        "args": [
+          ":all"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#sum",
+        "depth": 5,
+        "args": [
+          ":unread"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 5,
+        "args": [
+          "{:person_id=>26, :name=>\"admin\"}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 5,
+        "args": [
+          "{:person_id=>26}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 15,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 24,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 6,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 16,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 26,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 6,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 16,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 26,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 7,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 18,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 29,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#pluck",
+        "depth": 7,
+        "args": [
+          "\"contacts.id\"",
+          "\"profiles.first_name\"",
+          "\"profiles.last_name\"",
+          "\"people.diaspora_handle\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 7,
+        "args": [
+
+        ]
+      }
+    ],
+    "statements": [
+      {
+        "sql": "SELECT  \"users\".* FROM \"users\" WHERE \"users\".\"id\" = ? ORDER BY \"users\".\"id\" ASC LIMIT ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "BEGIN TRANSACTION",
+        "under": "ActiveRecord::Base#save"
+      },
+      {
+        "sql": "UPDATE \"users\" SET \"sign_in_count\" = ?, \"current_sign_in_at\" = ?, \"last_sign_in_ip\" = ?, \"updated_at\" = ? WHERE \"users\".\"id\" = ?",
+        "under": "ActiveRecord::Base#save"
+      },
+      {
+        "sql": "COMMIT TRANSACTION",
+        "under": "ActiveRecord::Base#save"
+      },
+      {
+        "sql": "BEGIN TRANSACTION",
+        "under": "ActiveRecord::Base#save"
+      },
+      {
+        "sql": "UPDATE \"users\" SET \"updated_at\" = ?, \"last_seen\" = ? WHERE \"users\".\"id\" = ?",
+        "under": "ActiveRecord::Base#save"
+      },
+      {
+        "sql": "COMMIT TRANSACTION",
+        "under": "ActiveRecord::Base#save"
+      },
+      {
+        "sql": "SELECT  \"people\".* FROM \"people\" WHERE \"people\".\"owner_id\" = ? LIMIT ?",
+        "under": "ActiveRecord::Associations::SingularAssociation#find_target"
+      },
+      {
+        "sql": "SELECT contacts.id, profiles.first_name, profiles.last_name, people.diaspora_handle FROM \"contacts\" INNER JOIN \"people\" ON \"people\".\"id\" = \"contacts\".\"person_id\" INNER JOIN \"profiles\" ON \"profiles\".\"person_id\" = \"people\".\"id\" WHERE \"contacts\".\"user_id\" = ? AND \"contacts\".\"sharing\" = ? AND \"contacts\".\"receiving\" = ?",
+        "under": "ActiveRecord::Calculations#pluck"
+      },
+      {
+        "sql": "SELECT  1 AS one FROM \"contacts\" WHERE \"contacts\".\"user_id\" = ? AND \"contacts\".\"sharing\" = ? AND \"contacts\".\"receiving\" = ? LIMIT ?",
+        "under": "ActiveRecord::FinderMethods#exists?"
+      },
+      {
+        "sql": "SELECT COUNT(*) FROM (SELECT DISTINCT \"conversation_visibilities\".\"id\" FROM \"conversation_visibilities\" LEFT OUTER JOIN \"conversations\" ON \"conversations\".\"id\" = \"conversation_visibilities\".\"conversation_id\" WHERE \"conversation_visibilities\".\"person_id\" = ?) subquery_for_count",
+        "under": "ActiveRecord::Calculations#count"
+      },
+      {
+        "sql": "SELECT COUNT(*) FROM (SELECT DISTINCT \"conversation_visibilities\".\"id\" FROM \"conversation_visibilities\" LEFT OUTER JOIN \"conversations\" ON \"conversations\".\"id\" = \"conversation_visibilities\".\"conversation_id\" WHERE \"conversation_visibilities\".\"person_id\" = ?) subquery_for_count",
+        "under": "ActiveRecord::Calculations#count"
+      },
+      {
+        "sql": "SELECT  \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = ? LIMIT ?",
+        "under": "ActiveRecord::Associations::SingularAssociation#find_target"
+      },
+      {
+        "sql": "SELECT COUNT(*) FROM \"notifications\" WHERE \"notifications\".\"recipient_id\" = ? AND \"notifications\".\"unread\" = ?",
+        "under": "ActiveRecord::Calculations#count"
+      },
+      {
+        "sql": "SELECT SUM(\"conversation_visibilities\".\"unread\") FROM \"conversation_visibilities\" WHERE \"conversation_visibilities\".\"person_id\" = ?",
+        "under": "ActiveRecord::Calculations#sum"
+      },
+      {
+        "sql": "SELECT  1 AS one FROM \"roles\" WHERE \"roles\".\"person_id\" = ? AND \"roles\".\"name\" = ? LIMIT ?",
+        "under": "ActiveRecord::FinderMethods#exists?"
+      },
+      {
+        "sql": "SELECT  1 AS one FROM \"roles\" WHERE \"roles\".\"name\" IN (?, ?) AND \"roles\".\"person_id\" = ? LIMIT ?",
+        "under": "ActiveRecord::FinderMethods#exists?"
+      },
+      {
+        "sql": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = ? ORDER BY order_id ASC",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"services\".* FROM \"services\" WHERE \"services\".\"user_id\" = ?",
+        "under": "ActiveRecord::Associations::CollectionProxy#load_target"
+      },
+      {
+        "sql": "SELECT COUNT(*) FROM \"contacts\" WHERE \"contacts\".\"user_id\" = ? AND \"contacts\".\"receiving\" = ?",
+        "under": "ActiveRecord::Calculations#count"
+      }
+    ],
+    "coverage": {
+},
+    "error": null
+  },
+  {
+    "name": "R01_eve_sameSecond_ipsDiffer_newIp",
+    "target_calls": [
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 6,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 7,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 12,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 13,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Base#save",
+        "depth": 0,
+        "args": [
+          "{:validate=>false}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Base#update_attribute",
+        "depth": 0,
+        "args": [
+          ":last_seen",
+          "Sun, 30 Aug 2026 12:40:45 +0000"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Base#save",
+        "depth": 1,
+        "args": [
+          "{:validate=>false}"
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::SingularAssociation#find_target",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#pluck",
+        "depth": 0,
+        "args": [
+          "\"contacts.id\"",
+          "\"profiles.first_name\"",
+          "\"profiles.last_name\"",
+          "\"people.diaspora_handle\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#pluck",
+        "depth": 1,
+        "args": [
+          "\"contacts.id\"",
+          "\"profiles.first_name\"",
+          "\"profiles.last_name\"",
+          "\"people.diaspora_handle\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#empty?",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 0,
+        "args": [
+          ":all"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 1,
+        "args": [
+          ":all"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 0,
+        "args": [
+          ":all"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 1,
+        "args": [
+          ":all"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::SingularAssociation#find_target",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#sum",
+        "depth": 0,
+        "args": [
+          ":unread"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#sum",
+        "depth": 1,
+        "args": [
+          ":unread"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 0,
+        "args": [
+          "{:person_id=>23, :name=>\"admin\"}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 1,
+        "args": [
+          "{:person_id=>23, :name=>\"admin\"}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 0,
+        "args": [
+          "{:person_id=>23}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 1,
+        "args": [
+          "{:person_id=>23}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#load_target",
+        "depth": 6,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 7,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 8,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 13,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 14,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#load_target",
+        "depth": 6,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#load_target",
+        "depth": 6,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 11,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 19,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 13,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 22,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#pluck",
+        "depth": 4,
+        "args": [
+          "\"contacts.id\"",
+          "\"profiles.first_name\"",
+          "\"profiles.last_name\"",
+          "\"people.diaspora_handle\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 4,
+        "args": [
+          ":all"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 4,
+        "args": [
+          ":all"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#sum",
+        "depth": 4,
+        "args": [
+          ":unread"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 4,
+        "args": [
+          "{:person_id=>26, :name=>\"admin\"}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 4,
+        "args": [
+          "{:person_id=>26}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 14,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 23,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 15,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 25,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 15,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 25,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 6,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 17,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 28,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#pluck",
+        "depth": 6,
+        "args": [
+          "\"contacts.id\"",
+          "\"profiles.first_name\"",
+          "\"profiles.last_name\"",
+          "\"people.diaspora_handle\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 6,
+        "args": [
+
+        ]
+      }
+    ],
+    "statements": [
+      {
+        "sql": "SELECT  \"users\".* FROM \"users\" WHERE \"users\".\"id\" = ? ORDER BY \"users\".\"id\" ASC LIMIT ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "BEGIN TRANSACTION",
+        "under": "ActiveRecord::Base#save"
+      },
+      {
+        "sql": "UPDATE \"users\" SET \"sign_in_count\" = ?, \"current_sign_in_at\" = ?, \"current_sign_in_ip\" = ?, \"last_sign_in_ip\" = ?, \"updated_at\" = ? WHERE \"users\".\"id\" = ?",
+        "under": "ActiveRecord::Base#save"
+      },
+      {
+        "sql": "COMMIT TRANSACTION",
+        "under": "ActiveRecord::Base#save"
+      },
+      {
+        "sql": "BEGIN TRANSACTION",
+        "under": "ActiveRecord::Base#save"
+      },
+      {
+        "sql": "UPDATE \"users\" SET \"updated_at\" = ?, \"last_seen\" = ? WHERE \"users\".\"id\" = ?",
+        "under": "ActiveRecord::Base#save"
+      },
+      {
+        "sql": "COMMIT TRANSACTION",
+        "under": "ActiveRecord::Base#save"
+      },
+      {
+        "sql": "SELECT  \"people\".* FROM \"people\" WHERE \"people\".\"owner_id\" = ? LIMIT ?",
+        "under": "ActiveRecord::Associations::SingularAssociation#find_target"
+      },
+      {
+        "sql": "SELECT contacts.id, profiles.first_name, profiles.last_name, people.diaspora_handle FROM \"contacts\" INNER JOIN \"people\" ON \"people\".\"id\" = \"contacts\".\"person_id\" INNER JOIN \"profiles\" ON \"profiles\".\"person_id\" = \"people\".\"id\" WHERE \"contacts\".\"user_id\" = ? AND \"contacts\".\"sharing\" = ? AND \"contacts\".\"receiving\" = ?",
+        "under": "ActiveRecord::Calculations#pluck"
+      },
+      {
+        "sql": "SELECT  1 AS one FROM \"contacts\" WHERE \"contacts\".\"user_id\" = ? AND \"contacts\".\"sharing\" = ? AND \"contacts\".\"receiving\" = ? LIMIT ?",
+        "under": "ActiveRecord::FinderMethods#exists?"
+      },
+      {
+        "sql": "SELECT COUNT(*) FROM (SELECT DISTINCT \"conversation_visibilities\".\"id\" FROM \"conversation_visibilities\" LEFT OUTER JOIN \"conversations\" ON \"conversations\".\"id\" = \"conversation_visibilities\".\"conversation_id\" WHERE \"conversation_visibilities\".\"person_id\" = ?) subquery_for_count",
+        "under": "ActiveRecord::Calculations#count"
+      },
+      {
+        "sql": "SELECT COUNT(*) FROM (SELECT DISTINCT \"conversation_visibilities\".\"id\" FROM \"conversation_visibilities\" LEFT OUTER JOIN \"conversations\" ON \"conversations\".\"id\" = \"conversation_visibilities\".\"conversation_id\" WHERE \"conversation_visibilities\".\"person_id\" = ?) subquery_for_count",
+        "under": "ActiveRecord::Calculations#count"
+      },
+      {
+        "sql": "SELECT  \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = ? LIMIT ?",
+        "under": "ActiveRecord::Associations::SingularAssociation#find_target"
+      },
+      {
+        "sql": "SELECT COUNT(*) FROM \"notifications\" WHERE \"notifications\".\"recipient_id\" = ? AND \"notifications\".\"unread\" = ?",
+        "under": "ActiveRecord::Calculations#count"
+      },
+      {
+        "sql": "SELECT SUM(\"conversation_visibilities\".\"unread\") FROM \"conversation_visibilities\" WHERE \"conversation_visibilities\".\"person_id\" = ?",
+        "under": "ActiveRecord::Calculations#sum"
+      },
+      {
+        "sql": "SELECT  1 AS one FROM \"roles\" WHERE \"roles\".\"person_id\" = ? AND \"roles\".\"name\" = ? LIMIT ?",
+        "under": "ActiveRecord::FinderMethods#exists?"
+      },
+      {
+        "sql": "SELECT  1 AS one FROM \"roles\" WHERE \"roles\".\"name\" IN (?, ?) AND \"roles\".\"person_id\" = ? LIMIT ?",
+        "under": "ActiveRecord::FinderMethods#exists?"
+      },
+      {
+        "sql": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = ? ORDER BY order_id ASC",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"services\".* FROM \"services\" WHERE \"services\".\"user_id\" = ?",
+        "under": "ActiveRecord::Associations::CollectionProxy#load_target"
+      },
+      {
+        "sql": "SELECT COUNT(*) FROM \"contacts\" WHERE \"contacts\".\"user_id\" = ? AND \"contacts\".\"receiving\" = ?",
+        "under": "ActiveRecord::Calculations#count"
+      }
+    ],
+    "coverage": {
+},
+    "error": null
+  },
+  {
+    "name": "R01_fay_garbage_cookie",
+    "target_calls": [
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 10,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 18,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 12,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 21,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#pluck",
+        "depth": 3,
+        "args": [
+          "\"contacts.id\"",
+          "\"profiles.first_name\"",
+          "\"profiles.last_name\"",
+          "\"people.diaspora_handle\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 3,
+        "args": [
+          ":all"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 3,
+        "args": [
+          ":all"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#sum",
+        "depth": 3,
+        "args": [
+          ":unread"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 3,
+        "args": [
+          "{:person_id=>26, :name=>\"admin\"}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 3,
+        "args": [
+          "{:person_id=>26}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 13,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 22,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 14,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 24,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 14,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 24,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 16,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 27,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#pluck",
+        "depth": 5,
+        "args": [
+          "\"contacts.id\"",
+          "\"profiles.first_name\"",
+          "\"profiles.last_name\"",
+          "\"people.diaspora_handle\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      }
+    ],
+    "statements": [
+
+    ],
+    "coverage": {
+},
+    "error": null
+  },
+  {
+    "name": "R01_gus_cookie_deleted_uid",
+    "target_calls": [
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 8,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 9,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 16,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 17,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 11,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 20,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#pluck",
+        "depth": 2,
+        "args": [
+          "\"contacts.id\"",
+          "\"profiles.first_name\"",
+          "\"profiles.last_name\"",
+          "\"people.diaspora_handle\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 2,
+        "args": [
+          ":all"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 2,
+        "args": [
+          ":all"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#sum",
+        "depth": 2,
+        "args": [
+          ":unread"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 2,
+        "args": [
+          "{:person_id=>26, :name=>\"admin\"}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 2,
+        "args": [
+          "{:person_id=>26}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 12,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 21,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 13,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 23,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 13,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 23,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 15,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 26,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#pluck",
+        "depth": 4,
+        "args": [
+          "\"contacts.id\"",
+          "\"profiles.first_name\"",
+          "\"profiles.last_name\"",
+          "\"people.diaspora_handle\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      }
+    ],
+    "statements": [
+      {
+        "sql": "SELECT  \"users\".* FROM \"users\" WHERE \"users\".\"id\" = ? ORDER BY \"users\".\"id\" ASC LIMIT ?",
+        "under": "ActiveRecord::Relation#records"
+      }
+    ],
+    "coverage": {
+},
+    "error": null
+  },
+  {
+    "name": "R01_hal_session_and_cookie",
+    "target_calls": [
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 9,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 10,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 18,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 19,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::SingularAssociation#find_target",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#pluck",
+        "depth": 0,
+        "args": [
+          "\"contacts.id\"",
+          "\"profiles.first_name\"",
+          "\"profiles.last_name\"",
+          "\"people.diaspora_handle\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#pluck",
+        "depth": 1,
+        "args": [
+          "\"contacts.id\"",
+          "\"profiles.first_name\"",
+          "\"profiles.last_name\"",
+          "\"people.diaspora_handle\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#empty?",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 0,
+        "args": [
+          ":all"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 1,
+        "args": [
+          ":all"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 0,
+        "args": [
+          ":all"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 1,
+        "args": [
+          ":all"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::SingularAssociation#find_target",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#sum",
+        "depth": 0,
+        "args": [
+          ":unread"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#sum",
+        "depth": 1,
+        "args": [
+          ":unread"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 0,
+        "args": [
+          "{:person_id=>26, :name=>\"admin\"}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 1,
+        "args": [
+          "{:person_id=>26, :name=>\"admin\"}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 0,
+        "args": [
+          "{:person_id=>26}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 1,
+        "args": [
+          "{:person_id=>26}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#load_target",
+        "depth": 9,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 10,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 11,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 19,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 20,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#load_target",
+        "depth": 9,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#load_target",
+        "depth": 9,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 12,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 22,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 12,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 22,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 14,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 25,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#pluck",
+        "depth": 3,
+        "args": [
+          "\"contacts.id\"",
+          "\"profiles.first_name\"",
+          "\"profiles.last_name\"",
+          "\"people.diaspora_handle\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      }
+    ],
+    "statements": [
+      {
+        "sql": "SELECT  \"users\".* FROM \"users\" WHERE \"users\".\"id\" = ? ORDER BY \"users\".\"id\" ASC LIMIT ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT  \"people\".* FROM \"people\" WHERE \"people\".\"owner_id\" = ? LIMIT ?",
+        "under": "ActiveRecord::Associations::SingularAssociation#find_target"
+      },
+      {
+        "sql": "SELECT contacts.id, profiles.first_name, profiles.last_name, people.diaspora_handle FROM \"contacts\" INNER JOIN \"people\" ON \"people\".\"id\" = \"contacts\".\"person_id\" INNER JOIN \"profiles\" ON \"profiles\".\"person_id\" = \"people\".\"id\" WHERE \"contacts\".\"user_id\" = ? AND \"contacts\".\"sharing\" = ? AND \"contacts\".\"receiving\" = ?",
+        "under": "ActiveRecord::Calculations#pluck"
+      },
+      {
+        "sql": "SELECT  1 AS one FROM \"contacts\" WHERE \"contacts\".\"user_id\" = ? AND \"contacts\".\"sharing\" = ? AND \"contacts\".\"receiving\" = ? LIMIT ?",
+        "under": "ActiveRecord::FinderMethods#exists?"
+      },
+      {
+        "sql": "SELECT COUNT(*) FROM (SELECT DISTINCT \"conversation_visibilities\".\"id\" FROM \"conversation_visibilities\" LEFT OUTER JOIN \"conversations\" ON \"conversations\".\"id\" = \"conversation_visibilities\".\"conversation_id\" WHERE \"conversation_visibilities\".\"person_id\" = ?) subquery_for_count",
+        "under": "ActiveRecord::Calculations#count"
+      },
+      {
+        "sql": "SELECT COUNT(*) FROM (SELECT DISTINCT \"conversation_visibilities\".\"id\" FROM \"conversation_visibilities\" LEFT OUTER JOIN \"conversations\" ON \"conversations\".\"id\" = \"conversation_visibilities\".\"conversation_id\" WHERE \"conversation_visibilities\".\"person_id\" = ?) subquery_for_count",
+        "under": "ActiveRecord::Calculations#count"
+      },
+      {
+        "sql": "SELECT  \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = ? LIMIT ?",
+        "under": "ActiveRecord::Associations::SingularAssociation#find_target"
+      },
+      {
+        "sql": "SELECT COUNT(*) FROM \"notifications\" WHERE \"notifications\".\"recipient_id\" = ? AND \"notifications\".\"unread\" = ?",
+        "under": "ActiveRecord::Calculations#count"
+      },
+      {
+        "sql": "SELECT SUM(\"conversation_visibilities\".\"unread\") FROM \"conversation_visibilities\" WHERE \"conversation_visibilities\".\"person_id\" = ?",
+        "under": "ActiveRecord::Calculations#sum"
+      },
+      {
+        "sql": "SELECT  1 AS one FROM \"roles\" WHERE \"roles\".\"person_id\" = ? AND \"roles\".\"name\" = ? LIMIT ?",
+        "under": "ActiveRecord::FinderMethods#exists?"
+      },
+      {
+        "sql": "SELECT  1 AS one FROM \"roles\" WHERE \"roles\".\"name\" IN (?, ?) AND \"roles\".\"person_id\" = ? LIMIT ?",
+        "under": "ActiveRecord::FinderMethods#exists?"
+      },
+      {
+        "sql": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = ? ORDER BY order_id ASC",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"services\".* FROM \"services\" WHERE \"services\".\"user_id\" = ?",
+        "under": "ActiveRecord::Associations::CollectionProxy#load_target"
+      },
+      {
+        "sql": "SELECT COUNT(*) FROM \"contacts\" WHERE \"contacts\".\"user_id\" = ? AND \"contacts\".\"receiving\" = ?",
+        "under": "ActiveRecord::Calculations#count"
+      }
+    ],
+    "coverage": {
+},
+    "error": null
+  },
+  {
+    "name": "R01_ivy_stale_session_stale_cookie",
+    "target_calls": [
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 10,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 11,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 20,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 21,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 10,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 11,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 20,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 21,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 13,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 24,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#pluck",
+        "depth": 2,
+        "args": [
+          "\"contacts.id\"",
+          "\"profiles.first_name\"",
+          "\"profiles.last_name\"",
+          "\"people.diaspora_handle\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      }
+    ],
+    "statements": [
+      {
+        "sql": "SELECT  \"users\".* FROM \"users\" WHERE \"users\".\"id\" = ? ORDER BY \"users\".\"id\" ASC LIMIT ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT  \"users\".* FROM \"users\" WHERE \"users\".\"id\" = ? ORDER BY \"users\".\"id\" ASC LIMIT ?",
+        "under": "ActiveRecord::Relation#records"
+      }
+    ],
+    "coverage": {
+},
+    "error": null
+  },
+  {
+    "name": "R01_jon_never_signed_in_cookie",
+    "target_calls": [
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 11,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 12,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 22,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 23,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Base#save",
+        "depth": 0,
+        "args": [
+          "{:validate=>false}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Base#update_attribute",
+        "depth": 0,
+        "args": [
+          ":last_seen",
+          "Sun, 30 Aug 2026 12:40:46 +0000"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Base#save",
+        "depth": 1,
+        "args": [
+          "{:validate=>false}"
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::SingularAssociation#find_target",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#pluck",
+        "depth": 0,
+        "args": [
+          "\"contacts.id\"",
+          "\"profiles.first_name\"",
+          "\"profiles.last_name\"",
+          "\"people.diaspora_handle\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#pluck",
+        "depth": 1,
+        "args": [
+          "\"contacts.id\"",
+          "\"profiles.first_name\"",
+          "\"profiles.last_name\"",
+          "\"people.diaspora_handle\""
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActionController::Metal#status=",
+        "depth": 0,
+        "args": [
+          "200"
+        ]
+      }
+    ],
+    "statements": [
+      {
+        "sql": "SELECT  \"users\".* FROM \"users\" WHERE \"users\".\"id\" = ? ORDER BY \"users\".\"id\" ASC LIMIT ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "BEGIN TRANSACTION",
+        "under": "ActiveRecord::Base#save"
+      },
+      {
+        "sql": "UPDATE \"users\" SET \"sign_in_count\" = ?, \"current_sign_in_at\" = ?, \"last_sign_in_at\" = ?, \"current_sign_in_ip\" = ?, \"last_sign_in_ip\" = ?, \"updated_at\" = ? WHERE \"users\".\"id\" = ?",
+        "under": "ActiveRecord::Base#save"
+      },
+      {
+        "sql": "COMMIT TRANSACTION",
+        "under": "ActiveRecord::Base#save"
+      },
+      {
+        "sql": "BEGIN TRANSACTION",
+        "under": "ActiveRecord::Base#save"
+      },
+      {
+        "sql": "UPDATE \"users\" SET \"updated_at\" = ?, \"last_seen\" = ? WHERE \"users\".\"id\" = ?",
+        "under": "ActiveRecord::Base#save"
+      },
+      {
+        "sql": "COMMIT TRANSACTION",
+        "under": "ActiveRecord::Base#save"
+      },
+      {
+        "sql": "SELECT  \"people\".* FROM \"people\" WHERE \"people\".\"owner_id\" = ? LIMIT ?",
+        "under": "ActiveRecord::Associations::SingularAssociation#find_target"
+      },
+      {
+        "sql": "SELECT contacts.id, profiles.first_name, profiles.last_name, people.diaspora_handle FROM \"contacts\" INNER JOIN \"people\" ON \"people\".\"id\" = \"contacts\".\"person_id\" INNER JOIN \"profiles\" ON \"profiles\".\"person_id\" = \"people\".\"id\" WHERE \"contacts\".\"user_id\" = ? AND \"contacts\".\"sharing\" = ? AND \"contacts\".\"receiving\" = ?",
+        "under": "ActiveRecord::Calculations#pluck"
+      },
+      {
+        "sql": "SELECT  \"conversation_visibilities\".\"id\" AS t0_r0, \"conversation_visibilities\".\"conversation_id\" AS t0_r1, \"conversation_visibilities\".\"person_id\" AS t0_r2, \"conversation_visibilities\".\"unread\" AS t0_r3, \"conversation_visibilities\".\"created_at\" AS t0_r4, \"conversation_visibilities\".\"updated_at\" AS t0_r5, \"conversations\".\"id\" AS t1_r0, \"conversations\".\"subject\" AS t1_r1, \"conversations\".\"guid\" AS t1_r2, \"conversations\".\"author_id\" AS t1_r3, \"conversations\".\"created_at\" AS t1_r4, \"conversations\".\"updated_at\" AS t1_r5 FROM \"conversation_visibilities\" LEFT OUTER JOIN \"conversations\" ON \"conversations\".\"id\" = \"conversation_visibilities\".\"conversation_id\" WHERE \"conversation_visibilities\".\"person_id\" = ? ORDER BY conversations.updated_at DESC LIMIT ? OFFSET ?",
+        "under": "ActiveRecord::Relation#records"
+      }
+    ],
+    "coverage": {
+},
+    "error": null
+  }
+]

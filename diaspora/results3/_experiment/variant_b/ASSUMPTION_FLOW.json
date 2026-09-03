@@ -1,0 +1,110 @@
+[
+  {
+    "class": "finder-arm",
+    "guard": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+    "guard_side": true,
+    "guard_site": "concolic_targets.rb:527-529 (finder_mock lambda)",
+    "runs": {
+      "foreclosing": "dump_plain_t2_nft_dse0001.json (not_found forced True)",
+      "recording": "dump_plain_t2_nff_dse0001.json (not_found forced False)"
+    },
+    "foreclosed_exprs": [
+      "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid == '')",
+      "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id == SYM_PERSON_NI_id)",
+      "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_persisted == True)"
+    ],
+    "present_on_recording_side": true,
+    "absent_on_foreclosing_side": true,
+    "pc_set_evidence": {
+      "only_in_foreclosing": [],
+      "only_in_recording_count": 3
+    },
+    "verdict": "PASS",
+    "notes": "Clean disjoint PC sets (0 foreclosed exprs leak into the not_found=True run; all 3 found-arm attribute exprs present in the not_found=False run). Coverage-level divergence not separately measured for this class (PC-level evidence alone is unambiguous: finder_mock's if/else is a single 2-line branch, concolic_targets.rb:529-534)."
+  },
+  {
+    "class": "persisted-gate",
+    "guard": "(SYM_RESULT_ActiveRecord__Relation_to_ary_1_row_persisted == True)",
+    "guard_side": false,
+    "guard_site": "concolic_targets.rb:501-511 (symbolic_instance persisted-decision) -> targets.rb:589-605 (CollectionAssociation#size shim) -> activerecord collection_association.rb:286-294 (null_scope?/find_target?)",
+    "runs": {
+      "foreclosing": "dump_plain_t2_pf_dse0001.json (to_ary_1_row_persisted forced False)",
+      "recording": "dump_plain_t2_pt_dse0001.json (to_ary_1_row_persisted forced True)"
+    },
+    "foreclosed_exprs": [
+      "(SYM_RESULT_ActiveRecord__Calculations_count_3_count < 4)",
+      "(SYM_RESULT_ActiveRecord__Calculations_count_3_count == 0)",
+      "(SYM_RESULT_ActiveRecord__Calculations_count_4_count == 0)",
+      "(SYM_RESULT_ActiveRecord__Calculations_count_4_count == 1)"
+    ],
+    "present_on_recording_side": true,
+    "absent_on_foreclosing_side": true,
+    "pc_set_evidence": {
+      "only_in_foreclosing": [],
+      "only_in_recording_count": 4
+    },
+    "coverage_divergence": {
+      "targets.rb": {
+        "first_diverging_lines": [
+          593,
+          594,
+          596,
+          597
+        ],
+        "detail": "foreclosing hits line 593 (super/`!find_target?` branch) 2x, 0x on 594/596/597; recording hits 594/596/597 (count_records branch), 0x on 593"
+      },
+      "activerecord/associations/collection_association.rb": {
+        "first_diverging_lines": [
+          212,
+          213,
+          287,
+          288,
+          289,
+          293
+        ],
+        "detail": "the exact lines BUGFIXES_20260819.md bug-1 cites (286-294, null_scope?/none! build)"
+      },
+      "activerecord/associations/has_many_association.rb": {
+        "first_diverging_lines": [
+          63,
+          66,
+          72,
+          74
+        ],
+        "detail": "count_records: 0 hits foreclosing side, 2 hits recording side"
+      }
+    },
+    "verdict": "PASS",
+    "notes": "IMPORTANT CORRECTION vs the module docstring's original description: the foreclosed exprs are NOT generic companion `_persisted` exprs on the SAME representative (assoc_author_persisted/assoc_target_persisted fire on BOTH sides -- belongs_to/SingularAssociation reads are unaffected, confirming Bug1's null_scope? fix is CollectionAssociation-specific as documented). The real foreclosed family is the has_many-THROUGH `actors`/`notification_actors` collection's count_records-derived PCs, gated via targets.rb's own `size` coerce shim. The classifier's `_same_class` still correctly labels this pair 'persisted-gate' (matches on `_persisted` in the guard var name, not on a specific B pattern), so the auto-derivation logic is validated even though my first hand-guessed example B was wrong -- recorded here so a future reader does not re-guess the same wrong mechanism."
+  },
+  {
+    "class": "tier0-type-exclusivity (sanity check, sound by construction)",
+    "guard": "(SYM_NOTE_TYPE_PROFILE == 0)  vs  (SYM_NOTE_TYPE_PROFILE == 4)",
+    "guard_site": "targets.rb:298-304 (\u00a75f build_notification_representative, unconditional per-index compare loop)",
+    "runs": {
+      "side_a": "dump_plain_t2_type0_dse0001.json (type=0, liked/Post)",
+      "side_b": "dump_plain_t2_type4_dse0001.json (type=4, mentioned/Mention)"
+    },
+    "foreclosed_exprs_a_only": [
+      "(assoc_author_persisted == True)",
+      "(assoc_target_persisted == True)",
+      "(assoc_target_text_has_mention == True)"
+    ],
+    "foreclosed_exprs_b_only": [
+      "(assoc_mentions_container_persisted == True)",
+      "(assoc_mentions_container_text_has_mention == True)"
+    ],
+    "verdict": "PASS (sanity check on representative pair, as required even though Tier0 is sound by construction)",
+    "notes": "Clean disjoint sets confirmed for one representative pair (type 0 vs type 4). Note type0 vs type1 (liked vs reshared) produced IDENTICAL PC sets -- both profiles route through the same opts_for_post helper shape per targets.rb's own documentation, so that particular pair is not itself a Tier0 example (expected and consistent, not a discrepancy: Tier0 declares only pairs whose OBSERVED type-sets are disjoint, and liked/reshared's sets are not disjoint from each other for these two exprs)."
+  },
+  {
+    "class": "count-chain",
+    "verdict": "NOT PROBED / BLOCKED",
+    "notes": "No genuine cross-variable (guard-is-a-count-var, forecloses-a-DIFFERENT-expr-not-covered-by-persisted-gate) instance was located within the available probing time. Added to _T2_BLOCKED_CLASSES in coverage_assumptions.py; will not be auto-declared."
+  },
+  {
+    "class": "one-sided (Tier 2, guid != StringVal(''))",
+    "verdict": "NOT PROBED / BLOCKED",
+    "notes": "Attempted two directed seeds (type=4/mentioned with text_has_mention=True; also the default corpus sample) -- the recording site (Journey-formatter anchor route generation for a comment/mention guid) was not reached by either. Only the syntactically DIFFERENT `_guid == ''` exprs were observed, never the `!= StringVal('')` form the assumption targets. Blocked in coverage_assumptions.py (_T2_ONE_SIDED_PROBED_OK = False) rather than declared on the prior corpus-count-only evidence."
+  }
+]

@@ -1,0 +1,80 @@
+### mock_note_check
+== mock_note_check: 8 target frames issued real SELECTs; 17 targets carry corpus notes ==
+
+NOTE-OK*      ActiveRecord::Associations::CollectionProxy.load_target  (1 shape(s) matched under a DIFFERENT target — frame nesting)
+NOTE-OK       ActiveRecord::Associations::SingularAssociation.find_target  (2 real shapes matched)
+NOTE-MISMATCH ActiveRecord::Base.save  <-- RED: 3 real statement shape(s) with NO corpus note anywhere
+     real: UPDATE "users" SET "sign_in_count" = ?, "current_sign_in_at" = ?, "last_sign_in_ip" = ?, "updated_at" = ? WHER
+     real: UPDATE "users" SET "updated_at" = ?, "last_seen" = ? WHERE "users"."id" = ?
+     real: UPDATE "users" SET "sign_in_count" = ?, "current_sign_in_at" = ?, "current_sign_in_ip" = ?, "last_sign_in_ip" 
+NOTE-OK       ActiveRecord::Calculations.count  (3 real shapes matched)
+NOTE-OK       ActiveRecord::Calculations.pluck  (1 real shapes matched)
+NOTE-OK       ActiveRecord::Calculations.sum  (1 real shapes matched)
+NOTE-OK       ActiveRecord::FinderMethods.exists?  (3 real shapes matched)
+NOTE-OK*      ActiveRecord::Relation.records  (1 shape(s) matched under a DIFFERENT target — frame nesting)
+
+RESULT: RED — target mocks with missing/mismatched notes above.
+EXIT=1
+
+### note_fidelity_audit
+== note_fidelity_audit: 1 run file(s), 19 distinct real SELECTs under 8 frames; 17 targets carry notes ==
+
+-- wildcard notes per target (corpus) --
+   ActiveRecord::Associations::CollectionProxy.records                    notes=3    star=3
+   ActiveRecord::Associations::SingularAssociation.find_target            notes=17   star=17
+   ActiveRecord::Base.reload                                              notes=5    star=5
+   ActiveRecord::Base.save                                                notes=9    cols=9
+   ActiveRecord::Calculations.count                                       notes=9    agg=9
+   ActiveRecord::Calculations.pluck                                       notes=3    cols=3
+   ActiveRecord::Calculations.sum                                         notes=1    agg=1
+   ActiveRecord::FinderMethods.devise_user_first                          notes=1    star=1
+   ActiveRecord::FinderMethods.exists?                                    notes=5    cols=5
+   ActiveRecord::FinderMethods.find_by                                    notes=3    star=3
+   ActiveRecord::FinderMethods.first                                      notes=4    star=4
+   ActiveRecord::FinderMethods.take                                       notes=2    cols=2
+   ActiveRecord::Relation.empty?                                          notes=1    cols=1
+   ActiveRecord::Relation.records                                         notes=5    cols=2 star=3
+   ActiveRecord::Relation.to_a                                            notes=3    cols=2 star=1
+   ActiveRecord::Relation.to_ary                                          notes=2    star=2
+   Anonymous.load_intermediate                                            notes=3    star=3
+
+-- MISSING: 3 --
+   ActiveRecord::Base.save  [R01_cookie_validity.json:R01_eve_sameSecond_ipsDiffer_newIp]
+      real: UPDATE "users" SET "sign_in_count" = ?, "current_sign_in_at" = ?, "current_sign_in_ip" = ?, "last_sign_in_ip" = ?, "updated_at" = ? WHERE "users"."id"
+   ActiveRecord::Base.save  [R01_cookie_validity.json:R01_dan_sameSecond_ipsDiffer_sameIp]
+      real: UPDATE "users" SET "sign_in_count" = ?, "current_sign_in_at" = ?, "last_sign_in_ip" = ?, "updated_at" = ? WHERE "users"."id" = ?
+   ActiveRecord::Base.save  [R01_cookie_validity.json:R01_carl_notremembered_future_cookie, R01_cookie_validity.json:R01_dan_sameSecond_ipsDiffer_sameIp, R01_cookie_validity.json:R01_eve_sameSecond_ipsDiffer_newIp]
+      real: UPDATE "users" SET "updated_at" = ?, "last_seen" = ? WHERE "users"."id" = ?
+
+-- STAR-OVER: 0 --
+
+-- AGG-COLLAPSE: 0 --
+
+-- PROJ-DIFF: 0 --
+
+-- PRED-OP-DIFF: 0 --
+
+-- LIMIT-DIFF: 0 --
+
+-- ORDER-DIFF: 0 --
+
+-- PRED-DIFF: 0 --
+
+-- EXACT: 16 --
+RESULT: RED — 3 real statement(s) whose note is unfaithful in projection or missing.
+EXIT=1
+
+### _multiset_counts (batch judge, write-aware)
+== multiset_counts: 10 real requests, 21835 dumps ==
+  UNDER  real x1 corpus max x0  update users set sign_in_count = @, current_sign_in_at = @, current_sign_in_ip = @, last_sign_in_ip = @, updat
+  UNDER  real x1 corpus max x0  update users set sign_in_count = @, current_sign_in_at = @, last_sign_in_ip = @, updated_at = @ where users.id
+  UNDER  real x1 corpus max x0  update users set updated_at = @, last_seen = @ where users.id = @
+  OVER   corpus x2 real max x1  select @ as one from roles where roles.name in (@, @) and roles.person_id = @ limit @
+  OVER   corpus x2 real max x1  select @ as one from roles where roles.person_id = @ and roles.name = @ limit @
+  OVER   corpus x3 real max x1  select count(*) from notifications where notifications.recipient_id = @ and notifications.unread = @
+  OVER   corpus x5 real max x1  select profiles.* from profiles where profiles.person_id = @ limit @
+  OVER   corpus x3 real max x1  select sum(conversation_visibilities.unread) from conversation_visibilities where conversation_visibilities.pe
+
+count-exact real requests reproduced by some dump: 6/10
+RESULT: RED — per-request shapes under-emitted 3, over-emitted 5; per-row shapes at the one-representative limit 0 (known, not judged)
+EXIT=1

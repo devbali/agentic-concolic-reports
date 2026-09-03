@@ -1,0 +1,11 @@
+== mock_note_check: 5 target frames issued real SELECTs; 13 targets carry corpus notes ==
+
+NOTE-OK       ActiveRecord::Associations::BelongsToPolymorphicAssociation.find_target  (2 real shapes matched)
+NOTE-OK       ActiveRecord::Associations::SingularAssociation.find_target  (3 real shapes matched)
+NOTE-OK       ActiveRecord::Calculations.count  (3 real shapes matched)
+NOTE-MISSING  ActiveRecord::FinderMethods.exists?  <-- RED: issues real SQL, zero SQL-shaped corpus notes
+     real: SELECT  1 AS one FROM "posts" WHERE "posts"."guid" = ? LIMIT ?
+
+NOTE-OK       ActiveRecord::Relation.records  (12 real shapes matched)
+
+RESULT: RED — target mocks with missing/mismatched notes above.

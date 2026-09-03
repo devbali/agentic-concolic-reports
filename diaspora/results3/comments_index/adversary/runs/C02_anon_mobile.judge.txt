@@ -1,0 +1,44 @@
+### mock_note_check
+== mock_note_check: 2 target frames issued real SELECTs; 12 targets carry corpus notes ==
+
+NOTE-MISSING  ActiveRecord::FinderMethods.exists?  <-- RED: issues real SQL, zero SQL-shaped corpus notes
+     real: SELECT  1 AS one FROM "posts" WHERE "posts"."guid" = ? LIMIT ?
+
+NOTE-OK*      ActiveRecord::Relation.records  (5 shape(s) matched under a DIFFERENT target — frame nesting)
+
+RESULT: RED — target mocks with missing/mismatched notes above.
+EXIT=1
+
+### note_fidelity_audit
+== note_fidelity_audit: 1 run file(s), 8 distinct real SELECTs under 2 frames; 12 targets carry notes ==
+
+-- wildcard notes per target (corpus) --
+   ActiveRecord::Associations::SingularAssociation.find_target            notes=9    star=9
+   ActiveRecord::Core::ClassMethods.mention_lookup_json_first             notes=1    star=1
+   ActiveRecord::Core::ClassMethods.mention_lookup_json_retry             notes=1    star=1
+   ActiveRecord::Core::ClassMethods.mention_lookup_msg_first              notes=1    star=1
+   ActiveRecord::Core::ClassMethods.mention_lookup_msg_retry              notes=1    star=1
+   ActiveRecord::FinderMethods.ci_author_first                            notes=2    star=2
+   ActiveRecord::FinderMethods.ci_public_first                            notes=2    star=2
+   ActiveRecord::FinderMethods.ci_vis_first                               notes=2    star=2
+   ActiveRecord::FinderMethods.devise_user_first                          notes=1    star=1
+   ActiveRecord::FinderMethods.first                                      notes=2    star=2
+   ActiveRecord::Relation.records                                         notes=5    star=5
+   Anonymous.load_intermediate                                            notes=6    star=6
+
+-- MISSING: 0 --
+
+-- STAR-OVER: 1 --
+   ActiveRecord::FinderMethods.exists?  [C02_anon_mobile.json:C02_anon_mobile]
+      real: SELECT 1 AS one FROM "posts" WHERE "posts"."guid" = ? LIMIT ?
+      note: SELECT "posts".* FROM "posts" WHERE "posts"."id" = $$(SYM_PARAM_post_id)
+
+-- AGG-COLLAPSE: 0 --
+
+-- PROJ-DIFF: 0 --
+
+-- PRED-DIFF: 0 --
+
+-- EXACT: 7 --
+RESULT: RED — 1 real statement(s) whose note is unfaithful in projection or missing.
+EXIT=1

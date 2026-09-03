@@ -1,412 +1,126 @@
-# Diaspora Concolic Experiment
+# Diaspora concolic experiment
 
-**Goal:** Run the concolic testing framework against a **real Rails app**
-(Diaspora) on JRuby — no Python simulators, no modeled behavior. Runners
-drive the real controller/service/model code; ActiveRecord query methods
-are intercepted at the framework level and return **symbolic values**, so
-the app's own branches on query results record real path conditions.
+Extract, for each Rails endpoint, the **set of SQL queries it can issue** —
+its access policy — by running the real app under a concolic (concrete +
+symbolic) engine, and prove the set is complete **without any reference
+policy**. The app runs for real on JRuby; ActiveRecord query methods are
+intercepted at the framework boundary and return symbolic values, so the
+app's own branches on query results record path conditions, and each
+intercepted call records a NOTE: the statement it stands for, with `$(VAR)`
+binds. The corpus of runs (`dump_*.json`) is the evidence; the policy is
+folded out of it.
 
-## Layout
+There is no oracle. Completeness is a property we have to establish
+ourselves — that is what everything below is for.
+
+---
+
+## Where things are
 
 ```
 reports/diaspora/
-├── README.md                  ← this file (the whole experiment spec + how-to)
-├── concolic_targets.rb        ← ConcolicTargets.install! — ALL framework-level
-│                                target declarations (verified working)
-├── STEP0_query_targets.md     ← (archived to trash/)
-├── RAILS_CONCOLIC_MOCKING.md  ← reference: how/why mocking works at this layer
-├── PLAN_symbolic_query_ops.md ← original design plan (implemented; historical)
-└── results/                   ← one folder per batch; each batch has one
-                                 subfolder per entrypoint (populated by running)
+├── README.md              ← this file: what the project is, state, how to run it
+├── docs/                  ← the live process documentation
+│   ├── RUNBOOK.md         ← THE PROCESS: actors, the loop, every tool, ops
+│   ├── DISCIPLINE.md      ← the rules: Class S/B, D1–D3, Rule T (shared boundary)
+│   ├── CHECKS.md          ← each check in detail, with examples
+│   ├── TARGET_FUNCTIONS.md← what the target functions ARE (the query boundary)
+│   ├── ADVERSARY_WINS.md  ← ledger of every gap a real run found + patterns
+│   └── history/           ← superseded plans, audits and reports (kept, not live)
+├── tools/                 ← project-specific scripts (SQL/extraction level)
+│   ├── hardening_lint.py  ← past adversary wins as a mechanical pre-check
+│   ├── note_fidelity_audit.py, statement_diff.py, complement_audit.py
+├── results3/              ← the live batches, one directory per endpoint
+│   ├── <endpoint>/        ← runner, targets, shims, manifests, dumps, reports
+│   └── queries_from_runs/ ← extracted policies (`<endpoint>.sql`)
+├── results/, results2/    ← earlier generations (historical)
+└── trash/                 ← retired scripts and artifacts
 ```
 
-Everything lives under `/home/dev/project/reports/diaspora/`. `results/`
-holds only the (currently empty) batch + entrypoint folders — runners write
-their dumps there.
+Engine code lives outside this tree:
+`src/concolic_engine/` (coverage + completion), `src/end_to_end_completion_checker/`
+(assumption gate, note check, the adversary brief), `src/ruby_runtime/completion_checker/`
+(Ruby probes), `src/queries_from_runs/` (the fold, plus its five dump audits).
+
+## How an endpoint is declared done
+
+Three independent checks, on the same corpus — see `docs/RUNBOOK.md` for the
+full flow:
+
+1. **the completion engine** — `coverage_summary.json` ends with
+   `"complete": true`: every branch combination covered or exempted by a
+   declared assumption, every declared assumption tested by replay, every
+   shim mock reaching zero targets at 100% line coverage, every target's real
+   statements matching a corpus note;
+2. **the five SQL-consumer audits** (`src/queries_from_runs/audits/`) — the
+   dumps survive what the fold will do with them (binds resolve, PCs parse,
+   principal binds are symbolic, notes are well-shaped, compared columns are
+   PC-visible);
+3. **the adversary** — a sub-agent that reads the real code and tries to make
+   a REAL run (sqlite fixtures, no mocks) issue a target call the corpus does
+   not have. A round with zero wins closes the endpoint; any win reopens (1).
+
+A defect in a **target declaration** (the shared boundary) voids every
+endpoint and forces a from-scratch regeneration — `docs/DISCIPLINE.md` §8,
+Rule T.
+
+## State (2026-09-01 03:40)
+
+Sequential, one endpoint at a time. Standard for "done": engine
+`complete: true` (0 FAIL / 0 NOT-TESTABLE) + the coordinator's audit sweep +
+an adversary round with zero wins + the multiset matrix green — all on ONE
+corpus. Scope is DISCIPLINE §15: post-auth entrypoint, symbolic principal;
+the auth stages are the shared `results3/_auth_boundary/BOUNDARY_POLICY.md`,
+unioned into every endpoint's policy.
+
+| endpoint | standing | next |
+|---|---|---|
+| **conversations_index** | **CLOSED 2026-09-01** — engine complete (105 nodes, 0 missing, 18,623 dumps, 5,877 assumption probes PASS, shims 15/23/0); 8 audits + lint + census + boundary green; adversary R7 **zero wins** with entrypoint-frame proof; multiset matrix 7/7. **Correction 2026-09-01:** one of those checks (`cardinality_consistency`) judged 0 events here — its rule's subject does not occur on this endpoint — so the closure rests on ten checks with evidence, not eleven; no verdict retracted (see REPORT.md). Policy extracted: `queries_from_runs/conversations_index.sql`, **58 views** | done |
+| **comments_index** | **CLOSED 2026-09-01** — engine complete (84 nodes, 0 missing, 26 528 dumps, 928 746 PCs, assumptions 3 648/3 648 PASS, shims 19/11/0, **zero waivers**); coordinator's 11 checks green (cardinality 123 974 pairs judged / 52 282 explained); adversary **R10 zero wins** over 37 real requests, all four attacks refuted with evidence; count matrix 0 under / 0 over under BOTH plain and executor-wrapped ground truth. Policy: `queries_from_runs/comments_index.sql`, **79 views** (413 594 raw → 79 distinct). Declared gap: the discovery-success arm is unreachable here and DECLARED UNMODELLED — see POLICY_HEADER | done |
+| notifications_index | **BLOCKED 2026-09-01 by account weekly limit (resets Sep 4, 20:00 UTC)** — not a defect. Cycle-7 corpus regenerated on a repaired model (4 938 dumps): layout un-pinned (7 previously-absent shapes now present), discovery wall relocated to `Person#fix_profile` (`reload` over-emission 1 906 → 0), `sum`/`size` aggregate projections and a singular-association memo repaired. Coverage-only pass: 151 nodes, 7 681 missing, truncated. Handoff: `PAUSED_C7.md` | resume: clique profile → demand rounds → engine → sweep → adversary |
+| people_show / people_stream / posts_show | not started (pre-hardening targets, 0 dumps) | queued in that order |
+
+Shared assets every later endpoint inherits: the auth-boundary policy (§8 of
+that file says what is verified and what is NOT claimed), the post-auth scope,
+`tools/slot` 2-slot parallelism, the rig-crash census, the DML-aware judges,
+the repaired hand-seeder, and the multiset matrix protocol.
+
+Extracted policies to date: `results3/queries_from_runs/notifications_index.sql`
+(83 views, pre-engine corpus) and `comments_index.sql` (26 views). Extraction
+is the last step of a closed endpoint, not a checkpoint.
+
+The reference policies that once lived in `ruby_examples/dse-apps/policies/`
+are deliberately quarantined and unreadable; no agent may look for them.
+
+## Running things
+
+```bash
+# one JRuby at a time, machine-wide; always unset JAVA_TOOL_OPTIONS
+flock /tmp/concolic-slot.lock scripts/diaspora-concolic /abs/path/runner.rb
+
+# the engine report for a batch (needs ~5.5-6.3 GB at 20k dumps; run it alone)
+systemd-run --user --pipe --wait -p MemoryMax=6300M -p MemorySwapMax=0 \
+  --working-directory=/home/dev/project bash -c \
+  'unset JAVA_TOOL_OPTIONS; MAX_MISSING_PER_CLIQUE=4 PYTHONPATH=src \
+   python3 reports/diaspora/results3/<endpoint>/coverage_report.py'
+
+# the five SQL audits (coordinator)
+PYTHONPATH=src venvs/queries_from_runs/bin/python \
+  src/queries_from_runs/audits/<audit>.py reports/diaspora/results3/<endpoint> [...]
+
+# the hardening lint, before any adversary round
+PYTHONPATH=src python3 reports/diaspora/tools/hardening_lint.py \
+  reports/diaspora/results3/<endpoint> --sample 400
+```
+
+Cost model: a concolic run is ~30 ms, but a JRuby launch is ~60–90 s, so
+wall-clock is dominated by the number of launches (rounds, probes, concrete
+scenarios) and by the assumption gate's replays — not by the runs themselves.
 
 ## Infrastructure
 
-- Java 21 + JRuby 9.3 at `/home/dev/tools/`
-- Rails 5.2.4.3 + minimal gems (`Gemfile.minimal`) at
-  `/home/dev/project/ruby_examples/dse-apps/apps/diaspora`
-- SQLite DB for `RAILS_ENV=concolic` at `db/concolic.sqlite3` — has empty
-  tables for posts/people/profiles/users/share_visibilities/photos/tags/
-  taggings (needed for `columns_hash`; add more tables if a model's
-  `columns_hash` comes back empty)
-- Launch script: `/home/dev/project/scripts/diaspora-concolic <runner.rb>`
-  (runs from the app dir with the right env)
-- Ruby runtime: `/home/dev/project/src/ruby_runtime/` — mirror of the
-  Python reference runtime (`src/py_runtime/`); strict/loud philosophy:
-  unsupported ops raise `NotImplementedError`, captured in the dump's
-  `error` key
-- Concolic engine (Python, CoverageChecker): `/home/dev/project/src/concolic_engine/`
-- Working smoke test: `/home/dev/project/scripts/test_framework_targets.rb`
-  (real `PostService#find!` → 2 PCs; collection run → 1 PC)
-
-## Workflow (per batch)
-
-1. **Pick a batch** from the table below.
-2. Write a Ruby runner at `results/{batch}/run_concolic.rb` that:
-   - Loads the app + runtime + `ConcolicTargets.install!` (see §Usage below)
-   - Maps each entrypoint scenario to `CallInterceptor.instance.run(...)`
-   - Writes dumps to `results/{batch}/{entrypoint}/dump_{label}.json`
-   - **Closes the coverage loop per entrypoint**: run defaults → feed
-     CoverageChecker's suggested values into `ConcolicTargets.seed_overrides`
-     → re-run → repeat until complete (or no new suggestions); write
-     `coverage_summary.json`
-3. Run it: `/home/dev/project/scripts/diaspora-concolic results/{batch}/run_concolic.rb`
-4. Verify each dump contains `symbolic_call` events (query interceptions,
-   with the real SQL in the vars' `note` fields) and — for entrypoints whose
-   code branches on query results — `path_condition` events. A dump whose
-   `error` key is set means the run crashed (often an unsupported symbolic
-   op); the PCs recorded before the crash are still present. Report errors
-   honestly — do not silently drop crashed runs.
-
-## Wall-fixing discipline (a runner agent closes walls systematically)
-
-When an entrypoint's dump has an `error` (a "wall" — crash before completion),
-close it this way, repeatedly, until the batch reaches its completion definition
-("keep symbolic-mocking around till everything works"):
-
-1. **Read the traceback.** Find the raise frame and trace outward to the
-   **smallest enclosing method whose real body contains NO SQL and calls NO
-   other declared target function.** That is the only legal mock unit.
-   - If the enclosing method's body issues a query (`.`where/.find/.first/…`) or
-     calls another `declare_target`ed function, **do NOT mock it** — move outward
-     until you find a SQL-free leaf, or (Gate 1b pattern) extract the SQL-free
-     iteration/transform into its own named method and wrap only that.
-2. **Mock it symbolically** via `declare_target(receiver, method, returns: …)`
-   in `concolic_targets.rb` (§X for the canonical batch). The mock returns
-   symbolic-but-concrete values so downstream app branches still record PCs.
-3. **Preserve the real query path.** The enclosing finder/query
-   (`find!` → `EvilQuery`, `aspects_from_ids`, `target.subscribers`, the
-   persistence mocks) must still run FOR REAL — you are replacing only a
-   SQL-free leaf, never the query itself.
-4. **SQL traceability.** Query mocks render the producing SQL with symbolic
-   binds shown as `$$(SYMNAME)` (never the concrete string — see `sql_for`).
-   The rendered SQL is attached as `note` on both the returned vars AND the
-   `symbolic_call` event (the two-mock design: the query producer returns vars
-   carrying the SQL; the interceptor stamps it on the consumer call). Every
-   `$$(SYMNAME)` in a dump resolves to a prior `symbolic_call` whose returned
-   var carries the query that produced it.
-5. Re-run the batch, re-apply on the next wall, repeat.
-
-**The invariant (critical):** a mocked function's real body must not call any
-other target function. Mocking a unit that internally fires another target
-hides the symbolic query chain beneath it — that is the failure mode being
-prevented ("otherwise we lose everything"). If the smallest unit is SQL-free
-but still calls another target, split it (extract the leaf) rather than mocking
-the whole.
-
-**Return-value rule:** the mock must not re-enter the interceptor. Return `nil`
-(absent, passes through unchanged), a raw `Array`/concrete value, a non-native
-stub object, or a symbolic value with `note:` as appropriate — never a value
-that `to_symbolic` would re-wrap into a crash.
-
-**Worked examples (landed):** `Post.blocked_people`, `Stream::Base#post_ids` /
-`#attach_user_likes`, `StreamsController#decorated_stream_posts`
-(function-boundary splits, §I), and the posts-batch wall mocks in §X
-(`PostService#mark_user_notifications`, `Post.diaspora_initialize`,
-`ActsAsApi::Collection#as_api_response`, `Diaspora::Taggable#build_tags` +
-`StatusMessage#tag_name_max_length`, `DiasporaFederation::Entity#validate`).
-
-## Batches
-
-| # | Batch | Route→Action entrypoints |
-|---|-------|--------------------------|
-| 1 | `posts` | `GET /posts/:id` posts#show · `GET /oembed` posts#oembed · `GET /posts/:id/mentionable` posts#mentionable · `DELETE /posts/:id` posts#destroy · `POST /reshares` reshares#create · `GET /posts/:id/reshares` reshares#index · `GET /status_messages/new` status_messages#new · `POST /status_messages` status_messages#create · `GET /bookmarklet` status_messages#bookmarklet |
-| 2 | `comments` | `POST /posts/:id/comments` comments#create · `GET /posts/:id/comments` comments#index · `GET /posts/:id/comments/new` comments#new · `DELETE /comments/:id` comments#destroy |
-| 3 | `photos` | `GET /photos/:id` photos#show · `GET /people/:id/photos` photos#index · `POST /photos` photos#create · `DELETE /photos/:id` photos#destroy · `PUT /photos/:id/make_profile_photo` photos#make_profile_photo · `POST /posts/:id/participation` participations#create · `DELETE /posts/:id/participation` participations#destroy · `POST /posts/:id/poll_participations` poll_participations#create |
-| 4 | `contacts_aspects_blocks` | `GET /contacts` contacts#index · `GET /community_spotlight` contacts#spotlight · `POST /aspects` aspects#create · `GET /aspects/:id` aspects#show · `PUT /aspects/:id` aspects#update · `DELETE /aspects/:id` aspects#destroy · `PUT /aspects/order` aspects#update_order · `PUT /aspects/:id/toggle_chat_privilege` aspects#toggle_chat_privilege · `POST /aspect_memberships` aspect_memberships#create · `DELETE /aspect_memberships/:id` aspect_memberships#destroy · `POST /blocks` blocks#create · `DELETE /blocks/:id` blocks#destroy · `PUT /share_visibilities/:id` share_visibilities#update |
-| 5 | `conversations` | `GET /conversations` conversations#index · `POST /conversations` conversations#create · `GET /conversations/:id` conversations#show · `GET /conversations/:id/raw` conversations#raw · `POST /conversations/:id/messages` messages#create · `DELETE /conversations/:id/visibility` conversation_visibilities#destroy |
-| 6 | `notifications_tags` | `GET /notifications` notifications#index · `PUT /notifications/:id` notifications#update · `GET /notifications/read_all` notifications#read_all · `GET /tags` tags#index · `GET /tags/:name` tags#show · `GET /tag_followings` tag_followings#index · `POST /tag_followings` tag_followings#create · `DELETE /tag_followings/:id` tag_followings#destroy · `GET /tag_followings/manage` tag_followings#manage |
-| 7 | `oidc_federation_nodeinfo` | `POST /api/openid_connect/access_tokens` access_tokens#create · `POST /api/openid_connect/authorization` authorizations#create · `GET /.well-known/webfinger` webfinger · `GET /.well-known/host-meta` host_meta · `GET /node_info/:version` node_info#show · `POST /receive/public` federation receive · `POST /receive/private` federation receive |
-| 8 | `search_links_reports_profiles` | `GET /search` search#search · `GET /link` links#resolve · `GET /report` report#index · `POST /report` report#create · `PUT /report/:id` report#update · `DELETE /report/:id` report#destroy · `GET /profile` profiles#edit · `PUT /profile` profiles#update · `GET /profiles/:id` profiles#show |
-| 9 | `services_admin` | `POST /services/:provider/invite` services#invite · `GET /services/:provider/failure` services#failure · `GET /admin/user_search` admin#user_search · `GET /admin/dashboard` admin#dashboard · `GET /admin/stats` admin#stats · `POST /admin/users/:id/close_account` admin#close_account · `POST /admin/users/:id/lock_account` admin#lock_account · `POST /admin/users/:id/unlock_account` admin#unlock_account · `POST /admin/users/:id/add_invites` admin#add_invites |
-| 10 | `users_sessions` | `GET /users/edit` users#edit · `PUT /users` users#update · `GET /users/privacy_settings` users#privacy_settings · `PUT /users/privacy_settings` users#update_privacy_settings · `GET /users/getting_started` users#getting_started · `PUT /users/getting_started` users#getting_started_completed · `GET /users/export` users#export · `GET /users/export_photos` users#export_photos · `GET /users/download_profile` users#download_profile · `GET /users/confirm_email/:token` users#confirm_email · `GET /users/public` users#public · `DELETE /users` users#destroy · `GET /users/auth_token` users#auth_token · `GET /users/token` users#token · `POST /users/remove_avatar` users#remove_avatar · `POST /users/session` sessions#create · `DELETE /users/sign_out` sessions#destroy · `GET /users/sign_in` sessions#new · `POST /users` registrations#create · `GET /users/sign_up` registrations#new · `GET /users/invitation/accept` invitations#edit · `POST /users/invitation` invitations#create |
-| 11 | `likes` | `POST /posts/:id/likes` likes#create · `DELETE /likes/:id` likes#destroy · `GET /posts/:id/likes` likes#index |
-| 12 | `people` | `GET /people` people#index · `GET /people/:id` people#show · `GET /people/:id/stream` people#stream · `GET /people/:id/hovercard` people#hovercard · `GET /people/refresh_search` people#refresh_search · `POST /people/by_handle` people#retrieve_remote |
-| 13 | `streams` | `GET /aspects` streams#aspects · `GET /public` streams#public · `GET /activity` streams#activity · `GET /stream` streams#multi · `GET /commented` streams#commented · `GET /liked` streams#liked · `GET /mentions` streams#mentioned · `GET /followed_tags` streams#followed_tags |
-
-For model source files, see the app's `app/controllers/` and
-`app/services/` (e.g. `posts` → `posts_controller.rb`, `post_service.rb`,
-`reshare_service.rb`, `status_message_creation_service.rb`).
-
-## Usage (verified working — this exact pattern passed end-to-end)
-
-The old adapter-level `ConcolicHarness.declare_sql_target` approach is
-**deprecated for this experiment**: adapter returns are consumed by AR
-plumbing before app code sees them → zero PCs. Use the framework-level
-targets in `concolic_targets.rb` instead — they intercept
-`FinderMethods#find/first/...`, `Relation#records/to_a/any?/...`,
-`Calculations#count/sum`, `Persistence#save/update`, etc., and return
-symbolic values the app then branches on.
-
-```ruby
-require "./config/environment"   # real Rails app (run via diaspora-concolic)
-require "/home/dev/project/src/ruby_runtime/call_interceptor"
-require "/home/dev/project/src/ruby_runtime/bool"
-require "/home/dev/project/src/ruby_runtime/list"
-require "/home/dev/project/reports/diaspora/concolic_targets"
-require "json"
-
-ActiveRecord::Base.establish_connection(:concolic)
-interceptor = CallInterceptor.instance
-ConcolicTargets.install!(interceptor)
-
-source = ->(id:) {
-  service = PostService.new(nil)   # nil = anonymous
-  begin
-    post = service.find!(id.value) # .value: symbolic kwarg -> concrete
-    "found public=#{post.public?.inspect}"
-  rescue ActiveRecord::RecordNotFound then "not_found"
-  rescue Diaspora::NonPublic then "non_public"
-  end
-}
-
-# Run 1: defaults (record found, public=false, collections length 1)
-dump = interceptor.run(source, { "id" => 1 }, label: "posts_show_defaults")
-File.write("dump_defaults.json", JSON.pretty_generate(dump))
-
-# Run 2+: drive the OTHER branches via seed overrides (names come from
-# CoverageChecker's missing-coverage suggestions, or from run 1's vars)
-ConcolicTargets.seed_overrides = {
-  "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found" => true,
-}
-dump2 = interceptor.run(source, { "id" => 1 }, label: "posts_show_not_found")
-```
-
-What the mocks return:
-- **Single-record finders** → a symbolic instance of the REAL model class
-  (`klass.allocate`, no callbacks/DB): integer/boolean/string columns become
-  symint/symbool/symstr vars named `{result}_{column}`, each carrying the
-  real SQL in `note`. Boolean predicate readers (`post.public?`) record the
-  PC themselves and return a CONCRETE bool (Ruby truthiness gap — see
-  Limitations). `find`/`first!`-style raise `RecordNotFound` on the
-  not-found branch; `find_by`/`first`-style return nil (PC already
-  recorded either way).
-- **Collections** (`records`/`to_a`) → length-only `SymbolicList` —
-  `empty?`/`any?` record `(len(X) != 0)` PCs; element access raises.
-- **`count`/`sum`/`exists?`/`update_all`/`save`** → symint/symbool.
-- **`pluck`/`ids`/`find_each`** and other contents-ops → raise (out of scope).
-
-**Authenticated users:** `User.find(id)` returns a symbolic User instance
-through the finder mock. If a path needs real user behavior beyond
-attribute reads, note it in the report rather than hand-building users.
-
-## Coverage loop (verified)
-
-```bash
-cd /home/dev/project/src
-python3 -c "
-import sys, glob, json
-sys.path.insert(0, '.')
-from concolic_engine.run import Run
-from concolic_engine.coverage import CoverageChecker
-runs = [Run.from_dict(json.load(open(p)))
-        for p in glob.glob('/home/dev/project/reports/diaspora/results/{batch}/{entrypoint}/dump_*.json')]
-r = CoverageChecker(runs).check_coverage()
-print('Complete:', r.complete)
-for m in r.missing:
-    print('missing:', m)   # includes suggested concrete_values
-"
-```
-
-`MissingCoverage.concrete_values` maps var names to suggested values — feed
-them into `ConcolicTargets.seed_overrides` for the next run. Verified cycle
-on posts#show: defaults → suggestions `not_found=True` / `public=True` →
-seeded runs → **coverage complete** (3 dumps).
-
-## Output structure (per entrypoint)
-
-Each entrypoint gets its own coverage check with all its runs. Coverage is
-**not** checked at the batch level — each `{entrypoint}/` subdir must be
-`complete=true` on its own.
-
-```
-results/{batch}/
-├── run_concolic.rb          ← the batch runner
-├── {entrypoint}/            ← one subdir per entrypoint, each fully covered
-│   ├── dump_{label}.json    ← RunDump from CallInterceptor.instance.run
-│   └── coverage_summary.json ← CoverageChecker result (per-entrypoint)
-├── elapsed_seconds.txt
-└── REPORT.md                ← optional per-batch prose report
-```
-
-## Honest known limitations
-
-- **No modeled behavior.** Runners drive the real app code; path
-  conditions must come from the app's own branches on symbolic values. Do
-  **not** hand-replicate service logic in the runner to fabricate PCs.
-- **Ruby truthiness gap** (`src/TODO.txt`): bare `if obj` on a symbolic
-  wrapper cannot be intercepted — only explicit compares (`== true`, `!x`,
-  `.empty?`, predicate readers) record PCs. Consequence: some real app
-  branches (`if post.author`, `if params[:x]`) emit no PC. Boolean
-  attribute predicates (`post.public?`) DO record — the mock's predicate
-  reader handles it. Report un-recordable branches honestly.
-- **Strict runtime — expect loud crashes.** Unsupported operations on
-  symbolic values (arithmetic on symint, `to_s`/interpolation of symstr,
-  element access on SymbolicList, `pluck`, …) raise `NotImplementedError`,
-  captured under the dump's `error` key with PCs-so-far intact. This is
-  intended behavior (silent concretization is the failure mode being
-  prevented). If an entrypoint always crashes before its first PC, record
-  the error type/location in the batch report — that's a finding, not a
-  failure to hide. Escape hatch inside runner code only: `.value`.
-- **Var-name collisions across multiple calls to the same target** in one
-  run get distinct `_1`/`_2`… suffixes from the per-run call counter, and
-  seed_overrides key on the full name — but if the SAME entrypoint hits the
-  same finder twice, confirm which call a suggestion refers to via `note`
-  (SQL) before seeding.
-- **Source discipline.** The runtime (`src/ruby_runtime/` + `src/py_runtime/`)
-  is generic and mirrored — the Python runtime is the REFERENCE
-  implementation; PCs only from symbolic comparisons; no task-/SQL-specific
-  logic in shared source. If a runtime change seems needed, STOP and raise
-  it to Bali — do not edit `src/` from a batch-runner session. Scripts in
-  `reports/diaspora/results/` are free to iterate.
-
-## Current verification status (2026-08-08) — READ THIS
-
-**All 13 batches were run and each produced `run_concolic.rb` + `REPORT.md` + per-entrypoint
-dumps + `coverage_summary.json` (216 dumps, multiple runs per entrypoint for the coverage loop).**
-See `STATUS.md` for per-batch dump/entrypoint counts and operational notes.
-
-**Engine-verified completeness (via `Run.from_dict` + `CoverageChecker` per entrypoint):**
-- **113 / 113 entrypoints report `complete=true`**, 0 incomplete.
-- **40 are genuinely covered** (≥1 path condition recorded, checker confirms).
-- **73 are vacuous** — `complete=true` but **0 path conditions** across their runs
-  (crash-before-PC on an unsupported symbolic op / render plumbing before the first branchable
-  point). Those are NOT fully-explored; each REPORT.md marks them honestly. To genuinely cover
-  them would require `src/ruby_runtime` work (implement the missing ops) — raise to Bali.
-
-Note: an earlier draft below claimed "all vacuous / 0 genuine" — that was a bug in an ad-hoc
-verification counter (it counted PC events by a `type` attribute that `PathCondition` objects
-do not carry), NOT the engine. Verified here using the engine's own parsed runs.
-
-**Known `src/ruby_runtime` gaps behind the 73 vacuous entrypoints (raise to Bali, do not
-silently patch):**
-- `Core::ClassMethods#find` (single-id `Model.find`) not declared → routes through
-  `Querying.find_by_sql` → `SymbolicList#first` NotImplementedError. Blocks devise
-  `current_user`, comments_destroy, messages_create, likes_destroy.
-- Symbolic `klass.allocate` has no `@association_cache` → association readers
-  (`post.comments`, `user.person`) NoMethodError (worked around runner-locally).
-- `SymbolicInt#hash` as Hash key crashes Arel.
-- `SymbolicInt#to_i`/`#-@`, `SymbolicString#to_s`, `SymbolicList#map/each/pluck` → NotImplementedError.
-- `Tag` = `ActsAsTaggableOn::Tag` (namespaced) — needs explicit load in concolic env.
-- `len(...)` SymbolicList var decls: engine emits `Failed to eval var decl 'len(...) = Int('len(...)')'`
-  during constraint eval for collection vars (warnings; entrypoints still complete per the checker).
-
-Both the gap list and the engine-vs-runner format questions are `src/` concerns — raise to Bali
-before changing anything (per the source-discipline note above).
-
-### Symbolic entrypoint variables
-
-Entrypoint parameters (esp. `current_user.id` and `params[:id]`) should be **symbolic**
-whenever feasible, not hardcoded concrete values. A concrete `user.id` prevents the
-engine from exploring branches that depend on which user runs the query (e.g.
-`share_visibilities.user_id`, `people.owner_id`).
-
-- In `symbolic_user` (the runner's helper), **remove** any `define_singleton_method(:id) { 1 }`
-  override — the symbolic model instance already returns a `SymbolicInt` for the `id`
-  column via `symbolic_instance`. The override exists for legacy reasons (the old
-  `to_i` crash in `sql_for` before `$$(SYMNAME)` rendering) and is no longer needed.
-- Entrypoint kwargs passed to `interceptor.run(source, kwargs)` are automatically
-  wrapped as symbolic types (`SymbolicInt`, `SymbolicString`, `SymbolicBool`).
-- Runner-local concrete overrides (`ctrl.params = { id: 1 }`) are fine for the inner
-  params hash (it feeds `Post.find(1)` → mocked → symbolic instance); the `1` here is
-  a seed value for the mock, not a forced concrete variable.
-
-**Live status + per-batch numbers + operational notes:** see [`STATUS.md`](STATUS.md) in this
-directory (`reports/diaspora/STATUS.md`) for the current engine-verified completeness breakdown
-(40 genuine / 73 vacuous per entrypoint), batch dump counts, and how to resume work from a
-fresh session.
-
-## Coverage checking (per-endpoint)
-
-Run the coverage checker once per **endpoint** (not merged across the batch):
-
-```bash
-cd /home/dev/project
-PYTHONPATH=src python3 reports/diaspora/verify_gate1b.py posts
-```
-
-Each endpoint under `results/posts/` (e.g. `posts_show`, `reshares_create`) is checked
-independently — its `coverage_summary.json` reflects ONLY that endpoint's runs.
-
-### Semantics (strict-per-node, decision 2026-08-13)
-
-The `CoverageChecker` builds an execution tree from the runs' path conditions.
-Every distinct PC expression is a tree node with two children (`taken` / `not_taken`).
-
-- **Strict per node**: a node is covered only when BOTH its taken and not-taken
-  outcomes have been observed by some run.
-- **Nested PCs**: a PC that appears nested under another (observed in sequence after
-  it) is also demanded under BOTH branches of its parent — the checker checks via Z3
-  whether the continuation is reachable under the missing branch prefix, and if so,
-  reports it as additionally missing. (Guarded inner ifs — where the inner PC is
-  unreachable under the outer's false branch — are filtered as UNSAT by Z3.)
-- **Assumptions relax strictness**: an `IndependenceAssumption` between two PCs
-  promotes them to parallel roots, so the cross-branch requirement does not apply.
-  An `UntrackedPathAssumption` marks a PC as not-important — its missing side is
-  reported but does NOT block `complete`.
-
-### Declaring assumptions: key them by EXPRESSION, not by file:line
-
-Path conditions in this experiment are overwhelmingly recorded **at the mock
-boundary, by design**. A target standing in for a query decides its own outcome
-with an explicit symbolic compare inside the mock and returns a concrete value
-(`concolic_targets.rb:331`, `finder_mock`), because the app's own
-`rescue RecordNotFound` or bare `if row` is not interceptable — see the
-boundary-decided section of `src/TODO.txt`. That is how a *generic* interceptor
-is meant to work: one shared mock serving every finder in the app.
-
-Measured across all 13 batches:
-
-| where the PC is recorded | share | distinct sites |
-|---|---|---|
-| mocks (`concolic_targets.rb` / batch `targets.rb`) | **63.7%** | 10 |
-| framework internals (`blank.rb`, `core.rb`, …) | 34.7% | 9 |
-| a line of app source | **1.7%** | 14 |
-
-So one source line hosts many decisions: **129 of 146 distinct branch
-expressions (88%) share a site with at least one other expression.** All twelve
-finder decisions in `reshares_create` record at `concolic_targets.rb:331`.
-
-Therefore declare assumptions with `expr=` (or `expr_a=`/`expr_b=`):
-
-```python
-UntrackedPathAssumption(expr="(SYM_RESULT_..._find_by_5_not_found == True)")
-IndependenceAssumption(expr_a="(...)", expr_b="(...)")
-```
-
-`source=` is correct only where a site genuinely hosts one decision — typically
-a branch written in app code. Supplying both requires both to match. Supplying
-neither matches nothing: a blank assumption is inert, never a wildcard.
-
-**Caveat that comes with `expr`:** results are named with a per-run call ordinal
-(`SYM_RESULT_<func>_<idx>`), so the same expression can denote different calls in
-different runs. `reshares_create`'s `find_by_1` is the action's lookup in some
-runs and the presenter's in others. The execution tree is already keyed by
-expression so this is not new, but confirm the decision you name means the same
-thing in every run you feed the checker. Worked example:
-`results/posts/prune_reshares.py`.
-
-### Reading the summary
-
-```json
-{
-  "endpoint": "posts_show",
-  "coverage_complete": false,
-  "tree_nodes": 27,
-  "missing_branches": 35,
-  "assumptions": [],
-  "assumptions_used": 0
-}
-```
-
-- `complete=true` means every observed branch node has both sides covered (the
-  strict-per-node condition). This is **branch-coverage-complete**, not
-  query-set-complete.
-- `missing` lists each uncovered branch with Z3-suggested concrete values —
-  feed these as `seed_overrides` and re-run to close them.
-- `assumptions` lists every declared assumption with its source file/line —
-  empty when no assumptions were provided.
+Java 21 + JRuby 9.3 (`/home/dev/tools/`), Rails 5.2.4.3 with a minimal
+Gemfile, the app at `ruby_examples/dse-apps/apps/diaspora/`, Z3 via the
+`venvs/queries_from_runs` virtualenv, sqlite (bundled JDBC adapter) for the
+real fixture runs. Source-code discipline: `src/**` and the app are
+coordinator-only; batch directories are write-freely.

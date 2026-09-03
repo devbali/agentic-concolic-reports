@@ -1,0 +1,27 @@
+{
+  "entrypoint": "comments_index",
+  "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+  "signed_in": true,
+  "variant": "auth_mobile",
+  "format": "mobile",
+  "app_error_terminals": "ActionView::Template::Error(nil NoMethodError|DiscoveryError), DiscoveryError — recorded outcomes",
+  "params": {
+    "post_id": {
+      "symbolic_name": "SYM_PARAM_post_id",
+      "seed": "5"
+    }
+  },
+  "request_format": "json",
+  "runs_executed": 17,
+  "distinct_paths": 17,
+  "seed_sets_tried": 17,
+  "stack_remaining": 0,
+  "worklist_exhausted": true,
+  "max_runs": 3000,
+  "time_budget": 1800,
+  "elapsed_seconds": 1.6,
+  "run_errors": {
+},
+  "unflippable_pcs": {
+}
+}

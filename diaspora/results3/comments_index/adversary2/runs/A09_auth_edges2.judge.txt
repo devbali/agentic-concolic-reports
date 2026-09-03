@@ -1,0 +1,59 @@
+### mock_note_check
+== mock_note_check: 5 target frames issued real SELECTs; 15 targets carry corpus notes ==
+
+NOTE-OK       ActiveRecord::Associations::SingularAssociation.find_target  (2 real shapes matched)
+NOTE-MISSING  ActiveRecord::Calculations.count  <-- RED: issues real SQL, zero SQL-shaped corpus notes
+     real: SELECT COUNT(*) FROM "posts" WHERE "posts"."id" = ? AND "posts"."public" = ?
+
+NOTE-MISSING  ActiveRecord::Calculations.pluck  <-- RED: issues real SQL, zero SQL-shaped corpus notes
+     real: SELECT "posts"."id", "posts"."public" FROM "posts" WHERE "posts"."id" = ?
+     real: SELECT "posts"."id", "posts"."public" FROM "posts" WHERE "posts"."id" IN (?, ?)
+
+NOTE-OK       ActiveRecord::FinderMethods.exists?  (1 real shapes matched)
+NOTE-OK*      ActiveRecord::Relation.records  (2 shape(s) matched under a DIFFERENT target — frame nesting)
+
+RESULT: RED — target mocks with missing/mismatched notes above.
+EXIT=1
+
+### note_fidelity_audit
+== note_fidelity_audit: 1 run file(s), 14 distinct real SELECTs under 5 frames; 15 targets carry notes ==
+
+-- wildcard notes per target (corpus) --
+   ActiveRecord::Associations::SingularAssociation.find_target            notes=12   star=12
+   ActiveRecord::Base.reload                                              notes=4    star=4
+   ActiveRecord::Core::ClassMethods.mention_lookup_json_first             notes=2    star=2
+   ActiveRecord::Core::ClassMethods.mention_lookup_json_retry             notes=2    star=2
+   ActiveRecord::Core::ClassMethods.mention_lookup_msg_first              notes=1    star=1
+   ActiveRecord::Core::ClassMethods.mention_lookup_msg_retry              notes=1    star=1
+   ActiveRecord::FinderMethods.ci_author_first                            notes=3    star=3
+   ActiveRecord::FinderMethods.ci_public_first                            notes=3    star=3
+   ActiveRecord::FinderMethods.ci_vis_first                               notes=3    star=3
+   ActiveRecord::FinderMethods.devise_user_first                          notes=1    star=1
+   ActiveRecord::FinderMethods.first                                      notes=3    star=3
+   ActiveRecord::Relation.records                                         notes=6    star=6
+   ActiveRecord::Relation.to_a                                            notes=4    star=4
+   Anonymous.exists_probe                                                 notes=2    cols=2
+   Anonymous.load_intermediate                                            notes=10   star=10
+
+-- MISSING: 0 --
+
+-- STAR-OVER: 0 --
+
+-- AGG-COLLAPSE: 1 --
+   ActiveRecord::Calculations.count  [A09_auth_edges2.json:A09-auth-edges-2]
+      real: SELECT COUNT(*) FROM "posts" WHERE "posts"."id" = ? AND "posts"."public" = ?
+      note: SELECT "posts".* FROM "posts" WHERE "posts"."id" = $$(SYM_PARAM_post_id) AND "posts"."author_id" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_us
+
+-- PROJ-DIFF: 2 --
+   ActiveRecord::Calculations.pluck  [A09_auth_edges2.json:A09-auth-edges-2]
+      real: SELECT "posts"."id", "posts"."public" FROM "posts" WHERE "posts"."id" = ?
+      note: SELECT 1 AS one FROM "posts" WHERE "posts"."guid" = $$(SYM_PARAM_dlink_guid_Relation_records_1_row) LIMIT 1
+   ActiveRecord::Calculations.pluck  [A09_auth_edges2.json:A09-auth-edges-2]
+      real: SELECT "posts"."id", "posts"."public" FROM "posts" WHERE "posts"."id" IN (?, ?)
+      note: SELECT 1 AS one FROM "posts" WHERE "posts"."guid" = $$(SYM_PARAM_dlink_guid_Relation_records_1_row) LIMIT 1
+
+-- PRED-DIFF: 0 --
+
+-- EXACT: 11 --
+RESULT: RED — 3 real statement(s) whose note is unfaithful in projection or missing.
+EXIT=1

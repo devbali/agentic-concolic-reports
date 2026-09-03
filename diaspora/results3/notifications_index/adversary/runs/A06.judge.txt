@@ -1,0 +1,9 @@
+== mock_note_check: 5 target frames issued real SELECTs; 13 targets carry corpus notes ==
+
+NOTE-OK       ActiveRecord::Associations::BelongsToPolymorphicAssociation.find_target  (1 real shapes matched)
+NOTE-OK*      ActiveRecord::Associations::CollectionProxy.load_target  (1 shape(s) matched under a DIFFERENT target — frame nesting)
+NOTE-OK       ActiveRecord::Associations::SingularAssociation.find_target  (3 real shapes matched)
+NOTE-OK       ActiveRecord::Calculations.count  (2 real shapes matched)
+NOTE-OK       ActiveRecord::Relation.records  (9 real shapes matched)
+
+RESULT: every SQL-issuing target's notes match its real statements.

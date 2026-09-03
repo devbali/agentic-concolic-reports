@@ -1,0 +1,72 @@
+{
+ "endpoint": "conversations_index",
+ "coverage_complete": true,
+ "tree_nodes": 8,
+ "missing_branches": 0,
+ "truncated": false,
+ "solver_lost": 0,
+ "unevaluable_exprs": [],
+ "total_runs": 96,
+ "total_path_conditions": 556,
+ "dump_errors": {},
+ "assumptions": [
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "A(conversation not found) || B(visibility not found)"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+   "expr_b": "((- SYM_RESULT_ActiveRecord__FinderMethods_first_2_unread) == 0)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "A(conversation not found) || C(first-unread index == 0)"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
+   "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found == True)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "A(conversation not found) || D(set_read visibility not found)"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found == True)",
+   "expr_b": "((- SYM_RESULT_ActiveRecord__FinderMethods_first_2_unread) == 0)",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "B(visibility not found) || C(first-unread index == 0)"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Calculations_pluck_1_pluck1_first_name == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Calculations_pluck_1_pluck2_last_name == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "P1(first_name blank) || P2(last_name blank)"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Calculations_pluck_1_pluck1_first_name == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Calculations_pluck_1_pluck3_diaspora_handle == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "P1(first_name blank) || P3(diaspora_handle blank, via tidy_bytes)"
+  },
+  {
+   "type": "IndependenceAssumption",
+   "expr_a": "(SYM_RESULT_ActiveRecord__Calculations_pluck_1_pluck2_last_name == '')",
+   "expr_b": "(SYM_RESULT_ActiveRecord__Calculations_pluck_1_pluck3_diaspora_handle == '')",
+   "source_a": ":0",
+   "source_b": ":0",
+   "description": "P2(last_name blank) || P3(diaspora_handle blank, via tidy_bytes)"
+  }
+ ],
+ "assumptions_used": 7,
+ "missing": []
+}

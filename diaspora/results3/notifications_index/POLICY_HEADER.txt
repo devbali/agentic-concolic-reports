@@ -1,0 +1,142 @@
+-- notifications_index — NotificationsController#index  (GET /notifications)
+--
+-- CANONICAL HEADER. This text is maintained at
+-- reports/diaspora/results3/notifications_index/POLICY_HEADER.txt and MUST be
+-- re-applied to the top of this file by every extraction. Under the M-17
+-- resolution below, the declaration IS the safeguard: a policy file that
+-- simply stops at the wall is indistinguishable from one that covers
+-- everything, so the exclusion may not live only in a report.
+--
+-- SCOPE (DISCIPLINE §15): the entrypoint is the POST-AUTH action with a
+-- SYMBOLIC principal. The authentication stages run ABOVE the entrypoint and
+-- are not part of this file; the endpoint's complete policy is THIS FILE
+-- UNION §2 of results3/_auth_boundary/BOUNDARY_POLICY.md. On this controller
+-- `authenticate_user!` is a `before_action` with no `except:`, so every
+-- request reaching the action has been through the boundary.
+--
+-- THE LAYOUT AND THE FILTER CHAIN ARE ENDPOINT MATERIAL. `ApplicationController`
+-- declares `layout proc { request.format == :mobile ? "application" :
+-- "with_header_with_footer" }`, so html and mobile requests render site chrome
+-- inside this action's own request, and `gon_set_current_user` builds a
+-- `UserPresenter` whose serialisation happens at `include_gon` time. Those
+-- reads — `aspects` by user_id, `services`, `tags` ⋈ `tag_followings`, the two
+-- `roles` existence probes, `COUNT(*) contacts`, and
+-- `SUM(conversation_visibilities.unread)` — belong to THIS policy, not to the
+-- auth boundary. json and xml render no layout and issue none of them.
+--
+-- ============================================================================
+-- KNOWN LIMITS OF THE STATEMENT TEXT BELOW
+-- ============================================================================
+-- * A predicate rendered as `"notifications"."unread" = true` is a predicate ON
+--   THE `unread` COLUMN. The literal is an artefact of rendering the note from
+--   Arel (`Notification.unread` puts the value INTO the relation and
+--   `Arel#to_sql` inlines it) where the real statement logs `= ?`. It is NOT a
+--   claim that only the `true` case is reachable; both polarities are explored.
+-- * Bulk preload predicates carry a REPRESENTATIVE key-set arity. The list model
+--   renders one bind per row actually loaded and its MANY is 3 (4 for a
+--   preloaded association), where real pages hold 2, 4, 5 and 25 rows, so
+--   `IN (@, @, @)` will not match a real `IN (@, @)` byte for byte. Tables,
+--   predicate columns and the bulk operator are faithful; the arity is a
+--   designed limit of the sampled-list model, not a claim about page size.
+-- * Per-request statement MULTIPLICITY here is an upper bound, not a production
+--   count. Every measurement in this project dispatches through
+--   `ActionController::TestCase#process`, which never runs
+--   `ActionDispatch::Executor`, so ActiveRecord's query cache never engages
+--   (M-18 / T-ae). Measured on this endpoint, both ways, same fixtures:
+--   html 42 statements unwrapped -> 30 inside `Rails.application.executor.wrap`;
+--   mobile 35 -> 25; **27 and 22 distinct SHAPES respectively, unchanged in
+--   both directions**. Caching removes duplicates, never a shape, so shape
+--   PRESENCE — which is what this policy asserts — is unaffected.
+--
+-- ============================================================================
+-- COMPLETENESS OF THIS POLICY, AND THE ONE PLACE IT STOPS  (M-17 / M-15, C7)
+-- ============================================================================
+-- This file describes the endpoint's data access on EVERY PATH A REAL REQUEST
+-- IN THIS ENVIRONMENT CAN TAKE.
+--
+-- There is exactly one place where the description ends before the application
+-- does. Rendering a person's name calls `Person#name`
+-- (app/models/person.rb:246-250), which on a person with no `profiles` row
+-- calls `Person#fix_profile` (:371-375), which calls
+-- `DiasporaFederation::Discovery::Discovery#fetch_and_save` and then `reload`.
+-- That method has two arms.
+--
+--   * the RAISING arm — the arm this endpoint takes, modelled here in full.
+--     Reached by a `people.diaspora_handle` whose domain is not a legal URI
+--     host: Faraday parses the webfinger URL with `URI.parse` BEFORE the
+--     typhoeus adapter, raises `URI::InvalidURIError` in pure Ruby, and
+--     `fetch_and_save` converts it to `DiscoveryError`. Measured on this batch,
+--     not inherited — `_c7_discovery_probe.rb` / `_c7_fixprofile_probe.rb`:
+--     `fix_profile` ENTERED, `fetch_and_save` ENTERED, 53 target calls,
+--     12 statements, **0 JVM aborts**, and `reload` NEVER REACHED because the
+--     raise precedes it. The reads that come before it and the resulting
+--     terminal ARE in this file.
+--     `_c7_fixprofile_probe.log`: "[F1] EXIT  Person#fix_profile; statements
+--     issued INSIDE it: 0" — the walled body issues NO SQL before it raises, so
+--     walling it drops no read.
+--
+--   * the SUCCESS arm — UNREACHABLE in this environment, and therefore
+--     DECLARED UNMODELLED, NOT SHOWN ABSENT. Returning normally requires two
+--     live HTTP fetches (`discovery.rb` `webfinger` and `hcard`, both
+--     `HttpClient.get`). Measured here, as a contrast rather than an assertion:
+--     the same probe with a PARSEABLE host (`wraith@unreachable-pod.invalid`,
+--     `_c7_disc_parseable_probe.rb`) aborts the JVM — unit **exit 134** — while
+--     the URI-hostile handle exits 0.
+--
+-- TERMINAL SUBSTITUTION, STATED RATHER THAN GLOSSED. The corpus reaches this
+-- arm by declaring `Person#fix_profile` a target, which skips `Discovery.new`,
+-- `fetch_and_save` and `reload` together; the render then raises `NoMethodError`
+-- on the nil profile where the application raises `DiscoveryError`. The
+-- STATEMENT SETS are identical and the request 500s either way, but a consumer
+-- reading TERMINAL CLASSES should know the substitution was made and why: a
+-- wall that raises inside its `returns` lambda loses its note (the interceptor
+-- pushes the record AFTER the lambda returns), so the note is preserved by
+-- letting the application fail one step later instead.
+-- There are TWO such nil-profile consumers, both truncating the same way, and
+-- both appear in the corpus as `ActionView::Template::Error`:
+--   `undefined method 'first_name' for nil:NilClass`      (Person#name ->
+--       Person.name_from_attrs, app/models/person.rb:250)
+--   `undefined method 'as_api_response' for nil:NilClass` (the people_helper
+--       presenter path)
+-- Measured on the repaired model, 144-dump smoke, whole population: 5 and 2
+-- occurrences respectively, 5 `WALL Person#fix_profile` events, and **0**
+-- `ActiveRecord::Base#reload` events (the pre-repair corpus emitted 1 906 of
+-- them on this arm, none of which the application issues).
+--
+-- SO: THE ABSENCE OF DISCOVERY-SUCCESS STATEMENTS BELOW IS A DECLARED GAP, NOT
+-- A FINDING THAT THE PATH READS NOTHING. If that arm ever became reachable (a
+-- working HTTP adapter), the policy would GAIN, from the application's own
+-- `:save_person_after_webfinger` callback — measured by THIS batch, with no
+-- network, by running the callback directly
+-- (`_c7_disc_gap_probe.rb` -> `_c7_discovery_gap_evidence.json`):
+--
+--     COUNTING RULE, stated so a reader who disagrees with it can redo the sum:
+--     these are APPLICATION statements. Schema introspection issued by the
+--     sqlite adapter (`PRAGMA table_info`, `SELECT sql FROM (... sqlite_master
+--     ...)`, `SELECT name FROM sqlite_master`) is EXCLUDED as not data access —
+--     4 of 17 raw statements in the new-person branch and 17 of 27 in the
+--     existing-person branch. The raw sequences, including the excluded
+--     statements, are in `_c7_discovery_gap_evidence.json`.
+--
+--     new-person branch — 13 application statements of 17 raw
+--     (6 SELECT, 3 INSERT, 2 BEGIN, 2 COMMIT):
+--       writes : INSERT INTO "pods", INSERT INTO "people", INSERT INTO "profiles"
+--       reads  : people by diaspora_handle; pods by host with port IS NULL;
+--                a people-by-guid uniqueness probe;
+--                a `people.diaspora_handle` projection by guid excluding the
+--                own handle; a people-by-diaspora_handle uniqueness probe;
+--                tags INNER JOIN taggings by taggable
+--
+--     existing-person branch — 10 application statements of 27 raw
+--     (5 SELECT, 1 INSERT, 2 BEGIN, 1 COMMIT, 1 ROLLBACK). It did NOT complete
+--     under this batch's fixture: `ActiveRecord::RecordInvalid: "Specify an
+--     owner or a pod, not both"` (the person.rb `owner_xor_pod` validation),
+--     after issuing the people-by-handle read, the profiles-by-person read,
+--     INSERT INTO "profiles", the tags INNER JOIN taggings read and both
+--     uniqueness probes, then ROLLBACK.
+--
+-- Those statements are NOT asserted in this file, because no real run of this
+-- endpoint in this environment can issue them and this project verifies every
+-- note against a real endpoint statement. They are recorded here so a consumer
+-- knows the boundary of what is claimed.
+-- ============================================================================

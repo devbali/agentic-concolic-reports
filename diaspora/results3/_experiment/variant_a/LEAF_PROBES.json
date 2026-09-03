@@ -1,0 +1,2475 @@
+[
+  {
+    "method": "ActionController::Metal#status=",
+    "classification": "CRASH-STOPPER",
+    "on_path": true,
+    "verdict": "PASS",
+    "fixtures": [
+      {
+        "label": "nil-ish (200)",
+        "target_calls": [
+
+        ],
+        "connection_touches": [
+
+        ],
+        "error": {
+          "type": "fixture_error",
+          "class": "Module::DelegationError",
+          "message": "ActionController::Metal#status= delegated to @_response.status=, but @_response is nil: #<NotificationsController:0x6cf7de4e @_action_has_layout=true, @_response=nil, @_request=nil, @_routes=nil>"
+        }
+      },
+      {
+        "label": "typical (:ok)",
+        "target_calls": [
+
+        ],
+        "connection_touches": [
+
+        ],
+        "error": {
+          "type": "fixture_error",
+          "class": "Module::DelegationError",
+          "message": "ActionController::Metal#status= delegated to @_response.status=, but @_response is nil: #<NotificationsController:0x580694ce @_action_has_layout=true, @_response=nil, @_request=nil, @_routes=nil>"
+        }
+      },
+      {
+        "label": "boundary (404 sym)",
+        "target_calls": [
+
+        ],
+        "connection_touches": [
+
+        ],
+        "error": {
+          "type": "fixture_error",
+          "class": "Module::DelegationError",
+          "message": "ActionController::Metal#status= delegated to @_response.status=, but @_response is nil: #<NotificationsController:0x579071ef @_action_has_layout=true, @_response=nil, @_request=nil, @_routes=nil>"
+        }
+      }
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal.rb",
+    "body_line_range": [
+      150,
+      150
+    ],
+    "body_lines": [
+
+    ],
+    "covered_lines": [
+
+    ],
+    "uncovered_lines": [
+
+    ],
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActionController::Redirecting#redirect_to",
+    "classification": "CRASH-STOPPER",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "notifications#index never calls redirect_to (only #read_all does; not this entrypoint) -- confirmed by reading notifications_controller.rb",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActionDispatch::Routing::UrlFor#url_for",
+    "classification": "CRASH-STOPPER",
+    "on_path": true,
+    "verdict": "PASS",
+    "fixtures": [
+      {
+        "label": "nil-ish (empty hash)",
+        "target_calls": [
+
+        ],
+        "connection_touches": [
+
+        ],
+        "error": {
+          "type": "fixture_error",
+          "class": "NoMethodError",
+          "message": "undefined method `host' for nil:NilClass"
+        }
+      },
+      {
+        "label": "typical (controller/action hash)",
+        "target_calls": [
+
+        ],
+        "connection_touches": [
+
+        ],
+        "error": {
+          "type": "fixture_error",
+          "class": "NoMethodError",
+          "message": "undefined method `host' for nil:NilClass"
+        }
+      }
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_dispatch/routing/url_for.rb",
+    "body_line_range": [
+      168,
+      170
+    ],
+    "body_lines": [
+      169
+    ],
+    "covered_lines": [
+      169
+    ],
+    "uncovered_lines": [
+
+    ],
+    "coverage_pct": 100.0,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "DeviseController#assert_is_devise_resource!",
+    "classification": "CRASH-STOPPER",
+    "on_path": true,
+    "verdict": "FAIL",
+    "fixtures": [
+      {
+        "label": "typical",
+        "target_calls": [
+          "DeviseController.devise_mapping"
+        ],
+        "connection_touches": [
+
+        ],
+        "error": null
+      }
+    ],
+    "target_calls": [
+      "DeviseController.devise_mapping"
+    ],
+    "connection_touches": 0,
+    "body_file": "/home/dev/.gem/jruby/2.6.0/gems/devise-4.7.1/app/controllers/devise_controller.rb",
+    "body_line_range": [
+      64,
+      81
+    ],
+    "body_lines": [
+      65,
+      66,
+      67,
+      69,
+      71,
+      72,
+      75,
+      76,
+      78,
+      80
+    ],
+    "covered_lines": [
+      65
+    ],
+    "uncovered_lines": [
+      66,
+      67,
+      69,
+      71,
+      72,
+      75,
+      76,
+      78,
+      80
+    ],
+    "coverage_pct": 10.0,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActiveRecord::Associations::SingularAssociation#writer",
+    "classification": "CRASH-STOPPER",
+    "on_path": "unclear",
+    "verdict": "PASS",
+    "fixtures": [
+      {
+        "label": "nil-ish (assign nil)",
+        "target_calls": [
+
+        ],
+        "connection_touches": [
+
+        ],
+        "error": null
+      },
+      {
+        "label": "typical (assign real record)",
+        "target_calls": [
+
+        ],
+        "connection_touches": [
+
+        ],
+        "error": null
+      }
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations/singular_association.rb",
+    "body_line_range": [
+      16,
+      18
+    ],
+    "body_lines": [
+      17
+    ],
+    "covered_lines": [
+      17
+    ],
+    "uncovered_lines": [
+
+    ],
+    "coverage_pct": 100.0,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActionController::Metal#head",
+    "classification": "CRASH-STOPPER",
+    "on_path": "unclear",
+    "verdict": "INSTRUMENTATION-FAILED",
+    "skip_reason": "no TRUE_ORIGINALS entry captured",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActionController::Head#head",
+    "classification": "CRASH-STOPPER",
+    "on_path": "unclear",
+    "verdict": "FAIL",
+    "fixtures": [
+      {
+        "label": "typical (:not_found)",
+        "target_calls": [
+          "ActionController::Metal.status="
+        ],
+        "connection_touches": [
+
+        ],
+        "error": {
+          "type": "fixture_error",
+          "class": "NoMethodError",
+          "message": "undefined method `reset_body!' for nil:NilClass"
+        }
+      },
+      {
+        "label": "boundary (200 + options hash)",
+        "target_calls": [
+          "ActionController::Metal.status=",
+          "ActionDispatch::Routing::UrlFor.url_for"
+        ],
+        "connection_touches": [
+
+        ],
+        "error": {
+          "type": "fixture_error",
+          "class": "Module::DelegationError",
+          "message": "ActionController::Metal#location= delegated to @_response.location=, but @_response is nil: #<NotificationsController:0x53a74970 @_action_has_layout=true, @_response=nil, @_request=nil, @_routes=nil>"
+        }
+      }
+    ],
+    "target_calls": [
+      "ActionController::Metal.status=",
+      "ActionController::Metal.status=",
+      "ActionDispatch::Routing::UrlFor.url_for"
+    ],
+    "connection_touches": 0,
+    "body_file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/head.rb",
+    "body_line_range": [
+      21,
+      46
+    ],
+    "body_lines": [
+      22,
+      23,
+      26,
+      28,
+      29,
+      31,
+      32,
+      35,
+      36,
+      38,
+      40,
+      41,
+      42,
+      45
+    ],
+    "covered_lines": [
+      22,
+      26,
+      28,
+      29,
+      31,
+      35,
+      36,
+      38
+    ],
+    "uncovered_lines": [
+      23,
+      32,
+      40,
+      41,
+      42,
+      45
+    ],
+    "coverage_pct": 57.1,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActiveRecord::Associations::SingularAssociation#find_target",
+    "classification": "DESIGN",
+    "on_path": true,
+    "verdict": "EXEMPT",
+    "fixtures": [
+      {
+        "label": "typical (post.author belongs_to)",
+        "target_calls": [
+          "ActiveRecord::Querying.find_by_sql"
+        ],
+        "connection_touches": [
+
+        ],
+        "error": {
+          "type": "fixture_error",
+          "class": "NotImplementedError",
+          "message": "SymbolicList#first is not supported without a representative or for a multi-element take (contents out of scope). Supply representative: to a SymbolicList to read its first row."
+        }
+      }
+    ],
+    "target_calls": [
+      "ActiveRecord::Querying.find_by_sql"
+    ],
+    "connection_touches": 0,
+    "body_file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations/singular_association.rb",
+    "body_line_range": [
+      38,
+      54
+    ],
+    "body_lines": [
+      39,
+      40,
+      42,
+      43,
+      44,
+      45,
+      48,
+      49,
+      50,
+      51,
+      52,
+      53
+    ],
+    "covered_lines": [
+      39,
+      40,
+      42,
+      43,
+      44,
+      45,
+      48,
+      49,
+      51
+    ],
+    "uncovered_lines": [
+      50,
+      52,
+      53
+    ],
+    "coverage_pct": 75.0,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActiveRecord::Associations::BelongsToPolymorphicAssociation#find_target",
+    "classification": "DESIGN",
+    "on_path": true,
+    "verdict": "INHERITED_NO_OVERRIDE",
+    "note": "ActiveRecord::Associations::BelongsToPolymorphicAssociation does not define its own find_target -- Ruby method resolution falls through to an ancestor class whose real body is probed under that ancestor's OWN declare_target key (see RESULT.md for which).",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActionController::Rendering#_set_rendered_content_type",
+    "classification": "CRASH-STOPPER",
+    "on_path": true,
+    "verdict": "FAIL_COVERAGE",
+    "fixtures": [
+      {
+        "label": "nil-ish",
+        "target_calls": [
+
+        ],
+        "connection_touches": [
+
+        ],
+        "error": null
+      },
+      {
+        "label": "typical (Mime::HTML)",
+        "target_calls": [
+
+        ],
+        "connection_touches": [
+
+        ],
+        "error": {
+          "type": "fixture_error",
+          "class": "NoMethodError",
+          "message": "undefined method `content_type' for nil:NilClass"
+        }
+      }
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/rendering.rb",
+    "body_line_range": [
+      75,
+      79
+    ],
+    "body_lines": [
+      76,
+      77
+    ],
+    "covered_lines": [
+      76
+    ],
+    "uncovered_lines": [
+      77
+    ],
+    "coverage_pct": 50.0,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "DeviseController#devise_mapping",
+    "classification": "CRASH-STOPPER",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "NotificationsController < ApplicationController, NOT DeviseController -- this target only fires for the Devise engine's OWN controllers (sessions/registrations), confirmed dormant for #index by class hierarchy",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActionDispatch::Journey::Router::Utils.escape_segment",
+    "classification": "CRASH-STOPPER",
+    "on_path": true,
+    "verdict": "PASS",
+    "fixtures": [
+      {
+        "label": "nil-ish (empty string)",
+        "target_calls": [
+
+        ],
+        "connection_touches": [
+
+        ],
+        "error": null
+      },
+      {
+        "label": "typical (numeric id as string)",
+        "target_calls": [
+
+        ],
+        "connection_touches": [
+
+        ],
+        "error": null
+      },
+      {
+        "label": "boundary (needs escaping)",
+        "target_calls": [
+
+        ],
+        "connection_touches": [
+
+        ],
+        "error": null
+      }
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_dispatch/journey/router/utils.rb",
+    "body_line_range": [
+      84,
+      86
+    ],
+    "body_lines": [
+      85
+    ],
+    "covered_lines": [
+      85
+    ],
+    "uncovered_lines": [
+
+    ],
+    "coverage_pct": 100.0,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActiveRecord::Base#to_param",
+    "classification": "CRASH-STOPPER",
+    "on_path": true,
+    "verdict": "PASS",
+    "fixtures": [
+      {
+        "label": "nil-ish (no id)",
+        "target_calls": [
+
+        ],
+        "connection_touches": [
+
+        ],
+        "error": null
+      },
+      {
+        "label": "typical (id=1)",
+        "target_calls": [
+
+        ],
+        "connection_touches": [
+
+        ],
+        "error": null
+      }
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/integration.rb",
+    "body_line_range": [
+      49,
+      52
+    ],
+    "body_lines": [
+      51
+    ],
+    "covered_lines": [
+      51
+    ],
+    "uncovered_lines": [
+
+    ],
+    "coverage_pct": 100.0,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActiveRecord::FinderMethods#find_by",
+    "classification": "DESIGN",
+    "on_path": true,
+    "verdict": "EXEMPT",
+    "fixtures": [
+      {
+        "label": "typical",
+        "target_calls": [
+          "ActiveRecord::FinderMethods.take"
+        ],
+        "connection_touches": [
+
+        ],
+        "error": null
+      }
+    ],
+    "target_calls": [
+      "ActiveRecord::FinderMethods.take"
+    ],
+    "connection_touches": 0,
+    "body_file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/relation/finder_methods.rb",
+    "body_line_range": [
+      80,
+      84
+    ],
+    "body_lines": [
+      81,
+      82,
+      83
+    ],
+    "covered_lines": [
+      81
+    ],
+    "uncovered_lines": [
+      82,
+      83
+    ],
+    "coverage_pct": 33.3,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActiveRecord::Core::ClassMethods#find_by",
+    "classification": "DESIGN",
+    "on_path": true,
+    "verdict": "EXEMPT",
+    "fixtures": [
+      {
+        "label": "typical",
+        "target_calls": [
+          "ActiveRecord::Querying.find_by_sql"
+        ],
+        "connection_touches": [
+
+        ],
+        "error": {
+          "type": "fixture_error",
+          "class": "NotImplementedError",
+          "message": "SymbolicList#first is not supported without a representative or for a multi-element take (contents out of scope). Supply representative: to a SymbolicList to read its first row."
+        }
+      }
+    ],
+    "target_calls": [
+      "ActiveRecord::Querying.find_by_sql"
+    ],
+    "connection_touches": 0,
+    "body_file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/core.rb",
+    "body_line_range": [
+      186,
+      214
+    ],
+    "body_lines": [
+      187,
+      188,
+      190,
+      192,
+      193,
+      194,
+      197,
+      199,
+      201,
+      202,
+      203,
+      204,
+      205,
+      206,
+      208,
+      209,
+      210,
+      211,
+      212
+    ],
+    "covered_lines": [
+      187,
+      188,
+      190,
+      192,
+      193,
+      197,
+      199,
+      201,
+      202,
+      203,
+      205,
+      208
+    ],
+    "uncovered_lines": [
+      194,
+      204,
+      206,
+      209,
+      210,
+      211,
+      212
+    ],
+    "coverage_pct": 63.2,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActiveRecord::Calculations#count",
+    "classification": "DESIGN",
+    "on_path": true,
+    "verdict": "EXEMPT",
+    "fixtures": [
+      {
+        "label": "typical",
+        "target_calls": [
+          "ActiveRecord::Calculations.calculate"
+        ],
+        "connection_touches": [
+
+        ],
+        "error": {
+          "type": "fixture_error",
+          "class": "NotImplementedError",
+          "message": "unimplemented concolic operation: Calculations#calculate (contents out of scope)"
+        }
+      }
+    ],
+    "target_calls": [
+      "ActiveRecord::Calculations.calculate"
+    ],
+    "connection_touches": 0,
+    "body_file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/relation/calculations.rb",
+    "body_line_range": [
+      41,
+      53
+    ],
+    "body_lines": [
+      42,
+      43,
+      44,
+      45,
+      46,
+      49,
+      52
+    ],
+    "covered_lines": [
+      42,
+      52
+    ],
+    "uncovered_lines": [
+      43,
+      44,
+      45,
+      46,
+      49
+    ],
+    "coverage_pct": 28.6,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActiveRecord::FinderMethods#find",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActiveRecord::FinderMethods#take!",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActiveRecord::FinderMethods#first!",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActiveRecord::FinderMethods#last!",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActiveRecord::FinderMethods#find_by!",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActiveRecord::FinderMethods#take",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActiveRecord::FinderMethods#first",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActiveRecord::FinderMethods#last",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActiveRecord::Core::ClassMethods#find",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActiveRecord::Core::ClassMethods#find_by!",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActiveRecord::FinderMethods#exists?",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActiveRecord::FinderMethods#any?",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActiveRecord::FinderMethods#none?",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActiveRecord::FinderMethods#one?",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActiveRecord::FinderMethods#many?",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActiveRecord::FinderMethods#empty?",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActiveRecord::Relation#to_a",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActiveRecord::Relation#to_ary",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActiveRecord::Relation#records",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActiveRecord::Relation#size",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActiveRecord::Calculations#sum",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActiveRecord::Calculations#pluck",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActiveRecord::Calculations#ids",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActiveRecord::Calculations#average",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActiveRecord::Calculations#minimum",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActiveRecord::Calculations#maximum",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActiveRecord::Calculations#calculate",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActiveRecord::Batches#find_each",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActiveRecord::Batches#find_in_batches",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActiveRecord::Batches#in_batches",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActiveRecord::Relation#update_all",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActiveRecord::Relation#delete_all",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActiveRecord::Relation#destroy_all",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActiveRecord::Base#save",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActiveRecord::Base#save!",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActiveRecord::Base#update",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActiveRecord::Base#update!",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActiveRecord::Base#update_attribute",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActiveRecord::Base#touch",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActiveRecord::Base#destroy",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActiveRecord::Base#destroy!",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActiveRecord::Querying#find_by_sql",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActiveRecord::Querying#count_by_sql",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "User#blocks",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "Post.blocked_people",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "Stream::Aspect#aspect_ids",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "Stream::FollowedTag#tag_ids",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "Stream::Base#post_ids",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "Stream::Base#attach_user_likes",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "StreamsController#decorated_stream_posts",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "Stream::Multi#publisher_prefill",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "TagsController#prep_tags_for_javascript",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "Sidekiq::Client#push",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "Sidekiq::Client#push_bulk",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActionController::Instrumentation#redirect_to",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "Photo#url",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "Photo.diaspora_initialize",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "PostService#mark_user_notifications",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "Diaspora::Taggable#build_tags",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "StatusMessage#tag_name_max_length",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "DiasporaFederation::Entity#validate",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "Gon::ControllerHelpers#gon",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "User#add_to_streams",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "StatusMessageCreationService#add_to_streams",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "User#retract",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "Diaspora::Mentionable.people_from_string",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "PostPresenter#build_mentioned_people_json",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "Diaspora::MessageRenderer#title",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "Diaspora::MessageRenderer::Processor.process",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "DiasporaFederation::Entity#normalize_property",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActiveRecord::Associations::CollectionProxy#create",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "User#mine?",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ApplicationController#after_sign_in_path_for",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ApplicationController#configure_permitted_parameters",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "User#confirm_email",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActiveRecord::Associations::CollectionProxy#records",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActiveRecord::Associations::CollectionProxy#load_target",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "DiasporaFederation::Discovery::Discovery#fetch_and_save",
+    "classification": "UNKNOWN",
+    "on_path": false,
+    "verdict": "NOT_PROBED",
+    "skip_reason": "dormant/out-of-scope for notifications#index per MOCK LEDGER header + call-chain grep (see RESULT.md); not live-probed under this variant's resource budget",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ConcolicKwargsToPositional (footer prepend on AR::Base.singleton_class + AR::Relation)",
+    "classification": "INFRA-SHIM",
+    "on_path": true,
+    "verdict": "STRUCTURAL-PASS",
+    "note": "always calls super with repacked args -- transparent by construction, does not skip any real body. Not subject to T1 body-skip removal logic.",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "ActiveRecord::Associations::CollectionAssociation#size (targets.rb gen2 prepend shim)",
+    "classification": "INFRA-SHIM",
+    "on_path": "unclear",
+    "verdict": "STRUCTURAL-PASS",
+    "note": "calls super (real body) in every branch except the narrow 0+count_records arithmetic-avoidance case; real body executes on all other inputs by construction. Not on notifications#index's own read path (index never touches a has_many CollectionAssociation directly), but note.actors_from_target etc. may.",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "Person.name_from_attrs (concolic_targets.rb X6i prepend shim)",
+    "classification": "CRASH-STOPPER",
+    "on_path": true,
+    "verdict": "PASS",
+    "note": "Direct probe (app-code replacement, not a framework-method body-skip -- no separate real AR body exists to toggle back to). Calls Person.name_from_attrs directly with concrete args.",
+    "fixtures": [
+      {
+        "label": "nil-ish (blank first/last, handle present)",
+        "result": "concolic@example.org",
+        "target_calls": [
+
+        ],
+        "error": null
+      },
+      {
+        "label": "typical (both names present)",
+        "result": "Concolic First Last",
+        "target_calls": [
+
+        ],
+        "error": null
+      },
+      {
+        "label": "boundary (whitespace-only names -> blank branch)",
+        "result": "concolic@example.org",
+        "target_calls": [
+
+        ],
+        "error": null
+      }
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  },
+  {
+    "method": "Gon.preloads (targets.rb gen2 class-level prepend shim)",
+    "classification": "CRASH-STOPPER",
+    "on_path": "unclear",
+    "verdict": "STRUCTURAL-PASS",
+    "note": "one-line memoized-hash accessor, no AR/interceptor calls possible in its body.",
+    "fixtures": [
+
+    ],
+    "target_calls": [
+
+    ],
+    "connection_touches": 0,
+    "body_lines": null,
+    "covered_lines": null,
+    "coverage_pct": null,
+    "waivers": [
+
+    ]
+  }
+]

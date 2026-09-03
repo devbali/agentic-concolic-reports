@@ -1,0 +1,172 @@
+{
+ "_pre_pluckfix_backup": {
+  "endpoint": "_pre_pluckfix_backup",
+  "out_path": "reports/diaspora/results2/queries_from_runs/_pre_pluckfix_backup.sql",
+  "n_dumps": 64,
+  "n_runs_loaded": 64,
+  "n_queries_raw": 296,
+  "n_queries_deduped": 7,
+  "n_queries_final": 5,
+  "n_subsumed_dropped": 2,
+  "placeholders": [],
+  "flags": {},
+  "skipped_pc_shapes": {
+   "(SYM_RESULT_ActiveRecord__FinderMethods_first_N_not_found == True)": 168,
+   "(SYM_RESULT_ActiveRecord__Calculations_pluck_N_pluckN_first_name == '')": 64,
+   "(SYM_RESULT_ActiveRecord__Calculations_pluck_N_pluckN_last_name == '')": 48,
+   "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_N_not_found == True)": 48,
+   "(SYM_RESULT_ActiveRecord__Calculations_pluck_N_pluckN_diaspora_handle == '')": 32,
+   "((- SYM_RESULT_ActiveRecord__FinderMethods_first_N_unread) == N)": 32
+  },
+  "errors": [],
+  "subsume_errors": {},
+  "subsume_ran": true
+ },
+ "comments_index": {
+  "endpoint": "comments_index",
+  "out_path": "reports/diaspora/results2/queries_from_runs/comments_index.sql",
+  "n_dumps": 6,
+  "n_runs_loaded": 6,
+  "n_queries_raw": 6,
+  "n_queries_deduped": 2,
+  "n_queries_final": 2,
+  "n_subsumed_dropped": 0,
+  "placeholders": [],
+  "flags": {
+   "unscoped": 4
+  },
+  "skipped_pc_shapes": {
+   "(Length(SYM_PARAM_post_id) < N)": 6,
+   "(SYM_RESULT_ActiveRecord__FinderMethods_first_N_not_found == True)": 6
+  },
+  "errors": [],
+  "subsume_errors": {},
+  "subsume_ran": true
+ },
+ "conversations_index": {
+  "endpoint": "conversations_index",
+  "out_path": "reports/diaspora/results2/queries_from_runs/conversations_index.sql",
+  "n_dumps": 96,
+  "n_runs_loaded": 96,
+  "n_queries_raw": 428,
+  "n_queries_deduped": 8,
+  "n_queries_final": 6,
+  "n_subsumed_dropped": 2,
+  "placeholders": [],
+  "flags": {},
+  "skipped_pc_shapes": {
+   "(SYM_RESULT_ActiveRecord__FinderMethods_first_N_not_found == True)": 156,
+   "(SYM_RESULT_ActiveRecord__Calculations_pluck_N_pluckN_first_name == '')": 96,
+   "(SYM_RESULT_ActiveRecord__Calculations_pluck_N_pluckN_last_name == '')": 72,
+   "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_N_not_found == True)": 72,
+   "(SYM_RESULT_ActiveRecord__Relation_convidx_conv_lookup_N_not_found == True)": 64,
+   "(SYM_RESULT_ActiveRecord__Calculations_pluck_N_pluckN_diaspora_handle == '')": 48,
+   "((- SYM_RESULT_ActiveRecord__FinderMethods_first_N_unread) == N)": 48
+  },
+  "errors": [],
+  "subsume_errors": {},
+  "subsume_ran": true
+ },
+ "notifications_index": {
+  "endpoint": "notifications_index",
+  "out_path": "reports/diaspora/results2/queries_from_runs/notifications_index.sql",
+  "n_dumps": 6,
+  "n_runs_loaded": 6,
+  "n_queries_raw": 24,
+  "n_queries_deduped": 4,
+  "n_queries_final": 1,
+  "n_subsumed_dropped": 3,
+  "placeholders": [],
+  "flags": {},
+  "skipped_pc_shapes": {
+   "(SYM_PARAM_show == StringVal('unread'))": 6
+  },
+  "errors": [],
+  "subsume_errors": {},
+  "subsume_ran": true
+ },
+ "people_show": {
+  "endpoint": "people_show",
+  "out_path": "reports/diaspora/results2/queries_from_runs/people_show.sql",
+  "n_dumps": 10,
+  "n_runs_loaded": 10,
+  "n_queries_raw": 10,
+  "n_queries_deduped": 3,
+  "n_queries_final": 3,
+  "n_subsumed_dropped": 0,
+  "placeholders": [
+   "SYM_PERSON_via_user_id"
+  ],
+  "flags": {
+   "unscoped": 4
+  },
+  "skipped_pc_shapes": {
+   "(len(SYM_RESULT_ActiveRecord__Relation_records_N) != N)": 12,
+   "(SYM_DECISION_diaspora_id_username == True)": 10,
+   "(SYM_PROFILE_PERSON_public_details == True)": 6,
+   "(SYM_RESULT_ActiveRecord__FinderMethods_first_N_not_found == True)": 5,
+   "(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_N_not_found == True)": 5,
+   "(SYM_PROFILE_PERSON_birthday_year <= N)": 4,
+   "(SYM_PERSON_via_user_closed_account == True)": 4
+  },
+  "errors": [],
+  "subsume_errors": {},
+  "subsume_ran": true
+ },
+ "people_stream": {
+  "endpoint": "people_stream",
+  "out_path": "reports/diaspora/results2/queries_from_runs/people_stream.sql",
+  "n_dumps": 27,
+  "n_runs_loaded": 27,
+  "n_queries_raw": 13,
+  "n_queries_deduped": 5,
+  "n_queries_final": 5,
+  "n_subsumed_dropped": 0,
+  "placeholders": [
+   "SYM_PERSON_via_user_id",
+   "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_id"
+  ],
+  "flags": {
+   "unscoped": 7
+  },
+  "skipped_pc_shapes": {
+   "(SYM_RESULT_PeopleController_diaspora_id__N_result == True)": 27,
+   "(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_N_not_found == True)": 17,
+   "(SYM_RESULT_ActiveRecord__FinderMethods_first_N_not_found == True)": 10,
+   "(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_N_closed_account == True)": 7,
+   "(SYM_PERSON_via_user_closed_account == True)": 7,
+   "(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_N_guid == '')": 2,
+   "(SYM_PERSON_via_user_guid == '')": 2,
+   "(SYM_RESULT_ActiveRecord__FinderMethods_first_N_guid != StringVal(''))": 1,
+   "(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_N_guid != StringVal(''))": 1,
+   "(SYM_PERSON_via_user_guid != StringVal(''))": 1
+  },
+  "errors": [],
+  "subsume_errors": {},
+  "subsume_ran": true
+ },
+ "posts_show": {
+  "endpoint": "posts_show",
+  "out_path": "reports/diaspora/results2/queries_from_runs/posts_show.sql",
+  "n_dumps": 4278,
+  "n_runs_loaded": 4278,
+  "n_queries_raw": 18162,
+  "n_queries_deduped": 54,
+  "n_queries_final": 50,
+  "n_subsumed_dropped": 4,
+  "placeholders": [],
+  "flags": {
+   "unscoped": 50,
+   "type-mismatched-join": 7552
+  },
+  "skipped_pc_shapes": {
+   "(SYM_RESULT_ActiveRecord__FinderMethods_first_N_not_found == True)": 25866,
+   "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_N_not_found == True)": 8448,
+   "(Length(SYM_PARAM_id) < N)": 4278,
+   "(assoc_profile_nsfw == True)": 4272
+  },
+  "errors": [],
+  "subsume_errors": {},
+  "subsume_ran": true
+ }
+}

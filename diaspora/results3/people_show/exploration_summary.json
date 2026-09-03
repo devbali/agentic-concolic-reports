@@ -1,0 +1,68 @@
+{
+  "entrypoint": "people_show",
+  "params": {
+    "username": {
+      "symbolic_name": "SYM_PARAM_username",
+      "seed": "bob@example.org",
+      "type": "SymbolicString (SymUsernameString)"
+    }
+  },
+  "scenarios": [
+    {
+      "scenario": "anon_handle",
+      "description": "anonymous, default/html format -> gon.preloads presenter chain + Photo.visible(...).count + real show.html.haml/with_header render",
+      "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+      "runs_executed": 156,
+      "distinct_paths": 22,
+      "seed_sets_tried": 156,
+      "worklist_exhausted": true,
+      "capped_by": null,
+      "max_runs": 3000,
+      "time_budget": 3600,
+      "elapsed_seconds": 10.7,
+      "run_errors": {
+        "run:ActionView::MissingTemplate": 2
+      },
+      "unflippable_pcs": {
+}
+    },
+    {
+      "scenario": "anon_json",
+      "description": "anonymous, json format -> render json: @presenter.as_json (PersonPresenter/ProfilePresenter#as_json chain, no html layout)",
+      "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+      "runs_executed": 28,
+      "distinct_paths": 10,
+      "seed_sets_tried": 28,
+      "worklist_exhausted": true,
+      "capped_by": null,
+      "max_runs": 3000,
+      "time_budget": 3600,
+      "elapsed_seconds": 0.4,
+      "run_errors": {
+        "run:ActionView::MissingTemplate": 2
+      },
+      "unflippable_pcs": {
+}
+    },
+    {
+      "scenario": "anon_mobile",
+      "description": "anonymous, mobile format -> show.mobile.haml: Stream::Person#stream_posts (for_a_stream + like_posts_for_stream! chain) + mobile layout render",
+      "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+      "runs_executed": 3000,
+      "distinct_paths": 1152,
+      "seed_sets_tried": 3000,
+      "worklist_exhausted": false,
+      "capped_by": "MAX_RUNS",
+      "max_runs": 3000,
+      "time_budget": 3600,
+      "elapsed_seconds": 230.4,
+      "run_errors": {
+        "run:ActionView::Template::Error": 264
+      },
+      "unflippable_pcs": {
+        "(SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, 2) == '')": 131
+      }
+    }
+  ],
+  "total_elapsed_seconds": 241.5
+}

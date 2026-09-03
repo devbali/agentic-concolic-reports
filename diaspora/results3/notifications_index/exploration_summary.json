@@ -1,0 +1,71 @@
+{
+  "entrypoint": "notifications_index",
+  "strategy": "prefix-directed DSE (seed inheritance + single-branch flip), FIFO",
+  "signed_in": true,
+  "request_variants": {
+    "html_plain": {
+      "format": "html",
+      "type": null
+    },
+    "html_typed": {
+      "format": "html",
+      "type": "liked"
+    },
+    "json_plain": {
+      "format": "json",
+      "type": null
+    },
+    "json_typed": {
+      "format": "json",
+      "type": "liked"
+    },
+    "mobile_plain": {
+      "format": "mobile",
+      "type": null
+    },
+    "mobile_typed": {
+      "format": "mobile",
+      "type": "liked"
+    },
+    "xml_plain": {
+      "format": "xml",
+      "type": null
+    }
+  },
+  "params": {
+    "show": {
+      "symbolic_name": "SYM_PARAM_show",
+      "type": "SymbolicString"
+    },
+    "type": {
+      "symbolic": false,
+      "reason": "Hash#eql? wall (types.has_key?)"
+    },
+    "page": {
+      "symbolic": false,
+      "reason": "WillPaginate Integer()/#to_i wall; page 1 pin"
+    },
+    "per_page": {
+      "symbolic": false,
+      "reason": "WillPaginate Integer() wall; 25 pin. Row-count effect explored as len(...to_ary_1_rows) in {0,1,many}"
+    }
+  },
+  "user_identity": {
+    "session key": "SYM_USER_NI_id (symbolic; real Devise serialize_from_session -> devise_user_first)",
+    "anon scenario": "none — before_action :authenticate_user! with no except:"
+  },
+  "runs_executed": 900,
+  "distinct_paths": 504,
+  "path_conditions_written": 14640,
+  "states_tried": 900,
+  "stack_remaining": 10958,
+  "worklist_exhausted": false,
+  "max_runs": 900,
+  "time_budget": 420,
+  "elapsed_seconds": 12.2,
+  "run_errors": {
+    "run:I18n::InvalidLocale": 89
+  },
+  "unflippable_pcs": {
+}
+}

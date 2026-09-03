@@ -1,0 +1,31 @@
+{
+  "batch_dir": "/home/dev/project/reports/diaspora/results3/notifications_index",
+  "runner": "/home/dev/project/reports/diaspora/tools/slot scripts/diaspora-concolic /home/dev/project/reports/diaspora/results3/notifications_index/run_dse.rb",
+  "workdir": "/home/dev/project",
+  "env_by_scenario": {
+    "html_plain": {
+      "VARIANTS": "html_plain"
+    },
+    "html_typed": {
+      "VARIANTS": "html_typed"
+    },
+    "json_plain": {
+      "VARIANTS": "json_plain"
+    },
+    "json_typed": {
+      "VARIANTS": "json_typed"
+    },
+    "mobile_plain": {
+      "VARIANTS": "mobile_plain"
+    },
+    "mobile_typed": {
+      "VARIANTS": "mobile_typed"
+    },
+    "xml_plain": {
+      "VARIANTS": "xml_plain"
+    }
+  },
+  "env": {
+    "JAVA_TOOL_OPTIONS": ""
+  }
+}

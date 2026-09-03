@@ -1,0 +1,61 @@
+{
+ "ref": {
+  "SELECT `tags`.`name`, `taggings`.`id`, `people`.`guid` FROM `people`,     `profiles`,     `tags`,     `taggings` WHERE `tags`.`id` = `taggings`.`tag_id` AND (`taggings`.`taggable_id` = `profiles`.`id` AND `taggings`.`taggable_type` = 'Profile') AND (`taggings`.`context` = 'tags' AND (`profiles`.`person_id` = `people`.`id` AND `people`.`closed_account` = FALSE))": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `tags`.`id`, `tags`.`name`, `tags`.`taggings_count`, `taggings`.`id` AS `id0`, `people`.`guid` FROM `people`,     `contacts`,     `profiles`,     `tags`,     `taggings` WHERE `tags`.`id` = `taggings`.`tag_id` AND `taggings`.`taggable_id` = `profiles`.`id` AND (`taggings`.`taggable_type` = 'Profile' AND `taggings`.`context` = 'tags') AND (`profiles`.`person_id` = `people`.`id` AND `contacts`.`user_id` = _MY_UID AND (`contacts`.`person_id` = `people`.`id` AND `people`.`closed_account` = FALSE))": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `tags`.`id`, `tags`.`name`, `tags`.`taggings_count`, `taggings`.`id` AS `id0`, `people`.`guid` FROM `people`,     `profiles`,     `tags`,     `taggings` WHERE `tags`.`id` = `taggings`.`tag_id` AND (`taggings`.`taggable_id` = `profiles`.`id` AND `taggings`.`taggable_type` = 'Profile') AND (`taggings`.`context` = 'tags' AND `profiles`.`public_details` = TRUE AND (`profiles`.`person_id` = `people`.`id` AND `people`.`closed_account` = FALSE))": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `tags`.`id`, `tags`.`name`, `tags`.`taggings_count`, `taggings`.`id` AS `id0`, `people`.`guid` FROM `people`,     `profiles`,     `people` AS `people0`,     `tags`,     `taggings` WHERE `tags`.`id` = `taggings`.`tag_id` AND `taggings`.`taggable_id` = `profiles`.`id` AND (`taggings`.`taggable_type` = 'Profile' AND (`taggings`.`context` = 'tags' AND `people`.`id` <> `people0`.`id`)) AND (`people0`.`owner_id` = _MY_UID AND `profiles`.`person_id` = `people`.`id` AND (`profiles`.`public_details` = FALSE AND (`people`.`closed_account` = FALSE AND `people`.`owner_id` IS NOT NULL)))": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `photos`.`id`, `photos`.`author_id`, `photos`.`public`, `photos`.`guid`, `photos`.`pending`, `photos`.`text`, `photos`.`remote_photo_path`, `photos`.`remote_photo_name`, `photos`.`random_string`, `photos`.`processed_image`, `photos`.`created_at`, `photos`.`updated_at`, `photos`.`unprocessed_image`, `photos`.`status_message_guid`, `photos`.`comments_count`, `photos`.`height`, `photos`.`width`, `people`.`guid` FROM `people`,     `contacts`,     `photos`,     `share_visibilities` WHERE `share_visibilities`.`shareable_id` = `photos`.`id` AND `share_visibilities`.`shareable_type` = 'Photo' AND (`photos`.`author_id` = `people`.`id` AND `share_visibilities`.`user_id` = _MY_UID) AND (`photos`.`created_at` < _NOW AND `contacts`.`user_id` = _MY_UID AND (`contacts`.`person_id` = `people`.`id` AND (`photos`.`pending` = FALSE AND `people`.`closed_account` = FALSE)))": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `tags`.`id`, `tags`.`name`, `tags`.`taggings_count`, `taggings`.`id` AS `id0`, `people`.`guid` FROM `people`,     `profiles`,     `tags`,     `taggings` WHERE `tags`.`id` = `taggings`.`tag_id` AND (`taggings`.`taggable_id` = `profiles`.`id` AND `taggings`.`taggable_type` = 'Profile') AND (`taggings`.`context` = 'tags' AND `profiles`.`person_id` = `people`.`id` AND (`people`.`owner_id` IS NULL AND `people`.`closed_account` = FALSE))": {
+   "verdict": "rejected",
+   "reason": "",
+   "timeout_ms": 120000
+  },
+  "SELECT `tags`.`id` AS `id1`, `tags`.`name`, `tags`.`taggings_count`, `taggings`.`id` AS `id2`, `people`.`guid` FROM `people`,     `profiles`,     `tags`,     `taggings` WHERE `tags`.`id` = `taggings`.`tag_id` AND (`taggings`.`taggable_id` = `profiles`.`id` AND `taggings`.`taggable_type` = 'Profile') AND (`taggings`.`context` = 'tags' AND `people`.`owner_id` = _MY_UID AND (`profiles`.`person_id` = `people`.`id` AND `people`.`closed_account` = FALSE))": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `photos`.`id`, `photos`.`author_id`, `photos`.`public`, `photos`.`guid`, `photos`.`pending`, `photos`.`text`, `photos`.`remote_photo_path`, `photos`.`remote_photo_name`, `photos`.`random_string`, `photos`.`processed_image`, `photos`.`created_at`, `photos`.`updated_at`, `photos`.`unprocessed_image`, `photos`.`status_message_guid`, `photos`.`comments_count`, `photos`.`height`, `photos`.`width`, `people`.`guid` FROM `people`,     `people` AS `people0`,     `photos`,     `share_visibilities` WHERE `share_visibilities`.`shareable_id` = `photos`.`id` AND `share_visibilities`.`shareable_type` = 'Photo' AND (`photos`.`author_id` = `people`.`id` AND (`share_visibilities`.`user_id` = _MY_UID AND `photos`.`created_at` < _NOW)) AND (`people`.`id` <> `people0`.`id` AND `people0`.`owner_id` = _MY_UID AND (`photos`.`pending` = FALSE AND (`people`.`closed_account` = FALSE AND `people`.`owner_id` IS NOT NULL)))": {
+   "verdict": "unknown",
+   "reason": "timeout/inconclusive: solver proved neither coverage nor a counterexample within 120000 ms",
+   "timeout_ms": 120000
+  },
+  "SELECT `photos`.`id`, `photos`.`author_id`, `photos`.`public`, `photos`.`guid`, `photos`.`pending`, `photos`.`text`, `photos`.`remote_photo_path`, `photos`.`remote_photo_name`, `photos`.`random_string`, `photos`.`processed_image`, `photos`.`created_at`, `photos`.`updated_at`, `photos`.`unprocessed_image`, `photos`.`status_message_guid`, `photos`.`comments_count`, `photos`.`height`, `photos`.`width`, `people`.`guid` FROM `people`,     `photos`,     `share_visibilities` WHERE `share_visibilities`.`shareable_id` = `photos`.`id` AND `share_visibilities`.`shareable_type` = 'Photo' AND (`photos`.`author_id` = `people`.`id` AND `share_visibilities`.`user_id` = _MY_UID) AND (`photos`.`created_at` < _NOW AND `people`.`owner_id` IS NULL AND (`photos`.`pending` = FALSE AND `people`.`closed_account` = FALSE))": {
+   "verdict": "unknown",
+   "reason": "checker error: RuntimeError: checker failed rc=143: SLF4J: Failed to load class \"org.slf4j.impl.StaticLoggerBinder\".\nSLF4J: Defaulting to no-operation (NOP) logger implementation\nSLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.\n",
+   "timeout_ms": 120000
+  },
+  "SELECT `conversation_visibilities`.`unread`, `people`.`guid` FROM `people`,     `people` AS `people0`,     `conversation_visibilities` WHERE `conversation_visibilities`.`person_id` = `people0`.`id` AND `people0`.`owner_id` = _MY_UID AND `people`.`closed_account` = FALSE": {
+   "verdict": "unknown",
+   "reason": "checker error: RuntimeError: checker failed rc=143: SLF4J: Failed to load class \"org.slf4j.impl.StaticLoggerBinder\".\nSLF4J: Defaulting to no-operation (NOP) logger implementation\nSLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.\n",
+   "timeout_ms": 120000
+  },
+  "SELECT `profiles`.`id`, `profiles`.`diaspora_handle`, `profiles`.`first_name`, `profiles`.`last_name`, `profiles`.`image_url`, `profiles`.`image_url_small`, `profiles`.`image_url_medium`, `profiles`.`searchable`, `profiles`.`person_id`, `profiles`.`created_at`, `profiles`.`updated_at`, `profiles`.`full_name`, `profiles`.`nsfw`, `profiles`.`public_details`, `people`.`guid` FROM `people`,     `people` AS `people0`,     `profiles` WHERE `profiles`.`person_id` = `people0`.`id` AND `people0`.`owner_id` = _MY_UID AND `people`.`closed_account` = FALSE": {
+   "verdict": "unknown",
+   "reason": "checker error: RuntimeError: checker failed rc=143: SLF4J: Failed to load class \"org.slf4j.impl.StaticLoggerBinder\".\nSLF4J: Defaulting to no-operation (NOP) logger implementation\nSLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.\n",
+   "timeout_ms": 120000
+  }
+ },
+ "ours": {},
+ "view_errors": {}
+}

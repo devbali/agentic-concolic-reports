@@ -1,0 +1,166 @@
+<div class='container-fluid' id='notifications_container'>
+<div class='row'>
+<div class='col-md-3'>
+<div class='sidebar'>
+<div class='sidebar-header clearfix'>
+<h3>
+Notifications
+</h3>
+</div>
+<div class='list-group'>
+<a class='active list-group-item' data-type='all' href='/notifications'>
+<span class='badge hidden pull-right'>
+0
+</span>
+All notifications
+</a>
+<a class='list-group-item' data-type='also_commented' href='/notifications?type=also_commented'>
+<span class='badge hidden pull-right'>
+0
+</span>
+<i class='entypo-comment'></i>
+Also commented
+</a>
+<a class='list-group-item' data-type='comment_on_post' href='/notifications?type=comment_on_post'>
+<span class='badge hidden pull-right'>
+0
+</span>
+<i class='entypo-comment'></i>
+Comment on post
+</a>
+<a class='list-group-item' data-type='liked' href='/notifications?type=liked'>
+<span class='badge hidden pull-right'>
+0
+</span>
+<i class='entypo-heart'></i>
+Liked
+</a>
+<a class='list-group-item' data-type='mentioned' href='/notifications?type=mentioned'>
+<span class='badge hidden pull-right'>
+0
+</span>
+<span class='mentionIcon'>
+@
+</span>
+Mentioned in post
+</a>
+<a class='list-group-item' data-type='mentioned_in_comment' href='/notifications?type=mentioned_in_comment'>
+<span class='badge hidden pull-right'>
+0
+</span>
+<span class='mentionIcon'>
+@
+</span>
+Mentioned in comment
+</a>
+<a class='list-group-item' data-type='reshared' href='/notifications?type=reshared'>
+<span class='badge hidden pull-right'>
+0
+</span>
+<i class='entypo-reshare'></i>
+Reshared
+</a>
+<a class='list-group-item' data-type='started_sharing' href='/notifications?type=started_sharing'>
+<span class='badge hidden pull-right'>
+0
+</span>
+<i class='entypo-add-user'></i>
+Started sharing
+</a>
+<a class='list-group-item' data-type='contacts_birthday' href='/notifications?type=contacts_birthday'>
+<span class='badge hidden pull-right'>
+0
+</span>
+<i class='entypo-calendar'></i>
+Birthday
+</a>
+</div>
+</div>
+</div>
+<div class='col-md-9 stream notifications'>
+<div class='framed-content'>
+<div class='row'>
+<div class='col-md-12'>
+<div class='header clearfix'>
+<div class='btn-toolbar pull-right'>
+<div class='btn-group'>
+<a class='active btn btn-default' href='/notifications'>
+Show all
+</a>
+<a class='btn btn-default' href='/notifications?show=unread'>
+Show unread
+</a>
+</div>
+<a class='btn btn-default btn-group disabled' href='/notifications/read_all'>
+Mark all as read
+</a>
+</div>
+</div>
+</div>
+</div>
+<div class='day_group row'>
+<div class='date col-md-2'>
+<div class='day'>27</div>
+<div class='month'>August</div>
+</div>
+<div class='notifications_for_day col-md-10'>
+<div class='media stream-element unread' data-guid='530' data-type='liked'>
+<div class='unread-toggle pull-right'>
+<i class='entypo-eye' title='Mark read'></i>
+</div>
+<div class='media-object pull-left'>
+<a href='/people/bobguid' class='hovercardable hovercardable' >
+      <img alt="Bob B" class="avatar img-responsive center-block" title="Bob B" data-person_id="2" src="/assets/user/default-2c878d1cd0171726fc490add065f342be5a959729df46a89807a4c18a8fc8d14.png" />
+      </a>
+</div>
+<div class='media-body'>
+<a data-hovercard='/people/bobguid' href='/people/bobguid' class='hovercardable hovercardable'>Bob B</a> has liked your post <a data-ref="110" class="hard_object_link" href="/posts/110">2 photos by Bob B</a>.
+<div>
+<time datetime="2026-08-27T20:24:27Z" class="timeago" title="2026-08-27T20:24:27Z" data-time-ago="2026-08-27T20:24:27Z">2026-08-27</time>
+</div>
+</div>
+</div>
+
+<div class='media read stream-element' data-guid='531' data-type='reshared'>
+<div class='unread-toggle pull-right'>
+<i class='entypo-eye' title='Mark unread'></i>
+</div>
+<div class='media-object pull-left'>
+<a href='/people/bobguid' class='hovercardable hovercardable' >
+      <img alt="Bob B" class="avatar img-responsive center-block" title="Bob B" data-person_id="2" src="/assets/user/default-2c878d1cd0171726fc490add065f342be5a959729df46a89807a4c18a8fc8d14.png" />
+      </a>
+</div>
+<div class='media-body'>
+<a data-hovercard='/people/bobguid' href='/people/bobguid' class='hovercardable hovercardable'>Bob B</a> has reshared your post <a data-ref="111" class="hard_object_link" href="/posts/111">/posts/111</a>.
+<div>
+<time datetime="2026-08-27T20:24:17Z" class="timeago" title="2026-08-27T20:24:17Z" data-time-ago="2026-08-27T20:24:17Z">2026-08-27</time>
+</div>
+</div>
+</div>
+
+<div class='media stream-element unread' data-guid='532' data-type='mentioned'>
+<div class='unread-toggle pull-right'>
+<i class='entypo-eye' title='Mark read'></i>
+</div>
+<div class='media-object pull-left'>
+<a href='/people/bobguid' class='hovercardable hovercardable' >
+      <img alt="Bob B" class="avatar img-responsive center-block" title="Bob B" data-person_id="2" src="/assets/user/default-2c878d1cd0171726fc490add065f342be5a959729df46a89807a4c18a8fc8d14.png" />
+      </a>
+</div>
+<div class='media-body'>
+<a data-hovercard='/people/bobguid' href='/people/bobguid' class='hovercardable hovercardable'>Bob B</a> has mentioned you in the post <a href="/posts/110">2 photos by Bob B</a>.
+<div>
+<time datetime="2026-08-27T20:24:07Z" class="timeago" title="2026-08-27T20:24:07Z" data-time-ago="2026-08-27T20:24:07Z">2026-08-27</time>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+<div class='center-block text-center'>
+
+</div>
+</div>
+</div>
+</div>
+</div>

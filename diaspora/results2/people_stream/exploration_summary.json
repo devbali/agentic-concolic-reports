@@ -1,0 +1,88 @@
+{
+  "entrypoint": "people_stream",
+  "params": {
+    "person_id": {
+      "symbolic_name": "SYM_PARAM_person_id",
+      "seed": "1",
+      "type": "SymbolicString"
+    },
+    "username": {
+      "symbolic_name": "SYM_PARAM_username",
+      "seed": "bob@example.org",
+      "type": "SymbolicString",
+      "note": "per-instance identity #downcase/#lstrip override — see build_params"
+    }
+  },
+  "user": {
+    "SYM_USER_PS_id": "current_user.id (auth_json only) — PIN REMOVED, flows symbolic",
+    "SYM_PERSON_PS_id": "current_user.person.id (auth_json only) — PIN REMOVED, flows symbolic",
+    "SYM_USER_PS_guid": "current_user.guid (delegated to person) — PIN REMOVED, flows via person.guid",
+    "SYM_USER_PS_diaspora_handle": "current_user.diaspora_handle (delegated to person) — PIN REMOVED",
+    "SYM_USER_PS_person_id": "current_user.person_id (real users column) — PIN REMOVED, independent symbol from SYM_PERSON_PS_id",
+    "SYM_USER_PS_language": "FORCED pin \"en\" — i18n set_locale wall, not an identity attribute",
+    "SYM_USER_PS_gender": "FORCED pin \"\" — cosmetic, never branched on"
+  },
+  "scenarios": [
+    {
+      "scenario": "anon_all",
+      "description": "anonymous, default/html format -> redirect_to person_path(@person)",
+      "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+      "runs_executed": 39,
+      "distinct_paths": 11,
+      "seed_sets_tried": 39,
+      "stack_remaining": 0,
+      "frontier_entries_dropped": 0,
+      "worklist_exhausted": true,
+      "stop_reason": "worklist drained",
+      "max_runs": 300,
+      "time_budget": 1200,
+      "stack_limit": 50000,
+      "elapsed_seconds": 1.0,
+      "run_errors": {
+},
+      "unflippable_pcs": {
+}
+    },
+    {
+      "scenario": "anon_json",
+      "description": "anonymous, json format -> person_stream.stream_posts.map(...) (literal port of source run_concolic.rb's people_stream_default)",
+      "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+      "runs_executed": 24,
+      "distinct_paths": 8,
+      "seed_sets_tried": 24,
+      "stack_remaining": 0,
+      "frontier_entries_dropped": 0,
+      "worklist_exhausted": true,
+      "stop_reason": "worklist drained",
+      "max_runs": 300,
+      "time_budget": 1200,
+      "stack_limit": 50000,
+      "elapsed_seconds": 0.5,
+      "run_errors": {
+},
+      "unflippable_pcs": {
+}
+    },
+    {
+      "scenario": "auth_json",
+      "description": "signed-in (symbolic user, pins removed), json format -- exercises Stream::Person#posts -> user.posts_from(person)",
+      "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+      "runs_executed": 24,
+      "distinct_paths": 8,
+      "seed_sets_tried": 24,
+      "stack_remaining": 0,
+      "frontier_entries_dropped": 0,
+      "worklist_exhausted": true,
+      "stop_reason": "worklist drained",
+      "max_runs": 300,
+      "time_budget": 1200,
+      "stack_limit": 50000,
+      "elapsed_seconds": 0.4,
+      "run_errors": {
+},
+      "unflippable_pcs": {
+}
+    }
+  ],
+  "total_elapsed_seconds": 1.9
+}

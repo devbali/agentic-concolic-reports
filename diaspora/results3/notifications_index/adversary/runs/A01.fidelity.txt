@@ -1,0 +1,32 @@
+== note_fidelity_audit: 1 run file(s), 21 distinct real SELECTs under 5 frames; 13 targets carry notes ==
+
+-- wildcard notes per target (corpus) --
+   ActiveRecord::Associations::BelongsToPolymorphicAssociation.find_target notes=7    star=7
+   ActiveRecord::Associations::CollectionProxy.load_target                notes=1    star=1
+   ActiveRecord::Associations::CollectionProxy.records                    notes=10   star=10
+   ActiveRecord::Associations::SingularAssociation.find_target            notes=18   star=18
+   ActiveRecord::Calculations.count                                       notes=8    agg=8
+   ActiveRecord::Calculations.pluck                                       notes=1    cols=1
+   ActiveRecord::FinderMethods.devise_user_first                          notes=1    star=1
+   ActiveRecord::FinderMethods.find_by                                    notes=3    star=3
+   ActiveRecord::FinderMethods.first                                      notes=2    star=2
+   ActiveRecord::FinderMethods.last                                       notes=2    star=2
+   ActiveRecord::Relation.records                                         notes=5    star=5
+   ActiveRecord::Relation.to_ary                                          notes=4    star=4
+   Anonymous.load_intermediate                                            notes=3    star=3
+
+-- MISSING: 0 --
+
+-- STAR-OVER: 1 --
+   ActiveRecord::FinderMethods.exists?  [A01.json:adv-A01-diaspora-links]
+      real: SELECT 1 AS one FROM "posts" WHERE "posts"."guid" = ? LIMIT ?
+      note: SELECT "posts".* FROM "posts" WHERE "posts"."id" = $$(SYM_RESULT_ActiveRecord__Relation_to_ary_1_row_target_id)
+
+-- AGG-COLLAPSE: 0 --
+
+-- PROJ-DIFF: 0 --
+
+-- PRED-DIFF: 0 --
+
+-- EXACT: 20 --
+RESULT: RED — 1 real statement(s) whose note is unfaithful in projection or missing.

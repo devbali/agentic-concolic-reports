@@ -1,0 +1,13 @@
+[ActiveRecord::Relation#records] SELECT  "posts".* FROM "posts" WHERE "posts"."id" = ? ORDER BY "posts"."id" ASC LIMIT ?
+[ActiveRecord::Relation#records] SELECT "comments".* FROM "comments" WHERE "comments"."commentable_id" = ? AND "comments"."commentable_type" = ? ORDER BY created_at ASC
+[ActiveRecord::Relation#records] SELECT "people".* FROM "people" WHERE "people"."id" IN (?, ?, ?)
+[ActiveRecord::Relation#records] SELECT "profiles".* FROM "profiles" WHERE "profiles"."person_id" IN (?, ?, ?)
+[ActiveRecord::Relation#records] SELECT "mentions".* FROM "mentions" WHERE "mentions"."mentions_container_id" = ? AND "mentions"."mentions_container_type" = ?
+[ActiveRecord::Relation#records] SELECT "mentions".* FROM "mentions" WHERE "mentions"."mentions_container_id" = ? AND "mentions"."mentions_container_type" = ?
+[ActiveRecord::Relation#records] SELECT "mentions".* FROM "mentions" WHERE "mentions"."mentions_container_id" = ? AND "mentions"."mentions_container_type" = ?
+[ActiveRecord::Relation#records] SELECT "people".* FROM "people" WHERE "people"."id" = ?
+[ActiveRecord::Relation#records] SELECT "profiles".* FROM "profiles" WHERE "profiles"."person_id" = ?
+[ActiveRecord::Relation#records] SELECT "mentions".* FROM "mentions" WHERE "mentions"."mentions_container_id" = ? AND "mentions"."mentions_container_type" = ?
+[ActiveRecord::Relation#records] SELECT "people".* FROM "people" WHERE "people"."id" = ?
+[ActiveRecord::Relation#records] SELECT "profiles".* FROM "profiles" WHERE "profiles"."person_id" = ?
+[ActiveRecord::Relation#records] SELECT "mentions".* FROM "mentions" WHERE "mentions"."mentions_container_id" = ? AND "mentions"."mentions_container_type" = ?

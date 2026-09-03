@@ -1,0 +1,54 @@
+### mock_note_check
+== mock_note_check: 3 target frames issued real SELECTs; 10 targets carry corpus notes ==
+
+-- statements OUTSIDE any target frame (2) — each needs a declared target or a waiver (evidence minted nowhere):
+     SELECT  "people".* FROM "people" WHERE "people"."id" = ? LIMIT ?
+     SELECT  "profiles".* FROM "profiles" WHERE "profiles"."id" = ? LIMIT ?
+
+NOTE-MISMATCH ActiveRecord::Associations::SingularAssociation.find_target  <-- RED: 1 real statement shape(s) with NO corpus note anywhere
+     real: SELECT  "pods".* FROM "pods" WHERE "pods"."id" = ? LIMIT ?
+NOTE-OK*      ActiveRecord::Relation.records  (3 shape(s) matched under a DIFFERENT target — frame nesting)
+NOTE-MISMATCH ActiveRecord::Relation.records  <-- RED: 1 real statement shape(s) with NO corpus note anywhere
+     real: SELECT "tags".* FROM "tags" INNER JOIN "taggings" ON "tags"."id" = "taggings"."tag_id" WHERE "taggings"."tagga
+
+RESULT: RED — target mocks with missing/mismatched notes above.
+EXIT=1
+
+### note_fidelity_audit
+== note_fidelity_audit: 1 run file(s), 17 distinct real SELECTs under 3 frames; 10 targets carry notes ==
+
+-- wildcard notes per target (corpus) --
+   ActiveRecord::Associations::SingularAssociation.find_target            notes=2    star=2
+   ActiveRecord::FinderMethods.ci_author_first                            notes=2    star=2
+   ActiveRecord::FinderMethods.ci_public_first                            notes=2    star=2
+   ActiveRecord::FinderMethods.ci_vis_first                               notes=2    star=2
+   ActiveRecord::FinderMethods.devise_user_first                          notes=1    star=1
+   ActiveRecord::FinderMethods.exists?                                    notes=16   cols=16
+   ActiveRecord::FinderMethods.first                                      notes=2    star=2
+   ActiveRecord::Relation.records                                         notes=8    star=8
+   ActiveRecord::Relation.to_a                                            notes=4    star=4
+   Anonymous.load_intermediate                                            notes=23   star=23
+
+-- MISSING: 2 --
+   ActiveRecord::Associations::SingularAssociation.find_target  [K02_formats_pods_and_principal.json:K02-formats-pods-and-principal]
+      real: SELECT "pods".* FROM "pods" WHERE "pods"."id" = ? LIMIT ?
+   ActiveRecord::Relation.records  [K02_formats_pods_and_principal.json:K02-formats-pods-and-principal]
+      real: SELECT "tags".* FROM "tags" INNER JOIN "taggings" ON "tags"."id" = "taggings"."tag_id" WHERE "taggings"."taggable_id" = ? AND "taggings"."taggable_typ
+
+-- STAR-OVER: 0 --
+
+-- AGG-COLLAPSE: 0 --
+
+-- PROJ-DIFF: 0 --
+
+-- PRED-OP-DIFF: 0 --
+
+-- LIMIT-DIFF: 0 --
+
+-- ORDER-DIFF: 0 --
+
+-- PRED-DIFF: 0 --
+
+-- EXACT: 13 --
+RESULT: RED — 2 real statement(s) whose note is unfaithful in projection or missing.
+EXIT=1

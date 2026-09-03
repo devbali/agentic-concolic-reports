@@ -1,0 +1,73 @@
+### mock_note_check
+== mock_note_check: 7 target frames issued real SELECTs; 13 targets carry corpus notes ==
+
+-- statements OUTSIDE any target frame (2) — each needs a declared target or a waiver (evidence minted nowhere):
+     SELECT  "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?
+     SELECT SUM("conversation_visibilities"."unread") FROM "conversation_visibilities" WHERE "conversation_visibili
+
+NOTE-MISMATCH ActiveRecord::Associations::CollectionProxy.load_target  <-- RED: 1 real statement shape(s) with NO corpus note anywhere
+     real: SELECT "services".* FROM "services" WHERE "services"."user_id" = ?
+NOTE-OK       ActiveRecord::Associations::SingularAssociation.find_target  (3 real shapes matched)
+NOTE-MISMATCH ActiveRecord::Calculations.count  <-- RED: 2 real statement shape(s) with NO corpus note anywhere
+     real: SELECT COUNT(*) FROM "notifications" WHERE "notifications"."recipient_id" = ? AND "notifications"."unread" = ?
+     real: SELECT COUNT(*) FROM "contacts" WHERE "contacts"."user_id" = ? AND "contacts"."receiving" = ?
+NOTE-OK       ActiveRecord::Calculations.pluck  (1 real shapes matched)
+NOTE-MISMATCH ActiveRecord::FinderMethods.exists?  <-- RED: 2 real statement shape(s) with NO corpus note anywhere
+     real: SELECT  1 AS one FROM "roles" WHERE "roles"."name" IN (?, ?) AND "roles"."person_id" = ? LIMIT ?
+     real: SELECT  1 AS one FROM "roles" WHERE "roles"."person_id" = ? AND "roles"."name" = ? LIMIT ?
+NOTE-MISMATCH ActiveRecord::Relation.records  <-- RED: 1 real statement shape(s) with NO corpus note anywhere
+     real: SELECT "aspects".* FROM "aspects" WHERE "aspects"."user_id" = ? ORDER BY order_id ASC
+
+RESULT: RED — target mocks with missing/mismatched notes above.
+EXIT=1
+
+### note_fidelity_audit
+== note_fidelity_audit: 1 run file(s), 20 distinct real SELECTs under 7 frames; 13 targets carry notes ==
+
+-- wildcard notes per target (corpus) --
+   ActiveRecord::Associations::SingularAssociation.find_target            notes=17   star=17
+   ActiveRecord::Base.reload                                              notes=4    star=4
+   ActiveRecord::Calculations.count                                       notes=6    agg=6
+   ActiveRecord::Calculations.pluck                                       notes=3    cols=3
+   ActiveRecord::FinderMethods.devise_user_first                          notes=1    star=1
+   ActiveRecord::FinderMethods.exists?                                    notes=3    cols=3
+   ActiveRecord::FinderMethods.find_by                                    notes=3    star=3
+   ActiveRecord::FinderMethods.first                                      notes=2    star=2
+   ActiveRecord::Relation.empty?                                          notes=1    cols=1
+   ActiveRecord::Relation.records                                         notes=5    cols=2 star=3
+   ActiveRecord::Relation.to_a                                            notes=3    cols=2 star=1
+   ActiveRecord::Relation.to_ary                                          notes=2    star=2
+   Anonymous.load_intermediate                                            notes=3    star=3
+
+-- MISSING: 5 --
+   ActiveRecord::Associations::CollectionProxy.load_target  [P11_layout_gon_probe.json:P11_userpresenter_to_json_PROBE]
+      real: SELECT "services".* FROM "services" WHERE "services"."user_id" = ?
+   ActiveRecord::Calculations.count  [P11_layout_gon_probe.json:P11_userpresenter_to_json_PROBE]
+      real: SELECT COUNT(*) FROM "notifications" WHERE "notifications"."recipient_id" = ? AND "notifications"."unread" = ?
+   ActiveRecord::FinderMethods.exists?  [P11_layout_gon_probe.json:P11_userpresenter_to_json_PROBE]
+      real: SELECT 1 AS one FROM "roles" WHERE "roles"."name" IN (?, ?) AND "roles"."person_id" = ? LIMIT ?
+   ActiveRecord::FinderMethods.exists?  [P11_layout_gon_probe.json:P11_userpresenter_to_json_PROBE]
+      real: SELECT 1 AS one FROM "roles" WHERE "roles"."person_id" = ? AND "roles"."name" = ? LIMIT ?
+   ActiveRecord::Relation.records  [P11_layout_gon_probe.json:P11_userpresenter_to_json_PROBE]
+      real: SELECT "aspects".* FROM "aspects" WHERE "aspects"."user_id" = ? ORDER BY order_id ASC
+
+-- STAR-OVER: 0 --
+
+-- AGG-COLLAPSE: 1 --
+   ActiveRecord::Calculations.count  [P11_layout_gon_probe.json:P11_userpresenter_to_json_PROBE]
+      real: SELECT COUNT(*) FROM "contacts" WHERE "contacts"."user_id" = ? AND "contacts"."receiving" = ?
+      note: SELECT 1 AS one FROM "contacts" WHERE "contacts"."user_id" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND "contacts"."sharing
+
+-- PROJ-DIFF: 0 --
+
+-- PRED-OP-DIFF: 0 --
+
+-- LIMIT-DIFF: 0 --
+
+-- ORDER-DIFF: 0 --
+
+-- PRED-DIFF: 0 --
+
+-- EXACT: 12 --
+RESULT: RED — 6 real statement(s) whose note is unfaithful in projection or missing.
+EXIT=1

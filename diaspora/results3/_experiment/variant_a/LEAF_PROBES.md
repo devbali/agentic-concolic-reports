@@ -1,0 +1,104 @@
+# LEAF_PROBES.md — variant_a T1 leaf-probe sweep
+
+Generated 2026-08-19 06:44:31 +0000 by `_leaf_probe.rb`. See RESULT.md for full narrative.
+
+| method | class | on_path | verdict | target_calls | conn_touches | coverage_pct |
+|---|---|---|---|---|---|---|
+| `ActionController::Metal#status=` | CRASH-STOPPER | true | **PASS** | 0 | 0 | nil |
+| `ActionController::Redirecting#redirect_to` | CRASH-STOPPER | false | **NOT_PROBED** | 0 | 0 | nil |
+| `ActionDispatch::Routing::UrlFor#url_for` | CRASH-STOPPER | true | **PASS** | 0 | 0 | 100.0 |
+| `DeviseController#assert_is_devise_resource!` | CRASH-STOPPER | true | **FAIL** | 1 | 0 | 10.0 |
+| `ActiveRecord::Associations::SingularAssociation#writer` | CRASH-STOPPER | unclear | **PASS** | 0 | 0 | 100.0 |
+| `ActionController::Metal#head` | CRASH-STOPPER | unclear | **INSTRUMENTATION-FAILED** | 0 | 0 | nil |
+| `ActionController::Head#head` | CRASH-STOPPER | unclear | **FAIL** | 3 | 0 | 57.1 |
+| `ActiveRecord::Associations::SingularAssociation#find_target` | DESIGN | true | **EXEMPT** | 1 | 0 | 75.0 |
+| `ActiveRecord::Associations::BelongsToPolymorphicAssociation#find_target` | DESIGN | true | **INHERITED_NO_OVERRIDE** | 0 | 0 | nil |
+| `ActionController::Rendering#_set_rendered_content_type` | CRASH-STOPPER | true | **FAIL_COVERAGE** | 0 | 0 | 50.0 |
+| `DeviseController#devise_mapping` | CRASH-STOPPER | false | **NOT_PROBED** | 0 | 0 | nil |
+| `ActionDispatch::Journey::Router::Utils.escape_segment` | CRASH-STOPPER | true | **PASS** | 0 | 0 | 100.0 |
+| `ActiveRecord::Base#to_param` | CRASH-STOPPER | true | **PASS** | 0 | 0 | 100.0 |
+| `ActiveRecord::FinderMethods#find_by` | DESIGN | true | **EXEMPT** | 1 | 0 | 33.3 |
+| `ActiveRecord::Core::ClassMethods#find_by` | DESIGN | true | **EXEMPT** | 1 | 0 | 63.2 |
+| `ActiveRecord::Calculations#count` | DESIGN | true | **EXEMPT** | 1 | 0 | 28.6 |
+| `ActiveRecord::FinderMethods#find` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `ActiveRecord::FinderMethods#take!` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `ActiveRecord::FinderMethods#first!` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `ActiveRecord::FinderMethods#last!` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `ActiveRecord::FinderMethods#find_by!` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `ActiveRecord::FinderMethods#take` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `ActiveRecord::FinderMethods#first` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `ActiveRecord::FinderMethods#last` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `ActiveRecord::Core::ClassMethods#find` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `ActiveRecord::Core::ClassMethods#find_by!` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `ActiveRecord::FinderMethods#exists?` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `ActiveRecord::FinderMethods#any?` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `ActiveRecord::FinderMethods#none?` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `ActiveRecord::FinderMethods#one?` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `ActiveRecord::FinderMethods#many?` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `ActiveRecord::FinderMethods#empty?` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `ActiveRecord::Relation#to_a` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `ActiveRecord::Relation#to_ary` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `ActiveRecord::Relation#records` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `ActiveRecord::Relation#size` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `ActiveRecord::Calculations#sum` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `ActiveRecord::Calculations#pluck` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `ActiveRecord::Calculations#ids` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `ActiveRecord::Calculations#average` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `ActiveRecord::Calculations#minimum` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `ActiveRecord::Calculations#maximum` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `ActiveRecord::Calculations#calculate` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `ActiveRecord::Batches#find_each` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `ActiveRecord::Batches#find_in_batches` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `ActiveRecord::Batches#in_batches` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `ActiveRecord::Relation#update_all` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `ActiveRecord::Relation#delete_all` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `ActiveRecord::Relation#destroy_all` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `ActiveRecord::Base#save` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `ActiveRecord::Base#save!` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `ActiveRecord::Base#update` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `ActiveRecord::Base#update!` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `ActiveRecord::Base#update_attribute` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `ActiveRecord::Base#touch` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `ActiveRecord::Base#destroy` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `ActiveRecord::Base#destroy!` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `ActiveRecord::Querying#find_by_sql` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `ActiveRecord::Querying#count_by_sql` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `User#blocks` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `Post.blocked_people` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `Stream::Aspect#aspect_ids` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `Stream::FollowedTag#tag_ids` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `Stream::Base#post_ids` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `Stream::Base#attach_user_likes` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `StreamsController#decorated_stream_posts` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `Stream::Multi#publisher_prefill` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `TagsController#prep_tags_for_javascript` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `Sidekiq::Client#push` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `Sidekiq::Client#push_bulk` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `ActionController::Instrumentation#redirect_to` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `Photo#url` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `Photo.diaspora_initialize` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `PostService#mark_user_notifications` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `Diaspora::Taggable#build_tags` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `StatusMessage#tag_name_max_length` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `DiasporaFederation::Entity#validate` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `Gon::ControllerHelpers#gon` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `User#add_to_streams` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `StatusMessageCreationService#add_to_streams` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `User#retract` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `Diaspora::Mentionable.people_from_string` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `PostPresenter#build_mentioned_people_json` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `Diaspora::MessageRenderer#title` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `Diaspora::MessageRenderer::Processor.process` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `DiasporaFederation::Entity#normalize_property` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `ActiveRecord::Associations::CollectionProxy#create` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `User#mine?` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `ApplicationController#after_sign_in_path_for` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `ApplicationController#configure_permitted_parameters` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `User#confirm_email` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `ActiveRecord::Associations::CollectionProxy#records` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `ActiveRecord::Associations::CollectionProxy#load_target` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `DiasporaFederation::Discovery::Discovery#fetch_and_save` | UNKNOWN | false | **NOT_PROBED** | 0 | 0 | nil |
+| `ConcolicKwargsToPositional (footer prepend on AR::Base.singleton_class + AR::Relation)` | INFRA-SHIM | true | **STRUCTURAL-PASS** | 0 | 0 | nil |
+| `ActiveRecord::Associations::CollectionAssociation#size (targets.rb gen2 prepend shim)` | INFRA-SHIM | unclear | **STRUCTURAL-PASS** | 0 | 0 | nil |
+| `Person.name_from_attrs (concolic_targets.rb X6i prepend shim)` | CRASH-STOPPER | true | **PASS** | 0 | 0 | nil |
+| `Gon.preloads (targets.rb gen2 class-level prepend shim)` | CRASH-STOPPER | unclear | **STRUCTURAL-PASS** | 0 | 0 | nil |

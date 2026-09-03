@@ -1,0 +1,43 @@
+== note_fidelity_audit: 7 run file(s), 41 distinct real SELECTs under 6 frames; 13 targets carry notes ==
+
+-- wildcard notes per target (corpus) --
+   ActiveRecord::Associations::BelongsToPolymorphicAssociation.find_target notes=7    star=7
+   ActiveRecord::Associations::CollectionProxy.load_target                notes=1    star=1
+   ActiveRecord::Associations::CollectionProxy.records                    notes=10   star=10
+   ActiveRecord::Associations::SingularAssociation.find_target            notes=18   star=18
+   ActiveRecord::Calculations.count                                       notes=8    agg=8
+   ActiveRecord::Calculations.pluck                                       notes=1    cols=1
+   ActiveRecord::FinderMethods.devise_user_first                          notes=1    star=1
+   ActiveRecord::FinderMethods.find_by                                    notes=3    star=3
+   ActiveRecord::FinderMethods.first                                      notes=2    star=2
+   ActiveRecord::FinderMethods.last                                       notes=2    star=2
+   ActiveRecord::Relation.records                                         notes=5    star=5
+   ActiveRecord::Relation.to_ary                                          notes=4    star=4
+   Anonymous.load_intermediate                                            notes=3    star=3
+
+-- MISSING: 1 --
+   ActiveRecord::Relation.records  [A05.json:adv-A05-sharing-and-pm]
+      real: SELECT "conversations".* FROM "conversations" WHERE "conversations"."id" = ?
+
+-- STAR-OVER: 1 --
+   ActiveRecord::FinderMethods.exists?  [A01.json:adv-A01-diaspora-links]
+      real: SELECT 1 AS one FROM "posts" WHERE "posts"."guid" = ? LIMIT ?
+      note: SELECT "posts".* FROM "posts" WHERE "posts"."id" = $$(SYM_RESULT_ActiveRecord__Relation_to_ary_1_row_target_mentions_container_commentable_id)
+
+-- AGG-COLLAPSE: 0 --
+
+-- PROJ-DIFF: 0 --
+
+-- PRED-DIFF: 3 --
+   ActiveRecord::Associations::SingularAssociation.find_target  [A02.json:adv-A02-photo-target]
+      real: SELECT "posts".* FROM "posts" WHERE "posts"."type" IN ('StatusMessage') AND "posts"."guid" = ? LIMIT ?
+      note: SELECT "posts".* FROM "posts" WHERE "posts"."id" = $$(SYM_RESULT_ActiveRecord__Relation_to_ary_1_row_target_id)
+   ActiveRecord::Relation.records  [A02.json:adv-A02-photo-target]
+      real: SELECT "photos".* FROM "photos" WHERE "photos"."id" = ?
+      note: SELECT "photos".* FROM "photos" WHERE "photos"."status_message_guid" = $$(SYM_RESULT_ActiveRecord__Relation_to_ary_1_row_target_mentions_container_gui
+   ActiveRecord::Relation.records  [A02.json:adv-A02-photo-target]
+      real: SELECT "photos".* FROM "photos" WHERE "photos"."id" IN (?, ?)
+      note: SELECT "photos".* FROM "photos" WHERE "photos"."status_message_guid" = $$(SYM_RESULT_ActiveRecord__Relation_to_ary_1_row_target_mentions_container_gui
+
+-- EXACT: 36 --
+RESULT: RED — 2 real statement(s) whose note is unfaithful in projection or missing.
