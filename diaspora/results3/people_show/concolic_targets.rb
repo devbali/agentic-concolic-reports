@@ -777,6 +777,33 @@ module ConcolicTargets
       end)
     end
 
+    # Mobile render wall (2026-09-03, anon_mobile scenario, cycle 1):
+    # shared/_stream_element.mobile.haml -> shared/_post_info.mobile.haml:31
+    # reads `post.location` on every stream post. `location` is NOT a Post
+    # column (the schema's `location` string lives on `profiles`); it exists
+    # as a real association reader ONLY on the STI subclass StatusMessage
+    # (`has_one :location`, status_message.rb:25). On a base-Post
+    # symbolic_instance rep (decorated_stream_posts mints class Post
+    # exactly), `post.location` hits AR method_missing -> NoMethodError,
+    # killing the whole mobile render at 32/40 explored paths (cycle-1
+    # corpus: ActionView::Template::Error 32x).
+    #
+    # NOT a declare_target: `location` does not exist on base Post, and
+    # declare_target requires an existing instance_method to wrap. The shim
+    # lives as a PREPEND module in targets.rb (PostSymLocation,
+    # PeopleShowSymParams.install!) — SAFE against the STI reader: Rails
+    # generates has_one readers on the DECLARING class (StatusMessage), so
+    # StatusMessage#location wins method resolution for real StatusMessage
+    # instances; the prepend only ever fires on plain-Post reps, where the
+    # association does not exist. Returns nil (the rig's documented
+    # nil-passthrough), so the template guard `if ... post.location` takes
+    # the FALSE side — a FREE decision: this rig loads no Location rows (the
+    # Location table is never seeded/queried on this entrypoint), so the
+    # location-present branch (`post.location.address` render) is
+    # unreachable by construction.
+    # Runner-local (this endpoint's private fork), NOT a shared-boundary
+    # change — Rule T untouched.
+
     # Row 6 consumption: StatusMessage.tag_stream / .user_tag_stream are CLASS
     # methods (def self.xxx). They are intentionally NOT mocked here: their body
     # is SQL (where IN), and the followed-tags posts must come back as a REAL

@@ -145,6 +145,27 @@ SCENARIOS = {
     desc: "anonymous, json format -> render json: @presenter.as_json " \
           "(PersonPresenter/ProfilePresenter#as_json chain, no html layout)",
   },
+  # format.mobile (H1 hardening-lint find): `show` DECLARES :mobile
+  # (people_controller.rb:76-79: @post_type = :all; person_stream;
+  # respond_with @presenter) and show.mobile.haml EXISTS — the real app
+  # reaches it via mobile_switch (session[:mobile_view]/device header) or
+  # explicit format: :mobile, exactly as conversations_index cycle 3
+  # (W1-W3) proved format dispatch works in this rig. The block is LAZY:
+  # Stream::Person is built but its queries fire only when show.mobile.haml
+  # renders `@stream.stream_posts.length > 0` -> Stream::Person#stream_posts
+  # -> posts.for_a_stream -> for_visible_shareable_sql (+ like_posts_for_stream!).
+  # The stream family is ALREADY declared in this endpoint's concolic_targets.rb
+  # (excluding_blocks/tag_ids/decorated_stream_posts/like_posts_for_stream!,
+  # lines ~673-785) — ported from people_stream — so mobile_show runs under
+  # the current boundary with no new boundary targets. Anonymous: the stream
+  # branch decision (user.present? ? user.posts_from : @person.posts.where
+  # public: true, lib/stream/person.rb:16-18) takes the else arm, and
+  # @post_type == :all selects the .stream branch of show.mobile.haml.
+  "anon_mobile" => {
+    format: :mobile,
+    desc: "anonymous, mobile format -> show.mobile.haml: Stream::Person#stream_posts " \
+          "(for_a_stream + like_posts_for_stream! chain) + mobile layout render",
+  },
 }.freeze
 
 # ---------------------------------------------------------------------------
@@ -258,6 +279,94 @@ def flip_seed(expr, want_taken)
   if (m = /\ANot\(Contains\(StringVal\('(.*)'\), ([A-Za-z_][A-Za-z0-9_]*)\)\)\z/m.match(s))
     sep, var = m[1], m[2]
     return want_taken ? { var => "no-separator-here" } : { var => "x#{sep}y" }
+  end
+
+  # --- anon_mobile unflippables (results3/people_show, H1 mobile campaign) ---
+  # The mobile render (show.mobile.haml -> stream -> people_helper
+  # local_or_remote_person_path + ActiveSupport blank? checks) records FIVE
+  # new PC shapes on the handle var(s) that the classic handlers above cannot
+  # parse. All are concrete-value-derived (string.rb SubString/IndexOf), so
+  # the only lever is SYNTHESIZING a parent-var seed that changes the derived
+  # concrete value. Prefix-replay drift is accepted (path-signature dedup
+  # bounds it):
+  #
+  #   1. `IndexOf(H, '@') == 1`  (219x taken:true, unflippable: the seed
+  #      "x@y" always puts '@' at index 1) -> seed '@' at a DIFFERENT index.
+  #   2. `Contains('.', H[0,1])` (72x false)  -> seed dot-leading H.
+  #   3. `Contains('.', H[0,Len-0])` (72x false) -> seed H with/without dot.
+  #   4. `(SubString(H,0,Len-0) == '')` / `(SubString(H,0,1) == '')` (blank?
+  #      BLANK_RE) -> seed empty/non-empty.
+
+  # 1. IndexOf(VAR, StringVal('sep')) == N
+  if (m = /\AIndexOf\(([A-Za-z_][A-Za-z0-9_]*), StringVal\('(.*)'\)\) == (\d+)\z/m.match(s))
+    var, sep, n = m[1], m[2], m[3].to_i
+    if want_taken
+      return { var => ("a" * n) + sep + "z" }
+    else
+      return { var => ("a" * (n + 1)) + sep + "z" }
+    end
+  end
+
+  # 2. Contains(StringVal('.'), SubString(VAR, 0, 1)) -- username[0] == sep
+  #    EMPIRICAL (734-run corpus): k in SubString(H,0,k) = length of
+  #    split('@')[0] (username). k=1 -> '@' at position 1. T-side:
+  #    username "." -> H = ".@b". F-side: username "a" -> H = "a@b".
+  if (m = /\AContains\(StringVal\('(.*)'\), SubString\(([A-Za-z_][A-Za-z0-9_]*), 0, 1\)\)\z/m.match(s))
+    var = m[2]
+    return want_taken ? { var => ".@b" } : { var => "a@b" }
+  end
+
+  # 2b. Contains(StringVal('.'), SubString(VAR, 0, 2)) -- username[0..1]
+  #    k=2 -> '@' at position 2. T-side: username ".a" -> H = ".a@b".
+  #    F-side: username "aa" -> H = "aa@b".
+  if (m = /\AContains\(StringVal\('(.*)'\), SubString\(([A-Za-z_][A-Za-z0-9_]*), 0, 2\)\)\z/m.match(s))
+    var = m[2]
+    return want_taken ? { var => ".a@b" } : { var => "aa@b" }
+  end
+
+  # 2c. Contains(StringVal('.'), SubString(VAR, 0, 3)) -- username[0..2]
+  #    k=3 -> '@' at position 3. T-side: username "a.b" -> H = "a.b@c".
+  #    F-side: username "abc" -> H = "abc@d".
+  if (m = /\AContains\(StringVal\('(.*)'\), SubString\(([A-Za-z_][A-Za-z0-9_]*), 0, 3\)\)\z/m.match(s))
+    var = m[2]
+    return want_taken ? { var => "a.b@c" } : { var => "abc@d" }
+  end
+
+  # 3. Contains(StringVal('.'), SubString(VAR, 0, Length(VAR) - 0)) -- H.include?(sep)
+  #    EMPIRICAL: the Length-0 form fires on the WHOLE handle as username
+  #    (no-'@' / NOTC arm). ".a.b" (no @, dot) records T; the default
+  #    "..._v" (no @, no dot) records F. Seeds: T -> ".a.b"; F -> "ab".
+  if (m = /\AContains\(StringVal\('(.*)'\), SubString\(([A-Za-z_][A-Za-z0-9_]*), 0, Length\(\2\) - 0\)\)\z/m.match(s))
+    var = m[2]
+    return want_taken ? { var => ".a.b" } : { var => "ab" }
+  end
+
+  # 4a. (SubString(VAR, 0, Length(VAR) - 0) == '') -- H == ''
+  if (m = /\A\(SubString\(([A-Za-z_][A-Za-z0-9_]*), 0, Length\(\1\) - 0\) == ''\)\z/m.match(s))
+    var = m[1]
+    return want_taken ? { var => "" } : { var => "x@y" }
+  end
+
+  # 4b. (SubString(VAR, 0, 1) == '') -- H[0] == ''
+  if (m = /\A\(SubString\(([A-Za-z_][A-Za-z0-9_]*), 0, 1\) == ''\)\z/m.match(s))
+    var = m[1]
+    return want_taken ? { var => "" } : { var => "x@y" }
+  end
+
+  if (m = /\A\(len\((.+)\) (<=|>=|==|!=|<|>) (-?\d+)\)\z/m.match(s))
+    var, op, n = m[1], m[2], m[3].to_i
+    len =
+      case op
+      when "<"  then want_taken ? n - 1 : n
+      when "<=" then want_taken ? n     : n + 1
+      when ">"  then want_taken ? n + 1 : n
+      when ">=" then want_taken ? n     : n - 1
+      when "==" then want_taken ? n     : n + 1
+      when "!=" then want_taken ? n + 1 : n
+      else return nil
+      end
+    len = 0 if len.negative?
+    return { "len(#{var})" => len }
   end
 
   if (m = /\A\(len\((.+)\) != 0\)\z/m.match(s))
