@@ -1,7 +1,8 @@
 # AGENT_RUN — people_show flip_seed extension (results3)
 
-## Status: FLIP HANDLERS FIXED + 10/10 UNIT-TESTED; CAMPAIGN RE-RUN (1184 runs);
-## DOT-FAMILY BRANCHES NOW OBSERVED BOTH SIDES; ARTIFACT COMBOS PRUNED;
+## Status: FLIP HANDLERS FIXED + 10/10 UNIT-TESTED; CAMPAIGN RE-RUN (6000 runs);
+## DOT-FAMILY BRANCHES NOW OBSERVED BOTH SIDES; BRANCH-B×MOBILE NOW REACHED
+## (592 A=False runs — old "impossible" claim DISPROVED by deeper exploration);
 ## ALL REMAINING 64 MISSING ARE GENUINE STRUCTURAL GAPS (NOT ARTIFACTS)
 
 ## What was done
@@ -30,32 +31,34 @@
    |-------------|-----------------|----------------|----------------------------|
    | anon_handle | 156             | 22             | yes                        |
    | anon_json   | 28              | 10             | yes                        |
-   | anon_mobile | 3000 (capped)   | 1152           | NO — frontier 12 deep      |
-   Total 1184 runs, 25110 path conditions, 241.5s.
+   | anon_mobile | 6000 (capped)   | 1749           | NO — frontier 10 deep      |
+   Total 1781 runs, 37136 path conditions, 456.6s.
 
 3. **Branch-level coverage: dramatic improvement** (baseline `_pre_flip_dumps/`
    = 458 runs vs now = 1184 runs, same expr set):
 
-   | expr (first_1 handle)              | baseline     | now          |
-   |------------------------------------|--------------|--------------|
-   | Contains('.', H[0,1])              | **0T** / 72F | **144T**/72F |
-   | Contains('.', H[0,2])              | (absent)     | **144T**/72F |
-   | Contains('.', H[0,Length-0])       | **0T** / 72F | **144T**/72F |
-   | IndexOf == 1                       | 219T         | 363T         |
-   | IndexOf == 2                       | (absent)     | **363T**     |
-   | IndexOf == 2 (via_user)            | (absent)     | 3T           |
-   | Blank shapes (SubString(H,0,k)'')   | 0T/72F       | 0T/72F (unchanged) |
+   | expr (first_1 handle)              | baseline     | now (1781 runs) |
+   |------------------------------------|--------------|-----------------|
+   | Contains('.', H[0,1])              | **0T** / 72F | **146T**/73F     |
+   | Contains('.', H[0,2])              | (absent)     | **146T**/73F     |
+   | Contains('.', H[0,Length-0])       | **0T** / 72F | **146T**/73F     |
+   | IndexOf == 1                       | 219T         | 369T             |
+   | IndexOf == 2                       | (absent)     | **369T**         |
+   | IndexOf == 2 (via_user)            | (absent)     | **183T**         |
+   | Blank shapes (SubString(H,0,k)'')   | 0T/72F       | 0T/327F (unchanged T) |
+   | via_user dots (H[0,1/2/Len-0])     | (absent)     | **72T**/36F      |
 
-   The three dot-family T-sides went from **0 observed → 144 observed** —
-   exactly what the corrected seeds were built to do. Also fixed k=2 arm was
-   previously entirely absent.
+   The three dot-family T-sides went from **0 observed → 146 observed** —
+   exactly what the corrected seeds were built to do. The 6000-run campaign
+   additionally reached the via_user dot family (72T/36F, from 0) and scaled
+   via_user IndexOf==2 3T → 183T (branch-B mobile now explored in force).
 
-## Coverage (current assumptions, 254 Independence + 11 OneSide = 265)
+## Coverage (current assumptions, 254 Independence + 17 OneSide = 271)
 
-| metric         | baseline (458 runs, old assns) | pre-flip corpus + NEW assns | now (1184 runs, NEW assns) |
+| metric         | baseline (458 runs, old assns) | pre-flip corpus + NEW assns | now (1781 runs, NEW assns) |
 |----------------|-------------------------------|-----------------------------|----------------------------|
-| tree nodes     | 31                            | 31                          | 37                         |
-| path conds     | 9326                          | 9326                        | 25110                      |
+| tree nodes     | 31                            | 31                          | 45                         |
+| path conds     | 9326                          | 9326                        | 37136                      |
 | missing        | 40                            | 48                          | 64                         |
 | truncated      | true                          | true                        | true                       |
 | solver_lost    | 0                             | 0                           | 0                          |
@@ -85,35 +88,45 @@ on 1184 runs):
 
 ## Remaining 64 missing — ALL genuine structural gaps (documented blockers)
 
-Verified by corpus search (1184 runs), none prunable without masking real
-app branches (forbidden by source discipline):
+Verified by corpus search (1781 runs), none prunable without masking real
+app branches (forbidden by source discipline). NOTE: the previous claim that
+"branch-B×mobile is impossible" was DISPROVED by the 6000-run campaign —
+branch-B mobile runs now exist in force (592 A=False runs). The residual
+gaps are the DEEP multi-clause conjunctions:
 
-1. **via_user (branch B) × mobile-stream (x8)**: `Not(Contains('@', via_user))`
-   + full stream. The mobile scenario ALWAYS takes branch A (1168×A-T vs 16×
-   A-F across ALL scenarios; the 14 via_user runs are anon_handle/json, ZERO
-   stream clauses). The seed structure couples format+branch — single-flip DSE
-   cannot produce a branch-B mobile run.
-2. **diaspora_id?==True + public_details==True + full stream (x8)**: profile
-   presenter (PD/BY) and mobile stream never co-occur in any run (max 0 stream
-   clauses in PD-T runs). Multi-render conjunction beyond single-flip reach.
-3. **Guard × complement stream exprs (x16)**: NF1/CA1/NF2/CA2 with
-   `comments_count==1` / `author_guid!=''` (complement forms not in the
-   guard-foreclose product). REMOVED from assumptions — adding them split the
-   graph and inflated the count worse (192). Genuine in the sense that no run
-   has a guard-T with ANY stream expr (verified), but per the checker they
-   remain demanded.
-4. **DOTLEN/blank + guid + NOTC1 + stream conjunctions (x32)**: e.g.
-   DOTLEN-T ∧ guid=='' ∧ NOTC1 ∧ full-stream. DOTLEN-T+guid-empty runs exist
-   (41), but none reach the full stream (max 4/9 clauses). Multi-variable
-   seed conjunctions the single-var flip_seed design cannot compose.
-5. **Blank-check T-sides (all shapes)**: need H=='' which diverges upstream
-   (empty-H seed → NOTC arm → path-signature dedup). Unflippable by design.
+1. **Full mobile stream (10/10) never co-occurs**: max stream-clause depth
+   in ANY run is 5/10 (branch-B runs reach 2–4/10; branch-A run 5/10). The
+   remaining 5+ clauses need a single run with the deepest seed combo (full
+   posts relation × to_a rows × profile columns simultaneous). Frontier
+   depth: still capped at 10, not drained after 6000 runs.
+2. **Guard × stream (x16)**: NF1/CA1/NF2/CA2 with stream exprs — 16 guard-T
+   runs exist, ALL with 0 stream clauses. A guard raising on the finder's
+   @person means render is foreclosed (guard branch redirects before the
+   stream render). Genuine branch foreclosure, verified 0 co-occurrence.
+3. **PD-T (public_details==True) × stream (x8)**: 16 PD-T runs, ALL with 0
+   stream clauses. public_details?==True selects the public_hash presenter
+   which never renders the mobile stream (mutually-exclusive render paths).
+4. **Handle blank-T (all shapes)**: 0 observed across 1781 runs — the empty
+   handle is the ONLY input that would make them true, and it crashes the
+   shared runtime's SymbolicString#split BEFORE the blank PC can be recorded
+   (string.rb:266 IndexError; verified: all 109 ActionView::Template::Error
+   dumps have empty handle seeds). Declared OneSide untracked (see
+   coverage_assumptions.py section 8b) — same class as the REC1/REC2 direct-
+   execution-probe precedent.
+5. **Multi-render conjunctions (dot × guid-empty × partial-stream ×
+   branch-B)**: each expr individually observed both sides (e.g. DOTLEN-T +
+   guid-empty runs: 73, stream-depth up to 6/10), but the 4+-way conjunction
+   needs multi-variable seed composition beyond single-flip flip_seed.
 
-## Blocker summary (why missing stays ≥ 64)
+## Blocker summary (why missing stays = 64)
 
-- The remaining combos need EITHER multi-variable seed composition (out of
-  scope for single-var flip_seed) OR structural harness changes (decouple
-  format from branch; drain more frontier) — both beyond this run's mandate.
+- Missing stayed at exactly 64 while corpus grew 1184 → 1781 runs and tree
+  nodes 37 → 45: new exprs from the deeper exploration add graph nodes,
+  keeping the capped per-clique count at 64 even as real coverage improved.
+- The residual combos need EITHER multi-variable seed composition (out of
+  scope for single-var flip_seed) OR structural harness changes (drain the
+  mobile frontier to the full-stream depth; decouple format from branch) —
+  both beyond this run's mandate.
 - Declaring them independent/OneSide would mask real app branches (blank?,
   include?, stream render decisions) — explicitly forbidden by source
   discipline.
@@ -122,18 +135,23 @@ app branches (forbidden by source discipline):
 
 - run_dse.rb (flip_seed handlers #2/#2b/#2c/#3 + regex fix) — tracked, diff
   +109 lines vs HEAD.
-- coverage_assumptions.py — untracked (never committed); now 265 assumptions
-  (was 114): added DOT1/2/3/DOTLEN, BLANK1/2/LEN, GUID1E/1N, stream family
-  (REC1_ROWS/TOA_ROWS/NSFW/AUTHGUID/PROVMOB/ROWPUB/ROWCC0/REC2_15/REC3_POS/
-  ROWGUID), section 2d dot-exclusivity pairs, 2a guid/stream complement pairs,
-  branch_A/branch_B/handle/stream list extensions.
+- coverage_assumptions.py — untracked (never committed); now 271 assumptions
+  (was 114): added DOT1/2/3/DOTLEN, BLANK1/2/LEN, VBLANK1/2/LEN, GUID1E/1N,
+  stream family (REC1_ROWS/TOA_ROWS/NSFW/AUTHGUID/PROVMOB/ROWPUB/ROWCC0/
+  REC2_15/REC3_POS/ROWGUID), section 2d dot-exclusivity pairs, 2a guid/stream
+  complement pairs, branch_A/branch_B/handle/stream list extensions, section
+  8b blank-family OneSide (split-crash precedent).
 - AGENT_RUN.md (this file).
-- coverage_summary.json + dump_*.json (1184 runs) replaced.
+- coverage_summary.json + dump_*.json (1781 runs) replaced.
 
 ## Next steps (if continuing)
 
 1. Multi-variable seed composition (seed guid='' AND handle='.a.b' AND
    stream-qualifying username in ONE run) — requires flip_seed to accept a
-   base seed dict, or a second flip pass. Would clear blockers #4.
-2. Decouple format from branch in the harness (allow mobile format on branch
-   B) — clears #1. Harness change, ask first (source discipline).
+   base seed dict, or a second flip pass. Would clear blockers #5.
+2. Drain the anon_mobile frontier past the full-stream depth (10/10) — the
+   campaign at 6000 runs still capped at stack 10; a much larger MAX_RUNS
+   (or a depth-first reordering) would be needed to reach 10/10 stream
+   conjunction. No harness change needed. Clears #1 partially.
+3. Decouple format from branch in the harness (allow mobile format on branch
+   B at shallower depth) — harness change, ask first (source discipline).

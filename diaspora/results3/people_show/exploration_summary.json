@@ -17,9 +17,9 @@
       "seed_sets_tried": 156,
       "worklist_exhausted": true,
       "capped_by": null,
-      "max_runs": 3000,
-      "time_budget": 3600,
-      "elapsed_seconds": 10.7,
+      "max_runs": 6000,
+      "time_budget": 5400,
+      "elapsed_seconds": 10.8,
       "run_errors": {
         "run:ActionView::MissingTemplate": 2
       },
@@ -35,8 +35,8 @@
       "seed_sets_tried": 28,
       "worklist_exhausted": true,
       "capped_by": null,
-      "max_runs": 3000,
-      "time_budget": 3600,
+      "max_runs": 6000,
+      "time_budget": 5400,
       "elapsed_seconds": 0.4,
       "run_errors": {
         "run:ActionView::MissingTemplate": 2
@@ -48,21 +48,23 @@
       "scenario": "anon_mobile",
       "description": "anonymous, mobile format -> show.mobile.haml: Stream::Person#stream_posts (for_a_stream + like_posts_for_stream! chain) + mobile layout render",
       "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
-      "runs_executed": 3000,
-      "distinct_paths": 1152,
-      "seed_sets_tried": 3000,
+      "runs_executed": 6000,
+      "distinct_paths": 1749,
+      "seed_sets_tried": 6000,
       "worklist_exhausted": false,
       "capped_by": "MAX_RUNS",
-      "max_runs": 3000,
-      "time_budget": 3600,
-      "elapsed_seconds": 230.4,
+      "max_runs": 6000,
+      "time_budget": 5400,
+      "elapsed_seconds": 445.4,
       "run_errors": {
-        "run:ActionView::Template::Error": 264
+        "run:ActionView::Template::Error": 524,
+        "run:ActionView::MissingTemplate": 1
       },
       "unflippable_pcs": {
-        "(SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, 2) == '')": 131
+        "(SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, 2) == '')": 217,
+        "(SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == '')": 45
       }
     }
   ],
-  "total_elapsed_seconds": 241.5
+  "total_elapsed_seconds": 456.6
 }

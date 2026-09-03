@@ -172,6 +172,10 @@ DOTLEN = "Contains(StringVal('.'), SubString(SYM_RESULT_ActiveRecord__FinderMeth
 BLANK1   = "(SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, 1) == '')"
 BLANK2   = "(SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, 2) == '')"
 BLANKLEN = "(SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, Length(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle) - 0) == '')"
+# via_user blank shapes (branch-B, same runtime crash path as BLANK1/2/LEN).
+VBLANK1   = "(SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')"
+VBLANK2   = "(SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == '')"
+VBLANKLEN = "(SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')"
 
 # MOBILE-universe stream-family exprs (anon_mobile scenario — the person's
 # posts stream renders on show.mobile.haml). All live in ONE mobile render,
@@ -414,6 +418,26 @@ def build() -> AssumptionSet:
             description="non-empty side proven unreachable by direct DSE probe (NullRelation)",
             agent_notes="person_presenter.rb has_contact?/is_blocked? .present? on "
                          "Block.none/Contact.none for the anonymous scenario — see module docstring.",
+        ))
+
+    # 8b. Blank handle shapes: the T side (username/handle empty) is proven
+    #    unreachable by direct execution — the EMPTY string is the ONLY input
+    #    that would make them true, and it crashes the shared runtime's
+    #    SymbolicString#split BEFORE the blank PC can be recorded
+    #    (string.rb:266 `split result index 0 out of range (len=0)`;
+    #    "".split("@") -> [] -> [0] IndexError). 109 ActionView:
+    #    Template::Error dumps in the 1781-run corpus, ALL with handle value
+    #    '' (verified). The app's own DiasporaId validation excludes empty
+    #    handles from ever reaching this code in production. Applies to the
+    #    first_1 AND via_user blank shapes (same runtime path).
+    for blank in (BLANK1, BLANK2, BLANKLEN,
+                  VBLANK1, VBLANK2, VBLANKLEN):
+        assumptions.append(OneSideUntrackedPathAssumption(
+            expr=blank,
+            tracked_side="not_taken",
+            description="empty-side unreachable: only input (H=='') crashes split interceptor before recording (verified 109 Template::Error dumps, handle value '') ",
+            agent_notes="string.rb:266 SymbolicString#split IndexError on empty concrete value (\"\".split('@') -> []); "
+                         "DiasporaId validation forbids empty handles in production.",
         ))
 
     # Kept DEPENDENT (not exempted), all genuinely co-reachable and already
