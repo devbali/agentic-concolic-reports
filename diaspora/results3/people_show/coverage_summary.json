@@ -5856,6 +5856,24 @@
       "expr_b": "(assoc_profile_birthday_year <= 1004)"
     },
     {
+      "type": "SymbolicConstraintAssumption",
+      "description": "same posts-stream query minted twice (rows_mock) \u2014 equal by construction",
+      "agent_notes": "people_controller.rb:129-138 `find_person`: `@person = diaspora_id?(username) ? Person.where(...).first : Person.find_from_guid_or_username(...)` \u2014 an if/else. Branch-A-only vars (first_1_*, including the atom-url handle-split family below) only exist when `diaspora_id?==True`; branch-B-only vars (find_by_1_* / via_user_*) only exist when False. Exactly one branch runs per request, so the other branch's vars are simply absent from that run's trace \u2014 mutually exclusive per the IndependenceAssumption safety test's criterion 1 (\"different if/elif/else branches\").",
+      "z3_expr": "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows == SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows"
+    },
+    {
+      "type": "SymbolicConstraintAssumption",
+      "description": "same posts-stream query minted twice (rows_mock) \u2014 equal by construction",
+      "agent_notes": "people_controller.rb:129-138 `find_person`: `@person = diaspora_id?(username) ? Person.where(...).first : Person.find_from_guid_or_username(...)` \u2014 an if/else. Branch-A-only vars (first_1_*, including the atom-url handle-split family below) only exist when `diaspora_id?==True`; branch-B-only vars (find_by_1_* / via_user_*) only exist when False. Exactly one branch runs per request, so the other branch's vars are simply absent from that run's trace \u2014 mutually exclusive per the IndependenceAssumption safety test's criterion 1 (\"different if/elif/else branches\").",
+      "z3_expr": "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows == SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows"
+    },
+    {
+      "type": "SymbolicConstraintAssumption",
+      "description": "same posts-stream query minted twice (rows_mock) \u2014 equal by construction",
+      "agent_notes": "people_controller.rb:129-138 `find_person`: `@person = diaspora_id?(username) ? Person.where(...).first : Person.find_from_guid_or_username(...)` \u2014 an if/else. Branch-A-only vars (first_1_*, including the atom-url handle-split family below) only exist when `diaspora_id?==True`; branch-B-only vars (find_by_1_* / via_user_*) only exist when False. Exactly one branch runs per request, so the other branch's vars are simply absent from that run's trace \u2014 mutually exclusive per the IndependenceAssumption safety test's criterion 1 (\"different if/elif/else branches\").",
+      "z3_expr": "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows == SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows"
+    },
+    {
       "type": "OneSideUntrackedPathAssumption",
       "description": "false side unreachable by construction (string.rb record! call sites hardcode taken:true)",
       "agent_notes": "src/ruby_runtime/string.rb SplitAccessor#[] (~lines 279-296): the Contains/Not(Contains)/IndexOf record! calls for this shape ALL pass the Ruby literal `taken: true` at their call site \u2014 there is no code path in the shared runtime that ever records the false side of these exact expr texts. Out of scope to change (src/ruby_runtime is shared, off-limits per source discipline) \u2014 the untracked side is unreachable by construction, not merely unobserved in this endpoint's corpus.",
@@ -6114,299 +6132,71 @@
   "assumptions_used": 239,
   "missing": [
     {
-      "node_constraint": "Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1 != 0)) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2 != 0)) AND (assoc_profile_public_details == True) AND Not(Contains(StringVal('@'), SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle)) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows > 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows != 0) AND (assoc_profile_nsfw == True) AND (assoc_author_guid == '') AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name == StringVal('mobile')) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows == 15) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows > 0) AND Contains(StringVal('.'), SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, Length(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle) - 0)) AND (SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid == '') AND Not((SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1)) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid == '') AND Not((assoc_author_guid != StringVal(''))) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND (SYM_PERSON_via_user_guid == '') AND Not((SYM_PERSON_via_user_guid != StringVal(''))) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
+      "node_constraint": "(SYM_PERSON_via_user_closed_account == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1) AND (assoc_author_guid != StringVal('')) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND (SYM_PERSON_via_user_guid == '') AND Not((SYM_PERSON_via_user_guid != StringVal(''))) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
       "missing_branch": "combination",
       "source_location": "",
       "untracked": false,
       "concrete_values": {
-        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid": "",
-        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle": ".",
-        "assoc_profile_nsfw": true,
-        "assoc_profile_public_details": true,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
         "SYM_PERSON_via_user_guid": "",
         "SYM_PERSON_via_user_diaspora_handle": ".",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 1,
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 1,
-        "assoc_author_guid": "",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 1
+        "SYM_PERSON_via_user_closed_account": true,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 0,
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 0,
+        "assoc_author_guid": "B",
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 0,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 0
       }
     },
     {
-      "node_constraint": "Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1 != 0)) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2 != 0)) AND (assoc_profile_public_details == True) AND Not(Contains(StringVal('@'), SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle)) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows > 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows != 0) AND (assoc_profile_nsfw == True) AND (assoc_author_guid == '') AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name == StringVal('mobile')) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows == 15) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows > 0) AND Contains(StringVal('.'), SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, Length(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle) - 0)) AND (SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid == '') AND Not((SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1)) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid == '') AND Not((assoc_author_guid != StringVal(''))) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND Not((SYM_PERSON_via_user_guid == '')) AND (SYM_PERSON_via_user_guid != StringVal('')) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
+      "node_constraint": "(SYM_PERSON_via_user_closed_account == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1) AND (assoc_author_guid != StringVal('')) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND Not((SYM_PERSON_via_user_guid == '')) AND (SYM_PERSON_via_user_guid != StringVal('')) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
       "missing_branch": "combination",
       "source_location": "",
       "untracked": false,
       "concrete_values": {
-        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid": "",
-        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle": ".",
-        "assoc_profile_nsfw": true,
-        "assoc_profile_public_details": true,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
         "SYM_PERSON_via_user_guid": "B",
         "SYM_PERSON_via_user_diaspora_handle": ".",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 1,
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 1,
-        "assoc_author_guid": "",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 1
+        "SYM_PERSON_via_user_closed_account": true,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 0,
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 0,
+        "assoc_author_guid": "C",
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 0,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 0
       }
     },
     {
-      "node_constraint": "Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1 != 0)) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2 != 0)) AND (assoc_profile_public_details == True) AND Not(Contains(StringVal('@'), SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle)) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows > 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows != 0) AND (assoc_profile_nsfw == True) AND (assoc_author_guid == '') AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name == StringVal('mobile')) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows == 15) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows > 0) AND Contains(StringVal('.'), SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, Length(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle) - 0)) AND (SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid == '') AND Not((SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1)) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid == '') AND Not((assoc_author_guid != StringVal(''))) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND (SYM_PERSON_via_user_guid == '') AND Not((SYM_PERSON_via_user_guid != StringVal(''))) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
+      "node_constraint": "(SYM_PERSON_via_user_closed_account == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1) AND (assoc_author_guid != StringVal('')) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND (SYM_PERSON_via_user_guid == '') AND Not((SYM_PERSON_via_user_guid != StringVal(''))) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
       "missing_branch": "combination",
       "source_location": "",
       "untracked": false,
       "concrete_values": {
-        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid": "",
-        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle": ".",
-        "assoc_profile_nsfw": true,
-        "assoc_profile_public_details": true,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
         "SYM_PERSON_via_user_guid": "",
         "SYM_PERSON_via_user_diaspora_handle": ".A",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 1,
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 1,
-        "assoc_author_guid": "",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 1
+        "SYM_PERSON_via_user_closed_account": true,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 0,
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 0,
+        "assoc_author_guid": "B",
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 0,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 0
       }
     },
     {
-      "node_constraint": "Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1 != 0)) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2 != 0)) AND (assoc_profile_public_details == True) AND Not(Contains(StringVal('@'), SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle)) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows > 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows != 0) AND (assoc_profile_nsfw == True) AND (assoc_author_guid == '') AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name == StringVal('mobile')) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows == 15) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows > 0) AND Contains(StringVal('.'), SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, Length(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle) - 0)) AND (SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid == '') AND Not((SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1)) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid == '') AND Not((assoc_author_guid != StringVal(''))) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND (SYM_PERSON_via_user_guid == '') AND Not((SYM_PERSON_via_user_guid != StringVal(''))) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
+      "node_constraint": "(SYM_PERSON_via_user_closed_account == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1) AND (assoc_author_guid != StringVal('')) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND (SYM_PERSON_via_user_guid == '') AND Not((SYM_PERSON_via_user_guid != StringVal(''))) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
       "missing_branch": "combination",
       "source_location": "",
       "untracked": false,
       "concrete_values": {
-        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid": "",
-        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle": ".",
-        "assoc_profile_nsfw": true,
-        "assoc_profile_public_details": true,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
         "SYM_PERSON_via_user_guid": "",
         "SYM_PERSON_via_user_diaspora_handle": "B",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 1,
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 1,
-        "assoc_author_guid": "",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 1
-      }
-    },
-    {
-      "node_constraint": "Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1 != 0)) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2 != 0)) AND (assoc_profile_public_details == True) AND Not(Contains(StringVal('@'), SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle)) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows > 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows != 0) AND (assoc_profile_nsfw == True) AND (assoc_author_guid == '') AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name == StringVal('mobile')) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows == 15) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows > 0) AND Not((SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, Length(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle) - 0) == '')) AND (SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid == '') AND Not((SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, 1) == '')) AND Not((SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, 2) == '')) AND Not((SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1)) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid == '') AND Not((assoc_author_guid != StringVal(''))) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND (SYM_PERSON_via_user_guid == '') AND Not((SYM_PERSON_via_user_guid != StringVal(''))) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
-      "missing_branch": "combination",
-      "source_location": "",
-      "untracked": false,
-      "concrete_values": {
-        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid": "",
-        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle": "B",
-        "assoc_profile_nsfw": true,
-        "assoc_profile_public_details": true,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
-        "SYM_PERSON_via_user_guid": "",
-        "SYM_PERSON_via_user_diaspora_handle": ".",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 1,
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 1,
-        "assoc_author_guid": "",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 1
-      }
-    },
-    {
-      "node_constraint": "Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1 != 0)) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2 != 0)) AND (assoc_profile_public_details == True) AND Not(Contains(StringVal('@'), SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle)) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows > 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows != 0) AND (assoc_profile_nsfw == True) AND (assoc_author_guid == '') AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name == StringVal('mobile')) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows == 15) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows > 0) AND Not((SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, Length(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle) - 0) == '')) AND (SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid == '') AND Not((SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, 1) == '')) AND Not((SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, 2) == '')) AND Not((SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1)) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid == '') AND Not((assoc_author_guid != StringVal(''))) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND Not((SYM_PERSON_via_user_guid == '')) AND (SYM_PERSON_via_user_guid != StringVal('')) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
-      "missing_branch": "combination",
-      "source_location": "",
-      "untracked": false,
-      "concrete_values": {
-        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid": "",
-        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle": "B",
-        "assoc_profile_nsfw": true,
-        "assoc_profile_public_details": true,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
-        "SYM_PERSON_via_user_guid": "C",
-        "SYM_PERSON_via_user_diaspora_handle": ".",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 1,
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 1,
-        "assoc_author_guid": "",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 1
-      }
-    },
-    {
-      "node_constraint": "Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1 != 0)) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2 != 0)) AND (assoc_profile_public_details == True) AND Not(Contains(StringVal('@'), SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle)) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows > 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows != 0) AND (assoc_profile_nsfw == True) AND (assoc_author_guid == '') AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name == StringVal('mobile')) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows == 15) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows > 0) AND Not((SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, Length(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle) - 0) == '')) AND (SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid == '') AND Not((SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, 1) == '')) AND Not((SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, 2) == '')) AND Not((SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1)) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid == '') AND Not((assoc_author_guid != StringVal(''))) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND (SYM_PERSON_via_user_guid == '') AND Not((SYM_PERSON_via_user_guid != StringVal(''))) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
-      "missing_branch": "combination",
-      "source_location": "",
-      "untracked": false,
-      "concrete_values": {
-        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid": "",
-        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle": "BC",
-        "assoc_profile_nsfw": true,
-        "assoc_profile_public_details": true,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
-        "SYM_PERSON_via_user_guid": "",
-        "SYM_PERSON_via_user_diaspora_handle": ".A",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 1,
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 1,
-        "assoc_author_guid": "",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 1
-      }
-    },
-    {
-      "node_constraint": "Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1 != 0)) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2 != 0)) AND (assoc_profile_public_details == True) AND Not(Contains(StringVal('@'), SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle)) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows > 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows != 0) AND (assoc_profile_nsfw == True) AND (assoc_author_guid == '') AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name == StringVal('mobile')) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows == 15) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows > 0) AND Not((SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, Length(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle) - 0) == '')) AND (SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid == '') AND Not((SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, 1) == '')) AND Not((SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, 2) == '')) AND Not((SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1)) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid == '') AND Not((assoc_author_guid != StringVal(''))) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND (SYM_PERSON_via_user_guid == '') AND Not((SYM_PERSON_via_user_guid != StringVal(''))) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
-      "missing_branch": "combination",
-      "source_location": "",
-      "untracked": false,
-      "concrete_values": {
-        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid": "",
-        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle": "C",
-        "assoc_profile_nsfw": true,
-        "assoc_profile_public_details": true,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
-        "SYM_PERSON_via_user_guid": "",
-        "SYM_PERSON_via_user_diaspora_handle": "B",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 1,
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 1,
-        "assoc_author_guid": "",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 1
-      }
-    },
-    {
-      "node_constraint": "(SYM_DECISION_diaspora_id_username == True) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1 != 0)) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2 != 0)) AND (assoc_profile_public_details == True) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows > 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows != 0) AND (assoc_profile_nsfw == True) AND (assoc_author_guid == '') AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name == StringVal('mobile')) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows == 15) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows > 0) AND Not((SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1)) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid == '') AND Not((assoc_author_guid != StringVal(''))) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND (SYM_PERSON_via_user_guid == '') AND Not((SYM_PERSON_via_user_guid != StringVal(''))) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
-      "missing_branch": "combination",
-      "source_location": "",
-      "untracked": false,
-      "concrete_values": {
-        "SYM_DECISION_diaspora_id_username": true,
-        "assoc_profile_nsfw": true,
-        "assoc_profile_public_details": true,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
-        "SYM_PERSON_via_user_guid": "",
-        "SYM_PERSON_via_user_diaspora_handle": ".",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 1,
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 1,
-        "assoc_author_guid": "",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 1
-      }
-    },
-    {
-      "node_constraint": "(SYM_DECISION_diaspora_id_username == True) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1 != 0)) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2 != 0)) AND (assoc_profile_public_details == True) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows > 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows != 0) AND (assoc_profile_nsfw == True) AND (assoc_author_guid == '') AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name == StringVal('mobile')) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows == 15) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows > 0) AND Not((SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1)) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid == '') AND Not((assoc_author_guid != StringVal(''))) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND Not((SYM_PERSON_via_user_guid == '')) AND (SYM_PERSON_via_user_guid != StringVal('')) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
-      "missing_branch": "combination",
-      "source_location": "",
-      "untracked": false,
-      "concrete_values": {
-        "SYM_DECISION_diaspora_id_username": true,
-        "assoc_profile_nsfw": true,
-        "assoc_profile_public_details": true,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
-        "SYM_PERSON_via_user_guid": "B",
-        "SYM_PERSON_via_user_diaspora_handle": ".",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 1,
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 1,
-        "assoc_author_guid": "",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 1
-      }
-    },
-    {
-      "node_constraint": "(SYM_DECISION_diaspora_id_username == True) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1 != 0)) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2 != 0)) AND (assoc_profile_public_details == True) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows > 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows != 0) AND (assoc_profile_nsfw == True) AND (assoc_author_guid == '') AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name == StringVal('mobile')) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows == 15) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows > 0) AND Not((SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1)) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid == '') AND Not((assoc_author_guid != StringVal(''))) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND (SYM_PERSON_via_user_guid == '') AND Not((SYM_PERSON_via_user_guid != StringVal(''))) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
-      "missing_branch": "combination",
-      "source_location": "",
-      "untracked": false,
-      "concrete_values": {
-        "SYM_DECISION_diaspora_id_username": true,
-        "assoc_profile_nsfw": true,
-        "assoc_profile_public_details": true,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
-        "SYM_PERSON_via_user_guid": "",
-        "SYM_PERSON_via_user_diaspora_handle": ".A",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 1,
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 1,
-        "assoc_author_guid": "",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 1
-      }
-    },
-    {
-      "node_constraint": "(SYM_DECISION_diaspora_id_username == True) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1 != 0)) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2 != 0)) AND (assoc_profile_public_details == True) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows > 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows != 0) AND (assoc_profile_nsfw == True) AND (assoc_author_guid == '') AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name == StringVal('mobile')) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows == 15) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows > 0) AND Not((SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1)) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid == '') AND Not((assoc_author_guid != StringVal(''))) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND (SYM_PERSON_via_user_guid == '') AND Not((SYM_PERSON_via_user_guid != StringVal(''))) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
-      "missing_branch": "combination",
-      "source_location": "",
-      "untracked": false,
-      "concrete_values": {
-        "SYM_DECISION_diaspora_id_username": true,
-        "assoc_profile_nsfw": true,
-        "assoc_profile_public_details": true,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
-        "SYM_PERSON_via_user_guid": "",
-        "SYM_PERSON_via_user_diaspora_handle": "B",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 1,
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 1,
-        "assoc_author_guid": "",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 1
+        "SYM_PERSON_via_user_closed_account": true,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 0,
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 0,
+        "assoc_author_guid": "C",
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 0,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 0
       }
     },
     {
@@ -6421,15 +6211,15 @@
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
         "SYM_PERSON_via_user_guid": "",
         "SYM_PERSON_via_user_diaspora_handle": ".",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 15,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 15,
         "assoc_author_guid": "",
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 1
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 15
       }
     },
     {
@@ -6444,15 +6234,15 @@
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
         "SYM_PERSON_via_user_guid": "B",
         "SYM_PERSON_via_user_diaspora_handle": ".",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 15,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 15,
         "assoc_author_guid": "",
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 1
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 15
       }
     },
     {
@@ -6467,15 +6257,15 @@
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
         "SYM_PERSON_via_user_guid": "",
         "SYM_PERSON_via_user_diaspora_handle": ".A",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 15,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 15,
         "assoc_author_guid": "",
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 1
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 15
       }
     },
     {
@@ -6490,15 +6280,15 @@
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
         "SYM_PERSON_via_user_guid": "",
         "SYM_PERSON_via_user_diaspora_handle": "B",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 15,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 15,
         "assoc_author_guid": "",
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 1
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 15
       }
     },
     {
@@ -6515,15 +6305,15 @@
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
         "SYM_PERSON_via_user_guid": "",
         "SYM_PERSON_via_user_diaspora_handle": ".",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 15,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 15,
         "assoc_author_guid": "",
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 1
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 15
       }
     },
     {
@@ -6540,15 +6330,15 @@
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
         "SYM_PERSON_via_user_guid": "B",
         "SYM_PERSON_via_user_diaspora_handle": ".",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 15,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 15,
         "assoc_author_guid": "",
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 1
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 15
       }
     },
     {
@@ -6565,15 +6355,15 @@
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
         "SYM_PERSON_via_user_guid": "",
         "SYM_PERSON_via_user_diaspora_handle": ".A",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 15,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 15,
         "assoc_author_guid": "",
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 1
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 15
       }
     },
     {
@@ -6590,15 +6380,15 @@
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
         "SYM_PERSON_via_user_guid": "",
         "SYM_PERSON_via_user_diaspora_handle": "B",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 15,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 15,
         "assoc_author_guid": "",
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 1
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 15
       }
     },
     {
@@ -6615,15 +6405,15 @@
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
         "SYM_PERSON_via_user_guid": "",
         "SYM_PERSON_via_user_diaspora_handle": ".",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 15,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 15,
         "assoc_author_guid": "",
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 1
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 15
       }
     },
     {
@@ -6640,15 +6430,15 @@
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
         "SYM_PERSON_via_user_guid": "C",
         "SYM_PERSON_via_user_diaspora_handle": ".",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 15,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 15,
         "assoc_author_guid": "",
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 1
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 15
       }
     },
     {
@@ -6657,23 +6447,23 @@
       "source_location": "",
       "untracked": false,
       "concrete_values": {
-        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid": "C",
-        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle": "B",
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid": "D",
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle": "BC",
         "assoc_profile_nsfw": true,
         "assoc_profile_public_details": true,
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1": 0,
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
         "SYM_PERSON_via_user_guid": "",
         "SYM_PERSON_via_user_diaspora_handle": ".A",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 15,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 15,
         "assoc_author_guid": "",
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 1
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 15
       }
     },
     {
@@ -6690,194 +6480,290 @@
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
         "SYM_PERSON_via_user_guid": "",
         "SYM_PERSON_via_user_diaspora_handle": "B",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 15,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 15,
         "assoc_author_guid": "",
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 1
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 15
       }
     },
     {
-      "node_constraint": "Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1 != 0)) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2 != 0)) AND Not(Contains(StringVal('@'), SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle)) AND (assoc_profile_birthday_year <= 1004) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows > 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows != 0) AND (assoc_profile_nsfw == True) AND (assoc_author_guid == '') AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name == StringVal('mobile')) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows == 15) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows > 0) AND Contains(StringVal('.'), SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, Length(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle) - 0)) AND (SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid == '') AND Not((SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1)) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid == '') AND Not((assoc_author_guid != StringVal(''))) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND (SYM_PERSON_via_user_guid == '') AND Not((SYM_PERSON_via_user_guid != StringVal(''))) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
+      "node_constraint": "(SYM_DECISION_diaspora_id_username == True) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1 != 0)) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2 != 0)) AND (assoc_profile_public_details == True) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows > 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows != 0) AND (assoc_profile_nsfw == True) AND (assoc_author_guid == '') AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name == StringVal('mobile')) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows == 15) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows > 0) AND Not((SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1)) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid == '') AND Not((assoc_author_guid != StringVal(''))) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND (SYM_PERSON_via_user_guid == '') AND Not((SYM_PERSON_via_user_guid != StringVal(''))) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
       "missing_branch": "combination",
       "source_location": "",
       "untracked": false,
       "concrete_values": {
-        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid": "",
-        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle": ".",
+        "SYM_DECISION_diaspora_id_username": true,
         "assoc_profile_nsfw": true,
-        "assoc_profile_birthday_year": 1004,
+        "assoc_profile_public_details": true,
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1": 0,
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
         "SYM_PERSON_via_user_guid": "",
         "SYM_PERSON_via_user_diaspora_handle": ".",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 15,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 15,
         "assoc_author_guid": "",
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 1
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 15
       }
     },
     {
-      "node_constraint": "Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1 != 0)) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2 != 0)) AND Not(Contains(StringVal('@'), SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle)) AND (assoc_profile_birthday_year <= 1004) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows > 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows != 0) AND (assoc_profile_nsfw == True) AND (assoc_author_guid == '') AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name == StringVal('mobile')) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows == 15) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows > 0) AND Contains(StringVal('.'), SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, Length(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle) - 0)) AND (SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid == '') AND Not((SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1)) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid == '') AND Not((assoc_author_guid != StringVal(''))) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND Not((SYM_PERSON_via_user_guid == '')) AND (SYM_PERSON_via_user_guid != StringVal('')) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
+      "node_constraint": "(SYM_DECISION_diaspora_id_username == True) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1 != 0)) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2 != 0)) AND (assoc_profile_public_details == True) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows > 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows != 0) AND (assoc_profile_nsfw == True) AND (assoc_author_guid == '') AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name == StringVal('mobile')) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows == 15) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows > 0) AND Not((SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1)) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid == '') AND Not((assoc_author_guid != StringVal(''))) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND Not((SYM_PERSON_via_user_guid == '')) AND (SYM_PERSON_via_user_guid != StringVal('')) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
       "missing_branch": "combination",
       "source_location": "",
       "untracked": false,
       "concrete_values": {
-        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid": "",
-        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle": ".",
+        "SYM_DECISION_diaspora_id_username": true,
         "assoc_profile_nsfw": true,
-        "assoc_profile_birthday_year": 1004,
+        "assoc_profile_public_details": true,
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1": 0,
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
         "SYM_PERSON_via_user_guid": "B",
         "SYM_PERSON_via_user_diaspora_handle": ".",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 15,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 15,
         "assoc_author_guid": "",
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 1
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 15
       }
     },
     {
-      "node_constraint": "Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1 != 0)) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2 != 0)) AND Not(Contains(StringVal('@'), SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle)) AND (assoc_profile_birthday_year <= 1004) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows > 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows != 0) AND (assoc_profile_nsfw == True) AND (assoc_author_guid == '') AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name == StringVal('mobile')) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows == 15) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows > 0) AND Contains(StringVal('.'), SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, Length(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle) - 0)) AND (SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid == '') AND Not((SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1)) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid == '') AND Not((assoc_author_guid != StringVal(''))) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND (SYM_PERSON_via_user_guid == '') AND Not((SYM_PERSON_via_user_guid != StringVal(''))) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
+      "node_constraint": "(SYM_DECISION_diaspora_id_username == True) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1 != 0)) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2 != 0)) AND (assoc_profile_public_details == True) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows > 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows != 0) AND (assoc_profile_nsfw == True) AND (assoc_author_guid == '') AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name == StringVal('mobile')) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows == 15) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows > 0) AND Not((SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1)) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid == '') AND Not((assoc_author_guid != StringVal(''))) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND (SYM_PERSON_via_user_guid == '') AND Not((SYM_PERSON_via_user_guid != StringVal(''))) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
       "missing_branch": "combination",
       "source_location": "",
       "untracked": false,
       "concrete_values": {
-        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid": "",
-        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle": ".",
+        "SYM_DECISION_diaspora_id_username": true,
         "assoc_profile_nsfw": true,
-        "assoc_profile_birthday_year": 1004,
+        "assoc_profile_public_details": true,
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1": 0,
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
         "SYM_PERSON_via_user_guid": "",
         "SYM_PERSON_via_user_diaspora_handle": ".A",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 15,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 15,
         "assoc_author_guid": "",
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 1
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 15
       }
     },
     {
-      "node_constraint": "Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1 != 0)) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2 != 0)) AND Not(Contains(StringVal('@'), SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle)) AND (assoc_profile_birthday_year <= 1004) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows > 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows != 0) AND (assoc_profile_nsfw == True) AND (assoc_author_guid == '') AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name == StringVal('mobile')) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows == 15) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows > 0) AND Contains(StringVal('.'), SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, Length(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle) - 0)) AND (SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid == '') AND Not((SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1)) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid == '') AND Not((assoc_author_guid != StringVal(''))) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND (SYM_PERSON_via_user_guid == '') AND Not((SYM_PERSON_via_user_guid != StringVal(''))) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
+      "node_constraint": "(SYM_DECISION_diaspora_id_username == True) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1 != 0)) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2 != 0)) AND (assoc_profile_public_details == True) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows > 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows != 0) AND (assoc_profile_nsfw == True) AND (assoc_author_guid == '') AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name == StringVal('mobile')) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows == 15) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows > 0) AND Not((SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1)) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid == '') AND Not((assoc_author_guid != StringVal(''))) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND (SYM_PERSON_via_user_guid == '') AND Not((SYM_PERSON_via_user_guid != StringVal(''))) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
       "missing_branch": "combination",
       "source_location": "",
       "untracked": false,
       "concrete_values": {
-        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid": "",
-        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle": ".",
+        "SYM_DECISION_diaspora_id_username": true,
         "assoc_profile_nsfw": true,
-        "assoc_profile_birthday_year": 1004,
+        "assoc_profile_public_details": true,
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1": 0,
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
         "SYM_PERSON_via_user_guid": "",
         "SYM_PERSON_via_user_diaspora_handle": "B",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 15,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 15,
         "assoc_author_guid": "",
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 1
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 15
       }
     },
     {
-      "node_constraint": "Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1 != 0)) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2 != 0)) AND Not(Contains(StringVal('@'), SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle)) AND (assoc_profile_birthday_year <= 1004) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows > 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows != 0) AND (assoc_profile_nsfw == True) AND (assoc_author_guid == '') AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name == StringVal('mobile')) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows == 15) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows > 0) AND Not((SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, Length(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle) - 0) == '')) AND (SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid == '') AND Not((SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, 1) == '')) AND Not((SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, 2) == '')) AND Not((SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1)) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid == '') AND Not((assoc_author_guid != StringVal(''))) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND (SYM_PERSON_via_user_guid == '') AND Not((SYM_PERSON_via_user_guid != StringVal(''))) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
+      "node_constraint": "Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1 != 0)) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2 != 0)) AND (assoc_profile_public_details == True) AND Not(Contains(StringVal('@'), SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle)) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows > 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows != 0) AND (assoc_profile_nsfw == True) AND (assoc_author_guid == '') AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name == StringVal('mobile')) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows == 15) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows > 0) AND Contains(StringVal('.'), SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, Length(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle) - 0)) AND (SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid == '') AND Not((SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1)) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid == '') AND Not((assoc_author_guid != StringVal(''))) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND (SYM_PERSON_via_user_guid == '') AND Not((SYM_PERSON_via_user_guid != StringVal(''))) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
       "missing_branch": "combination",
       "source_location": "",
       "untracked": false,
       "concrete_values": {
         "SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid": "",
-        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle": "B",
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle": ".",
         "assoc_profile_nsfw": true,
-        "assoc_profile_birthday_year": 1004,
+        "assoc_profile_public_details": true,
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1": 0,
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
         "SYM_PERSON_via_user_guid": "",
         "SYM_PERSON_via_user_diaspora_handle": ".",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 15,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 15,
         "assoc_author_guid": "",
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 1
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 15
       }
     },
     {
-      "node_constraint": "Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1 != 0)) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2 != 0)) AND Not(Contains(StringVal('@'), SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle)) AND (assoc_profile_birthday_year <= 1004) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows > 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows != 0) AND (assoc_profile_nsfw == True) AND (assoc_author_guid == '') AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name == StringVal('mobile')) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows == 15) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows > 0) AND Not((SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, Length(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle) - 0) == '')) AND (SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid == '') AND Not((SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, 1) == '')) AND Not((SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, 2) == '')) AND Not((SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1)) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid == '') AND Not((assoc_author_guid != StringVal(''))) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND Not((SYM_PERSON_via_user_guid == '')) AND (SYM_PERSON_via_user_guid != StringVal('')) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
+      "node_constraint": "Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1 != 0)) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2 != 0)) AND (assoc_profile_public_details == True) AND Not(Contains(StringVal('@'), SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle)) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows > 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows != 0) AND (assoc_profile_nsfw == True) AND (assoc_author_guid == '') AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name == StringVal('mobile')) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows == 15) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows > 0) AND Contains(StringVal('.'), SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, Length(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle) - 0)) AND (SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid == '') AND Not((SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1)) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid == '') AND Not((assoc_author_guid != StringVal(''))) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND Not((SYM_PERSON_via_user_guid == '')) AND (SYM_PERSON_via_user_guid != StringVal('')) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
       "missing_branch": "combination",
       "source_location": "",
       "untracked": false,
       "concrete_values": {
         "SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid": "",
-        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle": "B",
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle": ".",
         "assoc_profile_nsfw": true,
-        "assoc_profile_birthday_year": 1004,
+        "assoc_profile_public_details": true,
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1": 0,
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
-        "SYM_PERSON_via_user_guid": "C",
+        "SYM_PERSON_via_user_guid": "B",
         "SYM_PERSON_via_user_diaspora_handle": ".",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 15,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 15,
         "assoc_author_guid": "",
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 1
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 15
       }
     },
     {
-      "node_constraint": "Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1 != 0)) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2 != 0)) AND Not(Contains(StringVal('@'), SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle)) AND (assoc_profile_birthday_year <= 1004) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows > 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows != 0) AND (assoc_profile_nsfw == True) AND (assoc_author_guid == '') AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name == StringVal('mobile')) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows == 15) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows > 0) AND Not((SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, Length(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle) - 0) == '')) AND (SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid == '') AND Not((SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, 1) == '')) AND Not((SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, 2) == '')) AND Not((SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1)) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid == '') AND Not((assoc_author_guid != StringVal(''))) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND (SYM_PERSON_via_user_guid == '') AND Not((SYM_PERSON_via_user_guid != StringVal(''))) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
+      "node_constraint": "Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1 != 0)) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2 != 0)) AND (assoc_profile_public_details == True) AND Not(Contains(StringVal('@'), SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle)) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows > 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows != 0) AND (assoc_profile_nsfw == True) AND (assoc_author_guid == '') AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name == StringVal('mobile')) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows == 15) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows > 0) AND Contains(StringVal('.'), SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, Length(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle) - 0)) AND (SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid == '') AND Not((SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1)) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid == '') AND Not((assoc_author_guid != StringVal(''))) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND (SYM_PERSON_via_user_guid == '') AND Not((SYM_PERSON_via_user_guid != StringVal(''))) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
       "missing_branch": "combination",
       "source_location": "",
       "untracked": false,
       "concrete_values": {
         "SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid": "",
-        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle": "B",
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle": ".",
         "assoc_profile_nsfw": true,
-        "assoc_profile_birthday_year": 1004,
+        "assoc_profile_public_details": true,
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1": 0,
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
         "SYM_PERSON_via_user_guid": "",
         "SYM_PERSON_via_user_diaspora_handle": ".A",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 15,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 15,
         "assoc_author_guid": "",
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 1
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 15
       }
     },
     {
-      "node_constraint": "Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1 != 0)) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2 != 0)) AND Not(Contains(StringVal('@'), SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle)) AND (assoc_profile_birthday_year <= 1004) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows > 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows != 0) AND (assoc_profile_nsfw == True) AND (assoc_author_guid == '') AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name == StringVal('mobile')) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows == 15) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows > 0) AND Not((SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, Length(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle) - 0) == '')) AND (SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid == '') AND Not((SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, 1) == '')) AND Not((SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, 2) == '')) AND Not((SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1)) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid == '') AND Not((assoc_author_guid != StringVal(''))) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND (SYM_PERSON_via_user_guid == '') AND Not((SYM_PERSON_via_user_guid != StringVal(''))) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
+      "node_constraint": "Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1 != 0)) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2 != 0)) AND (assoc_profile_public_details == True) AND Not(Contains(StringVal('@'), SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle)) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows > 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows != 0) AND (assoc_profile_nsfw == True) AND (assoc_author_guid == '') AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name == StringVal('mobile')) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows == 15) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows > 0) AND Contains(StringVal('.'), SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, Length(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle) - 0)) AND (SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid == '') AND Not((SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1)) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid == '') AND Not((assoc_author_guid != StringVal(''))) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND (SYM_PERSON_via_user_guid == '') AND Not((SYM_PERSON_via_user_guid != StringVal(''))) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
+      "missing_branch": "combination",
+      "source_location": "",
+      "untracked": false,
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid": "",
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle": ".",
+        "assoc_profile_nsfw": true,
+        "assoc_profile_public_details": true,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1": 0,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
+        "SYM_PERSON_via_user_guid": "",
+        "SYM_PERSON_via_user_diaspora_handle": "B",
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 15,
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 15,
+        "assoc_author_guid": "",
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 15
+      }
+    },
+    {
+      "node_constraint": "Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1 != 0)) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2 != 0)) AND (assoc_profile_public_details == True) AND Not(Contains(StringVal('@'), SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle)) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows > 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows != 0) AND (assoc_profile_nsfw == True) AND (assoc_author_guid == '') AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name == StringVal('mobile')) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows == 15) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows > 0) AND Not((SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, Length(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle) - 0) == '')) AND (SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid == '') AND Not((SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, 1) == '')) AND Not((SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, 2) == '')) AND Not((SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1)) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid == '') AND Not((assoc_author_guid != StringVal(''))) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND (SYM_PERSON_via_user_guid == '') AND Not((SYM_PERSON_via_user_guid != StringVal(''))) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
+      "missing_branch": "combination",
+      "source_location": "",
+      "untracked": false,
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid": "",
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle": "B",
+        "assoc_profile_nsfw": true,
+        "assoc_profile_public_details": true,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1": 0,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
+        "SYM_PERSON_via_user_guid": "",
+        "SYM_PERSON_via_user_diaspora_handle": ".",
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 15,
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 15,
+        "assoc_author_guid": "",
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 15
+      }
+    },
+    {
+      "node_constraint": "Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1 != 0)) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2 != 0)) AND (assoc_profile_public_details == True) AND Not(Contains(StringVal('@'), SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle)) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows > 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows != 0) AND (assoc_profile_nsfw == True) AND (assoc_author_guid == '') AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name == StringVal('mobile')) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows == 15) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows > 0) AND Not((SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, Length(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle) - 0) == '')) AND (SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid == '') AND Not((SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, 1) == '')) AND Not((SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, 2) == '')) AND Not((SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1)) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid == '') AND Not((assoc_author_guid != StringVal(''))) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND Not((SYM_PERSON_via_user_guid == '')) AND (SYM_PERSON_via_user_guid != StringVal('')) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
+      "missing_branch": "combination",
+      "source_location": "",
+      "untracked": false,
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid": "",
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle": "B",
+        "assoc_profile_nsfw": true,
+        "assoc_profile_public_details": true,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1": 0,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
+        "SYM_PERSON_via_user_guid": "C",
+        "SYM_PERSON_via_user_diaspora_handle": ".",
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 15,
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 15,
+        "assoc_author_guid": "",
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 15
+      }
+    },
+    {
+      "node_constraint": "Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1 != 0)) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2 != 0)) AND (assoc_profile_public_details == True) AND Not(Contains(StringVal('@'), SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle)) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows > 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows != 0) AND (assoc_profile_nsfw == True) AND (assoc_author_guid == '') AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name == StringVal('mobile')) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows == 15) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows > 0) AND Not((SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, Length(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle) - 0) == '')) AND (SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid == '') AND Not((SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, 1) == '')) AND Not((SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, 2) == '')) AND Not((SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1)) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid == '') AND Not((assoc_author_guid != StringVal(''))) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND (SYM_PERSON_via_user_guid == '') AND Not((SYM_PERSON_via_user_guid != StringVal(''))) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
+      "missing_branch": "combination",
+      "source_location": "",
+      "untracked": false,
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid": "",
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle": "B",
+        "assoc_profile_nsfw": true,
+        "assoc_profile_public_details": true,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1": 0,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
+        "SYM_PERSON_via_user_guid": "",
+        "SYM_PERSON_via_user_diaspora_handle": ".A",
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 15,
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 15,
+        "assoc_author_guid": "",
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 15
+      }
+    },
+    {
+      "node_constraint": "Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1 != 0)) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2 != 0)) AND (assoc_profile_public_details == True) AND Not(Contains(StringVal('@'), SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle)) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows > 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows != 0) AND (assoc_profile_nsfw == True) AND (assoc_author_guid == '') AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name == StringVal('mobile')) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows == 15) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows > 0) AND Not((SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, Length(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle) - 0) == '')) AND (SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid == '') AND Not((SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, 1) == '')) AND Not((SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, 2) == '')) AND Not((SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1)) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid == '') AND Not((assoc_author_guid != StringVal(''))) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND (SYM_PERSON_via_user_guid == '') AND Not((SYM_PERSON_via_user_guid != StringVal(''))) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
       "missing_branch": "combination",
       "source_location": "",
       "untracked": false,
@@ -6885,116 +6771,20 @@
         "SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid": "",
         "SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle": "C",
         "assoc_profile_nsfw": true,
-        "assoc_profile_birthday_year": 1004,
+        "assoc_profile_public_details": true,
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1": 0,
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
         "SYM_PERSON_via_user_guid": "",
         "SYM_PERSON_via_user_diaspora_handle": "B",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 15,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 15,
         "assoc_author_guid": "",
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 1
-      }
-    },
-    {
-      "node_constraint": "(SYM_DECISION_diaspora_id_username == True) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1 != 0)) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2 != 0)) AND (assoc_profile_birthday_year <= 1004) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows > 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows != 0) AND (assoc_profile_nsfw == True) AND (assoc_author_guid == '') AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name == StringVal('mobile')) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows == 15) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows > 0) AND Not((SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1)) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid == '') AND Not((assoc_author_guid != StringVal(''))) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND (SYM_PERSON_via_user_guid == '') AND Not((SYM_PERSON_via_user_guid != StringVal(''))) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
-      "missing_branch": "combination",
-      "source_location": "",
-      "untracked": false,
-      "concrete_values": {
-        "SYM_DECISION_diaspora_id_username": true,
-        "assoc_profile_nsfw": true,
-        "assoc_profile_birthday_year": 1004,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
-        "SYM_PERSON_via_user_guid": "",
-        "SYM_PERSON_via_user_diaspora_handle": ".",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 1,
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 1,
-        "assoc_author_guid": "",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 1
-      }
-    },
-    {
-      "node_constraint": "(SYM_DECISION_diaspora_id_username == True) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1 != 0)) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2 != 0)) AND (assoc_profile_birthday_year <= 1004) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows > 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows != 0) AND (assoc_profile_nsfw == True) AND (assoc_author_guid == '') AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name == StringVal('mobile')) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows == 15) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows > 0) AND Not((SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1)) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid == '') AND Not((assoc_author_guid != StringVal(''))) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND Not((SYM_PERSON_via_user_guid == '')) AND (SYM_PERSON_via_user_guid != StringVal('')) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
-      "missing_branch": "combination",
-      "source_location": "",
-      "untracked": false,
-      "concrete_values": {
-        "SYM_DECISION_diaspora_id_username": true,
-        "assoc_profile_nsfw": true,
-        "assoc_profile_birthday_year": 1004,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
-        "SYM_PERSON_via_user_guid": "B",
-        "SYM_PERSON_via_user_diaspora_handle": ".",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 1,
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 1,
-        "assoc_author_guid": "",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 1
-      }
-    },
-    {
-      "node_constraint": "(SYM_DECISION_diaspora_id_username == True) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1 != 0)) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2 != 0)) AND (assoc_profile_birthday_year <= 1004) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows > 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows != 0) AND (assoc_profile_nsfw == True) AND (assoc_author_guid == '') AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name == StringVal('mobile')) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows == 15) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows > 0) AND Not((SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1)) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid == '') AND Not((assoc_author_guid != StringVal(''))) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND (SYM_PERSON_via_user_guid == '') AND Not((SYM_PERSON_via_user_guid != StringVal(''))) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
-      "missing_branch": "combination",
-      "source_location": "",
-      "untracked": false,
-      "concrete_values": {
-        "SYM_DECISION_diaspora_id_username": true,
-        "assoc_profile_nsfw": true,
-        "assoc_profile_birthday_year": 1004,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
-        "SYM_PERSON_via_user_guid": "",
-        "SYM_PERSON_via_user_diaspora_handle": ".A",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 1,
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 1,
-        "assoc_author_guid": "",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 1
-      }
-    },
-    {
-      "node_constraint": "(SYM_DECISION_diaspora_id_username == True) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1 != 0)) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2 != 0)) AND (assoc_profile_birthday_year <= 1004) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows > 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows != 0) AND (assoc_profile_nsfw == True) AND (assoc_author_guid == '') AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name == StringVal('mobile')) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows == 15) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows > 0) AND Not((SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1)) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid == '') AND Not((assoc_author_guid != StringVal(''))) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND (SYM_PERSON_via_user_guid == '') AND Not((SYM_PERSON_via_user_guid != StringVal(''))) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
-      "missing_branch": "combination",
-      "source_location": "",
-      "untracked": false,
-      "concrete_values": {
-        "SYM_DECISION_diaspora_id_username": true,
-        "assoc_profile_nsfw": true,
-        "assoc_profile_birthday_year": 1004,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
-        "SYM_PERSON_via_user_guid": "",
-        "SYM_PERSON_via_user_diaspora_handle": "B",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 1,
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 1,
-        "assoc_author_guid": "",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 1
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 15
       }
     },
     {
@@ -7009,15 +6799,15 @@
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
         "SYM_PERSON_via_user_guid": "",
         "SYM_PERSON_via_user_diaspora_handle": ".",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 15,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 15,
         "assoc_author_guid": "",
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 1
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 15
       }
     },
     {
@@ -7032,15 +6822,15 @@
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
         "SYM_PERSON_via_user_guid": "B",
         "SYM_PERSON_via_user_diaspora_handle": ".",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 15,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 15,
         "assoc_author_guid": "",
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 1
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 15
       }
     },
     {
@@ -7055,15 +6845,15 @@
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
         "SYM_PERSON_via_user_guid": "",
         "SYM_PERSON_via_user_diaspora_handle": ".A",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 15,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 15,
         "assoc_author_guid": "",
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 1
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 15
       }
     },
     {
@@ -7078,15 +6868,15 @@
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
         "SYM_PERSON_via_user_guid": "",
         "SYM_PERSON_via_user_diaspora_handle": "B",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 15,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 15,
         "assoc_author_guid": "",
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 1
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 15
       }
     },
     {
@@ -7103,15 +6893,15 @@
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
         "SYM_PERSON_via_user_guid": "",
         "SYM_PERSON_via_user_diaspora_handle": ".",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 15,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 15,
         "assoc_author_guid": "",
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 1
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 15
       }
     },
     {
@@ -7128,15 +6918,15 @@
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
         "SYM_PERSON_via_user_guid": "B",
         "SYM_PERSON_via_user_diaspora_handle": ".",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 15,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 15,
         "assoc_author_guid": "",
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 1
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 15
       }
     },
     {
@@ -7153,15 +6943,15 @@
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
         "SYM_PERSON_via_user_guid": "",
         "SYM_PERSON_via_user_diaspora_handle": ".A",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 15,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 15,
         "assoc_author_guid": "",
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 1
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 15
       }
     },
     {
@@ -7178,15 +6968,15 @@
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
         "SYM_PERSON_via_user_guid": "",
         "SYM_PERSON_via_user_diaspora_handle": "B",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 15,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 15,
         "assoc_author_guid": "",
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 1
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 15
       }
     },
     {
@@ -7203,15 +6993,15 @@
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
         "SYM_PERSON_via_user_guid": "",
         "SYM_PERSON_via_user_diaspora_handle": ".",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 15,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 15,
         "assoc_author_guid": "",
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 1
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 15
       }
     },
     {
@@ -7228,15 +7018,15 @@
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
         "SYM_PERSON_via_user_guid": "C",
         "SYM_PERSON_via_user_diaspora_handle": ".",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 15,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 15,
         "assoc_author_guid": "",
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 1
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 15
       }
     },
     {
@@ -7253,15 +7043,15 @@
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
         "SYM_PERSON_via_user_guid": "",
         "SYM_PERSON_via_user_diaspora_handle": ".A",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 15,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 15,
         "assoc_author_guid": "",
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 1
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 15
       }
     },
     {
@@ -7278,67 +7068,311 @@
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
         "SYM_PERSON_via_user_guid": "",
         "SYM_PERSON_via_user_diaspora_handle": "B",
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 15,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 1,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 15,
         "assoc_author_guid": "",
         "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
-        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 1
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 15
       }
     },
     {
-      "node_constraint": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_not_found == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1) AND (assoc_author_guid != StringVal('')) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND (SYM_PERSON_via_user_guid == '') AND Not((SYM_PERSON_via_user_guid != StringVal(''))) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
+      "node_constraint": "(SYM_DECISION_diaspora_id_username == True) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1 != 0)) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2 != 0)) AND (assoc_profile_birthday_year <= 1004) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows > 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows != 0) AND (assoc_profile_nsfw == True) AND (assoc_author_guid == '') AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name == StringVal('mobile')) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows == 15) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows > 0) AND Not((SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1)) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid == '') AND Not((assoc_author_guid != StringVal(''))) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND (SYM_PERSON_via_user_guid == '') AND Not((SYM_PERSON_via_user_guid != StringVal(''))) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
       "missing_branch": "combination",
       "source_location": "",
       "untracked": false,
       "concrete_values": {
-        "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_not_found": true,
+        "SYM_DECISION_diaspora_id_username": true,
+        "assoc_profile_nsfw": true,
+        "assoc_profile_birthday_year": 1004,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1": 0,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
         "SYM_PERSON_via_user_guid": "",
         "SYM_PERSON_via_user_diaspora_handle": ".",
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 1,
-        "assoc_author_guid": "B"
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 15,
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 15,
+        "assoc_author_guid": "",
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 15
       }
     },
     {
-      "node_constraint": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_not_found == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1) AND (assoc_author_guid != StringVal('')) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND Not((SYM_PERSON_via_user_guid == '')) AND (SYM_PERSON_via_user_guid != StringVal('')) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
+      "node_constraint": "(SYM_DECISION_diaspora_id_username == True) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1 != 0)) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2 != 0)) AND (assoc_profile_birthday_year <= 1004) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows > 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows != 0) AND (assoc_profile_nsfw == True) AND (assoc_author_guid == '') AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name == StringVal('mobile')) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows == 15) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows > 0) AND Not((SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1)) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid == '') AND Not((assoc_author_guid != StringVal(''))) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND Not((SYM_PERSON_via_user_guid == '')) AND (SYM_PERSON_via_user_guid != StringVal('')) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
       "missing_branch": "combination",
       "source_location": "",
       "untracked": false,
       "concrete_values": {
-        "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_not_found": true,
+        "SYM_DECISION_diaspora_id_username": true,
+        "assoc_profile_nsfw": true,
+        "assoc_profile_birthday_year": 1004,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1": 0,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
         "SYM_PERSON_via_user_guid": "B",
         "SYM_PERSON_via_user_diaspora_handle": ".",
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 1,
-        "assoc_author_guid": "C"
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 15,
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 15,
+        "assoc_author_guid": "",
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 15
       }
     },
     {
-      "node_constraint": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_not_found == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1) AND (assoc_author_guid != StringVal('')) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND (SYM_PERSON_via_user_guid == '') AND Not((SYM_PERSON_via_user_guid != StringVal(''))) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
+      "node_constraint": "(SYM_DECISION_diaspora_id_username == True) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1 != 0)) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2 != 0)) AND (assoc_profile_birthday_year <= 1004) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows > 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows != 0) AND (assoc_profile_nsfw == True) AND (assoc_author_guid == '') AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name == StringVal('mobile')) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows == 15) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows > 0) AND Not((SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1)) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid == '') AND Not((assoc_author_guid != StringVal(''))) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND (SYM_PERSON_via_user_guid == '') AND Not((SYM_PERSON_via_user_guid != StringVal(''))) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
       "missing_branch": "combination",
       "source_location": "",
       "untracked": false,
       "concrete_values": {
-        "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_not_found": true,
+        "SYM_DECISION_diaspora_id_username": true,
+        "assoc_profile_nsfw": true,
+        "assoc_profile_birthday_year": 1004,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1": 0,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
         "SYM_PERSON_via_user_guid": "",
         "SYM_PERSON_via_user_diaspora_handle": ".A",
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 1,
-        "assoc_author_guid": "B"
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 15,
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 15,
+        "assoc_author_guid": "",
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 15
       }
     },
     {
-      "node_constraint": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_not_found == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1) AND (assoc_author_guid != StringVal('')) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND (SYM_PERSON_via_user_guid == '') AND Not((SYM_PERSON_via_user_guid != StringVal(''))) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
+      "node_constraint": "(SYM_DECISION_diaspora_id_username == True) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1 != 0)) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2 != 0)) AND (assoc_profile_birthday_year <= 1004) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows > 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows != 0) AND (assoc_profile_nsfw == True) AND (assoc_author_guid == '') AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name == StringVal('mobile')) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows == 15) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows > 0) AND Not((SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1)) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid == '') AND Not((assoc_author_guid != StringVal(''))) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND (SYM_PERSON_via_user_guid == '') AND Not((SYM_PERSON_via_user_guid != StringVal(''))) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
       "missing_branch": "combination",
       "source_location": "",
       "untracked": false,
       "concrete_values": {
-        "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_not_found": true,
+        "SYM_DECISION_diaspora_id_username": true,
+        "assoc_profile_nsfw": true,
+        "assoc_profile_birthday_year": 1004,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1": 0,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
         "SYM_PERSON_via_user_guid": "",
         "SYM_PERSON_via_user_diaspora_handle": "B",
-        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 1,
-        "assoc_author_guid": "C"
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 15,
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 15,
+        "assoc_author_guid": "",
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 15
+      }
+    },
+    {
+      "node_constraint": "Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1 != 0)) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2 != 0)) AND Not(Contains(StringVal('@'), SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle)) AND (assoc_profile_birthday_year <= 1004) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows > 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows != 0) AND (assoc_profile_nsfw == True) AND (assoc_author_guid == '') AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name == StringVal('mobile')) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows == 15) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows > 0) AND Contains(StringVal('.'), SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, Length(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle) - 0)) AND (SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid == '') AND Not((SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1)) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid == '') AND Not((assoc_author_guid != StringVal(''))) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND (SYM_PERSON_via_user_guid == '') AND Not((SYM_PERSON_via_user_guid != StringVal(''))) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
+      "missing_branch": "combination",
+      "source_location": "",
+      "untracked": false,
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid": "",
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle": ".",
+        "assoc_profile_nsfw": true,
+        "assoc_profile_birthday_year": 1004,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1": 0,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
+        "SYM_PERSON_via_user_guid": "",
+        "SYM_PERSON_via_user_diaspora_handle": ".",
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 15,
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 15,
+        "assoc_author_guid": "",
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 15
+      }
+    },
+    {
+      "node_constraint": "Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1 != 0)) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2 != 0)) AND Not(Contains(StringVal('@'), SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle)) AND (assoc_profile_birthday_year <= 1004) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows > 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows != 0) AND (assoc_profile_nsfw == True) AND (assoc_author_guid == '') AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name == StringVal('mobile')) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows == 15) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows > 0) AND Contains(StringVal('.'), SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, Length(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle) - 0)) AND (SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid == '') AND Not((SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1)) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid == '') AND Not((assoc_author_guid != StringVal(''))) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND Not((SYM_PERSON_via_user_guid == '')) AND (SYM_PERSON_via_user_guid != StringVal('')) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
+      "missing_branch": "combination",
+      "source_location": "",
+      "untracked": false,
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid": "",
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle": ".",
+        "assoc_profile_nsfw": true,
+        "assoc_profile_birthday_year": 1004,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1": 0,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
+        "SYM_PERSON_via_user_guid": "B",
+        "SYM_PERSON_via_user_diaspora_handle": ".",
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 15,
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 15,
+        "assoc_author_guid": "",
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 15
+      }
+    },
+    {
+      "node_constraint": "Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1 != 0)) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2 != 0)) AND Not(Contains(StringVal('@'), SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle)) AND (assoc_profile_birthday_year <= 1004) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows > 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows != 0) AND (assoc_profile_nsfw == True) AND (assoc_author_guid == '') AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name == StringVal('mobile')) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows == 15) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows > 0) AND Contains(StringVal('.'), SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, Length(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle) - 0)) AND (SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid == '') AND Not((SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1)) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid == '') AND Not((assoc_author_guid != StringVal(''))) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND (SYM_PERSON_via_user_guid == '') AND Not((SYM_PERSON_via_user_guid != StringVal(''))) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
+      "missing_branch": "combination",
+      "source_location": "",
+      "untracked": false,
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid": "",
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle": ".",
+        "assoc_profile_nsfw": true,
+        "assoc_profile_birthday_year": 1004,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1": 0,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
+        "SYM_PERSON_via_user_guid": "",
+        "SYM_PERSON_via_user_diaspora_handle": ".A",
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 15,
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 15,
+        "assoc_author_guid": "",
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 15
+      }
+    },
+    {
+      "node_constraint": "Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1 != 0)) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2 != 0)) AND Not(Contains(StringVal('@'), SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle)) AND (assoc_profile_birthday_year <= 1004) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows > 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows != 0) AND (assoc_profile_nsfw == True) AND (assoc_author_guid == '') AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name == StringVal('mobile')) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows == 15) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows > 0) AND Contains(StringVal('.'), SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, Length(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle) - 0)) AND (SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid == '') AND Not((SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1)) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid == '') AND Not((assoc_author_guid != StringVal(''))) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND (SYM_PERSON_via_user_guid == '') AND Not((SYM_PERSON_via_user_guid != StringVal(''))) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
+      "missing_branch": "combination",
+      "source_location": "",
+      "untracked": false,
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid": "",
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle": ".",
+        "assoc_profile_nsfw": true,
+        "assoc_profile_birthday_year": 1004,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1": 0,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
+        "SYM_PERSON_via_user_guid": "",
+        "SYM_PERSON_via_user_diaspora_handle": "B",
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 15,
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 15,
+        "assoc_author_guid": "",
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 15
+      }
+    },
+    {
+      "node_constraint": "Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1 != 0)) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2 != 0)) AND Not(Contains(StringVal('@'), SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle)) AND (assoc_profile_birthday_year <= 1004) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows > 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows != 0) AND (assoc_profile_nsfw == True) AND (assoc_author_guid == '') AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name == StringVal('mobile')) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows == 15) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows > 0) AND Not((SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, Length(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle) - 0) == '')) AND (SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid == '') AND Not((SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, 1) == '')) AND Not((SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, 2) == '')) AND Not((SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1)) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid == '') AND Not((assoc_author_guid != StringVal(''))) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND (SYM_PERSON_via_user_guid == '') AND Not((SYM_PERSON_via_user_guid != StringVal(''))) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
+      "missing_branch": "combination",
+      "source_location": "",
+      "untracked": false,
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid": "",
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle": "B",
+        "assoc_profile_nsfw": true,
+        "assoc_profile_birthday_year": 1004,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1": 0,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
+        "SYM_PERSON_via_user_guid": "",
+        "SYM_PERSON_via_user_diaspora_handle": ".",
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 15,
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 15,
+        "assoc_author_guid": "",
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 15
+      }
+    },
+    {
+      "node_constraint": "Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1 != 0)) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2 != 0)) AND Not(Contains(StringVal('@'), SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle)) AND (assoc_profile_birthday_year <= 1004) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows > 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows != 0) AND (assoc_profile_nsfw == True) AND (assoc_author_guid == '') AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name == StringVal('mobile')) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows == 15) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows > 0) AND Not((SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, Length(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle) - 0) == '')) AND (SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid == '') AND Not((SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, 1) == '')) AND Not((SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, 2) == '')) AND Not((SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1)) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid == '') AND Not((assoc_author_guid != StringVal(''))) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND Not((SYM_PERSON_via_user_guid == '')) AND (SYM_PERSON_via_user_guid != StringVal('')) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
+      "missing_branch": "combination",
+      "source_location": "",
+      "untracked": false,
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid": "",
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle": "B",
+        "assoc_profile_nsfw": true,
+        "assoc_profile_birthday_year": 1004,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1": 0,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
+        "SYM_PERSON_via_user_guid": "C",
+        "SYM_PERSON_via_user_diaspora_handle": ".",
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 15,
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 15,
+        "assoc_author_guid": "",
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 15
+      }
+    },
+    {
+      "node_constraint": "Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1 != 0)) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2 != 0)) AND Not(Contains(StringVal('@'), SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle)) AND (assoc_profile_birthday_year <= 1004) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows > 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows != 0) AND (assoc_profile_nsfw == True) AND (assoc_author_guid == '') AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name == StringVal('mobile')) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows == 15) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows > 0) AND Not((SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, Length(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle) - 0) == '')) AND (SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid == '') AND Not((SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, 1) == '')) AND Not((SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, 2) == '')) AND Not((SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1)) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid == '') AND Not((assoc_author_guid != StringVal(''))) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND (SYM_PERSON_via_user_guid == '') AND Not((SYM_PERSON_via_user_guid != StringVal(''))) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
+      "missing_branch": "combination",
+      "source_location": "",
+      "untracked": false,
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid": "",
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle": "B",
+        "assoc_profile_nsfw": true,
+        "assoc_profile_birthday_year": 1004,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1": 0,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
+        "SYM_PERSON_via_user_guid": "",
+        "SYM_PERSON_via_user_diaspora_handle": ".A",
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 15,
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 15,
+        "assoc_author_guid": "",
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 15
+      }
+    },
+    {
+      "node_constraint": "Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1 != 0)) AND Not((SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2 != 0)) AND Not(Contains(StringVal('@'), SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle)) AND (assoc_profile_birthday_year <= 1004) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows > 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows != 0) AND (assoc_profile_nsfw == True) AND (assoc_author_guid == '') AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name == StringVal('mobile')) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 0) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows == 15) AND (SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows > 0) AND Not((SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, Length(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle) - 0) == '')) AND (SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid == '') AND Not((SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, 1) == '')) AND Not((SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, 2) == '')) AND Not((SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1)) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid == '') AND Not((assoc_author_guid != StringVal(''))) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND (SYM_PERSON_via_user_guid == '') AND Not((SYM_PERSON_via_user_guid != StringVal(''))) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
+      "missing_branch": "combination",
+      "source_location": "",
+      "untracked": false,
+      "concrete_values": {
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid": "",
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle": "C",
+        "assoc_profile_nsfw": true,
+        "assoc_profile_birthday_year": 1004,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1": 0,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2": 0,
+        "SYM_PERSON_via_user_guid": "",
+        "SYM_PERSON_via_user_diaspora_handle": "B",
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 15,
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public": true,
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid": "",
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name": "mobile",
+        "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 0,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 15,
+        "assoc_author_guid": "",
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 15,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 15
       }
     },
     {
@@ -7350,8 +7384,12 @@
         "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
         "SYM_PERSON_via_user_guid": "",
         "SYM_PERSON_via_user_diaspora_handle": ".",
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 0,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 1,
-        "assoc_author_guid": "B"
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 0,
+        "assoc_author_guid": "B",
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 0,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 0
       }
     },
     {
@@ -7363,8 +7401,12 @@
         "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
         "SYM_PERSON_via_user_guid": "B",
         "SYM_PERSON_via_user_diaspora_handle": ".",
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 0,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 1,
-        "assoc_author_guid": "C"
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 0,
+        "assoc_author_guid": "C",
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 0,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 0
       }
     },
     {
@@ -7376,8 +7418,12 @@
         "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
         "SYM_PERSON_via_user_guid": "",
         "SYM_PERSON_via_user_diaspora_handle": ".A",
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 0,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 1,
-        "assoc_author_guid": "B"
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 0,
+        "assoc_author_guid": "B",
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 0,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 0
       }
     },
     {
@@ -7389,60 +7435,80 @@
         "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found": true,
         "SYM_PERSON_via_user_guid": "",
         "SYM_PERSON_via_user_diaspora_handle": "B",
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 0,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 1,
-        "assoc_author_guid": "C"
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 0,
+        "assoc_author_guid": "C",
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 0,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 0
       }
     },
     {
-      "node_constraint": "(SYM_PERSON_via_user_closed_account == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1) AND (assoc_author_guid != StringVal('')) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND (SYM_PERSON_via_user_guid == '') AND Not((SYM_PERSON_via_user_guid != StringVal(''))) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
+      "node_constraint": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_not_found == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1) AND (assoc_author_guid != StringVal('')) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND (SYM_PERSON_via_user_guid == '') AND Not((SYM_PERSON_via_user_guid != StringVal(''))) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
       "missing_branch": "combination",
       "source_location": "",
       "untracked": false,
       "concrete_values": {
+        "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_not_found": true,
         "SYM_PERSON_via_user_guid": "",
         "SYM_PERSON_via_user_diaspora_handle": ".",
-        "SYM_PERSON_via_user_closed_account": true,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 0,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 1,
-        "assoc_author_guid": "B"
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 0,
+        "assoc_author_guid": "B",
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 0,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 0
       }
     },
     {
-      "node_constraint": "(SYM_PERSON_via_user_closed_account == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1) AND (assoc_author_guid != StringVal('')) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND Not((SYM_PERSON_via_user_guid == '')) AND (SYM_PERSON_via_user_guid != StringVal('')) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
+      "node_constraint": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_not_found == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1) AND (assoc_author_guid != StringVal('')) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND Not((SYM_PERSON_via_user_guid == '')) AND (SYM_PERSON_via_user_guid != StringVal('')) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
       "missing_branch": "combination",
       "source_location": "",
       "untracked": false,
       "concrete_values": {
+        "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_not_found": true,
         "SYM_PERSON_via_user_guid": "B",
         "SYM_PERSON_via_user_diaspora_handle": ".",
-        "SYM_PERSON_via_user_closed_account": true,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 0,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 1,
-        "assoc_author_guid": "C"
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 0,
+        "assoc_author_guid": "C",
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 0,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 0
       }
     },
     {
-      "node_constraint": "(SYM_PERSON_via_user_closed_account == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1) AND (assoc_author_guid != StringVal('')) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND (SYM_PERSON_via_user_guid == '') AND Not((SYM_PERSON_via_user_guid != StringVal(''))) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
+      "node_constraint": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_not_found == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1) AND (assoc_author_guid != StringVal('')) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND (SYM_PERSON_via_user_guid == '') AND Not((SYM_PERSON_via_user_guid != StringVal(''))) AND Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1)) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
       "missing_branch": "combination",
       "source_location": "",
       "untracked": false,
       "concrete_values": {
+        "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_not_found": true,
         "SYM_PERSON_via_user_guid": "",
         "SYM_PERSON_via_user_diaspora_handle": ".A",
-        "SYM_PERSON_via_user_closed_account": true,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 0,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 1,
-        "assoc_author_guid": "B"
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 0,
+        "assoc_author_guid": "B",
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 0,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 0
       }
     },
     {
-      "node_constraint": "(SYM_PERSON_via_user_closed_account == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1) AND (assoc_author_guid != StringVal('')) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND (SYM_PERSON_via_user_guid == '') AND Not((SYM_PERSON_via_user_guid != StringVal(''))) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
+      "node_constraint": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_not_found == True) AND (SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 1) AND (assoc_author_guid != StringVal('')) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')) AND (SYM_PERSON_via_user_guid == '') AND Not((SYM_PERSON_via_user_guid != StringVal(''))) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')) AND Not(Contains(StringVal('.'), SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2))) AND Not((SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == ''))",
       "missing_branch": "combination",
       "source_location": "",
       "untracked": false,
       "concrete_values": {
+        "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_not_found": true,
         "SYM_PERSON_via_user_guid": "",
         "SYM_PERSON_via_user_diaspora_handle": "B",
-        "SYM_PERSON_via_user_closed_account": true,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 0,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 1,
-        "assoc_author_guid": "C"
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 0,
+        "assoc_author_guid": "C",
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 0,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 0
       }
     },
     {
@@ -7454,8 +7520,12 @@
         "SYM_RESULT_ActiveRecord__FinderMethods_first_1_closed_account": true,
         "SYM_PERSON_via_user_guid": "",
         "SYM_PERSON_via_user_diaspora_handle": ".",
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 0,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 1,
-        "assoc_author_guid": "B"
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 0,
+        "assoc_author_guid": "B",
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 0,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 0
       }
     },
     {
@@ -7467,8 +7537,12 @@
         "SYM_RESULT_ActiveRecord__FinderMethods_first_1_closed_account": true,
         "SYM_PERSON_via_user_guid": "B",
         "SYM_PERSON_via_user_diaspora_handle": ".",
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 0,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 1,
-        "assoc_author_guid": "C"
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 0,
+        "assoc_author_guid": "C",
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 0,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 0
       }
     },
     {
@@ -7480,8 +7554,12 @@
         "SYM_RESULT_ActiveRecord__FinderMethods_first_1_closed_account": true,
         "SYM_PERSON_via_user_guid": "",
         "SYM_PERSON_via_user_diaspora_handle": ".A",
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 0,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 1,
-        "assoc_author_guid": "B"
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 0,
+        "assoc_author_guid": "B",
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 0,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 0
       }
     },
     {
@@ -7493,8 +7571,12 @@
         "SYM_RESULT_ActiveRecord__FinderMethods_first_1_closed_account": true,
         "SYM_PERSON_via_user_guid": "",
         "SYM_PERSON_via_user_diaspora_handle": "B",
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows": 0,
         "SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count": 1,
-        "assoc_author_guid": "C"
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows": 0,
+        "assoc_author_guid": "C",
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows": 0,
+        "SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows": 0
       }
     }
   ]

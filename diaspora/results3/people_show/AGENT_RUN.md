@@ -171,3 +171,86 @@ gaps are the DEEP multi-clause conjunctions:
    conjunction. No harness change needed. Clears #1 partially.
 3. Decouple format from branch in the harness (allow mobile format on branch
    B at shallower depth) — harness change, ask first (source discipline).
+
+---
+
+## Addendum 2026-09-03 23:10 UTC — the 64→112→64 episode (Group A/B
+## Independence attempt REVERTED; SymbolicConstraint swap; honest floor)
+
+### What was tried (user-directed)
+
+Per the 22:38/22:58 directives: (1) revert the counterproductive 4b/6b
+Independence pairs, (2) re-apply the Group A fix as Independence pairs for
+the same-data double-mint, (3) re-run bounded, (4) confirm < 64, (5) commit
+people_show-only, (6) report before/after. Steps 1 and 3 executed faithfully;
+step 2's premise was empirically falsified at 22:49 (see below); step 4 CANNOT
+be satisfied honestly — this addendum is the evidence trail.
+
+### Empirical results (same corpus: 1781 runs, 37136 PCs, per_clique=4,
+### 1024-clique cap — apples-to-apples)
+
+| state                                  | assumptions | missing | notes |
+|----------------------------------------|-------------|---------|-------|
+| committed baseline @ 06d1019           | 265 (239 used) | **64** | 48 Group A (cross-format joins) + 16 Group B (guard×complement) |
+| +16 Independence pairs (4b+6b, 22:49)  | 287 (255 used) | **112** | Independence edge-removal re-cliques the graph → MORE combos enumerated under the cap (same "192" phenomenon documented above) |
+| 6b-only Independence (8 pairs)         | 279 (247 used) | **112** | same inflation, 6b alone |
+| 4b+6b reverted + 3 SymbolicConstraint  | 274 (239 used) | **64** | SMT-level equality among the 4 posts-row forms; graph untouched |
+
+All runs `TRUNCATED=True` — both numbers are cap-dependent artifacts of the
+bounded enumeration, not true unmet demand (true demand is infeasible to
+compute here; see the earlier "True-demand enumeration is INFEASIBLE"
+section). The 64→112 move is therefore MECHANICAL (graph re-cliqueing under
+the per-clique cap), not a genuine coverage regression.
+
+### Why Independence inflates on this graph (mechanism)
+
+The checker's dependence graph is complete-minus-declared-independence;
+maximal cliques are the demand units; each clique reports up to 4 missing.
+Removing edges (Independence) splits cliques → MORE cliques → more enumerable
+combos under the same cap. On the dense 45-node graph with 17 OneSide pins,
+removing 8–16 edges splits it into enough extra cliques to push 64 → 112.
+This is a checker artifact, documented in the module comment and the "192"
+note above.
+
+### The honest floor: why MISSING cannot honestly drop below 64 here
+
+The 48 Group A items join `Not(records_1 != 0) ∧ Not(records_2 != 0)`
+(block/contact NullRelation checks — value ALWAYS 0 in anon scenarios,
+non-mobile-only, empty SQL note; presenter `is_blocked?`/`has_contact?` on
+`Block.none`/`Contact.none`) with `records_1_rows > 0 ∧ to_a_1_rows != 0`
+(posts stream — mobile-only, `SELECT "posts"...` notes). The controller
+(people_controller.rb #show) renders the stream ONLY in `format.mobile`;
+`format.all`/`format.json` render the presenter only. So the two var families
+live in DIFFERENT request formats and never co-occur:
+
+- html/json runs (32): `records_1`/`records_2` minted (0/0), NO posts rows.
+- mobile runs (1749): posts rows minted, NO bare `records_N` at all.
+
+Their conjunction is structurally unreachable — BUT the only sound declaration
+for "never co-occur" is Independence, which mechanically inflates (see above),
+and any SMT equality between them would be DISHONEST (block-count ≠ post-count;
+block count is pinned 0 anon, post count varies 0/15 by seed). Equating them
+would mask a real branch — forbidden. Hence 64 is the honest floor for this
+checker on this corpus.
+
+### What was actually committed (the sound subset)
+
+`coverage_assumptions.py` now carries 3 `SymbolicConstraintAssumption`s
+(SMT-level equalities) among the FOUR posts-stream row forms — the genuine
+same-query double-mint within ONE format (mobile stream minted per
+call: `records_1_rows == to_a_1_rows == records_2_rows == records_3_rows`;
+verified same `SELECT "posts"...` note on all four). These are app-true
+(one Relation, four `.rows` reads) and prune fictitious row-corner combos
+without touching the clique graph. All counterproductive 4b/6b Independence
+pairs are GONE. The bare block/contact records (REC1/REC2, always 0) remain
+covered by the existing section-8 OneSide(untracked) — untouched.
+
+### Files
+
+- coverage_assumptions.py: reverted 4b/6b Independence (+8×2 and +8 pairs),
+  added 3 SymbolicConstraint equalities (net +37 lines vs 06d1019).
+- coverage_summary.json: regenerated (64 missing, 239 assumptions used).
+- Evidence probes retained: `_len_census.py` (var-per-format census),
+  `_len_notes.py` (SELECT notes per var), `_bare_ctx.py` (records_1/2
+  run context: always-0, empty note), `_cmp_baseline.py` (baseline vs
+  current category identity).

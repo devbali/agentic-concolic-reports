@@ -145,12 +145,67 @@ full-stream-qualifying username in ONE run), which the single-flip
    entry point at shallower depth. Harness/targets change — requires
    asking first (source discipline).
 
+---
+
+## Addendum 2026-09-03 23:10 UTC — cross-format join (the honest floor)
+
+### The 48 "Group A" items are format-exclusive, not same-data
+
+Late probe (`_len_census.py`, `_len_notes.py`, `_bare_ctx.py`) resolved the
+identity of the row-count vars definitively:
+
+- **Bare `len(Relation_records_1)` / `len(Relation_records_2)`** — value
+  ALWAYS 0, **empty SQL note**, minted ONLY in non-mobile (html/json) runs
+  (32 dumps). These are the presenter's `is_blocked?`/`has_contact?` on
+  `current_user_person_block`/`current_user_person_contact` = `Block.none`/
+  `Contact.none` in anon scenarios — the always-empty block/contact check
+  (module docstring REC1/REC2, section-8 OneSide).
+- **`len(Relation_records_N_rows)` ×3 + `len(Relation_to_a_1_rows)`** — the
+  posts stream, minted ONLY in mobile runs (1749 dumps), all carrying the
+  same `SELECT "posts".* FROM "posts" WHERE "posts"."public" = true` note.
+
+The demanded conjunction `records_1==0 ∧ records_2==0 ∧ records_1_rows>0 ∧
+to_a_1_rows!=0` joins two var families that live in DIFFERENT request
+formats: `people_controller.rb #show` renders the stream ONLY in
+`format.mobile`; `format.all`/`format.json` render the presenter only.
+The join is structurally unreachable — a genuine gap, but of a different
+shape than "same query minted twice".
+
+### 2026-09-03 23:10: the 64→112→64 episode + mechanism change
+
+Per user directive, 4b/6b Independence pairs were added for the
+"same-data double-mint" (guards × complement forms, and bare records × rows
+forms). Re-run: **MISSING 64 → 112** — WORSE. The Independence
+edge-removal re-cliques the dense dependence graph (45 nodes, 17 OneSide
+pins), producing more enumerable combos under the per-clique cap (the
+same "192" phenomenon as the earlier dot-family episode). All runs are
+`TRUNCATED=True`, so both numbers are capped-sample artifacts.
+
+Resolution (this commit): revert 4b/6b; replace the counterproductive
+Independence pairs with the framework's **`SymbolicConstraintAssumption`**
+for the ONE genuinely same-query double-mint — the four posts-stream row
+forms (`records_1_rows == to_a_1_rows == records_2_rows == records_3_rows`).
+These are app-true (one Relation, four `.rows`/`to_a`/`records` reads;
+identical SELECT notes) and prune fictitious row-corner combos at the SMT
+level without touching the clique graph. Re-run: **MISSING = 64** (parity
+with the honest baseline; assumptions_used 239 = baseline).
+
+The bare block/contact `records_N` (always 0) are NOT equated with the
+posts rows — that would equate block-count with post-count, masking a real
+branch (forbidden by discipline). 64 is therefore the honest floor for this
+checker/corpus: the only sound declaration for the format-exclusive join
+(Independence) mechanically inflates the capped count, and any equality
+across the two families would be dishonest.
+
 ## Files
 
 - `run_dse.rb` — flip_seed handlers (fixed), campaign driver.
-- `coverage_assumptions.py` — 271 assumptions (254 Independence + 17
-  OneSide), including the new VBLANK section 8b.
+- `coverage_assumptions.py` — 274 assumptions (254 Independence + 17
+  OneSide + 3 SymbolicConstraint): reverted 4b/6b, added the 3 same-query
+  row equalities (net +37 vs 06d1019).
 - `coverage_report.py`, `coverage_summary.json` — coverage evidence.
 - `__gap_evidence.py`, `_run_gap_evidence.sh`, `_gap_check.py`,
   `_blank_check.py`, `_branch_check.py` — evidence tooling (scratch).
-- `AGENT_RUN.md` — run log + blocker documentation.
+- `_len_census.py`, `_len_notes.py`, `_bare_ctx.py`, `_cmp_baseline.py`
+  — 64→112→64 probe tooling (scratch, untracked).
+- `AGENT_RUN.md` — run log + blocker documentation (addendum).

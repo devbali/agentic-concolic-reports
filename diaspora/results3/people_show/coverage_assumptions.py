@@ -123,6 +123,7 @@ from concolic_engine.assumptions import (        # noqa: E402
     AssumptionSet,
     IndependenceAssumption,
     OneSideUntrackedPathAssumption,
+    SymbolicConstraintAssumption,
 )
 
 A    = "(SYM_DECISION_diaspora_id_username == True)"
@@ -266,6 +267,14 @@ def _pair(expr_a, expr_b, why):
     )
 
 
+def _len_z3(expr):
+    """Extract the Z3 var name from a `(SYM_LEN_X ...)` expr text."""
+    # exprs: "(SYM_LEN_FOO > 0)" / "(SYM_LEN_FOO != 0)" / "(SYM_LEN_FOO == 15)"
+    inner = expr.strip().strip("()")
+    var = inner.split()[0]
+    return var
+
+
 def build() -> AssumptionSet:
     # handle_A/B: THREE vars per branch, not two — NOTC (no '@' found) is
     # mutually exclusive with CONT+IDX (found) WITHIN the same branch (the
@@ -393,6 +402,38 @@ def build() -> AssumptionSet:
     # 6. PD vs BY: public_details?==False selects public_hash, which never
     #    reads birthday_year at all (1 pair).
     add(PD, BY, PD_GUARDS_BY)
+
+    # 6b. Same-query row-count double-mints: the FOUR textual forms of the
+    #    ONE posts-stream query (targets.rb rows_mock mints a fresh
+    #    `#{name}_rows` SymbolicList len for EVERY to_a/to_ary/records call
+    #    on the same @person.posts stream; verified: all four carry the same
+    #    `SELECT "posts".* FROM "posts"` note in the dumps). One underlying
+    #    row count, four independently-minted z3 vars: the checker's
+    #    cross-combinations (e.g. records_1_rows>0 ∧ to_a_1_rows==0) are z3
+    #    artifacts of double-minting, real-impossible in Rails (all four
+    #    return the same Relation's rows). Experience with Independence
+    #    pairs INFLATES the enumeration instead of pruning it (edge removal
+    #    re-cliques the graph — confirmed 64→112 above and in AGENT_RUN.md
+    #    "192" note), so use the framework's SymbolicConstraintAssumption
+    #    instead: an SMT-level equality that makes the fictitious combos
+    #    UNSAT without touching the clique graph. Does NOT reduce demand for
+    #    any expr's own sides.
+    #
+    #    Note: the BARE `len(Relation_records_N)` vars (block/contact
+    #    NullRelation checks — always 0, non-mobile-only) are a DIFFERENT
+    #    query and are deliberately NOT in this chain; equating them with
+    #    the posts row count would be dishonest (see STRUCTURAL_GAPS.md
+    #    "cross-format join" section).
+    for rows_len_a, rows_len_b in [
+        (REC1_ROWS, TOA_ROWS),
+        (REC1_ROWS, REC2_15),
+        (REC1_ROWS, REC3_POS),
+    ]:
+        assumptions.append(SymbolicConstraintAssumption(
+            z3_expr=f"{_len_z3(rows_len_a)} == {_len_z3(rows_len_b)}",
+            description="same posts-stream query minted twice (rows_mock) — equal by construction",
+            agent_notes=GUARD_VS_BRANCH,
+        ))
 
     # 7. Handle-split family: the untracked (never-recorded) side of each of
     #    the 6 exprs is unreachable BY CONSTRUCTION of the shared runtime
