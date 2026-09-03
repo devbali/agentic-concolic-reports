@@ -107,6 +107,25 @@ Two competing effects, observed across three corpus sizes (1200/1184 →
   combos. The capped sum stays ≈ 64 while the real unexplored frontier
   shrinks.
 
+## True-demand enumeration is computationally infeasible on this corpus
+
+The checker's `max_missing_per_clique=4` / `max_cliques=1024` bounded
+run completes in ~15.6s and reports 64. Two moderate-cap probes to compute
+the true (uncapped) demand both self-terminated on hard timeouts
+(2026-09-03):
+
+- `max_missing_per_clique=100, max_cliques=2000` → TOO_SLOW at 180s
+  (`_true_demand.py`).
+- `max_missing_per_clique=100, max_cliques=1024` (default clique count,
+  the config that completes in ~15s at per-clique=4) → TOO_SLOW at 170s
+  (`_true_demand2.py`).
+
+The second probe isolates the cost: the explosion is in **per-clique z3
+combo querying**, not clique enumeration. 64 is therefore a lower bound on
+the true unmet demand; the category breakdown in this document (verified by
+corpus search, not clique enumeration) is the trustworthy structural
+evidence.
+
 Deeper exploration alone will not drive `missing` to 0: the residual
 combos need multi-variable seed composition (guid='' AND dot-handle AND
 full-stream-qualifying username in ONE run), which the single-flip

@@ -86,6 +86,22 @@ on 1184 runs):
 - full mobile stream family (10 exprs) × guards (4) — guard forecloses render
 - DOT-T × BLANK-T (handle can't be both empty and dot-containing)
 
+### True-demand enumeration is INFEASIBLE at moderate caps (2026-09-03)
+
+The user-directed "compute TRUE demand with moderate caps" check
+(max_missing_per_clique=100, max_cliques=2000) was attempted with a hard
+180s self-timeout (`_true_demand.py`) — it printed `TOO_SLOW` at 180s after
+`loaded 1781 runs`. A second variant isolating the cost (`_true_demand2.py`:
+max_cliques=1024 = the default that completes in ~15s, per_clique=100) ALSO
+timed out at 170s. Conclusion: the explosion is in **per-clique z3 combo
+querying**, not clique enumeration — raising the per-clique cap 4→100 makes
+a 15.6s run exceed 170s. The checker's bounded default (4/clique,
+1024 cliques, 15.6s, missing=64) is the **practical ceiling** for this
+corpus; true-demand (uncapped) enumeration is computationally infeasible
+here. The 64 is therefore a lower bound on the true unmet demand, and the
+breakdown in the next section is the trustworthy structural evidence
+(verified by corpus search, not by clique enumeration).
+
 ## Remaining 64 missing — ALL genuine structural gaps (documented blockers)
 
 Verified by corpus search (1781 runs), none prunable without masking real

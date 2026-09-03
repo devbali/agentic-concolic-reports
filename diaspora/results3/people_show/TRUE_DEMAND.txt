@@ -1,0 +1,9 @@
+loaded 1781 runs
+TOO_SLOW budget=180s cap_cliques=2000 cap_per_clique=100
+Exception ignored in: <function AstRef.__del__ at 0x7aac6a5d0cc0>
+Traceback (most recent call last):
+  File "/home/dev/.local/lib/python3.12/site-packages/z3/z3.py", line 379, in __del__
+    Z3_dec_ref(self.ctx.ref(), self.as_ast())
+  File "/home/dev/.local/lib/python3.12/site-packages/z3/z3core.py", line 1691, in Z3_dec_ref
+    _elems.f(a0, a1)
+ctypes.ArgumentError: argument 2: SystemExit: 3
