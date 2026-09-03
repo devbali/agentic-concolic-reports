@@ -11,15 +11,16 @@
     {
       "scenario": "anon_handle",
       "description": "anonymous, default/html format -> gon.preloads presenter chain + Photo.visible(...).count + real show.html.haml/with_header render",
-      "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
-      "runs_executed": 156,
-      "distinct_paths": 22,
-      "seed_sets_tried": 156,
+      "strategy": "prefix-directed DSE (seed inheritance + single-branch flip + multi-var composition)",
+      "runs_executed": 66,
+      "distinct_paths": 17,
+      "seed_sets_tried": 109,
+      "composed_children": 43,
       "worklist_exhausted": true,
       "capped_by": null,
       "max_runs": 6000,
-      "time_budget": 5400,
-      "elapsed_seconds": 10.8,
+      "time_budget": 900,
+      "elapsed_seconds": 5.2,
       "run_errors": {
         "run:ActionView::MissingTemplate": 2
       },
@@ -29,15 +30,16 @@
     {
       "scenario": "anon_json",
       "description": "anonymous, json format -> render json: @presenter.as_json (PersonPresenter/ProfilePresenter#as_json chain, no html layout)",
-      "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
-      "runs_executed": 28,
-      "distinct_paths": 10,
-      "seed_sets_tried": 28,
+      "strategy": "prefix-directed DSE (seed inheritance + single-branch flip + multi-var composition)",
+      "runs_executed": 15,
+      "distinct_paths": 8,
+      "seed_sets_tried": 40,
+      "composed_children": 25,
       "worklist_exhausted": true,
       "capped_by": null,
       "max_runs": 6000,
-      "time_budget": 5400,
-      "elapsed_seconds": 0.4,
+      "time_budget": 900,
+      "elapsed_seconds": 0.2,
       "run_errors": {
         "run:ActionView::MissingTemplate": 2
       },
@@ -47,24 +49,25 @@
     {
       "scenario": "anon_mobile",
       "description": "anonymous, mobile format -> show.mobile.haml: Stream::Person#stream_posts (for_a_stream + like_posts_for_stream! chain) + mobile layout render",
-      "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
-      "runs_executed": 6000,
-      "distinct_paths": 1749,
-      "seed_sets_tried": 6000,
-      "worklist_exhausted": false,
-      "capped_by": "MAX_RUNS",
+      "strategy": "prefix-directed DSE (seed inheritance + single-branch flip + multi-var composition)",
+      "runs_executed": 3961,
+      "distinct_paths": 1657,
+      "seed_sets_tried": 5822,
+      "composed_children": 1861,
+      "worklist_exhausted": true,
+      "capped_by": null,
       "max_runs": 6000,
-      "time_budget": 5400,
-      "elapsed_seconds": 445.4,
+      "time_budget": 900,
+      "elapsed_seconds": 300.1,
       "run_errors": {
-        "run:ActionView::Template::Error": 524,
-        "run:ActionView::MissingTemplate": 1
+        "run:ActionView::Template::Error": 380,
+        "run:ActionView::MissingTemplate": 2
       },
       "unflippable_pcs": {
-        "(SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, 2) == '')": 217,
-        "(SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == '')": 45
+        "(SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, 2) == '')": 110,
+        "(SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == '')": 80
       }
     }
   ],
-  "total_elapsed_seconds": 456.6
+  "total_elapsed_seconds": 305.5
 }

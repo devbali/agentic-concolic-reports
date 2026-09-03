@@ -60,6 +60,14 @@
 # adds exactly one flip for c_k. Dedup on path signature; expand until the
 # worklist drains or a cap is hit.
 #
+# MULTI-VAR COMPOSITION (results3/people_show future-work #1, dse_compose.rb):
+# single-flip chaining is depth-limited by PC ordering — flipping c_k
+# changes the path, so the sibling PC needed for the NEXT flip may never
+# reappear at an index >= min_k. Each observed run therefore ALSO spawns
+# composed children that merge 2-3 flips on DISTINCT variables into one
+# seed set (COMPOSE_CAP per way, default 6), jumping the co-flip depth to
+# reach the missing dot×guid×stream×branch-B conjunctions directly.
+#
 # Touches neither src/, the shared concolic_targets.rb, nor the diaspora app
 # source — this directory carries PRIVATE copies of concolic_targets.rb and
 # targets.rb (results2/README.md layout).
@@ -80,6 +88,7 @@ require "/home/dev/project/src/ruby_runtime/bool"
 require "/home/dev/project/src/ruby_runtime/list"
 require_relative "concolic_targets"
 require_relative "targets"
+require_relative "dse_compose"
 require "json"
 require "set"
 require "digest"
@@ -98,6 +107,7 @@ PeopleShowSymParams.install!($interceptor)    # NEW: diaspora_id? boundary mock 
 HERE        = File.dirname(File.expand_path(__FILE__))
 MAX_RUNS    = (ENV["MAX_RUNS"] || 300).to_i
 TIME_BUDGET = (ENV["TIME_BUDGET"] || 1200).to_i
+COMPOSE_CAP = (ENV["COMPOSE_CAP"] || 6).to_i
 
 # Devise/warden plumbing substitute (no warden env in the controller-test rig).
 # Ported verbatim from results/people/run_dse.rb; unused on this scenario's
@@ -446,6 +456,7 @@ def explore(prefix)
   errors      = Hash.new(0)
   runs        = 0
   written     = 0
+  composed_pushed = 0
   capped      = nil
 
   stack = [[{}, 0]]
@@ -467,6 +478,8 @@ def explore(prefix)
     key = digest(JSON.generate(seeds.sort.to_h) + "|#{min_k}")
     next if seen_seeds.include?(key)
     seen_seeds << key
+
+    flippable = []
 
     runs += 1
     label = format("%s_%04d", prefix, runs)
@@ -501,9 +514,26 @@ def explore(prefix)
         unflippable[expr] += 1
         next
       end
+      flippable << [fl, k]
       child = seeds.merge(fl)
       ckey = digest(JSON.generate(child.sort.to_h) + "|#{k + 1}")
       stack.push([child, k + 1]) unless seen_seeds.include?(ckey)
+    end
+
+    # MULTI-VAR SEED COMPOSITION (results3/people_show future-work #1): the
+    # single-flip children above reach conjunctions only one flip at a time,
+    # depth-limited by PC ordering (flipping PC_k changes the path so the
+    # sibling PC for the next flip may vanish). dse_compose.rb merges 2-3
+    # flips on DISTINCT vars into one child seed set — jumping the co-flip
+    # depth to reach the missing dot×guid×stream×branch-B conjunctions
+    # (STRUCTURAL_GAPS blockers #1/#5). Same dedup key scheme; bounded per
+    # run (COMPOSE_CAP, default 6 per way).
+    DseCompose.compose_children(seeds, flippable, cap: COMPOSE_CAP).each do |child, mk|
+      ckey = digest(JSON.generate(child.sort.to_h) + "|#{mk}")
+      next if seen_seeds.include?(ckey)
+      seen_seeds << ckey
+      stack.push([child, mk])
+      composed_pushed += 1
     end
   end
 
@@ -511,10 +541,11 @@ def explore(prefix)
   {
     "scenario"           => prefix,
     "description"        => SCENARIOS.fetch(prefix)[:desc],
-    "strategy"           => "prefix-directed DSE (seed inheritance + single-branch flip)",
+    "strategy"           => "prefix-directed DSE (seed inheritance + single-branch flip + multi-var composition)",
     "runs_executed"      => runs,
     "distinct_paths"     => written,
     "seed_sets_tried"    => seen_seeds.size,
+    "composed_children"  => composed_pushed,
     "worklist_exhausted" => capped.nil?,
     "capped_by"          => capped,
     "max_runs"           => MAX_RUNS,
