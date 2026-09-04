@@ -9,65 +9,27 @@
   },
   "scenarios": [
     {
-      "scenario": "anon_handle",
-      "description": "anonymous, default/html format -> gon.preloads presenter chain + Photo.visible(...).count + real show.html.haml/with_header render",
+      "scenario": "anon_mobile_presenter",
+      "description": "anonymous, DUAL-FORMAT run: format.all html presenter render (bare records_1/2 block/contact checks) + format.mobile stream render (posts rows) in ONE interceptor run -> co-mints both var families to witness the 48 cross-format missing items (FUTURE-WORK #3 Option A)",
       "strategy": "prefix-directed DSE (seed inheritance + single-branch flip + multi-var composition)",
-      "runs_executed": 156,
-      "distinct_paths": 22,
-      "seed_sets_tried": 156,
-      "composed_children": 0,
-      "worklist_exhausted": true,
-      "capped_by": null,
-      "max_runs": 10000,
-      "time_budget": 1500,
-      "elapsed_seconds": 10.6,
+      "runs_executed": 5000,
+      "distinct_paths": 1701,
+      "seed_sets_tried": 7271,
+      "composed_children": 2271,
+      "worklist_exhausted": false,
+      "capped_by": "MAX_RUNS",
+      "max_runs": 5000,
+      "time_budget": 1800,
+      "elapsed_seconds": 645.5,
       "run_errors": {
+        "run:ActionView::Template::Error": 450,
         "run:ActionView::MissingTemplate": 2
       },
       "unflippable_pcs": {
-}
-    },
-    {
-      "scenario": "anon_json",
-      "description": "anonymous, json format -> render json: @presenter.as_json (PersonPresenter/ProfilePresenter#as_json chain, no html layout)",
-      "strategy": "prefix-directed DSE (seed inheritance + single-branch flip + multi-var composition)",
-      "runs_executed": 28,
-      "distinct_paths": 10,
-      "seed_sets_tried": 28,
-      "composed_children": 0,
-      "worklist_exhausted": true,
-      "capped_by": null,
-      "max_runs": 10000,
-      "time_budget": 1500,
-      "elapsed_seconds": 0.4,
-      "run_errors": {
-        "run:ActionView::MissingTemplate": 2
-      },
-      "unflippable_pcs": {
-}
-    },
-    {
-      "scenario": "anon_mobile",
-      "description": "anonymous, mobile format -> show.mobile.haml: Stream::Person#stream_posts (for_a_stream + like_posts_for_stream! chain) + mobile layout render",
-      "strategy": "prefix-directed DSE (seed inheritance + single-branch flip + multi-var composition)",
-      "runs_executed": 9950,
-      "distinct_paths": 2346,
-      "seed_sets_tried": 9950,
-      "composed_children": 0,
-      "worklist_exhausted": true,
-      "capped_by": null,
-      "max_runs": 10000,
-      "time_budget": 1500,
-      "elapsed_seconds": 730.3,
-      "run_errors": {
-        "run:ActionView::Template::Error": 868,
-        "run:ActionView::MissingTemplate": 2
-      },
-      "unflippable_pcs": {
-        "(SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, 2) == '')": 217,
-        "(SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == '')": 217
+        "(SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_2_diaspora_handle, 0, 2) == '')": 115,
+        "(SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == '')": 110
       }
     }
   ],
-  "total_elapsed_seconds": 741.3
+  "total_elapsed_seconds": 645.5
 }

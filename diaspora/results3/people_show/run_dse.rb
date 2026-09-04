@@ -77,7 +77,8 @@
 #       /home/dev/project/reports/diaspora/results3/people_show/run_dse.rb
 #
 # Env: MAX_RUNS (default 300 per scenario), TIME_BUDGET seconds (default
-# 1200 per scenario).
+# 1200 per scenario), COMPOSE_CAP (default 6), SCENARIO_ONLY (optional
+# single scenario name to run in isolation, e.g. anon_mobile_presenter).
 
 require "./config/environment"
 require "/home/dev/project/src/ruby_runtime/call_interceptor"
@@ -176,6 +177,27 @@ SCENARIOS = {
     desc: "anonymous, mobile format -> show.mobile.haml: Stream::Person#stream_posts " \
           "(for_a_stream + like_posts_for_stream! chain) + mobile layout render",
   },
+  # FUTURE-WORK #3 (Option A, PERMISSION GRANTED 2026-09-04): dual-format
+  # run — the html presenter render (format.all: `@presenter.as_json` +
+  # show.html.haml/with_header, mints the bare `records_1/2` block/contact
+  # NullRelation checks) and the mobile stream render (format.mobile:
+  # show.mobile.haml, mints the `records_N_rows` posts-stream family) execute
+  # inside ONE $interceptor.run block, so a single dump witnesses BOTH var
+  # families — making the 48 cross-format joins (bare records_1/2 == 0 ∧
+  # stream rows>0 ∧ PD ∧ NOTC ∧ ...) co-recordable in one path. Mirrors the
+  # real app's mobile-plus-presenter double render (respond_with @presenter
+  # fires on ALL formats; the stream fires only on mobile). Two separate
+  # harness instances (fresh controller/test-case/request each) so the two
+  # request cycles don't pollute each other's ivars/responses. format key
+  # drives the mobile leg; dual: true marks the branch.
+  "anon_mobile_presenter" => {
+    format: :mobile,
+    dual: true,
+    desc: "anonymous, DUAL-FORMAT run: format.all html presenter render (bare " \
+          "records_1/2 block/contact checks) + format.mobile stream render " \
+          "(posts rows) in ONE interceptor run -> co-mints both var families " \
+          "to witness the 48 cross-format missing items (FUTURE-WORK #3 Option A)",
+  },
 }.freeze
 
 # ---------------------------------------------------------------------------
@@ -191,31 +213,38 @@ def run_one(prefix, label, seeds)
     ::Gon.instance_variable_set(:@concolic_preloads, {})
   end
   user = PeopleTargets.symbolic_user("PE") # built fresh; unused as current_user (anon scenario)
-  ctrl, tc = make_harness(PeopleController)
-  ctrl.singleton_class.define_method(:current_user)    { nil }
-  ctrl.singleton_class.define_method(:user_signed_in?) { false }
-  tc.instance_variable_get(:@request).env["warden"] = StubWarden.new(user)
 
   sym_username = PeopleShowSymParams.symbolic_username(PARAM_DEFAULT)
   scen = SCENARIOS.fetch(prefix)
 
-  dump = $interceptor.run(
-    -> {
+  # FUTURE-WORK #3: dual-format leg — build a FRESH harness per render so the
+  # two request cycles stay isolated (controller/test-case/request ivars,
+  # response buffers), then run BOTH processes inside one interceptor block.
+  dual_render = lambda do
+    legs = scen[:dual] ? [:html, :mobile] : [scen[:format]]
+    legs.map do |leg|
+      c2, t2 = make_harness(PeopleController)
+      c2.singleton_class.define_method(:current_user)    { nil }
+      c2.singleton_class.define_method(:user_signed_in?) { false }
+      t2.instance_variable_get(:@request).env["warden"] = StubWarden.new(user)
+      fmt = leg == :html ? nil : :mobile
       begin
-        tc.process(:show, method: "GET", params: { username: sym_username }, format: scen[:format])
+        t2.process(:show, method: "GET", params: { username: sym_username }, format: fmt)
       rescue Exception => e # rubocop:disable Lint/RescueException
-        # tc.process/dispatch already routes RecordNotFound/AccountClosed
-        # through the declared rescue_from handlers (ActionController::Rescue
-        # wraps process_action). Defensive fallback only, mirroring
-        # results3/people_stream's identical pattern, in case an exception
-        # somehow escapes that wrapping now that render is real.
         handled = begin
-          ctrl.send(:rescue_with_handler, e)
+          c2.send(:rescue_with_handler, e)
         rescue Exception # rubocop:disable Lint/RescueException
           nil
         end
         raise e unless handled
       end
+      c2
+    end
+  end
+
+  dump = $interceptor.run(
+    -> {
+      dual_render.call
       :ok
     },
     {}, label: label, script: "run_dse.rb"
@@ -561,7 +590,9 @@ FileUtils.mkdir_p(DIR)
 Dir.glob(File.join(DIR, "dump_*.json")).each { |f| File.delete(f) }
 
 t0 = Time.now
-scenario_summaries = SCENARIOS.keys.map { |p| explore(p) }
+scenario_keys = SCENARIOS.keys
+scenario_keys = [ENV["SCENARIO_ONLY"]] if ENV["SCENARIO_ONLY"] && !ENV["SCENARIO_ONLY"].empty?
+scenario_summaries = scenario_keys.map { |p| explore(p) }
 
 summary = {
   "entrypoint"      => "people_show",

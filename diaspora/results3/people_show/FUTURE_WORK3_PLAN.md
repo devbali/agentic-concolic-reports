@@ -1,5 +1,9 @@
 # FUTURE-WORK #3 PLAN — decouple format from branch (people_show)
-# Status: PLAN ONLY — NOT IMPLEMENTED. Harness change ⇒ PERMISSION REQUIRED
+# Status: COMPLETE (2026-09-04, PERMISSION GRANTED). Result: dual-format
+# scenario proves semantic co-reachability but MISSING STAYS 64 — the 48
+# cross-format items are a single-run call-ordinal NAMING collision, not an
+# app gap (see STRUCTURAL_GAPS.md addendum + commit). Runtime naming change
+# to clear them is OUT OF SCOPE (SOURCE.md). Plan below retained as record.
 # (source discipline: ask before deviating from intended design).
 # Prepared 2026-09-04 so execution is immediate upon approval.
 
