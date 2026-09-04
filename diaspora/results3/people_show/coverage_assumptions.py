@@ -155,6 +155,23 @@ IDX1_2 = "IndexOf(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle
 IDX1_3 = "IndexOf(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, StringVal('@')) == 3"
 IDX2_2 = "IndexOf(SYM_PERSON_via_user_diaspora_handle, StringVal('@')) == 2"
 
+# NEW (2026-09-04, 16:26 directive): the first_2 handle family — the
+# SECOND FinderMethods.first ordinal (find_person's pred/records `_2`
+# ordinals, same family as the 6c guard pins' first_2_not_found/
+# first_2_closed_account). The OneSide set below (step 7) covered the
+# first_1 and via_user handle splits but omitted first_2; the missing-item
+# enumeration consequently demanded the false sides of these exprs, which are
+# unreachable BY CONSTRUCTION — string.rb SplitAccessor#[] hardcodes
+# `taken: true` at EVERY record! call site (lines ~279-296), for every
+# ordinal var identically (same runtime path). Verified on the 7673-run
+# merged corpus: Contains('@', first_2_handle) T=2984/F=0,
+# IndexOf(first_2_handle,'@')==2 T=1492/F=0, per-run arms are exactly
+# ('NOTC') | ('CONT','IDX1') | ('CONT','IDX2') — one arm per run, never a
+# false-side record. 0 witnesses of either false side in the drained corpus.
+CONT_F2 = "Contains(StringVal('@'), SYM_RESULT_ActiveRecord__FinderMethods_first_2_diaspora_handle)"
+NOTC_F2 = "Not(Contains(StringVal('@'), SYM_RESULT_ActiveRecord__FinderMethods_first_2_diaspora_handle))"
+IDX_F2  = "IndexOf(SYM_RESULT_ActiveRecord__FinderMethods_first_2_diaspora_handle, StringVal('@')) == 2"
+
 # MOBILE-universe dot/blank handle shapes (people_helper.rb:62
 # `unless username.include?('.')` — the username is diaspora_handle.split('@')[0]
 # in atom_url; flip_seed handlers #2/#2b/#2c/#3 in run_dse.rb). EMPIRICAL
@@ -478,7 +495,8 @@ def build() -> AssumptionSet:
     #    (see HANDLE_UNTRACKED) — untrack only that side, keep the
     #    always-observed `taken: true` side demanded.
     for expr in (CONT1, NOTC1, IDX1, IDX1_2, IDX1_3,
-                 CONT2, NOTC2, IDX2, IDX2_2):
+                 CONT2, NOTC2, IDX2, IDX2_2,
+                 CONT_F2, NOTC_F2, IDX_F2):
         assumptions.append(OneSideUntrackedPathAssumption(
             expr=expr,
             tracked_side="taken",
