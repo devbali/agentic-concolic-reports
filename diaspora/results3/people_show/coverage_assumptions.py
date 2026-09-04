@@ -435,6 +435,44 @@ def build() -> AssumptionSet:
             agent_notes=GUARD_VS_BRANCH,
         ))
 
+    # 6c. Guard-True foreclosure (Bali 05:53 directive): exclude the True
+    #    side of EVERY not_found/closed_account guard branch var. Proven: a
+    #    guard-True outcome (record_not_found/closed_account on ANY finder)
+    #    raises via rescue_from (RecordNotFound -> 404 render, AccountClosed
+    #    -> redirect_back — people_controller.rb:17-27) which terminates the
+    #    request BEFORE `show`/the presenter/the layout/the mobile stream
+    #    ever mint their data vars. Empirically: EVERY dump where any guard
+    #    var is taken True (all 64 are dump_replay_*) co-mints ZERO
+    #    downstream data vars (no rows/to_a/handle-split/guid). So any
+    #    missing combo conjoining guard==True with downstream data vars is a
+    #    fictitious cross-combination — made UNSAT by pinning each guard var
+    #    to == False (the SymbolicConstraintAssumption pattern), and does NOT
+    #    mask any real co-minted branch (none exists: guard-True never co-mints).
+    #
+    #    The app mints TWO ordinal families of the same finders (the _1
+    #    pred / _2 records ordinals via FinderMethods.first/find_by_2 in
+    #    find_person) plus the via_user branch guard; whichever subset the
+    #    enumeration surfaces, ALL are pinned below:
+    #      branch-A:  first_1_not_found, first_1_closed_account
+    #      branch-B:  find_by_1_not_found, find_by_2_not_found
+    #      first_2:   first_2_not_found, first_2_closed_account
+    #      via_user:  via_user_closed_account
+    _GUARD_EXCLUDE_TRUE = [
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found",
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_1_closed_account",
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found",
+        "SYM_RESULT_ActiveRecord__FinderMethods_first_2_closed_account",
+        "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_not_found",
+        "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_2_not_found",
+        "SYM_PERSON_via_user_closed_account",
+    ]
+    for _g in _GUARD_EXCLUDE_TRUE:
+        assumptions.append(SymbolicConstraintAssumption(
+            z3_expr=f"({_g} == False)",
+            description="guard-True (not_found/closed_account) forecloses show — exclude True side of every guard branch var (both ordinals + via_user)",
+            agent_notes=GUARD_FORECLOSES_SHOW,
+        ))
+
     # 7. Handle-split family: the untracked (never-recorded) side of each of
     #    the 6 exprs is unreachable BY CONSTRUCTION of the shared runtime
     #    (see HANDLE_UNTRACKED) — untrack only that side, keep the
