@@ -297,9 +297,14 @@ Downrevised honest reading of the 64:
   them requires a runtime/engine call-ordinal change (SOURCE.md: OUT OF SCOPE).
 
 The 64 therefore remains the honest bounded-count floor, and is now the
-strongest possible claim: MISSING is unchanged at 64 across (a) deeper drain
-(69fe5bb), (b) multi-var composition (a67ae0e), and (c) dual-format
-co-rendering (this addendum) — three independent strategies, same 64.
+strongest possible claim: MISSING is unchanged at 64 across SIX corpus
+configurations — (a) deeper drain (69fe5bb), (b) multi-var composition
+(a67ae0e), (c) dual-format co-rendering at 5000 runs (bf9650c), and
+(d) dual-format scale-out to 10000 runs / 2606 dual paths / 4984-dump
+mixed corpus (2026-09-04 03:55 addendum) — independent strategies and
+scales, same 64. The dual frontier is large-but-saturating (2606 paths
+at 10k, not drained) yet MISSING does not move: the ordinal-naming
+collision and control-flow foreclosure are scale-invariant.
 
 Frozen endpoints + shared concolic_targets.rb untouched. `run_dse.rb` + docs
 committed; probe scripts `_fw3_*.py` untracked scratch.
