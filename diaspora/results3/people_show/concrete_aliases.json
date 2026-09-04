@@ -1,0 +1,42 @@
+{
+ "ActiveRecord::Relation.to_a": [
+  "ActiveRecord::Relation.records"
+ ],
+ "ActiveRecord::Relation.records": [
+  "ActiveRecord::Relation.to_a"
+ ],
+ "ActiveRecord::Associations::CollectionProxy.records": [
+  "ActiveRecord::Associations::CollectionProxy.to_a",
+  "ActiveRecord::Associations::CollectionProxy.load_target"
+ ],
+ "ActiveRecord::Associations::CollectionProxy.load_target": [
+  "ActiveRecord::Associations::CollectionProxy.records"
+ ],
+ "ActiveRecord::FinderMethods.first": [
+  "ActiveRecord::Core::ClassMethods.find_by",
+  "ActiveRecord::FinderMethods.first"
+ ],
+ "ActiveRecord::FinderMethods.find_by": [
+  "ActiveRecord::Core::ClassMethods.find_by",
+  "ActiveRecord::FinderMethods.find_by"
+ ],
+ "ActiveRecord::FinderMethods.exists?": [
+  "ActiveRecord::FinderMethods.exists?"
+ ],
+ "ActiveRecord::Persistence.update_column": [
+  "ActiveRecord::Base.update_column",
+  "ActiveRecord::Persistence.update_column"
+ ],
+ "ActiveRecord::Base.update_column": [
+  "ActiveRecord::Persistence.update_column",
+  "ActiveRecord::Base.update_column"
+ ],
+ "ActiveRecord::Persistence.update_columns": [
+  "ActiveRecord::Base.update_columns",
+  "ActiveRecord::Persistence.update_columns"
+ ],
+ "ActiveRecord::Base.update_columns": [
+  "ActiveRecord::Persistence.update_columns",
+  "ActiveRecord::Base.update_columns"
+ ]
+}

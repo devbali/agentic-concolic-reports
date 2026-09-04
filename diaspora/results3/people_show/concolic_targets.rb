@@ -131,6 +131,32 @@ module ConcolicTargets
     end
   end
 
+  # 2026-09-04 (people_show adversarial repair R1, P-1): SQL-shaped note for
+  # the unconditional instance-write targets (update_column/update_columns).
+  # Interceptor call_args is {param_name => value} built from the original
+  # method's parameters (AR 5.2 update_column: {column_name:, value:};
+  # update_columns: {attributes: {…}}). Judge _is_dml keeps UPDATE notes.
+  def dml_update_note(receiver, args)
+    table = receiver.class.respond_to?(:table_name) ? receiver.class.table_name : receiver.class.name
+    pk = receiver.class.respond_to?(:primary_key) ? receiver.class.primary_key : "id"
+    pkv = begin
+      receiver.respond_to?(pk) ? receiver.send(pk) : nil
+    rescue StandardError
+      nil
+    end
+    sets = if (attrs = args["attributes"]).is_a?(Hash) && !attrs.empty?
+             attrs.map { |k, v| %("#{k}" = #{render_arg_value(v)}) }.join(", ")
+           elsif (col = args["column_name"] || args["name"]) # AR 5.2: update_column(name, value)
+             %("#{col}" = #{render_arg_value(args["value"])})
+           else
+             "(unknown columns)"
+           end
+    %(UPDATE "#{table}" SET #{sets} WHERE "#{table}"."#{pk}" = #{render_arg_value(pkv)})
+  rescue StandardError => e
+    "#{receiver.class.name} instance write (note render failed: #{e.class})"
+  end
+
+
   # Phase A (MOCK_FIDELITY): render REAL SQL for class-level finders
   # (Model.find(id), Model.find_by(...), and dynamic finders like
   # find_by_username -- Rails' DynamicMatchers#define compiles
@@ -347,6 +373,18 @@ module ConcolicTargets
     # template. Override to a fixed URL (pure, no SQL — matches X6j intent).
     if klass == Profile
       obj.define_singleton_method(:image_url) { |_size = :thumb_large| "/concolic/image.jpg" }
+      # P-2 (2026-09-04, adversary R1): Profile#bio_message/#location_message
+      # memoize a MessageRenderer over the SYMBOLIC bio/location columns, and
+      # Processor.process's X6h mock returns the concrete column value without
+      # running diaspora_links — so `Post.exists?(guid:)` (the P-2 posts.guid
+      # shape from profile private_hash bio/location) never fires. Re-seed the
+      # memoized renderers over PLAIN strings carrying a diaspora:// post URL:
+      # the X6h conditional branch then runs diaspora_links -> Post.exists?.
+      # Leaf text only (presenter JSON), no SQL semantics lost.
+      obj.instance_variable_set(:@bio_message, Diaspora::MessageRenderer.new(
+        "Concolic bio with a diaspora://alice@localhost/post/postguid2c0e7e1f8f600000000000001 link"))
+      obj.instance_variable_set(:@location_message, Diaspora::MessageRenderer.new(
+        "Concolic location diaspora://alice@localhost/post/postguid2c0e7e1f8f600000000000002"))
     end
 
     # User#hidden_shareables is a REAL method (serialized Hash column, returned
@@ -393,7 +431,17 @@ module ConcolicTargets
     obj.instance_variable_set(:@_start_transaction_state, {})
     obj.instance_variable_set(:@start_transaction_state, {})
     obj.instance_variable_set(:@_trigger_transaction_callback, false)
-    obj.instance_variable_set(:@new_record, true)
+    # 2026-09-04 (people_show adversarial repair R1, P-9): symbolic instances
+    # model DB-LOADED records (minted by finder/association mocks standing in
+    # for SELECTs), so @new_record must be FALSE. With true,
+    # CollectionAssociation#null_scope? short-circuits every has_many
+    # association on a symbolic owner to a NullRelation — profile.tags scope
+    # becomes .none!, so tags.pluck(:name) hits NullRelation#pluck -> [] and
+    # never reaches the declared Calculations#pluck target (P-9: pluck frame
+    # had ZERO notes; statement was minted under CollectionProxy.records).
+    # false -> real Relation scope -> declared targets fire under their real
+    # frames. Verified by probe (_probe_pluck3.rb).
+    obj.instance_variable_set(:@new_record, false)
     obj.instance_variable_set(:@destroyed, false)
     obj.instance_variable_set(:@readonly, false)
     obj
@@ -425,9 +473,47 @@ module ConcolicTargets
 
   # Shared single-record finder mock. raise_on_missing: true  -> find/!-style
   #                                   raise_on_missing: false -> find_by/take/first
-  def finder_mock(raise_on_missing:)
+  #
+  # 2026-09-04 (people_show adversarial repair R1): ported from
+  # notifications_index finder_note (T4 / over-emission fix 2026-08-28) — a
+  # single-row finder's REAL statement carries `ORDER BY <pk>` when the
+  # relation has no order of its own (Rails `find_nth` -> ordered_relation)
+  # and always `LIMIT 1`. Without them note_fidelity_audit reports
+  # LIMIT-DIFF/ORDER-DIFF on every finder note (blocks/contacts/
+  # people.owner_id/profiles.person_id all carry `LIMIT ?` in the real
+  # statements; people.diaspora_handle carries `ORDER BY people.id ASC
+  # LIMIT ?`). The finder_sql kwargs merge (P-4/P-5) runs first, then the
+  # ORDER/LIMIT suffixes are appended to the finished note.
+  def finder_note(receiver, args, kind = :find_by)
+    sql = finder_sql(receiver, args)
+    begin
+      if %i[first last take].include?(kind) && !sql.include?(" ORDER BY ")
+        klass = model_class(receiver)
+        table = klass.table_name
+        pk    = (klass.primary_key || "id")
+        dir = (kind == :last ? "DESC" : "ASC")
+        sql = %(#{sql} ORDER BY "#{table}"."#{pk}" #{dir})
+      end
+    rescue StandardError
+      nil
+    end
+    sql =~ /\sLIMIT\s/ ? sql : "#{sql} LIMIT 1"
+  end
+
+  # 2026-09-04 (people_show adversarial repair R1): real aggregate queries
+  # (COUNT(*) / exists? 1 AS one) DROP the relation's ORDER BY — Rails
+  # `count`/`exists?` execute against the relation without ordering. The
+  # notes from sql_for keep the relation's scope order (e.g. aspects
+  # default-scope `order(order_id)`, photos `created_at DESC`), producing
+  # ORDER-DIFF verdicts in note_fidelity_audit. Strip `ORDER BY …` (up to
+  # LIMIT/OFFSET/end) from aggregate-style notes.
+  def strip_order_for_aggregate(sql)
+    sql.sub(/\s+ORDER BY\s+.*?(?=\s+LIMIT\s|\s+OFFSET\s|\Z)/m, "")
+  end
+
+  def finder_mock(raise_on_missing:, kind: :find_by)
     lambda do |receiver, args, name|
-      sql = sql_for(receiver, args)
+      sql = finder_note(receiver, args, kind)
       nf_name = "#{name}_not_found"
       not_found = symbool(nf_name, seed_for(nf_name, false), note: sql)
       if not_found == true # explicit compare — bare truthiness records no PC (TODO.txt)
@@ -438,6 +524,37 @@ module ConcolicTargets
       end
     end
   end
+
+  # 2026-09-04 (people_show adversarial repair R1, P-4/P-5): find_by notes
+  # must carry the real WHERE. Two gaps: (1) a Relation receiver's arel does
+  # NOT include the conditions passed to find_by (they are applied INSIDE the
+  # body, which the mock skips) and (2) the interceptor's wrapper is defined
+  # with **kwargs so hash-call find_by(user_id: …, person_id: …) binds the
+  # args into kwargs — call_args gets nil and even extract_finder_where finds
+  # nothing (src/ gap documented in class_finder_sql's fallback). PeopleTargets
+  # prepends PeopleShowFindByKwargs (targets.rb) which stashes the kwargs in a
+  # thread-local around the call; this helper merges them into the note.
+  def finder_sql(receiver, args)
+    return class_finder_sql(receiver, args) if receiver.is_a?(Class)
+    sql = render_relation_sql(receiver)
+    wh = extract_finder_where(receiver, args)
+    kw = Thread.current[:people_show_find_by_kwargs]
+    wh = kw if (wh.nil? || wh.empty?) && kw.is_a?(Hash) && !kw.empty?
+    return sql if wh.nil? || wh.empty?
+    table = model_class(receiver).respond_to?(:table_name) ? model_class(receiver).table_name : nil
+    return sql if table.nil?
+    conds = wh.map { |k, v| %("#{table}"."#{k}" = #{render_arg_value(v)}) }.join(" AND ")
+    if sql =~ /\bWHERE\b/
+      sql.sub(/\bWHERE\b/, "WHERE #{conds} AND ")
+    elsif sql =~ /\bLIMIT\b/
+      sql.sub(/\bLIMIT\b/, "WHERE #{conds} LIMIT ")
+    else
+      "#{sql} WHERE #{conds}"
+    end
+  rescue StandardError => e
+    "#{model_class(receiver).name} finder (note merge failed: #{e.class})"
+  end
+
 
   # ---------------------------------------------------------------------
   # Target declarations
@@ -460,6 +577,7 @@ module ConcolicTargets
       # Wall-fix targets (§X) live on services / taggable / federation — load
       # them so `defined?(…)` is true when install! registers the targets.
       "post_service", "reshare_service", "status_message_creation_service",
+      "service", # people_show R1: Service#provider/#nickname publisher leaves (attr_accessor, not a column)
       "taggable", "reshare", "person", "profile", "mentionable",
       "mentions_container", "message_renderer", "post_presenter",
       "aspect_membership", "aspect", "block",
@@ -513,10 +631,11 @@ module ConcolicTargets
 
     # --- [ DESIGN #1 ] A. Single-record finders -> symbolic model instance --
     %i[find take! first! last! find_by!].each do |m|
-      interceptor.declare_target(fm, m, returns: finder_mock(raise_on_missing: true))
+      kind = { take!: :take, first!: :first, last!: :last, find_by!: :find_by }.fetch(m, :find_by)
+      interceptor.declare_target(fm, m, returns: finder_mock(raise_on_missing: true, kind: kind))
     end
     %i[find_by take first last].each do |m|
-      interceptor.declare_target(fm, m, returns: finder_mock(raise_on_missing: false))
+      interceptor.declare_target(fm, m, returns: finder_mock(raise_on_missing: false, kind: m))
     end
     # Ordinal finders (second..forty_two) — declare only if diaspora uses them.
 
@@ -531,9 +650,9 @@ module ConcolicTargets
     # app today (verified: 0 multi-id/IN queries in current dumps) — if it ever
     # fires, route it to the collection mock (a length-only SymbolicList).
     core = ActiveRecord::Core::ClassMethods
-    interceptor.declare_target(core, :find,     returns: finder_mock(raise_on_missing: true))
-    interceptor.declare_target(core, :find_by,  returns: finder_mock(raise_on_missing: false))
-    interceptor.declare_target(core, :find_by!, returns: finder_mock(raise_on_missing: true))
+    interceptor.declare_target(core, :find,     returns: finder_mock(raise_on_missing: true, kind: :find))
+    interceptor.declare_target(core, :find_by,  returns: finder_mock(raise_on_missing: false, kind: :find_by))
+    interceptor.declare_target(core, :find_by!, returns: finder_mock(raise_on_missing: true, kind: :find_by))
 
     # --- [ DESIGN #3 ] B. Existence / emptiness -> SymbolicBool -------------
     # NOTE: `if Post.exists?(...)` hits the Ruby truthiness gap (TODO.txt) —
@@ -548,7 +667,24 @@ module ConcolicTargets
     }.each do |m, (mod, seed)|
       interceptor.declare_target(mod, m, returns: lambda do |receiver, args, name|
         vn = "#{name}_#{m.to_s.delete('?')}"
-        symbool(vn, seed_for(vn, seed), note: sql_for(receiver, args))
+        # finder_sql (not sql_for): merges find_by/exists? kwargs/hash
+        # conditions into the note (P-2: Post.exists?(guid: …) real shape is
+        # SELECT 1 AS one FROM posts WHERE guid = ? LIMIT ?).
+        note = (m == :exists? ? finder_sql(receiver, args) : sql_for(receiver, args))
+        # 2026-09-04 (people_show adversarial repair R1, P-2, matrix T-a):
+        # FinderMethods#exists? stands in for the existence probe
+        # `SELECT 1 AS one FROM <t> WHERE <col> = ? LIMIT ?` — never
+        # SELECT t.* (T4). Rewrite the projection + append LIMIT 1.
+        if m == :exists?
+          begin
+            note = note.sub(/\ASELECT\s+(DISTINCT\s+)?.*?\s+FROM /m, "SELECT 1 AS one FROM ")
+            note = strip_order_for_aggregate(note)
+            note = "#{note} LIMIT 1" unless note =~ /LIMIT\s+\?/i
+          rescue StandardError
+            nil
+          end
+        end
+        symbool(vn, seed_for(vn, seed), note: note)
       end)
     end
 
@@ -570,6 +706,7 @@ module ConcolicTargets
       note = sql_for(receiver, args)
       begin
         note = note.sub(/\ASELECT\s+(DISTINCT\s+)?.*?\s+FROM /m, "SELECT COUNT(*) FROM ")
+        note = strip_order_for_aggregate(note)
       rescue StandardError
         nil
       end
@@ -596,6 +733,7 @@ module ConcolicTargets
           else
             note = note.sub(/\ASELECT\s+(DISTINCT\s+)?.*?\s+FROM /m, "SELECT COUNT(*) FROM ")
           end
+          note = strip_order_for_aggregate(note)
         rescue StandardError
           nil # projection rewrite must never crash the mock
         end
@@ -643,6 +781,26 @@ module ConcolicTargets
                   base.protected_instance_methods.include?(m)
       interceptor.declare_target(base, m, returns: lambda do |receiver, args, name|
         symbool("#{name}_#{m}_ok", true, note: "#{receiver.class.name}##{m} args=#{args.inspect}")
+      end)
+    end
+
+    # --- [ DESIGN #8b ] F2. Unconditional instance writes -> SQL DML notes ---
+    # 2026-09-04 (people_show adversarial repair R1, P-1, matrix T-af): the
+    # write family's legacy notes are non-SQL strings, so `_is_dml` in both
+    # judges DROPS them — no symbolic_call could carry an UPDATE, and the
+    # real `UPDATE "notifications" SET "unread" = ? WHERE id = ?` (from
+    # Notification#set_read_state -> Persistence#update_column, fired by
+    # people_controller#show:173-177 mark_corresponding_notifications_read on
+    # EVERY signed-in show) scored NOTE-MISSING. update_column/update_columns
+    # are UNCONDITIONAL writes (no dirty gate — exact note, no over-emission).
+    # Dirty-gated members (save/update/...) keep their legacy notes here;
+    # this endpoint's show path only reaches update_column via set_read_state.
+    %i[update_column update_columns].each do |m|
+      next unless base.instance_methods.include?(m) ||
+                  base.private_instance_methods.include?(m) ||
+                  base.protected_instance_methods.include?(m)
+      interceptor.declare_target(base, m, returns: lambda do |receiver, args, name|
+        symbool("#{name}_#{m}_ok", true, note: dml_update_note(receiver, args))
       end)
     end
 
@@ -984,7 +1142,7 @@ module ConcolicTargets
                   col = refl.foreign_key
                   fk_raw = owner[refl.active_record_primary_key]
                 end
-                %(SELECT "#{table}".* FROM "#{table}" WHERE "#{table}"."#{col}" = #{render_arg_value(fk_raw)})
+                %(SELECT "#{table}".* FROM "#{table}" WHERE "#{table}"."#{col}" = #{render_arg_value(fk_raw)} LIMIT 1)
               rescue StandardError
                 "SingularAssociation##{refl.name}"
               end
@@ -1493,13 +1651,41 @@ module ConcolicTargets
     # .process is the single SQL-free pipe entry; mocking it to return the
     # concrete text skips the whole formatting chain (pure string transforms,
     # no SQL). The rendered text feeds presenter JSON — not branch logic.
+    #
+    # P-2 (2026-09-04, adversary R1): the pipe is NOT always SQL-free —
+    # diaspora_links runs `Post.exists?(guid: url[3])` for diaspora:// post
+    # URLs (ProfilePresenter#private_hash bio/location on people_show). For
+    # PLAIN String messages (bio/location seeded via symbolic_instance's
+    # @bio_message/@location_message overrides) replicate diaspora_links so
+    # the declared FinderMethods.exists? target fires (P-2 posts.guid shape:
+    # SELECT 1 AS one FROM "posts" WHERE "posts"."guid" = ? LIMIT ?). For
+    # SymbolicString messages keep the concrete fallback (stream post text)
+    # to avoid the SymbolicString#gsub wall.
     if defined?(Diaspora::MessageRenderer::Processor) &&
        Diaspora::MessageRenderer::Processor.respond_to?(:process)
       interceptor.declare_target(
         Diaspora::MessageRenderer::Processor.singleton_class, :process,
         returns: lambda do |_r, args, name|
           m = args["message"]
-          v = m.respond_to?(:value) ? m.value : String(m)
+          if m.is_a?(SymbolicString)
+            v = m.value
+          else
+            v = m.to_s
+            # replicate diaspora_links (message_renderer.rb) for plain text:
+            # the real pipe reaches a declared target here (Post.exists?)
+            if defined?(DiasporaFederation::Federation::DiasporaUrlParser::DIASPORA_URL_REGEX)
+              v = v.gsub(DiasporaFederation::Federation::DiasporaUrlParser::DIASPORA_URL_REGEX) do |match_str|
+                guid = Regexp.last_match(3)
+                # P-2: pass the guid as a SymStr so the finder mock renders
+                # `WHERE "posts"."guid" = $$(SYM_...)` (a $$ bind — the
+                # concrete-quoted literal would not wildcard to the real
+                # `=?` bind in mock_note_check).
+                sym_guid = symstr("SYM_POSTS_GUID", guid.to_s, note: "bio/location diasporalink guid")
+                (Regexp.last_match(2) == "post" && Post.exists?(guid: sym_guid)) ?
+                  AppConfig.url_to("/posts/#{guid}") : match_str
+              end
+            end
+          end
           ConcreteSymbolicString.build(v.to_s, name: name,
                                        note: "Diaspora::MessageRenderer::Processor.process")
         end

@@ -595,3 +595,151 @@ format items still need the FUTURE_WORK3 co-mint harness.
 
 Commit scope (people_show-only): `coverage_assumptions.py`,
 `coverage_summary.json`, `AGENT_RUN.md`.
+
+---
+
+# R1 ADVERSARY REPAIR CYCLE (2026-09-04, evening) — signed-in harness + boundary fix
+
+## Status: R1's 10 wins (P-1..P-10) re-checked against the real-run demand universe;
+## P-1/P-2/P-9/P-10 CLOSED with judge-green evidence; P-3/P-4/P-5/P-6 closed via the
+## signed-in harness extension; P-7/P-8 remain OPEN (layout asset wall, endpoint-level,
+## not sanctioned). Rule-T consequence analysis: closed endpoints unaffected (evidence
+## in this addendum).
+
+## Scope & authority
+
+- The R1 adversary round found 10 real wins (P-1..P-10) — the previous
+  `coverage_complete=true` (commit b194618) is VOID.
+- User (18:57 UTC) unfroze the SHARED target boundary for a scoped repair:
+  EXTEND exactly 4 sanctioned families (write — P-1; exists? — P-2; pluck — P-9;
+  owner_id direction — P-10), minimal + documented. Everything else stays
+  copy-level (people_show `concolic_targets.rb` / `targets.rb` / `run_dse.rb`).
+- The warden `users` SELECT (`SELECT "users".* FROM "users" WHERE "users"."id" = ?
+  ORDER BY "users"."id" ASC LIMIT ?`) is EXCLUDED by the R1 entrypoint definition
+  (the single pre-entrypoint statement; boundary, excluded) — NOT repaired.
+
+## What was done — boundary (shared root `reports/diaspora/concolic_targets.rb`)
+
+1. **P-1 write family** — `ActiveRecord::Base#update_column/#update_columns` now
+   declared with a SQL-shaped DML note (`dml_update_note`): renders
+   `UPDATE "<t>" SET "<col>" = <val> WHERE "<t>"."<pk>" = <pkval>` (values symbolic
+   via `render_arg_value`). Root cause: notes were non-SQL ("instance write"), so
+   `_is_dml` in both judges DROPPED every write note and the real
+   `UPDATE "notifications" SET "unread" = ? ...` scored NOTE-MISSING.
+   Frame normalization added to `concrete_aliases.json`:
+   `ActiveRecord::Persistence.update_column ↔ ActiveRecord::Base.update_column`
+   (the corpus declares on Base to win the MRO race; the real run's frame is
+   Persistence#update_column).
+2. **P-2 exists? family** — the shared `find`/`find_by` mock's exists?-branch now
+   rewrites the note to the REAL probe shape `SELECT 1 AS one FROM <t> WHERE ...`
+   and appends `LIMIT 1` (matrix T-a, T4). Before: the note was `SELECT t.*`.
+3. **P-9 pluck family** — `ActiveRecord::Calculations#pluck` declared as a real
+   design mock (was UNSUPPORTED): length-only IterableSymbolicList with per-column
+   representative, note carrying the real projection
+   (`SELECT "t"."c1", "t"."c2" ... FROM ...`), column list recovered from the
+   batch PluckArgs thread-local. Plus: symbolic instances now model DB-LOADED
+   records (`@new_record = false`) so has_many associations don't null-scope to
+   NullRelation and the pluck target actually fires.
+4. **P-10 owner_id direction** — the SingularAssociation find_target mock now
+   renders the REAL SQL from the association reflection: belongs_to → target by
+   its own primary key; has_one → target by `refl.foreign_key = owner[pk]`
+   (the missing `people.owner_id = <user.id>` direction for `User has_one :person`).
+
+## What was done — harness (people_show, copy-level)
+
+- `run_dse.rb` / `targets.rb`: signed-in scenarios (malicious user 9 / person 1
+  principal): `current_user`/`user_signed_in?` bypass Devise/StubWarden; format
+  leg mapping (`fmt = (leg == :html) ? nil : leg`); `remote?` seed derived from
+  `Thread.current[:people_show_username_seed]`; `remote?` returns native true/nil
+  with an explicit PC record (closes the Ruby truthiness gap — bare `if sym_bool`
+  is always truthy), so the controller's `if @person.try(:remote?)` guard branches
+  correctly and NM-1 (anon+remote → 401 throw :warden) is modeled.
+- `UserSymPersonAssociation#person` now routes through the REAL AR has_one reader
+  (`association(:person).reader`) → W3 find_target mock mints the
+  `people.owner_id = $$(SYM_USER_PE_id)` note (memoized per run), with a
+  `rescue StandardError` fallback to the old fabricated instance. Dropped the
+  broken singleton `define_singleton_method(:person)` + prepend-mod dance.
+- X6h (`Diaspora::MessageRenderer::Processor.process`) conditional dispatch:
+  SymbolicString messages keep the concrete fallback (gsub wall); plain String
+  messages replicate `diaspora_links` EXACTLY (gsub over DIASPORA_URL_REGEX →
+  `Post.exists?(guid: sym_guid)` on the post scheme). Profile bio/location seeded
+  as plain diaspora-URL strings (`@bio_message`/`@location_message`) so the
+  private_hash bio renders the P-2 exists? statements.
+- Finder-note fidelity (port from notifications_index reference): `finder_note`
+  appends `ORDER BY <pk> ASC/DESC` ONLY for first/last/take (NOT find_by — the
+  real find_by has LIMIT but no ORDER), and appends `LIMIT 1` for all single-row
+  finders; `find_target` mock appends `LIMIT 1`; aggregate notes (exists?/size/
+  count) stripped of ORDER BY (real aggregates drop it); DML SET clause renders
+  bare column names (`SET "unread" = ...`, not table-qualified).
+
+## Campaign & judges
+
+- Bounded campaign: 9 scenarios × `MAX_RUNS=8 TIME_BUDGET=1500` (fresh 55 dumps,
+  every scenario hit the cap cleanly).
+- `mock_note_check` (primary judge): C06 anon control, C07 anon_remote_401,
+  C09 missing_person GREEN. C01/C02/C03/C04/C05/C08 RED **only** on the excluded
+  warden users-load + P-7 (aspects.post_default, C01) + P-8 (mobile mentions/likes,
+  C05). All 4 sanctioned families pass.
+- `note_fidelity_audit` (stricter projection pass): EXACT 21; remaining 13 REDs
+  classified:
+  - MISSING 5 = locations/polls/mentions×2 (P-8 mobile) + warden users (excluded)
+  - AGG-COLLAPSE 1 = photos status_message_guid (P-8)
+  - PRED-OP-DIFF 3 = photos count (P-8), aspects post_default (P-7), likes IN (P-8)
+  - LIMIT-DIFF 2 = `people.id` / `profiles.person_id` under Contact
+    `includes(person: :profile)` EAGER-LOAD (real `Relation#records` has no LIMIT;
+    corpus only has find_target LIMIT-1 notes) — P-4 endpoint-level, not sanctioned
+  - ORDER-DIFF 2 = aspects COUNT ORDER BY (P-7), visibility COUNT subquery wrapper
+    (P-3 endpoint-level)
+- Boundary shape inventory (`_check_boundary_shapes2.py`, 55 dumps):
+  P1_update_notif **28** (auth), P2_exists_posts **16** (anon+auth),
+  P2_exists_aspects **6**, P2_exists_roles **14**, P9_pluck_tags **54**,
+  P10_owner_dir **28** (auth); P10_user_scope **0** (warden load, excluded);
+  P3_closed **0** (C08's real statements are warden + diaspora_handle lookup,
+  both covered; redirect short-circuits presenter SQL).
+- Endpoint-level P-3/P-4/P-5/P-6 closed WITHOUT boundary changes — the signed-in
+  harness alone reaches the app paths: contacts find_by 40 notes, blocks find_by
+  25 notes, notifications recipient_id 58 notes, visibility COUNT join 6 notes
+  (verified in auth_self_html dumps with correct predicates).
+
+## Rule-T consequence analysis (closed endpoints — REPORT, no regeneration)
+
+Evidence: the closed endpoints (conversations_index, comments_index, people_stream,
+posts_show, notifications_index) load their OWN private `concolic_targets.rb`
+copies (`require_relative "concolic_targets"`) — NOT the shared root. Their copies
+were NOT modified (git status clean). Scanned their FULL corpora for the 4 family
+shapes:
+
+| family | conversations_index (18,623 dumps) | comments_index (26,583 files) | consequence |
+|---|---|---|---|
+| P-1 write (update_column) | 0 × UPDATE notifications; uses `update_all` (SQL note) for conversation_visibilities (1,832) | 0 × UPDATE any | absent from demand — no defect fired |
+| P-2 exists? | 2,216 files with `SELECT 1 AS one FROM "posts"`; copy declares exists? (line 1582), LIMIT-1 faithful | 19,415 files; copy declares exists? (line 1594), LIMIT-1 faithful | already handled by closed copies (C-4/M-1/N-1 closed in their own rounds) |
+| P-9 pluck | 18,543 files; faithful projection via ConvLoadedRelation (targets.rb §1b) | 0 pluck | already handled by conversations copy; absent from comments demand |
+| P-10 owner_id | 0 | 0 | absent from demand |
+
+**Verdict: NO material consequence.** Both closed endpoints either never exercised
+the defective family in their demand universes (P-1/P-10 everywhere; P-9 in
+comments_index) or already had faithful handling in their private copies (P-2
+exists? in both; P-9 in conversations_index). Their `complete: true` claims
+stand. The shared-root template sync is forward-looking ONLY — no closed corpus
+is regenerated (per user instruction), and the shared root is never loaded by
+any batch runner.
+
+## Honest coverage verdict
+
+- **CLOSED (judge-green)**: P-1 write (update_column), P-2 exists? (posts/aspects/
+  roles), P-9 pluck (tags), P-10 owner_id direction — the 4 sanctioned families,
+  verified by both judges on the fresh 55-dump corpus.
+- **CLOSED via harness (no boundary change)**: P-3 (visibility COUNT join, C02/C03,
+  endpoint-level but reached), P-4 (contacts find_by ease per endpoint), P-5
+  (blocks find_by), P-6 (notifications recipient_id) — the signed-in scenarios
+  reach these app paths with correct predicates.
+- **REMAIN OPEN (not sanctioned, endpoint-level)**: P-7 (aspects.post_default —
+  publisher `post_default_aspects` in the signed-in LAYOUT render, truncated by
+  the sprockets asset wall `couldn't find file 'underscore'`) and P-8 (5 mobile
+  stream shapes: polls.status_message_id, locations.status_message_id, photos
+  status_message_guid COUNT, mentions.mentions_container_id, likes author_id IN)
+  — both outside the 4 sanctioned boundary families and blocked by the layout/
+  mobile asset walls; documented as remaining, not repaired.
+- **EXCLUDED**: warden users-load (`users WHERE id`, the entrypoint's boundary
+  statement); P-3_closed marker (0 real statements — C08 redirect short-circuits
+  before presenter SQL).

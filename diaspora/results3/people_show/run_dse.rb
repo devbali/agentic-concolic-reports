@@ -118,8 +118,15 @@ class StubWarden
   def initialize(user)
     @user = user
   end
-  def authenticate!(*_a); @user; end
-  def authenticated?(*_a); true; end
+  # Real warden throws :warden when no strategy authenticates the request.
+  # Devise's authenticate_user! calls warden.authenticate! and relies on the
+  # throw to abort with 401 (NM-1: anon + remote profile -> authenticate_user!
+  # in people_controller#authenticate_if_remote_profile! -> 401, 0 bytes).
+  def authenticate!(*_a)
+    throw(:warden, @user) if @user.nil?
+    @user
+  end
+  def authenticated?(*_a); !@user.nil?; end
   def user(*_a); @user; end
 end
 
@@ -142,9 +149,12 @@ SCENARIOS = {
   # The mission's named target: format.all (html) -> gon.preloads[:person] =
   # @presenter.as_json, Photo.visible(...).count(:all), then the real
   # show.html.haml/with_header layout render (title/meta_data content_for
-  # blocks call @presenter.name / @presenter.metas_attributes).
+  # blocks call @presenter.name / @presenter.metas_attributes). Local handle
+  # (alice@localhost) so the anon full-page render is a REAL state (anon +
+  # REMOTE handle 401s — adversary NM-1/C07; see anon_remote_401 scenario).
   "anon_handle" => {
     format: nil,
+    username_default: "alice@localhost",
     desc: "anonymous, default/html format -> gon.preloads presenter chain + " \
           "Photo.visible(...).count + real show.html.haml/with_header render",
   },
@@ -153,6 +163,7 @@ SCENARIOS = {
   # walls are layout-specific vs presenter-chain-specific.
   "anon_json" => {
     format: :json,
+    username_default: "alice@localhost",
     desc: "anonymous, json format -> render json: @presenter.as_json " \
           "(PersonPresenter/ProfilePresenter#as_json chain, no html layout)",
   },
@@ -174,6 +185,7 @@ SCENARIOS = {
   # @post_type == :all selects the .stream branch of show.mobile.haml.
   "anon_mobile" => {
     format: :mobile,
+    username_default: "alice@localhost",
     desc: "anonymous, mobile format -> show.mobile.haml: Stream::Person#stream_posts " \
           "(for_a_stream + like_posts_for_stream! chain) + mobile layout render",
   },
@@ -193,10 +205,65 @@ SCENARIOS = {
   "anon_mobile_presenter" => {
     format: :mobile,
     dual: true,
+    username_default: "alice@localhost",
     desc: "anonymous, DUAL-FORMAT run: format.all html presenter render (bare " \
           "records_1/2 block/contact checks) + format.mobile stream render " \
           "(posts rows) in ONE interceptor run -> co-mints both var families " \
           "to witness the 48 cross-format missing items (FUTURE-WORK #3 Option A)",
+  },
+  # --- 2026-09-04 adversarial repair R1: SIGNED-IN scenarios (P-3..P-8, P-10) ---
+  # The corpus was anon-only BY CONSTRUCTION (harness hard-wired current_user
+  # = nil). The real signed-in show adds notifications read + update_column
+  # WRITE (P-1), contact_for/block_for (P-4/P-5), Photo.visible user arm
+  # (P-3-shape), private_hash Post.exiss? (P-2-reach), publisher aspects
+  # (P-8), mobile stream user-arm (P-9 tags pluck + stream joins). Each
+  # signed-in scenario wires current_user = the symbolic signed-in principal
+  # (real association readers fire the declared targets — P-10 owner_id via
+  # W3 find_target on User#person).
+  "auth_self_html" => {
+    format: nil,
+    sign_in: true,
+    username_default: "alice@localhost",
+    desc: "SIGNED-IN html — own profile: mark_corresponding_notifications_read " \
+          "(notifications SELECT + update_column WRITE), contact_for/block_for, " \
+          "private_hash Post.exiss?, Photo.visible SELF arm, publisher aspects",
+  },
+  # user.person.id seeded 2 != @person.id (1) -> `person == user.person`
+  # resolves 1==2 false -> the OTHER arm (share_visibilities JOIN + OR).
+  "auth_other_html" => {
+    format: nil,
+    sign_in: true,
+    seeds: { "assoc_person_id" => 2 },
+    username_default: "alice@localhost",
+    desc: "SIGNED-IN html — OTHER person (user.person.id=2 != @person.id=1): " \
+          "Photo.visible OTHER arm (share_visibilities JOIN + (user_id = ? OR " \
+          "public = ?)), contact_for/block_for, notifications, private_hash exists?",
+  },
+  "auth_json" => {
+    format: :json,
+    sign_in: true,
+    seeds: { "assoc_person_id" => 2 },
+    username_default: "alice@localhost",
+    desc: "SIGNED-IN json — presenter chain: contact_for, block_for, " \
+          "private_hash Post.exiss?, tags pluck (Calculations.pluck frame)",
+  },
+  "auth_mobile" => {
+    format: :mobile,
+    sign_in: true,
+    seeds: { "assoc_person_id" => 2 },
+    username_default: "alice@localhost",
+    desc: "SIGNED-IN mobile — stream user-arm: Post.from_person_visible_by_user " \
+          "(DISTINCT + share_visibilities JOIN), like_posts_for_stream! " \
+          "(likes IN), mentions eager-load, polls/locations/photos assoc, " \
+          "photo COUNT",
+  },
+  # NM-1 (adversary C07): anon + REMOTE handle -> authenticate_if_remote_profile!
+  # -> authenticate_user! -> throw :warden -> 401 (0 bytes). Modeled as a
+  # terminal: run dumps the pre-auth finder SQL + the warden_401 error.
+  "anon_remote_401" => {
+    format: nil,
+    username_default: "bob@remote.example.org",
+    desc: "ANON + remote handle -> throw :warden -> 401 (NM-1), finder-only SQL",
   },
 }.freeze
 
@@ -204,7 +271,11 @@ SCENARIOS = {
 # One execution of a REAL PeopleController#show under a seed assignment.
 # ---------------------------------------------------------------------------
 def run_one(prefix, label, seeds)
-  ConcolicTargets.seed_overrides = seeds
+  scen = SCENARIOS.fetch(prefix)
+  # 2026-09-04 (R1): scenario-local seeds (auth_other/auth_json/auth_mobile
+  # force assoc_person_id = 2 so the person == user.person OTHER arm is
+  # reachable) merge AFTER the DSE seeds — scenario seed wins on conflict.
+  ConcolicTargets.seed_overrides = seeds.merge(scen[:seeds] || {})
   PeopleTargets.begin_run!
   # boundary fix 2 (2026-09-03): per-run reset of the GonPreloadsShim ivar
   # (concolic_targets.rb X6b-preloads) so gon.preloads data cannot leak
@@ -212,22 +283,36 @@ def run_one(prefix, label, seeds)
   if defined?(::Gon) && ::Gon.instance_variable_defined?(:@concolic_preloads)
     ::Gon.instance_variable_set(:@concolic_preloads, {})
   end
-  user = PeopleTargets.symbolic_user("PE") # built fresh; unused as current_user (anon scenario)
+  # 2026-09-04 (R1): signed-in runs use the REAL signed-in principal
+  # constructor (no query-masking overrides) — see targets.rb#signed_in_user.
+  user = if scen[:sign_in]
+           PeopleTargets.signed_in_user("PE")
+         else
+           PeopleTargets.symbolic_user("PE") # legacy anon principal (never wired as current_user)
+         end
 
-  sym_username = PeopleShowSymParams.symbolic_username(PARAM_DEFAULT)
-  scen = SCENARIOS.fetch(prefix)
+  sym_username = PeopleShowSymParams.symbolic_username(scen[:username_default] || PARAM_DEFAULT)
+  # 2026-09-04: remote? seed source — the CONCRETE username seed (the symbolic
+  # person's diaspora_handle column value is the opaque var name, unusable for
+  # host checks). "alice@localhost" seeds remote?=false; foreign hosts true.
+  Thread.current[:people_show_username_seed] = scen[:username_default] || PARAM_DEFAULT
 
   # FUTURE-WORK #3: dual-format leg — build a FRESH harness per render so the
   # two request cycles stay isolated (controller/test-case/request ivars,
   # response buffers), then run BOTH processes inside one interceptor block.
+  # 2026-09-04 (R1): signed-in wiring — current_user / user_signed_in? per
+  # scenario; warden stub matches (authenticate! -> user when signed-in,
+  # nil when anon so authenticate_user! throws :warden on remote profiles =
+  # real 401, NM-1).
+  sign_in = scen[:sign_in] == true
   dual_render = lambda do
     legs = scen[:dual] ? [:html, :mobile] : [scen[:format]]
     legs.map do |leg|
       c2, t2 = make_harness(PeopleController)
-      c2.singleton_class.define_method(:current_user)    { nil }
-      c2.singleton_class.define_method(:user_signed_in?) { false }
-      t2.instance_variable_get(:@request).env["warden"] = StubWarden.new(user)
-      fmt = leg == :html ? nil : :mobile
+      c2.singleton_class.define_method(:current_user)    { sign_in ? user : nil }
+      c2.singleton_class.define_method(:user_signed_in?) { sign_in ? true : false }
+      t2.instance_variable_get(:@request).env["warden"] = StubWarden.new(sign_in ? user : nil)
+      fmt = (leg == :html) ? nil : leg # html legs use format.all (nil); json/mobile pass through
       begin
         t2.process(:show, method: "GET", params: { username: sym_username }, format: fmt)
       rescue Exception => e # rubocop:disable Lint/RescueException
@@ -242,9 +327,21 @@ def run_one(prefix, label, seeds)
     end
   end
 
+  # 2026-09-04 (R1, NM-1): anon + remote profile -> authenticate_if_remote_profile!
+  # -> authenticate_user! -> warden.authenticate! returns nil (StubWarden anon)
+  # -> throw(:warden). catch(:warden) turns that into a 401 TERMINAL dump
+  # (error "warden_401") instead of an uncaught-throw harness crash. The
+  # pre-throw finder SQL (Person.where(...).first) is still recorded in the
+  # dump, matching the real 0-byte 401 page (C07).
+  warden_thrown = false
   dump = $interceptor.run(
     -> {
-      dual_render.call
+      thrown = catch(:warden) do
+        dual_render.call
+        :no_throw
+      end
+      # catch returns the throw VALUE when thrown; :no_throw sentinel otherwise.
+      warden_thrown = (thrown != :no_throw)
       :ok
     },
     {}, label: label, script: "run_dse.rb"
@@ -254,6 +351,10 @@ def run_one(prefix, label, seeds)
   # (call_interceptor.rb — #run only ever reads the slice belonging to the
   # current run). Clearing between runs is behaviour-preserving.
   $interceptor.instance_variable_get(:@all_calls).clear
+  if warden_thrown
+    dump ||= {}
+    dump["error"] = { "type" => "Warden::Unauthenticated => 401 (warden_401, NM-1)" }
+  end
   dump
 end
 

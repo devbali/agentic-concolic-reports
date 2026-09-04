@@ -123,6 +123,34 @@ module ConcolicTargets
     args.is_a?(Hash) ? args.map { |k, v| "#{k}=#{render_arg_value(v)}" }.join(", ") : args.inspect
   end
 
+  # 2026-09-04 (people_show adversarial repair R1, P-1): SQL-shaped note for
+  # the unconditional instance-write targets (update_column/update_columns).
+  # The interceptor's call_args is a {param_name => value} hash built from
+  # the ORIGINAL method's parameters — for AR 5.2 update_column that is
+  # {column_name:, value:}; for update_columns it is {attributes: {…}}.
+  # Renders UPDATE "<t>" SET "<col>" = <val> WHERE "<t>"."<pk>" = <pkval>
+  # so the judge's _is_dml filter keeps it (writes are now witnessable).
+  def dml_update_note(receiver, args)
+    table = receiver.class.respond_to?(:table_name) ? receiver.class.table_name : receiver.class.name
+    pk = receiver.class.respond_to?(:primary_key) ? receiver.class.primary_key : "id"
+    pkv = begin
+      receiver.respond_to?(pk) ? receiver.send(pk) : nil
+    rescue StandardError
+      nil
+    end
+    sets = if (attrs = args["attributes"]).is_a?(Hash) && !attrs.empty?
+             attrs.map { |k, v| %("#{table}"."#{k}" = #{render_arg_value(v)}) }.join(", ")
+           elsif (col = args["column_name"])
+             %("#{table}"."#{col}" = #{render_arg_value(args["value"])})
+           else
+             "(unknown columns)"
+           end
+    %(UPDATE "#{table}" SET #{sets} WHERE "#{table}"."#{pk}" = #{render_arg_value(pkv)})
+  rescue StandardError => e
+    "#{receiver.class.name} instance write (note render failed: #{e.class})"
+  end
+
+
   def render_arg_value(v)
     if v.respond_to?(:sym_name) && v.sym_name
       "$$(#{v.sym_name})"
@@ -311,7 +339,20 @@ module ConcolicTargets
     obj.instance_variable_set(:@_start_transaction_state, {})
     obj.instance_variable_set(:@start_transaction_state, {})
     obj.instance_variable_set(:@_trigger_transaction_callback, false)
-    obj.instance_variable_set(:@new_record, true)
+    # 2026-09-04 (people_show adversarial repair R1, P-9): symbolic instances
+    # model DB-LOADED records (every one is minted by a finder/association
+    # mock standing in for a SELECT), so @new_record must be FALSE.
+    # With true, CollectionAssociation#null_scope? (owner.new_record? &&
+    # !foreign_key_present?) short-circuits every has_many association on a
+    # symbolic owner to a NullRelation: `profile.tags` scope is `.none!`
+    # (where!("1=0").extending!(NullRelation)), so `tags.pluck(:name)`
+    # dispatches to NullRelation#pluck -> [] and NEVER reaches the declared
+    # ActiveRecord::Calculations#pluck target — the tags statement was being
+    # minted under CollectionProxy.records instead (adversary P-9). With
+    # new_record? == false the association scope is a real Relation and the
+    # declared pluck/records/count/exists? targets fire under their real
+    # frames (verified probe: Calculations.pluck note now minted).
+    obj.instance_variable_set(:@new_record, false)
     obj.instance_variable_set(:@destroyed, false)
     obj.instance_variable_set(:@readonly, false)
     obj
@@ -436,7 +477,23 @@ module ConcolicTargets
     }.each do |m, (mod, seed)|
       interceptor.declare_target(mod, m, returns: lambda do |receiver, args, name|
         vn = "#{name}_#{m.to_s.delete('?')}"
-        symbool(vn, seed_for(vn, seed), note: sql_for(receiver, args))
+        note = sql_for(receiver, args)
+        # 2026-09-04 (people_show adversarial repair R1, P-2, matrix T-a):
+        # FinderMethods#exists? stands in for the existence probe
+        # `SELECT 1 AS one FROM <t> WHERE <col> = ? LIMIT ?` — never
+        # `SELECT t.*` (T4). Render the probe shape so the note is faithful
+        # even though the judge would accept the t.* form (projection {} ⊆
+        # {"*"}). sql_for on the relation gives `SELECT t.* …`; rewrite the
+        # projection and append LIMIT 1 (the judge ignores LIMIT, T4 wants it).
+        if m == :exists?
+          begin
+            note = note.sub(/\ASELECT\s+(DISTINCT\s+)?.*?\s+FROM /m, "SELECT 1 AS one FROM ")
+            note = "#{note} LIMIT 1" unless note =~ /LIMIT\s+\?/i
+          rescue StandardError
+            nil
+          end
+        end
+        symbool(vn, seed_for(vn, seed), note: note)
       end)
     end
 
@@ -490,7 +547,63 @@ module ConcolicTargets
         symint(vn, seed_for(vn, m == :count ? 1 : 0), note: note)
       end)
     end
-    %i[pluck ids average minimum maximum calculate].each do |m|
+    # --- [ DESIGN #5b ] D2. Calculations#pluck -> IterableSymbolicList -------
+    # 2026-09-04 (people_show adversarial repair R1, P-9, matrix T-ag): pluck
+    # was declared UNSUPPORTED, so the `ProfilePresenter tags.pluck(:name)`
+    # statement (fires on EVERY show) was minted under CollectionProxy.records
+    # instead — the pluck frame carried zero notes and mock_note_check scored
+    # NOTE-MISSING on every run incl. the anon control. pluck IS the query
+    # boundary (same role as records/to_a — see results2/conversations_index
+    # targets.rb §1b and results3/people_show targets.rb for the identical
+    # descent), so the shared boundary now declares it as a real design mock:
+    # length-only IterableSymbolicList with a per-column representative, and a
+    # SQL note carrying the projection (SELECT "t"."col1", "t"."col2" …)
+    # instead of SELECT t.* — matches the real pluck statements.
+    # The pluck column list is recovered via the PluckArgs-style prepend each
+    # batch already installs (PeopleShowPluckArgs / conversations PluckArgs);
+    # if no column was captured, fall back to "*"-shaped note + one value rep.
+    if calc.method_defined?(:pluck)
+      interceptor.declare_target(calc, :pluck, returns: lambda do |receiver, args, name|
+        vn   = "#{name}_plucked"
+        cols = (Thread.current[:people_show_pluck_cols] ||
+                Thread.current[:conversations_pluck_cols] ||
+                []).map(&:to_s)
+        note = sql_for(receiver, args)
+        begin
+          unless cols.empty?
+            tbl = (receiver.respond_to?(:table_name) && receiver.table_name) ||
+                  (receiver.respond_to?(:klass) && receiver.klass.table_name)
+            proj = cols.map { |c| %("#{tbl}"."#{c.split('.').last}") }.join(", ")
+            note = note.sub(/\ASELECT\s+(DISTINCT\s+)?.*?\s+FROM /m, "SELECT #{proj} FROM ")
+          end
+        rescue StandardError
+          nil # projection rewrite must never crash the mock
+        end
+        cols = ["value"] if cols.empty?
+        vals = cols.each_with_index.map do |c, i|
+          var = cols.size == 1 ? "#{name}_pluck_#{c.split('.').last}" : "#{name}_pluck#{i}_#{c.split('.').last}"
+          # self-contained column symboliser (root has no PeopleTargets.
+          # sym_for_column — each batch's copy may reuse its own). Type comes
+          # from the relation klass's columns_hash; untyped -> string.
+          begin
+            klass = model_class(receiver)
+            bare  = c.to_s.split('.').last.to_s
+            type  = klass.respond_to?(:columns_hash) ? klass.columns_hash[bare]&.type : nil
+          rescue StandardError
+            type = nil
+          end
+          case type
+          when :integer, :bigint, :float, :decimal then symint(var, seed_for(var, 1),  note: note)
+          when :boolean                           then symbool(var, seed_for(var, false), note: note)
+          else                                         symstr(var, seed_for(var, "sym_#{bare}"), note: note)
+          end
+        end
+        rep = cols.size == 1 ? vals.first : vals
+        IterableSymbolicList.new(seed_for("len(#{vn})", 1), name: vn,
+                                 note: note, representative: rep)
+      end)
+    end
+    %i[ids average minimum maximum calculate].each do |m|
       interceptor.declare_target(calc, m, returns: ->(_r, _a, _n) { UNSUPPORTED.call("Calculations##{m}") })
     end
 
@@ -531,6 +644,34 @@ module ConcolicTargets
                   base.protected_instance_methods.include?(m)
       interceptor.declare_target(base, m, returns: lambda do |receiver, args, name|
         symbool("#{name}_#{m}_ok", true, note: "#{receiver.class.name}##{m} args=#{args.inspect}")
+      end)
+    end
+
+    # --- [ DESIGN #8b ] F2. Unconditional instance writes -> SQL DML notes ---
+    # 2026-09-04 (people_show adversarial repair R1, P-1, matrix T-af): the
+    # write family was declared but its notes were non-SQL strings
+    # ("Model#save args=..."), so `_is_dml` in both judges DROPPED every
+    # write note — no symbolic_call could carry an UPDATE, and a real
+    # `UPDATE "notifications" SET "unread" = ? WHERE id = ?` (from
+    # Notification#set_read_state -> ActiveRecord::Persistence#update_column)
+    # scored NOTE-MISSING on every signed-in run.
+    #
+    # update_column/update_columns are UNCONDITIONAL writes (no dirty-state
+    # gate — the write fires even when the value is unchanged), so a plain
+    # UPDATE note is exact for them. The dirty-gated members (save/update/
+    # touch/update_attribute) KEEP their legacy notes here; the dirty-state
+    # write modeling (both polarities + negative row) is the conversations_index
+    # copy's local responsibility (C-5/C-14 closed), and this shared root is
+    # never loaded by a batch runner (each batch carries a private copy).
+    # Rendering: UPDATE "<table>" SET "<col>" = <val> WHERE "<table>""."<pk>" = <pkval>
+    # — matches the judge's normalization (DML shapes compare on WHERE
+    # predicate columns; SET rendering is not part of the shape).
+    %i[update_column update_columns].each do |m|
+      next unless base.instance_methods.include?(m) ||
+                  base.private_instance_methods.include?(m) ||
+                  base.protected_instance_methods.include?(m)
+      interceptor.declare_target(base, m, returns: lambda do |receiver, args, name|
+        symbool("#{name}_#{m}_ok", true, note: dml_update_note(receiver, args))
       end)
     end
 
@@ -823,8 +964,30 @@ module ConcolicTargets
             refl = receiver.reflection
             klass = refl.klass
             if klass && klass.respond_to?(:allocate)
-              symbolic_instance(klass, "assoc_#{refl.name}",
-                                "SingularAssociation##{refl.name}")
+              # 2026-09-04 (people_show adversarial repair R1, P-10, matrix
+              # T-ah): render the real SQL find_target stands in for, derived
+              # from the association reflection (target table + FK + owner
+              # key), instead of the junk "SingularAssociation#<name>" note.
+              # belongs_to: FK col lives on the OWNER; target queried by its
+              # own primary key. has_one: FK col lives on the TARGET table,
+              # queried by the owner's primary key — the missing
+              # `people.owner_id = <user.id>` direction (User -> Person).
+              # Never let note-building crash the mock.
+              sql = begin
+                owner = receiver.owner
+                table = klass.table_name
+                if refl.belongs_to?
+                  col = refl.association_primary_key(klass)
+                  fk_raw = owner[refl.foreign_key]
+                else
+                  col = refl.foreign_key
+                  fk_raw = owner[refl.active_record_primary_key]
+                end
+                %(SELECT "#{table}".* FROM "#{table}" WHERE "#{table}"."#{col}" = #{render_arg_value(fk_raw)})
+              rescue StandardError
+                "SingularAssociation##{refl.name}"
+              end
+              symbolic_instance(klass, "assoc_#{refl.name}", sql)
             else
               nil
             end

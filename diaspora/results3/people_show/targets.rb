@@ -69,6 +69,56 @@ module PeopleShowPluckArgs
   end
 end
 
+# 2026-09-04 (people_show adversarial repair R1, P-4/P-5/P-2): recover the
+# kwargs of hash-call finders (find_by/find_by!/exists? with `key: value`
+# syntax). The interceptor's define_method wrapper accepts **kwargs, so Ruby
+# binds hash arguments into kwargs and the wrapper's call_args loses them
+# (its own fallback text documents this src/ gap). This prepend stashes the
+# kwargs in a thread-local for the duration of the call (incl. the nested
+# interceptor wrapper + value_fn); ConcolicTargets#finder_sql merges them
+# into the note so `SELECT "contacts".* … WHERE "user_id" = ? AND
+# "person_id" = ?` renders instead of the opaque fallback. Mirrors the
+# PeopleShowPluckArgs pattern exactly (prepend + thread-local + super).
+module PeopleShowFindByKwargs
+  # Recover finder conditions for the note renderer. Two call forms arrive:
+  #   (a) native kwargs:   find_by(user_id: 1, person_id: p.id)
+  #   (b) CK2P-converted:  ConcolicKwargsToPositional (prepended on
+  #       ActiveRecord::Relation, BELOW us in the MRO) already folded the
+  #       kwargs into a trailing positional Hash before super reaches us —
+  #       so kwargs is empty and args.last is the Hash (this is the actually
+  #       observed form in people_show runs).
+  # Stash whichever form carries the conditions; finder_sql merges them into
+  # the note (SELECT … WHERE u = ? AND p = ?).
+  def stash_finder_kwargs(args, kwargs)
+    kw = kwargs
+    kw = args.last if (kw.nil? || kw.empty?) && args.last.is_a?(Hash) && !args.last.empty?
+    prev = Thread.current[:people_show_find_by_kwargs]
+    unless kw.nil? || kw.empty?
+      Thread.current[:people_show_find_by_kwargs] = kw
+      begin
+        yield
+      ensure
+        Thread.current[:people_show_find_by_kwargs] = prev
+      end
+    else
+      yield
+    end
+  end
+  private :stash_finder_kwargs
+
+  def find_by(*args, **kwargs)
+    stash_finder_kwargs(args, kwargs) { super }
+  end
+
+  def find_by!(*args, **kwargs)
+    stash_finder_kwargs(args, kwargs) { super }
+  end
+
+  def exists?(*args, **kwargs)
+    stash_finder_kwargs(args, kwargs) { super }
+  end
+end
+
 module PeopleTargets
   module_function
 
@@ -104,11 +154,98 @@ module PeopleTargets
     ct = ConcolicTargets
 
     # ---------------------------------------------------------------------
+    # 0. PeopleShowFindByKwargs — recover find_by/exists? kwargs (P-4/P-5).
+    # 2026-09-04 (people_show adversarial repair R1): the interceptor's
+    # wrapper is defined with **kwargs, so hash-call finders
+    # (`Contact.includes(...).find_by(user_id: …)`, `Post.exists?(guid: …)`,
+    # `User.find_by_username(...)`) bind their args into kwargs and call_args
+    # loses them — every such note fell back to the opaque "(WHERE unavailable
+    # …)" string / predicate-less SQL. This prepend stashes the kwargs in a
+    # thread-local around the call; ConcolicTargets#finder_sql merges them
+    # into the rendered note (real SQL shape: SELECT … WHERE u = ? AND p = ?).
+    # MRO after prepend: [PSFBK, FinderMethods (interceptor wrapper)] — super
+    # reaches the wrapper, whose value_fn runs while the thread-local is set.
+    # JRuby 9.3 quirk: `FinderMethods.prepend(PSFBK)` does NOT splice PSFBK
+    # into Relation's already-built ancestor chain (Relation included
+    # FinderMethods at load time; the include point was frozen). Only direct
+    # prepends to Relation / Base.singleton_class appear in the chain (same
+    # pattern as PeopleShowPluckArgs below). Prepend directly so PSFBK sits
+    # ABOVE ConcolicKwargsToPositional and sees the NATIVE kwargs form
+    # (find_by(user_id: 1, person_id: p.id)) before CK2P folds them into a
+    # positional Hash. MRO: [PSFBK, PeopleShowPluckArgs, CK2P, Relation, …].
+    [ActiveRecord::Relation, ActiveRecord::Base.singleton_class].each do |target_klass|
+      next if target_klass.ancestors.include?(PeopleShowFindByKwargs)
+      target_klass.prepend(PeopleShowFindByKwargs)
+    end
+    fm_mod = ActiveRecord::FinderMethods
+    unless fm_mod < PeopleShowFindByKwargs
+      fm_mod.prepend(PeopleShowFindByKwargs)
+    end
+
+    # ---------------------------------------------------------------------
     # 1. Person association readers for finder-symbolic Person records.
     # (ported verbatim from results/people/targets.rb §1)
     # ---------------------------------------------------------------------
     unless Person.ancestors.include?(PersonSymAssociations)
       Person.prepend(PersonSymAssociations)
+    end
+
+    # ---------------------------------------------------------------------
+    # 1b. Person#remote? — pod-boundary DECISION (adversary NM-1, 2026-09-04).
+    # The real app 401s on `authenticate_if_remote_profile!` when an anon
+    # request reaches a REMOTE person's profile (`authenticate_user!` ->
+    # warden throws -> 401, 0 bytes — C07). Person#remote? is
+    # `!local?` where local? is `owner_id.present?` — on a symbolic person
+    # owner_id is a symbolic int, so the real method would resolve present?
+    # concretely-true for EVERY symbolic person (always local) and the 401
+    # arm would be structurally unreachable (and the full-page anon-remote
+    # dumps in the old corpus represent impossible real states).
+    # Model it as a flippable DECISION: host-name-derived for the seed
+    # (handles on a foreign host seed remote? = true), DSE-flippable so both
+    # arms are explored. SQL-free — non-DML note, judges ignore it; it only
+    # feeds the before_action branch + records a PC.
+    if defined?(Person) && (Person.instance_methods.include?(:remote?) ||
+                            Person.private_instance_methods.include?(:remote?))
+      interceptor.declare_target(Person, :remote?, returns: lambda do |receiver, _args, name|
+        vn = "#{name}_remote"
+        # Host-derived seed: any handle NOT on the local pod (…@localhost)
+        # seeds remote? = true; DSE may flip either way. Use the CONCRETE
+        # seed value (same pattern as DiasporaIdBoundaryMock) — a symbolic
+        # diaspora_handle's to_s is identity and !~ is UNSUPPORTED.
+        # 2026-09-04 fix: the symbolic person's own diaspora_handle column
+        # reader returns a SymbolicString whose .value is the SYMBOLIC VAR
+        # NAME (e.g. "SYM_PERSON_diaspora_handle_v"), so a host check on it
+        # ALWAYS seeds remote? = true (even for @localhost handles). The
+        # request param's CONCRETE SEED (Thread.current, set by run_dse.rb
+        # from the scenario's username_default) is the correct host source:
+        # "alice@localhost" -> false, "bob@remote.example.org" -> true.
+        default = begin
+          s = Thread.current[:people_show_username_seed].to_s
+          !s.empty? && s !~ /@localhost/
+        rescue StandardError
+          false
+        end
+        # Ruby truthiness gap (bool.rb TODO.txt): a SymbolicBool wrapping
+        # false is still a TRUTHY Ruby object, so the app's bare
+        # `if @person.try(:remote?)` guard (people_controller.rb
+        # authenticate_if_remote_profile!) would ALWAYS fire for anon
+        # requests — the local-handle full render would be structurally
+        # unreachable and every anon scenario would 401. Fix: record the
+        # flippable PC explicitly (`sym == true` — same expr shape as the
+        # `!` hook: (vn == True), taken = seed value), then return a value
+        # whose RUBY TRUTHINESS matches the seed: `true` for remote (the
+        # interceptor re-wraps it in SymbolicBool(true), truthy — correct)
+        # and `nil` for local (nil passes through to_symbolic unchanged and
+        # is FALSY — correct). The note survives via
+        # Thread.current[:concolic_pending_note] (call_interceptor
+        # extract_note reads it when the returned value carries none).
+        seed = ct.seed_for(vn, default)
+        sym = symbool(vn, seed,
+                      note: "Person#remote? (pod-boundary decision; 401 via authenticate_if_remote_profile! when anon)")
+        taken = (sym == true) # records PC (vn == True), returns native bool
+        Thread.current[:concolic_pending_note] = "Person#remote? (pod-boundary decision; 401 via authenticate_if_remote_profile! when anon)"
+        taken ? true : nil
+      end)
     end
 
     # ---------------------------------------------------------------------
@@ -234,12 +371,33 @@ module PeopleTargets
         def symbolic_instance(klass, base_name, sql)
           obj = symbolic_instance_without_dates(klass, base_name, sql)
           klass.columns_hash.each do |col, meta|
-            next unless %i[date datetime].include?(meta.type)
-            vn = "#{base_name}_#{col}_year"
-            d = ConcolicDate.new(1990, 1, 1)
-            d.sym_year = symint(vn, seed_for(vn, 1990), note: sql)
-            obj.define_singleton_method(col) { d }
-            obj.concolic_attrs[col] = d if obj.respond_to?(:concolic_attrs)
+            if %i[date datetime].include?(meta.type)
+              vn = "#{base_name}_#{col}_year"
+              d = ConcolicDate.new(1990, 1, 1)
+              d.sym_year = symint(vn, seed_for(vn, 1990), note: sql)
+              obj.define_singleton_method(col) { d }
+              obj.concolic_attrs[col] = d if obj.respond_to?(:concolic_attrs)
+            elsif col == "name" && obj.respond_to?(col)
+              # 2026-09-04 (signed-in mobile drawer wall): the drawer renders
+              # current_user.aspects.each -> aspect.name (link_to ->
+              # content_tag -> html_escape -> tidy_bytes -> scrub). The
+              # symbolic column reader's SymbolicString is unsupported by
+              # HTML-escape; SQL for these rows is ALREADY minted by the
+              # CollectionProxy.records projection (SELECT "aspects".* …) so
+              # the name reader is a SQL-free display leaf (same discipline
+              # as the date-column special-case above and the Aspect#name
+              # declared target — which the singleton reader shadows).
+              css = if defined?(ConcreteSymbolicString)
+                      ConcreteSymbolicString
+                    else
+                      ::String
+                    end
+              cn = "#{base_name}_#{col}"
+              s = css.build("concolic_#{klass.name.split('::').last.downcase}_name",
+                             name: cn, note: sql)
+              obj.define_singleton_method(col) { s }
+              obj.concolic_attrs[col] = s if obj.respond_to?(:concolic_attrs)
+            end
           end
           obj
         end
@@ -344,6 +502,20 @@ module PeopleTargets
       note = ct.sql_for(receiver, args)
       vn   = "#{name}_plucked"
       cols = Thread.current[:people_show_pluck_cols] || []
+      # 2026-09-04 (people_show adversarial repair R1, P-9, matrix T-ag):
+      # render the pluck projection (SELECT "tags"."name" …) instead of
+      # SELECT tags.* — matches the REAL tags statement and the shared
+      # boundary's D2 pluck mock. Never crash the mock.
+      begin
+        unless cols.empty?
+          tbl = (receiver.respond_to?(:table_name) && receiver.table_name) ||
+                (receiver.respond_to?(:klass) && receiver.klass.table_name)
+          proj = cols.map { |c| %("#{tbl}"."#{c.to_s.split('.').last}") }.join(", ")
+          note = note.sub(/\ASELECT\s+(DISTINCT\s+)?.*?\s+FROM /m, "SELECT #{proj} FROM ")
+        end
+      rescue StandardError
+        nil
+      end
       cols = ["value"] if cols.empty?
       vals = cols.each_with_index.map do |c, i|
         var = cols.size == 1 ? "#{name}_pluck_#{c.split('.').last}" : "#{name}_pluck#{i}_#{c.split('.').last}"
@@ -399,6 +571,55 @@ module PeopleTargets
       end)
     end
 
+    # ---------------------------------------------------------------------
+    # 1d. Aspect#name / Tag#name — untracked HTML-escape leaves (2026-09-04,
+    # signed-in mobile drawer wall). The mobile layout drawer
+    # (_drawer.mobile.haml:20) renders current_user.aspects.each ->
+    # aspect.name and current_user.followed_tags -> tag_link(tag) ->
+    # tag.name; both are symbolic column values that hit Rails' real
+    # HTML-escape pipeline (unwrapped_html_escape -> tidy_bytes -> scrub,
+    # UNSUPPORTED on tracked SymbolicString — same class as Person#last_name).
+    # SQL is minted upstream via the association CollectionProxy
+    # (SELECT "aspects".* …) and the pluck projection (SELECT "tags"."name" …),
+    # so the name readers are SQL-free display leaves.
+    # ---------------------------------------------------------------------
+    [[:Aspect, :name], ["ActsAsTaggableOn::Tag", :name]].each do |const_name, meth|
+      begin
+        klass = const_name.is_a?(String) ? const_name.split("::").inject(Object) { |acc, c| acc.const_get(c) } : const_name
+        next unless klass.instance_methods.include?(meth) ||
+                    klass.private_instance_methods.include?(meth)
+        interceptor.declare_target(klass, meth, returns: lambda do |_receiver, _args, name|
+          ConcreteSymbolicString.build("concolic_#{klass.name.split('::').last.downcase}_name",
+                                       name: name,
+                                       note: "#{klass.name}##{meth} (untracked HTML-escape leaf)")
+        end)
+      rescue NameError
+        nil # model not loaded at install? skip target (honest: not declared)
+      end
+    end
+
+    # ---------------------------------------------------------------------
+    # 1e. Service#provider / Service#nickname — untracked concrete leaves
+    # (2026-09-04, signed-in publisher partial wall). The signed-in full-page
+    # render iterates current_user.services and calls service.provider.titleize
+    # (publisher_helper#service_button); the CollectionProxy.records mock's
+    # representative Service row has nil provider -> `titleize for nil` wall
+    # AFTER all SQL notes are minted. Judge reads events (not error status),
+    # so the wall costs nothing — but a clean render is stronger evidence.
+    # Concrete string leaves (same class as Person#first_name/last_name
+    # untracked leaves): SQL-free, no declared-target calls downstream.
+    # ---------------------------------------------------------------------
+    if defined?(Service)
+      {provider: "twitter", nickname: "@concolic"}.each do |meth, val|
+        next unless Service.instance_methods.include?(meth) ||
+                    Service.private_instance_methods.include?(meth)
+        interceptor.declare_target(Service, meth, returns: lambda do |_receiver, _args, name|
+          ConcreteSymbolicString.build(val, name: name,
+                                       note: "Service##{meth} (untracked publisher leaf)")
+        end)
+      end
+    end
+
     warn "[people_show] PeopleTargets installed"
   end
 
@@ -433,6 +654,56 @@ module PeopleTargets
     end
     user.define_singleton_method(:block_for)  { |_p| Block.none }
     user.define_singleton_method(:posts_from) { |_p| Post.all }
+    user
+  end
+
+  # 2026-09-04 (people_show adversarial repair R1, P-3..P-8, P-10): the
+  # SIGNED-IN current-user constructor — deliberately NOT apply_user_overrides!
+  #
+  # The old overrides MASKED the real signed-in surface (contact_for pinned
+  # to a concrete-id find_by, block_for -> Block.none (no SQL!), posts_from
+  # -> Post.all (no visibility JOIN), aspects -> Aspect.all (no post_default
+  # WHERE)) — the exact reason P-3..P-8 were structurally absent. The
+  # adversary's real runs (C01-C05) prove the REAL methods fire real queries
+  # when the principal is a persisted user; the symbolic principal now models
+  # that:
+  #   - identity accessors pinned concrete (adversary's fixture user 9);
+  #   - person -> REAL has_one reader (User has_one :person,
+  #     foreign_key: :owner_id, app/models/user.rb:54) -> W3 find_target
+  #     renders `SELECT people.* WHERE people.owner_id = $(user.id)` (P-10);
+  #   - contact_for/block_for/posts_from/aspects -> REAL User::Querying
+  #     methods -> real Arel -> the declared find_by/records/count targets
+  #     mint the signed-in SQL shapes (P-3/P-4/P-5/P-7/P-8). new_record? is
+  #     false on symbolic instances now (concolic_targets.rb), so association
+  #     readers (blocks/aspects/...) produce real scopes instead of
+  #     NullRelation short-circuits.
+  #
+  # NOTE on the `person` reader: UserSymPersonAssociation (prepended) only
+  # short-circuits symbolic users via respond_to?(:concolic_attrs). Singleton
+  # defs SHADOW prepends, so NOT defining person here lets the REAL
+  # association reader + W3 find_target fire. User#person must not blow up on
+  # a symbolic owner: @association_cache is initialized by symbolic_instance
+  # and W3 find_target is declared, so the reader is safe.
+  def signed_in_user(tag)
+    user = ConcolicTargets.symbolic_instance(User, "SYM_USER_#{tag}", "User (current)")
+    user.define_singleton_method(:id)              { 1 }
+    user.define_singleton_method(:guid)            { "abc123" }
+    user.define_singleton_method(:person_id)       { 1 }
+    user.define_singleton_method(:diaspora_handle) { "alice@localhost" }
+    user.define_singleton_method(:language)        { "en" }
+    user.define_singleton_method(:gender)          { "" }
+    # User#blocks is a DECLARED target (SymbolicList w/ rep — no find_by), so
+    # the real has_many reader is shadowed; override with a REAL relation so
+    # User#block_for -> blocks.find_by(person_id:) fires the finder mock
+    # under the real shape (P-5: SELECT blocks.* WHERE user_id = ? AND
+    # person_id = ?). user_id: 1 matches the pinned id.
+    user.define_singleton_method(:blocks) { Block.where(user_id: 1) }
+    # P-10 (2026-09-04, adversary R1): UserSymPersonAssociation#person now
+    # routes symbolic users through the REAL has_one reader
+    # (association(:person).reader -> W3 find_target -> the
+    # `people.owner_id` SQL note, memoized per-run). The singleton override
+    # is therefore unnecessary — the prepend (which sits ABOVE User in the
+    # MRO for every symbolic instance) fires for this user too.
     user
   end
 
@@ -558,7 +829,24 @@ module PeopleShowSymParams
   # the shared `find_by` finder mock, and `u.person` is called on it.
   module UserSymPersonAssociation
     def person
-      respond_to?(:concolic_attrs) ? ConcolicTargets.symbolic_instance(Person, "SYM_PERSON_via_user", "User#person (has_one)") : super
+      return super unless respond_to?(:concolic_attrs)
+      # P-10 fix (2026-09-04, adversary R1): the real has_one :person reader
+      # (User has_one :person, foreign_key: :owner_id) must fire W3
+      # find_target so the `SELECT "people".* FROM "people" WHERE
+      # "people"."owner_id" = ?` note is minted (P-10 direction — the
+      # reverse of the corpus's people.id / profiles.person_id notes). The
+      # old bare symbolic_instance fabricated the Person with NO SQL note.
+      # @association_cache is {} on symbolic instances (symbolic_instance
+      # inits it), so association(:person).reader is safe; find_target
+      # memoizes per-run (W3-memo) so repeated reads return the same
+      # symbolic Person, matching real AR caching.
+      begin
+        association(:person).reader
+      rescue StandardError
+        # defensive: the diaspora_id? find_by_username path must never crash
+        # on the reader (falls back to the old fabricated instance).
+        ConcolicTargets.symbolic_instance(Person, "SYM_PERSON_via_user", "User#person (has_one)")
+      end
     end
   end
 
