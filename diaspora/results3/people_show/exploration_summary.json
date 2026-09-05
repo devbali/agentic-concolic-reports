@@ -12,17 +12,18 @@
       "scenario": "anon_handle",
       "description": "anonymous, default/html format -> gon.preloads presenter chain + Photo.visible(...).count + real show.html.haml/with_header render",
       "strategy": "prefix-directed DSE (seed inheritance + single-branch flip + multi-var composition)",
-      "runs_executed": 8,
-      "distinct_paths": 6,
-      "seed_sets_tried": 25,
-      "composed_children": 17,
-      "worklist_exhausted": false,
-      "capped_by": "MAX_RUNS",
-      "max_runs": 8,
-      "time_budget": 1500,
-      "elapsed_seconds": 1.4,
+      "runs_executed": 119,
+      "distinct_paths": 26,
+      "seed_sets_tried": 218,
+      "composed_children": 99,
+      "worklist_exhausted": true,
+      "capped_by": null,
+      "max_runs": 1000000,
+      "time_budget": 1200,
+      "elapsed_seconds": 9.4,
       "run_errors": {
-        "run:ActionView::Template::Error": 4
+        "run:ActionView::Template::Error": 52,
+        "run:Warden::Unauthenticated => 401 (warden_401, NM-1)": 1
       },
       "unflippable_pcs": {
 }
@@ -31,17 +32,18 @@
       "scenario": "anon_json",
       "description": "anonymous, json format -> render json: @presenter.as_json (PersonPresenter/ProfilePresenter#as_json chain, no html layout)",
       "strategy": "prefix-directed DSE (seed inheritance + single-branch flip + multi-var composition)",
-      "runs_executed": 8,
-      "distinct_paths": 3,
-      "seed_sets_tried": 21,
-      "composed_children": 13,
-      "worklist_exhausted": false,
-      "capped_by": "MAX_RUNS",
-      "max_runs": 8,
-      "time_budget": 1500,
-      "elapsed_seconds": 0.2,
+      "runs_executed": 16,
+      "distinct_paths": 9,
+      "seed_sets_tried": 41,
+      "composed_children": 25,
+      "worklist_exhausted": true,
+      "capped_by": null,
+      "max_runs": 1000000,
+      "time_budget": 1200,
+      "elapsed_seconds": 0.3,
       "run_errors": {
-},
+        "run:Warden::Unauthenticated => 401 (warden_401, NM-1)": 1
+      },
       "unflippable_pcs": {
 }
     },
@@ -49,144 +51,154 @@
       "scenario": "anon_mobile",
       "description": "anonymous, mobile format -> show.mobile.haml: Stream::Person#stream_posts (for_a_stream + like_posts_for_stream! chain) + mobile layout render",
       "strategy": "prefix-directed DSE (seed inheritance + single-branch flip + multi-var composition)",
-      "runs_executed": 8,
-      "distinct_paths": 6,
-      "seed_sets_tried": 22,
-      "composed_children": 14,
-      "worklist_exhausted": false,
-      "capped_by": "MAX_RUNS",
-      "max_runs": 8,
-      "time_budget": 1500,
-      "elapsed_seconds": 1.3,
+      "runs_executed": 8473,
+      "distinct_paths": 2976,
+      "seed_sets_tried": 16831,
+      "composed_children": 8358,
+      "worklist_exhausted": true,
+      "capped_by": null,
+      "max_runs": 1000000,
+      "time_budget": 1200,
+      "elapsed_seconds": 685.1,
       "run_errors": {
-        "run:ActionView::Template::Error": 4
+        "run:ActionView::Template::Error": 4296,
+        "run:Warden::Unauthenticated => 401 (warden_401, NM-1)": 1
       },
       "unflippable_pcs": {
-}
+        "(SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, 2) == '')": 57,
+        "(SubString(assoc_person_diaspora_handle, 0, 2) == '')": 41
+      }
     },
     {
       "scenario": "anon_mobile_presenter",
       "description": "anonymous, DUAL-FORMAT run: format.all html presenter render (bare records_1/2 block/contact checks) + format.mobile stream render (posts rows) in ONE interceptor run -> co-mints both var families to witness the 48 cross-format missing items (FUTURE-WORK #3 Option A)",
       "strategy": "prefix-directed DSE (seed inheritance + single-branch flip + multi-var composition)",
-      "runs_executed": 8,
-      "distinct_paths": 6,
-      "seed_sets_tried": 22,
-      "composed_children": 14,
+      "runs_executed": 9267,
+      "distinct_paths": 2927,
+      "seed_sets_tried": 18380,
+      "composed_children": 9113,
       "worklist_exhausted": false,
-      "capped_by": "MAX_RUNS",
-      "max_runs": 8,
-      "time_budget": 1500,
-      "elapsed_seconds": 1.5,
+      "capped_by": "TIME_BUDGET",
+      "max_runs": 1000000,
+      "time_budget": 1200,
+      "elapsed_seconds": 1200.1,
       "run_errors": {
-        "run:ActionView::Template::Error": 4
+        "run:ActionView::Template::Error": 4563,
+        "run:Warden::Unauthenticated => 401 (warden_401, NM-1)": 1
       },
       "unflippable_pcs": {
-}
+        "(SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_2_diaspora_handle, 0, 2) == '')": 57,
+        "(SubString(assoc_person_diaspora_handle, 0, 2) == '')": 45
+      }
     },
     {
       "scenario": "auth_self_html",
       "description": "SIGNED-IN html — own profile: mark_corresponding_notifications_read (notifications SELECT + update_column WRITE), contact_for/block_for, private_hash Post.exiss?, Photo.visible SELF arm, publisher aspects",
       "strategy": "prefix-directed DSE (seed inheritance + single-branch flip + multi-var composition)",
-      "runs_executed": 8,
-      "distinct_paths": 6,
-      "seed_sets_tried": 21,
-      "composed_children": 13,
-      "worklist_exhausted": false,
-      "capped_by": "MAX_RUNS",
-      "max_runs": 8,
-      "time_budget": 1500,
-      "elapsed_seconds": 0.7,
+      "runs_executed": 856,
+      "distinct_paths": 332,
+      "seed_sets_tried": 1699,
+      "composed_children": 843,
+      "worklist_exhausted": true,
+      "capped_by": null,
+      "max_runs": 1000000,
+      "time_budget": 1200,
+      "elapsed_seconds": 34.3,
       "run_errors": {
-        "run:ActionView::Template::Error": 8
+        "run:ActionView::Template::Error": 852
       },
       "unflippable_pcs": {
-        "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id == assoc_person_id)": 3,
-        "(assoc_person_id == SYM_RESULT_ActiveRecord__FinderMethods_first_1_id)": 2
+        "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id == assoc_person_id)": 28,
+        "(assoc_person_id == SYM_RESULT_ActiveRecord__FinderMethods_first_1_id)": 116,
+        "(assoc_person_id == assoc_person_id)": 16
       }
     },
     {
       "scenario": "auth_other_html",
       "description": "SIGNED-IN html — OTHER person (user.person.id=2 != @person.id=1): Photo.visible OTHER arm (share_visibilities JOIN + (user_id = ? OR public = ?)), contact_for/block_for, notifications, private_hash exists?",
       "strategy": "prefix-directed DSE (seed inheritance + single-branch flip + multi-var composition)",
-      "runs_executed": 8,
-      "distinct_paths": 6,
-      "seed_sets_tried": 22,
-      "composed_children": 14,
-      "worklist_exhausted": false,
-      "capped_by": "MAX_RUNS",
-      "max_runs": 8,
-      "time_budget": 1500,
-      "elapsed_seconds": 0.8,
+      "runs_executed": 723,
+      "distinct_paths": 302,
+      "seed_sets_tried": 1372,
+      "composed_children": 649,
+      "worklist_exhausted": true,
+      "capped_by": null,
+      "max_runs": 1000000,
+      "time_budget": 1200,
+      "elapsed_seconds": 42.3,
       "run_errors": {
-        "run:ActionView::Template::Error": 4
+        "run:ActionView::Template::Error": 402
       },
       "unflippable_pcs": {
-        "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id == assoc_person_id)": 3,
-        "(assoc_person_id == SYM_RESULT_ActiveRecord__FinderMethods_first_1_id)": 2
+        "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id == assoc_person_id)": 34,
+        "(assoc_person_id == SYM_RESULT_ActiveRecord__FinderMethods_first_1_id)": 161,
+        "(assoc_person_id == assoc_person_id)": 16
       }
     },
     {
       "scenario": "auth_json",
       "description": "SIGNED-IN json — presenter chain: contact_for, block_for, private_hash Post.exiss?, tags pluck (Calculations.pluck frame)",
       "strategy": "prefix-directed DSE (seed inheritance + single-branch flip + multi-var composition)",
-      "runs_executed": 8,
-      "distinct_paths": 8,
-      "seed_sets_tried": 21,
-      "composed_children": 13,
-      "worklist_exhausted": false,
-      "capped_by": "MAX_RUNS",
-      "max_runs": 8,
-      "time_budget": 1500,
-      "elapsed_seconds": 0.2,
+      "runs_executed": 38,
+      "distinct_paths": 38,
+      "seed_sets_tried": 102,
+      "composed_children": 64,
+      "worklist_exhausted": true,
+      "capped_by": null,
+      "max_runs": 1000000,
+      "time_budget": 1200,
+      "elapsed_seconds": 0.5,
       "run_errors": {
 },
       "unflippable_pcs": {
-        "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id == assoc_person_id)": 5
+        "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id == assoc_person_id)": 20,
+        "(assoc_person_id == assoc_person_id)": 3
       }
     },
     {
       "scenario": "auth_mobile",
       "description": "SIGNED-IN mobile — stream user-arm: Post.from_person_visible_by_user (DISTINCT + share_visibilities JOIN), like_posts_for_stream! (likes IN), mentions eager-load, polls/locations/photos assoc, photo COUNT",
       "strategy": "prefix-directed DSE (seed inheritance + single-branch flip + multi-var composition)",
-      "runs_executed": 8,
-      "distinct_paths": 8,
-      "seed_sets_tried": 25,
-      "composed_children": 17,
+      "runs_executed": 10384,
+      "distinct_paths": 6370,
+      "seed_sets_tried": 29664,
+      "composed_children": 19280,
       "worklist_exhausted": false,
-      "capped_by": "MAX_RUNS",
-      "max_runs": 8,
-      "time_budget": 1500,
-      "elapsed_seconds": 1.5,
+      "capped_by": "TIME_BUDGET",
+      "max_runs": 1000000,
+      "time_budget": 1200,
+      "elapsed_seconds": 1200.1,
       "run_errors": {
-        "run:ActionView::Template::Error": 2
+        "run:ActionView::Template::Error": 3501
       },
       "unflippable_pcs": {
         "(assoc_person_id == SYM_RESULT_ActiveRecord__FinderMethods_first_1_id)": 3,
         "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id == assoc_person_id)": 9,
         "(assoc_author_id == assoc_person_id)": 2,
-        "(assoc_person_id == assoc_author_id)": 1
+        "(assoc_person_id == assoc_author_id)": 11,
+        "(SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_handle, 0, 2) == '')": 24
       }
     },
     {
       "scenario": "anon_remote_401",
       "description": "ANON + remote handle -> throw :warden -> 401 (NM-1), finder-only SQL",
       "strategy": "prefix-directed DSE (seed inheritance + single-branch flip + multi-var composition)",
-      "runs_executed": 8,
-      "distinct_paths": 6,
-      "seed_sets_tried": 34,
-      "composed_children": 26,
-      "worklist_exhausted": false,
-      "capped_by": "MAX_RUNS",
-      "max_runs": 8,
-      "time_budget": 1500,
-      "elapsed_seconds": 0.5,
+      "runs_executed": 68,
+      "distinct_paths": 17,
+      "seed_sets_tried": 199,
+      "composed_children": 131,
+      "worklist_exhausted": true,
+      "capped_by": null,
+      "max_runs": 1000000,
+      "time_budget": 1200,
+      "elapsed_seconds": 3.4,
       "run_errors": {
-        "run:Warden::Unauthenticated => 401 (warden_401, NM-1)": 1,
-        "run:ActionView::Template::Error": 5
+        "run:Warden::Unauthenticated => 401 (warden_401, NM-1)": 2,
+        "run:ActionView::Template::Error": 48
       },
       "unflippable_pcs": {
 }
     }
   ],
-  "total_elapsed_seconds": 8.2
+  "total_elapsed_seconds": 3175.4
 }

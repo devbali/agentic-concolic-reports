@@ -743,3 +743,93 @@ any batch runner.
 - **EXCLUDED**: warden users-load (`users WHERE id`, the entrypoint's boundary
   statement); P-3_closed marker (0 real statements — C08 redirect short-circuits
   before presenter SQL).
+
+---
+
+# DRAIN CAMPAIGN (2026-09-05, ~01:00 UTC) — signed-in harness, uncapped
+
+## Status: fresh 12,997-path corpus; coverage COMPLETE=True (symbolic tree);
+## SQL-shape judges confirm P-1/P-2/P-9/P-10 GREEN; P-7/P-8 remain the honest
+## missing set (endpoint-level render walls); warden users-load excluded.
+
+## Campaign
+
+- Command: `MAX_RUNS=1000000 TIME_BUDGET=1200 CONCOLIC_SLOTS=1 SLOT_TIMEOUT=14400
+  concolic-slot run_dse.rb` (no run cap; 20-min per-scenario hard ceiling =
+  ~3h worst-case total; every scenario drains naturally unless the ceiling hits).
+- **29,944 runs / 12,997 distinct paths / 52.9 min total** (7/9 scenarios drained
+  naturally, 2 capped at TIME_BUDGET):
+
+  | scenario | runs | paths | drained | capped |
+  |---|---|---|---|---|
+  | anon_handle | 119 | 26 | yes | — |
+  | anon_json | 16 | 9 | yes | — |
+  | anon_mobile | 8,473 | 2,976 | yes | — |
+  | anon_mobile_presenter | 9,267 | 2,927 | no | TIME_BUDGET |
+  | auth_self_html | 856 | 332 | yes | — |
+  | auth_other_html | 723 | 302 | yes | — |
+  | auth_json | 38 | 38 | yes | — |
+  | auth_mobile | 10,384 | 6,370 | no | TIME_BUDGET |
+  | anon_remote_401 | 68 | 17 | yes | — |
+
+## coverage_report.py (new corpus)
+
+- **COMPLETE=True; NODES=97; MISSING=0; BLOCKING=0; PCS=525,378; TRUNCATED=False.**
+- assumptions_used=130 (the PRE-EXISTING IndependenceAssumption guard pins from
+  coverage_assumptions.py — NOT modified this session; nothing added to hide
+  P-7/P-8).
+- dump_errors: ActionView::Template::Error 4,784 (render walls) +
+  Warden::Unauthenticated 401 ×6 (NM-1 modeled).
+- ⚠ This is the SYMBOLIC-TREE verdict. The SQL-shape demand check is the
+  mock_note_check/note_fidelity judges below (the b194618 lesson: complete=true
+  on the tree does NOT imply the real shapes are represented).
+
+## Judges vs the adversary real-run shapes (C01-C09)
+
+- mock_note_check: C06 (anon control), C07 (remote 401), C09 (missing person)
+  GREEN. C01-C05, C08 RED **only** on:
+  - warden users-load (`users WHERE id ORDER BY id ASC LIMIT ?`) — EXCLUDED by
+    the R1 entrypoint definition (single pre-entrypoint statement);
+  - P-7 aspects.post_default (C01);
+  - P-8 likes `author_id + target_id IN (?, ?)` (C05).
+- note_fidelity_audit (stricter projections): EXACT 21; 13 residual REDs:
+  MISSING 5 (locations, polls, mentions ×2 = P-8; warden), AGG-COLLAPSE 1
+  (photos status_message_guid = P-8), PRED-OP-DIFF 3 (photos COUNT = P-8,
+  aspects post_default = P-7, likes IN = P-8), LIMIT-DIFF 2 (people.id /
+  profiles.person_id = P-4 Contact includes eager-load: real Relation#records
+  has no LIMIT, notes are find_target LIMIT-1), ORDER-DIFF 2 (aspects COUNT
+  ORDER BY = P-7; visibility COUNT subquery wrapper = P-3).
+- Boundary shape inventory (12,997 dumps): P1 7,030 · P2 posts 588 · P2 aspects
+  360 · P2 roles 6,599 · P9 12,964 · P10 9,946 (+anon) — all sanctioned
+  families massively covered.
+
+## Why P-8's stream-content queries still don't mint (evidence)
+
+- auth_mobile explored 6,370 paths; share_visibilities JOIN machinery fires in
+  ALL of them (the `SELECT  DISTINCT posts.* … LEFT OUTER JOIN share_visibilities`
+  stream-post shape IS present — P-8 #1).
+- But likes SELECT / mentions / polls / locations / photos status_message_guid
+  are ZERO across all 6,370 dumps. The render truncates in the mobile layout at
+  a ROUTE-GENERATION wall: `ActionView::Template::Error: No route matches
+  {:action=>"show", :controller=>"people", :format=>"mobile",
+  :username=><SymStr SYM_USER_PE_username = "">}` — a symbolic username reaching
+  the URL builder (`path_to_people`/person_path) before the per-post
+  associations fire. (Different wall than the html layout's sprockets
+  'underscore'; same class: endpoint-level template wall, not a boundary
+  declare).
+
+## Honest verdict
+
+- **CLOSED (judge-green)**: P-1 write, P-2 exists?, P-9 pluck, P-10 owner_id
+  (the 4 sanctioned boundary families), massively re-witnessed by the drain.
+- **REACHED (statement-presence)**: P-3 visibility COUNT join, P-4 contacts
+  find_by, P-5 blocks find_by, P-6 notifications recipient_id — with the
+  documented fidelity nuances (P-3 subquery wrapper, P-4 eager-load LIMIT).
+- **MISSING SET (unchanged, honest)**: P-7 (aspects.post_default + aspects
+  COUNT ORDER-BY) and P-8 (likes IN, mentions ×2, polls, locations, photos
+  status_message_guid COUNT/SELECT) — both blocked by ENDPOINT-LEVEL template
+  render walls (html layout sprockets 'underscore'; mobile layout route
+  generation on the symbolic username), outside the 4 sanctioned boundary
+  families and impossible to close without touching the frozen layout/app
+  template layer. Plus the excluded warden users-load (entrypoint boundary
+  statement). NO assumptions were added to hide any of this.

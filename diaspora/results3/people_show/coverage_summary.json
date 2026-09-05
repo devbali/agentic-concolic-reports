@@ -1,15 +1,16 @@
 {
   "endpoint": "people_show",
   "coverage_complete": true,
-  "tree_nodes": 62,
+  "tree_nodes": 97,
   "missing_branches": 0,
   "truncated": false,
   "solver_lost": 0,
   "unevaluable_exprs": [],
-  "total_runs": 7673,
-  "total_path_conditions": 226084,
+  "total_runs": 12997,
+  "total_path_conditions": 525378,
   "dump_errors": {
-    "ActionView::Template::Error": 400
+    "ActionView::Template::Error": 4784,
+    "Warden::Unauthenticated => 401 (warden_401, NM-1)": 6
   },
   "assumptions": [
     {
@@ -6215,6 +6216,6 @@
       "expr": "(SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')"
     }
   ],
-  "assumptions_used": 242,
+  "assumptions_used": 130,
   "missing": []
 }
