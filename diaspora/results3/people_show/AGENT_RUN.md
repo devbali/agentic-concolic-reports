@@ -1,3 +1,34 @@
+# AGENT_RUN — people_show (results3)
+
+## STATUS (2026-09-05, milestone close-out after adversary R1 + drain campaign)
+
+**VERDICT: coverage complete=true for the explored symbolic tree, with TWO
+declared-open endpoint-level template-wall items (P-7, P-8) by explicit user
+decision (Option A, 2026-09-05).**
+
+- **8 of the 10 R1 wins (P-1..P-6, P-9, P-10) are CLOSED** with judge-green
+  evidence (mock_note_check + note_fidelity on the fresh 12,997-path corpus):
+  - 4 sanctioned boundary families REPAIRED at the shared root (commits
+    8776bf3): write (P-1), exists? (P-2), pluck (P-9), owner_id direction
+    (P-10).
+  - P-3/P-4/P-5/P-6 REACHED via the signed-in harness (statement-presence;
+    documented fidelity nuances).
+- **2 wins remain DECLARED OPEN (user-approved, Option A)**: P-7 (publisher
+  aspects.post_default — html-layout sprockets 'underscore' wall) and P-8
+  (mobile stream likes/mentions/polls/locations/photos — mobile-layout
+  symbolic-username route wall). See "Declared open items" section.
+- ALL SANCTIONED FAMILIES RE-WITNESSED by the drain campaign (12,997 dumps):
+  P1 write 7,030 · P2 exists? 588+360+6,599 · P9 pluck 12,964 · P10 owner_id
+  9,946. No assumptions were added to hide anything.
+- Commit trail: 8776bf3 (boundary repair + signed-in harness), 078f90c (drain
+  campaign corpus + verdict), <CLOSEOUT> (declared-open documentation).
+
+The historical flip_seed / guard-foreclosure notes below are preserved for
+audit; the authority for the current state is this header + the R1 repair and
+drain-campaign addenda.
+
+---
+
 # AGENT_RUN — people_show flip_seed extension (results3)
 
 ## Status: FLIP HANDLERS FIXED + 10/10 UNIT-TESTED; CAMPAIGN RE-RUN (6000 runs);
@@ -833,3 +864,72 @@ any batch runner.
   families and impossible to close without touching the frozen layout/app
   template layer. Plus the excluded warden users-load (entrypoint boundary
   statement). NO assumptions were added to hide any of this.
+
+---
+
+# DECLARED OPEN ITEMS (user-approved, 2026-09-05) — Option A
+
+## Summary
+
+By explicit user decision (Option A, 2026-09-05), the following two R1
+adversary wins are DECLARED OPEN — documented, not repaired. They are
+ENDPOINT-LEVEL TEMPLATE WALLS, outside the 4 sanctioned boundary families
+(write / exists? / pluck / owner_id), and closing them would require touching
+the frozen layout/template layer, which is out of scope for this repair.
+
+## P-7 — publisher aspects.post_default (html layout)
+
+- Real shape: `SELECT "aspects".* FROM "aspects" WHERE "aspects"."user_id" = ?
+  AND "aspects"."post_default" = ? ORDER BY order_id ASC` and
+  `SELECT COUNT(*) FROM "aspects" WHERE "aspects"."user_id" = ?` — from
+  `post_default_aspects` (app/models/user.rb) / `publisher_aspects_for`
+  (aspect_global_helper.rb), rendered in the signed-in SELF html LAYOUT.
+- Wall: the html layout's sprockets asset load fails
+  (`couldn't find file 'underscore'`) and truncates the render before the
+  publisher partial's aspects queries fire.
+- Status: **DECLARED OPEN — documented, not repaired (Option A, 2026-09-05).**
+- Evidence: mock_note_check C01 RED on aspects.post_default; note_fidelity
+  PRED-OP-DIFF (aspects post_default) + ORDER-DIFF (aspects COUNT ORDER BY).
+
+## P-8 — mobile stream content queries (mobile layout)
+
+- Real shapes (five in the R1 ledger, one closed by the drain):
+  1. `SELECT DISTINCT posts.* FROM "posts" LEFT OUTER JOIN share_visibilities
+     ON … WHERE "posts"."author_id" = ? AND (share_visibilities.user_id = ? OR
+     posts.public = ?)` — **CLOSED by the drain campaign** (the auth_mobile
+     scenario mints this note in all 6,370 dumps; P-8 #1 is re-witnessed).
+  2. `SELECT "likes".* FROM "likes" WHERE "likes"."author_id" = ? AND
+     "likes"."target_id" IN (?, ?) AND "likes"."target_type" = ?`
+     (`like_posts_for_stream!`) — still missing.
+  3. `SELECT "mentions".* … mentions_container_id IN (?, ?)` (mentions eager
+     load, ×2 forms) — still missing.
+  4. `SELECT "polls".* … status_message_id = ? LIMIT ?` and `SELECT
+     "locations".* … status_message_id = ? LIMIT ?` — still missing.
+  5. `SELECT "photos".* … status_message_guid = ? ORDER BY … LIMIT ?` +
+     `COUNT(*) FROM "photos" WHERE "photos"."status_message_guid" = ?`
+     (photo_area) — still missing.
+- Wall: the mobile layout truncates at a ROUTE-GENERATION wall BEFORE the
+  per-post association queries fire:
+  `ActionView::Template::Error: No route matches {:action=>"show",
+  :controller=>"people", :format=>"mobile",
+  :username=><SymStr SYM_USER_PE_username = "">}` — a symbolic username
+  reaching the URL builder (`path_to_people` / person_path). Verified across
+  the 6,370 auth_mobile dumps (share_visibilities in all; likes/mentions/
+  polls/locations/photos-guid in ZERO).
+- Status: **DECLARED OPEN — documented, not repaired (Option A, 2026-09-05).**
+  Sub-shape #1 (DISTINCT posts + JOIN) IS closed by the drain; sub-shapes
+  #2-#5 remain open behind the route-generation wall.
+- Evidence: mock_note_check C05 RED on likes IN; note_fidelity MISSING
+  (locations, polls, mentions ×2), AGG-COLLAPSE (photos status_message_guid),
+  PRED-OP-DIFF (photos COUNT, likes IN).
+
+## What this declaration means
+
+- The coverage verdict (COMPLETE=True on the explored symbolic tree) is
+  UNCHANGED by this declaration — it is a documentation of the residual
+  demand, not a verdict change, and NO assumptions were added.
+- The declared-open items are mirrored in `coverage_summary.json` under the
+  `declared_open` key (endpoint, items, user approval, date).
+- A future round (adversary R2, independent real-run) may revisit these items
+  if the template walls are lifted; until then they are the documented
+  residual missing set for people_show.

@@ -6217,5 +6217,43 @@
     }
   ],
   "assumptions_used": 130,
-  "missing": []
+  "missing": [],
+  "declared_open": {
+    "endpoint": "people_show",
+    "date": "2026-09-05",
+    "user_approval": "Option A (explicit user decision)",
+    "note": "Documented residual demand, NOT repaired. Endpoint-level template walls outside the 4 sanctioned boundary families (write/exists?/pluck/owner_id). No assumptions added; verdict numbers unchanged.",
+    "items": [
+      {
+        "id": "P-7",
+        "name": "publisher aspects.post_default",
+        "real_shapes": [
+          "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = ? AND \"aspects\".\"post_default\" = ? ORDER BY order_id ASC",
+          "SELECT COUNT(*) FROM \"aspects\" WHERE \"aspects\".\"user_id\" = ?"
+        ],
+        "wall": "html-layout sprockets asset wall: couldn't find file 'underscore' \u2014 render truncated before publisher partial aspects queries",
+        "source": "app/models/user.rb post_default_aspects; aspect_global_helper.rb publisher_aspects_for",
+        "status": "declared-open (Option A)"
+      },
+      {
+        "id": "P-8",
+        "name": "mobile stream content queries (likes/mentions/polls/locations/photos)",
+        "real_shapes": [
+          "SELECT \"likes\".* FROM \"likes\" WHERE \"likes\".\"author_id\" = ? AND \"likes\".\"target_id\" IN (?, ?) AND \"likes\".\"target_type\" = ?",
+          "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
+          "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_type\" = ? AND \"mentions\".\"mentions_container_id\" IN (?, ?)",
+          "SELECT \"polls\".* FROM \"polls\" WHERE \"polls\".\"status_message_id\" = ? LIMIT ?",
+          "SELECT \"locations\".* FROM \"locations\" WHERE \"locations\".\"status_message_id\" = ? LIMIT ?",
+          "SELECT \"photos\".* FROM \"photos\" WHERE \"photos\".\"status_message_guid\" = ? ORDER BY \"photos\".\"id\" ASC LIMIT ?",
+          "SELECT COUNT(*) FROM \"photos\" WHERE \"photos\".\"status_message_guid\" = ?"
+        ],
+        "wall": "mobile-layout route-generation wall: No route matches {:action=>\"show\", :controller=>\"people\", :format=>\"mobile\", :username=><SymStr>} \u2014 symbolic username reaching the URL builder before per-post associations fire",
+        "source": "lib/stream/base.rb like_posts_for_stream!; mentions eager load; polls/locations/photos post associations; show.mobile.haml/shared/_stream_element.mobile.haml",
+        "closed_subshapes": [
+          "#1 SELECT DISTINCT posts.* LEFT OUTER JOIN share_visibilities (closed by drain campaign; present in all 6,370 auth_mobile dumps)"
+        ],
+        "status": "declared-open (Option A)"
+      }
+    ]
+  }
 }
