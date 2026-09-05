@@ -1,0 +1,60 @@
+{
+  "round": "R2",
+  "endpoint": "people_show",
+  "date": "2026-09-05",
+  "claim_under_attack": "people_show complete: 8776bf3 (boundary repair: P-1 write / P-2 exists? / P-9 pluck / P-10 owner_id + signed-in harness) + 078f90c (drain, 12,997 paths, COMPLETE=True, MISSING=0) + 7f3858d (Option-A close-out: P-7 aspects.post_default html-layout sprockets wall and P-8 mobile likes/mentions/polls/locations/photos declared OPEN)",
+  "verdict": "R2 ZERO-WIN — claim verified within the declared scope (P-7/P-8 open, accepted Option A)",
+  "discipline": {
+    "step0": "hardening_lint.py run on R2 scenarios first (5 advisory checks H1-H5; H1 scenarios:[] is a format artifact — scenario name lives in dump label, not concolic_scenario key)",
+    "real_runs_only": true,
+    "harness": "concrete_run_probe.rb + _common.rb via run_scenario.sh: ConcreteEnv sqlite (JDBC), fixture INSERTs, real Devise session serialize_from_session, real ActionController::TestCase#process dispatch, real templates; systemd-run MemoryMax=4000M, flock /tmp/concolic-slot.lock, one JRuby at a time",
+    "no_app_edits": true,
+    "batch_readonly": "run_dse.rb / targets.rb / concrete_aliases.json read-only (not edited)",
+    "runs_dir": "adversary/runs/ (fresh 2026-09-05 08:48-08:58, executed by R2 session)"
+  },
+  "runs": [
+    {"id": "R2C01_auth_self_html", "request": "alice@localhost html signed-in (self: 2 unread+1 read notifications, diaspora:// bio+location, 3 photos, 2 aspects, tags)", "real_status": "EXC ActionView::Template::Error 'underscore' (P-7 html-layout sprockets wall, after all controller SQL)", "mock_note_check": "RED — NOTE-OK on update_column/find_target/pluck/exists?/count; NOTE-MISMATCH Relation.records x2 = warden users-load + P-7 aspects.post_default (open)", "note_fidelity": "RED — 3 unfaithful: warden users-load + P-7 aspects (open)", "entry_frames": {"update_column": "people_controller.rb:175-178 mark_corresponding_notifications_read -> notification.rb:59 set_read_state -> update_column(:unread,false)", "exists?": "message_renderer.rb:103 Post.exists?(guid:) (bio/location diaspora:// links)", "pluck": "profile_presenter.rb:16 tags.pluck(:name)", "owner_id": "user.rb:54 has_one :person, foreign_key: :owner_id"}, "verdict": "sanctioned families NOTE-OK; residuals = boundary warden users-load + declared-open P-7"},
+    {"id": "R2C02_auth_other_html", "request": "bob@remote.example html signed-in (contact receiving-only, shared/private photos, visibility)", "real_status": "EXC 'underscore' wall", "mock_note_check": "RED — NOTE-OK on find_target/count/pluck/records*; NOTE-MISMATCH records x1 = warden users-load", "note_fidelity": "RED — 4: warden users-load + P-4 eager-load LIMIT-DIFF x2 (documented) + P-3 COUNT subquery ORDER-DIFF (documented)", "verdict": "no NEW shape; all residuals pre-adjudicated (warden boundary + documented nuances)"},
+    {"id": "R2C03_auth_other_mutual_html", "request": "bob@remote.example html signed-in MUTUAL (contact, bob bio diaspora:// link)", "real_status": "EXC 'underscore' wall", "mock_note_check": "RED — NOTE-OK on find_target/count/pluck/exists?; NOTE-MISMATCH records x1 = warden users-load", "note_fidelity": "RED — 4: warden users-load + P-4 LIMIT-DIFF + P-3 ORDER-DIFF (documented)", "verdict": "exists? NOTE-OK (P-2); no NEW shape"},
+    {"id": "R2C04_auth_blocked_json", "request": "bob@remote.example json signed-in (alice blocks bob, no contact, tags)", "real_status": "200 (390 bytes) FULL RENDER", "mock_note_check": "RED — NOTE-OK on find_target/pluck/records*; NOTE-MISMATCH records x1 = warden users-load", "note_fidelity": "RED — 1: warden users-load only", "verdict": "every endpoint shape EXACT except boundary warden users-load; json surface fully real-verified"},
+    {"id": "R2C05_auth_mobile", "request": "bob@remote.example mobile signed-in (2 posts public+shared, 1 private, like, comments, photo, block on carol, tags)", "real_status": "EXC ActionView::Template::Error 'Nil location provided' (P-8 mobile-layout wall, after all controller SQL)", "mock_note_check": "RED — NOTE-OK on pluck/exists?/load_target; NOTE-MISMATCH find_target x2 (P-4 preload LIMIT-DIFF, documented) + count x1 + records x6 = P-8 open families (likes IN, mentions x2, polls, locations, photos)", "note_fidelity": "RED — 11: all P-8 declared-open + warden users-load + documented LIMIT-DIFFs", "p8_1": {"real": "SELECT DISTINCT posts.* FROM posts LEFT OUTER JOIN share_visibilities ... WHERE author_id = ? AND (share_visibilities.user_id = ? OR posts.public = ?) — reproduced x4", "corpus": "25,462 auth_mobile dumps carry the note; listed EXACT by note_fidelity (12 EXACT)", "verdict": "P-8 #1 CLAIMED-CLOSED VERIFIED"}, "verdict": "no NEW shape; all RED = declared-open P-8 + boundary + documented nuances"},
+    {"id": "R2C06_anon_self_html", "request": "alice@localhost html ANON control (public bio, 3 photos, tags)", "real_status": "EXC 'underscore' wall (after all controller SQL)", "mock_note_check": "GREEN EXIT=0 (every SQL-issuing target's notes match)", "note_fidelity": "GREEN EXIT=0 (every real statement projection-faithful)", "verdict": "C06 anon control: NOTE-OK — harness fidelity re-established on post-repair corpus; P-9 pluck (was R1 RED) now GREEN"},
+    {"id": "R2C07_anon_remote_401", "request": "bob@remote.example html ANON (NM-1)", "real_status": "401 (throw :warden) 0 bytes — exactly ONE statement (people diaspora_handle finder) then auth gate", "mock_note_check": "GREEN EXIT=0 (finder matched)", "note_fidelity": "GREEN EXIT=0 (1 EXACT)", "verdict": "NM-1 verified: real dispatch 401 matches 4/6 warden dumps exactly (anon_handle_0094, anon_json_0011, anon_mobile_4951, anon_remote_401_0001); anon_mobile_presenter_4951 = documented dual:true artifact (6 notes); anon_remote_401_0066 = people.owner_id over-emission (real 401 never reads owner_id — no principal); both boundary-stage artifacts, not endpoint wins"},
+    {"id": "R2C09_missing_person", "request": "nobody@nowhere.example html ANON (404 control)", "real_status": "404 (241 bytes) — exactly ONE statement (people finder) + not-found decision", "mock_note_check": "GREEN EXIT=0", "note_fidelity": "GREEN EXIT=0 (1 EXACT)", "verdict": "C09 404 control verified"}
+  ],
+  "sanctioned_families": {
+    "P-1 write": {"real_shape": "UPDATE \"notifications\" SET \"unread\" = ? WHERE \"notifications\".\"id\" = ? (x2)", "corpus_witnesses": 7030, "judge": "NOTE-OK R2C01 (Base.update_column; aliases map Persistence<->Base)", "entry": "people_controller.rb:175-178"},
+    "P-2 exists?": {"real_shape": "SELECT 1 AS one FROM \"posts\" WHERE \"posts\".\"guid\" = ? LIMIT ? (x2) + aspects 1 AS one", "corpus_witnesses": "1176 posts.guid + variants", "judge": "NOTE-OK R2C01 (x2), R2C03", "entry": "message_renderer.rb:103"},
+    "P-9 pluck": {"real_shape": "SELECT \"tags\".\"name\" FROM \"tags\" INNER JOIN \"taggings\" ON ... WHERE taggable_id/type/context ORDER BY taggings.id", "corpus_witnesses": 15887, "judge": "NOTE-OK R2C01-C06 (was NOTE-MISSING in R1 C06 — now GREEN)", "entry": "profile_presenter.rb:16/23"},
+    "P-10 owner_id": {"real_shape": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"owner_id\" = ? LIMIT ?", "corpus_witnesses": 11436, "judge": "NOTE-OK R2C01-C05 (find_target)", "entry": "user.rb:54"}
+  },
+  "new_shapes_vs_r1": [
+    {"run": "R2C01", "shape": "UPDATE notifications unread", "classification": "same P-1 SQL tagged under Base.update_column vs R1 Persistence.update_column — frame-tagging variance covered by concrete_aliases.json; NOTE-OK. NOT a new gap"},
+    {"run": "R2C05", "shape": "SELECT likes.* WHERE author_id = ? AND target_id IN (?,?) AND target_type = ? LIMIT ?", "classification": "P-8 declared-open likes family (LIMIT variant of the R1 shape); NOT touched"}
+  ],
+  "residual_classification": {
+    "warden_users_load": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = ? ORDER BY \"users\".\"id\" ASC LIMIT ? — real Devise serialize_from_session reload; stmt #0 pre-entrypoint in every signed-in run; R1 ledger excludes it ('the only pre-entrypoint statement'); 0 users-table notes corpus-wide (batch StubWarden assigns current_user directly). BOUNDARY, unchanged by repair",
+    "P-7": "aspects post_default + aspects COUNT ORDER-DIFF — declared OPEN (7f3858d Option A); observed on R2C01",
+    "P-8": "mobile likes IN / mentions x2 / polls / locations / photos count+records — declared OPEN; observed on R2C05",
+    "P-3_count_subquery": "COUNT(*) FROM (SELECT DISTINCT photos.* ...) vs corpus COUNT(*) JOIN form — documented AGENT_RUN nuance; NOTE-OK on the JOIN form; semantics identical",
+    "P-4_limit_diff": "people.id / profiles.person_id no-LIMIT preloads vs find_target LIMIT-1 notes — documented AGENT_RUN nuance; unchanged",
+    "H4_polarity": "3 length decisions single-polarity in corpus — model caution, no real-run gap"
+  },
+  "entrypoint_frames": {
+    "show": "people_controller.rb:69",
+    "find_person": "people_controller.rb:127 (finder) + :139 raise ActiveRecord::RecordNotFound -> C09 404",
+    "authenticate_if_remote_profile!": "people_controller.rb:171 -> NM-1 401 (warden throw)",
+    "mark_corresponding_notifications_read": "people_controller.rb:175",
+    "Photo.visible": "people_controller.rb show body (P-3)",
+    "actor_person": "user.rb:54 has_one :person owner_id (P-10)",
+    "diaspora_links": "message_renderer.rb:103 Post.exists? (P-2)",
+    "tags.pluck": "profile_presenter.rb:16/23 (P-9)"
+  },
+  "artifacts": {
+    "manifests": "adversary/R2C0{1..7,9}_*.rb",
+    "runs": "adversary/runs/R2C0{1..7,9}_*.{json,judge.txt,log,sqlite3} (sqlite 716800 B each, fresh 08:48-08:58)",
+    "audit_scripts": "adversary/r2/{rejudge_r1,residual_detail,corpus_family_audit,verify_p8_nm1,diff_r1_r2}.py",
+    "report": "ADVERSARY_REPORT.md R2 section (lines 241-362)",
+    "wins_log": "docs/ADVERSARY_WINS.md R2 row (2026-09-05, 0 wins — claim verified within the declared scope)"
+  }
+}

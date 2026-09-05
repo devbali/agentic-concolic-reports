@@ -1,0 +1,346 @@
+[
+  {
+    "name": "C04_auth_blocked_json",
+    "target_calls": [
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Person#remote?",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActionController::Rendering#_set_rendered_content_type",
+        "depth": 0,
+        "args": [
+          "#<Mime::Type:0x3239f4c1 @symbol=:json, @hash=855060123294594"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::SingularAssociation#find_target",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::SingularAssociation#find_target",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#find_by",
+        "depth": 0,
+        "args": [
+          "{:user_id=>9, :person_id=>2}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#find_by",
+        "depth": 1,
+        "args": [
+          "{:user_id=>9, :person_id=>2}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#find_by",
+        "depth": 0,
+        "args": [
+          "{:user_id=>9, :person_id=>2}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#find_by",
+        "depth": 1,
+        "args": [
+          "{:user_id=>9, :person_id=>2}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "User#blocks",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#find_by",
+        "depth": 0,
+        "args": [
+          "{:person_id=>2}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#find_by",
+        "depth": 1,
+        "args": [
+          "{:person_id=>2}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#find_by",
+        "depth": 0,
+        "args": [
+          "{:user_id=>9, :person_id=>2}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#find_by",
+        "depth": 1,
+        "args": [
+          "{:user_id=>9, :person_id=>2}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#pluck",
+        "depth": 0,
+        "args": [
+          ":name"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#pluck",
+        "depth": 1,
+        "args": [
+          ":name"
+        ]
+      },
+      {
+        "target": "ActionController::Rendering#_set_rendered_content_type",
+        "depth": 0,
+        "args": [
+          "#<Mime::Type:0x3239f4c1 @symbol=:json, @hash=855060123294594"
+        ]
+      }
+    ],
+    "statements": [
+      {
+        "sql": "SELECT  \"users\".* FROM \"users\" WHERE \"users\".\"id\" = ? ORDER BY \"users\".\"id\" ASC LIMIT ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT  \"people\".* FROM \"people\" WHERE \"people\".\"diaspora_handle\" = ? ORDER BY \"people\".\"id\" ASC LIMIT ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"notifications\".* FROM \"notifications\" WHERE \"notifications\".\"recipient_id\" = ? AND \"notifications\".\"target_type\" = ? AND \"notifications\".\"target_id\" = ? AND \"notifications\".\"unread\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT  \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = ? LIMIT ?",
+        "under": "ActiveRecord::Associations::SingularAssociation#find_target"
+      },
+      {
+        "sql": "SELECT  \"people\".* FROM \"people\" WHERE \"people\".\"owner_id\" = ? LIMIT ?",
+        "under": "ActiveRecord::Associations::SingularAssociation#find_target"
+      },
+      {
+        "sql": "SELECT  \"contacts\".* FROM \"contacts\" WHERE \"contacts\".\"user_id\" = ? AND \"contacts\".\"person_id\" = ? LIMIT ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT  \"contacts\".* FROM \"contacts\" WHERE \"contacts\".\"user_id\" = ? AND \"contacts\".\"person_id\" = ? LIMIT ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT  \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ? AND \"blocks\".\"person_id\" = ? LIMIT ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT  \"contacts\".* FROM \"contacts\" WHERE \"contacts\".\"user_id\" = ? AND \"contacts\".\"person_id\" = ? LIMIT ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"tags\".\"name\" FROM \"tags\" INNER JOIN \"taggings\" ON \"tags\".\"id\" = \"taggings\".\"tag_id\" WHERE \"taggings\".\"taggable_id\" = ? AND \"taggings\".\"taggable_type\" = ? AND \"taggings\".\"context\" = ? ORDER BY taggings.id",
+        "under": "ActiveRecord::Calculations#pluck"
+      }
+    ],
+    "coverage": {
+},
+    "error": null
+  }
+]

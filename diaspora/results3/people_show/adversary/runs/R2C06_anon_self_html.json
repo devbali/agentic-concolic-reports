@@ -1,0 +1,284 @@
+[
+  {
+    "name": "C06_anon_self_html",
+    "target_calls": [
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Person#remote?",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActionController::Rendering#_set_rendered_content_type",
+        "depth": 0,
+        "args": [
+          "#<Mime::Type:0x7169a87 @symbol=:html, @hash=1612889808342716"
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::SingularAssociation#find_target",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#pluck",
+        "depth": 0,
+        "args": [
+          ":name"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#pluck",
+        "depth": 1,
+        "args": [
+          ":name"
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 0,
+        "args": [
+          ":all"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 1,
+        "args": [
+          ":all"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#load_target",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 6,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "PersonPresenter#description",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "PersonPresenter#description",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActionDispatch::Routing::UrlFor#url_for",
+        "depth": 0,
+        "args": [
+          "#<Person id: 1, guid: \"aliceguid0000000001\", diaspora_handle"
+        ]
+      },
+      {
+        "target": "Person#first_name",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Person#last_name",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActionDispatch::Routing::UrlFor#url_for",
+        "depth": 0,
+        "args": [
+          "{:controller=>\"/registrations\", :action=>:new, :only_path=>t"
+        ]
+      },
+      {
+        "target": "ActionDispatch::Routing::UrlFor#url_for",
+        "depth": 0,
+        "args": [
+          "{:controller=>\"/sessions\", :action=>:new, :only_path=>true}"
+        ]
+      }
+    ],
+    "statements": [
+      {
+        "sql": "SELECT  \"people\".* FROM \"people\" WHERE \"people\".\"diaspora_handle\" = ? ORDER BY \"people\".\"id\" ASC LIMIT ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT  \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = ? LIMIT ?",
+        "under": "ActiveRecord::Associations::SingularAssociation#find_target"
+      },
+      {
+        "sql": "SELECT \"tags\".\"name\" FROM \"tags\" INNER JOIN \"taggings\" ON \"tags\".\"id\" = \"taggings\".\"tag_id\" WHERE \"taggings\".\"taggable_id\" = ? AND \"taggings\".\"taggable_type\" = ? AND \"taggings\".\"context\" = ? ORDER BY taggings.id",
+        "under": "ActiveRecord::Calculations#pluck"
+      },
+      {
+        "sql": "SELECT COUNT(*) FROM \"photos\" WHERE \"photos\".\"author_id\" = ? AND \"photos\".\"public\" = ? AND \"photos\".\"pending\" = ?",
+        "under": "ActiveRecord::Calculations#count"
+      },
+      {
+        "sql": "SELECT \"tags\".* FROM \"tags\" INNER JOIN \"taggings\" ON \"tags\".\"id\" = \"taggings\".\"tag_id\" WHERE \"taggings\".\"taggable_id\" = ? AND \"taggings\".\"taggable_type\" = ? AND \"taggings\".\"context\" = ? ORDER BY taggings.id",
+        "under": "ActiveRecord::Relation#records"
+      }
+    ],
+    "coverage": {
+},
+    "error": null
+  }
+]

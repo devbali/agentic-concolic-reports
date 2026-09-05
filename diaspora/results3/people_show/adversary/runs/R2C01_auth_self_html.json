@@ -1,0 +1,761 @@
+[
+  {
+    "name": "C01_auth_self_html",
+    "target_calls": [
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#first",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Person#remote?",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Base#update_column",
+        "depth": 0,
+        "args": [
+          ":unread",
+          "false"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Base#update_column",
+        "depth": 0,
+        "args": [
+          ":unread",
+          "false"
+        ]
+      },
+      {
+        "target": "ActionController::Rendering#_set_rendered_content_type",
+        "depth": 0,
+        "args": [
+          "#<Mime::Type:0xf308c09 @symbol=:html, @hash=4929112437535232"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#find_by",
+        "depth": 0,
+        "args": [
+          "{:user_id=>9, :person_id=>1}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#find_by",
+        "depth": 1,
+        "args": [
+          "{:user_id=>9, :person_id=>1}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::SingularAssociation#find_target",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::SingularAssociation#find_target",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#find_by",
+        "depth": 0,
+        "args": [
+          "{:user_id=>9, :person_id=>1}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#find_by",
+        "depth": 1,
+        "args": [
+          "{:user_id=>9, :person_id=>1}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "User#blocks",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#find_by",
+        "depth": 0,
+        "args": [
+          "{:person_id=>1}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#find_by",
+        "depth": 1,
+        "args": [
+          "{:person_id=>1}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#pluck",
+        "depth": 0,
+        "args": [
+          ":name"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#pluck",
+        "depth": 1,
+        "args": [
+          ":name"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 0,
+        "args": [
+          "{:guid=>\"postguid100000001\"}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 1,
+        "args": [
+          "{:guid=>\"postguid100000001\"}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 0,
+        "args": [
+          "{:guid=>\"postguid100000001\"}"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 1,
+        "args": [
+          "{:guid=>\"postguid100000001\"}"
+        ]
+      },
+      {
+        "target": "Gon::ControllerHelpers#gon",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 0,
+        "args": [
+          ":all"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 1,
+        "args": [
+          ":all"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#load_target",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 6,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "PersonPresenter#description",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "PersonPresenter#description",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActionDispatch::Routing::UrlFor#url_for",
+        "depth": 0,
+        "args": [
+          "#<Person id: 1, guid: \"aliceguid0000000001\", diaspora_handle"
+        ]
+      },
+      {
+        "target": "Person#first_name",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Person#last_name",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#size",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 1,
+        "args": [
+          ":all"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 2,
+        "args": [
+          ":all"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#size",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 1,
+        "args": [
+          ":all"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 2,
+        "args": [
+          ":all"
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::FinderMethods#exists?",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#size",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 1,
+        "args": [
+          ":all"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Calculations#count",
+        "depth": 2,
+        "args": [
+          ":all"
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#load_target",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 3,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#to_a",
+        "depth": 4,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 5,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Relation#records",
+        "depth": 6,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#size",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#load_target",
+        "depth": 2,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "Person#remote?",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 0,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#records",
+        "depth": 1,
+        "args": [
+
+        ]
+      },
+      {
+        "target": "ActiveRecord::Associations::CollectionProxy#load_target",
+        "depth": 2,
+        "args": [
+
+        ]
+      }
+    ],
+    "statements": [
+      {
+        "sql": "SELECT  \"users\".* FROM \"users\" WHERE \"users\".\"id\" = ? ORDER BY \"users\".\"id\" ASC LIMIT ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT  \"people\".* FROM \"people\" WHERE \"people\".\"diaspora_handle\" = ? ORDER BY \"people\".\"id\" ASC LIMIT ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"notifications\".* FROM \"notifications\" WHERE \"notifications\".\"recipient_id\" = ? AND \"notifications\".\"target_type\" = ? AND \"notifications\".\"target_id\" = ? AND \"notifications\".\"unread\" = ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "UPDATE \"notifications\" SET \"unread\" = ? WHERE \"notifications\".\"id\" = ?",
+        "under": "ActiveRecord::Base#update_column"
+      },
+      {
+        "sql": "UPDATE \"notifications\" SET \"unread\" = ? WHERE \"notifications\".\"id\" = ?",
+        "under": "ActiveRecord::Base#update_column"
+      },
+      {
+        "sql": "SELECT  \"contacts\".* FROM \"contacts\" WHERE \"contacts\".\"user_id\" = ? AND \"contacts\".\"person_id\" = ? LIMIT ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT  \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = ? LIMIT ?",
+        "under": "ActiveRecord::Associations::SingularAssociation#find_target"
+      },
+      {
+        "sql": "SELECT  \"people\".* FROM \"people\" WHERE \"people\".\"owner_id\" = ? LIMIT ?",
+        "under": "ActiveRecord::Associations::SingularAssociation#find_target"
+      },
+      {
+        "sql": "SELECT  \"contacts\".* FROM \"contacts\" WHERE \"contacts\".\"user_id\" = ? AND \"contacts\".\"person_id\" = ? LIMIT ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT  \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ? AND \"blocks\".\"person_id\" = ? LIMIT ?",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"tags\".\"name\" FROM \"tags\" INNER JOIN \"taggings\" ON \"tags\".\"id\" = \"taggings\".\"tag_id\" WHERE \"taggings\".\"taggable_id\" = ? AND \"taggings\".\"taggable_type\" = ? AND \"taggings\".\"context\" = ? ORDER BY taggings.id",
+        "under": "ActiveRecord::Calculations#pluck"
+      },
+      {
+        "sql": "SELECT  1 AS one FROM \"posts\" WHERE \"posts\".\"guid\" = ? LIMIT ?",
+        "under": "ActiveRecord::FinderMethods#exists?"
+      },
+      {
+        "sql": "SELECT  1 AS one FROM \"posts\" WHERE \"posts\".\"guid\" = ? LIMIT ?",
+        "under": "ActiveRecord::FinderMethods#exists?"
+      },
+      {
+        "sql": "SELECT COUNT(*) FROM \"photos\" WHERE \"photos\".\"author_id\" = ? AND \"photos\".\"created_at\" < ? AND \"photos\".\"pending\" = ?",
+        "under": "ActiveRecord::Calculations#count"
+      },
+      {
+        "sql": "SELECT \"tags\".* FROM \"tags\" INNER JOIN \"taggings\" ON \"tags\".\"id\" = \"taggings\".\"tag_id\" WHERE \"taggings\".\"taggable_id\" = ? AND \"taggings\".\"taggable_type\" = ? AND \"taggings\".\"context\" = ? ORDER BY taggings.id",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = ? AND \"aspects\".\"post_default\" = ? ORDER BY order_id ASC",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT  1 AS one FROM \"aspects\" WHERE \"aspects\".\"user_id\" = ? LIMIT ?",
+        "under": "ActiveRecord::FinderMethods#exists?"
+      },
+      {
+        "sql": "SELECT COUNT(*) FROM \"aspects\" WHERE \"aspects\".\"user_id\" = ?",
+        "under": "ActiveRecord::Calculations#count"
+      },
+      {
+        "sql": "SELECT  1 AS one FROM \"aspects\" WHERE \"aspects\".\"user_id\" = ? LIMIT ?",
+        "under": "ActiveRecord::FinderMethods#exists?"
+      },
+      {
+        "sql": "SELECT COUNT(*) FROM \"aspects\" WHERE \"aspects\".\"user_id\" = ?",
+        "under": "ActiveRecord::Calculations#count"
+      },
+      {
+        "sql": "SELECT  1 AS one FROM \"aspects\" WHERE \"aspects\".\"user_id\" = ? LIMIT ?",
+        "under": "ActiveRecord::FinderMethods#exists?"
+      },
+      {
+        "sql": "SELECT COUNT(*) FROM \"aspects\" WHERE \"aspects\".\"user_id\" = ?",
+        "under": "ActiveRecord::Calculations#count"
+      },
+      {
+        "sql": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = ? ORDER BY order_id ASC",
+        "under": "ActiveRecord::Relation#records"
+      },
+      {
+        "sql": "SELECT \"services\".* FROM \"services\" WHERE \"services\".\"user_id\" = ?",
+        "under": "ActiveRecord::Associations::CollectionProxy#load_target"
+      }
+    ],
+    "coverage": {
+},
+    "error": null
+  }
+]

@@ -236,3 +236,127 @@ SELECT  "people".* FROM "people" WHERE "people"."owner_id" = ? LIMIT ?
 `docs/ADVERSARY_WINS.md`: people_show R1 section (P-1 … P-10, status
 `open`), propagation-matrix marks (T-a ⏳(P-2) → people_show; T-t/T-v ⏳(P-1);
 new rows T-af/T-ag/T-ah), round-log row R1 2026-09-04.
+---
+
+# R2 — 2026-09-05 (post-repair claim attack; zero-win round)
+
+## Round summary
+
+| | |
+|---|---|
+| Claim under attack | batch R1 repair `8776bf3` (shared boundary: 4 sanctioned families write/exists?/pluck/owner_id + signed-in harness) → drain `078f90c` (29,944 runs / 12,997 paths, COMPLETE=True, MISSING=0) → Option-A close-out `7f3858d` (P-7/P-8 declared open) |
+| Verdict | **ZERO WINS — claim verified within the declared scope** (P-7/P-8 open, accepted) |
+| Runs | 8 manifests / 8 processes / 8 real requests (R2C01–R2C07, R2C09), all EXIT=0, 0 JVM aborts; sqlite DBs + `.json`/`.judge.txt`/`.log` in `adversary/runs/` |
+| Discipline | Step-0 `hardening_lint.py` run on the R2 scenarios first (5 advisory checks, none a shape gap beyond P-7/P-8); REAL runs only (ConcreteEnv sqlite via JDBC, fixture INSERTS, real Devise session via `User.serialize_from_session`, real `ActionController::TestCase#process`, real templates); no mocks/stubs/src/app edits. App checkout verified: the only app diffs vs HEAD are the batch's documented "Gate 1b split (function boundary only, NO functional change)" extractions in `lib/stream/base.rb` / `app/models/post.rb` / `streams_controller.rb` (P-8 family) + env config; `people_controller.rb` and the P-1/P-2/P-9/P-10 code paths are untouched |
+| Batch files | `run_dse.rb`, `targets.rb`, `concrete_aliases.json` read-only (not edited) |
+
+## 1. The 4 sanctioned families — corpus-faithful (both judges GREEN)
+
+Real scenarios replicated the R1 shapes; judged against the 078f90c/7f3858d
+corpus with `mock_note_check + note_fidelity_audit`:
+
+| family | real shape (R2C01–R2C05) | corpus witnesses | judge |
+|---|---|---|---|
+| P-1 write | `UPDATE "notifications" SET "unread" = ? WHERE "notifications"."id" = ?` | **7 030** `update_column` notes (`SET "unread" = false`, auth dumps) | NOTE-OK (C01/C02/C03/C05) |
+| P-2 exists? | `SELECT 1 AS one FROM "posts" WHERE "posts"."guid" = ? LIMIT 1` + aspects `1 AS one` | **1 176** posts.guid + roles/likes variants | NOTE-OK ×2 (C01), C03 |
+| P-9 pluck | `SELECT "tags"."name" FROM "tags" INNER JOIN "taggings" ON … WHERE taggable_id/type/context ORDER BY taggings.id` | **15 887** `Calculations.pluck` notes | NOTE-OK (C01–C06) |
+| P-10 owner_id | `SELECT "people".* FROM "people" WHERE "people"."owner_id" = ? LIMIT 1` | **11 436** find_target notes (3 direction shapes) | NOTE-OK (C01–C05) |
+
+Re-witness counts from AGENT_RUN (7 030 / 6 599+ / 12 964 / 9 946) all present
+— two families grew further in the drain corpus (pluck 15 887, owner_id
+11 436).
+
+## 2. Signed-in harness shapes — all have corpus counterparts
+
+- **R2C01 auth_self_html** (alice→alice): full signed-in self surface
+  (notifications SELECT + write, contact_for, block_for, private_hash
+  exists?, publisher aspects, photo count). Judge: NOTE-OK on every issuing
+  frame except the two pre-adjudicated classes (warden `users` SELECT
+  boundary exclusion; P-7 aspects `post_default` + aspects COUNT ORDER-DIFF —
+  declared open). 4/5 anon-render shapes EXACT.
+- **R2C02 auth_other_html** (alice→bob): OTHER arm — visibility COUNT with
+  share_visibilities JOIN, contact_for/block_for, notifications, private_hash.
+  Judge NOTE-OK everywhere except `users` (boundary); fidelity flags:
+  preload LIMIT-DIFF ×2 (`people.id`/`profiles.person_id` no-LIMIT vs
+  find_target LIMIT-1 — the documented P-4 nuance), P-3 COUNT ORDER-DIFF
+  (subquery wrapper — documented nuance).
+- **R2C03 auth_other_mutual_html**: identical shape set + mutual contact —
+  same verdict (exists? NOTE-OK; only boundary/nuance REDs).
+- **R2C04 auth_blocked_json**: blocked-other json — every shape EXACT except
+  `users` (boundary); 7 EXACT / 0 MISSING.
+- **R2C05 auth_mobile**: signed-in mobile stream. P-8 #1
+  (`SELECT DISTINCT posts.* … LEFT OUTER JOIN share_visibilities … WHERE
+  author_id = ? AND (share_visibilities.user_id = ? OR posts.public = ?)`)
+  reproduced real ×4 and corpus-matched (25 462 auth_mobile dumps carry the
+  note; listed EXACT by note_fidelity, 12 EXACT total). The 11 RED items are
+  all P-8 declared-open families (likes IN, mentions ×2, polls, locations,
+  photos status_message_guid count + records) + `users` (boundary) + the
+  documented LIMIT-DIFFs. **No NEW shape.**
+- Frame census across all 8 runs (170 `records`, 54 `to_a`, 37 `gon`, 34
+  `find_by`, 30 `first`, 24 `count`, 24 `CollectionProxy.records`, 16
+  `exists?`, 15 `find_target`, 12 `pluck`, 12 `load_target`, 9 `size`, 2
+  `update_column` …): every SQL-issuing frame is one of the 14 corpus-note
+  targets; `Person#first_name/last_name`, `Person#remote?`, `gon`,
+  `_set_rendered_content_type`, `PersonPresenter#description`, `url_for`,
+  `status=` are documented non-SQL leaves (H3). `Stream::Base#post_ids` /
+  `#attach_user_likes` are the Gate-1b splits (P-8 open).
+
+## 3. NM-1 auth boundary — verified
+
+Real C07 (anon + bob@remote.example): exactly ONE statement — the people
+finder — then `authenticate_if_remote_profile!` → `throw :warden` → 401
+(0 bytes). mock_note_check EXIT=0 (finder matched). Cross-checked the 6
+warden-401 dumps:
+
+- `anon_handle_0094`, `anon_json_0011`, `anon_mobile_4951`,
+  `anon_remote_401_0001` — exactly the real shape (1 finder note) ✓
+- `anon_mobile_presenter_4951` — 6 SQL notes (full render + 401): the
+  batch's documented `dual: true` two-request-in-one-run artifact, not a
+  401 misrepresentation (note, boundary-stage)
+- `anon_remote_401_0066` — `people.owner_id` find_target instead of the
+  finder: symbolic alternate-path OVER-EMISSION the real pre-auth dispatch
+  cannot produce (the real 401 never reads owner_id — no principal yet).
+  Note, boundary-stage; consistent with R1's NM-1 adjudication that the
+  auth boundary belongs in `_auth_boundary/BOUNDARY_POLICY.md`, not an
+  endpoint win.
+
+## 4. Controls — harness trustworthiness re-established
+
+- **R2C06 anon control (C06 replication)**: `mock_note_check` EXIT=0, all 5
+  real statements EXACT — the anon html render reproduces the corpus shapes
+  exactly on the post-repair corpus.
+- **R2C09 404 control**: `mock_note_check` EXIT=0, 1 EXACT — missing-person
+  404 emits exactly the finder + not-found decision the corpus models.
+- **R2C07 401**: EXIT=0 (above).
+
+## 5. Fidelity notes (all pre-adjudicated; none a win)
+
+1. **Warden `users` SELECT** (`SELECT "users".* FROM "users" WHERE id = ?
+   ORDER BY id ASC LIMIT ?`, every signed-in request): the real Devise
+   `serialize_from_session` reload. Corpus-wide **zero** users-table SQL
+   notes (the batch's StubWarden assigns `current_user` directly; the
+   repair's signed-in harness kept that model). R1's own ledger excludes it:
+   "the only pre-entrypoint statement is the single warden `users` SELECT
+   (boundary, excluded)". Boundary-stage; unchanged by the repair; recorded.
+2. **P-3 COUNT subquery wrapper** (`COUNT(*) FROM (SELECT DISTINCT
+   photos.* …)` vs corpus `COUNT(*) FROM photos LEFT OUTER JOIN …`):
+   documented AGENT_RUN 722/858 ("visibility COUNT subquery wrapper = P-3");
+   0 subquery-form notes corpus-wide; the mock normalizer accepts the JOIN
+   form (NOTE-OK), semantics identical.
+3. **P-4 eager-load LIMIT-DIFF** (`people.id`/`profiles.person_id`
+   no-LIMIT preloads vs find_target LIMIT-1 notes): documented AGENT_RUN
+   719/829-831; unchanged.
+4. **P-7 aspects** (`post_default` + COUNT ORDER BY): declared open (7f3858d).
+5. **P-8 mobile families** (likes IN, mentions, polls, locations, photos):
+   declared open; 0 `IN (?, ?)` mentions notes corpus-wide confirms the
+   open declaration is accurate.
+6. **H4 hardening note**: 3 length decisions recorded with ONE polarity only
+   (records len False-only etc.) — corpus-model caution, no real-run shape
+   gap observed on people_show.
+
+## Ledger
+
+`docs/ADVERSARY_WINS.md`: people_show R2 section added (zero-win statement
+with full cross-check) + propagation-matrix row `R2 2026-09-05 | people_show
+| 0 wins — claim verified within the declared scope`.
+**Milestone: CLOSED on this round (within the P-7/P-8 declared-open scope).**

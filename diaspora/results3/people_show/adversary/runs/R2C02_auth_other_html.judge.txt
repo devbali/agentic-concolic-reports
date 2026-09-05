@@ -1,0 +1,63 @@
+### mock_note_check
+== mock_note_check: 5 target frames issued real SELECTs; 14 targets carry corpus notes ==
+
+NOTE-OK       ActiveRecord::Associations::CollectionProxy.load_target  (1 real shapes matched)
+NOTE-OK       ActiveRecord::Associations::SingularAssociation.find_target  (3 real shapes matched)
+NOTE-OK       ActiveRecord::Calculations.count  (1 real shapes matched)
+NOTE-OK       ActiveRecord::Calculations.pluck  (1 real shapes matched)
+NOTE-OK*      ActiveRecord::Relation.records  (6 shape(s) matched under a DIFFERENT target — frame nesting)
+NOTE-MISMATCH ActiveRecord::Relation.records  <-- RED: 1 real statement shape(s) with NO corpus note anywhere
+     real: SELECT  "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?
+
+RESULT: RED — target mocks with missing/mismatched notes above.
+EXIT=1
+
+### note_fidelity_audit
+== note_fidelity_audit: 1 run file(s), 14 distinct real SELECTs under 5 frames; 14 targets carry notes ==
+
+-- wildcard notes per target (corpus) --
+   ActiveRecord::Associations::CollectionProxy.records                    notes=6    star=6
+   ActiveRecord::Associations::CollectionProxy.size                       notes=4    agg=4
+   ActiveRecord::Associations::SingularAssociation.find_target            notes=12   star=12
+   ActiveRecord::Base.update_column                                       notes=1    cols=1
+   ActiveRecord::Calculations.count                                       notes=76   agg=76
+   ActiveRecord::Calculations.pluck                                       notes=1    cols=1
+   ActiveRecord::Calculations.sum                                         notes=1    agg=1
+   ActiveRecord::FinderMethods.exists?                                    notes=5    cols=5
+   ActiveRecord::FinderMethods.find_by                                    notes=4    star=4
+   ActiveRecord::FinderMethods.first                                      notes=2    star=2
+   ActiveRecord::Relation.empty?                                          notes=1496 star=1496
+   ActiveRecord::Relation.records                                         notes=1928 star=1928
+   ActiveRecord::Relation.size                                            notes=2    agg=2
+   ActiveRecord::Relation.to_a                                            notes=1926 star=1926
+
+-- MISSING: 1 --
+   ActiveRecord::Relation.records  [R2C02_auth_other_html.json:C02_auth_other_html]
+      real: SELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?
+
+-- STAR-OVER: 0 --
+
+-- AGG-COLLAPSE: 0 --
+
+-- PROJ-DIFF: 0 --
+
+-- PRED-OP-DIFF: 0 --
+
+-- LIMIT-DIFF: 2 --
+   ActiveRecord::Relation.records  [R2C02_auth_other_html.json:C02_auth_other_html]
+      real: SELECT "people".* FROM "people" WHERE "people"."id" = ?
+      note: SELECT "people".* FROM "people" WHERE "people"."id" = $$(SYM_RESULT_ActiveRecord__Relation_to_a_1_row_author_id) LIMIT 1
+   ActiveRecord::Relation.records  [R2C02_auth_other_html.json:C02_auth_other_html]
+      real: SELECT "profiles".* FROM "profiles" WHERE "profiles"."person_id" = ?
+      note: SELECT "profiles".* FROM "profiles" WHERE "profiles"."person_id" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id) LIMIT 1
+
+-- ORDER-DIFF: 1 --
+   ActiveRecord::Calculations.count  [R2C02_auth_other_html.json:C02_auth_other_html]
+      real: SELECT COUNT(*) FROM (SELECT DISTINCT photos.* FROM "photos" LEFT OUTER JOIN share_visibilities ON share_visibilities.shareable_id = photos.id AND sha
+      note: SELECT COUNT(*) FROM "photos" LEFT OUTER JOIN share_visibilities ON share_visibilities.shareable_id = photos.id AND share_visibilities.shareable_type 
+
+-- PRED-DIFF: 0 --
+
+-- EXACT: 10 --
+RESULT: RED — 4 real statement(s) whose note is unfaithful in projection or missing.
+EXIT=1
