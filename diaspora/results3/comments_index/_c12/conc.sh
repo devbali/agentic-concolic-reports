@@ -9,7 +9,7 @@ echo "CONC $MODE START $(date -Is)"
 for m in anon auth mobile r3 r4 r5 r6; do
   rm -f $B/concrete_run.json
   env $EXPORTS $P/reports/diaspora/tools/slot $P/scripts/diaspora-concolic \
-      $P/src/ruby_runtime/completion_checker/concrete_run_probe.rb $B/concrete_manifest_$m.rb \
+      $P/reports/diaspora/tools/concrete_checker/concrete_run_probe.rb $B/concrete_manifest_$m.rb \
       > $B/_c12/conc_${MODE}_$m.log 2>&1
   rc=$?
   if [ -f $B/concrete_run.json ]; then mv $B/concrete_run.json $B/concrete_run_${m}${SUF}.json; fi

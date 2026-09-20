@@ -1,5 +1,5 @@
 # M-18 (adversary round 9) — BATCH-LOCAL executor wrapping. The shared probe
-# (`src/ruby_runtime/completion_checker/concrete_run_probe.rb`) is NOT touched.
+# (`reports/diaspora/tools/concrete_checker/concrete_run_probe.rb`) is NOT touched.
 #
 # Why: the rigs dispatch through `ActionController::TestCase#process`, which
 # never runs `ActionDispatch::Executor`; Rails installs ActiveRecord's query

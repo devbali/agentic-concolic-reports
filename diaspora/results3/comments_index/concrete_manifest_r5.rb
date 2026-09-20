@@ -8,7 +8,7 @@
 #       one dangling, give `people.id IN (?, ?)` then `profiles.person_id = ?`.
 #  M-9  a finder that finds nothing still ISSUED its query: the 404 request's
 #       only statement is the post finder, and it must be in the corpus.
-require "/home/dev/project/src/ruby_runtime/completion_checker/concrete_env.rb"
+require "/home/dev/project/reports/diaspora/tools/concrete_checker/concrete_env.rb"
 require File.expand_path("../_c12/exec_wrap.rb", __FILE__)
 
 CE = CompletionChecker::ConcreteEnv

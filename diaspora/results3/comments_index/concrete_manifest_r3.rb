@@ -17,7 +17,7 @@
 #       `SELECT "profiles".* … WHERE "person_id" = ? LIMIT 1` on the DEVISE
 #       PRINCIPAL before the action body (set_locale -> set_grammatical_gender
 #       -> current_user.gender), with `en` it does not.
-require "/home/dev/project/src/ruby_runtime/completion_checker/concrete_env.rb"
+require "/home/dev/project/reports/diaspora/tools/concrete_checker/concrete_env.rb"
 require File.expand_path("../_c12/exec_wrap.rb", __FILE__)
 
 CE = CompletionChecker::ConcreteEnv

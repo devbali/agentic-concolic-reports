@@ -21,7 +21,7 @@
 #  M-16  the SECOND key's missing `profiles` row must have the SAME
 #        consequence as the first's. Byte-identical fixture pairs differing
 #        ONLY in WHICH author/mention lacks its profile: both must 500.
-require "/home/dev/project/src/ruby_runtime/completion_checker/concrete_env.rb"
+require "/home/dev/project/reports/diaspora/tools/concrete_checker/concrete_env.rb"
 require File.expand_path("../_c12/exec_wrap.rb", __FILE__)
 
 CE = CompletionChecker::ConcreteEnv

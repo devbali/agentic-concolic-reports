@@ -5,7 +5,7 @@
 # they are what the endpoint WOULD issue on the discovery-success arm, which no
 # real run in this environment can reach.
 require File.expand_path("../../../../../../ruby_examples/dse-apps/apps/diaspora/config/environment", __FILE__)
-require "/home/dev/project/src/ruby_runtime/completion_checker/concrete_env.rb"
+require "/home/dev/project/reports/diaspora/tools/concrete_checker/concrete_env.rb"
 CE = CompletionChecker::ConcreteEnv
 CE.setup!(db: File.expand_path("../gap.sqlite3", __FILE__))
 

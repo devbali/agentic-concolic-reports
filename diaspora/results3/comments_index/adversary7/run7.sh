@@ -7,7 +7,7 @@ N=$1
 unset JAVA_TOOL_OPTIONS
 rm -f "$ADV/concrete_run.json"
 systemd-run --user --pipe --wait -p MemoryMax=4000M -p MemorySwapMax=0 --working-directory=/home/dev/project \
-  bash -c "unset JAVA_TOOL_OPTIONS; export CONCRETE_COVERAGE=0; flock /tmp/concolic-slot.lock scripts/diaspora-concolic /home/dev/project/src/ruby_runtime/completion_checker/concrete_run_probe.rb $ADV/$N.rb" \
+  bash -c "unset JAVA_TOOL_OPTIONS; export CONCRETE_COVERAGE=0; flock /tmp/concolic-slot.lock scripts/diaspora-concolic /home/dev/project/reports/diaspora/tools/concrete_checker/concrete_run_probe.rb $ADV/$N.rb" \
   > "$ADV/runs/$N.log" 2>&1
 RC=$?
 echo "EXIT=$RC" >> "$ADV/runs/$N.log"

@@ -1,6 +1,6 @@
 # MOCK CHECKER manifest — comments_index (RUNBOOK Phase 1 gate).
 # Run: JRUBY_OPTS=--debug scripts/diaspora-concolic \
-#        /abs/src/ruby_runtime/completion_checker/mock_checker.rb <this file>
+#        /abs/reports/diaspora/tools/concrete_checker/mock_checker.rb <this file>
 MOCK_PROBES = [
   # shim mock: pure name computation used by presenters (same probe as
   # notifications — both branches for M2's 100%).

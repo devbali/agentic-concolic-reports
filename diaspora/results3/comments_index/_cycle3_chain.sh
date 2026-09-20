@@ -10,7 +10,7 @@ for v in anon_json auth_json anon_mobile auth_mobile; do
   echo "== base $v: $(grep -E 'distinct paths|run errors' $S/c7_$v.log | tr -s ' ' | tr '\n' ' ')"
 done
 for sc in anon auth mobile; do
-  $RUN bash -c "unset JAVA_TOOL_OPTIONS; /home/dev/project/scripts/diaspora-concolic /home/dev/project/src/ruby_runtime/completion_checker/concrete_run_probe.rb $B/concrete_manifest_$sc.rb" > $S/c7_concrete_$sc.log 2>&1
+  $RUN bash -c "unset JAVA_TOOL_OPTIONS; /home/dev/project/scripts/diaspora-concolic /home/dev/project/reports/diaspora/tools/concrete_checker/concrete_run_probe.rb $B/concrete_manifest_$sc.rb" > $S/c7_concrete_$sc.log 2>&1
   grep -E "target_calls|ERROR" $S/c7_concrete_$sc.log; [ -f $B/concrete_run.json ] && mv $B/concrete_run.json $B/concrete_run_$sc.json
 done
 python3 $B/merge_concrete_runs.py

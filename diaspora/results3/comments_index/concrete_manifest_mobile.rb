@@ -6,7 +6,7 @@
 # `comment.author == current_user.person`, person_link_class self/
 # hovercardable, render_mentions with a mentioned person). Real sqlite DB,
 # real rows, real Devise resolution, real dispatch; no mocks. One process.
-require "/home/dev/project/src/ruby_runtime/completion_checker/concrete_env.rb"
+require "/home/dev/project/reports/diaspora/tools/concrete_checker/concrete_env.rb"
 require File.expand_path("../_c12/exec_wrap.rb", __FILE__)
 
 CE = CompletionChecker::ConcreteEnv

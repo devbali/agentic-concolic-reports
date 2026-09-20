@@ -15,7 +15,7 @@
 #  N4-3 the preload's predicate operator follows the collection's cardinality:
 #       one author => `WHERE "people"."id" = ?`, three authors =>
 #       `WHERE "people"."id" IN (?, ?, ?)`. Both shapes must have a note.
-require "/home/dev/project/src/ruby_runtime/completion_checker/concrete_env.rb"
+require "/home/dev/project/reports/diaspora/tools/concrete_checker/concrete_env.rb"
 require File.expand_path("../_c12/exec_wrap.rb", __FILE__)
 
 CE = CompletionChecker::ConcreteEnv

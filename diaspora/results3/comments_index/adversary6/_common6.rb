@@ -15,7 +15,7 @@
 #    (cycle-4 demoted `Discovery.new` from a TARGET to a SHIM — a shim must mint
 #    no note and reach no target, which is checked by TRACING it) and keeps
 #    `escape_segment` from round 2 for the same reason.
-require "/home/dev/project/src/ruby_runtime/completion_checker/concrete_env.rb"
+require "/home/dev/project/reports/diaspora/tools/concrete_checker/concrete_env.rb"
 
 CE = CompletionChecker::ConcreteEnv
 BATCH = "/home/dev/project/reports/diaspora/results3/comments_index"

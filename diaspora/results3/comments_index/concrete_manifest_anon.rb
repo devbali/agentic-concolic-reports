@@ -2,7 +2,7 @@
 # Real sqlite DB, real rows, real dispatch; no mocks, no stubs. One
 # scenario per manifest (JVM crash isolation — the mention path can abort
 # natively on this JRuby).
-require "/home/dev/project/src/ruby_runtime/completion_checker/concrete_env.rb"
+require "/home/dev/project/reports/diaspora/tools/concrete_checker/concrete_env.rb"
 require File.expand_path("../_c12/exec_wrap.rb", __FILE__)
 
 CE = CompletionChecker::ConcreteEnv

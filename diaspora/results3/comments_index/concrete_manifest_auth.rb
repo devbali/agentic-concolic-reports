@@ -11,7 +11,7 @@
 #   post 102 — public post by bob, no visibility row (branch 3)
 # Each carries a mention-free and a mention-bearing comment (the latter with
 # a real mentions row) so the persisted mentioned_people chain fires.
-require "/home/dev/project/src/ruby_runtime/completion_checker/concrete_env.rb"
+require "/home/dev/project/reports/diaspora/tools/concrete_checker/concrete_env.rb"
 require File.expand_path("../_c12/exec_wrap.rb", __FILE__)
 
 CE = CompletionChecker::ConcreteEnv

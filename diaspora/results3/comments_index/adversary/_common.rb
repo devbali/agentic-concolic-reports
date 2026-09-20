@@ -4,7 +4,7 @@
 # dispatch so every before_action runs, real templates). NO fixtures here:
 # each scenario manifest seeds its own rows. Nothing in here mocks, stubs
 # or patches app code — only fixture rows, session, params, headers, format.
-require "/home/dev/project/src/ruby_runtime/completion_checker/concrete_env.rb"
+require "/home/dev/project/reports/diaspora/tools/concrete_checker/concrete_env.rb"
 
 CE = CompletionChecker::ConcreteEnv
 BATCH = "/home/dev/project/reports/diaspora/results3/comments_index"

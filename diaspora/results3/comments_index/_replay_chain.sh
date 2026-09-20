@@ -1,4 +1,8 @@
 #!/bin/bash
+# E12 (2026-09-11): src/queries_from_runs is app-agnostic and REQUIRES an
+# app config; bind_resolution_audit and identity_symbolicity_audit read the
+# schema and the principal columns from it and go RED without one.
+export QFR_APP_CONFIG="${QFR_APP_CONFIG:-/home/dev/project/reports/diaspora/queries_config/app.json}"
 B=/home/dev/project/reports/diaspora/results3/comments_index
 S=/tmp/claude-1000/-home-dev-project/e0395c49-56d0-42c0-af70-a3707c6552fa/scratchpad
 RUN="flock /tmp/concolic-slot.lock systemd-run --user --pipe --wait -p MemoryMax=3000M -p MemorySwapMax=0 --working-directory=/home/dev/project"
@@ -10,7 +14,7 @@ for v in anon_json auth_json anon_mobile auth_mobile; do
 done
 echo "dumps: $(find $B -maxdepth 1 -name 'dump_*.json' | wc -l)"
 for sc in anon auth mobile; do
-  $RUN bash -c "unset JAVA_TOOL_OPTIONS; /home/dev/project/scripts/diaspora-concolic /home/dev/project/src/ruby_runtime/completion_checker/concrete_run_probe.rb $B/concrete_manifest_$sc.rb" > $S/rp_concrete_$sc.log 2>&1
+  $RUN bash -c "unset JAVA_TOOL_OPTIONS; /home/dev/project/scripts/diaspora-concolic /home/dev/project/reports/diaspora/tools/concrete_checker/concrete_run_probe.rb $B/concrete_manifest_$sc.rb" > $S/rp_concrete_$sc.log 2>&1
   grep -E "target_calls|ERROR" $S/rp_concrete_$sc.log
   [ -f $B/concrete_run.json ] && mv $B/concrete_run.json $B/concrete_run_$sc.json
 done
