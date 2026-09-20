@@ -26,7 +26,7 @@
 # --- MINIMAL FIXTURE DB (Rule S: "make it runnable with the minimal mocks the
 #     test needs"). Real sqlite + the app schema through the project's own
 #     concrete_env helper, then ROWS via the app's own AR.
-require "/home/dev/project/src/ruby_runtime/completion_checker/concrete_env.rb"
+require "/home/dev/project/reports/diaspora/tools/concrete_checker/concrete_env.rb"
 CompletionChecker::ConcreteEnv.setup!(
   db: "/home/dev/project/reports/diaspora/results3/notifications_index/shim_tests.sqlite3")
 CompletionChecker::ConcreteEnv.insert("users", id: 9, username: "shimtester",
@@ -86,6 +86,53 @@ SHIM_ASSET_HOST.singleton_class.prepend(NotificationsIndexTargets::AssetPathShim
 # encoder, which is not a target.
 ActionDispatch::Journey::Router::Utils.singleton_class.prepend(EscapeSegmentShim)
 SHIM_GON_HOST.singleton_class.prepend(NotificationsIndexTargets::GonPreloadsShim)
+
+# ---------------------------------------------------------------------------
+# C22 (2026-09-13) — the two shims `install!` prepends that had NO TEST.
+#
+# Both are NAMED constants under `NotificationsIndexTargets`, so they can be
+# installed here exactly as `install!` installs them, on the SAME owners, with
+# no `install!` call and therefore no target declared in this process.
+#
+# INSTRUMENT LIMIT, MEASURED AND WORKED AROUND (verbatim from
+# comments_index/shim_tests.rb, and it applies here identically because
+# `AR_TARGETS` above also carries
+# `[ActiveRecord::Associations::SingularAssociation, :find_target]`):
+# `TargetCallProbe.capture` wraps a target by `home.instance_method(meth)` +
+# `home.send(:define_method, meth)` on the OWNER. With `SingularLoadedTargetShim`
+# already prepended, `instance_method` resolves THROUGH the prepend, so the
+# probe's captured "original" IS the memo while the memo's own `super` lands on
+# the probe wrapper — an infinite recursion that dies as a JVM
+# StackOverflowError. The fix is the same "detach, keep, re-attach" pattern:
+# the body is kept as an UnboundMethod and removed from the module here, and
+# the ONE test that is about the memo re-attaches it from inside its own
+# fixture, i.e. AFTER `capture` has taken the REAL `find_target` as its
+# original. The memo then runs for real, its `super` reaches the real body
+# through the probe (which records the call) and there is no cycle.
+# ---------------------------------------------------------------------------
+ActiveRecord::Associations::SingularAssociation
+  .prepend(NotificationsIndexTargets::SingularLoadedTargetShim)
+SHIM_NI_SINGULAR_MEMO = NotificationsIndexTargets::SingularLoadedTargetShim
+SHIM_NI_MEMO_BODY = SHIM_NI_SINGULAR_MEMO.instance_method(:find_target)
+SHIM_NI_SINGULAR_MEMO.send(:remove_method, :find_target)
+
+# `RealGonShim` needs no detach: `gon` is not a declared target, so the probe
+# never wraps it and there is no ancestry cycle. Prepend on the REAL owner,
+# which is exactly what `install!` does.
+NotificationsController.prepend(NotificationsIndexTargets::RealGonShim)
+SHIM_NI_GON_SHIM = NotificationsIndexTargets::RealGonShim
+
+def shim_ni_controller(request_obj = :none)
+  c = NotificationsController.new
+  c.set_request!(request_obj) unless request_obj == :none
+  c
+end
+
+def shim_ni_request(uuid)
+  env = Rack::MockRequest.env_for("/notifications",
+                                  "action_dispatch.request_id" => uuid)
+  ActionDispatch::Request.new(env)
+end
 
 AR_TARGETS = [
   [ActiveRecord::FinderMethods, :find_by],
@@ -315,6 +362,84 @@ SHIM_TESTS = {
       sym = SymbolicString.new("x y", name: "SHIMTEST_seg")
       got2 = ActionDispatch::Journey::Router::Utils.escape_segment(sym)
       raise "escape sym: #{got2.inspect}" unless got2.to_s.include?("%20")
+    } },
+
+  # =========================================================================
+  # C22 — `SingularLoadedTargetShim#find_target` (targets.rb:322, prepended by
+  # `install!` at :367). A DISPATCH layer: reaching `find_target` IS its job
+  # (Rule S rule 5), so the claim is `reaches:` EQUALITY plus 100% of its own
+  # body — the memo MISS (`super`) and the memo HIT (cached). The body is
+  # re-attached inside the fixture; see INSTRUMENT LIMIT above.
+  # =========================================================================
+  "ActiveRecord::Associations::SingularAssociation.find_target" => {
+    targets: AR_TARGETS,
+    reaches: ["ActiveRecord::Associations::SingularAssociation#find_target"],
+    coverage_of: [SHIM_NI_SINGULAR_MEMO, :find_target, :instance],
+    fixture: -> {
+      # re-attach the real memo body now that `capture` holds the REAL
+      # find_target as its original (see INSTRUMENT LIMIT above)
+      SHIM_NI_SINGULAR_MEMO.send(:define_method, :find_target, SHIM_NI_MEMO_BODY)
+      Thread.current[:notifidx_singular_targets] = nil
+      # SHIM_DB_USER is loaded at FILE scope, before `capture`: using it here
+      # keeps `FinderMethods#find` (which IS in this batch's AR_TARGETS, unlike
+      # comments_index's) out of the reached set, so `reaches:` stays exact.
+      a = SHIM_DB_USER.association(:person)
+      a.reset
+      first = a.send(:find_target)                 # memo MISS -> super
+      raise "find_target miss: #{first.inspect}" unless first && first.id == 1
+      second = a.send(:find_target)                # memo HIT (no super)
+      raise "memo did not return the cached target" unless second.equal?(first)
+      Thread.current[:notifidx_singular_targets] = nil
+    } },
+
+  # =========================================================================
+  # C22 — `RealGonShim#gon` (targets.rb:335, prepended by `install!` at :375).
+  # Restores the real `Gon::ControllerHelpers#gon` on THIS controller over the
+  # boundary's X6b stub. Pure RequestStore bookkeeping: ZERO targets, and all
+  # FOUR arms —
+  #   (1) no usable request      -> the `return super` fall-through,
+  #   (2) `cur.nil?`             -> build,
+  #   (3) `cur.id != req.uuid`   -> rebuild,
+  #   (4) cached hit             -> the same Gon::Request object is kept.
+  # Arm (1) is asserted by its EFFECT: with no request the guard fails and
+  # `super` is entered, where the REAL gon body reaches `request.env` on nil
+  # and raises. Catching that exception is the proof the branch was taken —
+  # nothing is stubbed to make it pass.
+  # =========================================================================
+  "NotificationsController.gon" => {
+    targets: AR_TARGETS,
+    coverage_of: [SHIM_NI_GON_SHIM, :gon, :instance],
+    fixture: -> {
+      store = ::RequestStore.store
+      # (1) the `return super` arm
+      fell_through = false
+      begin
+        shim_ni_controller.gon
+      rescue NoMethodError, StandardError => e
+        fell_through = true
+      end
+      raise "arm 1: `return super` was not entered" unless fell_through
+
+      req1 = shim_ni_request("shim-gon-uuid-1")
+      c1 = shim_ni_controller(req1)
+      # (2) cur.nil? -> build
+      store[:gon] = nil
+      raise "arm 2 did not return ::Gon" unless c1.gon.equal?(::Gon)
+      built = store[:gon]
+      raise "arm 2 built nothing" unless built.is_a?(::Gon::Request)
+      raise "arm 2 id: #{built.id.inspect}" unless built.id == "shim-gon-uuid-1"
+      # (4) cached hit -> same object kept (run before (3) so (3)'s rebuild is
+      #     unambiguous evidence of the id mismatch, not of a fresh store)
+      raise "arm 4 did not return ::Gon" unless c1.gon.equal?(::Gon)
+      raise "arm 4 replaced the cached request" unless store[:gon].equal?(built)
+      # (3) cur.id != req.uuid -> rebuild
+      stale = ::Gon::Request.new(req1.env)
+      stale.id = "shim-gon-uuid-STALE"
+      store[:gon] = stale
+      raise "arm 3 did not return ::Gon" unless c1.gon.equal?(::Gon)
+      raise "arm 3 kept the stale request" if store[:gon].equal?(stale)
+      raise "arm 3 id: #{store[:gon].id.inspect}" unless store[:gon].id == "shim-gon-uuid-1"
+      store[:gon] = nil
     } },
 
 }

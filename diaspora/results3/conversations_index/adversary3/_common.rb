@@ -6,7 +6,7 @@
 # DIFFERENCE from round 2: ONE REQUEST PER CONCRETE SCENARIO, so the probe's
 # per-scenario `statements` array segments the run by request (round 2 put
 # 4-6 requests in one scenario and could not attribute a statement to one).
-require "/home/dev/project/src/ruby_runtime/completion_checker/concrete_env.rb"
+require "/home/dev/project/reports/diaspora/tools/concrete_checker/concrete_env.rb"
 
 CE = CompletionChecker::ConcreteEnv
 BATCH = "/home/dev/project/reports/diaspora/results3/conversations_index"

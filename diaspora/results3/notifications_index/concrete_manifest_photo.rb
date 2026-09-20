@@ -4,7 +4,7 @@
 # templates. NO mocks, NO stubs: every target function runs for real; the
 # probe only OBSERVES which ones are invoked and what SQL each issues.
 # One scenario per manifest process (JVM crash isolation).
-require "/home/dev/project/src/ruby_runtime/completion_checker/concrete_env.rb"
+require "/home/dev/project/reports/diaspora/tools/concrete_checker/concrete_env.rb"
 require "builder"
 
 CE = CompletionChecker::ConcreteEnv

@@ -7,7 +7,7 @@
 # scenario per manifest process (JVM crash isolation); the one body drives
 # the four request shapes the corpus explores (html/json x with/without
 # conversation_id) against the same fixtures.
-require "/home/dev/project/src/ruby_runtime/completion_checker/concrete_env.rb"
+require "/home/dev/project/reports/diaspora/tools/concrete_checker/concrete_env.rb"
 
 CE = CompletionChecker::ConcreteEnv
 CE.setup!(db: File.expand_path("../concrete_auth.sqlite3", __FILE__))

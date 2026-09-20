@@ -3,7 +3,7 @@
 set +e; unset JAVA_TOOL_OPTIONS; cd /home/dev/project
 B=/home/dev/project/reports/diaspora/results3/notifications_index
 S=/home/dev/project/reports/diaspora/tools/slot
-P=/home/dev/project/src/ruby_runtime/completion_checker/concrete_run_probe.rb
+P=/home/dev/project/reports/diaspora/tools/concrete_checker/concrete_run_probe.rb
 LOG="$B/_c7_disc_probes.log"; echo "=== disc probes start $(date -Is) ===" > "$LOG"
 
 # 1. PARSEABLE host: does the success arm abort the JVM HERE? (expect nonzero)

@@ -5,7 +5,7 @@ set -u
 unset JAVA_TOOL_OPTIONS
 cd /home/dev/project
 B=/home/dev/project/reports/diaspora/results3/conversations_index
-P=/home/dev/project/src/ruby_runtime/completion_checker/concrete_run_probe.rb
+P=/home/dev/project/reports/diaspora/tools/concrete_checker/concrete_run_probe.rb
 for m in auth mobile; do
   echo "=== CONCRETE $m ==="
   rm -f "$B/concrete_$m.sqlite3"

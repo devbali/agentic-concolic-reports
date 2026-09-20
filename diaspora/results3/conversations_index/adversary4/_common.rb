@@ -24,7 +24,7 @@
 #     asset tree.  This is the same class of knob every harness already
 #     sets (`check_precompiled_asset = false`).  The app renders its REAL
 #     layout, header, drawer and gon block.
-require "/home/dev/project/src/ruby_runtime/completion_checker/concrete_env.rb"
+require "/home/dev/project/reports/diaspora/tools/concrete_checker/concrete_env.rb"
 
 CE = CompletionChecker::ConcreteEnv
 BATCH = "/home/dev/project/reports/diaspora/results3/conversations_index"

@@ -19,7 +19,7 @@ for S in auth mobile links photo pages; do
     rm -f "$B/concrete_run.json"
     CC_REQ=$i /home/dev/project/reports/diaspora/tools/slot \
       /home/dev/project/scripts/diaspora-concolic \
-      /home/dev/project/src/ruby_runtime/completion_checker/concrete_run_probe.rb \
+      /home/dev/project/reports/diaspora/tools/concrete_checker/concrete_run_probe.rb \
       "$M" >> "$LOG" 2>&1
     rc=$?
     if [ -f "$B/concrete_run.json" ]; then

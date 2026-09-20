@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
-# usage: run_scenario.sh <manifest basename>   (env: ADV4_DEVISE_WARDEN=1, ADV4_REAL_LAYOUT=1, COV=1)
+# usage: run_scenario.sh <manifest basename without .rb>  (one JRuby at a time, machine-wide lock)
 set -u
-ADV=/home/dev/project/reports/diaspora/results3/conversations_index/adversary4
-BATCH=/home/dev/project/reports/diaspora/results3/conversations_index
+ADV=/home/dev/project/reports/diaspora/results3/people_show/adversary
+BATCH=/home/dev/project/reports/diaspora/results3/people_show
 N=$1
 unset JAVA_TOOL_OPTIONS
 rm -f "$ADV/concrete_run.json"
 systemd-run --user --pipe --wait -p MemoryMax=4000M -p MemorySwapMax=0 --working-directory=/home/dev/project \
-  bash -c "unset JAVA_TOOL_OPTIONS; export CONCRETE_COVERAGE=${COV:-0} JRUBY_OPTS=${JOPTS:---debug} ADV4_REAL_LAYOUT=${ADV4_REAL_LAYOUT:-0} ADV4_DEVISE_WARDEN=${ADV4_DEVISE_WARDEN:-0}; flock /tmp/concolic-slot.lock scripts/diaspora-concolic /home/dev/project/reports/diaspora/tools/concrete_checker/concrete_run_probe.rb $ADV/$N.rb" \
+  bash -c "unset JAVA_TOOL_OPTIONS; export CONCRETE_COVERAGE=${COV:-0} JRUBY_OPTS=\"${JOPTS:-}\"; flock /tmp/concolic-slot.lock scripts/diaspora-concolic /home/dev/project/reports/diaspora/tools/concrete_checker/concrete_run_probe.rb $ADV/$N.rb" \
   > "$ADV/runs/$N.log" 2>&1
 echo "EXIT=$?" >> "$ADV/runs/$N.log"
 if [ -f "$ADV/concrete_run.json" ]; then
@@ -15,4 +15,4 @@ if [ -f "$ADV/concrete_run.json" ]; then
   { echo "### mock_note_check"; python3 /home/dev/project/src/end_to_end_completion_checker/mock/mock_note_check.py "$ADV/runs/$N.json" "$BATCH" --aliases "$BATCH/concrete_aliases.json"; echo "EXIT=$?";
     echo; echo "### note_fidelity_audit"; PYTHONPATH=/home/dev/project/src /home/dev/project/venvs/queries_from_runs/bin/python /home/dev/project/reports/diaspora/tools/note_fidelity_audit.py "$BATCH" "$ADV/runs/$N.json" --aliases "$BATCH/concrete_aliases.json"; echo "EXIT=$?"; } > "$ADV/runs/$N.judge.txt" 2>&1
 fi
-echo "DONE $N $(date +%T)" >> "$ADV/runs/_progress.log"
+echo "DONE $N $(date +%T)" >> "$ADV/runs/_done.log"

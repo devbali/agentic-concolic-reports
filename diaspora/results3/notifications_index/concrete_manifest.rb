@@ -2,7 +2,7 @@
 # Real sqlite DB, real fixture rows, real Devise resolution, real
 # controller dispatch. NO mocks, NO stubs: every target function runs
 # for real; the probe only OBSERVES which ones are invoked.
-require "/home/dev/project/src/ruby_runtime/completion_checker/concrete_env.rb"
+require "/home/dev/project/reports/diaspora/tools/concrete_checker/concrete_env.rb"
 
 CE = CompletionChecker::ConcreteEnv
 CE.setup!(db: File.expand_path("../concrete.sqlite3", __FILE__))

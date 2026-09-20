@@ -6,7 +6,7 @@
 # stubs, nothing under src/ or the app touched.
 #
 # Each scenario manifest sets ADV_TAG then require_relative's this file.
-require "/home/dev/project/src/ruby_runtime/completion_checker/concrete_env.rb"
+require "/home/dev/project/reports/diaspora/tools/concrete_checker/concrete_env.rb"
 require "builder"
 
 ADV_DIR   = File.expand_path("..", __FILE__)

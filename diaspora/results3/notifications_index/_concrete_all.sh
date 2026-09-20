@@ -8,7 +8,7 @@ for S in auth mobile links photo pages; do
   echo "--- $S ---" >> "$LOG"
   rm -f "$B/concrete_run.json"
   flock /tmp/concolic-slot.lock /home/dev/project/scripts/diaspora-concolic \
-    /home/dev/project/src/ruby_runtime/completion_checker/concrete_run_probe.rb \
+    /home/dev/project/reports/diaspora/tools/concrete_checker/concrete_run_probe.rb \
     "$B/concrete_manifest_${S}.rb" >> "$LOG" 2>&1
   rc=$?
   if [ -f "$B/concrete_run.json" ]; then

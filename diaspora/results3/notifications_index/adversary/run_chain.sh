@@ -3,7 +3,7 @@
 # scenario its own process (JVM-crash isolation), DONE line per scenario.
 ADV=/home/dev/project/reports/diaspora/results3/notifications_index/adversary
 LOG=$ADV/runs/_progress.log
-PROBE=/home/dev/project/src/ruby_runtime/completion_checker/concrete_run_probe.rb
+PROBE=/home/dev/project/reports/diaspora/tools/concrete_checker/concrete_run_probe.rb
 for tag in "$@"; do
   mf=$(ls $ADV/${tag}_*.rb 2>/dev/null | head -1)
   if [ -z "$mf" ]; then echo "DONE $tag NOMANIFEST" >> $LOG; continue; fi
