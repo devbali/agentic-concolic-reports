@@ -1,0 +1,75 @@
+{
+  "version": 1,
+  "name": "diaspora",
+  "schema": {
+    "rails_schema_rb": "../../../ruby_examples/dse-apps/schemas/diaspora-schema.rb"
+  },
+  "subsume": {
+    "resource_dir": "resources",
+    "ddl": "diaspora-ddl.sql",
+    "primary_keys": "pk.txt",
+    "foreign_keys": "fk.txt",
+    "dependencies": "deps.sql",
+    "const_decls": "const-decls.txt",
+    "sql_schema_name": "diaspora",
+    "h2_db_name": "diaspora_subsume",
+    "blockaid_jar": null,
+    "z3_dir": null,
+    "java_home": null
+  },
+  "principal": {
+    "uid_const": "_MY_UID",
+    "now_const": "_NOW",
+    "principal_table": "users",
+    "principal_columns": {
+      "users": "id",
+      "people": "owner_id",
+      "aspects": "user_id",
+      "contacts": "user_id",
+      "share_visibilities": "user_id",
+      "notifications": "recipient_id"
+    },
+    "identity": {
+      "table": "people",
+      "id_column": "id",
+      "guid_column": "guid",
+      "ref_fallback_columns": [
+        "person_id",
+        "author_id"
+      ],
+      "pinned_id": 1,
+      "pinned_owner_guid": "abc123"
+    },
+    "binds": {
+      "uid": "^SYM_USER_[A-Za-z0-9]+_id$",
+      "request_param": "^(?:__BIND__)?_?SYM_PARAM_",
+      "identity_id": "^SYM_PERSON_[A-Za-z0-9]+_id$",
+      "identity_prefix": "^SYM_PERSON_",
+      "non_principal_identity_name": "^SYM_PERSON_via_user(?:_|$)",
+      "non_principal_identity_note": "^\\s*User#person\\b"
+    }
+  },
+  "inflections": {
+    "irregular_plurals": {
+      "person": "people"
+    }
+  },
+  "cli": {
+    "results_dir": "../results",
+    "queries_out": "../results/queries_from_runs",
+    "reference_dir": null,
+    "ours_dir": "../results/queries_from_runs",
+    "diff_out": "../results/queries_from_runs/diff"
+  },
+  "conventions": {
+    "view_file_suffix": ".sql",
+    "placeholder_prefix": "_"
+  },
+  "policy": {
+    "_comment": "Exception types that mean the APPLICATION REJECTED the request: an authorization refusal or a lookup that 404s. A run ending in one of these was not served, so --exclude-rejected drops its queries. Deliberately EXCLUDES ActionView::Template::Error, ActionController::UnknownFormat and I18n::InvalidLocale: those are failures of the RENDERING stage or of the rig's own dispatch, after the action's reads were granted, and they account for 99% of people_stream and 60% of notifications_index runs.",
+    "rejecting_errors": [
+      "Diaspora::NonPublic",
+      "ActiveRecord::RecordNotFound"
+    ]
+  }
+}
