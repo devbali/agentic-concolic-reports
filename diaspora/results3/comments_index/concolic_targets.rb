@@ -90,8 +90,61 @@ module ConcolicTargets
 
   module_function
 
+  # Sentinel distinguishing "seeded with nil/false" from "not seeded at all".
+  SEED_MISS = Object.new.freeze
+
+  # ------------------------------------------------------------------
+  # NAME BOUNDARY (2026-09-14) — seed keys accept BOTH length spellings
+  # ------------------------------------------------------------------
+  #
+  # The runtimes used to mint a container's cardinality variable literally as
+  # `len(X)`, and every batch renamed it to `SYM_LEN_X` at load because
+  # `len(X)` is not a legal PYTHON identifier and `concolic_engine/solver.py`
+  # transports Z3 terms as Python source it `exec`/`eval`s. The runtimes now
+  # mint the solver-legal spelling directly (`SymbolicVar.len_var_name`), so
+  # the second dialect is gone going forward.
+  #
+  # But `seed_for` matches EXACTLY and falls back to `default` SILENTLY. Every
+  # seed file and every dump snapshot written before that change keys its
+  # length seeds `len(X)`, so without this shim a pre-change seed replayed
+  # under the new runtime would be quietly IGNORED — no error, no log, just an
+  # inert knob and a flip that "did not take". That is the same silent-miss
+  # failure the rename was made to end, so both spellings are accepted here.
+  # The asked-for spelling always wins; the sibling is only consulted on a
+  # miss. See reports/diaspora/docs/NAME_BOUNDARY_PLAN_20260914.md.
+  LEGACY_LEN_RE  = /\Alen\((.+)\)\z/.freeze
+  SYM_LEN_PREFIX = "SYM_LEN_"
+
+  # True when `var_name` names a container's cardinality, in either spelling.
+  def length_var?(var_name)
+    s = var_name.to_s
+    s.start_with?(SYM_LEN_PREFIX) || !LEGACY_LEN_RE.match(s).nil?
+  end
+
+  # Every spelling a seed dict might key `var_name` by, asked-for form FIRST.
+  def seed_aliases(var_name)
+    s = var_name.to_s
+    m = LEGACY_LEN_RE.match(s)
+    if m
+      [var_name, "#{SYM_LEN_PREFIX}#{m[1]}"]
+    elsif s.start_with?(SYM_LEN_PREFIX)
+      [var_name, "len(#{s[SYM_LEN_PREFIX.length..-1]})"]
+    else
+      [var_name]
+    end
+  end
+
+  # The seed override for `var_name` under any accepted spelling, or the
+  # sentinel `miss` when none is present.
+  def seed_lookup(var_name, miss)
+    ov = ConcolicTargets.seed_overrides
+    seed_aliases(var_name).each { |k| return ov[k] if ov.key?(k) }
+    miss
+  end
+
   def seed_for(var_name, default)
-    ConcolicTargets.seed_overrides.fetch(var_name, default)
+    v = seed_lookup(var_name, SEED_MISS)
+    v.equal?(SEED_MISS) ? default : v
   end
 
   # ---------------------------------------------------------------------
@@ -615,7 +668,7 @@ module ConcolicTargets
       interceptor.declare_target(rel, m, returns: lambda do |receiver, args, name|
         vn = "#{name}_rows"
         rep = symbolic_instance(model_class(receiver), "#{name}_row", sql_for(receiver, args))
-        SymbolicList.new(seed_for("len(#{vn})", 1), name: vn,
+        SymbolicList.new(seed_for(SymbolicVar.len_var_name(vn), 1), name: vn,
                        note: sql_for(receiver, args), representative: rep)
       end)
     end
@@ -656,7 +709,58 @@ module ConcolicTargets
         symint(vn, seed_for(vn, m == :count ? 1 : 0), note: note)
       end)
     end
-    %i[pluck ids average minimum maximum calculate].each do |m|
+    # --- [ DESIGN #5c ] D3. Calculations#ids -> symbolic id list ------------
+    # Boundary gap B-5 (docs/BOUNDARY_NOTE_GAPS_20260915.md), repaired
+    # 2026-09-15. `ids` was UNSUPPORTED in the shared boundary, so it recorded
+    # NOTHING and any batch needing it had to redeclare it locally.
+    #
+    # WHAT B-5 ACTUALLY IS (measured on results3/posts_show, whose targets.rb
+    # carries such a local declaration): the statement IS recorded -- on the
+    # `Calculations.ids` call event and on the representative
+    # `<result>_id`/`len(<result>_ids)` vars. What is missing is a RESOLVABLE
+    # NAME. That local mock names the LIST `<result>_ids`, and `ids` is not a
+    # column of the relation, so when the list is handed to a later
+    # `where(...)` as a bind, render_bind_value emits `$$(<result>_ids)` --
+    # and transform.py's bind recursion resolves `<producer>_<column>` only,
+    # so it stays an unresolved placeholder
+    # (`"notifications"."target_id" = $$(SYM_RESULT_ActiveRecord__
+    # Calculations_ids_1_ids)`, 72 notes / 150 dumps).
+    #
+    # So the shared declaration names the list after the relation's REAL
+    # primary key (`<result>_<pk>`), which is exactly the column the list
+    # holds; a bind naming it then resolves as that column of THIS query by
+    # the ordinary recursion, with no new config regex. The representative
+    # carries the same name -- list and representative ARE the same column --
+    # and the length var (`len(...)` / `SYM_LEN_...`) stays distinct by
+    # construction. The note carries the real projection
+    # (`SELECT "t"."id" FROM ...`) rather than `SELECT "t".*`: `ids` reads one
+    # column, and `SELECT *` would overstate it. Same descent §5b took for
+    # `pluck`.
+    if calc.method_defined?(:ids)
+      interceptor.declare_target(calc, :ids, returns: lambda do |receiver, args, name|
+        note = sql_for(receiver, args)
+        pk = begin
+          k = model_class(receiver)
+          (k.respond_to?(:primary_key) && k.primary_key) || "id"
+        rescue StandardError
+          "id"
+        end
+        begin
+          tbl = (receiver.respond_to?(:table_name) && receiver.table_name) ||
+                (receiver.respond_to?(:klass) && receiver.klass.table_name)
+          proj = tbl ? %("#{tbl}"."#{pk}") : %("#{pk}")
+          note = note.sub(/\ASELECT\s+(DISTINCT\s+)?.*?\s+FROM /m, "SELECT #{proj} FROM ")
+        rescue StandardError
+          nil # projection rewrite must never crash the mock
+        end
+        vn  = "#{name}_#{pk}"
+        rep = symint(vn, seed_for(vn, 1), note: note)
+        list_class = defined?(IterableSymbolicList) ? IterableSymbolicList : SymbolicList
+        list_class.new(seed_for(SymbolicVar.len_var_name(vn), 1), name: vn,
+                       note: note, representative: rep)
+      end)
+    end
+    %i[pluck average minimum maximum calculate].each do |m|
       interceptor.declare_target(calc, m, returns: ->(_r, _a, _n) { UNSUPPORTED.call("Calculations##{m}") })
     end
 

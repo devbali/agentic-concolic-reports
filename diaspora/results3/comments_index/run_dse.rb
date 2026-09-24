@@ -383,10 +383,29 @@ def path_conditions(dump)
     .map { |e| [e["expr"], e["taken"] ? true : false] }
 end
 
+# NAME BOUNDARY (2026-09-14) — keep length decisions FLIPPABLE.
+#
+# The runtimes used to mint a list's cardinality variable as `len(X)`; they now
+# mint `SYM_LEN_X`, because `len(X)` is not a legal Python identifier and
+# `concolic_engine/solver.py` exec/evals its declarations. The flip matchers
+# below are written in the OLD spelling, so a new dump's `(SYM_LEN_X != 0)`
+# would MISS the dedicated length branch — and the generic `(VAR op LIT)`
+# matcher would catch it instead, producing a seed that IGNORES `want_taken`.
+# That is a silently WRONG flip, not a clean miss: DSE would stop exploring
+# list-cardinality decisions and never say so.
+#
+# Normalise to the matchers' spelling on the way in. Seed keys stay
+# `len(...)`-spelled, which `concolic_targets.rb`'s `seed_for` accepts in both
+# spellings, so pre-existing seed files and snapshots are unaffected.
+# See reports/diaspora/docs/NAME_BOUNDARY_PLAN_20260914.md.
+def canon_len(expr)
+  expr.to_s.strip.gsub(/SYM_LEN_([A-Za-z0-9_]+)/, 'len(\1)')
+end
+
 # Flip a single "(VAR == LITERAL)" path condition — the shape emitted by
 # scalar-equality comparisons and boolean predicate readers.
 def flip_seed(expr, want_taken, vals = {})
-  m = /\A\(([A-Za-z_][A-Za-z0-9_]*) (==|!=) (.+)\)\z/m.match(expr.to_s.strip)
+  m = /\A\(([A-Za-z_][A-Za-z0-9_]*) (==|!=) (.+)\)\z/m.match(canon_len(expr))
   return nil unless m
   var, op, lit = m[1], m[2], m[3].strip
   want_taken = !want_taken if op == "!="
@@ -456,7 +475,7 @@ end
 
 # SymbolicList length PCs "(len(X) != 0)" are flippable too — seed the length.
 def flip_len_seed(expr, want_taken)
-  m = /\A\((len\(.+\)) != 0\)\z/m.match(expr.to_s.strip)
+  m = /\A\((len\(.+\)) != 0\)\z/m.match(canon_len(expr))
   return nil unless m
   { m[1] => (want_taken ? 1 : 0) }
 end
@@ -464,7 +483,7 @@ end
 # N4-3 (round 4): the 1-vs-MANY half of the same length dimension, recorded by
 # targets.rb's rows_mock as "(len(X) > 1)". 2 is the modelled "two or more".
 def flip_len_many_seed(expr, want_taken)
-  m = /\A\((len\(.+\)) > 1\)\z/m.match(expr.to_s.strip)
+  m = /\A\((len\(.+\)) > 1\)\z/m.match(canon_len(expr))
   return nil unless m
   { m[1] => (want_taken ? 2 : 1) }
 end
@@ -477,7 +496,7 @@ end
 # of the length needed to flip the inequality the OTHER way, so both the
 # :id-lookup and :guid-lookup queries get explored.
 def flip_length_seed(expr, want_taken)
-  m = /\A\(Length\(([A-Za-z_][A-Za-z0-9_]*)\) (<=|>=|==|!=|<|>) (-?\d+)\)\z/m.match(expr.to_s.strip)
+  m = /\A\(Length\(([A-Za-z_][A-Za-z0-9_]*)\) (<=|>=|==|!=|<|>) (-?\d+)\)\z/m.match(canon_len(expr))
   return nil unless m
   var, op, n = m[1], m[2], m[3].to_i
 

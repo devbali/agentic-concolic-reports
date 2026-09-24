@@ -11,6 +11,7 @@
   "note_check_cmd": "python3 /home/dev/project/src/end_to_end_completion_checker/mock/mock_note_check.py {run} {batch} --aliases /home/dev/project/reports/diaspora/results3/comments_index/concrete_aliases.json",
   "assumption_cfg": "/home/dev/project/reports/diaspora/results3/comments_index/assumption_manifest.json",
   "assumption_cmd": "/home/dev/project/reports/diaspora/results3/comments_index/_c12/gate_wrapper.sh {cfg} {declared} {out}",
+  "assumption_timeout": 604800,
   "pc_gate_columns": [
     "public",
     "diaspora_handle",

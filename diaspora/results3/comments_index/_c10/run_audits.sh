@@ -1,6 +1,10 @@
 #!/bin/bash
 # cycle-10 standalone audit sweep
 set -u
+# E12 (2026-09-11): src/queries_from_runs is app-agnostic and REQUIRES an
+# app config; bind_resolution_audit and identity_symbolicity_audit read the
+# schema and the principal columns from it and go RED without one.
+export QFR_APP_CONFIG="${QFR_APP_CONFIG:-/home/dev/project/reports/diaspora/queries_config/app.json}"
 P=/home/dev/project
 B=$P/reports/diaspora/results3/comments_index
 O=$B/_c10

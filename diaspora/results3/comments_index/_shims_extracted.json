@@ -1,5 +1,6 @@
 [
   {
+    "key": "h.image_path",
     "owner": "h",
     "method": "image_path",
     "kind": "rep_plumbing",
@@ -7,6 +8,7 @@
     "line": 1393
   },
   {
+    "key": "h.path_to_image",
     "owner": "h",
     "method": "path_to_image",
     "kind": "rep_plumbing",
@@ -14,6 +16,7 @@
     "line": 1394
   },
   {
+    "key": "Person.name_from_attrs",
     "owner": "Person",
     "method": "name_from_attrs",
     "kind": "rep_plumbing",
@@ -21,6 +24,7 @@
     "line": 1417
   },
   {
+    "key": "receiver.concolic_note",
     "owner": "receiver",
     "method": "concolic_note",
     "kind": "rep_plumbing",
@@ -28,6 +32,7 @@
     "line": 1579
   },
   {
+    "key": "DiasporaFederation::Discovery::Discovery.singleton_class.DYNAMIC",
     "owner": "DiasporaFederation::Discovery::Discovery.singleton_class",
     "method": "DYNAMIC",
     "kind": "value_class",
@@ -37,6 +42,7 @@
     "note": "dynamically-named define_method \u2014 engine requires manual entry or waiver"
   },
   {
+    "key": "ActiveRecord::Base.to_param",
     "owner": "ActiveRecord::Base",
     "method": "to_param",
     "kind": "prepend",
@@ -45,6 +51,7 @@
     "line": 1786
   },
   {
+    "key": "EvilQuery::VisibleShareableById.post!",
     "owner": "EvilQuery::VisibleShareableById",
     "method": "post!",
     "kind": "prepend",
@@ -53,6 +60,7 @@
     "line": 1834
   },
   {
+    "key": "u.persisted?",
     "owner": "u",
     "method": "persisted?",
     "kind": "rep_plumbing",
@@ -60,6 +68,7 @@
     "line": 1897
   },
   {
+    "key": "u.new_record?",
     "owner": "u",
     "method": "new_record?",
     "kind": "rep_plumbing",
@@ -67,6 +76,7 @@
     "line": 1898
   },
   {
+    "key": "User.authenticatable_salt",
     "owner": "User",
     "method": "authenticatable_salt",
     "kind": "prepend",
@@ -75,6 +85,7 @@
     "line": 1915
   },
   {
+    "key": "OrmAdapter::ActiveRecord.get",
     "owner": "OrmAdapter::ActiveRecord",
     "method": "get",
     "kind": "prepend",
@@ -83,6 +94,7 @@
     "line": 1921
   },
   {
+    "key": "Person.singleton_class.DYNAMIC",
     "owner": "Person.singleton_class",
     "method": "DYNAMIC",
     "kind": "dynamic",
@@ -92,6 +104,7 @@
     "note": "dynamically-named define_method \u2014 engine requires manual entry or waiver"
   },
   {
+    "key": "Person.singleton_class.find_or_fetch_by_identifier",
     "owner": "Person.singleton_class",
     "method": "find_or_fetch_by_identifier",
     "kind": "prepend",
@@ -100,6 +113,7 @@
     "line": 2086
   },
   {
+    "key": "CommentPresenter.as_json",
     "owner": "CommentPresenter",
     "method": "as_json",
     "kind": "prepend",
@@ -108,120 +122,154 @@
     "line": 2096
   },
   {
+    "key": "obj.read_attribute",
     "owner": "obj",
     "method": "read_attribute",
     "kind": "rep_plumbing",
     "file": "concolic_targets.rb",
-    "line": 382
+    "line": 435
   },
   {
+    "key": "obj._read_attribute",
     "owner": "obj",
     "method": "_read_attribute",
     "kind": "rep_plumbing",
     "file": "concolic_targets.rb",
-    "line": 383
+    "line": 436
   },
   {
+    "key": "obj.concolic_attrs",
     "owner": "obj",
     "method": "concolic_attrs",
     "kind": "rep_plumbing",
     "file": "concolic_targets.rb",
-    "line": 384
+    "line": 437
   },
   {
+    "key": "obj.concolic_note",
     "owner": "obj",
     "method": "concolic_note",
     "kind": "rep_plumbing",
     "file": "concolic_targets.rb",
-    "line": 388
+    "line": 441
   },
   {
+    "key": "obj.attributes",
     "owner": "obj",
     "method": "attributes",
     "kind": "rep_plumbing",
     "file": "concolic_targets.rb",
-    "line": 396
+    "line": 449
   },
   {
+    "key": "obj.write_attribute",
     "owner": "obj",
     "method": "write_attribute",
     "kind": "rep_plumbing",
     "file": "concolic_targets.rb",
-    "line": 397
+    "line": 450
   },
   {
+    "key": "obj._write_attribute",
     "owner": "obj",
     "method": "_write_attribute",
     "kind": "rep_plumbing",
     "file": "concolic_targets.rb",
-    "line": 398
+    "line": 451
   },
   {
+    "key": "obj.image_url",
     "owner": "obj",
     "method": "image_url",
     "kind": "rep_plumbing",
     "file": "concolic_targets.rb",
-    "line": 405
+    "line": 458
   },
   {
+    "key": "obj.hidden_shareables",
     "owner": "obj",
     "method": "hidden_shareables",
-    "kind": "rep_plumbing",
-    "file": "concolic_targets.rb",
-    "line": 415
-  },
-  {
-    "owner": "obj",
-    "method": "post_location",
-    "kind": "rep_plumbing",
-    "file": "concolic_targets.rb",
-    "line": 424
-  },
-  {
-    "owner": "obj",
-    "method": "inspect",
-    "kind": "rep_plumbing",
-    "file": "concolic_targets.rb",
-    "line": 430
-  },
-  {
-    "owner": "obj",
-    "method": "persisted?",
     "kind": "rep_plumbing",
     "file": "concolic_targets.rb",
     "line": 468
   },
   {
+    "key": "obj.post_location",
+    "owner": "obj",
+    "method": "post_location",
+    "kind": "rep_plumbing",
+    "file": "concolic_targets.rb",
+    "line": 477
+  },
+  {
+    "key": "obj.inspect",
+    "owner": "obj",
+    "method": "inspect",
+    "kind": "rep_plumbing",
+    "file": "concolic_targets.rb",
+    "line": 483
+  },
+  {
+    "key": "obj.persisted?",
+    "owner": "obj",
+    "method": "persisted?",
+    "kind": "rep_plumbing",
+    "file": "concolic_targets.rb",
+    "line": 521
+  },
+  {
+    "key": "obj.new_record?",
     "owner": "obj",
     "method": "new_record?",
     "kind": "rep_plumbing",
     "file": "concolic_targets.rb",
-    "line": 469
+    "line": 522
   },
   {
+    "key": "ActiveRecord::Associations::SingularAssociation.find_target",
+    "owner": "ActiveRecord::Associations::SingularAssociation",
+    "method": "find_target",
+    "kind": "prepend",
+    "module": "singular_loaded_target_memo",
+    "file": "concolic_targets.rb",
+    "line": 1167
+  },
+  {
+    "key": "::Gon.singleton_class.preloads",
+    "owner": "::Gon.singleton_class",
+    "method": "preloads",
+    "kind": "prepend",
+    "module": "gon_preloads_shim",
+    "file": "concolic_targets.rb",
+    "line": 1395
+  },
+  {
+    "key": "ActionDispatch::Journey::Router::Utils.singleton_class.escape_segment",
     "owner": "ActionDispatch::Journey::Router::Utils.singleton_class",
     "method": "escape_segment",
     "kind": "value_class",
     "module": "ConcolicEscapeSegmentShim",
     "file": "concolic_targets.rb",
-    "line": 1470
+    "line": 1669
   },
   {
+    "key": "ActiveRecord::Base.singleton_class.DYNAMIC",
     "owner": "ActiveRecord::Base.singleton_class",
     "method": "DYNAMIC",
     "kind": "value_class",
     "module": "ConcolicKwargsToPositional",
     "file": "concolic_targets.rb",
-    "line": 1517,
+    "line": 1716,
     "note": "dynamically-named define_method \u2014 engine requires manual entry or waiver"
   },
   {
+    "key": "ActiveRecord::Relation.DYNAMIC",
     "owner": "ActiveRecord::Relation",
     "method": "DYNAMIC",
     "kind": "value_class",
     "module": "ConcolicKwargsToPositional",
     "file": "concolic_targets.rb",
-    "line": 1518,
+    "line": 1717,
     "note": "dynamically-named define_method \u2014 engine requires manual entry or waiver"
   }
 ]
