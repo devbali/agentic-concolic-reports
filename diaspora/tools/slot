@@ -4,12 +4,48 @@
 # The engine takes no machine-wide lock (assumption_checker.py's comment: a
 # deployment expresses serialisation IN the runner). This wrapper IS that
 # expression for this host: N slots instead of one mutex, so the assumption
-# gate can keep N JRubys busy. Memory, not cores, sets N — each JRuby peaks
-# ~1.2 GB on a 7.9 GB box. Default 2 (Bali, 2026-09-01).
+# gate can keep N JRubys busy.
 #
-# usage: tools/slot <command> [args...]      env: CONCOLIC_SLOTS (default 2)
+# usage: tools/slot [--num-workers N] [--help] <command> [args...]
+#
+#   --num-workers N   concurrent JRuby slots   [env: $CONCOLIC_SLOTS]  [default: 2]
+#
+# Precedence: --num-workers > $CONCOLIC_SLOTS > 2  (the project rule).
+#
+# STALE DEFAULT, FLAGGED 2026-09-15 (not changed here -- two campaigns are
+# running and a default change is a behaviour change):
+#   The default of 2 was set by Bali on 2026-09-01 with the justification
+#   "memory, not cores, sets N -- each JRuby peaks ~1.2 GB on a 7.9 GB box".
+#   THAT BOX IS GONE. This host has 16 cores and 68 GB. At ~1.2 GB per JRuby
+#   the memory argument now permits far more than 2, and the companion
+#   finding in _RESTART_HANDOFF_20260911.md ("CONCOLIC_PROBE_WORKERS was
+#   useless ONLY because of the core count, and that conclusion expires with
+#   more cores") expired with the same upgrade. Raise it deliberately --
+#   `tools/slot --num-workers 8 ...`, or CONCOLIC_SLOTS=8 -- after re-measuring
+#   with reports/diaspora/results3/tools/cov_par_differential.py, and set
+#   CONCOLIC_PROBE_WORKERS with it: slots without workers changes nothing.
 set -u
+
 N="${CONCOLIC_SLOTS:-2}"
+
+# Leading options only, so `tools/slot java -Xss...` is untouched.
+while [ $# -gt 0 ]; do
+  case "${1:-}" in
+    --num-workers) N="$2"; shift 2 ;;
+    --num-workers=*) N="${1#--num-workers=}"; shift ;;
+    -h|--help)
+      sed -n '2,26p' "$0" | sed 's/^# \{0,1\}//'
+      exit 0 ;;
+    *) break ;;
+  esac
+done
+
+case "$N" in
+  ''|*[!0-9]*) echo "slot: --num-workers/\$CONCOLIC_SLOTS must be a positive integer, got '$N'" >&2; exit 2 ;;
+esac
+[ "$N" -ge 1 ] || { echo "slot: --num-workers must be >= 1, got '$N'" >&2; exit 2; }
+[ $# -ge 1 ] || { echo "slot: no command given (try --help)" >&2; exit 2; }
+
 while true; do
   for i in $(seq 1 "$N"); do
     exec 9>"/tmp/concolic-slot-$i.lock" || continue

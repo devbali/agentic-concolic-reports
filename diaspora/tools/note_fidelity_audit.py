@@ -150,6 +150,13 @@ def main():
         print(f"   {t:<70} notes={len(notes[t]):<4} " + " ".join(f"{k}={v}" for k, v in sorted(kinds.items())))
     print()
 
+    declared_cfg, declared_hit = [], set()
+    try:
+        _cfg = os.path.join(batch, "completion_config.json")
+        if os.path.exists(_cfg):
+            declared_cfg = json.load(open(_cfg)).get("note_fidelity_declared") or []
+    except Exception:
+        declared_cfg = []
     red = 0
     findings = defaultdict(list)
     for tgt in sorted(real):
@@ -177,10 +184,47 @@ def main():
                         if c is not None and (best is None or RANK[c] < RANK[best.rstrip("*")]):
                             best, best_note = c + "*", note
             verdict = best or "MISSING"
-            findings[verdict.rstrip("*")].append((tgt, sql, best_note, sorted(scen)[:3]))
-            if verdict.rstrip("*") in ("STAR-OVER", "AGG-COLLAPSE", "MISSING", "PROJ-DIFF",
-                                       "PRED-OP-DIFF", "LIMIT-DIFF", "ORDER-DIFF"):
+            v0 = verdict.rstrip("*")
+            # DECLARED (2026-09-11) — a batch may DECLARE a row whose verdict is
+            # fixed by WHAT THE INSTRUMENT IS, not by what the mock says, via
+            # completion_config.json:
+            #   "note_fidelity_declared": [{"match": "<substring of the REAL sql>",
+            #                               "verdicts": ["PRED-OP-DIFF", ...],
+            #                               "reason": "..."}]
+            # Same hook shape as hardening_lint.py's h4_by_construction /
+            # h6_answered / pc_pin_ledger. It does NOT weaken the audit: the
+            # reason is printed on every run so the claim stays auditable, MISSING
+            # is never declarable (a missing note cannot be an instrument
+            # artefact), a declaration must name BOTH the statement and the
+            # verdict it exempts, and a declaration that matches nothing is
+            # itself reported and counts RED.
+            _d = None
+            if v0 != "MISSING":
+                for e in declared_cfg:
+                    if e.get("match") and e["match"] in sql and v0 in (e.get("verdicts") or []):
+                        _d = e
+                        declared_hit.add(id(e))
+                        break
+            if _d is not None:
+                findings["DECLARED"].append((tgt, sql, best_note, sorted(scen)[:3], v0, _d))
+                continue
+            findings[v0].append((tgt, sql, best_note, sorted(scen)[:3]))
+            if v0 in ("STAR-OVER", "AGG-COLLAPSE", "MISSING", "PROJ-DIFF",
+                      "PRED-OP-DIFF", "LIMIT-DIFF", "ORDER-DIFF"):
                 red += 1
+
+    items = findings.get("DECLARED", [])
+    print(f"-- DECLARED: {len(items)} --")
+    for tgt, sql, note, scen, v0, e in items:
+        print(f"   {v0:<13} {tgt}  [{', '.join(scen)}]")
+        print(f"      real: {sql[:150]}")
+        print(f"      declared: {e.get('reason','(no reason given)')}")
+    for e in declared_cfg:
+        if id(e) not in declared_hit:
+            red += 1
+            print(f"   CHECK note_fidelity_declared entry {e.get('match')!r} "
+                  f"matched no row with verdict(s) {e.get('verdicts')} — stale declaration")
+    print()
 
     for v in ("MISSING", "STAR-OVER", "AGG-COLLAPSE", "PROJ-DIFF", "PRED-OP-DIFF",
               "LIMIT-DIFF", "ORDER-DIFF", "PRED-DIFF", "EXACT"):
