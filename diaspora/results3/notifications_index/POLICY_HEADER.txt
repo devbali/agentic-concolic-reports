@@ -92,16 +92,87 @@
 -- wall that raises inside its `returns` lambda loses its note (the interceptor
 -- pushes the record AFTER the lambda returns), so the note is preserved by
 -- letting the application fail one step later instead.
--- There are TWO such nil-profile consumers, both truncating the same way, and
--- both appear in the corpus as `ActionView::Template::Error`:
---   `undefined method 'first_name' for nil:NilClass`      (Person#name ->
---       Person.name_from_attrs, app/models/person.rb:250)
---   `undefined method 'as_api_response' for nil:NilClass` (the people_helper
---       presenter path)
+-- THE TERMINAL POPULATION, RE-MEASURED ON THE WHOLE CORPUS (C29, 2026-09-14).
+-- The earlier text here said "There are TWO such nil-profile consumers, both
+-- truncating the same way", measured on a 144-dump smoke. That undercounts.
+-- Over the corpus of record (`_snapshot_c27_R8.txt`, 136 028 runs;
+-- `_c29_errcensus.py`, a regex census of the raw dump bytes) there are
+-- **48 646 `ActionView::Template::Error` (35.8 % of the corpus) in TEN message
+-- shapes raised at TEN DISTINCT APPLICATION SITES**, plus one
+-- `I18n::InvalidLocale` (the deliberate C32A locale probe). The two shapes
+-- named above cover 38 275 of the 48 646 (78.7 %); the other 10 371 (21.3 %)
+-- were not named here at all:
+--
+--   DECLARED (the nil-profile consumers this section explains)
+--     22 809  undefined method `first_name' for nil:NilClass
+--               Person#name -> Person.name_from_attrs, app/models/person.rb:251
+--               (this file previously said :250)
+--     15 466  undefined method `as_api_response' for nil:NilClass
+--               app/presenters/user_presenter.rb:12 (the people_helper
+--               presenter path)
+--   NOT PREVIOUSLY NAMED — 10 371 runs, 21.3 % of the class
+--      4 383  undefined method `mentions_container' for nil
+--               app/models/notifications/mentioned.rb:8
+--      2 074  No route matches {:action=>"show", :controller=>"people",
+--             :username=><SymStr ... = "">}, possible unmatched constraints:
+--             [:username]
+--               raised from app/views/layouts/_drawer.mobile.haml:33 through
+--               actionpack journey/formatter.rb:57  -- NOT A NIL CONSUMER; see
+--               the separate note below
+--      1 715  Photo#author_name delegated to author.name, author nil
+--               lib/diaspora/shareable.rb:21
+--        629  undefined method `message' for nil    app/helpers/posts_helper.rb:14
+--        578  undefined method `[]' for nil         app/helpers/gon_helper.rb:6
+--        505  Photo#status_message_author_name delegated to
+--             status_message.author_name, status_message nil  app/models/photo.rb:45
+--        300  undefined method `diaspora_handle' for nil
+--               lib/diaspora/mentionable.rb:35
+--        187  undefined method `contact_for' for nil
+--               app/models/notifications/started_sharing.rb:19
+--
+-- NINE of the ten are the same declared mechanism -- a nil association or nil
+-- profile reaching a consumer in application code, the render truncating there
+-- -- so the MECHANISM this section describes is right; the SURFACE was
+-- undercounted five-fold in shapes and by 27 % in runs. The class has not grown
+-- into something new: its share of the corpus is flat (34.8 % at C20R4,
+-- 35.7 % at C26R1, 35.8 % here) and every shape is present in the OLDEST drive
+-- tags as well as the newest.
+--
+-- THE ROUTING SHAPE IS NOT A NIL CONSUMER, AND ITS STATUS IS NOW MEASURED
+-- RATHER THAN ASSERTED. `user_profile_path(current_user.username)`
+-- (`_drawer.mobile.haml:33`) generates against
+-- `get '/u/:username' => 'people#show', :constraints => { :username => /[^\/]+/ }`
+-- (config/routes.rb:189). An EMPTY username fails that constraint, so Rails
+-- raises `ActionController::UrlGenerationError` and ActionView wraps it. Two
+-- measurements decide whether that is the application's behaviour or the rig's:
+--
+--   * the value, not the wrapper. Over all 136 028 runs, mobile scenarios,
+--     username value x outcome:
+--         non-empty username : 22 662 clean renders + 11 219 other-error runs,
+--                              and **0 routing errors**
+--         username == ""     : 2 074 routing errors + 3 248 runs that raised
+--                              earlier, and **0 clean renders**
+--     22 662 runs rendered that very line with a SYMBOLIC username and
+--     generated the URL, so the failure follows the VALUE and not the fact
+--     that the value is symbolic.
+--   * the value is SEEDED. `""` appears only where a constructed seed wrote
+--     `concolic_seeds["SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_username"] = ""`;
+--     the unseeded default is the variable's own name, which routes.
+--
+-- So the MECHANISM is faithful -- any Rails application raises exactly this for
+-- an empty required dynamic segment -- but the PRECONDITION is not reachable in
+-- the application: `app/models/user.rb:37-38` validates `username` for presence
+-- and against `/\A[A-Za-z0-9_]+\z/`, so a persisted User cannot carry `""`.
+-- The 2 074 runs are therefore a faithful Rails response to a state OUTSIDE the
+-- application-valid codomain of the `users.username` column mock -- an M-SNAP
+-- shaped codomain observation about that mock, not a nil consumer, and not a
+-- defect in the routing layer. It is REPORTED here, not declared away.
+--
 -- Measured on the repaired model, 144-dump smoke, whole population: 5 and 2
--- occurrences respectively, 5 `WALL Person#fix_profile` events, and **0**
--- `ActiveRecord::Base#reload` events (the pre-repair corpus emitted 1 906 of
--- them on this arm, none of which the application issues).
+-- occurrences of the two declared shapes respectively, 5 `WALL
+-- Person#fix_profile` events, and **0** `ActiveRecord::Base#reload` events (the
+-- pre-repair corpus emitted 1 906 of them on this arm, none of which the
+-- application issues).
 --
 -- SO: THE ABSENCE OF DISCOVERY-SUCCESS STATEMENTS BELOW IS A DECLARED GAP, NOT
 -- A FINDING THAT THE PATH READS NOTHING. If that arm ever became reachable (a
@@ -139,4 +210,266 @@
 -- endpoint in this environment can issue them and this project verifies every
 -- note against a real endpoint statement. They are recorded here so a consumer
 -- knows the boundary of what is claimed.
+-- ============================================================================
+--
+-- ============================================================================
+-- WHAT `COMPLETE` COVERS, AND WHAT IT DOES NOT  (C30, 2026-09-15)
+-- ============================================================================
+-- THE VERDICT THIS FILE SHIPS UNDER, verbatim from the run that produced it:
+--
+--   coverage pass  C30OFF5   CONFINEMENT=0   corpus _snapshot_c30_R5.txt
+--                            138 912 runs (the batch DIRECTORY holds 313 977
+--                            dumps; the snapshot is the corpus of record)
+--     COMPLETE=True; NODES=441; MISSING=4; BLOCKING=0; PCS=8883622
+--     GENUINE=True; TRUNCATED=False; SOLVER_LOST=0; UNEVALUABLE=[]
+--   engine section            OVERALL_COMPLETE=True; COMPLETION=True
+--                             completion.blocking = []   (coverage_summary.json)
+--     5 fixed audits green, NOTE-CHECK green, ASSUMPTIONS green
+--     (declared 27 231, distinct_tested 2 004,
+--      PASS 1 907 / NOT-COMPARABLE 32 / NOT-TESTABLE 65)
+--
+-- `COMPLETE` is a statement about DECISIONS: every satisfiable leaf of every
+-- demand set is walked by a run in that corpus. It is NOT a statement that the
+-- list below is everything a request could ever read. The five places it stops
+-- are named here, each with the measurement behind it.
+--
+-- (1) THE FOUR UNTRACKED TRANSPARENCY ENTRIES. `MISSING=4` with `BLOCKING=0`
+--     means four branches are REPORTED AND NOT COUNTED, because the engine
+--     cannot track them. All four are the same shape, one per `to_ary
+--     notifications` statement variant:
+--
+--       (SYM_RESULT_..._notifications_3aa8587a_row_actors_row_guid != StringVal(''))
+--       (SYM_RESULT_..._notifications_c7e6a7ca_row_actors_row_guid != StringVal(''))
+--       (SYM_RESULT_..._notifications_10254800_row_actors_row_guid != StringVal(''))
+--       (SYM_RESULT_..._notifications_cf379872_row_actors_row_guid != StringVal(''))
+--
+--     raised at actionpack-5.2.4.3 `action_dispatch/journey/formatter.rb:41`
+--     (`block in generate`) — URL generation off an actor's guid inside the
+--     framework, not application code. They are listed so a reader can see
+--     they are the same four, and not something new.
+--
+-- (2) THE INFERENCE STACK, AND ITS EVIDENCE GRADE PER LAYER. `BLOCKING=0` is
+--     reached with three INFERRED relations switched on (DISCIPLINE §16e,
+--     §16f, §16g). Nothing is declared for them, no `AssumptionSet` entry
+--     exists, and each re-derives itself from the corpus on every pass — but
+--     each REMOVES demand, so a wrong one would produce a FALSE completion.
+--     They were therefore probed under §17/X12 (a derived test probes K bases,
+--     not one; `FALS_K=8`, `_c30_fals_C30OFF5.*`), on the classes THIS pass
+--     actually applied, extracted from THIS summary:
+--
+--       §16e  gate-conjunction foreclosure  89 classes
+--             ACTIVELY CONFIRMED 89/89 — 448 confirming per-base replays,
+--             264 per-base NOT-TESTABLE, 0 refutations
+--       §16f  sub-conjunction foreclosure   26 classes  (W=3, budget 20 000)
+--             CONFIRMED 20, NOT-TESTABLE 6 — 115 per-base PASS, 93 N-T, 0 FAIL
+--       §16g  well-founded drops            26 classes  (W=3)
+--             CONFIRMED 4, NOT-TESTABLE 22 — 32 per-base PASS, 176 N-T, 0 FAIL
+--
+--     **ZERO REFUTATIONS AT EIGHT BASES ON ALL THREE LAYERS.** And the part a
+--     reader should not have to infer: **28 of the 141 applied classes (6 §16f
+--     + 22 §16g) are NOT-TESTABLE — no probed base realises their conditioning
+--     set, so they are UN-EVIDENCED, not confirmed.** Under §24.4 a
+--     NOT-TESTABLE is SILENCE, never a licence. This `COMPLETE` is exactly as
+--     strong as that: 113 of 141 actively confirmed, 28 unvouched.
+--     The §16e class file is NOT byte-identical to the set C27 probed, so no
+--     carry-over was claimed and all 89 were re-probed here.
+--
+-- (3) CONFINEMENT (§16c) IS **OFF**. `CONFINEMENT=0` on the pass that produced
+--     this file. The confinement-ON configuration also reaches
+--     `COMPLETE=True/BLOCKING=0`, and it was NOT used, deliberately: it rests
+--     on 578 confinement licences of which 510 (88.2 %) have never been
+--     probed, on an endpoint whose confinement gate refuted 84.9 % and then
+--     76.5 % of everything it DID test. Nothing in this file depends on a
+--     confinement licence: `confinement_tested: 0`, `confinement_withdrawn:
+--     []`, `confinement_unverified: []` in the engine section's own record.
+--     The 1 884 pairs already withdrawn stay withdrawn and are fed back into
+--     the pass as prior footprints; that direction only ADDS demand.
+--
+-- (4) THE TWO AUDIT REDS, NAMED RATHER THAN LEFT FOR THE READER TO FIND.
+--     The C7 suite is 16 audits; 14 exit 0 and 2 exit 1:
+--       * `skipped_pcs_VANILLA` — RED **BY DESIGN**. It measures the VANILLA
+--         `src/` fold, which discards 3 176 849 `(VAR == VAR(_))` and 32 422
+--         `(VAR != VAR(_))` PC records. That is RUNBOOK gap 3 (the fold
+--         patches are not upstreamed), and it is why this extraction installs
+--         `_experiment/variant_d`'s `AssocFoldingTransformer`. Measured BOTH
+--         ways on this corpus, as the RUNBOOK requires:
+--           vanilla  parsed 10 469 094 | DROPPED 3 209 271   -> RED
+--           patched  parsed 14 008 744 | dropped         0   -> pass
+--         The shipped file is the PATCHED one, so the red is a statement
+--         about `src/`, not about this policy.
+--       * `hardening_lint` — 2 checks still need an answer:
+--           H3 (opaque notes) 2 targets with no SQL note and not a documented
+--              wall: `CollectionProxy.load_target` (note "preloaded
+--              association #actors: answered from the loaded target") and
+--              `ActiveRecord::Base.to_param`.
+--           H6 (over-emission) 6 note shapes no concrete run issued —
+--              3 `CollectionProxy.records` photos reads, `find_by` on
+--              `people.diaspora_handle`, `Relation.size` on reports, and
+--              `load_intermediate` on tag_followings. Over-emission INFLATES
+--              a policy; it does not lose a statement.
+--         Neither is new and neither is waived here; both are reported.
+--
+-- (5) THE THREE DECLARATIONS, WITH THEIR FALSIFIERS AND KILL SWITCHES. A
+--     declaration removes demand by asserting something about the MOCK, so
+--     each is stated with the test that would refute it:
+--       * `M-SNAP` (8 constraints, `NO_MSNAP=1`) — the actors-list mock's
+--         codomain has holes at 2 and 3: `len(..._row_actors_row_rows) != 2`
+--         and `!= 3`, one pair per `to_ary notifications` variant, emitted
+--         only where the corpus records the `> 3` decision.
+--         FALSIFIER: any run minting one of those lengths at 2 or 3.
+--       * `RE-MINT-IDENTITY` (25 constraints, `NO_REMINT_IDENTITY=1`) — a
+--         re-minted association length EQUALS its upstream materialize
+--         length, because `targets.rb`'s loaded-target early return returns
+--         the very list the upstream mock produced. Census: 29 pairs,
+--         139 585 paired observations, EQUAL 139 585, DIFFERENT 0; active
+--         falsification 320 constructed replays, 835 pairs, DIFFERENT 0.
+--         FALSIFIER: any run recording the two with different values
+--         (`_c18_identity_census.py` is that test over any dump list). A
+--         Rule T change making the loaded-target return independently
+--         seedable refutes the tier.
+--       * `GATE-CONJ-INFEASIBLE` (4 constraints, `NO_GATE_CONJ=1`) —
+--         `Not( SYM_NOTE_TYPE_PROFILE out of range AND the mention container
+--         was FOUND )`, one per statement variant. Only the FOUND direction
+--         is declared: over a free Z3 Bool, excluding BOTH outcomes collapses
+--         to `Not(out-of-range)`, which 9 270 runs refute, so the other side
+--         is left free and that asymmetry is reported rather than hidden.
+--         FALSIFIER: any run with all eight dispatch literals not_taken and
+--         `..._row_target_mentions_container_not_found` recorded not_taken
+--         (`_c18_profile_diff.py`). 576 runs were CONSTRUCTED to try exactly
+--         that and none produced it.
+--     None of the three is testable by the shipped derived test (it derives a
+--     violating value for `VAR op INT`, and none of these has that form), so
+--     an ACTIVE falsification was run in each one's place and is recorded
+--     above — that substitution is itself part of the grade.
+--
+-- (6) THE STAGED B-8 REPAIR IS STILL STAGED, AND THIS CORPUS WAS BUILT
+--     WITHOUT IT. `concolic_targets.rb`'s ONE-FACT cache-replay arm returns a
+--     memoised `nil` without publishing its statement, so the replayed call is
+--     recorded as a note-less `symbolic_call`. `noteless_call_audit` is GREEN
+--     with 0 UNVERIFIED because it VERIFIES the invariant per event rather
+--     than waiving it: 14 308/14 308 of those events over the full
+--     313 977-dump corpus have their statement already published in the same
+--     run by the nil-returning MISS, and 0 of them mint a variable or record
+--     a PC. So the policy loses no statement and the coverage loses no
+--     decision. The fix is held as a SPLICE at
+--     `notifications_index/concolic_targets.rb.b8_next` — ONE line plus its
+--     comment, spliced before the single `next fval`, with
+--     `_c21_b8_diff.rb` as its ground-truth differential (expect 0 new
+--     decisions, 0 new statement shapes). It is NOT a file to copy: the
+--     earlier whole-file version of it was built from the Aug-29 base and
+--     landing it wholesale would have silently REVERTED the 2026-09-14
+--     name-boundary shim, which is shared by all eight batches.
+--
+-- (7) THE INDEPENDENCE GATE IS AN **ADDITIVE-ONLY** INSTRUMENT (X11, OPEN).
+--     `complete` here rests on the assumption gate's
+--       PASS 1 907 / NOT-COMPARABLE 32 / NOT-TESTABLE 65   over 2 004 distinct
+--       tested claims, out of 27 231 declared
+--     and 27 041 of those declarations are `IndependenceAssumption`s. Those
+--     PASSes are real probes — each replays the claim's two decisions flipped
+--     singly and together and compares the traces — but the probe can only
+--     see dependence that ADDS: a flip that makes a read or a shape APPEAR.
+--     Dependence that REMOVES — a finder that stops finding, a list that comes
+--     back with no rows — leaves the both-flipped trace a SUBSET of the single
+--     flips' and passes. That is X11, and it is still open on this path:
+--     DISCIPLINE.md:1518-1519, in the §16c/confinement acceptance record,
+--     says it in those words — "The existing independence flip test is
+--     untouched; X11's symmetric fix stays a filed proposal." X11 was fixed
+--     for CONFINEMENT (`_test_confinement`'s symmetric criteria); it was never
+--     fixed for INDEPENDENCE.
+--
+--     **What this is, and what it is not.** It is a WEAKER INSTRUMENT, not a
+--     known false claim: no independence PASS on this endpoint has been
+--     refuted, and the symmetric test that could refute one has not been
+--     built. The measured base rate for the shape it misses is not zero —
+--     posts_show's census found 44 overlapping pairs among 1 733 candidates
+--     that the flip probe passed (DISCIPLINE §X11) — so the exposure is real
+--     and is stated rather than rounded away.
+--
+--     **Two things that BOUND it, in the same breath.** First, every one of
+--     this endpoint's 27 041 independence declarations is EXPR-KEYED — checked
+--     here, not assumed: each row carries `expr_a`/`expr_b` ground expression
+--     pairs and **0 of 27 041 use the source-pattern form** (the same holds
+--     across the whole results tree, 38 486 rows). A wildcard pattern would
+--     have licensed every pair it matched; a ground pair licenses exactly
+--     itself, so the blast radius is one pair per row and not one per match.
+--     Second, and this is the strength of the OFF configuration: the
+--     INFERRED confinement pairs — the population X11 was found in — are
+--     **not in play at all here**. `confinement_tested: 0`,
+--     `confinement_withdrawn: []`, `confinement_unverified: []`; this file
+--     was produced with `CONFINEMENT=0` and depends on no derived
+--     confinement licence (item (3)).
+--
+--     A note on a number a reader may otherwise misread: 27 041 of the 27 231
+--     declarations are DISPATCH claims (the `SYM_NOTE_TYPE_PROFILE` seed
+--     against the association lengths) which would violate confinement's
+--     criterion (iv) while being true. That is expected and correct for a
+--     DECLARED claim — criterion (iv) is a test for INFERRED pairs — and it is
+--     recorded here so it is not mistaken for a defect.
+--
+-- (8) THE DECLARED PAIRS, MEASURED AGAINST THE CORPUS 2x2 — 4 586 OF 27 041
+--     SHOW AN INTERACTION. Item (7) says the independence probe is blind to
+--     dependence that REMOVES. There is a second blind spot with a cheap
+--     measurement, and it has now been taken on this endpoint rather than
+--     left as a worry: the probe FAILs only on a NOVEL shape, so it cannot
+--     see dependence that appears as an **AND cell** — a shape present only
+--     when BOTH decisions go one way, which no single flip produces.
+--     `reports/diaspora/tools/declared_pair_2x2.py` applies the engine's own
+--     `infer_pair_tables` + `classify_cells` to the DECLARED pairs (read-only,
+--     `KEEP_NOTES=1` so the shape currency keeps note/args, 138 912 dumps,
+--     114 454 distinct (outcome, trace) profiles, 91 distinct shapes, 1 750 s):
+--
+--       BENIGN          10 652   no combination yields a presence the singles
+--                                do not explain (OR / A-only / B-only /
+--                                ALWAYS / NEVER)
+--       INTERACTION      4 586   at least one shape classifies AND or
+--                                NON-MONOTONE                        (17.0 %)
+--       OPEN            11 063   at least one shape UNDETERMINED(AND?)
+--       ONE CELL ONLY      740   the corpus never separates the two decisions
+--       ------------------------
+--       total           27 041   every declared pair IS co-evaluated somewhere
+--
+--     A sample, so the reader can judge the kind rather than take the count.
+--     The heaviest are the dispatch-independence declarations —
+--     `SYM_NOTE_TYPE_PROFILE == k` against a notification-list length:
+--
+--       (SYM_NOTE_TYPE_PROFILE == 7) || (LEN ..._notifications_10254800_rows == 0)
+--         32 shapes AND, 42 benign, 4 cells. AND-classified include
+--           SELECT "posts".* FROM "posts" WHERE "posts"."id" = ?
+--           SELECT "people".* FROM "people" WHERE "people"."id" = ? LIMIT 1
+--           SELECT "photos".* FROM "photos" WHERE "photos"."status_message_guid" = ? AND (1=0)
+--       (SYM_NOTE_TYPE_PROFILE == 6) || (LEN ..._notifications_3aa8587a_rows == 0)
+--         29 shapes AND, 44 benign. AND-classified include
+--           SELECT "mentions".* FROM "mentions" WHERE "mentions"."id" IN (?, ?, ?)
+--
+--     **What this is.** An AND cell is evidence that a declaration deserves
+--     scrutiny; it is not a refutation, and nothing is withdrawn on it here.
+--     The mechanism in the sample is legible and unsurprising — a dispatch arm
+--     reads its own target only when the notification list is non-empty, so
+--     neither decision alone produces the read — but "legible" is not
+--     "verified", and the number is reported because the instrument that
+--     licensed these pairs cannot see it.
+--
+--     **No audit for declared pairs exists in `src/`.** Declared independence
+--     cuts the edge at `coverage.py` step 5, BEFORE confinement (step 5d) ever
+--     sees the demand sets, so no footprint is ever measured for a declared
+--     pair and §16c can neither classify it OVERLAPPING nor withdraw it. The
+--     measurement above is OUT-OF-TREE and REPORT-ONLY; it gates nothing and
+--     no shipped verdict depends on it.
+--
+--     **And confinement being OFF (item (3)) is NOT mitigation here — it is
+--     the opposite.** Nothing else covers these 27 041 declarations: the §16c
+--     machinery that would have measured footprints for them is switched off
+--     on this configuration, so this census is the only measurement they have.
+--     The same was true of comments_index (725 interactions of 4 182 declared
+--     pairs), conversations_index (875 of 6 123) and people_stream (2 of 25),
+--     all shipped inside `OVERALL_COMPLETE=True`; this endpoint is simply the
+--     largest declaration corpus in the project and the last to be measured.
+--
+-- (9) FORECLOSURE INFERENCE WAS NOT WITNESS-TESTED. The verdict applies
+--     foreclosure inference — §16b base (`FORECLOSURES=5345`), §16e
+--     conjunction (89), §16f sub-conjunction (26, W=3), §16g well-founded
+--     drops (26, W=3) — and these were **not** witness-tested. A witness test
+--     for §16f exists as of 2026-09-15
+--     (`src/end_to_end_completion_checker/assumption/foreclosure_gate.py`) and
+--     has been run on posts_show only.
 -- ============================================================================

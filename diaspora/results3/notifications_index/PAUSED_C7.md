@@ -160,6 +160,106 @@ family grouping against targets.rb's own mints before declaring any pair.
 demand rounds use it (Rule T3: assumptions are model — the batch agent may
 propose, not ship). Deliver the pair list with flip-both evidence.
 
+---
+
+## ADJUDICATION — APPROVED (coordinator, 2026-09-04, after the account reset)
+
+**The tier is APPROVED as stated** — cross-dimension length×length
+`IndependenceAssumption`s, restricted to proven-disjoint SELECT families,
+every pair gated by the engine's flip-both probe (D3). The batch agent's
+family census (`_c7_family_scan2_out.json`, ALL 4 938 dumps, not a sample)
+confirms the family grouping and the index-as-ordinal story. The pair list
+below is the one the demand rounds must use; the flip-both probe run remains
+the per-pair gate before anything is declared in `coverage_assumptions.py`.
+
+### Family census (authoritative, all 4 938 dumps — `_c7_family_scan2_out.json`)
+
+Root SELECT families (bind only the principal, `devise_user_first_1_id` or
+`find_by_1_id` — pairwise DISJOINT statements):
+
+| family | var(s) holding it | example note |
+|---|---|---|
+| F1 aspects | records_1/2/4/7 | `SELECT "aspects".* ... WHERE user_id = $devise_user_first_1_id ORDER BY order_id ASC` |
+| F2 services | records_3/4/5/8 | `SELECT "services".* ... WHERE user_id = $devise_user_first_1_id` |
+| F3 tags⋈tag_followings | records_5/6/7/8/11 | `SELECT "tags".* FROM "tags" INNER JOIN "tag_followings" ... WHERE user_id = $devise_user_first_1_id ORDER BY tags.name` |
+| F4 notifications list | to_ary_1 | `SELECT "notifications".* ... WHERE recipient_id = $devise_user_first_1_id ORDER BY updated_at desc LIMIT 25 OFFSET 0` |
+| F5 notifications unread | Relation_records_1 | `SELECT "notifications".* ... WHERE recipient_id = $devise_user_first_1_id AND unread = true` |
+| F8 aspect_memberships | records_1 (78 dumps) | `SELECT "aspect_memberships".* ... WHERE contact_id = $find_by_1_id` |
+
+NESTED families (bind to_ary row values — STAY DEPENDENT with F4):
+
+| family | var | binds |
+|---|---|---|
+| F7 actors | to_ary_1_row_actors_row | `to_ary_1_row_id` (per-row preload INSIDE the list) |
+| F6 mentions | Relation_records_2 | `to_ary_1_row_target_id` (off the target row) |
+| F9 target photos | records_2 (260) / target_photos_row | `target_guid` (off the target row; the latter PRELOADED_NO_STMT — H3 wall) |
+
+### Approved candidate pairs (family × family, disjoint root statements)
+
+All CROSS-family pairs among the ROOT families are candidates:
+
+- F1 × F2 (aspects × services)
+- F1 × F3 (aspects × tags⋈tag_followings)
+- F1 × F4 (aspects × notifications list)
+- F1 × F5 (aspects × notifications unread)
+- F1 × F8 (aspects × contact aspect_memberships)
+- F2 × F3 (services × tags⋈tag_followings)
+- F2 × F4, F2 × F5, F2 × F8
+- F3 × F4, F3 × F5, F3 × F8
+- F4 × F8 (notifications list × aspect_memberships)
+- F5 × F8
+
+Each pair is declared as `(len(X) > 1) ⊥ (len(Y) > 1)` on the ORDINAL var
+names, and only after the flip-both probe PASSES on the full corpus. The
+probe (per `assumption_checker.py` `test_declared` IndependenceAssumption
+branch): richest-seed dump that co-recorded both exprs → flip A, flip B,
+flip BOTH → `novel = trace(flip-both) − (base ∪ trace(A) ∪ trace(B))` →
+**PASS iff novel is empty**. A genuinely shared row source or a
+combination-only shape FAILS the pair; keep it observed then.
+
+### STAY DEPENDENT — never declare (verified against the census)
+
+1. **F4 × F7** (to_ary × actors_row): nested — actors preload binds
+   `to_ary_1_row_id`, fires INSIDE the list render. Modifying either will
+   change the other's statement set.
+2. **F4 × F6** (to_ary × mentions) and **F4 × F9** (to_ary × target photos):
+   mentions/photos bind `to_ary_1_row_target_id`/`target_guid` — off the
+   target row of the list. Nested via the target.
+3. **F4 × F5** (notifications list × notifications unread): same table
+   family, not proven disjoint; unread ⊂ list semantically, so
+   (list len==0 ∧ unread len>1) is unrealizable — one direction of the
+   independence would demand an impossible state. Stay observed.
+4. **Same-family ordinal pairs** (F1×F1, F2×F2, F3×F3 across different
+   ordinals, e.g. records_1-aspects × records_7-aspects): the fact cache
+   may return the SAME collection object → lengths correlated. Not proven
+   disjoint → stay observed.
+5. **length × DECISION** (W-E): e.g. len(to_ary) × SYM_NOTE_TYPE_PROFILE
+   (row-existence gates row-content dispatch), len(mentions) × the people
+   IN-read emission (len>0 gates the fetch). Never declared.
+6. **F6 × F9** (mentions × target photos): both nested under the same target
+   row — co-source, stay observed.
+
+### H4 — records_4 is aspects/services (ordinal), feed the demand round
+
+From the census: records_4 = aspects (180 dumps) + services (244 dumps),
+values "1":404 / "0":10 / "3":10 — the dominant MANIFEST scenario has
+records_4 EMPTY only 10/424. The H4 flag was for the SAMPLE where the
+non-empty side was essentially absent; the full corpus shows two-polarity,
+so H4 is a per-manifest miss. The demand round seeds the records_4
+collection (the aspects or services collection of the principal, per the
+manifest) to non-empty in the manifest where it currently lands at 0 —
+the miss is per-manifest, not systemic.
+
+### H3 — document as a wall (no code change)
+
+Confirmed as false positive: the PRELOADED_NO_STMT note fires only on the
+preloaded no-statement path (Rails issues no SQL); the real statements
+(join fetch, people IN read) fire as their own noted events via
+ConcolicThroughLoadProbe + emit_includes_preloads. Write in the batch notes:
+"CollectionProxy#load_target: declared no-statement wall — fires only when
+loaded? (Rails issues no SQL); the real statement carries the
+ConcolicThroughLoadProbe events."
+
 ### What the demand rounds should do meanwhile
 
 Even before the model is adjudicated, paged base rounds are safe and needed:

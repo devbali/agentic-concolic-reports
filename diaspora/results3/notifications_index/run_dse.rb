@@ -389,6 +389,11 @@ until stack.empty?
   if Time.now - started > TIME_BUDGET
     puts "[stop] time budget exhausted"; break
   end
+  # Campaign 2026-09-09: graceful stop between runs (never mid-write) when the
+  # launcher drops a STOP file; the in-flight run always completes.
+  if ENV["STOP_FILE"] && File.exist?(ENV["STOP_FILE"])
+    puts "[stop] STOP_FILE present"; break
+  end
 
   variant, seeds = stack.shift # FIFO (breadth-first)
   skey = state_key(variant, seeds)

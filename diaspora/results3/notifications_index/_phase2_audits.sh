@@ -2,6 +2,10 @@
 # Phase-2 SQL-consumer dump audits (parent-agent manual phase; not gating the
 # engine's `complete`, but required by the three-phase closing process).
 set +e
+# E12 (2026-09-11): src/queries_from_runs is app-agnostic and REQUIRES an
+# app config; bind_resolution_audit and identity_symbolicity_audit read the
+# schema and the principal columns from it and go RED without one.
+export QFR_APP_CONFIG="${QFR_APP_CONFIG:-/home/dev/project/reports/diaspora/queries_config/app.json}"
 cd /home/dev/project
 B=/home/dev/project/reports/diaspora/results3/notifications_index
 LOG="$B/_phase2_audits.log"

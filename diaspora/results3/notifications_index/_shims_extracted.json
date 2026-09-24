@@ -1,250 +1,301 @@
 [
   {
+    "key": "ActiveRecord::Associations::SingularAssociation.find_target",
+    "owner": "ActiveRecord::Associations::SingularAssociation",
+    "method": "find_target",
+    "kind": "prepend",
+    "module": "SingularLoadedTargetShim",
+    "file": "targets.rb",
+    "line": 367
+  },
+  {
+    "key": "NotificationsController.gon",
+    "owner": "NotificationsController",
+    "method": "gon",
+    "kind": "prepend",
+    "module": "RealGonShim",
+    "file": "targets.rb",
+    "line": 375
+  },
+  {
+    "key": "helper_proxy.singleton_class.DYNAMIC",
     "owner": "helper_proxy.singleton_class",
     "method": "DYNAMIC",
     "kind": "dynamic",
     "module": "asset_shim",
     "file": "targets.rb",
-    "line": 280,
+    "line": 382,
     "note": "dynamically-named define_method \u2014 engine requires manual entry or waiver"
   },
   {
+    "key": "ActionView::Base.DYNAMIC",
     "owner": "ActionView::Base",
     "method": "DYNAMIC",
     "kind": "dynamic",
     "module": "asset_shim",
     "file": "targets.rb",
-    "line": 289,
+    "line": 391,
     "note": "dynamically-named define_method \u2014 engine requires manual entry or waiver"
   },
   {
+    "key": "obj.type",
     "owner": "obj",
     "method": "type",
     "kind": "rep_plumbing",
     "file": "targets.rb",
-    "line": 1263
+    "line": 1493
   },
   {
+    "key": "obj.mentions_container_type",
     "owner": "obj",
     "method": "mentions_container_type",
     "kind": "rep_plumbing",
     "file": "targets.rb",
-    "line": 1308
+    "line": 1538
   },
   {
+    "key": "obj.guid",
     "owner": "obj",
     "method": "guid",
     "kind": "rep_plumbing",
     "file": "targets.rb",
-    "line": 1318
+    "line": 1548
   },
   {
+    "key": "obj.language",
     "owner": "obj",
     "method": "language",
     "kind": "rep_plumbing",
     "file": "targets.rb",
-    "line": 1361
+    "line": 1591
   },
   {
+    "key": "obj.commentable_type",
     "owner": "obj",
     "method": "commentable_type",
     "kind": "rep_plumbing",
     "file": "targets.rb",
-    "line": 1384
+    "line": 1614
   },
   {
+    "key": "obj.guid",
     "owner": "obj",
     "method": "guid",
     "kind": "rep_plumbing",
     "file": "targets.rb",
-    "line": 1394
+    "line": 1624
   },
   {
+    "key": "::Gon.singleton_class.DYNAMIC",
     "owner": "::Gon.singleton_class",
     "method": "DYNAMIC",
     "kind": "dynamic",
     "module": "gon_shim",
     "file": "targets.rb",
-    "line": 1586,
+    "line": 1937,
     "note": "dynamically-named define_method \u2014 engine requires manual entry or waiver"
   },
   {
+    "key": "ActiveRecord::Associations::CollectionAssociation.size",
     "owner": "ActiveRecord::Associations::CollectionAssociation",
     "method": "size",
     "kind": "prepend",
     "module": "shim",
     "file": "targets.rb",
-    "line": 1619
+    "line": 1970
   },
   {
+    "key": "ActiveRecord::Relation.pluck",
     "owner": "ActiveRecord::Relation",
     "method": "pluck",
     "kind": "prepend",
     "module": "pluck_args",
     "file": "targets.rb",
-    "line": 1675
+    "line": 2026
   },
   {
+    "key": "u.persisted?",
     "owner": "u",
     "method": "persisted?",
     "kind": "rep_plumbing",
     "file": "targets.rb",
-    "line": 1760
+    "line": 2111
   },
   {
+    "key": "u.new_record?",
     "owner": "u",
     "method": "new_record?",
     "kind": "rep_plumbing",
     "file": "targets.rb",
-    "line": 1761
+    "line": 2112
   },
   {
+    "key": "u.unread_notifications",
     "owner": "u",
     "method": "unread_notifications",
     "kind": "rep_plumbing",
     "file": "targets.rb",
-    "line": 1768
+    "line": 2119
   },
   {
+    "key": "User.authenticatable_salt",
     "owner": "User",
     "method": "authenticatable_salt",
     "kind": "prepend",
     "module": "salt_shim",
     "file": "targets.rb",
-    "line": 1807
+    "line": 2158
   },
   {
+    "key": "OrmAdapter::ActiveRecord.DYNAMIC",
     "owner": "OrmAdapter::ActiveRecord",
     "method": "DYNAMIC",
     "kind": "dynamic",
     "module": "OrmAdapterGetNaming",
     "file": "targets.rb",
-    "line": 1812,
+    "line": 2163,
     "note": "dynamically-named define_method \u2014 engine requires manual entry or waiver"
   },
   {
+    "key": "obj.read_attribute",
     "owner": "obj",
     "method": "read_attribute",
     "kind": "rep_plumbing",
     "file": "concolic_targets.rb",
-    "line": 596
+    "line": 660
   },
   {
+    "key": "obj._read_attribute",
     "owner": "obj",
     "method": "_read_attribute",
     "kind": "rep_plumbing",
     "file": "concolic_targets.rb",
-    "line": 597
+    "line": 661
   },
   {
+    "key": "obj.concolic_attrs",
     "owner": "obj",
     "method": "concolic_attrs",
     "kind": "rep_plumbing",
     "file": "concolic_targets.rb",
-    "line": 598
+    "line": 662
   },
   {
+    "key": "obj.concolic_note",
     "owner": "obj",
     "method": "concolic_note",
     "kind": "rep_plumbing",
     "file": "concolic_targets.rb",
-    "line": 602
+    "line": 666
   },
   {
+    "key": "obj.attributes",
     "owner": "obj",
     "method": "attributes",
     "kind": "rep_plumbing",
     "file": "concolic_targets.rb",
-    "line": 610
+    "line": 674
   },
   {
+    "key": "obj.write_attribute",
     "owner": "obj",
     "method": "write_attribute",
     "kind": "rep_plumbing",
     "file": "concolic_targets.rb",
-    "line": 611
+    "line": 675
   },
   {
+    "key": "obj._write_attribute",
     "owner": "obj",
     "method": "_write_attribute",
     "kind": "rep_plumbing",
     "file": "concolic_targets.rb",
-    "line": 612
+    "line": 676
   },
   {
+    "key": "obj.image_url",
     "owner": "obj",
     "method": "image_url",
     "kind": "rep_plumbing",
     "file": "concolic_targets.rb",
-    "line": 619
+    "line": 683
   },
   {
+    "key": "obj.hidden_shareables",
     "owner": "obj",
     "method": "hidden_shareables",
     "kind": "rep_plumbing",
     "file": "concolic_targets.rb",
-    "line": 629
+    "line": 693
   },
   {
+    "key": "obj.post_location",
     "owner": "obj",
     "method": "post_location",
     "kind": "rep_plumbing",
     "file": "concolic_targets.rb",
-    "line": 638
+    "line": 702
   },
   {
+    "key": "obj.inspect",
     "owner": "obj",
     "method": "inspect",
     "kind": "rep_plumbing",
     "file": "concolic_targets.rb",
-    "line": 644
+    "line": 708
   },
   {
+    "key": "obj.persisted?",
     "owner": "obj",
     "method": "persisted?",
     "kind": "rep_plumbing",
     "file": "concolic_targets.rb",
-    "line": 690
+    "line": 754
   },
   {
+    "key": "obj.new_record?",
     "owner": "obj",
     "method": "new_record?",
     "kind": "rep_plumbing",
     "file": "concolic_targets.rb",
-    "line": 691
+    "line": 755
   },
   {
+    "key": "Person.singleton_class.name_from_attrs",
     "owner": "Person.singleton_class",
     "method": "name_from_attrs",
     "kind": "prepend",
     "module": "shim",
     "file": "concolic_targets.rb",
-    "line": 1710
+    "line": 1825
   },
   {
+    "key": "ActionDispatch::Journey::Router::Utils.singleton_class.escape_segment",
     "owner": "ActionDispatch::Journey::Router::Utils.singleton_class",
     "method": "escape_segment",
     "kind": "prepend",
     "module": "EscapeSegmentShim",
     "file": "concolic_targets.rb",
-    "line": 1899
+    "line": 2014
   },
   {
+    "key": "ActiveRecord::Base.singleton_class.DYNAMIC",
     "owner": "ActiveRecord::Base.singleton_class",
     "method": "DYNAMIC",
     "kind": "value_class",
     "module": "ConcolicKwargsToPositional",
     "file": "concolic_targets.rb",
-    "line": 1964,
+    "line": 2079,
     "note": "dynamically-named define_method \u2014 engine requires manual entry or waiver"
   },
   {
+    "key": "ActiveRecord::Relation.DYNAMIC",
     "owner": "ActiveRecord::Relation",
     "method": "DYNAMIC",
     "kind": "value_class",
     "module": "ConcolicKwargsToPositional",
     "file": "concolic_targets.rb",
-    "line": 1965,
+    "line": 2080,
     "note": "dynamically-named define_method \u2014 engine requires manual entry or waiver"
   }
 ]

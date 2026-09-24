@@ -1358,3 +1358,157 @@ answered:**
    be in"); recorded here as the same cross-endpoint class rather than pinned,
    because `persisted` is a gated column whose OTHER use
    (`find_target?`'s `!owner.new_record?`) is a real decision.
+
+## Cycle C8 — foreclosure-aware completion drive (2026-09-10)
+
+Full narrative and every measurement: `_COMPLETION_CAMPAIGN_20260910.md` §7.
+
+### BOUNDARY CHANGES (Rule T3 — reported, NOT applied)
+
+Two `tree_missing` branch outcomes on this endpoint cannot be observed with
+the boundary as it stands, and the reason is a wall this batch WITHDREW that
+a closed sibling endpoint still carries.
+
+**The branches.**
+
+```
+(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_not_found == True)         :: taken
+(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_profile_not_found == True) :: taken
+```
+
+`find_by_1` here is `Person.by_account_identifier` —
+`SELECT "people".* FROM "people" WHERE "people"."diaspora_handle" =
+'concolic_mention@example.org' LIMIT 1` — called from
+`Person.find_or_fetch_by_identifier` (`app/models/person.rb:318-329`) via
+`lib/diaspora/mentionable.rb:89`:
+
+```ruby
+person = by_account_identifier(diaspora_id)                  # find_by_1
+return person if person.present? && person.profile.present?  # the two decisions
+DiasporaFederation::Discovery::Discovery.new(diaspora_id).fetch_and_save
+```
+
+Either decision taking its `True` arm enters `fetch_and_save`, which on this
+JRuby SIGSEGVs in `libcurl` (`curl_easy_setopt` -> `__libc_free`, through
+`com.kenai.jffi`). The dump is written at the END of a run, so the abort takes
+the path condition with it: **no seed and no amount of driving can record
+these two outcomes.**
+
+Evidence (all measured on this batch, 2026-09-10):
+* control-vs-flip on ONE seed — base seeds rc=0/1 path; the same seeds plus
+  `find_by_1_not_found = True` rc=**134**/0 paths;
+* 37 of 37 toxic seeds found by the C32A bulk drive set at least one of the
+  two; **0** of the 25.6 % of seeds that set neither is toxic;
+* `hs_err_pid*.log` native frames as above;
+* independently corroborated on 2026-08-15 by the `registrations_create` /
+  `users_sessions` crash-isolation work: "all four poisoned seeds shared
+  `find_by_1_not_found=true`, which pointed at a real webfinger over libcurl".
+
+**Why the boundary, not an assumption, is the right instrument.** This is the
+M-17 arm, and `comments_index` — a CLOSED endpoint — models it correctly today
+(`results3/comments_index/targets.rb`, §8e). Its wall RAISES and publishes its
+note first, which is exactly the shape notifications_index's withdrawn wall got
+wrong:
+
+```ruby
+discovery_returns = lambda do |r, _a, name|
+  Thread.current[:concolic_pending_note] =
+    "DiasporaFederation::Discovery#fetch_and_save (webfinger network wall; raises " \
+    "before any data access — the success arm is NOT MODELLED, see M-17)"
+  raise DiasporaFederation::Discovery::DiscoveryError, "concolic: webfinger discovery failed ..."
+end
+interceptor.declare_target(DiasporaFederation::Discovery::Discovery, :fetch_and_save,
+                           returns: discovery_returns)
+```
+
+`targets.rb:1732-1815` records why THIS batch withdrew its version: the old
+wall returned **nil**, which modelled a SUCCESS the app has no path to (1 916
+dumps ending in a clean 200 where the app always raises), and the replacement
+wall was put on `Person#fix_profile` instead. That replacement covers
+`Person#name`'s discovery call — and **not**
+`Person.find_or_fetch_by_identifier`'s, which is the mention path and is where
+T1/T2 live. The comments_index form does not have the withdrawn wall's defect:
+it raises `DiscoveryError`, which
+`Mentionable.find_or_fetch_person_by_identifier` (`mentionable.rb:88-91`)
+RESCUES to nil — the mention then renders as its raw match string, no 500, no
+invented statements, and the note survives because it is published before the
+raise (B-8 / T-n).
+
+| target | old (withdrawn here) | proposed |
+|---|---|---|
+| `DiasporaFederation::Discovery::Discovery#fetch_and_save` | returns `nil` (models a success the app cannot reach) — withdrawn 2026-09-01 | raises `DiscoveryError` after publishing its WALL note, exactly as `comments_index/targets.rb` §8e |
+| `Person#fix_profile` | wall, keep | keep (it also skips `reload`, which the raising arm never reaches) |
+
+**Cost if accepted.** New runs entering the arm produce a WALL note, a
+`DiscoveryError` rescue and the raw-mention render — a genuinely new region of
+the tree that must then be driven. Existing dumps are unaffected (they never
+took the arm: they aborted). It is a policy-visible change, which is why it is
+a coordinator decision and not this agent's.
+
+**Fallback if the boundary is not changed.** Declare the two outcomes
+`OneSideUntrackedPathAssumption(expr=…, side="taken")` in this batch's
+`coverage_assumptions.py`, with the falsifier: *a rig with a working HTTP
+adapter, or a URI-hostile mention fixture handle, makes the arm reachable and
+the pin wrong.* NOTE THE PRACTICAL SNAG: the assumption gate probes a pin by
+FLIPPING the branch, and flipping this one aborts the JVM — so the gate would
+report an abort, not a PASS, unless the probe is crash-isolated
+(`results/users_sessions/drive_registrations.py` pattern).
+
+### DECLARATION PROPOSED (not applied) — T10, `username == ''`
+
+```
+(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_username == '') :: taken
+```
+
+Foreclosed by a gate EARLIER IN THE SAME PARTIAL, not by the environment:
+`_drawer.mobile.haml:33` evaluates `user_profile_path(current_user.username)`
+before the `blank?` compare fires, and `config/routes.rb:189` constrains
+`:username` to `/[^\/]+/`, so `""` cannot generate that path. Measured: 38 of
+38 rooted runs with the seed honoured reach 86–90 path conditions and then
+raise `No route matches {…:username=>""}` at `journey/formatter.rb:57`; the
+compare is never reached. `app/models/user.rb:37-38` agrees — `username` is
+`presence: true` with format `/\A[A-Za-z0-9_]+\z/`, so no persisted row holds
+`""`.
+
+Proposed: `OneSideUntrackedPathAssumption(expr=…, side="taken")`.
+Falsifier: any run that records that compare as taken — which requires either
+the route constraint or the drawer's ordering to change.
+
+### C8 — the pins are installed, and the gate's verdict on them (MEASURED)
+
+Per the coordinator's relay of the owner's 2026-09-10 instruction, the three
+pins of §7.6/§7.7 are now DECLARED in `coverage_assumptions.py` as
+`_overnight_unreachable_pins` — a separate tier, counted as `OVERNIGHT_PINS=`
+in the `[assumptions]` line, reversible with one edit, with the evidence, the
+falsifier and the precedent in its docstring. Backup:
+`_bak_coverage_assumptions_pre_overnight_pins.py`.
+
+`assumption_checker.py` run over those three alone
+(`_assum_pins.json` -> `_assum_pins_results.json`, log `_assum_pins.log`):
+
+```
+  FAIL  OneSideUntrackedPathAssumption  (…find_by_1_not_found == True)
+      flip probe produced no dump in the snapshot's scenario
+  FAIL  OneSideUntrackedPathAssumption  (…find_by_1_profile_not_found == True)
+      flip probe produced no dump in the snapshot's scenario
+  PASS  OneSideUntrackedPathAssumption  (…devise_user_first_1_username == '')
+      flipping the variable leaves the PC unevaluated — the other side is unreachable by construction
+  RESULT: 3 distinct tested — PASS 1, FAIL 2, NOT-TESTABLE 0, NOT-COMPARABLE 0
+```
+
+T10 passes on its own merits. **T1/T2 cannot be tested at all**: the gate
+probes a pin by flipping the branch, and flipping these two is the action that
+aborts the JVM, so the probe yields no dump and the checker reports
+`FAIL: flip probe produced no dump`. That is not a refutation of the claim —
+the pin's evidence and the probe's failure mode are the same event — but it
+IS `completion.blocking`, so `complete` stays False on the assumption gate
+even when the coverage claim is earned.
+
+**This makes the BOUNDARY CHANGE above the single blocking item on this
+endpoint.** With `Discovery#fetch_and_save` walled in the comments_index form
+(publish note, then raise `DiscoveryError`), the two branches become
+observable, the two pins are deleted rather than argued, and the gate has a
+probe it can run. Second option, also outside this agent's authority: a
+crash-isolated probe in
+`src/end_to_end_completion_checker/assumption/assumption_checker.py`, so
+"the probe aborted" stops being spelled the same way as "the claim failed".

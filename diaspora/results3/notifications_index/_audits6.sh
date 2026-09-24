@@ -1,6 +1,10 @@
 #!/bin/bash
 # The coordinator's SEVEN checks, run by the batch as a pre-check.
 set +e; unset JAVA_TOOL_OPTIONS; cd /home/dev/project
+# E12 (2026-09-11): src/queries_from_runs is app-agnostic and REQUIRES an
+# app config; bind_resolution_audit and identity_symbolicity_audit read the
+# schema and the principal columns from it and go RED without one.
+export QFR_APP_CONFIG="${QFR_APP_CONFIG:-/home/dev/project/reports/diaspora/queries_config/app.json}"
 B=/home/dev/project/reports/diaspora/results3/notifications_index
 A=/home/dev/project/src/queries_from_runs/audits
 LOG="$B/_audits6.log"; echo "=== audits6 $(date -Is) ===" > "$LOG"

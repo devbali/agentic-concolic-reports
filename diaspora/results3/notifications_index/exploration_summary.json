@@ -54,18 +54,19 @@
     "session key": "SYM_USER_NI_id (symbolic; real Devise serialize_from_session -> devise_user_first)",
     "anon scenario": "none — before_action :authenticate_user! with no except:"
   },
-  "runs_executed": 900,
-  "distinct_paths": 504,
-  "path_conditions_written": 14640,
-  "states_tried": 900,
-  "stack_remaining": 10958,
-  "worklist_exhausted": false,
-  "max_runs": 900,
-  "time_budget": 420,
-  "elapsed_seconds": 12.2,
+  "runs_executed": 25,
+  "distinct_paths": 25,
+  "path_conditions_written": 1752,
+  "states_tried": 0,
+  "stack_remaining": 0,
+  "worklist_exhausted": true,
+  "max_runs": 8000,
+  "time_budget": 3000,
+  "elapsed_seconds": 51.7,
   "run_errors": {
-    "run:I18n::InvalidLocale": 89
+    "run:ActionView::Template::Error": 19
   },
   "unflippable_pcs": {
-}
+    "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id == SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id)": 26
+  }
 }

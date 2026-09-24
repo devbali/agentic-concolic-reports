@@ -746,7 +746,13 @@ module NotificationsIndexTargets
             # (notifications_helper.rb:63), with `> 1` recorded so the
             # cardinality-consistency check can read the decision back.
             if collection
-              aln = "len(#{abase}_rows)"
+              # NAME BOUNDARY (2026-09-14): mint through the runtime's one
+              # naming function. `len(X)` is legal Z3 but not a legal PYTHON
+              # identifier, and solver.py exec/evals its declarations — a
+              # direct mint here would still need the batch-local rename
+              # this change exists to retire. `seed_for` accepts both
+              # spellings, so pre-existing seed files are unaffected.
+              aln = SymbolicVar.len_var_name("#{abase}_rows")
               an_seed = ct.seed_for(aln, 1)
               an = (an_seed.respond_to?(:value) ? an_seed.value : an_seed).to_i
               an = 0 if an.negative?
@@ -1007,7 +1013,9 @@ module NotificationsIndexTargets
       # TypeError in will_paginate's `pager.replace`). "Many" is therefore 3
       # rows, not 2 — the domain is {0, 1, 3} and `len > 1` is the decision.
       len_n = 3 if len_n > 1
-      len_v = symint("len(#{vn})", len_n, note: sql)
+      # NAME BOUNDARY (2026-09-14): see the note at `aln` above — mint via
+      # the runtime's naming function, not a hand-built `len(...)` string.
+      len_v = symint(SymbolicVar.len_var_name(vn), len_n, note: sql)
       # (B-5: the representative below is built only when len_n > 0.)
       # explicit compares (bare truthiness records no PC) — both polarities
       # observable in one run, as the type-dispatch idx loop does.
@@ -1812,6 +1820,86 @@ module NotificationsIndexTargets
       warn "[notifications_index] C7: Person#fix_profile wall declared (Discovery walls withdrawn)"
     else
       warn "[notifications_index] WARNING: Person#fix_profile wall NOT declared"
+    end
+
+    # -----------------------------------------------------------------
+    # results3 §5h-bis, C8 (2026-09-10) — THE `fetch_and_save` WALL COMES
+    # BACK, IN ITS RAISING FORM. COORDINATOR-AUTHORISED.
+    #
+    # READ THIS NEXT TO THE 2026-09-01 WITHDRAWAL NOTE ABOVE. That note is
+    # still correct about the wall it withdrew: the OLD wall returned `nil`,
+    # which modelled a SUCCESS the application has no path to, and the corpus
+    # then explored everything downstream of a state that cannot exist (1 916
+    # dumps ending in a clean 200 where the app always raises, 1 906 of them
+    # emitting a `reload` the raising arm never reaches). Returning nil was
+    # the defect. RAISING is not.
+    #
+    # WHY IT IS BACK. `Person#fix_profile` is not the only route into
+    # discovery. `Person.find_or_fetch_by_identifier` (app/models/person.rb:
+    # 318-329), reached from `lib/diaspora/mentionable.rb:89` whenever a
+    # notification's text carries a mention, calls the SAME
+    # `Discovery.new(id).fetch_and_save`:
+    #
+    #     person = by_account_identifier(diaspora_id)                  # find_by_1
+    #     return person if person.present? && person.profile.present?
+    #     DiasporaFederation::Discovery::Discovery.new(diaspora_id).fetch_and_save
+    #
+    # Walling `fix_profile` does not cover that call, so the two decisions on
+    # line 321 — `<...>_find_by_1_not_found` and `<...>_find_by_1_profile_not_found`
+    # — could only ever be observed on their FALSE side: taking either TRUE
+    # entered the real `fetch_and_save`, which on this JRuby SIGSEGVs in
+    # libcurl (`curl_easy_setopt` -> `__libc_free`, through com.kenai.jffi)
+    # BEFORE the dump is written. Measured 2026-09-10: control-vs-flip on one
+    # seed, base rc=0/1 path vs base+flip rc=134/0 paths; and 37 of 37 toxic
+    # seeds in the C32A bulk drive set one of the two, against 0 of the 25.6 %
+    # that set neither. Both outcomes stood in `tree_missing`, which refuses
+    # the combination claim outright.
+    #
+    # THE SHAPE, AND WHY IT IS FAITHFUL. `fetch_and_save`'s RAISING arm is
+    # what a real pod takes when discovery fails, and it is the arm this
+    # environment can actually model: it raises before ANY data access, and
+    # `Mentionable.find_or_fetch_person_by_identifier` (mentionable.rb:88-91)
+    # RESCUES `DiscoveryError` to nil — the mention then renders as its raw
+    # match string, the request does NOT 500, and no statement is invented.
+    # The note is published BEFORE the raise, because the interceptor pushes
+    # its record AFTER the `returns` lambda returns and a raise would
+    # otherwise lose the wall entirely (B-8 / T-k / T-n).
+    #
+    # PRECEDENT: this is verbatim the form `results3/comments_index/targets.rb`
+    # §8e ships, on a CLOSED endpoint. The SUCCESS arm stays DECLARED
+    # UNMODELLED in POLICY_HEADER.txt (M-17) — walling it does not claim the
+    # arm reads nothing, it declines to describe it, and the statements it
+    # would gain are recorded in `_c7_discovery_gap_evidence.json`.
+    #
+    # RULE T: this is PER-BATCH material (Rule T1: shim mocks and this batch's
+    # walls live in `targets.rb`; the shared query boundary is
+    # `concolic_targets.rb`, which is NOT touched here). No closed endpoint is
+    # voided by it. Authorised by the coordinator, 2026-09-10, in response to
+    # the BOUNDARY CHANGES filing in AGENT_RUN.md.
+    # -----------------------------------------------------------------
+    if defined?(DiasporaFederation::Discovery::Discovery)
+      discovery_returns = lambda do |_receiver, _args, _name|
+        # B-8 / T-n: a mock that RAISES must still publish its note, or the
+        # wall it stands for disappears from the corpus entirely.
+        Thread.current[:concolic_pending_note] =
+          "WALL DiasporaFederation::Discovery#fetch_and_save — webfinger network " \
+          "boundary (person.rb:325, reached from mentionable.rb:89). Raises before " \
+          "ANY data access; `Mentionable.find_or_fetch_person_by_identifier` rescues " \
+          "DiscoveryError to nil and the mention renders as its raw text. The SUCCESS " \
+          "arm is DECLARED UNMODELLED (POLICY_HEADER.txt, M-17); its statements are " \
+          "recorded in _c7_discovery_gap_evidence.json."
+        raise DiasporaFederation::Discovery::DiscoveryError,
+              "concolic: webfinger discovery failed (wall: no HTTP adapter in this " \
+              "environment; the success arm and its :save_person_after_webfinger " \
+              "statements are NOT MODELLED)"
+      end
+      interceptor.declare_target(DiasporaFederation::Discovery::Discovery,
+                                 :fetch_and_save, returns: discovery_returns)
+      warn "[notifications_index] C8: Discovery#fetch_and_save RAISING wall declared " \
+           "(coordinator-authorised 2026-09-10; the withdrawn wall returned nil, this one raises)"
+    else
+      warn "[notifications_index] WARNING: Discovery#fetch_and_save wall NOT declared " \
+           "(DiasporaFederation::Discovery::Discovery undefined)"
     end
 
     # -----------------------------------------------------------------
