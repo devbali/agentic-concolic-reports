@@ -1,0 +1,32 @@
+{
+  "entrypoint": "aspect_memberships_create",
+  "strategy": "prefix-directed DSE (seed inheritance + single-branch flip)",
+  "signed_in": true,
+  "variant": "auth_json",
+  "format": "json",
+  "action": "create",
+  "write_endpoint": true,
+  "app_error_terminals": "AssociationTypeMismatch (nil aspect), nil-receiver NoMethodError, DelegationError — recorded outcomes",
+  "params": {
+    "person_id": {
+      "symbolic_name": "SYM_PARAM_person_id",
+      "seed": "5"
+    },
+    "aspect_id": {
+      "symbolic_name": "SYM_PARAM_aspect_id",
+      "seed": "7"
+    }
+  },
+  "runs_executed": 4,
+  "distinct_paths": 4,
+  "seed_sets_tried": 4,
+  "stack_remaining": 0,
+  "worklist_exhausted": true,
+  "max_runs": 6,
+  "time_budget": 600,
+  "elapsed_seconds": 5.1,
+  "run_errors": {
+},
+  "unflippable_pcs": {
+}
+}

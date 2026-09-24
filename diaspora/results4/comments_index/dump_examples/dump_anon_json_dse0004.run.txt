@@ -1,0 +1,136 @@
+run "anon_json_dse0004" schema=1
+  target ActionController::Head#head = shim
+  target ActionController::ImplicitRender#default_render = shim
+  target ActionController::Instrumentation#redirect_to = shim
+  target ActionController::Metal#status= = shim
+  target ActionController::Redirecting#redirect_to = shim
+  target ActionController::Rendering#_set_rendered_content_type = shim
+  target ActionDispatch::Routing::UrlFor#url_for = shim
+  target ActiveRecord::Associations::BelongsToPolymorphicAssociation#find_target = target_function
+  target ActiveRecord::Associations::BelongsToPolymorphicAssociation#klass = shim
+  target ActiveRecord::Associations::CollectionProxy#create = shim
+  target ActiveRecord::Associations::CollectionProxy#load_target = target_function
+  target ActiveRecord::Associations::CollectionProxy#records = target_function
+  target ActiveRecord::Associations::CollectionProxy#to_a = target_function
+  target ActiveRecord::Associations::CollectionProxy#to_ary = target_function
+  target ActiveRecord::Associations::SingularAssociation#find_target = target_function
+  target ActiveRecord::Associations::SingularAssociation#writer = shim
+  target ActiveRecord::Base#destroy = target_function
+  target ActiveRecord::Base#destroy! = target_function
+  target ActiveRecord::Base#reload = target_function
+  target ActiveRecord::Base#save = target_function
+  target ActiveRecord::Base#save! = target_function
+  target ActiveRecord::Base#touch = target_function
+  target ActiveRecord::Base#update = target_function
+  target ActiveRecord::Base#update! = target_function
+  target ActiveRecord::Base#update_attribute = target_function
+  target ActiveRecord::Batches#find_each = target_function
+  target ActiveRecord::Batches#find_in_batches = target_function
+  target ActiveRecord::Batches#in_batches = target_function
+  target ActiveRecord::Calculations#average = target_function
+  target ActiveRecord::Calculations#calculate = target_function
+  target ActiveRecord::Calculations#count = target_function
+  target ActiveRecord::Calculations#ids = target_function
+  target ActiveRecord::Calculations#maximum = target_function
+  target ActiveRecord::Calculations#minimum = target_function
+  target ActiveRecord::Calculations#pluck = target_function
+  target ActiveRecord::Calculations#sum = target_function
+  target ActiveRecord::Core::ClassMethods#find = target_function
+  target ActiveRecord::Core::ClassMethods#find_by = target_function
+  target ActiveRecord::Core::ClassMethods#find_by! = target_function
+  target ActiveRecord::Core::ClassMethods#mention_lookup_json_first = target_function
+  target ActiveRecord::Core::ClassMethods#mention_lookup_json_retry = target_function
+  target ActiveRecord::Core::ClassMethods#mention_lookup_msg_first = target_function
+  target ActiveRecord::Core::ClassMethods#mention_lookup_msg_retry = target_function
+  target ActiveRecord::FinderMethods#ci_author_first = target_function
+  target ActiveRecord::FinderMethods#ci_public_first = target_function
+  target ActiveRecord::FinderMethods#ci_vis_first = target_function
+  target ActiveRecord::FinderMethods#devise_user_first = target_function
+  target ActiveRecord::FinderMethods#exists? = target_function
+  target ActiveRecord::FinderMethods#find = target_function
+  target ActiveRecord::FinderMethods#find_by = target_function
+  target ActiveRecord::FinderMethods#find_by! = target_function
+  target ActiveRecord::FinderMethods#first = target_function
+  target ActiveRecord::FinderMethods#first! = target_function
+  target ActiveRecord::FinderMethods#last = target_function
+  target ActiveRecord::FinderMethods#last! = target_function
+  target ActiveRecord::FinderMethods#take = target_function
+  target ActiveRecord::FinderMethods#take! = target_function
+  target ActiveRecord::Querying#count_by_sql = target_function
+  target ActiveRecord::Querying#find_by_sql = target_function
+  target ActiveRecord::Relation#any? = target_function
+  target ActiveRecord::Relation#delete_all = target_function
+  target ActiveRecord::Relation#destroy_all = target_function
+  target ActiveRecord::Relation#empty? = target_function
+  target ActiveRecord::Relation#many? = target_function
+  target ActiveRecord::Relation#none? = target_function
+  target ActiveRecord::Relation#one? = target_function
+  target ActiveRecord::Relation#records = target_function
+  target ActiveRecord::Relation#size = target_function
+  target ActiveRecord::Relation#to_a = target_function
+  target ActiveRecord::Relation#to_ary = target_function
+  target ActiveRecord::Relation#update_all = target_function
+  target ApplicationController#after_sign_in_path_for = shim
+  target ApplicationController#configure_permitted_parameters = shim
+  target CommentsInertDiscovery#fetch_and_save = shim
+  target ConcolicThroughLoadProbe.load_intermediate = target_function
+  target DeviseController#assert_is_devise_resource! = shim
+  target DeviseController#devise_mapping = shim
+  target Diaspora::MessageRenderer#title = shim
+  target Diaspora::Taggable#build_tags = shim
+  target DiasporaFederation::Discovery::Discovery#fetch_and_save = shim
+  target DiasporaFederation::Entity#normalize_property = shim
+  target DiasporaFederation::Entity#validate = shim
+  target Gon::ControllerHelpers#gon = shim
+  target Photo#url = shim
+  target Photo.diaspora_initialize = shim
+  target Post.diaspora_initialize = shim
+  target PostPresenter#build_mentioned_people_json = shim
+  target PostService#mark_user_notifications = shim
+  target Sidekiq::Client#push = shim
+  target Sidekiq::Client#push_bulk = shim
+  target StatusMessage#tag_name_max_length = shim
+  target StatusMessageCreationService#add_to_streams = shim
+  target Stream::Aspect#aspect_ids = shim
+  target Stream::Base#attach_user_likes = shim
+  target Stream::Base#post_ids = shim
+  target Stream::FollowedTag#tag_ids = shim
+  target Stream::Multi#publisher_prefill = shim
+  target StreamsController#decorated_stream_posts = shim
+  target TagsController#prep_tags_for_javascript = shim
+  target User#add_to_streams = shim
+  target User#blocks = target_function
+  target User#confirm_email = shim
+  target User#mine? = shim
+  target User#retract = shim
+  sig ActiveRecord::FinderMethods#first() -> void target_function
+  var $SYM_PARAM_post_id: String = "5"
+  var $"Length(SYM_PARAM_post_id)": Int = 1
+  var $SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found: Bool = false note "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_first_1_id: Int = 1 note "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_first_1_author_id: Int = 0 note "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_first_1_public: Bool = false note "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid: String = "SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid_v" note "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_first_1_type: String = "Photo" note "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_first_1_text: String = "SYM_RESULT_ActiveRecord__FinderMethods_first_1_text_v" note "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_first_1_created_at: String = "SYM_RESULT_ActiveRecord__FinderMethods_first_1_created_at_v" note "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_first_1_updated_at: String = "SYM_RESULT_ActiveRecord__FinderMethods_first_1_updated_at_v" note "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_first_1_provider_display_name: String = "SYM_RESULT_ActiveRecord__FinderMethods_first_1_provider_display_name_v" note "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_first_1_root_guid: String = "SYM_RESULT_ActiveRecord__FinderMethods_first_1_root_guid_v" note "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_first_1_likes_count: Int = 0 note "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_first_1_comments_count: Int = 0 note "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_first_1_o_embed_cache_id: Int = 0 note "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_first_1_reshares_count: Int = 0 note "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_first_1_interacted_at: String = "SYM_RESULT_ActiveRecord__FinderMethods_first_1_interacted_at_v" note "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_first_1_tweet_id: String = "SYM_RESULT_ActiveRecord__FinderMethods_first_1_tweet_id_v" note "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_first_1_open_graph_cache_id: Int = 0 note "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_first_1_tumblr_ids: String = "SYM_RESULT_ActiveRecord__FinderMethods_first_1_tumblr_ids_v" note "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+  script "run_dse.rb"
+  0: pc ($"Length(SYM_PARAM_post_id)" < 16) taken
+       @ "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/services/post_service.rb":66 in "post_key"
+  1: void ActiveRecord::FinderMethods#first()
+       @ "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/services/post_service.rb":52 in "find_public!"
+  2: pc ($SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == true) not-taken
+       @ "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb":514 in "block in finder_mock_faithful"
+  3: pc ($SYM_RESULT_ActiveRecord__FinderMethods_first_1_type == "Photo") taken
+       @ "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb":1279 in "symbolic_instance"

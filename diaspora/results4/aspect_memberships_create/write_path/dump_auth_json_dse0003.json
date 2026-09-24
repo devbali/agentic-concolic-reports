@@ -1,0 +1,3361 @@
+{
+  "schema_version": "1.0",
+  "label": "auth_json_dse0003",
+  "symbolic_vars": [
+    {
+      "name": "SYM_PARAM_person_id",
+      "sort": "String",
+      "value": "5"
+    },
+    {
+      "name": "SYM_PARAM_aspect_id",
+      "sort": "String",
+      "value": "7"
+    },
+    {
+      "name": "SYM_USER_CI_id",
+      "sort": "Int",
+      "value": 1
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id",
+      "sort": "Int",
+      "value": 1,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "type": "int",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1",
+        "name": "id"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_username",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_username_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1",
+        "name": "username"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_serialized_private_key",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_serialized_private_key_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1",
+        "name": "serialized_private_key"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_getting_started",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "type": "bool",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1",
+        "name": "getting_started"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_disable_mail",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "type": "bool",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1",
+        "name": "disable_mail"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_language",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_language_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_email",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_email_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1",
+        "name": "email"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_encrypted_password",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_encrypted_password_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1",
+        "name": "encrypted_password"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_created_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_created_at_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1",
+        "name": "created_at"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_updated_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_updated_at_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1",
+        "name": "updated_at"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_locked_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_locked_at_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1",
+        "name": "locked_at"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_sign_in_count",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "type": "int",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1",
+        "name": "sign_in_count"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_current_sign_in_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_current_sign_in_at_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1",
+        "name": "current_sign_in_at"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_last_sign_in_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_last_sign_in_at_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1",
+        "name": "last_sign_in_at"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_current_sign_in_ip",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_current_sign_in_ip_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1",
+        "name": "current_sign_in_ip"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_last_sign_in_ip",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_last_sign_in_ip_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1",
+        "name": "last_sign_in_ip"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_hidden_shareables",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_hidden_shareables_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1",
+        "name": "hidden_shareables"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_reset_password_sent_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_reset_password_sent_at_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1",
+        "name": "reset_password_sent_at"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_last_seen",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_last_seen_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1",
+        "name": "last_seen"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_remove_after",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_remove_after_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1",
+        "name": "remove_after"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_export",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_export_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1",
+        "name": "export"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_exported_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_exported_at_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1",
+        "name": "exported_at"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_exporting",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "type": "bool",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1",
+        "name": "exporting"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_strip_exif",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "type": "bool",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1",
+        "name": "strip_exif"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_exported_photos_file",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_exported_photos_file_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1",
+        "name": "exported_photos_file"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_exported_photos_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_exported_photos_at_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1",
+        "name": "exported_photos_at"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_exporting_photos",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "type": "bool",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1",
+        "name": "exporting_photos"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_color_theme",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_color_theme_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1",
+        "name": "color_theme"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_post_default_public",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "type": "bool",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1",
+        "name": "post_default_public"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_auto_follow_back",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "type": "bool",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1",
+        "name": "auto_follow_back"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_auto_follow_back_aspect_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "type": "int",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1",
+        "name": "auto_follow_back_aspect_id"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_show_community_spotlight_in_stream",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "type": "bool",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1",
+        "name": "show_community_spotlight_in_stream"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_otp_required_for_login",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "type": "bool",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1",
+        "name": "otp_required_for_login"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_otp_backup_codes",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_otp_backup_codes_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1",
+        "name": "otp_backup_codes"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_plain_otp_secret",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_plain_otp_secret_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1",
+        "name": "plain_otp_secret"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_reset_password_token",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_reset_password_token_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1",
+        "name": "reset_password_token"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_remember_created_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_remember_created_at_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1",
+        "name": "remember_created_at"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_invited_by_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "type": "int",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1",
+        "name": "invited_by_id"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_authentication_token",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_authentication_token_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1",
+        "name": "authentication_token"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_not_found",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_PARAM_person_id)"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id",
+      "sort": "Int",
+      "value": 1,
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_PARAM_person_id)",
+      "type": "int",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1",
+        "name": "id"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_guid",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_guid_v",
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_PARAM_person_id)"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_diaspora_handle",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_diaspora_handle_v",
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_PARAM_person_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1",
+        "name": "diaspora_handle"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_serialized_public_key",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_serialized_public_key_v",
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_PARAM_person_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1",
+        "name": "serialized_public_key"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_owner_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_PARAM_person_id)",
+      "type": "int",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1",
+        "name": "owner_id"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_created_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_created_at_v",
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_PARAM_person_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1",
+        "name": "created_at"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_updated_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_updated_at_v",
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_PARAM_person_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1",
+        "name": "updated_at"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_closed_account",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_PARAM_person_id)",
+      "type": "bool",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1",
+        "name": "closed_account"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_fetch_status",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_PARAM_person_id)",
+      "type": "int",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1",
+        "name": "fetch_status"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_pod_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_PARAM_person_id)",
+      "type": "int",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1",
+        "name": "pod_id"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"aspects\".\"id\" = $$(SYM_PARAM_aspect_id) ORDER BY order_id ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_id",
+      "sort": "Int",
+      "value": 1,
+      "note": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"aspects\".\"id\" = $$(SYM_PARAM_aspect_id) ORDER BY order_id ASC LIMIT 1",
+      "type": "int",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
+        "name": "id"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_name",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_name_v",
+      "note": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"aspects\".\"id\" = $$(SYM_PARAM_aspect_id) ORDER BY order_id ASC LIMIT 1",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
+        "name": "name"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_user_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"aspects\".\"id\" = $$(SYM_PARAM_aspect_id) ORDER BY order_id ASC LIMIT 1",
+      "type": "int",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
+        "name": "user_id"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_created_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_created_at_v",
+      "note": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"aspects\".\"id\" = $$(SYM_PARAM_aspect_id) ORDER BY order_id ASC LIMIT 1",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
+        "name": "created_at"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_updated_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_updated_at_v",
+      "note": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"aspects\".\"id\" = $$(SYM_PARAM_aspect_id) ORDER BY order_id ASC LIMIT 1",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
+        "name": "updated_at"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_order_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"aspects\".\"id\" = $$(SYM_PARAM_aspect_id) ORDER BY order_id ASC LIMIT 1",
+      "type": "int",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
+        "name": "order_id"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_chat_enabled",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"aspects\".\"id\" = $$(SYM_PARAM_aspect_id) ORDER BY order_id ASC LIMIT 1",
+      "type": "bool",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
+        "name": "chat_enabled"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_post_default",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"aspects\".\"id\" = $$(SYM_PARAM_aspect_id) ORDER BY order_id ASC LIMIT 1",
+      "type": "bool",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
+        "name": "post_default"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Querying_find_by_sql_1_rows",
+      "sort": "Int",
+      "note": "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?",
+      "type": "[?]"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_exists__1_exists",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT 1 AS one FROM \"blocks\" WHERE \"blocks\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"blocks\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"contacts\".* FROM \"contacts\" WHERE \"contacts\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"contacts\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_id",
+      "sort": "Int",
+      "value": 1,
+      "note": "SELECT \"contacts\".* FROM \"contacts\" WHERE \"contacts\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"contacts\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1",
+      "type": "int",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1",
+        "name": "id"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"contacts\".* FROM \"contacts\" WHERE \"contacts\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"contacts\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1",
+      "type": "int",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1",
+        "name": "user_id"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"contacts\".* FROM \"contacts\" WHERE \"contacts\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"contacts\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1",
+      "type": "int",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1",
+        "name": "person_id"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_created_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_created_at_v",
+      "note": "SELECT \"contacts\".* FROM \"contacts\" WHERE \"contacts\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"contacts\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1",
+        "name": "created_at"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_updated_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_updated_at_v",
+      "note": "SELECT \"contacts\".* FROM \"contacts\" WHERE \"contacts\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"contacts\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1",
+        "name": "updated_at"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_sharing",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"contacts\".* FROM \"contacts\" WHERE \"contacts\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"contacts\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1",
+      "type": "bool",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1",
+        "name": "sharing"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_receiving",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"contacts\".* FROM \"contacts\" WHERE \"contacts\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"contacts\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1",
+      "type": "bool",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1",
+        "name": "receiving"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_username",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_username_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1",
+        "name": "username"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_serialized_private_key",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_serialized_private_key_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1",
+        "name": "serialized_private_key"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_getting_started",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "type": "bool",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1",
+        "name": "getting_started"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_disable_mail",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "type": "bool",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1",
+        "name": "disable_mail"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_language",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_language_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_email",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_email_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1",
+        "name": "email"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_encrypted_password",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_encrypted_password_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1",
+        "name": "encrypted_password"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_created_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_created_at_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1",
+        "name": "created_at"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_updated_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_updated_at_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1",
+        "name": "updated_at"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_locked_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_locked_at_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1",
+        "name": "locked_at"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_sign_in_count",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "type": "int",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1",
+        "name": "sign_in_count"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_current_sign_in_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_current_sign_in_at_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1",
+        "name": "current_sign_in_at"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_last_sign_in_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_last_sign_in_at_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1",
+        "name": "last_sign_in_at"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_current_sign_in_ip",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_current_sign_in_ip_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1",
+        "name": "current_sign_in_ip"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_last_sign_in_ip",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_last_sign_in_ip_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1",
+        "name": "last_sign_in_ip"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_hidden_shareables",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_hidden_shareables_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1",
+        "name": "hidden_shareables"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_reset_password_sent_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_reset_password_sent_at_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1",
+        "name": "reset_password_sent_at"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_last_seen",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_last_seen_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1",
+        "name": "last_seen"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_remove_after",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_remove_after_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1",
+        "name": "remove_after"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_export",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_export_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1",
+        "name": "export"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_exported_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_exported_at_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1",
+        "name": "exported_at"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_exporting",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "type": "bool",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1",
+        "name": "exporting"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_strip_exif",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "type": "bool",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1",
+        "name": "strip_exif"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_exported_photos_file",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_exported_photos_file_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1",
+        "name": "exported_photos_file"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_exported_photos_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_exported_photos_at_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1",
+        "name": "exported_photos_at"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_exporting_photos",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "type": "bool",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1",
+        "name": "exporting_photos"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_color_theme",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_color_theme_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1",
+        "name": "color_theme"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_post_default_public",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "type": "bool",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1",
+        "name": "post_default_public"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_auto_follow_back",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "type": "bool",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1",
+        "name": "auto_follow_back"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_auto_follow_back_aspect_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "type": "int",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1",
+        "name": "auto_follow_back_aspect_id"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_show_community_spotlight_in_stream",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "type": "bool",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1",
+        "name": "show_community_spotlight_in_stream"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_otp_required_for_login",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "type": "bool",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1",
+        "name": "otp_required_for_login"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_otp_backup_codes",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_otp_backup_codes_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1",
+        "name": "otp_backup_codes"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_plain_otp_secret",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_plain_otp_secret_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1",
+        "name": "plain_otp_secret"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_reset_password_token",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_reset_password_token_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1",
+        "name": "reset_password_token"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_remember_created_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_remember_created_at_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1",
+        "name": "remember_created_at"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_invited_by_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "type": "int",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1",
+        "name": "invited_by_id"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_authentication_token",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_authentication_token_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1",
+        "name": "authentication_token"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_guid",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_guid_v",
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id)"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_diaspora_handle",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_diaspora_handle_v",
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_2",
+        "name": "diaspora_handle"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_serialized_public_key",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_serialized_public_key_v",
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_2",
+        "name": "serialized_public_key"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id",
+      "sort": "Int",
+      "value": 2,
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id)",
+      "type": "int",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_2",
+        "name": "owner_id"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_created_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_created_at_v",
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_2",
+        "name": "created_at"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_updated_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_updated_at_v",
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_2",
+        "name": "updated_at"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_closed_account",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id)",
+      "type": "bool",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_2",
+        "name": "closed_account"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_fetch_status",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id)",
+      "type": "int",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_2",
+        "name": "fetch_status"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_pod_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id)",
+      "type": "int",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_2",
+        "name": "pod_id"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_exists__2_exists",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT 1 AS one FROM \"contacts\" WHERE \"contacts\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id) AND \"contacts\".\"id\" IS NOT NULL AND \"contacts\".\"user_id\" = nil LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_username",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_username_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_3",
+        "name": "username"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_serialized_private_key",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_serialized_private_key_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_3",
+        "name": "serialized_private_key"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_getting_started",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "type": "bool",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_3",
+        "name": "getting_started"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_disable_mail",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "type": "bool",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_3",
+        "name": "disable_mail"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_language",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_language_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_email",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_email_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_3",
+        "name": "email"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_encrypted_password",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_encrypted_password_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_3",
+        "name": "encrypted_password"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_created_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_created_at_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_3",
+        "name": "created_at"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_updated_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_updated_at_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_3",
+        "name": "updated_at"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_locked_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_locked_at_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_3",
+        "name": "locked_at"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_sign_in_count",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "type": "int",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_3",
+        "name": "sign_in_count"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_current_sign_in_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_current_sign_in_at_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_3",
+        "name": "current_sign_in_at"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_last_sign_in_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_last_sign_in_at_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_3",
+        "name": "last_sign_in_at"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_current_sign_in_ip",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_current_sign_in_ip_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_3",
+        "name": "current_sign_in_ip"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_last_sign_in_ip",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_last_sign_in_ip_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_3",
+        "name": "last_sign_in_ip"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_hidden_shareables",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_hidden_shareables_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_3",
+        "name": "hidden_shareables"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_reset_password_sent_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_reset_password_sent_at_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_3",
+        "name": "reset_password_sent_at"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_last_seen",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_last_seen_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_3",
+        "name": "last_seen"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_remove_after",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_remove_after_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_3",
+        "name": "remove_after"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_export",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_export_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_3",
+        "name": "export"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_exported_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_exported_at_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_3",
+        "name": "exported_at"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_exporting",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "type": "bool",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_3",
+        "name": "exporting"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_strip_exif",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "type": "bool",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_3",
+        "name": "strip_exif"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_exported_photos_file",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_exported_photos_file_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_3",
+        "name": "exported_photos_file"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_exported_photos_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_exported_photos_at_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_3",
+        "name": "exported_photos_at"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_exporting_photos",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "type": "bool",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_3",
+        "name": "exporting_photos"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_color_theme",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_color_theme_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_3",
+        "name": "color_theme"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_post_default_public",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "type": "bool",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_3",
+        "name": "post_default_public"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_auto_follow_back",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "type": "bool",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_3",
+        "name": "auto_follow_back"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_auto_follow_back_aspect_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "type": "int",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_3",
+        "name": "auto_follow_back_aspect_id"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_show_community_spotlight_in_stream",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "type": "bool",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_3",
+        "name": "show_community_spotlight_in_stream"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_otp_required_for_login",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "type": "bool",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_3",
+        "name": "otp_required_for_login"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_otp_backup_codes",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_otp_backup_codes_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_3",
+        "name": "otp_backup_codes"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_plain_otp_secret",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_plain_otp_secret_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_3",
+        "name": "plain_otp_secret"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_reset_password_token",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_reset_password_token_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_3",
+        "name": "reset_password_token"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_remember_created_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_remember_created_at_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_3",
+        "name": "remember_created_at"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_invited_by_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "type": "int",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_3",
+        "name": "invited_by_id"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_authentication_token",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_authentication_token_v",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_3",
+        "name": "authentication_token"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Querying_find_by_sql_2_rows",
+      "sort": "Int",
+      "note": "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?",
+      "type": "[?]"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_exists__3_exists",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT 1 AS one FROM \"blocks\" WHERE \"blocks\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id) AND \"blocks\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id) LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Base_save__1_save!_ok",
+      "sort": "Bool",
+      "value": true,
+      "note": "INSERT INTO \"aspect_memberships\" (\"aspect_id\", \"contact_id\") VALUES ($$(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id), $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_id))"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Base_save_1_save_ok",
+      "sort": "Bool",
+      "value": true,
+      "note": "UPDATE \"contacts\" SET \"contacts\".\"receiving\" = true WHERE \"contacts\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_id)"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Relation_update_all_1_update_all_count",
+      "sort": "Int",
+      "value": 1,
+      "note": "UPDATE \"notifications\" SET \"notifications\".\"unread\" = false WHERE \"notifications\".\"type\" IN ('Notifications::StartedSharing') AND \"notifications\".\"recipient_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"notifications\".\"target_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) AND \"notifications\".\"unread\" = true"
+    },
+    {
+      "name": "SYM_RESULT_ActionController__Rendering__set_rendered_content_type_1",
+      "sort": "Int",
+      "type": "[?]"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"aspect_memberships\".* FROM \"aspect_memberships\" WHERE \"aspect_memberships\".\"contact_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_id) AND \"aspect_memberships\".\"aspect_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id) ORDER BY \"aspect_memberships\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_id",
+      "sort": "Int",
+      "value": 1,
+      "note": "SELECT \"aspect_memberships\".* FROM \"aspect_memberships\" WHERE \"aspect_memberships\".\"contact_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_id) AND \"aspect_memberships\".\"aspect_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id) ORDER BY \"aspect_memberships\".\"id\" ASC LIMIT 1",
+      "type": "int",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__FinderMethods_first_2",
+        "name": "id"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_aspect_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"aspect_memberships\".* FROM \"aspect_memberships\" WHERE \"aspect_memberships\".\"contact_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_id) AND \"aspect_memberships\".\"aspect_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id) ORDER BY \"aspect_memberships\".\"id\" ASC LIMIT 1",
+      "type": "int",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__FinderMethods_first_2",
+        "name": "aspect_id"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_contact_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"aspect_memberships\".* FROM \"aspect_memberships\" WHERE \"aspect_memberships\".\"contact_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_id) AND \"aspect_memberships\".\"aspect_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id) ORDER BY \"aspect_memberships\".\"id\" ASC LIMIT 1",
+      "type": "int",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__FinderMethods_first_2",
+        "name": "contact_id"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_created_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_created_at_v",
+      "note": "SELECT \"aspect_memberships\".* FROM \"aspect_memberships\" WHERE \"aspect_memberships\".\"contact_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_id) AND \"aspect_memberships\".\"aspect_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id) ORDER BY \"aspect_memberships\".\"id\" ASC LIMIT 1",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__FinderMethods_first_2",
+        "name": "created_at"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_updated_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_updated_at_v",
+      "note": "SELECT \"aspect_memberships\".* FROM \"aspect_memberships\" WHERE \"aspect_memberships\".\"contact_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_id) AND \"aspect_memberships\".\"aspect_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id) ORDER BY \"aspect_memberships\".\"id\" ASC LIMIT 1",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__FinderMethods_first_2",
+        "name": "updated_at"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_aspect_name",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_aspect_name_v",
+      "note": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_aspect_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_4",
+        "name": "name"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_aspect_user_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_aspect_id)",
+      "type": "int",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_4",
+        "name": "user_id"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_aspect_created_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_aspect_created_at_v",
+      "note": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_aspect_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_4",
+        "name": "created_at"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_aspect_updated_at",
+      "sort": "String",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_aspect_updated_at_v",
+      "note": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_aspect_id)",
+      "type": "str",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_4",
+        "name": "updated_at"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_aspect_order_id",
+      "sort": "Int",
+      "value": 0,
+      "note": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_aspect_id)",
+      "type": "int",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_4",
+        "name": "order_id"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_aspect_chat_enabled",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_aspect_id)",
+      "type": "bool",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_4",
+        "name": "chat_enabled"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_aspect_post_default",
+      "sort": "Bool",
+      "value": false,
+      "note": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_aspect_id)",
+      "type": "bool",
+      "origin": {
+        "kind": "attr",
+        "of": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_4",
+        "name": "post_default"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActionController__Rendering__set_rendered_content_type_2",
+      "sort": "Int",
+      "type": "[?]"
+    }
+  ],
+  "events": [
+    {
+      "type": "call",
+      "target": "ActiveRecord::FinderMethods#devise_user_first",
+      "args": {
+},
+      "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb",
+      "lineno": 952,
+      "function": "get"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::FinderMethods#devise_user_first",
+      "args": {
+},
+      "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1",
+      "result_value": "#<User:0x40a38a44>",
+      "result_sort": "Int",
+      "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb",
+      "lineno": 952,
+      "function": "get",
+      "result_type": "obj<?>",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "type": "path_condition",
+      "expr": {
+        "op": "==",
+        "args": [
+          {
+            "sym": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_language"
+          },
+          {
+            "lit": {
+              "sort": "str",
+              "value": "pl"
+            }
+          }
+        ]
+      },
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb",
+      "lineno": 618,
+      "function": "symbolic_instance"
+    },
+    {
+      "type": "path_condition",
+      "expr": {
+        "op": "==",
+        "args": [
+          {
+            "sym": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_language"
+          },
+          {
+            "lit": {
+              "sort": "str",
+              "value": "xx"
+            }
+          }
+        ]
+      },
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb",
+      "lineno": 620,
+      "function": "symbolic_instance"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::Core::ClassMethods#find",
+      "args": {
+        "ids": {
+          "sym": "SYM_PARAM_person_id"
+        }
+      },
+      "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb",
+      "lineno": 816,
+      "function": "find"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::Core::ClassMethods#find",
+      "args": {
+        "ids": {
+          "sym": "SYM_PARAM_person_id"
+        }
+      },
+      "result_name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1",
+      "result_value": "#<Person:0x26838837>",
+      "result_sort": "Int",
+      "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb",
+      "lineno": 816,
+      "function": "find",
+      "result_type": "obj<?>",
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_PARAM_person_id)"
+    },
+    {
+      "type": "path_condition",
+      "expr": {
+        "op": "==",
+        "args": [
+          {
+            "sym": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_not_found"
+          },
+          {
+            "lit": {
+              "sort": "bool",
+              "value": true
+            }
+          }
+        ]
+      },
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb",
+      "lineno": 540,
+      "function": "block in finder_mock"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::FinderMethods#first",
+      "args": {
+},
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/aspect_memberships_controller.rb",
+      "lineno": 43,
+      "function": "create"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::FinderMethods#first",
+      "args": {
+},
+      "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
+      "result_value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_name_v",
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/aspect_memberships_controller.rb",
+      "lineno": 43,
+      "function": "create",
+      "result_type": "obj<?>",
+      "note": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"aspects\".\"id\" = $$(SYM_PARAM_aspect_id) ORDER BY order_id ASC LIMIT 1"
+    },
+    {
+      "type": "path_condition",
+      "expr": {
+        "op": "==",
+        "args": [
+          {
+            "sym": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found"
+          },
+          {
+            "lit": {
+              "sort": "bool",
+              "value": true
+            }
+          }
+        ]
+      },
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb",
+      "lineno": 102,
+      "function": "block in finder_mock_faithful"
+    },
+    {
+      "type": "call",
+      "target": "User#blocks",
+      "args": {
+},
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/models/user/connecting.rb",
+      "lineno": 14,
+      "function": "share_with"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "User#blocks",
+      "args": {
+},
+      "result_name": "SYM_RESULT_User_blocks_1",
+      "result_value": "#<Block::ActiveRecord_Associations_CollectionProxy:0x2cdb1581>",
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/models/user/connecting.rb",
+      "lineno": 14,
+      "function": "share_with",
+      "result_type": "opaque"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::Querying#find_by_sql",
+      "args": {
+        "sql": {
+          "lit": {
+            "sort": "str",
+            "value": "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
+          }
+        },
+        "binds": [
+          "#<ActiveRecord::Relation::QueryAttribute:0x4140f94c>"
+        ],
+        "preparable": {
+          "lit": {
+            "sort": "bool",
+            "value": true
+          }
+        }
+      },
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/statement_cache.rb",
+      "lineno": 108,
+      "function": "execute"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::Querying#find_by_sql",
+      "args": {
+        "sql": {
+          "lit": {
+            "sort": "str",
+            "value": "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
+          }
+        },
+        "binds": [
+          "#<ActiveRecord::Relation::QueryAttribute:0x4140f94c>"
+        ],
+        "preparable": {
+          "lit": {
+            "sort": "bool",
+            "value": true
+          }
+        }
+      },
+      "result_name": "SYM_RESULT_ActiveRecord__Querying_find_by_sql_1",
+      "result_value": {
+        "sym": "SYM_RESULT_ActiveRecord__Querying_find_by_sql_1_rows"
+      },
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/statement_cache.rb",
+      "lineno": 108,
+      "function": "execute",
+      "result_type": "[?]",
+      "note": "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::FinderMethods#exists?",
+      "args": {
+},
+      "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb",
+      "lineno": 1709,
+      "function": "block"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::FinderMethods#exists?",
+      "args": {
+},
+      "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_exists__1",
+      "result_value": {
+        "lit": {
+          "sort": "null"
+        }
+      },
+      "result_sort": "Int",
+      "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb",
+      "lineno": 1709,
+      "function": "block in exists?",
+      "result_type": "opaque?",
+      "note": "SELECT 1 AS one FROM \"blocks\" WHERE \"blocks\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"blocks\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
+    },
+    {
+      "type": "path_condition",
+      "expr": {
+        "op": "==",
+        "args": [
+          {
+            "sym": "SYM_RESULT_ActiveRecord__FinderMethods_exists__1_exists"
+          },
+          {
+            "lit": {
+              "sort": "bool",
+              "value": true
+            }
+          }
+        ]
+      },
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb",
+      "lineno": 382,
+      "function": "block in install!"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::FinderMethods#find_by",
+      "args": {
+},
+      "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb",
+      "lineno": 1709,
+      "function": "block"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::FinderMethods#find_by",
+      "args": {
+},
+      "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1",
+      "result_value": "#<Contact:0x1d6daa8a>",
+      "result_sort": "Int",
+      "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb",
+      "lineno": 1709,
+      "function": "block in find_by",
+      "result_type": "obj<?>",
+      "note": "SELECT \"contacts\".* FROM \"contacts\" WHERE \"contacts\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"contacts\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
+    },
+    {
+      "type": "path_condition",
+      "expr": {
+        "op": "==",
+        "args": [
+          {
+            "sym": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found"
+          },
+          {
+            "lit": {
+              "sort": "bool",
+              "value": true
+            }
+          }
+        ]
+      },
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb",
+      "lineno": 102,
+      "function": "block in finder_mock_faithful"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::Associations::SingularAssociation#find_target",
+      "args": {
+},
+      "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb",
+      "lineno": 1164,
+      "function": "find_target"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::Associations::SingularAssociation#find_target",
+      "args": {
+},
+      "result_name": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1",
+      "result_value": "#<User:0x27154b20>",
+      "result_sort": "Int",
+      "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb",
+      "lineno": 1164,
+      "function": "find_target",
+      "result_type": "obj<?>",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)"
+    },
+    {
+      "type": "path_condition",
+      "expr": {
+        "op": "==",
+        "args": [
+          {
+            "sym": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_language"
+          },
+          {
+            "lit": {
+              "sort": "str",
+              "value": "pl"
+            }
+          }
+        ]
+      },
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb",
+      "lineno": 618,
+      "function": "symbolic_instance"
+    },
+    {
+      "type": "path_condition",
+      "expr": {
+        "op": "==",
+        "args": [
+          {
+            "sym": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_language"
+          },
+          {
+            "lit": {
+              "sort": "str",
+              "value": "xx"
+            }
+          }
+        ]
+      },
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb",
+      "lineno": 620,
+      "function": "symbolic_instance"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::Associations::SingularAssociation#find_target",
+      "args": {
+},
+      "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb",
+      "lineno": 1164,
+      "function": "find_target"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::Associations::SingularAssociation#find_target",
+      "args": {
+},
+      "result_name": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_2",
+      "result_value": "#<Person:0x5316255e>",
+      "result_sort": "Int",
+      "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb",
+      "lineno": 1164,
+      "function": "find_target",
+      "result_type": "obj<?>",
+      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id)"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::FinderMethods#exists?",
+      "args": {
+},
+      "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb",
+      "lineno": 1709,
+      "function": "block"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::FinderMethods#exists?",
+      "args": {
+},
+      "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_exists__2",
+      "result_value": {
+        "lit": {
+          "sort": "null"
+        }
+      },
+      "result_sort": "Int",
+      "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb",
+      "lineno": 1709,
+      "function": "block in exists?",
+      "result_type": "opaque?",
+      "note": "SELECT 1 AS one FROM \"contacts\" WHERE \"contacts\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id) AND \"contacts\".\"id\" IS NOT NULL AND \"contacts\".\"user_id\" = nil LIMIT 1"
+    },
+    {
+      "type": "path_condition",
+      "expr": {
+        "op": "==",
+        "args": [
+          {
+            "sym": "SYM_RESULT_ActiveRecord__FinderMethods_exists__2_exists"
+          },
+          {
+            "lit": {
+              "sort": "bool",
+              "value": true
+            }
+          }
+        ]
+      },
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb",
+      "lineno": 382,
+      "function": "block in install!"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::Associations::SingularAssociation#find_target",
+      "args": {
+},
+      "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb",
+      "lineno": 1164,
+      "function": "find_target"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::Associations::SingularAssociation#find_target",
+      "args": {
+},
+      "result_name": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_3",
+      "result_value": "#<User:0x15da3ce9>",
+      "result_sort": "Int",
+      "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb",
+      "lineno": 1164,
+      "function": "find_target",
+      "result_type": "obj<?>",
+      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)"
+    },
+    {
+      "type": "path_condition",
+      "expr": {
+        "op": "==",
+        "args": [
+          {
+            "sym": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_language"
+          },
+          {
+            "lit": {
+              "sort": "str",
+              "value": "pl"
+            }
+          }
+        ]
+      },
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb",
+      "lineno": 618,
+      "function": "symbolic_instance"
+    },
+    {
+      "type": "path_condition",
+      "expr": {
+        "op": "==",
+        "args": [
+          {
+            "sym": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_language"
+          },
+          {
+            "lit": {
+              "sort": "str",
+              "value": "xx"
+            }
+          }
+        ]
+      },
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb",
+      "lineno": 620,
+      "function": "symbolic_instance"
+    },
+    {
+      "type": "path_condition",
+      "expr": {
+        "op": "==",
+        "args": [
+          {
+            "sym": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id"
+          },
+          {
+            "sym": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id"
+          }
+        ]
+      },
+      "taken": false,
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/core.rb",
+      "lineno": 425,
+      "function": "=="
+    },
+    {
+      "type": "call",
+      "target": "User#blocks",
+      "args": {
+},
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/models/contact.rb",
+      "lineno": 100,
+      "function": "not_blocked_user"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "User#blocks",
+      "args": {
+},
+      "result_name": "SYM_RESULT_User_blocks_2",
+      "result_value": "#<Block::ActiveRecord_Associations_CollectionProxy:0x6513fd22>",
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/models/contact.rb",
+      "lineno": 100,
+      "function": "not_blocked_user",
+      "result_type": "opaque"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::Querying#find_by_sql",
+      "args": {
+        "sql": {
+          "lit": {
+            "sort": "str",
+            "value": "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
+          }
+        },
+        "binds": [
+          "#<ActiveRecord::Relation::QueryAttribute:0x68d2e6eb>"
+        ],
+        "preparable": {
+          "lit": {
+            "sort": "bool",
+            "value": true
+          }
+        }
+      },
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/statement_cache.rb",
+      "lineno": 108,
+      "function": "execute"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::Querying#find_by_sql",
+      "args": {
+        "sql": {
+          "lit": {
+            "sort": "str",
+            "value": "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
+          }
+        },
+        "binds": [
+          "#<ActiveRecord::Relation::QueryAttribute:0x68d2e6eb>"
+        ],
+        "preparable": {
+          "lit": {
+            "sort": "bool",
+            "value": true
+          }
+        }
+      },
+      "result_name": "SYM_RESULT_ActiveRecord__Querying_find_by_sql_2",
+      "result_value": {
+        "sym": "SYM_RESULT_ActiveRecord__Querying_find_by_sql_2_rows"
+      },
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/statement_cache.rb",
+      "lineno": 108,
+      "function": "execute",
+      "result_type": "[?]",
+      "note": "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::FinderMethods#exists?",
+      "args": {
+},
+      "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb",
+      "lineno": 1709,
+      "function": "block"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::FinderMethods#exists?",
+      "args": {
+},
+      "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_exists__3",
+      "result_value": {
+        "lit": {
+          "sort": "null"
+        }
+      },
+      "result_sort": "Int",
+      "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb",
+      "lineno": 1709,
+      "function": "block in exists?",
+      "result_type": "opaque?",
+      "note": "SELECT 1 AS one FROM \"blocks\" WHERE \"blocks\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id) AND \"blocks\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id) LIMIT 1"
+    },
+    {
+      "type": "path_condition",
+      "expr": {
+        "op": "==",
+        "args": [
+          {
+            "sym": "SYM_RESULT_ActiveRecord__FinderMethods_exists__3_exists"
+          },
+          {
+            "lit": {
+              "sort": "bool",
+              "value": true
+            }
+          }
+        ]
+      },
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb",
+      "lineno": 382,
+      "function": "block in install!"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_closed_account == True)",
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb",
+      "lineno": 412,
+      "function": "block in symbolic_instance"
+    },
+    {
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_receiving == True)",
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb",
+      "lineno": 412,
+      "function": "block in symbolic_instance"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::Base#save!",
+      "args": {
+},
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations/has_many_through_association.rb",
+      "lineno": 77,
+      "function": "save_through_record"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::Base#save!",
+      "args": {
+},
+      "result_name": "SYM_RESULT_ActiveRecord__Base_save__1",
+      "result_value": {
+        "sym": "SYM_RESULT_ActiveRecord__Base_save__1_save!_ok"
+      },
+      "result_sort": "Bool",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/associations/has_many_through_association.rb",
+      "lineno": 77,
+      "function": "save_through_record",
+      "result_type": "opaque",
+      "note": "INSERT INTO \"aspect_memberships\" (\"aspect_id\", \"contact_id\") VALUES ($$(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id), $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_id))"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::Base#save",
+      "args": {
+},
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/models/user/connecting.rb",
+      "lineno": 22,
+      "function": "share_with"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::Base#save",
+      "args": {
+},
+      "result_name": "SYM_RESULT_ActiveRecord__Base_save_1",
+      "result_value": {
+        "sym": "SYM_RESULT_ActiveRecord__Base_save_1_save_ok"
+      },
+      "result_sort": "Bool",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/models/user/connecting.rb",
+      "lineno": 22,
+      "function": "share_with",
+      "result_type": "opaque",
+      "note": "UPDATE \"contacts\" SET \"contacts\".\"receiving\" = true WHERE \"contacts\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_id)"
+    },
+    {
+      "type": "call",
+      "target": "Diaspora::Federation::Dispatcher.defer_dispatch",
+      "args": {
+        "sender": "#<User:0x40a38a44>",
+        "object": "#<Contact:0x1d6daa8a>"
+      },
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/models/user/connecting.rb",
+      "lineno": 25,
+      "function": "share_with"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "Diaspora::Federation::Dispatcher.defer_dispatch",
+      "args": {
+        "sender": "#<User:0x40a38a44>",
+        "object": "#<Contact:0x1d6daa8a>"
+      },
+      "result_name": "SYM_RESULT_Diaspora__Federation__Dispatcher_defer_dispatch_1",
+      "result_value": {
+        "lit": {
+          "sort": "null"
+        }
+      },
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/models/user/connecting.rb",
+      "lineno": 25,
+      "function": "share_with",
+      "result_type": "opaque?"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::Relation#update_all",
+      "args": {
+},
+      "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb",
+      "lineno": 801,
+      "function": "update_all"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::Relation#update_all",
+      "args": {
+},
+      "result_name": "SYM_RESULT_ActiveRecord__Relation_update_all_1",
+      "result_value": {
+        "sym": "SYM_RESULT_ActiveRecord__Relation_update_all_1_update_all_count"
+      },
+      "result_sort": "Int",
+      "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb",
+      "lineno": 801,
+      "function": "update_all",
+      "result_type": "opaque",
+      "note": "UPDATE \"notifications\" SET \"notifications\".\"unread\" = false WHERE \"notifications\".\"type\" IN ('Notifications::StartedSharing') AND \"notifications\".\"recipient_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"notifications\".\"target_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) AND \"notifications\".\"unread\" = true"
+    },
+    {
+      "type": "call",
+      "target": "ActionController::Rendering#_set_rendered_content_type",
+      "args": {
+        "format": "application/json"
+      },
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/mime_responds.rb",
+      "lineno": 201,
+      "function": "respond_to"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActionController::Rendering#_set_rendered_content_type",
+      "args": {
+        "format": "application/json"
+      },
+      "result_name": "SYM_RESULT_ActionController__Rendering__set_rendered_content_type_1",
+      "result_value": {
+        "format": "application/json"
+      },
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/mime_responds.rb",
+      "lineno": 201,
+      "function": "respond_to",
+      "result_type": "[?]"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::FinderMethods#first",
+      "args": {
+},
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/aspect_memberships_controller.rb",
+      "lineno": 51,
+      "function": "block"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::FinderMethods#first",
+      "args": {
+},
+      "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2",
+      "result_value": "#<AspectMembership:0xa0c027a>",
+      "result_sort": "Int",
+      "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/aspect_memberships_controller.rb",
+      "lineno": 51,
+      "function": "block in create",
+      "result_type": "obj<?>",
+      "note": "SELECT \"aspect_memberships\".* FROM \"aspect_memberships\" WHERE \"aspect_memberships\".\"contact_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_id) AND \"aspect_memberships\".\"aspect_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id) ORDER BY \"aspect_memberships\".\"id\" ASC LIMIT 1"
+    },
+    {
+      "type": "path_condition",
+      "expr": {
+        "op": "==",
+        "args": [
+          {
+            "sym": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found"
+          },
+          {
+            "lit": {
+              "sort": "bool",
+              "value": true
+            }
+          }
+        ]
+      },
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb",
+      "lineno": 102,
+      "function": "block in finder_mock_faithful"
+    },
+    {
+      "type": "call",
+      "target": "ActiveRecord::Associations::SingularAssociation#find_target",
+      "args": {
+},
+      "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb",
+      "lineno": 1164,
+      "function": "find_target"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActiveRecord::Associations::SingularAssociation#find_target",
+      "args": {
+},
+      "result_name": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_4",
+      "result_value": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_aspect_name_v",
+      "result_sort": "Int",
+      "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb",
+      "lineno": 1164,
+      "function": "find_target",
+      "result_type": "obj<?>",
+      "note": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_aspect_id)"
+    },
+    {
+      "type": "call",
+      "target": "ActionController::Rendering#_set_rendered_content_type",
+      "args": {
+        "format": "application/json"
+      },
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/abstract_controller/rendering.rb",
+      "lineno": 29,
+      "function": "render"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "ActionController::Rendering#_set_rendered_content_type",
+      "args": {
+        "format": "application/json"
+      },
+      "result_name": "SYM_RESULT_ActionController__Rendering__set_rendered_content_type_2",
+      "result_value": {
+        "format": "application/json"
+      },
+      "result_sort": "Int",
+      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/abstract_controller/rendering.rb",
+      "lineno": 29,
+      "function": "render",
+      "result_type": "[?]"
+    }
+  ],
+  "declarations": {
+    "ActionController::Head#head": {
+      "kind": "shim"
+    },
+    "ActionController::ImplicitRender#default_render": {
+      "kind": "shim"
+    },
+    "ActionController::Instrumentation#redirect_to": {
+      "kind": "shim"
+    },
+    "ActionController::Metal#status=": {
+      "kind": "shim"
+    },
+    "ActionController::Redirecting#redirect_to": {
+      "kind": "shim"
+    },
+    "ActionController::Rendering#_set_rendered_content_type": {
+      "kind": "shim"
+    },
+    "ActionDispatch::Routing::UrlFor#url_for": {
+      "kind": "shim"
+    },
+    "ActiveRecord::Associations::CollectionProxy#create": {
+      "kind": "shim"
+    },
+    "ActiveRecord::Associations::SingularAssociation#find_target": {
+      "kind": "target_function"
+    },
+    "ActiveRecord::Associations::SingularAssociation#writer": {
+      "kind": "shim"
+    },
+    "ActiveRecord::Base#destroy": {
+      "kind": "target_function"
+    },
+    "ActiveRecord::Base#destroy!": {
+      "kind": "target_function"
+    },
+    "ActiveRecord::Base#save": {
+      "kind": "target_function"
+    },
+    "ActiveRecord::Base#save!": {
+      "kind": "target_function"
+    },
+    "ActiveRecord::Base#touch": {
+      "kind": "target_function"
+    },
+    "ActiveRecord::Base#update": {
+      "kind": "target_function"
+    },
+    "ActiveRecord::Base#update!": {
+      "kind": "target_function"
+    },
+    "ActiveRecord::Base#update_attribute": {
+      "kind": "target_function"
+    },
+    "ActiveRecord::Batches#find_each": {
+      "kind": "target_function"
+    },
+    "ActiveRecord::Batches#find_in_batches": {
+      "kind": "target_function"
+    },
+    "ActiveRecord::Batches#in_batches": {
+      "kind": "target_function"
+    },
+    "ActiveRecord::Calculations#average": {
+      "kind": "target_function"
+    },
+    "ActiveRecord::Calculations#calculate": {
+      "kind": "target_function"
+    },
+    "ActiveRecord::Calculations#count": {
+      "kind": "target_function"
+    },
+    "ActiveRecord::Calculations#ids": {
+      "kind": "target_function"
+    },
+    "ActiveRecord::Calculations#maximum": {
+      "kind": "target_function"
+    },
+    "ActiveRecord::Calculations#minimum": {
+      "kind": "target_function"
+    },
+    "ActiveRecord::Calculations#pluck": {
+      "kind": "target_function"
+    },
+    "ActiveRecord::Calculations#sum": {
+      "kind": "target_function"
+    },
+    "ActiveRecord::Core::ClassMethods#find": {
+      "kind": "target_function"
+    },
+    "ActiveRecord::Core::ClassMethods#find_by": {
+      "kind": "target_function"
+    },
+    "ActiveRecord::Core::ClassMethods#find_by!": {
+      "kind": "target_function"
+    },
+    "ActiveRecord::FinderMethods#devise_user_first": {
+      "kind": "target_function"
+    },
+    "ActiveRecord::FinderMethods#exists?": {
+      "kind": "target_function"
+    },
+    "ActiveRecord::FinderMethods#find": {
+      "kind": "target_function"
+    },
+    "ActiveRecord::FinderMethods#find_by": {
+      "kind": "target_function"
+    },
+    "ActiveRecord::FinderMethods#find_by!": {
+      "kind": "target_function"
+    },
+    "ActiveRecord::FinderMethods#first": {
+      "kind": "target_function"
+    },
+    "ActiveRecord::FinderMethods#first!": {
+      "kind": "target_function"
+    },
+    "ActiveRecord::FinderMethods#last": {
+      "kind": "target_function"
+    },
+    "ActiveRecord::FinderMethods#last!": {
+      "kind": "target_function"
+    },
+    "ActiveRecord::FinderMethods#take": {
+      "kind": "target_function"
+    },
+    "ActiveRecord::FinderMethods#take!": {
+      "kind": "target_function"
+    },
+    "ActiveRecord::Querying#count_by_sql": {
+      "kind": "target_function"
+    },
+    "ActiveRecord::Querying#find_by_sql": {
+      "kind": "target_function"
+    },
+    "ActiveRecord::Relation#any?": {
+      "kind": "target_function"
+    },
+    "ActiveRecord::Relation#delete_all": {
+      "kind": "target_function"
+    },
+    "ActiveRecord::Relation#destroy_all": {
+      "kind": "target_function"
+    },
+    "ActiveRecord::Relation#empty?": {
+      "kind": "target_function"
+    },
+    "ActiveRecord::Relation#many?": {
+      "kind": "target_function"
+    },
+    "ActiveRecord::Relation#none?": {
+      "kind": "target_function"
+    },
+    "ActiveRecord::Relation#one?": {
+      "kind": "target_function"
+    },
+    "ActiveRecord::Relation#records": {
+      "kind": "target_function"
+    },
+    "ActiveRecord::Relation#size": {
+      "kind": "target_function"
+    },
+    "ActiveRecord::Relation#to_a": {
+      "kind": "target_function"
+    },
+    "ActiveRecord::Relation#to_ary": {
+      "kind": "target_function"
+    },
+    "ActiveRecord::Relation#update_all": {
+      "kind": "target_function"
+    },
+    "ApplicationController#after_sign_in_path_for": {
+      "kind": "shim"
+    },
+    "ApplicationController#configure_permitted_parameters": {
+      "kind": "shim"
+    },
+    "DeviseController#assert_is_devise_resource!": {
+      "kind": "shim"
+    },
+    "DeviseController#devise_mapping": {
+      "kind": "shim"
+    },
+    "Diaspora::Federation::Dispatcher.defer_dispatch": {
+      "kind": "shim"
+    },
+    "Diaspora::MessageRenderer#title": {
+      "kind": "shim"
+    },
+    "Diaspora::Taggable#build_tags": {
+      "kind": "shim"
+    },
+    "DiasporaFederation::Entity#normalize_property": {
+      "kind": "shim"
+    },
+    "DiasporaFederation::Entity#validate": {
+      "kind": "shim"
+    },
+    "Gon::ControllerHelpers#gon": {
+      "kind": "shim"
+    },
+    "Photo#url": {
+      "kind": "shim"
+    },
+    "Photo.diaspora_initialize": {
+      "kind": "shim"
+    },
+    "Post.diaspora_initialize": {
+      "kind": "shim"
+    },
+    "PostPresenter#build_mentioned_people_json": {
+      "kind": "shim"
+    },
+    "PostService#mark_user_notifications": {
+      "kind": "shim"
+    },
+    "Sidekiq::Client#push": {
+      "kind": "shim"
+    },
+    "Sidekiq::Client#push_bulk": {
+      "kind": "shim"
+    },
+    "StatusMessage#tag_name_max_length": {
+      "kind": "shim"
+    },
+    "StatusMessageCreationService#add_to_streams": {
+      "kind": "shim"
+    },
+    "Stream::Aspect#aspect_ids": {
+      "kind": "shim"
+    },
+    "Stream::Base#attach_user_likes": {
+      "kind": "shim"
+    },
+    "Stream::Base#post_ids": {
+      "kind": "shim"
+    },
+    "Stream::FollowedTag#tag_ids": {
+      "kind": "shim"
+    },
+    "Stream::Multi#publisher_prefill": {
+      "kind": "shim"
+    },
+    "StreamsController#decorated_stream_posts": {
+      "kind": "shim"
+    },
+    "TagsController#prep_tags_for_javascript": {
+      "kind": "shim"
+    },
+    "User#add_to_streams": {
+      "kind": "shim"
+    },
+    "User#blocks": {
+      "kind": "shim"
+    },
+    "User#confirm_email": {
+      "kind": "shim"
+    },
+    "User#deliver_profile_update": {
+      "kind": "shim"
+    },
+    "User#mine?": {
+      "kind": "shim"
+    },
+    "User#retract": {
+      "kind": "shim"
+    }
+  },
+  "symbolic_results": [
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1",
+      "sort": "Int",
+      "type": "obj<?>",
+      "value": "#<User:0x40a38a44>"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1",
+      "sort": "Int",
+      "type": "obj<?>",
+      "value": "#<Person:0x26838837>"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
+      "sort": "Int",
+      "type": "obj<?>",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_name_v"
+    },
+    {
+      "name": "SYM_RESULT_User_blocks_1",
+      "sort": "Int",
+      "type": "opaque",
+      "value": "#<Block::ActiveRecord_Associations_CollectionProxy:0x2cdb1581>"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Querying_find_by_sql_1",
+      "sort": "Int",
+      "type": "[?]",
+      "value": {
+        "sym": "SYM_RESULT_ActiveRecord__Querying_find_by_sql_1_rows"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_exists__1",
+      "sort": "Int",
+      "type": "opaque?",
+      "value": {
+        "lit": {
+          "sort": "null"
+        }
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1",
+      "sort": "Int",
+      "type": "obj<?>",
+      "value": "#<Contact:0x1d6daa8a>"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1",
+      "sort": "Int",
+      "type": "obj<?>",
+      "value": "#<User:0x27154b20>"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_2",
+      "sort": "Int",
+      "type": "obj<?>",
+      "value": "#<Person:0x5316255e>"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_exists__2",
+      "sort": "Int",
+      "type": "opaque?",
+      "value": {
+        "lit": {
+          "sort": "null"
+        }
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_3",
+      "sort": "Int",
+      "type": "obj<?>",
+      "value": "#<User:0x15da3ce9>"
+    },
+    {
+      "name": "SYM_RESULT_User_blocks_2",
+      "sort": "Int",
+      "type": "opaque",
+      "value": "#<Block::ActiveRecord_Associations_CollectionProxy:0x6513fd22>"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Querying_find_by_sql_2",
+      "sort": "Int",
+      "type": "[?]",
+      "value": {
+        "sym": "SYM_RESULT_ActiveRecord__Querying_find_by_sql_2_rows"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_exists__3",
+      "sort": "Int",
+      "type": "opaque?",
+      "value": {
+        "lit": {
+          "sort": "null"
+        }
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Base_save__1",
+      "sort": "Bool",
+      "type": "opaque",
+      "value": {
+        "sym": "SYM_RESULT_ActiveRecord__Base_save__1_save!_ok"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Base_save_1",
+      "sort": "Bool",
+      "type": "opaque",
+      "value": {
+        "sym": "SYM_RESULT_ActiveRecord__Base_save_1_save_ok"
+      }
+    },
+    {
+      "name": "SYM_RESULT_Diaspora__Federation__Dispatcher_defer_dispatch_1",
+      "sort": "Int",
+      "type": "opaque?",
+      "value": {
+        "lit": {
+          "sort": "null"
+        }
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Relation_update_all_1",
+      "sort": "Int",
+      "type": "opaque",
+      "value": {
+        "sym": "SYM_RESULT_ActiveRecord__Relation_update_all_1_update_all_count"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActionController__Rendering__set_rendered_content_type_1",
+      "sort": "Int",
+      "type": "[?]",
+      "value": {
+        "format": "application/json"
+      }
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2",
+      "sort": "Int",
+      "type": "obj<?>",
+      "value": "#<AspectMembership:0xa0c027a>"
+    },
+    {
+      "name": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_4",
+      "sort": "Int",
+      "type": "obj<?>",
+      "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_aspect_name_v"
+    },
+    {
+      "name": "SYM_RESULT_ActionController__Rendering__set_rendered_content_type_2",
+      "sort": "Int",
+      "type": "[?]",
+      "value": {
+        "format": "application/json"
+      }
+    }
+  ],
+  "script": "run_dse.rb",
+  "concolic_seeds": {
+    "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id": 2
+  },
+  "concolic_scenario": {
+    "name": "auth_json",
+    "format": "json",
+    "signed_in": true
+  }
+}

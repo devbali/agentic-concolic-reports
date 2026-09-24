@@ -1,0 +1,144 @@
+run "auth_json_dse0003" schema=1
+  target ActionController::Head#head = shim
+  target ActionController::ImplicitRender#default_render = shim
+  target ActionController::Instrumentation#redirect_to = shim
+  target ActionController::Metal#status= = shim
+  target ActionController::Redirecting#redirect_to = shim
+  target ActionController::Rendering#_set_rendered_content_type = shim
+  target ActionDispatch::Routing::UrlFor#url_for = shim
+  target ActiveRecord::Associations::CollectionProxy#create = shim
+  target ActiveRecord::Associations::SingularAssociation#find_target = target_function
+  target ActiveRecord::Associations::SingularAssociation#writer = shim
+  target ActiveRecord::Base#destroy = target_function
+  target ActiveRecord::Base#destroy! = target_function
+  target ActiveRecord::Base#save = target_function
+  target ActiveRecord::Base#save! = target_function
+  target ActiveRecord::Base#touch = target_function
+  target ActiveRecord::Base#update = target_function
+  target ActiveRecord::Base#update! = target_function
+  target ActiveRecord::Base#update_attribute = target_function
+  target ActiveRecord::Batches#find_each = target_function
+  target ActiveRecord::Batches#find_in_batches = target_function
+  target ActiveRecord::Batches#in_batches = target_function
+  target ActiveRecord::Calculations#average = target_function
+  target ActiveRecord::Calculations#calculate = target_function
+  target ActiveRecord::Calculations#count = target_function
+  target ActiveRecord::Calculations#ids = target_function
+  target ActiveRecord::Calculations#maximum = target_function
+  target ActiveRecord::Calculations#minimum = target_function
+  target ActiveRecord::Calculations#pluck = target_function
+  target ActiveRecord::Calculations#sum = target_function
+  target ActiveRecord::Core::ClassMethods#find = target_function
+  target ActiveRecord::Core::ClassMethods#find_by = target_function
+  target ActiveRecord::Core::ClassMethods#find_by! = target_function
+  target ActiveRecord::FinderMethods#devise_user_first = target_function
+  target ActiveRecord::FinderMethods#exists? = target_function
+  target ActiveRecord::FinderMethods#find = target_function
+  target ActiveRecord::FinderMethods#find_by = target_function
+  target ActiveRecord::FinderMethods#find_by! = target_function
+  target ActiveRecord::FinderMethods#first = target_function
+  target ActiveRecord::FinderMethods#first! = target_function
+  target ActiveRecord::FinderMethods#last = target_function
+  target ActiveRecord::FinderMethods#last! = target_function
+  target ActiveRecord::FinderMethods#take = target_function
+  target ActiveRecord::FinderMethods#take! = target_function
+  target ActiveRecord::Querying#count_by_sql = target_function
+  target ActiveRecord::Querying#find_by_sql = target_function
+  target ActiveRecord::Relation#any? = target_function
+  target ActiveRecord::Relation#delete_all = target_function
+  target ActiveRecord::Relation#destroy_all = target_function
+  target ActiveRecord::Relation#empty? = target_function
+  target ActiveRecord::Relation#many? = target_function
+  target ActiveRecord::Relation#none? = target_function
+  target ActiveRecord::Relation#one? = target_function
+  target ActiveRecord::Relation#records = target_function
+  target ActiveRecord::Relation#size = target_function
+  target ActiveRecord::Relation#to_a = target_function
+  target ActiveRecord::Relation#to_ary = target_function
+  target ActiveRecord::Relation#update_all = target_function
+  target ApplicationController#after_sign_in_path_for = shim
+  target ApplicationController#configure_permitted_parameters = shim
+  target DeviseController#assert_is_devise_resource! = shim
+  target DeviseController#devise_mapping = shim
+  target Diaspora::Federation::Dispatcher.defer_dispatch = shim
+  target Diaspora::MessageRenderer#title = shim
+  target Diaspora::Taggable#build_tags = shim
+  target DiasporaFederation::Entity#normalize_property = shim
+  target DiasporaFederation::Entity#validate = shim
+  target Gon::ControllerHelpers#gon = shim
+  target Photo#url = shim
+  target Photo.diaspora_initialize = shim
+  target Post.diaspora_initialize = shim
+  target PostPresenter#build_mentioned_people_json = shim
+  target PostService#mark_user_notifications = shim
+  target Sidekiq::Client#push = shim
+  target Sidekiq::Client#push_bulk = shim
+  target StatusMessage#tag_name_max_length = shim
+  target StatusMessageCreationService#add_to_streams = shim
+  target Stream::Aspect#aspect_ids = shim
+  target Stream::Base#attach_user_likes = shim
+  target Stream::Base#post_ids = shim
+  target Stream::FollowedTag#tag_ids = shim
+  target Stream::Multi#publisher_prefill = shim
+  target StreamsController#decorated_stream_posts = shim
+  target TagsController#prep_tags_for_javascript = shim
+  target User#add_to_streams = shim
+  target User#blocks = shim
+  target User#confirm_email = shim
+  target User#deliver_profile_update = shim
+  target User#mine? = shim
+  target User#retract = shim
+  sig ActiveRecord::FinderMethods#devise_user_first() -> obj<?> target_function
+  var $SYM_PARAM_person_id: String = "5"
+  var $SYM_PARAM_aspect_id: String = "7"
+  var $SYM_USER_CI_id: Int = 1
+  var $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id: Int type int origin attr($SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1, id) = 1 note "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_username: String type str origin attr($SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1, username) = "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_username_v" note "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_serialized_private_key: String type str origin attr($SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1, serialized_private_key) = "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_serialized_private_key_v" note "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_getting_started: Bool type bool origin attr($SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1, getting_started) = false note "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_disable_mail: Bool type bool origin attr($SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1, disable_mail) = false note "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_language: String = "xx" note "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_email: String type str origin attr($SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1, email) = "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_email_v" note "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_encrypted_password: String type str origin attr($SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1, encrypted_password) = "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_encrypted_password_v" note "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_created_at: String type str origin attr($SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1, created_at) = "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_created_at_v" note "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_updated_at: String type str origin attr($SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1, updated_at) = "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_updated_at_v" note "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_locked_at: String type str origin attr($SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1, locked_at) = "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_locked_at_v" note "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_sign_in_count: Int type int origin attr($SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1, sign_in_count) = 0 note "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_current_sign_in_at: String type str origin attr($SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1, current_sign_in_at) = "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_current_sign_in_at_v" note "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_last_sign_in_at: String type str origin attr($SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1, last_sign_in_at) = "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_last_sign_in_at_v" note "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_current_sign_in_ip: String type str origin attr($SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1, current_sign_in_ip) = "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_current_sign_in_ip_v" note "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_last_sign_in_ip: String type str origin attr($SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1, last_sign_in_ip) = "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_last_sign_in_ip_v" note "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_hidden_shareables: String type str origin attr($SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1, hidden_shareables) = "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_hidden_shareables_v" note "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_reset_password_sent_at: String type str origin attr($SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1, reset_password_sent_at) = "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_reset_password_sent_at_v" note "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_last_seen: String type str origin attr($SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1, last_seen) = "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_last_seen_v" note "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_remove_after: String type str origin attr($SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1, remove_after) = "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_remove_after_v" note "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_export: String type str origin attr($SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1, export) = "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_export_v" note "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_exported_at: String type str origin attr($SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1, exported_at) = "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_exported_at_v" note "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_exporting: Bool type bool origin attr($SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1, exporting) = false note "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_strip_exif: Bool type bool origin attr($SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1, strip_exif) = false note "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_exported_photos_file: String type str origin attr($SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1, exported_photos_file) = "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_exported_photos_file_v" note "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_exported_photos_at: String type str origin attr($SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1, exported_photos_at) = "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_exported_photos_at_v" note "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_exporting_photos: Bool type bool origin attr($SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1, exporting_photos) = false note "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_color_theme: String type str origin attr($SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1, color_theme) = "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_color_theme_v" note "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_post_default_public: Bool type bool origin attr($SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1, post_default_public) = false note "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_auto_follow_back: Bool type bool origin attr($SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1, auto_follow_back) = false note "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_auto_follow_back_aspect_id: Int type int origin attr($SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1, auto_follow_back_aspect_id) = 0 note "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_show_community_spotlight_in_stream: Bool type bool origin attr($SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1, show_community_spotlight_in_stream) = false note "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_otp_required_for_login: Bool type bool origin attr($SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1, otp_required_for_login) = false note "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_otp_backup_codes: String type str origin attr($SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1, otp_backup_codes) = "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_otp_backup_codes_v" note "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_plain_otp_secret: String type str origin attr($SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1, plain_otp_secret) = "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_plain_otp_secret_v" note "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_reset_password_token: String type str origin attr($SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1, reset_password_token) = "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_reset_password_token_v" note "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_remember_created_at: String type str origin attr($SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1, remember_created_at) = "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_remember_created_at_v" note "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_invited_by_id: Int type int origin attr($SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1, invited_by_id) = 0 note "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_authentication_token: String type str origin attr($SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1, authentication_token) = "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_authentication_token_v" note "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+  result $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1 = ~"#<User:0x7c458ad3>"
+  script "run_dse.rb"
+  0: void ActiveRecord::FinderMethods#devise_user_first()
+       @ "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb":870 in "get"
+  1: call ActiveRecord::FinderMethods#devise_user_first() -> $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1: Int type obj<?> = ~"#<User:0x7c458ad3>"
+       note "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+       @ "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb":870 in "get"
+  2: pc ($SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_language == "pl") not-taken
+       @ "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb":618 in "symbolic_instance"
+  3: pc ($SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_language == "xx") taken
+       @ "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb":620 in "symbolic_instance"

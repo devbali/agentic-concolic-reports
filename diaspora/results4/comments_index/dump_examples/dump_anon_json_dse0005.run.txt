@@ -1,0 +1,336 @@
+run "anon_json_dse0005" schema=1
+  target ActionController::Head#head = shim
+  target ActionController::ImplicitRender#default_render = shim
+  target ActionController::Instrumentation#redirect_to = shim
+  target ActionController::Metal#status= = shim
+  target ActionController::Redirecting#redirect_to = shim
+  target ActionController::Rendering#_set_rendered_content_type = shim
+  target ActionDispatch::Routing::UrlFor#url_for = shim
+  target ActiveRecord::Associations::BelongsToPolymorphicAssociation#find_target = target_function
+  target ActiveRecord::Associations::BelongsToPolymorphicAssociation#klass = shim
+  target ActiveRecord::Associations::CollectionProxy#create = shim
+  target ActiveRecord::Associations::CollectionProxy#load_target = target_function
+  target ActiveRecord::Associations::CollectionProxy#records = target_function
+  target ActiveRecord::Associations::CollectionProxy#to_a = target_function
+  target ActiveRecord::Associations::CollectionProxy#to_ary = target_function
+  target ActiveRecord::Associations::SingularAssociation#find_target = target_function
+  target ActiveRecord::Associations::SingularAssociation#writer = shim
+  target ActiveRecord::Base#destroy = target_function
+  target ActiveRecord::Base#destroy! = target_function
+  target ActiveRecord::Base#reload = target_function
+  target ActiveRecord::Base#save = target_function
+  target ActiveRecord::Base#save! = target_function
+  target ActiveRecord::Base#touch = target_function
+  target ActiveRecord::Base#update = target_function
+  target ActiveRecord::Base#update! = target_function
+  target ActiveRecord::Base#update_attribute = target_function
+  target ActiveRecord::Batches#find_each = target_function
+  target ActiveRecord::Batches#find_in_batches = target_function
+  target ActiveRecord::Batches#in_batches = target_function
+  target ActiveRecord::Calculations#average = target_function
+  target ActiveRecord::Calculations#calculate = target_function
+  target ActiveRecord::Calculations#count = target_function
+  target ActiveRecord::Calculations#ids = target_function
+  target ActiveRecord::Calculations#maximum = target_function
+  target ActiveRecord::Calculations#minimum = target_function
+  target ActiveRecord::Calculations#pluck = target_function
+  target ActiveRecord::Calculations#sum = target_function
+  target ActiveRecord::Core::ClassMethods#find = target_function
+  target ActiveRecord::Core::ClassMethods#find_by = target_function
+  target ActiveRecord::Core::ClassMethods#find_by! = target_function
+  target ActiveRecord::Core::ClassMethods#mention_lookup_json_first = target_function
+  target ActiveRecord::Core::ClassMethods#mention_lookup_json_retry = target_function
+  target ActiveRecord::Core::ClassMethods#mention_lookup_msg_first = target_function
+  target ActiveRecord::Core::ClassMethods#mention_lookup_msg_retry = target_function
+  target ActiveRecord::FinderMethods#ci_author_first = target_function
+  target ActiveRecord::FinderMethods#ci_public_first = target_function
+  target ActiveRecord::FinderMethods#ci_vis_first = target_function
+  target ActiveRecord::FinderMethods#devise_user_first = target_function
+  target ActiveRecord::FinderMethods#exists? = target_function
+  target ActiveRecord::FinderMethods#find = target_function
+  target ActiveRecord::FinderMethods#find_by = target_function
+  target ActiveRecord::FinderMethods#find_by! = target_function
+  target ActiveRecord::FinderMethods#first = target_function
+  target ActiveRecord::FinderMethods#first! = target_function
+  target ActiveRecord::FinderMethods#last = target_function
+  target ActiveRecord::FinderMethods#last! = target_function
+  target ActiveRecord::FinderMethods#take = target_function
+  target ActiveRecord::FinderMethods#take! = target_function
+  target ActiveRecord::Querying#count_by_sql = target_function
+  target ActiveRecord::Querying#find_by_sql = target_function
+  target ActiveRecord::Relation#any? = target_function
+  target ActiveRecord::Relation#delete_all = target_function
+  target ActiveRecord::Relation#destroy_all = target_function
+  target ActiveRecord::Relation#empty? = target_function
+  target ActiveRecord::Relation#many? = target_function
+  target ActiveRecord::Relation#none? = target_function
+  target ActiveRecord::Relation#one? = target_function
+  target ActiveRecord::Relation#records = target_function
+  target ActiveRecord::Relation#size = target_function
+  target ActiveRecord::Relation#to_a = target_function
+  target ActiveRecord::Relation#to_ary = target_function
+  target ActiveRecord::Relation#update_all = target_function
+  target ApplicationController#after_sign_in_path_for = shim
+  target ApplicationController#configure_permitted_parameters = shim
+  target CommentsInertDiscovery#fetch_and_save = shim
+  target ConcolicThroughLoadProbe.load_intermediate = target_function
+  target DeviseController#assert_is_devise_resource! = shim
+  target DeviseController#devise_mapping = shim
+  target Diaspora::MessageRenderer#title = shim
+  target Diaspora::Taggable#build_tags = shim
+  target DiasporaFederation::Discovery::Discovery#fetch_and_save = shim
+  target DiasporaFederation::Entity#normalize_property = shim
+  target DiasporaFederation::Entity#validate = shim
+  target Gon::ControllerHelpers#gon = shim
+  target Photo#url = shim
+  target Photo.diaspora_initialize = shim
+  target Post.diaspora_initialize = shim
+  target PostPresenter#build_mentioned_people_json = shim
+  target PostService#mark_user_notifications = shim
+  target Sidekiq::Client#push = shim
+  target Sidekiq::Client#push_bulk = shim
+  target StatusMessage#tag_name_max_length = shim
+  target StatusMessageCreationService#add_to_streams = shim
+  target Stream::Aspect#aspect_ids = shim
+  target Stream::Base#attach_user_likes = shim
+  target Stream::Base#post_ids = shim
+  target Stream::FollowedTag#tag_ids = shim
+  target Stream::Multi#publisher_prefill = shim
+  target StreamsController#decorated_stream_posts = shim
+  target TagsController#prep_tags_for_javascript = shim
+  target User#add_to_streams = shim
+  target User#blocks = target_function
+  target User#confirm_email = shim
+  target User#mine? = shim
+  target User#retract = shim
+  sig ActionController::Metal#status=(arg: int) -> opaque? shim
+  sig ActionController::Rendering#_set_rendered_content_type(format: str) -> [?] shim
+  sig ActiveRecord::FinderMethods#first() -> obj<?> target_function
+  sig ActiveRecord::Relation#records() -> [?] target_function
+  sig ConcolicThroughLoadProbe.load_intermediate(sql: str) -> [?] target_function
+  var $SYM_PARAM_post_id: String = "5"
+  var $"Length(SYM_PARAM_post_id)": Int = 1
+  var $SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found: Bool = false note "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_first_1_id: Int type int origin attr($SYM_RESULT_ActiveRecord__FinderMethods_first_1, id) = 1 note "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_first_1_author_id: Int type int origin attr($SYM_RESULT_ActiveRecord__FinderMethods_first_1, author_id) = 0 note "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_first_1_public: Bool type bool origin attr($SYM_RESULT_ActiveRecord__FinderMethods_first_1, public) = true note "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid: String = "SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid_v" note "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_first_1_type: String = "SYM_RESULT_ActiveRecord__FinderMethods_first_1_type_v" note "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_first_1_text: String type str origin attr($SYM_RESULT_ActiveRecord__FinderMethods_first_1, text) = "SYM_RESULT_ActiveRecord__FinderMethods_first_1_text_v" note "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_first_1_created_at: String = "SYM_RESULT_ActiveRecord__FinderMethods_first_1_created_at_v" note "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_first_1_updated_at: String = "SYM_RESULT_ActiveRecord__FinderMethods_first_1_updated_at_v" note "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_first_1_provider_display_name: String type str origin attr($SYM_RESULT_ActiveRecord__FinderMethods_first_1, provider_display_name) = "SYM_RESULT_ActiveRecord__FinderMethods_first_1_provider_display_name_v" note "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_first_1_root_guid: String = "SYM_RESULT_ActiveRecord__FinderMethods_first_1_root_guid_v" note "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_first_1_likes_count: Int type int origin attr($SYM_RESULT_ActiveRecord__FinderMethods_first_1, likes_count) = 0 note "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_first_1_comments_count: Int type int origin attr($SYM_RESULT_ActiveRecord__FinderMethods_first_1, comments_count) = 0 note "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_first_1_o_embed_cache_id: Int type int origin attr($SYM_RESULT_ActiveRecord__FinderMethods_first_1, o_embed_cache_id) = 0 note "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_first_1_reshares_count: Int type int origin attr($SYM_RESULT_ActiveRecord__FinderMethods_first_1, reshares_count) = 0 note "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_first_1_interacted_at: String = "SYM_RESULT_ActiveRecord__FinderMethods_first_1_interacted_at_v" note "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_first_1_tweet_id: String type str origin attr($SYM_RESULT_ActiveRecord__FinderMethods_first_1, tweet_id) = "SYM_RESULT_ActiveRecord__FinderMethods_first_1_tweet_id_v" note "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_first_1_open_graph_cache_id: Int type int origin attr($SYM_RESULT_ActiveRecord__FinderMethods_first_1, open_graph_cache_id) = 0 note "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_first_1_tumblr_ids: String type str origin attr($SYM_RESULT_ActiveRecord__FinderMethods_first_1, tumblr_ids) = "SYM_RESULT_ActiveRecord__FinderMethods_first_1_tumblr_ids_v" note "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_first_1_created_at_year: Int = 1990 note "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_first_1_updated_at_year: Int = 1990 note "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_first_1_interacted_at_year: Int = 1990 note "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__Relation_records_1_row_id: Int = 1 note "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id) AND \"comments\".\"commentable_type\" = 'Post' ORDER BY created_at ASC"
+  var $SYM_RESULT_ActiveRecord__Relation_records_1_row_text: String = "SYM_RESULT_ActiveRecord__Relation_records_1_row_text_v" note "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id) AND \"comments\".\"commentable_type\" = 'Post' ORDER BY created_at ASC"
+  var $SYM_RESULT_ActiveRecord__Relation_records_1_row_commentable_id: Int = 0 note "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id) AND \"comments\".\"commentable_type\" = 'Post' ORDER BY created_at ASC"
+  var $SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id: Int = 0 note "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id) AND \"comments\".\"commentable_type\" = 'Post' ORDER BY created_at ASC"
+  var $SYM_RESULT_ActiveRecord__Relation_records_1_row_guid: String = "SYM_RESULT_ActiveRecord__Relation_records_1_row_guid_v" note "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id) AND \"comments\".\"commentable_type\" = 'Post' ORDER BY created_at ASC"
+  var $SYM_RESULT_ActiveRecord__Relation_records_1_row_created_at: String = "SYM_RESULT_ActiveRecord__Relation_records_1_row_created_at_v" note "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id) AND \"comments\".\"commentable_type\" = 'Post' ORDER BY created_at ASC"
+  var $SYM_RESULT_ActiveRecord__Relation_records_1_row_updated_at: String = "SYM_RESULT_ActiveRecord__Relation_records_1_row_updated_at_v" note "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id) AND \"comments\".\"commentable_type\" = 'Post' ORDER BY created_at ASC"
+  var $SYM_RESULT_ActiveRecord__Relation_records_1_row_likes_count: Int = 0 note "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id) AND \"comments\".\"commentable_type\" = 'Post' ORDER BY created_at ASC"
+  var $SYM_RESULT_ActiveRecord__Relation_records_1_row_commentable_type: String = "SYM_RESULT_ActiveRecord__Relation_records_1_row_commentable_type_v" note "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id) AND \"comments\".\"commentable_type\" = 'Post' ORDER BY created_at ASC"
+  var $SYM_RESULT_ActiveRecord__Relation_records_1_row_text_has_mention: Bool = false note "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id) AND \"comments\".\"commentable_type\" = 'Post' ORDER BY created_at ASC"
+  var $SYM_RESULT_ActiveRecord__Relation_records_1_row_text_has_dlink: Bool = false note "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id) AND \"comments\".\"commentable_type\" = 'Post' ORDER BY created_at ASC"
+  var $SYM_RESULT_ActiveRecord__Relation_records_1_row_created_at_year: Int = 1990 note "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id) AND \"comments\".\"commentable_type\" = 'Post' ORDER BY created_at ASC"
+  var $SYM_RESULT_ActiveRecord__Relation_records_1_row_updated_at_year: Int = 1990 note "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id) AND \"comments\".\"commentable_type\" = 'Post' ORDER BY created_at ASC"
+  var $SYM_RESULT_ActiveRecord__Relation_records_1_rows: Int type [?] note "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id) AND \"comments\".\"commentable_type\" = 'Post' ORDER BY created_at ASC"
+  var $SYM_RESULT_ActiveRecord__Relation_records_1_row2_author_id: Int = 2 note "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id) AND \"comments\".\"commentable_type\" = 'Post' ORDER BY created_at ASC"
+  var $SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_1_rows: Int type [?] note "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_1_row_author_guid: String = "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_guid_v" note "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_1_row_author_diaspora_handle: String = "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_diaspora_handle_v" note "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_1_row_author_serialized_public_key: String = "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_serialized_public_key_v" note "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_1_row_author_owner_id: Int = 0 note "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_1_row_author_created_at: String = "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_created_at_v" note "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_1_row_author_updated_at: String = "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_updated_at_v" note "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_1_row_author_closed_account: Bool = false note "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_1_row_author_fetch_status: Int = 0 note "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_1_row_author_pod_id: Int = 0 note "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_1_row_author_created_at_year: Int = 1990 note "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_1_row_author_updated_at_year: Int = 1990 note "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_1_row_author2_id: Int = 2 note "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+  var $SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_2_rows: Int type [?] note "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_not_found: Bool = false note "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_id: Int = 1 note "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_diaspora_handle: String = "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_diaspora_handle_v" note "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_first_name: String = "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_first_name_v" note "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_last_name: String = "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_last_name_v" note "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_image_url: String = "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_image_url_v" note "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_image_url_small: String = "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_image_url_small_v" note "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_image_url_medium: String = "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_image_url_medium_v" note "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_birthday: String = "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_birthday_v" note "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_gender: String = "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_gender_v" note "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_bio: String = "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_bio_v" note "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_searchable: Bool = false note "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_person_id: Int = 0 note "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_created_at: String = "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_created_at_v" note "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_updated_at: String = "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_updated_at_v" note "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_location: String = "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_location_v" note "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_full_name: String = "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_full_name_v" note "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_nsfw: Bool = false note "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_public_details: Bool = false note "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_birthday_year: Int = 1990 note "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_created_at_year: Int = 1990 note "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_updated_at_year: Int = 1990 note "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_2_row_id: Int = 1 note "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_id) AND \"mentions\".\"mentions_container_type\" = 'Comment'"
+  var $SYM_RESULT_ActiveRecord__Relation_records_2_row_mentions_container_id: Int = 0 note "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_id) AND \"mentions\".\"mentions_container_type\" = 'Comment'"
+  var $SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id: Int = 0 note "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_id) AND \"mentions\".\"mentions_container_type\" = 'Comment'"
+  var $SYM_RESULT_ActiveRecord__Relation_records_2_row_mentions_container_type: String = "SYM_RESULT_ActiveRecord__Relation_records_2_row_mentions_container_type_v" note "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_id) AND \"mentions\".\"mentions_container_type\" = 'Comment'"
+  var $SYM_RESULT_ActiveRecord__Relation_records_2_rows: Int type [?] note "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_id) AND \"mentions\".\"mentions_container_type\" = 'Comment'"
+  var $SYM_RESULT_ActiveRecord__Relation_records_2_row2_person_id: Int = 2 note "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_id) AND \"mentions\".\"mentions_container_type\" = 'Comment'"
+  var $SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_3_rows: Int type [?] note "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_2_row_person_not_found: Bool = false note "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_2_row_person_guid: String = "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_guid_v" note "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_2_row_person_diaspora_handle: String = "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_diaspora_handle_v" note "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_2_row_person_serialized_public_key: String = "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_serialized_public_key_v" note "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_2_row_person_owner_id: Int = 0 note "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_2_row_person_created_at: String = "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_created_at_v" note "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_2_row_person_updated_at: String = "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_updated_at_v" note "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_2_row_person_closed_account: Bool = false note "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_2_row_person_fetch_status: Int = 0 note "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_2_row_person_pod_id: Int = 0 note "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_2_row_person_created_at_year: Int = 1990 note "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_2_row_person_updated_at_year: Int = 1990 note "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_2_row_person2_id: Int = 2 note "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+  var $SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_4_rows: Int type [?] note "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_not_found: Bool = false note "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_id: Int = 1 note "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_diaspora_handle: String = "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_diaspora_handle_v" note "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_first_name: String = "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_first_name_v" note "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_last_name: String = "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_last_name_v" note "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_image_url: String = "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_image_url_v" note "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_image_url_small: String = "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_image_url_small_v" note "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_image_url_medium: String = "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_image_url_medium_v" note "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_birthday: String = "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_birthday_v" note "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_gender: String = "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_gender_v" note "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_bio: String = "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_bio_v" note "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_searchable: Bool = false note "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_person_id: Int = 0 note "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_created_at: String = "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_created_at_v" note "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_updated_at: String = "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_updated_at_v" note "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_location: String = "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_location_v" note "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_full_name: String = "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_full_name_v" note "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_nsfw: Bool = false note "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_public_details: Bool = false note "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_birthday_year: Int = 1990 note "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_created_at_year: Int = 1990 note "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+  var $SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_updated_at_year: Int = 1990 note "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+  var $SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_5_rows: Int type [?] note "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+  var $SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_6_rows: Int type [?] note "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+  var $SYM_RESULT_ActionController__Rendering__set_rendered_content_type_1: Int type [?]
+  result $SYM_RESULT_ActionController__Metal_status__1 = null
+  result $SYM_RESULT_ActionController__Rendering__set_rendered_content_type_1 = <opaque>
+  result $SYM_RESULT_ActiveRecord__FinderMethods_first_1 = ~"#<Post:0x1b9b8759>"
+  result $SYM_RESULT_ActiveRecord__Relation_records_1 = $SYM_RESULT_ActiveRecord__Relation_records_1_rows
+  result $SYM_RESULT_ActiveRecord__Relation_records_2 = $SYM_RESULT_ActiveRecord__Relation_records_2_rows
+  result $SYM_RESULT_ActiveRecord__Relation_records_3 = $SYM_RESULT_ActiveRecord__Relation_records_2_rows
+  result $SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_1 = $SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_1_rows
+  result $SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_2 = $SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_2_rows
+  result $SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_3 = $SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_3_rows
+  result $SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_4 = $SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_4_rows
+  result $SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_5 = $SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_5_rows
+  result $SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_6 = $SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_6_rows
+  script "run_dse.rb"
+  0: pc ($"Length(SYM_PARAM_post_id)" < 16) taken
+       @ "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/services/post_service.rb":66 in "post_key"
+  1: void ActiveRecord::FinderMethods#first()
+       @ "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/services/post_service.rb":52 in "find_public!"
+  2: call ActiveRecord::FinderMethods#first() -> $SYM_RESULT_ActiveRecord__FinderMethods_first_1: Int type obj<?> = ~"#<Post:0x1b9b8759>"
+       note "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+       @ "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/services/post_service.rb":52 in "find_public!"
+  3: pc ($SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == true) not-taken
+       @ "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb":514 in "block in finder_mock_faithful"
+  4: pc ($SYM_RESULT_ActiveRecord__FinderMethods_first_1_type == "Photo") not-taken
+       @ "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb":1279 in "symbolic_instance"
+  5: pc "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_public == True)" taken
+       @ "/home/dev/project/reports/diaspora/results4/comments_index/concolic_targets.rb":412 in "block in symbolic_instance"
+  6: void ActiveRecord::Relation#records()
+       @ "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/relation/delegation.rb":71 in "each"
+  7: call ActiveRecord::Relation#records() -> $SYM_RESULT_ActiveRecord__Relation_records_1: Int type [?] = $SYM_RESULT_ActiveRecord__Relation_records_1_rows
+       note "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id) AND \"comments\".\"commentable_type\" = 'Post' ORDER BY created_at ASC"
+       @ "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/relation/delegation.rb":71 in "each"
+  8: pc ($SYM_RESULT_ActiveRecord__Relation_records_1_row_text_has_mention == true) not-taken
+       @ "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb":1112 in "symbolic_instance"
+  9: pc ($SYM_RESULT_ActiveRecord__Relation_records_1_row_text_has_dlink == true) not-taken
+       @ "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb":1144 in "symbolic_instance"
+  10: pc (length($SYM_RESULT_ActiveRecord__Relation_records_1_rows) > 1) not-taken
+       @ "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb":948 in "block in install!"
+  11: void ConcolicThroughLoadProbe.load_intermediate(sql: "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)")
+       @ "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb":363 in "block"
+  12: call ConcolicThroughLoadProbe.load_intermediate(sql: "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)") -> $SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_1: Int type [?] = $SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_1_rows
+       note "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+       @ "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb":363 in "block in emit_includes_preloads"
+  13: void ConcolicThroughLoadProbe.load_intermediate(sql: "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)")
+       @ "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb":363 in "block"
+  14: call ConcolicThroughLoadProbe.load_intermediate(sql: "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)") -> $SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_2: Int type [?] = $SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_2_rows
+       note "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+       @ "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb":363 in "block in emit_includes_preloads"
+  15: pc ($SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_not_found == true) not-taken
+       @ "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb":388 in "block in emit_includes_preloads"
+  16: pc "(len(SYM_RESULT_ActiveRecord__Relation_records_1_rows) != 0)" taken
+       @ "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb":783 in "each"
+  17: void ActiveRecord::Relation#records()
+       @ "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/relation/delegation.rb":71 in "each"
+  18: call ActiveRecord::Relation#records() -> $SYM_RESULT_ActiveRecord__Relation_records_2: Int type [?] = $SYM_RESULT_ActiveRecord__Relation_records_2_rows
+       note "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_id) AND \"mentions\".\"mentions_container_type\" = 'Comment'"
+       @ "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/relation/delegation.rb":71 in "each"
+  19: pc (length($SYM_RESULT_ActiveRecord__Relation_records_2_rows) > 1) not-taken
+       @ "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb":948 in "block in install!"
+  20: void ConcolicThroughLoadProbe.load_intermediate(sql: "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)")
+       @ "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb":363 in "block"
+  21: call ConcolicThroughLoadProbe.load_intermediate(sql: "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)") -> $SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_3: Int type [?] = $SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_3_rows
+       note "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+       @ "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb":363 in "block in emit_includes_preloads"
+  22: pc ($SYM_RESULT_ActiveRecord__Relation_records_2_row_person_not_found == true) not-taken
+       @ "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb":388 in "block in emit_includes_preloads"
+  23: void ConcolicThroughLoadProbe.load_intermediate(sql: "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)")
+       @ "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb":363 in "block"
+  24: call ConcolicThroughLoadProbe.load_intermediate(sql: "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)") -> $SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_4: Int type [?] = $SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_4_rows
+       note "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+       @ "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb":363 in "block in emit_includes_preloads"
+  25: pc ($SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_not_found == true) not-taken
+       @ "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb":388 in "block in emit_includes_preloads"
+  26: pc "(len(SYM_RESULT_ActiveRecord__Relation_records_2_rows) != 0)" taken
+       @ "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb":783 in "each"
+  27: void ActiveRecord::Relation#records()
+       @ "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/relation/delegation.rb":71 in "each"
+  28: call ActiveRecord::Relation#records() -> $SYM_RESULT_ActiveRecord__Relation_records_3: Int type [?] = $SYM_RESULT_ActiveRecord__Relation_records_2_rows
+       note "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_id) AND \"mentions\".\"mentions_container_type\" = 'Comment'"
+       @ "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/relation/delegation.rb":71 in "each"
+  29: pc (length($SYM_RESULT_ActiveRecord__Relation_records_2_rows) > 1) not-taken
+       @ "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb":948 in "block in install!"
+  30: void ConcolicThroughLoadProbe.load_intermediate(sql: "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)")
+       @ "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb":363 in "block"
+  31: call ConcolicThroughLoadProbe.load_intermediate(sql: "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)") -> $SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_5: Int type [?] = $SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_5_rows
+       note "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+       @ "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb":363 in "block in emit_includes_preloads"
+  32: pc ($SYM_RESULT_ActiveRecord__Relation_records_2_row_person_not_found == true) not-taken
+       @ "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb":388 in "block in emit_includes_preloads"
+  33: void ConcolicThroughLoadProbe.load_intermediate(sql: "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)")
+       @ "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb":363 in "block"
+  34: call ConcolicThroughLoadProbe.load_intermediate(sql: "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)") -> $SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_6: Int type [?] = $SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_6_rows
+       note "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+       @ "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb":363 in "block in emit_includes_preloads"
+  35: pc ($SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_not_found == true) not-taken
+       @ "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb":388 in "block in emit_includes_preloads"
+  36: pc "(len(SYM_RESULT_ActiveRecord__Relation_records_2_rows) != 0)" taken
+       @ "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb":783 in "each"
+  37: void ActionController::Metal#status=(arg: 200)
+       @ "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/rendering.rb":115 in "_process_options"
+  38: call ActionController::Metal#status=(arg: 200) -> $SYM_RESULT_ActionController__Metal_status__1: Int type opaque? = null
+       @ "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/rendering.rb":115 in "_process_options"
+  39: void ActionController::Rendering#_set_rendered_content_type(format: ~"application/json")
+       @ "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/abstract_controller/rendering.rb":29 in "render"
+  40: call ActionController::Rendering#_set_rendered_content_type(format: ~"application/json") -> $SYM_RESULT_ActionController__Rendering__set_rendered_content_type_1: Int type [?] = <opaque>
+       @ "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/abstract_controller/rendering.rb":29 in "render"
