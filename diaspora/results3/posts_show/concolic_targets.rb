@@ -59,109 +59,6 @@
 # would have run; a mock is a *crash-stopper* iff it returns nil/concrete/
 # render-marker to get past a wall that would otherwise raise.
 # ===========================================================================
-#
-# ===========================================================================
-# results3/posts_show MOCK LEDGER (discipline rebuild, see ../README.md +
-# ../PHASE_A_PATCH.md + ../../results2/MOCK_AUDIT.md). Ported from
-# results2/posts_show's private copy (which already carries the
-# PostsShowFinderNaming call-site naming layer, kept fully intact below —
-# see targets.rb). Nothing in sections A-I / #1-#11 is touched beyond Phase A
-# note-fidelity: (a) PHASE_A_PATCH.md Patch 1 (SingularAssociation#find_target
-# real SQL), Patch 2 (class-level finder real WHERE via class_finder_sql),
-# Patch 3 (User#blocks real SQL) all APPLIED below. Patch 1b (polymorphic
-# BelongsToPolymorphicAssociation) does not apply — this endpoint's
-# targets.rb declares no such override. Patch 4 (CollectionProxy) was
-# ALREADY present in results2/posts_show/targets.rb (the origin of that
-# pattern per PHASE_A_PATCH.md's applicability table) — unchanged.
-#
-# REMOVED (violates (b) — the real body reaches SQL/another target):
-#
-#   - Section Z (render / render_to_string / render_to_body terminal
-#     markers) + Y2 (ImplicitRender#default_render). PostsController#show's
-#     `format.html` branch explicitly calls `render locals: {post:
-#     presenter}` (app/controllers/posts_controller.rb:28) — the entire
-#     point of this rerun (mission item 1: "the post page renders for
-#     real"). REMOVED so `ActionController::Rendering#render`/
-#     `#render_to_string`/`#render_to_body` run for real; the runner
-#     (run_dse.rb) wires the response object + action_name that
-#     `dispatch`/`process` would normally set (test-harness plumbing, not a
-#     mock — see that file's header).
-#   - `Post.singleton_class.blocked_people` (Gate-1b split, post.rb:105,
-#     `user.blocks.map{|b| b.person_id}`). MOCK_AUDIT: real body calls
-#     `user.blocks`, itself a separately-declared (now note-fixed, Patch 3)
-#     target, so the outer mock was hiding that target's note along this
-#     call path. REMOVED — but verified DEAD on posts_show specifically:
-#     `Post.excluding_blocks`/`excluding_hidden_content` (post.rb:89-118,
-#     the only callers of `blocked_people`) are reached from
-#     `EvilQuery::MultiStream#followed_tags_posts!` (the STREAMS batch, evil_
-#     query.rb:70) — NOT from `EvilQuery::VisibleShareableById#post!`, the
-#     only EvilQuery class posts#show's `find!`/`find_public!` path uses
-#     (post_service.rb:19-22, evil_query.rb:95-122). Grepped across
-#     app/+lib/: `excluding_blocks`/`blocked_people` have exactly one call
-#     site each, both in post.rb itself, both outside posts_show's real
-#     call graph. Removed for discipline-consistency with Patch 3's own
-#     note (PHASE_A_PATCH.md Patch 3 "Note for results3"), not because it
-#     changes any dump.
-#   - X1 (`PostService#mark_user_notifications` -> nil). MOCK_AUDIT: real
-#     body chains 4 queries (`Notification.where(...).update_all`,
-#     `Mention.where(...).ids`, a joined `mentions_in_comments_for_post`
-#     query, and a `.pluck(:id)` on it), none of which posts_controller
-#     branches on (its return value is discarded) — but the QUERIES
-#     themselves were being hidden. REMOVED so `mark_user_notifications`,
-#     `mark_comment_reshare_like_notifications_read` and
-#     `mark_mention_notifications_read` all run for real; `.ids`/`.pluck`
-#     are already real per-endpoint targets (targets.rb §2, from
-#     results2), and `.update_all` is already a real shared design-#7
-#     target — nothing new to mock. targets.rb's `IterableSymbolicList`
-#     gains a `#concat` method (not previously needed) because
-#     `mark_mention_notifications_read` does
-#     `mention_ids.concat(mentions_in_comments_for_post(post_id).pluck(:id))`
-#     — Array#concat mutates in place; `SymbolicList#concat` was an
-#     unconditional-raise stub (list.rb LIST_STUBS) before this rerun.
-#   - `Diaspora::Mentionable.people_from_string` (X6f, shared -> `[]`).
-#     MOCK_AUDIT: real body's `find_or_fetch_person_by_identifier` ->
-#     `Person.find_or_fetch_by_identifier` is a REAL local lookup
-#     (`find_by(diaspora_handle: ...)`, already a declared, Patch-2-fixed
-#     target) that on a miss reaches federation discovery I/O. REMOVED so
-#     the real body runs (mission item 4); targets.rb supplies (a) a TEXT
-#     IDENTITY SHIM (`msg_text.to_s.scan(REGEX)` — `scan` is UNSUPPORTED on
-#     SymbolicString by design — pinning `text` to a concrete witness driven
-#     by a seeded boolean, same technique as results3/comments_index's §4,
-#     itself ported from results3/notifications_index's §5g/§5h) and (b) a
-#     network-I/O wall on `DiasporaFederation::Discovery::Discovery
-#     #fetch_and_save` (network never fires — coordinator directive), plus
-#     a `PostsMentionLookupNaming` call-site-stable naming layer (this
-#     endpoint's `PostPresenter#build_text`/`#build_mentioned_people_json`
-#     are TWO independent call sites into the same lookup, exactly
-#     comments_index's `CommentsMentionLookupNaming` problem — ported).
-#
-# NOT removed (deliberate, documented deferrals):
-#
-#   - `ActsAsApi::Collection#as_api_response` (X3) — MOCK_AUDIT's 2nd-
-#     biggest violation, explicitly named in the task brief as optional
-#     ("take it if proportionate, defer documented if it explodes"). KEPT,
-#     matching results3/people_show + results3/people_stream's precedent
-#     (both deferred it too; only results3/comments_index descended it,
-#     where it was that endpoint's single-model win condition). posts_show
-#     calls `.as_api_response` on SEVEN distinct receivers across SIX
-#     different models (Person via author, Photo, Like, Reshare,
-#     OEmbedCache, OpenGraphCache, plus the Array-of-Person from
-#     mentioned_people and Relations from Like/ReshareService) —
-#     descending it here means auditing and wall-fixing six separate
-#     `api_accessible` templates, each its own potential deep-descent; out
-#     of proportion for this pass. `build_mentioned_people_json` (X6k,
-#     posts_show-local, was `-> []`) IS removed (targets.rb) so the now-
-#     real `mentioned_people` result flows INTO the still-mocked
-#     `as_api_response` boundary rather than being short-circuited before
-#     it — the people_from_string descent is genuine even though its
-#     result is then serialized by a mocked leaf.
-#   - `Person#name` (X6i) — MOCK_AUDIT: real body calls `self.profile`
-#     (a declared, note-fixed target). Carried-over violation, same scope
-#     decision as every other results3 endpoint that reaches it
-#     (comments_index, notifications_index) — narrowing it is disjoint work
-#     for a future pass, not part of either of this endpoint's two named
-#     descents (mark_user_notifications, people_from_string).
-# ===========================================================================
 
 module ConcolicTargets
   UNSUPPORTED = ->(op) {
@@ -185,8 +82,61 @@ module ConcolicTargets
 
   module_function
 
+  # Sentinel distinguishing "seeded with nil/false" from "not seeded at all".
+  SEED_MISS = Object.new.freeze
+
+  # ------------------------------------------------------------------
+  # NAME BOUNDARY (2026-09-14) — seed keys accept BOTH length spellings
+  # ------------------------------------------------------------------
+  #
+  # The runtimes used to mint a container's cardinality variable literally as
+  # `len(X)`, and every batch renamed it to `SYM_LEN_X` at load because
+  # `len(X)` is not a legal PYTHON identifier and `concolic_engine/solver.py`
+  # transports Z3 terms as Python source it `exec`/`eval`s. The runtimes now
+  # mint the solver-legal spelling directly (`SymbolicVar.len_var_name`), so
+  # the second dialect is gone going forward.
+  #
+  # But `seed_for` matches EXACTLY and falls back to `default` SILENTLY. Every
+  # seed file and every dump snapshot written before that change keys its
+  # length seeds `len(X)`, so without this shim a pre-change seed replayed
+  # under the new runtime would be quietly IGNORED — no error, no log, just an
+  # inert knob and a flip that "did not take". That is the same silent-miss
+  # failure the rename was made to end, so both spellings are accepted here.
+  # The asked-for spelling always wins; the sibling is only consulted on a
+  # miss. See reports/diaspora/docs/NAME_BOUNDARY_PLAN_20260914.md.
+  LEGACY_LEN_RE  = /\Alen\((.+)\)\z/.freeze
+  SYM_LEN_PREFIX = "SYM_LEN_"
+
+  # True when `var_name` names a container's cardinality, in either spelling.
+  def length_var?(var_name)
+    s = var_name.to_s
+    s.start_with?(SYM_LEN_PREFIX) || !LEGACY_LEN_RE.match(s).nil?
+  end
+
+  # Every spelling a seed dict might key `var_name` by, asked-for form FIRST.
+  def seed_aliases(var_name)
+    s = var_name.to_s
+    m = LEGACY_LEN_RE.match(s)
+    if m
+      [var_name, "#{SYM_LEN_PREFIX}#{m[1]}"]
+    elsif s.start_with?(SYM_LEN_PREFIX)
+      [var_name, "len(#{s[SYM_LEN_PREFIX.length..-1]})"]
+    else
+      [var_name]
+    end
+  end
+
+  # The seed override for `var_name` under any accepted spelling, or the
+  # sentinel `miss` when none is present.
+  def seed_lookup(var_name, miss)
+    ov = ConcolicTargets.seed_overrides
+    seed_aliases(var_name).each { |k| return ov[k] if ov.key?(k) }
+    miss
+  end
+
   def seed_for(var_name, default)
-    ConcolicTargets.seed_overrides.fetch(var_name, default)
+    v = seed_lookup(var_name, SEED_MISS)
+    v.equal?(SEED_MISS) ? default : v
   end
 
   # ---------------------------------------------------------------------
@@ -206,7 +156,9 @@ module ConcolicTargets
   # render SQL with symbolic binds shown as $$(SYMNAME) — readable, and each
   # $$(...) resolves back to the producing query via the var's note.
   def sql_for(receiver, args)
-    return class_finder_sql(receiver, args) if receiver.is_a?(Class)
+    if receiver.is_a?(Class)
+      return "#{receiver.name} query (class-level finder), args=#{render_args(args)}"
+    end
     render_relation_sql(receiver)
   rescue Exception => e # rubocop:disable Lint/RescueException
     # Never let note-rendering crash a mock. NotImplementedError < ScriptError
@@ -224,6 +176,34 @@ module ConcolicTargets
     args.is_a?(Hash) ? args.map { |k, v| "#{k}=#{render_arg_value(v)}" }.join(", ") : args.inspect
   end
 
+  # 2026-09-04 (people_show adversarial repair R1, P-1): SQL-shaped note for
+  # the unconditional instance-write targets (update_column/update_columns).
+  # The interceptor's call_args is a {param_name => value} hash built from
+  # the ORIGINAL method's parameters — for AR 5.2 update_column that is
+  # {column_name:, value:}; for update_columns it is {attributes: {…}}.
+  # Renders UPDATE "<t>" SET "<col>" = <val> WHERE "<t>"."<pk>" = <pkval>
+  # so the judge's _is_dml filter keeps it (writes are now witnessable).
+  def dml_update_note(receiver, args)
+    table = receiver.class.respond_to?(:table_name) ? receiver.class.table_name : receiver.class.name
+    pk = receiver.class.respond_to?(:primary_key) ? receiver.class.primary_key : "id"
+    pkv = begin
+      receiver.respond_to?(pk) ? receiver.send(pk) : nil
+    rescue StandardError
+      nil
+    end
+    sets = if (attrs = args["attributes"]).is_a?(Hash) && !attrs.empty?
+             attrs.map { |k, v| %("#{table}"."#{k}" = #{render_arg_value(v)}) }.join(", ")
+           elsif (col = args["column_name"])
+             %("#{table}"."#{col}" = #{render_arg_value(args["value"])})
+           else
+             "(unknown columns)"
+           end
+    %(UPDATE "#{table}" SET #{sets} WHERE "#{table}"."#{pk}" = #{render_arg_value(pkv)})
+  rescue StandardError => e
+    "#{receiver.class.name} instance write (note render failed: #{e.class})"
+  end
+
+
   def render_arg_value(v)
     if v.respond_to?(:sym_name) && v.sym_name
       "$$(#{v.sym_name})"
@@ -234,43 +214,6 @@ module ConcolicTargets
     end
   end
 
-  # Phase A (MOCK_FIDELITY, results3/PHASE_A_PATCH.md Patch 2): render REAL
-  # SQL for class-level finders (Model.find(id), Model.find_by(...), dynamic
-  # finders) instead of the useless "args=..." string every such note used to
-  # print. KNOWN, UNFIXABLE-HERE GAP (call_interceptor.rb's *rest-name param
-  # binding drops kwargs-style find_by calls — see PHASE_A_PATCH.md Patch 2):
-  # when no usable WHERE data survives, say so honestly instead of a blank
-  # args=nil that looks like real information.
-  def class_finder_sql(klass, args)
-    table = klass.respond_to?(:table_name) ? klass.table_name : klass.name
-    where_hash = extract_finder_where(klass, args)
-    if where_hash && !where_hash.empty?
-      conditions = where_hash.map { |k, v| %("#{table}"."#{k}" = #{render_arg_value(v)}) }.join(" AND ")
-      %(SELECT "#{table}".* FROM "#{table}" WHERE #{conditions})
-    else
-      "#{klass.name} query (class-level finder; WHERE unavailable -- interceptor " \
-      "drops kwargs for *rest-signature finder methods called with keyword " \
-      "syntax, see call_interceptor.rb param binding), args=#{render_args(args)}"
-    end
-  end
-
-  # Best-effort recovery of a {column => value} condition hash from whatever
-  # declare_target's param-binding actually captured. Returns nil (never {})
-  # when nothing usable was found, so the caller can render the honest
-  # fallback rather than claiming an (empty) WHERE.
-  def extract_finder_where(klass, args)
-    return nil unless args.is_a?(Hash)
-    args.each_value do |v|
-      return v.map { |k, vv| [k.to_s, vv] }.to_h if v.is_a?(Hash) && !v.empty?
-    end
-    pk = klass.respond_to?(:primary_key) ? klass.primary_key : "id"
-    args.each_value do |v|
-      next if v.nil?
-      return { pk => v }
-    end
-    nil
-  end
-
   # Render a Relation's SQL with symbolic bind values substituted as
   # $$(SYMNAME). Uses Arel's SQLString collector to get `?` placeholders
   # (never calling quote on a symbolic value), then substitutes each `?` in
@@ -278,7 +221,7 @@ module ConcolicTargets
   def render_relation_sql(rel)
     return "#{rel.class.name} (no arel)" unless rel.respond_to?(:arel) && rel.arel
 
-    visitor = ConcolicSymbolicToSql.new(rel.connection) # results3 bug-2b fix (file footer)
+    visitor = Arel::Visitors::ToSql.new(rel.connection)
     collector = Arel::Collectors::SQLString.new
     sql = visitor.accept(rel.arel.ast, collector).value
 
@@ -302,14 +245,7 @@ module ConcolicTargets
       return
     end
     if defined?(Arel::Nodes::Casted) && node.is_a?(Arel::Nodes::Casted)
-      # results3 bug-2b fix (2026-08-19, ../BUGFIXES_20260819.md): arel-9
-      # Casted has #val, not #value -- the old `out << node.value` raised
-      # NoMethodError HERE, losing the whole note to sql_for's rescue
-      # fallback for any relation carrying a Casted (association scopes with
-      # symbolic owner keys). And Casted renders INLINE via #quoted (never as
-      # a `?` placeholder), so it must not join the `?`-substitution list at
-      # all -- appending would misalign every later bind. Inline rendering of
-      # symbolic values is handled by ConcolicSymbolicToSql (file footer).
+      out << node.value
       return
     end
     # Recurse into any object ivar that itself looks like an Arel node tree.
@@ -456,7 +392,20 @@ module ConcolicTargets
     obj.instance_variable_set(:@_start_transaction_state, {})
     obj.instance_variable_set(:@start_transaction_state, {})
     obj.instance_variable_set(:@_trigger_transaction_callback, false)
-    obj.instance_variable_set(:@new_record, true)
+    # 2026-09-04 (people_show adversarial repair R1, P-9): symbolic instances
+    # model DB-LOADED records (every one is minted by a finder/association
+    # mock standing in for a SELECT), so @new_record must be FALSE.
+    # With true, CollectionAssociation#null_scope? (owner.new_record? &&
+    # !foreign_key_present?) short-circuits every has_many association on a
+    # symbolic owner to a NullRelation: `profile.tags` scope is `.none!`
+    # (where!("1=0").extending!(NullRelation)), so `tags.pluck(:name)`
+    # dispatches to NullRelation#pluck -> [] and NEVER reaches the declared
+    # ActiveRecord::Calculations#pluck target — the tags statement was being
+    # minted under CollectionProxy.records instead (adversary P-9). With
+    # new_record? == false the association scope is a real Relation and the
+    # declared pluck/records/count/exists? targets fire under their real
+    # frames (verified probe: Calculations.pluck note now minted).
+    obj.instance_variable_set(:@new_record, false)
     obj.instance_variable_set(:@destroyed, false)
     obj.instance_variable_set(:@readonly, false)
     obj
@@ -464,30 +413,6 @@ module ConcolicTargets
 
   def default_int(col)
     col == "id" ? 1 : 0
-  end
-
-  # results3 NEW: ConcreteSymbolicString (ported from results3/
-  # notifications_index's X6i comment). A bare Ruby String returned from a
-  # declare_target mock is NOT exempt from the interceptor's `to_symbolic`
-  # return-value wrapping (only `nil` and already-SymbolicVar-tagged values
-  # are) — so a "concrete" mock string silently gets RE-WRAPPED into a
-  # SymbolicString, and any real string op downstream (scrub/gsub/encoding —
-  # e.g. Rails' own HTML-escaping path) hits the deliberately-unsupported-op
-  # list. A real ::String subclass that also includes SymbolicVar behaves
-  # like a native string for every op while still being recognized by the
-  # interceptor as already-symbolic (skip re-wrap).
-  unless defined?(ConcreteSymbolicString)
-    ::Object.const_set(:ConcreteSymbolicString, Class.new(::String) do
-      include SymbolicVar
-      attr_reader :note
-
-      def self.build(str, name:, note:)
-        s = new(str)
-        s.instance_variable_set(:@sym_name, name)
-        s.instance_variable_set(:@note, note)
-        s
-      end
-    end)
   end
 
   # Shared single-record finder mock. raise_on_missing: true  -> find/!-style
@@ -499,6 +424,23 @@ module ConcolicTargets
       not_found = symbool(nf_name, seed_for(nf_name, false), note: sql)
       if not_found == true # explicit compare — bare truthiness records no PC (TODO.txt)
         raise ActiveRecord::RecordNotFound, "concolic: empty result for: #{sql}" if raise_on_missing
+        # B-8 HARVEST APPLIED BATCH-LOCALLY (posts_show, 2026-09-10). The finder
+        # ISSUED its statement and got no row — `nil` cannot carry the note
+        # (CallInterceptor.extract_note takes it from the RETURNED value), so
+        # publish it out of band on the channel the interceptor reads once
+        # (call_interceptor.rb:243-250). Without this the statement vanishes
+        # from the corpus and therefore from the extracted policy. Measured on
+        # this batch's corpus (stride-40 scan of the 96 365-dump snapshot):
+        # 100 % of noteless finder events have result_value nil and 100 % of
+        # noted ones return a record — the documented B-8 case exactly.
+        # This one repair covers EVERY finder on this endpoint: `find_by`,
+        # `find`, `find_by!` and the batch's own `evilq_<ctx>_<attempt>` and
+        # `findpublic_<ctx>` aliases all take `ct.finder_mock` (targets.rb:796,
+        # :801). Identical to the repair notifications_index, comments_index
+        # and people_stream already carry. The SHARED file
+        # reports/diaspora/concolic_targets.rb still lacks it — RAISED, not
+        # edited here (DISCIPLINE Rule T3).
+        Thread.current[:concolic_pending_note] = sql
         nil # PC already recorded at this boundary; app branches concretely+consistently
       else
         symbolic_instance(model_class(receiver), name, sql)
@@ -513,6 +455,34 @@ module ConcolicTargets
   # ---------------------------------------------------------------------
 
   def install!(interceptor = CallInterceptor.instance)
+    # ---- posts_show DESCENTS (Rule T re-sync, 2026-09-09) -----------------
+    # VERBATIM copy of the shared boundary reports/diaspora/concolic_targets.rb
+    # so it diffs against upstream and inherits the P-1/P-2/P-9/P-10 repairs.
+    # The six targets this batch DESCENDS (run_dse.rb header: the app runs them
+    # for real) are removed by FILTERING THE DECLARATION rather than editing
+    # declaration sites — a structural edit is how this file fell 4 repairs
+    # behind the boundary in the first place.
+    #
+    # NOTE: `ActiveRecord::Base#to_param` was declared in this batch's OLD
+    # copy and in NO other batch and NOT in the shared file. Adjudicated
+    # 2026-09-09: it is a WALL MOCK, not policy-bearing — Rails 5.2's body is
+    # literally `id && id.to_s` (activerecord integration.rb:49-52), it issues
+    # no SQL, and `persisted?` is not a declared target anywhere, so it
+    # forecloses nothing. It exists only because SymbolicInt#to_s is
+    # unsupported by design. It therefore belongs in this batch's targets.rb,
+    # NOT in the shared boundary — see targets.rb "W3b to_param".
+    _descend = %i[default_render pluck blocked_people
+                  render render_to_string render_to_body
+                  people_from_string build_mentioned_people_json
+                  mark_user_notifications]
+    unless interceptor.singleton_class.method_defined?(:__descend_filter__)
+      interceptor.define_singleton_method(:__descend_filter__) { true }
+      _orig_declare = interceptor.method(:declare_target)
+      interceptor.define_singleton_method(:declare_target) do |klass, method, **kw|
+        next nil if _descend.include?(method)
+        _orig_declare.call(klass, method, **kw)
+      end
+    end
     # Some mocked targets live in controllers / lib classes that load lazily
     # (e.g. StreamsController#decorated_stream_posts). Eager-load JUST those
     # files (not the whole app — full Rails.application.eager_load! crashes on
@@ -605,7 +575,23 @@ module ConcolicTargets
     }.each do |m, (mod, seed)|
       interceptor.declare_target(mod, m, returns: lambda do |receiver, args, name|
         vn = "#{name}_#{m.to_s.delete('?')}"
-        symbool(vn, seed_for(vn, seed), note: sql_for(receiver, args))
+        note = sql_for(receiver, args)
+        # 2026-09-04 (people_show adversarial repair R1, P-2, matrix T-a):
+        # FinderMethods#exists? stands in for the existence probe
+        # `SELECT 1 AS one FROM <t> WHERE <col> = ? LIMIT ?` — never
+        # `SELECT t.*` (T4). Render the probe shape so the note is faithful
+        # even though the judge would accept the t.* form (projection {} ⊆
+        # {"*"}). sql_for on the relation gives `SELECT t.* …`; rewrite the
+        # projection and append LIMIT 1 (the judge ignores LIMIT, T4 wants it).
+        if m == :exists?
+          begin
+            note = note.sub(/\ASELECT\s+(DISTINCT\s+)?.*?\s+FROM /m, "SELECT 1 AS one FROM ")
+            note = "#{note} LIMIT 1" unless note =~ /LIMIT\s+\?/i
+          rescue StandardError
+            nil
+          end
+        end
+        symbool(vn, seed_for(vn, seed), note: note)
       end)
     end
 
@@ -618,7 +604,7 @@ module ConcolicTargets
       interceptor.declare_target(rel, m, returns: lambda do |receiver, args, name|
         vn = "#{name}_rows"
         rep = symbolic_instance(model_class(receiver), "#{name}_row", sql_for(receiver, args))
-        SymbolicList.new(seed_for("len(#{vn})", 1), name: vn,
+        SymbolicList.new(seed_for(SymbolicVar.len_var_name(vn), 1), name: vn,
                        note: sql_for(receiver, args), representative: rep)
       end)
     end
@@ -659,7 +645,63 @@ module ConcolicTargets
         symint(vn, seed_for(vn, m == :count ? 1 : 0), note: note)
       end)
     end
-    %i[pluck ids average minimum maximum calculate].each do |m|
+    # --- [ DESIGN #5b ] D2. Calculations#pluck -> IterableSymbolicList -------
+    # 2026-09-04 (people_show adversarial repair R1, P-9, matrix T-ag): pluck
+    # was declared UNSUPPORTED, so the `ProfilePresenter tags.pluck(:name)`
+    # statement (fires on EVERY show) was minted under CollectionProxy.records
+    # instead — the pluck frame carried zero notes and mock_note_check scored
+    # NOTE-MISSING on every run incl. the anon control. pluck IS the query
+    # boundary (same role as records/to_a — see results2/conversations_index
+    # targets.rb §1b and results3/people_show targets.rb for the identical
+    # descent), so the shared boundary now declares it as a real design mock:
+    # length-only IterableSymbolicList with a per-column representative, and a
+    # SQL note carrying the projection (SELECT "t"."col1", "t"."col2" …)
+    # instead of SELECT t.* — matches the real pluck statements.
+    # The pluck column list is recovered via the PluckArgs-style prepend each
+    # batch already installs (PeopleShowPluckArgs / conversations PluckArgs);
+    # if no column was captured, fall back to "*"-shaped note + one value rep.
+    if calc.method_defined?(:pluck)
+      interceptor.declare_target(calc, :pluck, returns: lambda do |receiver, args, name|
+        vn   = "#{name}_plucked"
+        cols = (Thread.current[:people_show_pluck_cols] ||
+                Thread.current[:conversations_pluck_cols] ||
+                []).map(&:to_s)
+        note = sql_for(receiver, args)
+        begin
+          unless cols.empty?
+            tbl = (receiver.respond_to?(:table_name) && receiver.table_name) ||
+                  (receiver.respond_to?(:klass) && receiver.klass.table_name)
+            proj = cols.map { |c| %("#{tbl}"."#{c.split('.').last}") }.join(", ")
+            note = note.sub(/\ASELECT\s+(DISTINCT\s+)?.*?\s+FROM /m, "SELECT #{proj} FROM ")
+          end
+        rescue StandardError
+          nil # projection rewrite must never crash the mock
+        end
+        cols = ["value"] if cols.empty?
+        vals = cols.each_with_index.map do |c, i|
+          var = cols.size == 1 ? "#{name}_pluck_#{c.split('.').last}" : "#{name}_pluck#{i}_#{c.split('.').last}"
+          # self-contained column symboliser (root has no PeopleTargets.
+          # sym_for_column — each batch's copy may reuse its own). Type comes
+          # from the relation klass's columns_hash; untyped -> string.
+          begin
+            klass = model_class(receiver)
+            bare  = c.to_s.split('.').last.to_s
+            type  = klass.respond_to?(:columns_hash) ? klass.columns_hash[bare]&.type : nil
+          rescue StandardError
+            type = nil
+          end
+          case type
+          when :integer, :bigint, :float, :decimal then symint(var, seed_for(var, 1),  note: note)
+          when :boolean                           then symbool(var, seed_for(var, false), note: note)
+          else                                         symstr(var, seed_for(var, "sym_#{bare}"), note: note)
+          end
+        end
+        rep = cols.size == 1 ? vals.first : vals
+        IterableSymbolicList.new(seed_for(SymbolicVar.len_var_name(vn), 1), name: vn,
+                                 note: note, representative: rep)
+      end)
+    end
+    %i[ids average minimum maximum calculate].each do |m|
       interceptor.declare_target(calc, m, returns: ->(_r, _a, _n) { UNSUPPORTED.call("Calculations##{m}") })
     end
 
@@ -703,6 +745,34 @@ module ConcolicTargets
       end)
     end
 
+    # --- [ DESIGN #8b ] F2. Unconditional instance writes -> SQL DML notes ---
+    # 2026-09-04 (people_show adversarial repair R1, P-1, matrix T-af): the
+    # write family was declared but its notes were non-SQL strings
+    # ("Model#save args=..."), so `_is_dml` in both judges DROPPED every
+    # write note — no symbolic_call could carry an UPDATE, and a real
+    # `UPDATE "notifications" SET "unread" = ? WHERE id = ?` (from
+    # Notification#set_read_state -> ActiveRecord::Persistence#update_column)
+    # scored NOTE-MISSING on every signed-in run.
+    #
+    # update_column/update_columns are UNCONDITIONAL writes (no dirty-state
+    # gate — the write fires even when the value is unchanged), so a plain
+    # UPDATE note is exact for them. The dirty-gated members (save/update/
+    # touch/update_attribute) KEEP their legacy notes here; the dirty-state
+    # write modeling (both polarities + negative row) is the conversations_index
+    # copy's local responsibility (C-5/C-14 closed), and this shared root is
+    # never loaded by a batch runner (each batch carries a private copy).
+    # Rendering: UPDATE "<table>" SET "<col>" = <val> WHERE "<table>""."<pk>" = <pkval>
+    # — matches the judge's normalization (DML shapes compare on WHERE
+    # predicate columns; SET rendering is not part of the shape).
+    %i[update_column update_columns].each do |m|
+      next unless base.instance_methods.include?(m) ||
+                  base.private_instance_methods.include?(m) ||
+                  base.protected_instance_methods.include?(m)
+      interceptor.declare_target(base, m, returns: lambda do |receiver, args, name|
+        symbool("#{name}_#{m}_ok", true, note: dml_update_note(receiver, args))
+      end)
+    end
+
     # --- [ DESIGN #9 ] G. Raw SQL entry points ------------------------------
     querying = ActiveRecord::Querying
     interceptor.declare_target(querying, :find_by_sql, returns: lambda do |receiver, args, name|
@@ -737,31 +807,23 @@ module ConcolicTargets
     # and let the each/where cascade surface honestly as a documented limit.
     # user.blocks -> SymbolicList of Block reps (design rows 1-3 association).
     # Declared so any direct `user.blocks` read yields rep-carrying rows too.
-    # Phase A (MOCK_FIDELITY, PHASE_A_PATCH.md Patch 3): render the real SQL
-    # this stands in for (Block belongs_to :user, default FK "user_id")
-    # instead of the junk "User#blocks" note.
     interceptor.declare_target(User, :blocks, returns: lambda do |receiver, args, name|
-      sql = begin
-        owner_id = receiver.respond_to?(:[]) ? receiver[:id] : receiver.id
-        %(SELECT "blocks".* FROM "blocks" WHERE "blocks"."user_id" = #{render_arg_value(owner_id)})
-      rescue StandardError
-        "User#blocks"
-      end
-      rep = symbolic_instance(Block, "#{name}_block", sql)
-      symlist(name, 1, representative: rep, note: sql)
+      rep = symbolic_instance(Block, "#{name}_block", "User#blocks")
+      symlist(name, 1, representative: rep, note: "User#blocks")
     end)
 
-    # Post.blocked_people REMOVED for results3 (MOCK_AUDIT.md: VIOLATION —
-    # real body is `user.blocks.map{|b| b.person_id}`, a pure SQL-free
-    # transform over the now-correctly-noted User#blocks mock immediately
-    # above; the extra outer mock prevented that sibling's real SQL note
-    # from ever firing along this call path, and results3's rule (b) forbids
-    # mocking over a body that calls another declared target). Left
-    # undeclared so `blocked_people` runs for real. Verified DEAD on
-    # posts_show specifically (PostsController#show never calls
-    # Post.excluding_blocks/for_a_stream — that's streams territory) —
-    # kept removed anyway for cross-endpoint discipline consistency, same
-    # treatment MOCK_AUDIT.md gives SingularAssociation#writer.
+    # Post.blocked_people (Gate 1b split): the SQL-free `user.blocks.map{|b|
+    # b.person_id}` extracted from Post.excluding_blocks. Its result feeds the
+    # `if people.any? ... where("posts.author_id NOT IN (?)", people)` branch in
+    # excluding_blocks. The mock returns a CONCRETE EMPTY array `[]` so that
+    # `people.any?` is false and the NOT-IN SQL branch is SKIPPED entirely
+    # (representative user has no blocked people). Returning a non-empty list
+    # ([1]) or a SymbolicList makes Arel try to quote it during bind-var
+    # sanitisation, which crashes on SymbolicList#map. The SQL itself stays in
+    # excluding_blocks (never mocked).
+    interceptor.declare_target(Post.singleton_class, :blocked_people, returns: lambda do |_r, _a, _name|
+      []
+    end)
 
     # Rows 4-5: Stream::Aspect#aspect_ids -> aspects.map(&:id). Pure transform.
     # Returns a CONCRETE array [1] so that when the result feeds a `where(...
@@ -889,13 +951,17 @@ module ConcolicTargets
       interceptor.declare_target(ActionController::Metal, :status=, returns: ->(_r, _a, _n) { nil })
     end
 
-    # Y2. REMOVED for results3 (see file-header MOCK LEDGER) —
-    # `ActionController::ImplicitRender#default_render` real body just calls
-    # `render` (Z's target, also removed below). PostsController#show's
-    # `format.html`/`format.mobile` branches fall through to this for their
-    # implicit render. Left undeclared so the real default_render -> render
-    # chain runs; run_dse.rb wires the response/action_name plumbing that
-    # `dispatch`/`process` would normally set.
+    # Y2. Implicit render (UnknownFormat, 14 crashes). An action that runs its
+    # logic and falls through with NO explicit `render`/`redirect_to` calls
+    # hits default_render -> template lookup -> UnknownFormat. Render is
+    # terminal (decision A); these actions have completed their concolic
+    # logic, so the missing-template raise is an artifact. Make implicit render
+    # a terminal marker, mirroring the explicit-render boundary.
+    # (default_render lives on ActionController::ImplicitRender, included into
+    # Metal; explicit `render` is already handled in section Z.)
+    if defined?(ActionController::ImplicitRender)
+      interceptor.declare_target(ActionController::ImplicitRender, :default_render, returns: ->(_r, _a, _n) { :render_reached })
+    end
 
     # Y3. redirect_to / url_for — engine/Devise routes are not loaded in the
     # ActionController::TestCase rig, so url generation raises
@@ -919,15 +985,34 @@ module ConcolicTargets
       interceptor.declare_target(DeviseController, :assert_is_devise_resource!, returns: ->(_r, _a, _n) { true })
     end
 
-    # --- Z. REMOVED for results3 (see file-header MOCK LEDGER) ---
-    # `ActionController::Rendering#render`/`#render_to_string`/
-    # `#render_to_body` are exactly the SQL-adjacent chain this endpoint's
-    # rebuild exists to let run for real (mission item 1: "the post page
-    # renders for real"). Left undeclared; the real render pipeline runs and
-    # any walls it hits are closed at genuine SQL-free leaves in targets.rb
-    # instead (per (b): mock the leaf, never the render call that encloses
-    # the query chain). `respond_with` is still not declared — not present
-    # in this Action Pack.
+    # --- [ CRASH-STOP (agent) ] Z. Render boundary — render is TERMINAL ---
+    # Treat reaching a render call as the completion signal and short-circuit
+    # the real view/serialization machinery, which crashes on symbolic data
+    # (template lookup, presenter each/map over SymbolicLists, status= on nil
+    # @_response -> devise inspect -> serializable_hash -> to_hash/[] for nil).
+    # Concolic value lives in controller/service/model logic, not templates =>
+    # sound, and honest (the render call event is the completion marker;
+    # reports say "reached render", not "rendered a page").
+    # See DESIGN_render_boundary.md. All runners call install! => applies to all.
+    # Note: respond_with is deliberately NOT declared — it's not present in this
+    # Action Pack and render covers the terminal render path.
+    render_mod = ActionController::Rendering
+    {
+      render:              :render_reached,
+      render_to_string:    :render_to_string_reached,
+      render_to_body:      :render_to_body_reached,
+    }.each do |m, marker|
+      interceptor.declare_target(render_mod, m, returns: lambda do |receiver, args, name|
+        # Guard against nil @_response for controllers that set status/headers
+        # before/after render. (render's own _process_options is never reached
+        # because we skip the body.)
+        unless receiver.instance_variable_get(:@_response)
+          reply = receiver.respond_to?(:reply) ? receiver.reply : nil
+          receiver.instance_variable_set(:@_response, reply) if reply
+        end
+        marker # Symbol passes through the interceptor unchanged (not wrapped)
+      end)
+    end
 
     # --- [ CRASH-STOP (agent) ] W. Crash-free walls round 2 ---
     # These close the biggest remaining families. See STATUS.md inventory.
@@ -977,11 +1062,15 @@ module ConcolicTargets
             refl = receiver.reflection
             klass = refl.klass
             if klass && klass.respond_to?(:allocate)
-              # Phase A (MOCK_FIDELITY, PHASE_A_PATCH.md Patch 1): render the
-              # real SQL find_target stands in for, instead of the junk
-              # "SingularAssociation#name" note. belongs_to: FK on the OWNER,
-              # target queried by its own PK. has_one: FK on the TARGET,
-              # queried by the owner's PK. Never let note-building crash.
+              # 2026-09-04 (people_show adversarial repair R1, P-10, matrix
+              # T-ah): render the real SQL find_target stands in for, derived
+              # from the association reflection (target table + FK + owner
+              # key), instead of the junk "SingularAssociation#<name>" note.
+              # belongs_to: FK col lives on the OWNER; target queried by its
+              # own primary key. has_one: FK col lives on the TARGET table,
+              # queried by the owner's primary key — the missing
+              # `people.owner_id = <user.id>` direction (User -> Person).
+              # Never let note-building crash the mock.
               sql = begin
                 owner = receiver.owner
                 table = klass.table_name
@@ -1038,21 +1127,6 @@ module ConcolicTargets
       end
     end
 
-    # W3b. results3 NEW (mission item 1 — real render needs URL helpers).
-    # `ActiveRecord::Integration#to_param` (real body `id && id.to_s`) is hit
-    # via `post_url @post`/`post_path` inside `PostPresenter#url` (metas
-    # render, on-path for the html format) and Journey's route generation.
-    # `SymbolicInt#to_s` is unsupported by design. Pure URL formatting, no
-    # SQL, no other target — textbook leaf. ConcreteSymbolicString-wrapped
-    # for the same re-wrap reason as X6i/X6l/X6h.
-    if ActiveRecord::Base.instance_methods.include?(:to_param)
-      interceptor.declare_target(ActiveRecord::Base, :to_param, returns: lambda do |receiver, _args, name|
-        id = receiver.respond_to?(:id) ? receiver.id : nil
-        v = id.respond_to?(:value) ? id.value.to_s : id.to_s
-        ConcreteSymbolicString.build(v, name: name, note: "ActiveRecord::Integration#to_param")
-      end)
-    end
-
     # W4. ActionController::Rendering#_set_rendered_content_type -> no-op.
     # photos_index respond_to hits `response.content_type = ...` where the
     # rig's @_response is nil (NoMethodError content_type for nil), before the
@@ -1067,15 +1141,32 @@ module ConcolicTargets
     # W5. Photo#url -> SymbolicString. PhotosController#make_profile_photo and
     # #show call photo.url(...) which string-concatenates (SymbolicString#+,
     # NotImplementedError). URL assembly is display-only; return a symstr.
-    if defined?(Photo) &&
+    # ---------------------------------------------------------------------
+    # DISABLED HERE, OWNED BY ./targets.rb W7 (2026-09-10 drive, §46.8).
+    #
+    # NOT a style choice — a MEASURED defect. Re-declaring an already-declared
+    # target does not merely override it: `CallInterceptor#declare_target`
+    # reads the parameter list off the CURRENT method, and after the first
+    # declaration that method is the interceptor's own
+    # `|*splat_args, **kwargs, &block|` wrapper. So the second declaration
+    # records its args under the wrapper's names, and any mock that reads an
+    # argument BY NAME silently gets `nil`:
+    #
+    #   boundary only  Anonymous.process args {"message": "hello world, a
+    #                     concolic message with no mentions", "options": null}
+    #   double-declared  Anonymous.process args {"splat_args": "hello world,
+    #                     a concolic message with no mentions", "kwargs": null}
+    #
+    # `Processor.process`'s mock reads `args["message"]`, so under the
+    # double declaration it returned `String(nil)` == "" and the rendered
+    # post description became EMPTY. Owning the declaration in exactly one
+    # place is the fix. Reported as a boundary-override trap that applies to
+    # EVERY batch that overrides a boundary target reading args by name.
+    # ---------------------------------------------------------------------
+    if false && defined?(Photo) &&
        (Photo.instance_methods.include?(:url) || Photo.private_instance_methods.include?(:url))
       interceptor.declare_target(Photo, :url, returns: lambda do |receiver, _args, name|
-        # results3 UPGRADE: this endpoint's PostPresenter#images (metas
-        # render, on-path for real now) feeds this string straight into
-        # Rails' own HTML-escaping (`tag_option` -> `#scrub`, unsupported on
-        # a raw SymbolicString by design). ConcreteSymbolicString for the
-        # same re-wrap reason as X6i/X6l/X6h/W3b — pure display leaf, no SQL.
-        ConcreteSymbolicString.build("/uploads/#{name}_thumb.jpg", name: "#{name}_url", note: "Photo#url")
+        symstr("#{name}_url", "/uploads/#{name}_thumb.jpg", note: "Photo#url")
       end)
     end
 
@@ -1124,18 +1215,14 @@ module ConcolicTargets
     # SQL on the enclosing path (find! -> EvilQuery, aspects_from_ids,
     # target.subscribers, persistence) still runs.
 
-    # X1. REMOVED for results3 (see file-header MOCK LEDGER; mission item 2).
-    # MOCK_AUDIT: real body chains 4 queries (Notification#update_all,
-    # Mention#ids, a joined mentions_in_comments_for_post query, a #pluck)
-    # none of which posts_controller branches on, but the queries themselves
-    # were hidden. Left undeclared: `mark_comment_reshare_like_notifications_
-    # read`'s `Notification.where(recipient_id: user.id, ...).update_all` is
-    # already a real design-#7 target (its symbolic-int where-clause renders
-    # via sql_for/$$() same as any other target arg — no to_i wall, that
-    # concern was stale); `mark_mention_notifications_read`'s `.ids`/`.pluck`
-    # are already real per-endpoint targets (targets.rb, ported from
-    # results2). `IterableSymbolicList#concat` was added in targets.rb for
-    # `mention_ids.concat(mentions_in_comments_for_post(post_id).pluck(:id))`.
+    # X1. PostService#mark_user_notifications -> nil. Clears the posts_show
+    # to_i wall: its body (Notification.where(recipient_id: user.id).update_all)
+    # feeds a symbolic int into a real where -> to_sql -> Arel quote -> to_i.
+    # Result is discarded by posts_controller; nil passes through unchanged.
+    if defined?(PostService)
+      interceptor.declare_target(PostService, :mark_user_notifications,
+                                 returns: ->(_r, _a, _n) { nil })
+    end
 
     # X6g. ActionController::Instrumentation#redirect_to -> terminal. Y3 mocks
     # ActionController::Redirecting#redirect_to, but a controller's #redirect_to
@@ -1247,17 +1334,17 @@ module ConcolicTargets
     # targets.rb). Keep the declare_target (the interceptor still must see the
     # call), inline the real body (calling receiver.gon from inside the mock
     # would re-enter the declared method — infinite recursion), no no-op stub.
-    # gon is pure JS-var accumulation (gon.post = presenter... is a
-    # method_missing set_variable into the stored request's hash — the real
-    # body keeps that channel working); nothing branchable, no SQL.
+    # gon is pure JS-var accumulation; nothing branchable, no SQL. (Note:
+    # `Gon.preloads` is NOT a real method in gon-6.3.2 — it routes through
+    # method_missing; see the X6b-preloads shim below.)
     if defined?(Gon::ControllerHelpers)
       interceptor.declare_target(Gon::ControllerHelpers, :gon,
                                  returns: lambda do |receiver, _args, _name|
         # Real body, gon-6.3.2 helpers.rb:29-37 (with the rig's RequestStore
         # guard the notifications batch verified).
-        req = receiver.respond_to?(:request) ? receiver.request : nil
+        req = receiver.request
         store = defined?(::RequestStore) ? ::RequestStore.store : nil
-        if store && req && req.respond_to?(:env) && req.respond_to?(:uuid)
+        if store && req.respond_to?(:env) && req.respond_to?(:uuid)
           cur = store[:gon]
           if cur.nil? || cur.id != req.uuid
             gr = ::Gon::Request.new(req.env)
@@ -1268,15 +1355,18 @@ module ConcolicTargets
         ::Gon
       end)
 
-      # X6b-preloads. `Gon.preloads` is NOT a real method in gon-6.3.2 (grep
-      # the vendored gem: zero `preloads` in lib/) — it routes through
+      # X6b-preloads. `Gon.preloads` (people_controller.rb:78/147,
+      # gon_helper.rb:5 gon_load_contact) is NOT a real method in gon-6.3.2
+      # (grep the vendored gem: zero `preloads` in lib/) — it routes through
       # Gon.method_missing -> get_variable -> current_gon.gon['preloads'],
       # which is nil unless something pre-seeds that key, and the real gon
       # body REBUILDS the stored request (fresh empty gon hash) on every id
-      # mismatch. Same remedy as notifications §gen2 (GonPreloadsShim):
-      # prepend a `preloads` accessor on the Gon singleton so
-      # `gon.preloads[...]` is a real mutable Hash channel, independent of
-      # RequestStore.
+      # mismatch. `nil[:person] = ...` would crash. Same remedy as
+      # notifications §gen2 (GonPreloadsShim): prepend a `preloads` accessor
+      # on the Gon singleton so `gon.preloads[...]` is a real mutable Hash
+      # channel, independent of RequestStore. The RHS of
+      # `gon.preloads[:person] = @presenter.as_json` still evaluates eagerly
+      # (presenter reads fire at action time — unchanged from the old stub).
       unless defined?(@gon_preloads_shim) && @gon_preloads_shim
         gon_preloads_shim = Module.new do
           def preloads
@@ -1325,27 +1415,69 @@ module ConcolicTargets
     end
 
     # X6f. Diaspora::Mentionable.people_from_string -> nil. posts_show's
-    # X6f. REMOVED for results3 (see file-header MOCK LEDGER; mission item 4).
-    # Real body (`msg_text.to_s.scan(REGEX)...map { find_or_fetch_person_by_
-    # identifier }`) is SQL-free scan/parse + a REAL local `Person.find_by
-    # (diaspora_handle:)` lookup (a declared, Patch-2-fixed target). Left
-    # undeclared; targets.rb supplies the text-identity shim (`text` pinned
-    # to a concrete witness by a seeded boolean, so `.scan` works) + the
-    # network-I/O wall on `fetch_and_save` + `PostsMentionLookupNaming`.
+    # mention scan: mentioned_people (unpersisted branch, mentions_container.rb
+    # :21) -> people_from_string -> text.scan(REGEX) on a SymbolicString (scan
+    # wall). Pure string scan/parse, no SQL. Mocking to nil makes the mention
+    # list empty (representative post mentions nobody) — the caller
+    # (filter_mentions / message renderer) handles an empty array.
+    if defined?(Diaspora::Mentionable) && Diaspora::Mentionable.respond_to?(:people_from_string)
+      interceptor.declare_target(Diaspora::Mentionable.singleton_class, :people_from_string,
+                                 returns: ->(_r, _a, _n) { [] })
+    end
 
-    # X6i. Person#name — DELIBERATELY KEPT (see file-header MOCK LEDGER "NOT
-    # removed"): real body calls `self.profile` (a declared, Patch-1-fixed
-    # target) — a carried-over MOCK_AUDIT violation, same scope decision as
-    # every other results3 endpoint that reaches it. Upgraded to
-    # ConcreteSymbolicString (Phase A note-fidelity: a bare String return
-    # gets silently re-wrapped into a SymbolicString by the interceptor,
-    # crashing on the next real string op downstream — see class def above).
-    if defined?(Person) && Person.instance_methods.include?(:name)
+    # X6i. Person#name -> concrete string. posts_show's remaining author-render
+    # wall: acts_as_api `t.add :name` -> Person#name -> #name_from_attrs ->
+    # first_name/last_name .strip on SymbolicString (strip wall). Person#name
+    # is the SQL-free instance boundary the API template actually calls (the
+    # singleton class-method variant didn't reliably intercept — dispatch
+    # subtlety on def-self methods). Return a concrete "First Last" string so
+    # the whole name-building chain is skipped; the name feeds presenter JSON.
+    # X6i REMOVED for posts_show, 2026-09-10 (drive §46), under DISCIPLINE D1
+    # -- "a mock may replace execution, never evidence" -- following
+    # comments_index cycle 1 (2026-08-25), which deleted this exact site on
+    # this exact argument. Person#name's real body (person.rb:246-252) reads
+    # `self.profile` -- a DECLARED association target
+    # (SingularAssociation#find_target) -- before calling the pure
+    # `Person.name_from_attrs`. Mocking #name skipped that target read and
+    # emitted a note-less event: MEASURED on this corpus at 35 303 firings,
+    # every one with an EMPTY note. The wall it cleared (SymbolicString#strip
+    # inside name_from_attrs) is now cleared at the VALUE-FREE LEAF instead --
+    # ./targets.rb W8 shims `Person.name_from_attrs`, pure string logic that
+    # reaches ZERO targets -- so the real `#name` runs and its profile read
+    # mints evidence like every other reader.
+    # The §43 ConcreteSymbolicString wrap that used to be here was a MEASURED
+    # NO-OP (post-wrap dump byte-identical to pre-wrap: 135 events, 330
+    # symbolic vars, no Person var minted in EITHER), so nothing is lost by
+    # deleting it: §42 had named the wrong string. The strings that actually
+    # reach Rails' HTML-escape path are named and carried in ./targets.rb W7.
+    if false && defined?(Person) && Person.instance_methods.include?(:name)
+      # WRAPPED IN ConcreteSymbolicString, batch-locally, 2026-09-10 (drive).
+      # A bare Ruby String returned from ANY declare_target mock is NOT exempt
+      # from the interceptor's `to_symbolic` return-value re-wrap (only `nil`
+      # and already-SymbolicVar-tagged values are), so this returned a
+      # SymbolicString, whose UNSUPPORTED-op stubs then fired downstream.
+      # MEASURED, not inferred: with §14's class restore in place, the html arm
+      # dies at `SymbolicString#scrub` <- Multibyte::Unicode.tidy_bytes <-
+      # unwrapped_html_escape <- tag_option, rendering the `og:article:author`
+      # meta tag whose content is `author_name` (post_presenter.rb:42), and
+      # `Person.name` is the LAST call in the dump before the error.
+      # comments_index's copy of THIS SITE already says exactly this and wraps
+      # it ("wrapping defensively costs nothing and matches the established,
+      # validated fix") — and it renders JSON, where it matters less. This
+      # endpoint renders HTML and is the one that needs it; its copy lost the
+      # wrap when the 2026-09-09 Rule-T re-sync made it verbatim from the
+      # shared boundary, which is the same change that lost the class's
+      # definition (see targets.rb `define_concrete_symbolic_string!`).
+      # RAISED for the coordinator: the SHARED boundary should carry the wrap.
       interceptor.declare_target(
         Person, :name,
         returns: lambda do |_r, _args, name|
-          ConcreteSymbolicString.build("Concolic Person Name", name: name,
-                                       note: "Person#name (audited MOCK_AUDIT violation, out of scope this pass)")
+          if defined?(::ConcreteSymbolicString)
+            ::ConcreteSymbolicString.build("Concolic Person Name",
+                                           name: name, note: "Person#name")
+          else
+            "Concolic Person Name"
+          end
         end
       )
     end
@@ -1354,38 +1486,86 @@ module ConcolicTargets
     # — it is both a DB column and a URL method, and the per-instance column
     # reader would otherwise shadow the class method with arity 0.)
 
-    # X6k. REMOVED for results3 (see file-header MOCK LEDGER). Its real body
-    # (`@post.mentioned_people.as_api_response(:backbone)`) is exactly the
-    # "descended people_from_string feeds the still-mocked as_api_response
-    # boundary" path the header describes — left undeclared so the now-real
-    # `mentioned_people` result flows into `as_api_response` for real,
-    # instead of being short-circuited before X6f's real body ever runs.
-
-    # X6l. MessageRenderer#title — kept as a leaf (pure string heading
-    # extraction, `@text.lstrip` — lstrip is UNSUPPORTED on SymbolicString by
-    # design, and this is genuinely SQL-free/calls-no-target). Upgraded to
-    # ConcreteSymbolicString for the same re-wrap reason as X6i.
-    if defined?(Diaspora::MessageRenderer) &&
-       Diaspora::MessageRenderer.instance_methods.include?(:title)
-      interceptor.declare_target(Diaspora::MessageRenderer, :title,
-        returns: lambda do |_r, _a, name|
-          ConcreteSymbolicString.build("Concolic title", name: name,
-                                       note: "Diaspora::MessageRenderer#title (pure string leaf, no SQL)")
-        end)
+    # X6k. PostPresenter#build_mentioned_people_json -> []. posts_show's
+    # mentioned-people render: @post.mentioned_people.as_api_response(:backbone)
+    # — mentioned_people is a SymbolicList (people_from_string mock returns [],
+    # re-wrapped), and a SymbolicList has no as_api_response. The presenter
+    # method is the smallest SQL-free terminal that wraps the serialization;
+    # returning [] yields an empty mentioned_people key for the JSON.
+    if defined?(PostPresenter) &&
+       (PostPresenter.instance_methods.include?(:build_mentioned_people_json) ||
+        PostPresenter.private_instance_methods.include?(:build_mentioned_people_json))
+      interceptor.declare_target(PostPresenter, :build_mentioned_people_json,
+                                 returns: ->(_r, _a, _n) { [] })
     end
 
-    # X6h. MessageRenderer::Processor.process — kept as a leaf (pure string
-    # transform pipeline — normalize/gsub/diaspora_links/camo — no SQL, no
-    # target calls). Upgraded to ConcreteSymbolicString.
-    if defined?(Diaspora::MessageRenderer::Processor) &&
+    # X6l. MessageRenderer#title -> concrete string. posts_show title render:
+    # PostPresenter#title -> MessageRenderer#title -> @text.lstrip (lstrip
+    # wall). Pure string heading extraction, no SQL. Return a concrete title.
+    # ---------------------------------------------------------------------
+    # DISABLED HERE, OWNED BY ./targets.rb W7 (2026-09-10 drive, §46.8).
+    #
+    # NOT a style choice — a MEASURED defect. Re-declaring an already-declared
+    # target does not merely override it: `CallInterceptor#declare_target`
+    # reads the parameter list off the CURRENT method, and after the first
+    # declaration that method is the interceptor's own
+    # `|*splat_args, **kwargs, &block|` wrapper. So the second declaration
+    # records its args under the wrapper's names, and any mock that reads an
+    # argument BY NAME silently gets `nil`:
+    #
+    #   boundary only  Anonymous.process args {"message": "hello world, a
+    #                     concolic message with no mentions", "options": null}
+    #   double-declared  Anonymous.process args {"splat_args": "hello world,
+    #                     a concolic message with no mentions", "kwargs": null}
+    #
+    # `Processor.process`'s mock reads `args["message"]`, so under the
+    # double declaration it returned `String(nil)` == "" and the rendered
+    # post description became EMPTY. Owning the declaration in exactly one
+    # place is the fix. Reported as a boundary-override trap that applies to
+    # EVERY batch that overrides a boundary target reading args by name.
+    # ---------------------------------------------------------------------
+    if false && defined?(Diaspora::MessageRenderer) &&
+       Diaspora::MessageRenderer.instance_methods.include?(:title)
+      interceptor.declare_target(Diaspora::MessageRenderer, :title,
+                                 returns: ->(_r, _a, _n) { "Concolic title" })
+    end
+
+    # X6h. MessageRenderer::Processor.process -> concrete text. posts_show text
+    # rendering: PostPresenter#build_text -> MessageRenderer#process ->
+    # Processor.process(@text, opts, &block) which runs the renderer pipe
+    # (normalize -> gsub on a SymbolicString; diaspora_links; camo). Processor
+    # .process is the single SQL-free pipe entry; mocking it to return the
+    # concrete text skips the whole formatting chain (pure string transforms,
+    # no SQL). The rendered text feeds presenter JSON — not branch logic.
+    # ---------------------------------------------------------------------
+    # DISABLED HERE, OWNED BY ./targets.rb W7 (2026-09-10 drive, §46.8).
+    #
+    # NOT a style choice — a MEASURED defect. Re-declaring an already-declared
+    # target does not merely override it: `CallInterceptor#declare_target`
+    # reads the parameter list off the CURRENT method, and after the first
+    # declaration that method is the interceptor's own
+    # `|*splat_args, **kwargs, &block|` wrapper. So the second declaration
+    # records its args under the wrapper's names, and any mock that reads an
+    # argument BY NAME silently gets `nil`:
+    #
+    #   boundary only  Anonymous.process args {"message": "hello world, a
+    #                     concolic message with no mentions", "options": null}
+    #   double-declared  Anonymous.process args {"splat_args": "hello world,
+    #                     a concolic message with no mentions", "kwargs": null}
+    #
+    # `Processor.process`'s mock reads `args["message"]`, so under the
+    # double declaration it returned `String(nil)` == "" and the rendered
+    # post description became EMPTY. Owning the declaration in exactly one
+    # place is the fix. Reported as a boundary-override trap that applies to
+    # EVERY batch that overrides a boundary target reading args by name.
+    # ---------------------------------------------------------------------
+    if false && defined?(Diaspora::MessageRenderer::Processor) &&
        Diaspora::MessageRenderer::Processor.respond_to?(:process)
       interceptor.declare_target(
         Diaspora::MessageRenderer::Processor.singleton_class, :process,
-        returns: lambda do |_r, args, name|
+        returns: lambda do |_r, args, _name|
           m = args["message"]
-          v = m.respond_to?(:value) ? m.value : String(m)
-          ConcreteSymbolicString.build(v, name: name,
-                                       note: "Diaspora::MessageRenderer::Processor.process (pure string pipe, no SQL)")
+          m.respond_to?(:value) ? m.value : String(m)
         end
       )
     end
@@ -1494,48 +1674,6 @@ module ConcolicTargets
           s.respond_to?(:value) ? s.value : s
         end
       )
-    end
-  end
-end
-
-# ===========================================================================
-# results3 shared bug fixes (2026-08-19) -- rationale + blast radius in
-# ../BUGFIXES_20260819.md. Identical footer in all six endpoint copies.
-#
-# (bug 2a) Ruby-3/JRuby keyword semantics land `find_by(guid: x)` in the
-# interceptor wrapper's **kwargs, and its param-binding loop drops them for
-# Rails' *rest-signature finders (notes said "WHERE unavailable ...
-# args=nil"; extraction kept unresolved placeholders instead of producer
-# joins). These prepends convert keyword calls back to Ruby-2-style trailing
-# positional hashes BEFORE method lookup reaches the interceptor's
-# define_method, so its binding captures the conditions and
-# class_finder_sql/sql_for render the real WHERE into the note. `super`
-# continues into the interceptor unchanged; methods without keyword args are
-# untouched.
-module ConcolicKwargsToPositional
-  %i[find_by find_by! exists?].each do |m|
-    define_method(m) do |*args, **kwargs, &blk|
-      args += [kwargs] unless kwargs.empty?
-      super(*args, &blk)
-    end
-  end
-end
-ActiveRecord::Base.singleton_class.prepend(ConcolicKwargsToPositional) # Model.find_by / exists?
-ActiveRecord::Relation.prepend(ConcolicKwargsToPositional)            # relation / association find_by
-
-# (bug 2b) arel-9 renders Casted/Quoted nodes inline via ToSql#quoted, which
-# calls connection.quote on the raw value -- a wall for symbolic values (and
-# the reason association-scope notes died even after the Casted #val fix
-# above whenever the owner key itself was symbolic). Render symbolic values
-# as $$(name) inline, matching the note convention used for `?` binds.
-class ConcolicSymbolicToSql < Arel::Visitors::ToSql
-  private
-
-  def quoted(val, attribute)
-    if val.respond_to?(:sym_name) && val.sym_name
-      "$$(#{val.sym_name})"
-    else
-      super
     end
   end
 end

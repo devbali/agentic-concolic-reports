@@ -216,6 +216,145 @@ module PostsTargets
   # depends on the string's contents — which SymbolicString does not model — so
   # it raises, exactly as it does today. This is therefore strictly no worse
   # than the status quo: it can only turn a crash into a faithful no-op.
+  # ConcreteSymbolicString — RESTORED BATCH-LOCALLY, 2026-09-10 (drive).
+  #
+  # THE DEFECT IT REPAIRS. `targets.rb` uses `ConcreteSymbolicString` in three
+  # places, and the 2026-09-09 Rule-T re-sync deleted its DEFINITION while
+  # ADDING one of those uses. The re-sync made this batch's
+  # `concolic_targets.rb` a verbatim copy of the shared boundary, which has
+  # never defined the class (`grep -c` = 0 there and in this batch), whereas
+  # the archived `concolic_targets.rb.pre_ruleT_resync` defines it at line 479.
+  # The use it added is the W3b `to_param` wall mock (:666 below), whose own
+  # comment says it fires on `post_url @post` / `post_path` in
+  # `PostPresenter#url` — the metas render of the HTML format.
+  #
+  # MEASURED COST, on the corpus the re-sync produced: 100 % of html runs that
+  # get past the finder die in the view with
+  # `ActionView::Template::Error: uninitialized constant
+  # PostsTargets::ConcreteSymbolicString` — auth_html 2 061 of 2 237 sampled,
+  # anon_html 1 433 of 2 239 (the rest are RecordNotFound / NonPublic, which
+  # terminate earlier), and ZERO html runs in either arm reach the end of the
+  # action. The json arms are unaffected.
+  #
+  # WHY DEFINE IT HERE AND NOT GUARD THE USES. The mock genuinely needs the
+  # class: a bare Ruby `String` returned from a `declare_target` mock is NOT
+  # exempt from the interceptor's `to_symbolic` return wrapping (only `nil` and
+  # already-`SymbolicVar`-tagged values are), so a "concrete" return is
+  # silently RE-WRAPPED into a `SymbolicString` whose UNSUPPORTED-op stubs
+  # (scan/gsub/strip/...) then fire downstream. A real `::String` subclass that
+  # also includes `SymbolicVar` is native for every string op AND recognised by
+  # the interceptor as already-symbolic. Guarding the uses with
+  # `if defined?(...)` would only move the failure. Body is BYTE-IDENTICAL to
+  # comments_index/concolic_targets.rb:1411-1423 and to
+  # notifications_index's, which is where it was first found — on that
+  # endpoint's HTML render path.
+  #
+  # It is defined HERE, in the batch's own `targets.rb`, and NOT in this
+  # batch's copy of the shared boundary: DISCIPLINE Rule T1 keeps batch-local
+  # shims here so the boundary copy stays diffable against upstream, and T3
+  # forbids an agent editing the boundary. That the SHARED boundary lacks a
+  # class two batches carry privately is RAISED, not fixed here.
+  def define_concrete_symbolic_string!
+    return if defined?(::ConcreteSymbolicString)
+
+    ::Object.const_set(:ConcreteSymbolicString, Class.new(::String) do
+      include SymbolicVar
+      attr_reader :note
+
+      def self.build(str, name:, note:)
+        s = new(str)
+        s.instance_variable_set(:@sym_name, name)
+        s.instance_variable_set(:@note, note)
+        s
+      end
+    end)
+  end
+
+  # PcVisibleConcreteString — a render-safe string that STAYS PC-VISIBLE.
+  # ------------------------------------------------------------------------
+  # WHY IT EXISTS (2026-09-10 drive, §46). Three of this endpoint's SQL-free
+  # display mocks return a value that Rails' HTML-escape path then walks
+  # (`tag_option` -> `unwrapped_html_escape` -> `Multibyte::Unicode.tidy_bytes`
+  # -> `String#scrub`). `SymbolicString#scrub` is UNSUPPORTED by design, so
+  # every html run in the corpus terminated there. `ConcreteSymbolicString`
+  # (a real ::String that also `include`s SymbolicVar) is the established fix
+  # and it renders — but a plain ::String's `==` records NOTHING, so wrapping
+  # would DELETE whatever comparisons the corpus was recording on those
+  # values. That is the D1 direction ("a mock may replace execution, never
+  # evidence") and it is avoidable at zero cost.
+  #
+  # This subclass is notifications_index's `TypeLinkedString` instrument
+  # (targets.rb:853, "NOT a new pin ... these columns stay PC-VISIBLE and
+  # pc_visibility_audit --gate can still see any compare the app makes"),
+  # reused verbatim in mechanism: a ::String subclass whose `==` / `!=`
+  # RECORD the path condition against the value's own sym_name and then
+  # return a concrete Ruby bool. Render-safe for every string op AND
+  # strictly evidence-preserving: every `(name == StringVal(...))` the corpus
+  # recorded through the SymbolicString is still recorded through this.
+  def define_pc_visible_concrete_string!
+    return if defined?(::PcVisibleConcreteString)
+
+    define_concrete_symbolic_string!
+    ::Object.const_set(:PcVisibleConcreteString, Class.new(::ConcreteSymbolicString) do
+      # NOTE the explicit ::String bindings below. `to_s` returns SELF on this
+      # class (see below), so `to_s == other` inside `==` would re-enter this
+      # method forever; the comparison is therefore taken from ::String
+      # directly, which is the concrete byte comparison these mean.
+      def ==(other)
+        return super unless sym_name && other.is_a?(::String) && !other.respond_to?(:sym_name)
+        rhs = ::String.new(other.to_s)
+        result = ::String.instance_method(:==).bind(self).call(rhs)
+        record!("(#{sym_name} == #{z3_str_val(rhs)})", "==", taken: result)
+        result
+      end
+
+      def !=(other)
+        return super unless sym_name && other.is_a?(::String) && !other.respond_to?(:sym_name)
+        rhs = ::String.new(other.to_s)
+        result = !::String.instance_method(:==).bind(self).call(rhs)
+        record!("(#{sym_name} != #{z3_str_val(rhs)})", "!=", taken: result)
+        result
+      end
+
+      # `empty?`, recorded in the EXACT shape SymbolicString#empty? uses
+      # (src/ruby_runtime/string.rb:212-217, `"(#{z3_expr} == '')"` — note:
+      # NOT `StringVal('')`, which is what `==` renders). Byte-identical to
+      # the expression the corpus already carries for this value, so the
+      # decision the pre-W7 html runs recorded stays the SAME expression and
+      # is closable rather than orphaned.
+      #
+      # This is why the carrier is chosen PER SITE (W7): the emptiness of the
+      # RENDERED POST TEXT is a decision over app data, and the app really
+      # branches on it (ActiveSupport tidy_bytes, unicode.rb:227). The other
+      # two W7 sites return a value the MOCK invented — a constant that no app
+      # datum controls — so recording `== ''` there would mint a decision that
+      # is False by construction, i.e. a fake unreachable side needing a fake
+      # pin. Those two therefore use plain ConcreteSymbolicString and record
+      # nothing, and that non-recording is DECLARED rather than pinned.
+      def empty?
+        return super unless sym_name
+        result = ::String.instance_method(:empty?).bind(self).call
+        record!("(#{sym_name} == '')", "empty?", taken: result)
+        result
+      end
+
+      # `to_s` / `to_str` return SELF, mirroring SymbolicString (string.rb:74-80).
+      # MEASURED necessity, not defensiveness: Rails'
+      # `unwrapped_html_escape` (output_safety.rb:38) does `s = s.to_s` BEFORE
+      # `tidy_bytes`, and ::String#to_s on a SUBCLASS returns a fresh plain
+      # String — so without this the identity is stripped one frame before the
+      # `empty?` the corpus records, and the first attempt at this fix recorded
+      # nothing at all.
+      def to_s
+        self
+      end
+
+      def to_str
+        self
+      end
+    end)
+  end
+
   def define_substitutable_string!
     return if defined?(::SubstitutableSymbolicString)
 
@@ -352,6 +491,31 @@ module PostsTargets
 
   def install!(interceptor = CallInterceptor.instance)
     define_substitutable_string!
+    define_concrete_symbolic_string!
+    define_pc_visible_concrete_string!
+    # --- DIAGNOSTIC ONLY, ENV-GATED (PSH_SCRUB_DIAG=1), 2026-09-10 drive. ---
+    # §42 named `Person#name` as the string that reaches Rails' HTML-escape
+    # path. The wrap installed for it (§43) proved to be a NO-OP: the post-wrap
+    # dump is byte-identical to the pre-wrap one (135 events, 330 symbolic vars,
+    # no Person var minted in EITHER), so `Person#name` was never re-wrapped and
+    # is not the crashing string. This prepend NAMES the actual object instead
+    # of inferring it from the last CALL event. It is off unless the env var is
+    # set, so no corpus run is affected.
+    if ENV["PSH_SCRUB_DIAG"] == "1" && defined?(::SymbolicString)
+      ::SymbolicString.prepend(Module.new do
+        # NON-FATAL under the diagnostic: return the CONCRETE witness so the
+        # render continues and ONE run enumerates EVERY string that reaches
+        # Rails' HTML-escape path, instead of one run per failure point.
+        # Diagnostic only — these dumps are never corpus evidence.
+        def scrub(*args, &blk)
+          nm = respond_to?(:sym_name) ? sym_name : nil
+          vl = respond_to?(:value) ? value : nil
+          warn("[SCRUB-DIAG] sym_name=#{nm.inspect} value=#{vl.inspect} " \
+               "class=#{self.class} site=#{caller[3, 4].join(' <- ')}")
+          String(vl).scrub(*args, &blk)
+        end
+      end)
+    end
     ct  = ConcolicTargets
     rel = ActiveRecord::Relation
     calc = ActiveRecord::Calculations
@@ -592,8 +756,31 @@ module PostsTargets
           if attrs.key?("text")
             hm_name = "#{base_name}_text_has_mention"
             has_mention = symbool(hm_name, seed_for(hm_name, false), note: sql)
+            # W10 (2026-09-10 drive, §46.9) — the text is EMPTYABLE.
+            #
+            # Before this the shim offered exactly TWO non-empty constants, so
+            # `text.empty?` was False by construction and the corpus's own
+            # `(SYM_RESULT_Anonymous_process_N == '')` decision — recorded by
+            # ActiveSupport's escape path, unicode.rb:227 — could never be
+            # observed True. That is a MODELLING gap, not an app fact: a real
+            # diaspora StatusMessage can carry blank text (a photo-only post),
+            # `posts.text` is nullable, and `Post#message` renders it. Pinning
+            # the True side would have declared a mock's arbitrary constant as
+            # if it were a property of the program. Widening the model closes
+            # the branch instead, which is the direction the discipline asks
+            # for: a mock may replace execution, never evidence.
+            #
+            # BOTH comparisons are evaluated UNCONDITIONALLY (no early exit) —
+            # notifications' §5f correction: a companion compare left
+            # unevaluated makes a cube demanding it unsatisfiable by any run.
+            te_name = "#{base_name}_text_empty"
+            text_empty = symbool(te_name, seed_for(te_name, false), note: sql)
+            is_empty   = (text_empty == true)
+            is_mention = (has_mention == true)
             attrs["text"] =
-              if has_mention == true
+              if is_empty
+                ""
+              elsif is_mention
                 "hello @{Concolic Mention; concolic_mention@example.org} welcome"
               else
                 "hello world, a concolic message with no mentions"
@@ -646,6 +833,159 @@ module PostsTargets
     end
 
     warn "[posts] PostsTargets installed"
+
+    # W3b (moved here from concolic_targets.rb by the Rule T re-sync,
+    # 2026-09-09). ADJUDICATION: `ActiveRecord::Base#to_param` was declared in
+    # this batch's private copy of the SHARED boundary and in no other batch
+    # and not upstream — a Rule T divergence. It is a WALL MOCK, not
+    # policy-bearing: Rails 5.2's body is literally `id && id.to_s`
+    # (activerecord/lib/active_record/integration.rb:49-52), it issues NO SQL,
+    # and `persisted?` is not a declared target anywhere, so mocking it
+    # forecloses nothing. It exists only because SymbolicInt#to_s is
+    # unsupported by design. Batch-local wall mocks belong HERE; the shared
+    # boundary copy stays verbatim so it can be diffed against upstream.
+    # Reached via `post_url @post`/`post_path` in PostPresenter#url (metas
+    # render, html format) and Journey route generation.
+    if ActiveRecord::Base.instance_methods.include?(:to_param)
+      interceptor.declare_target(ActiveRecord::Base, :to_param, returns: lambda do |receiver, _args, name|
+        id = receiver.respond_to?(:id) ? receiver.id : nil
+        v = id.respond_to?(:value) ? id.value.to_s : id.to_s
+        ConcreteSymbolicString.build(v, name: name, note: "ActiveRecord::Integration#to_param")
+      end)
+    end
+
+    # -------------------------------------------------------------------
+    # W7. THE HTML RENDER ARM — the three strings that reach Rails' escape
+    # path, re-declared BATCH-LOCALLY so the boundary copy stays diffable
+    # (Rule T1). `PostsTargets.install!` runs AFTER `ConcolicTargets.install!`
+    # (run_dse.rb:76-77), so these override the boundary's own declarations.
+    #
+    # NOT INFERRED FROM THE LAST CALL EVENT. §42 named `Person#name` from the
+    # dump's last CALL before the crash and wrapped it (§43); the post-wrap
+    # dump is byte-identical to the pre-wrap one (135 events, 330 symbolic
+    # vars, no Person var in EITHER), i.e. that wrap is a measured NO-OP and
+    # `Person#name` was never the crashing string. The actual objects were
+    # NAMED by a diagnostic prepend on `SymbolicString#scrub` (PSH_SCRUB_DIAG,
+    # install! above) that prints `sym_name` and returns the concrete witness,
+    # so ONE run enumerates EVERY string that reaches the escape path instead
+    # of one run per failure point. It found exactly four values in three
+    # families, and with them non-fatal the html run COMPLETED (error=None):
+    #
+    #   SYM_RESULT_Anonymous_process_2            MessageRenderer::Processor.process
+    #   SYM_RESULT_Anonymous_process_3            (same target, 3rd call)
+    #   SYM_RESULT_Diaspora__MessageRenderer_title_3  MessageRenderer#title
+    #   SYM_RESULT_Photo_url_5_url                Photo#url
+    #
+    # All three are ALREADY declared SQL-free display targets on the boundary
+    # (X6h, X6l, W5). Nothing here mocks anything new; each returns the SAME
+    # value under the SAME name and note, in a render-safe carrier that keeps
+    # its `==`/`!=` PC-visible. No statement is skipped and no comparison is
+    # lost — the change is the CARRIER, not the value.
+    # -------------------------------------------------------------------
+    if defined?(Diaspora::MessageRenderer::Processor) &&
+       Diaspora::MessageRenderer::Processor.respond_to?(:process)
+      interceptor.declare_target(
+        Diaspora::MessageRenderer::Processor.singleton_class, :process,
+        returns: lambda do |_r, args, name|
+          m = args["message"]
+          v = m.respond_to?(:value) ? m.value : String(m)
+          PcVisibleConcreteString.build(v.to_s, name: name,
+                                        note: "Diaspora::MessageRenderer::Processor.process")
+        end
+      )
+    end
+
+    # X6l / W5 — plain ConcreteSymbolicString, NOT the PC-visible subclass.
+    # Both return a value the MOCK invents (a constant title; a URL assembled
+    # from the variable's own NAME), so no app datum controls it and every
+    # comparison over it would be decided by the mock rather than by the
+    # program. Recording them would mint permanently-one-sided expressions and
+    # then require pins whose argument is about this file rather than about
+    # the app. DECLARED GAP instead: the real `MessageRenderer#title` extracts
+    # a heading from the post text and the real `Photo#url` is built from the
+    # photo row, and NEITHER dependency is modelled here. Neither compare
+    # appears anywhere in the corpus, so nothing is lost by not recording it.
+    if defined?(Diaspora::MessageRenderer) &&
+       Diaspora::MessageRenderer.instance_methods.include?(:title)
+      interceptor.declare_target(
+        Diaspora::MessageRenderer, :title,
+        returns: lambda do |_r, _args, name|
+          ConcreteSymbolicString.build("Concolic title", name: name,
+                                       note: "Diaspora::MessageRenderer#title")
+        end
+      )
+    end
+
+    if defined?(Photo) &&
+       (Photo.instance_methods.include?(:url) || Photo.private_instance_methods.include?(:url))
+      interceptor.declare_target(Photo, :url, returns: lambda do |_receiver, _args, name|
+        ConcreteSymbolicString.build("/uploads/#{name}_thumb.jpg",
+                                     name: "#{name}_url", note: "Photo#url")
+      end)
+    end
+
+    # -------------------------------------------------------------------
+    # W11. CollectionProxy#size — the wall the W10 empty-text arm exposed.
+    #
+    # `ConcolicTargets` declares `size` on ActiveRecord::RELATION
+    # (concolic_targets.rb:558), but `CollectionProxy` OVERRIDES `size`
+    # (collection_proxy.rb:783 -> collection_association.rb:218), so that
+    # declaration never fires on an association and the real body runs:
+    #
+    #   unsaved_records = target.select(&:new_record?)
+    #   unsaved_records.size + count_records      # Integer + SymbolicInt
+    #
+    # `Integer#+` reflects onto `SymbolicInt#coerce`, which the runtime
+    # refuses BY DESIGN ("reflected arithmetic would lose symbolic
+    # tracking"). MEASURED, not inferred: with W10's empty text seeded,
+    # `posts_helper.rb:17` takes the `post.photos.size` arm of
+    # `post_page_title` and the run dies exactly there.
+    #
+    # This arm is REAL and the corpus has never driven it: a blank-text
+    # StatusMessage renders `posts.show.photos_by` and reads `photos`.
+    # `unsaved_records` is always [] in this rig (nothing is built unsaved),
+    # so `size == count_records`, and returning the same seeded SymbolicInt
+    # the Relation mock returns — under the same COUNT(*) note — is faithful
+    # AND keeps the value symbolic instead of concretising it.
+    # -------------------------------------------------------------------
+    if cproxy && cproxy.instance_methods.include?(:size)
+      interceptor.declare_target(cproxy, :size, returns: lambda do |receiver, args, name|
+        vn = "#{name}_size"
+        note = ct.sql_for(receiver, args)
+        begin
+          note = note.sub(/\ASELECT\s+(DISTINCT\s+)?.*?\s+FROM /m, "SELECT COUNT(*) FROM ")
+        rescue StandardError
+          nil # projection rewrite must never crash the mock (M-family rule)
+        end
+        symint(vn, ct.seed_for(vn, 1), note: note)
+      end)
+    end
+
+    # -------------------------------------------------------------------
+    # W8. Person.name_from_attrs — SHIM MOCK, replacing the X6i `Person#name`
+    # TARGET mock now disabled in ./concolic_targets.rb (drive §46, D1).
+    #
+    # Real body (person.rb:254-256) is PURE string logic —
+    #   first_name.blank? && last_name.blank? ? diaspora_handle
+    #                                         : "#{first.strip} #{last.strip}".strip
+    # — reaching ZERO target functions, and its output is DISPLAY data (the
+    # presenter's `name` field and the `og:article:author` meta), never a
+    # query argument. The only wall it clears is `SymbolicString#strip` on the
+    # symbolic first/last-name columns. `Person#name` itself now runs FOR
+    # REAL, so its `self.profile` read mints the profile-load evidence the
+    # mocked version swallowed.
+    #
+    # A SINGLETON STUB, not an interceptor target: the return is a plain Ruby
+    # String, display-only, and declaring a target here would re-introduce
+    # exactly the note-less event D1 objects to. Byte-identical in mechanism
+    # to comments_index/targets.rb §7.
+    # -------------------------------------------------------------------
+    if defined?(Person) && Person.respond_to?(:name_from_attrs)
+      Person.define_singleton_method(:name_from_attrs) do |_first, _last, _handle|
+        "Concolic Person Name"
+      end
+    end
+
   end
 end
 

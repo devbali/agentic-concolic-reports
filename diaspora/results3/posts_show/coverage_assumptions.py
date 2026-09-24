@@ -53,8 +53,12 @@ NAMING LAYERS (both endpoint-local, targets.rb):
     further) and their relationship to the unrelated act/render families
     (Tier 1/5 below) are asserted.
 
-TIER 0 — scenario x format exclusivity (generalizes results2's auth/anon-only
-version to the full 4-way partition; same mechanism, wider label set).
+TIER 0 — scenario x format exclusivity: DELETED 2026-09-10. Its whole argument
+was "these exprs' observed scenario sets are DISJOINT, so no single run's path
+can contain both", and under the co-evaluation semantics (DISCIPLINE §16) the
+engine derives that from the same evidence for itself. A declaration over a
+pair no run co-evaluates relaxes nothing. `build` now filters any survivor with
+the same property and PRINTS the count.
 
 TIER 1 — same-target "found vs attribute" impossibility (ported verbatim from
 results2; regex WIDENED to also match `mention_lookup_*` dedicated targets,
@@ -111,7 +115,9 @@ from __future__ import annotations
 
 import re
 
+from concolic_engine.coverage import maximal_sets  # noqa: E402
 from concolic_engine.assumptions import (  # noqa: F401
+    AliasAssumption,
     AssumptionSet,
     IndependenceAssumption,
     UntrackedPathAssumption,
@@ -119,6 +125,181 @@ from concolic_engine.assumptions import (  # noqa: F401
     SymbolicConstraintAssumption,
     PathSource,
 )
+
+# --- Alias (ported from notifications_index, 2026-09-09) -----------
+# posts_show has the same call-ordinal identity problem as notifications_index
+# and people_stream: measured over a 302-dump sample, list reads appear as
+# CollectionProxy_records_{1,2,3,4} and Relation_records_{1,2,3,4,5,7} — the
+# SAME logical read at different ordinals depending on the path prefix,
+# because a symbolic result is named by WHEN the call happened
+# (SymbolicFunc.next_call_idx), not by WHAT it is. That makes the checker
+# demand combinations across ordinals no single path can realise, and makes
+# demand seeds keyed on an ordinal inert whenever the path takes another.
+# Re-key by the statement resolved to (binds kept, literals wildcarded).
+# Identity is verified by the gate's Alias derived test, which FAILS
+# on an unsound alias.
+ALIAS_PATTERN = (r"SYM_RESULT_ActiveRecord__(?:Associations__CollectionProxy_records"
+                 r"|Relation_records|Relation_to_ary)_\d+")
+ALIASES = [AliasAssumption(
+    result_pattern=ALIAS_PATTERN, key="statement",
+    description="ordinal-named list reads identified by their statement (binds kept)",
+    agent_notes=("the ordinal of posts_show's list reads is a function of the path "
+                 "prefix; re-keyed by statement so one fact is one variable."))]
+
+
+# --- RENDER-ORDINAL IDENTITY (declared 2026-09-12; §78.9 -> §79) ------------
+# ONE FACT, TWO NAMES: `SYM_RESULT_Anonymous_process_2` and
+# `SYM_RESULT_Anonymous_process_3` are the SAME decision, and the demand
+# universe must not ask them to disagree.
+#
+# WHAT THEY ARE. `Anonymous.process` is the wall mock (targets.rb W7) of
+# `Diaspora::MessageRenderer::Processor.process`, called from ONE statement —
+# `message_renderer.rb:264`, the private `MessageRenderer#process`, which
+# every public renderer method funnels through with the instance's own
+# `@text`. Corpus-wide (192 365 dumps, _p16_render_scan.py) EVERY ONE of the
+# 557 489 calls to this target is at that one file:line. The mock's `returns`
+# lambda is the IDENTITY on its argument (`v = m.value; ...build(v.to_s)`),
+# so the result is a pure function of `args["message"]` — measured, 0
+# determinism violations corpus-wide.
+#
+# WHY THE ORDINALS ARE ONE FACT (the evidence, all of it re-measured on the
+# whole corpus for this declaration — §78.9 had it on samples):
+#   * 117 715 runs make BOTH call 2 and call 3. In 117 715 of 117 715 the two
+#     calls receive IDENTICAL arguments — args_equal_when_both_called
+#     {True: 117715, False: 0}.
+#   * 6 303 runs DECIDE both (`(... == '')` recorded for each). Joint
+#     outcomes: (False,False) 3 226, (True,True) 3 077, (True,False) 0,
+#     (False,True) 0. 6 303 co-evaluations, 0 disagreements.
+#   * The ordinals of this statement DO carry different messages in general —
+#     the per-run grouping signature (_p16_render_scan3.py) is `1,2` 43 313,
+#     `1,2,3,4` 34 896, `1,2,3|4` 22 708, `1|2,3,4` 20 894, `1,2,3` 15 261,
+#     `1,4|2,3` 12 691, `1|2,3|4` 6 843, `1|2,3` 4 422, `1|2` 1 750 — so this
+#     is NOT a corpus in which the mock only ever sees one string (it sees
+#     five). In EVERY one of those signatures ordinals 2 and 3 fall in the
+#     SAME group. The split that does occur falls at 1| or |4, never at 2|3.
+#   * Decisions are recorded on ordinals 2 and 3 ONLY (never 1, never 4), and
+#     the only expression form over them is `(... == '')`.
+#
+# WHY IT IS A CONSTRAINT AND NOT AN `AliasAssumption`. §78.9 option (1) said
+# "extend the alias assumption". MEASURED, IT CANNOT BE DONE THAT WAY without
+# editing `src/`, which this batch may not do:
+#   * `concolic_engine.assumptions._alias_core` skips any symbolic result
+#     whose `symbolic_call` note is not a STATEMENT
+#     (`is_statement_note` = /^(SELECT|INSERT|UPDATE|DELETE|WITH)/); this
+#     target's note is the prose "Diaspora::MessageRenderer::Processor.process"
+#     (the docstring names "a render probe" as the excluded case). Run on a
+#     real dump, an `AliasAssumption(result_pattern=r'SYM_RESULT_Anonymous_
+#     process_\d+', key='statement')` returns an EMPTY alias map: it is INERT,
+#     it would retire nothing, and it would say in the ledger that something
+#     had been declared.
+#   * the gate's derived alias test (`assumption_checker._test_alias`) probes
+#     by intervening on `len(<ordinal>_rows)` and by a k+1-row replay. There
+#     is no list and no length dimension here, and the canonical name would
+#     never appear in `_ALIAS_INDEX` — the test's own answer would be
+#     "canonical name never produced by the CURRENT corpus".
+# So the identity is declared as the equality it actually is. The two names
+# are STRING results; the constraint is fed into every SMT query
+# (`AssumptionSet.symbolic_constraints` -> `fixed_base`), and its only effect
+# is on demand sets that contain BOTH decisions — where only one is a member
+# the other stays free and no demand is lost. Verified with the engine's own
+# solver: the two agreeing assignments stay SAT, the two disagreeing ones
+# (which 201 of the 526 P15F witnesses demand) become UNSAT.
+#
+# SCOPE AND REVERSIBILITY. Ordinals 1 and 4 are deliberately NOT included:
+# they carry different messages in 33 909 / 42 242 runs respectively and no
+# run has ever decided them, so an equality over them would be both false and
+# inert. `NO_RENDER_IDENTITY=1` withdraws this declaration without editing
+# the file (the same knob shape as `NO_PINS`), so the pass can be re-run with
+# and without it and the difference measured.
+RENDER_IDENTITY = (SymbolicConstraintAssumption(
+    z3_expr=("SYM_RESULT_Anonymous_process_2 == SYM_RESULT_Anonymous_process_3"),
+    description=("Anonymous.process @ message_renderer.rb:264 — ordinals 2 and 3 are "
+                 "ONE decision: one statement, one renderer instance, and a mock that "
+                 "returns its own argument"),
+    agent_notes=(
+        "192 365-dump census (_p16_render_scan{,2,3}.py, 2026-09-12): all 557 489 "
+        "calls of this target are at message_renderer.rb:264; the mock (targets.rb "
+        "W7) returns args['message'] itself, 0 determinism violations; 117 715/117 715 "
+        "runs that make both calls give them the SAME argument; 6 303 runs decide both "
+        "-- (F,F) 3 226, (T,T) 3 077, disagreements 0; and although the statement's "
+        "ordinals do carry different messages across a run (grouping signatures "
+        "1,2,3|4, 1|2,3,4, 1,4|2,3, 1|2,3|4, ...), 2 and 3 are in the same group in "
+        "every one of them. Ordinals 1 and 4 are never decided and are not covered. "
+        "Declared as a constraint, not an AliasAssumption, because _alias_core is "
+        "note-gated to SQL statements and returns an empty map for this target "
+        "(measured) -- see the block comment above."),),)
+
+
+
+# --- RENDER TEXT SOURCE (declared 2026-09-13; P29 §88) ----------------------
+# THE RENDERED TEXT IS THE POST'S TEXT: `(SYM_RESULT_Anonymous_process_3 == '')`
+# is the SAME FACT as `(<the act-family finder that resolved the post>
+# _text_empty == True)`.
+#
+# WHAT IT IS, from the source, not inferred. §79 already established (over
+# 192 365 dumps) that every call of this target is `message_renderer.rb:264`,
+# the private `MessageRenderer#process`, which every public renderer method
+# funnels through with its own instance's `@text`, and that the wall mock
+# (targets.rb W7) returns that argument ITSELF (`v = m.value;
+# PcVisibleConcreteString.build(v.to_s, ...)`) with 0 determinism violations.
+# posts_show renders THE POST, and the post is whichever of the four
+# mutually-exclusive act-family finders resolved it. So the rendered string is
+# empty exactly when that post's text is empty, and `..._text_empty` is the
+# seed dimension that says so.
+#
+# THE CENSUS (`_p29_decmatrix.py` over the whole 48 368-profile pruned corpus
+# `_snapshot_pruned_P26F2.txt`, 137 decisions, 0 unparseable):
+#   `(SYM_RESULT_Anonymous_process_3 == '')` is evaluated in 4 685 profiles.
+#   co-evaluated with          agree   DISAGREE
+#     evilq_act_vis_1_text_empty      2 326   2 326        0
+#     evilq_act_author_1_text_empty   1 253   1 253        0
+#     evilq_act_public_1_text_empty     911     911        0
+#     findpublic_act_1_text_empty       189     189        0
+#                                     4 679   4 679        0
+#   The remaining 6 P3-evaluating profiles record NO act-family `_text_empty`
+#   at all (they are old wall-probe dumps `*_EMPTYTXT`, `*_W9b`, `*_W9c`) —
+#   an absent antecedent, not a disagreement.
+#   The four act finders are pairwise NEVER co-evaluated (0 profiles for all
+#   six pairs), so exactly one is live in a run and the four constraints can
+#   never conflict inside one demand set.
+#   `(Anonymous_process_2 == '')` behaves identically (4 685 co-evaluations
+#   with `_3`, 0 disagreements) — that is §79's RENDER_IDENTITY, unchanged.
+#   No profile records `(Anonymous_process_3 == '')` BOTH ways.
+#
+# FALSIFIER (the same shape §79.3(b) used): ANY run that records
+# `(SYM_RESULT_Anonymous_process_3 == '')` and the act-family finder's
+# `_text_empty` decision with DIFFERENT values. Self-re-deriving: such a run
+# enters the corpus and the census that licenses this declaration fails.
+# Actively falsified by construction (P29, `_p29_probe_*`), not only scanned.
+#
+# WHY IT IS NOT AN `AliasAssumption` and not an `IndependenceAssumption`: for
+# the same measured reason §79.1 gives — `_alias_core` is note-gated to SQL
+# statements and returns an EMPTY map for this target — and because this is an
+# EQUALITY between two decisions, which is what a `SymbolicConstraintAssumption`
+# is for. Reversible with `NO_RENDER_TEXT_SOURCE=1`.
+_RTS_ACT = ("SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1",
+            "SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1",
+            "SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1",
+            "SYM_RESULT_ActiveRecord__Relation_findpublic_act_1")
+_RTS_CENSUS = {"SYM_RESULT_ActiveRecord__Relation_evilq_act_vis_1": (2326, 0),
+               "SYM_RESULT_ActiveRecord__Relation_evilq_act_author_1": (1253, 0),
+               "SYM_RESULT_ActiveRecord__Relation_evilq_act_public_1": (911, 0),
+               "SYM_RESULT_ActiveRecord__Relation_findpublic_act_1": (189, 0)}
+RENDER_TEXT_SOURCE = tuple(
+    SymbolicConstraintAssumption(
+        z3_expr=("(SYM_RESULT_Anonymous_process_3 == '') == "
+                 f"({_v}_text_empty == True)"),
+        description=("Anonymous.process @ message_renderer.rb:264 renders THE POST's "
+                     f"text: the rendered string is empty iff {_v}'s text is empty"),
+        agent_notes=(
+            f"P29 census over 48 368 profiles (_p29_decmatrix.py, 2026-09-13): "
+            f"{_RTS_CENSUS[_v][0]} co-evaluations, {_RTS_CENSUS[_v][0]} agreements, "
+            f"{_RTS_CENSUS[_v][1]} disagreements. The four act-family finders are "
+            f"pairwise never co-evaluated, so exactly one of the four constraints is "
+            f"ever active in a demand set. Falsifier: any run recording the two with "
+            f"different values."))
+    for _v in _RTS_ACT)
+
 
 # Any dedicated per-call-site declared target this endpoint's two naming
 # layers mint: PostsShowFinderNaming's evilq_{ctx}_{attempt}/findpublic_{ctx}
@@ -244,110 +425,6 @@ def _tier2_attempt_chain_pairs(all_exprs):
                             f"both families; each family's own coverage is "
                             f"independently demanded and satisfied by execution "
                             f"(see REPORT.md mapping table)."
-                        ),
-                    ))
-    return out
-
-
-def _scenario_of(label):
-    # results3: 4-way partition (run_dse.rb SCENARIOS keys are literally
-    # auth_html/anon_html/auth_json/anon_json — labels are "<scenario>NNNN").
-    # Generalizes results2's 2-way auth/anon split to the same mechanism;
-    # `_tier0_scenario_exclusivity` below is otherwise UNCHANGED — it just
-    # cross-cuts whichever partition `_scenario_of` returns.
-    label = label or ""
-    for scen in ("auth_html", "anon_html", "auth_json", "anon_json"):
-        if label.startswith(scen):
-            return scen
-    return "auth" if label.startswith("auth") else "anon"
-
-
-# ---------------------------------------------------------------------------
-# TIER 0 — scenario x format exclusivity (auth_html/anon_html/auth_json/
-# anon_json). PostService#find!
-# (post_service.rb:16-22):
-#
-#     def find!(id_or_guid)
-#       if user
-#         find_non_public_by_guid_or_id_with_user!(id_or_guid)   # -> evilq_* family
-#       else
-#         find_public!(id_or_guid)                                # -> findpublic_* family
-#       end
-#     end
-#
-# `user` is PostService's own @user, fixed for the whole controller action
-# (PostsController#post_service memoizes `PostService.new(current_user)`,
-# and current_user itself is fixed per request by run_dse.rb's SCENARIOS
-# loop — every run in this corpus is entirely "auth" (symbolic current_user)
-# or entirely "anon" (current_user=nil), never mixed within one run). So the
-# `evilq_*` family (only reachable via find_non_public_by_guid_or_id_with_user!)
-# and the `findpublic_*` family (only reachable via find_public!) can NEVER
-# both appear in the same run's path — proven empirically below: every expr
-# in the corpus is exclusively auth-only, exclusively anon-only, or genuinely
-# scenario-independent (Length(SYM_PARAM_id)<16 -- post_key dispatch runs
-# regardless of user; assoc_profile_nsfw -- Post#nsfw reads the author's
-# profile regardless of current_user). Declared programmatically as a full
-# cross-cut between the auth-only and anon-only sets (not hand-enumerated),
-# so it can never drift out of sync with the observed universe. This is the
-# dominant clique-size reducer: without it every evilq_* expr is falsely
-# demanded to combine with every findpublic_* expr, which both cannot happen
-# (mutually exclusive scenarios) AND, empirically, blew up maximal-clique
-# enumeration to 1000+ cliques of size 14-17 (see REPORT.md).
-# ---------------------------------------------------------------------------
-_SCENARIO_NAMES = ("auth_html", "anon_html", "auth_json", "anon_json")
-
-
-def _tier0_scenario_exclusivity(runs):
-    expr_scenarios = {}
-    for r in runs:
-        scen = _scenario_of(r.label)
-        for pc in r.path_conditions:
-            expr_scenarios.setdefault(pc.expr, set()).add(scen)
-
-    # results3: 4-way partition, not 2-way. Group every expr by its exact
-    # observed-scenario SET (usually a singleton — one of the 4 — but some
-    # exprs are genuinely scenario-independent: Length(SYM_PARAM_id)<16 runs
-    # regardless of auth/anon/format; assoc_profile_nsfw reads the author's
-    # profile regardless of current_user; both appear in all 4 and correctly
-    # stay fully connected below since their "set" isn't disjoint from
-    # anything). Cross-cut every pair of exprs whose sets are DISJOINT (not
-    # just the old auth-only-vs-anon-only special case) — this also captures
-    # the NEW format axis for free: an evilq_like_*/evilq_reshare_*/
-    # findpublic_like/findpublic_reshare expr's set is exactly {"auth_html"}
-    # (format.json never invokes LikeService/ReshareService#find_for_post —
-    # see docstring), disjoint from anything json-only or anon-only.
-    by_set = {}
-    for e, s in expr_scenarios.items():
-        by_set.setdefault(frozenset(s), []).append(e)
-
-    groups = sorted(by_set.items(), key=lambda kv: sorted(kv[0]))
-    out = []
-    for i, (set_a, exprs_a) in enumerate(groups):
-        for set_b, exprs_b in groups[i + 1:]:
-            if set_a & set_b:
-                continue  # share at least one scenario — NOT provably exclusive
-            for a in exprs_a:
-                for b in exprs_b:
-                    out.append(IndependenceAssumption(
-                        expr_a=a, expr_b=b,
-                        description=(
-                            f"scenario/format exclusivity: {sorted(set_a)} vs "
-                            f"{sorted(set_b)}"
-                        ),
-                        agent_notes=(
-                            "post_service.rb:16-22 `find!`'s `if user` branch selects "
-                            "EXCLUSIVELY the evilq_* family (auth) or the findpublic_* "
-                            "family (anon) for the WHOLE request, never both — and "
-                            "posts_controller.rb:20-30's format.html/format.json branches "
-                            "are mutually exclusive per request too (LikeService/"
-                            "ReshareService#find_for_post — the like/reshare CONTEXTS — "
-                            "fire ONLY inside format.html's with_initial_interactions, "
-                            "never from format.json's with_interactions). Every run in "
-                            "this corpus is fixed to exactly one of the 4 run_dse.rb "
-                            "SCENARIOS for its whole duration. Verified empirically: "
-                            f"expr_a's observed scenario set is exactly {sorted(set_a)}, "
-                            f"expr_b's is exactly {sorted(set_b)} across the corpus — "
-                            "disjoint sets, so no single run's path can contain both."
                         ),
                     ))
     return out
@@ -643,6 +720,131 @@ def _tier1b_public_gates_attrs(all_exprs):
     return out
 
 
+# ---------------------------------------------------------------------------
+# ARGUMENT P — THE OVERNIGHT PINS (2026-09-10, installed by the completion
+# drive agent).  A SEPARATE, COUNTED TIER: printed on its own
+# (`OVERNIGHT_PINS=` in the `[assumptions]` line), reversed by one edit
+# (`_OVERNIGHT_PINS = ()`), and built WITHOUT it under `NO_PINS=1` — so no
+# number that depends on these is ever quoted without saying so.
+#
+# AUTHORITY.  Owner instruction 2026-09-10 (overnight), "continue working till
+# all endpoints are complete", together with the standing direction in
+# notifications `_COMPLETION_CAMPAIGN_20260910.md` §8 to INSTALL an
+# unreachable-side pin rather than leave it a proposal — and the drive brief's
+# condition that a genuinely unreachable side be DRIVEN AT TWICE first, rooted
+# from every base that reaches the site.  Both rounds are recorded in
+# `_COMPLETION_20260910.md` §8-§11.
+#
+# TWO FAMILIES, ON DIFFERENT ARGUMENTS.  They are kept apart deliberately: they
+# have different evidence and different falsifiers, and pinning one has no
+# bearing on the other.
+#
+#   P1  the three `SYM_LEN_..._records_N_rows != 0 :: taken` NullRelation sites
+#   P2  the four `..._as_api_response_N_row_guid != StringVal('') :: taken`
+#       framework short-circuits (the named defect, four instances here against
+#       people_stream's one)
+# ---------------------------------------------------------------------------
+
+_NULLRELATION_TRUE_UNREACHABLE = (
+    "targets.rb `rows_mock` short-circuits an ActiveRecord::NullRelation "
+    "receiver BEFORE it consults any seed: `next IterableSymbolicList.new(0, "
+    "name: \"#{name}_rows\", note: \"NullRelation (empty by definition, no "
+    "SQL)\", representative: nil) if null_rel && receiver.is_a?(null_rel)`. The "
+    "length is a hard-coded 0, so no seed can move it — MEASURED, not inferred: "
+    "a rooted seed carrying len(...)=1 was ACCEPTED into the dump's "
+    "concolic_seeds and the recorded var was still 0 with that note. And the "
+    "hard-coded 0 is FAITHFUL rather than a mock defect: NullRelation is what "
+    "`.none` returns and its `to_a` really is `[]` in the real app, so a real "
+    "run cannot produce a non-empty result from that receiver either. Census "
+    "through the engine's own load path (canonicalize_ordinals + fix_len_names) "
+    "over a stride-40 scan of the 96 422-dump snapshot: this canonical name "
+    "carries the NullRelation note in 100% of its observations, value 0 in "
+    "100%. These canonical names denote NullRelation sites SPECIFICALLY because "
+    "canonicalize_ordinals aliases a result by its NOTE and a NullRelation has "
+    "no SQL to alias on, so it is the one `records` call that keeps its bare "
+    "per-run ordinal. FALSIFIER: any run recording this expression `taken`; or, "
+    "at code level, a `records` call on a NullRelation receiver whose length is "
+    "not forced to 0 — remove the short-circuit and the seed takes effect. "
+    "KNOWN LIMITATION, stated rather than hidden: the SET of such names is not "
+    "closed, because a future run that puts a NullRelation at a new ordinal "
+    "mints a new canonical name with the same unreachable side. That is the "
+    "DecisionAlias defect (call_interceptor.rb:142-144) reaching the one case "
+    "with no note to alias on; a stable alias for the NullRelation branch fixes "
+    "it in targets.rb but needs a corpus regeneration."
+)
+
+_GUID_TRUE_UNREACHABLE = (
+    "action_dispatch/journey/formatter.rb:40-41 (actionpack 5.2.4.3, stock gem, "
+    "unmodified), reached from PostPresenter -> `author.as_api_response("
+    ":backbone)` -> Person#as_json (app/models/person.rb:344-356), whose line "
+    "351 is `url: Rails.application.routes.url_helpers.person_path(self)`. Line "
+    "40's `break if defaults[key].nil? && parameterized_parts[key].present?` "
+    "breaks the route-parts loop BEFORE line 41 (the '!=' pair's site) whenever "
+    "the guid is non-blank. When the guid IS blank, line 41 does run and "
+    "`guid.to_s != ''` is forced False by the value just established. So the "
+    "'!=' pair's True outcome cannot be produced by any seed: the only path "
+    "that evaluates it forces it False, and the alternative path never "
+    "evaluates it at all. Identical in mechanism, site and evidence to "
+    "people_stream's Argument 5 / 5b and to notifications' siblings. Corpus "
+    "differential over this endpoint's own snapshot, through the engine's load "
+    "path, two event sites only and byte-identical to the declared siblings "
+    "(blank.rb:126 'blank?' '==' and formatter.rb:41 'block in generate' '!='): "
+    "RE-MEASURED BY THE INSTALLING AGENT on a stride-8 scan of the 96 422-dump "
+    "snapshot (12 053 dumps), through canonicalize_ordinals + fix_len_names - "
+    "0 of 9 432 evaluations of the '!=' pair are taken (per family: 2 980 / "
+    "2 620 / 1 824 / 2 008, all not_taken), in 4 788 runs that evaluate it, and "
+    "530 runs show the other arm - the line-40 break, with the '!=' absent "
+    "entirely. (The preflight's figures on the smaller snapshot were 9 613 / "
+    "5 306 / 529; same shape, and the pin rests on the re-measurement.) "
+    "FALSIFIER: any run recording this expression taken; at code level, a route "
+    "default on person_path's :id segment (config/routes.rb has none) would "
+    "stop the break and make the True side reachable."
+)
+
+# THE TWO DRIVES CAME FIRST, AND BOTH FAILED — that is what authorises these.
+#
+#   round TR0910a  `_tree_root.py`, the 8 richest bases per (target, variant),
+#                  verbatim base seeds + one flip:      45 seeds ->    43 runs
+#   round TR0910w  `_tree_root_wide.py`, EVERY DISTINCT base seed dict in the
+#                  corpus that reaches the site (t06/t08 exhaustively; t01-t05
+#                  capped at 300 distinct contexts per variant):
+#                                                    3 024 seeds -> 3 024 runs
+#
+# `_tree_check.py` over the wide round, through the engine's own load path:
+# HIT=0 for all seven, with the expression EVALUATED on the other side 1 399 /
+# 514 / 1 111 / 1 159 / 1 209 / 291 / 134 times respectively — so the seeds
+# landed in the right contexts and the branch did not move. 0 JVM aborts, every
+# seed produced exactly one dump.
+_OVERNIGHT_PINS = tuple(
+    OneSideUntrackedPathAssumption(
+        expr=f"(SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_{_n}_rows != 0)",
+        tracked_side="not_taken",
+        description=("len(records)!=0 can only ever be observed False at this "
+                     "call site: it is an ActiveRecord::NullRelation, whose "
+                     "length rows_mock hard-codes to 0 -- OVERNIGHT PIN"),
+        agent_notes=_NULLRELATION_TRUE_UNREACHABLE,
+    # ORDINAL 5 ADDED 2026-09-10 (drive §47.3). The bulk round BV3A0910 minted
+    # a FOURTH NullRelation canonical name, which §9 had predicted in writing
+    # ("the set of such names is NOT closed"). Same evidence, re-measured on
+    # this endpoint's own grown corpus rather than inherited: 39/39
+    # observations carry the note 'NullRelation (empty by definition, no SQL)'
+    # and value 0, and the round's own runs show the seed ACCEPTED and
+    # CONTRADICTED at exactly the NullRelation receivers — (1,0) 3, (2,0) 4,
+    # (4,0) 3 against (0,0) 236 / (1,1) 227 / (2,2) 216 / (4,4) 242 at the
+    # real-SQL receivers sharing the raw ordinal.
+    ) for _n in (5, 7, 8, 10)
+) + tuple(
+    OneSideUntrackedPathAssumption(
+        expr=f"(SYM_RESULT_ActsAsApi__Collection_as_api_response_{_n}_row_guid "
+             f"!= StringVal(''))",
+        tracked_side="not_taken",
+        description=("guid!='' can only ever be observed False (framework "
+                     "short-circuit at journey/formatter.rb:40) -- OVERNIGHT PIN"),
+        agent_notes=_GUID_TRUE_UNREACHABLE,
+    ) for _n in (1, 2, 3, 4)
+)
+
+
 def build(runs=None) -> AssumptionSet:
     aset = AssumptionSet()
 
@@ -655,9 +857,6 @@ def build(runs=None) -> AssumptionSet:
                     seen.add(pc.expr)
                     all_exprs.append(pc.expr)
 
-    if runs:
-        for ia in _tier0_scenario_exclusivity(runs):
-            aset.add(ia)
     for ia in _tier1_same_target_pairs(all_exprs):
         aset.add(ia)
     for ia in _tier1b_public_gates_attrs(all_exprs):
@@ -670,6 +869,27 @@ def build(runs=None) -> AssumptionSet:
         aset.add(ia)
     for ia in _tier6_len_gates_row_attr(all_exprs):
         aset.add(ia)
+
+    # --- ARGUMENT P: THE OVERNIGHT PINS (separate, counted, reversible) ---
+    import os as _os
+    _pins = () if _os.environ.get("NO_PINS") else _OVERNIGHT_PINS
+    for _p in _pins:
+        aset.add(_p)
+
+    # --- RENDER-ORDINAL IDENTITY (2026-09-12, §79): declared, counted and
+    # reversible exactly like the pins above. See the block comment at the
+    # head of this file for the 192 365-dump evidence and for why it is a
+    # SymbolicConstraintAssumption rather than an AliasAssumption.
+    _rid = () if _os.environ.get("NO_RENDER_IDENTITY") else RENDER_IDENTITY
+    for _r in _rid:
+        aset.add(_r)
+
+    # --- RENDER TEXT SOURCE (2026-09-13, P29 §88): declared, counted and
+    # reversible exactly like RENDER_IDENTITY above. See the block comment at
+    # the head of this file for the 48 368-profile census and the falsifier.
+    _rts = () if _os.environ.get("NO_RENDER_TEXT_SOURCE") else RENDER_TEXT_SOURCE
+    for _r in _rts:
+        aset.add(_r)
 
     # results3 NOTE: results2's 3 hand-picked "presenter field-builder"
     # assumptions (find_by_1 vs find_by_2, both vs assoc_profile_nsfw) are
@@ -691,4 +911,39 @@ def build(runs=None) -> AssumptionSet:
     # missing combos in that specific sub-family, reported honestly in
     # REPORT.md rather than reintroducing a stale hardcoded mapping.
 
+    # CO-EVALUATION FILTER (2026-09-10). The engine demands a combination only
+    # over decisions some run evaluated TOGETHER, so an independence over a
+    # pair no run co-evaluates relaxes nothing. TIER 0 (scenario/format
+    # exclusivity) went with that rule: its whole argument was "these exprs'
+    # observed scenario sets are DISJOINT, so no single run's path contains
+    # both" — which is exactly the claim the engine now makes for itself, from
+    # the same evidence. It was "the dominant clique-size reducer"; under the
+    # new semantics there is nothing for it to reduce. This filter drops any
+    # survivor with the same property and says how many.
+    if runs:
+        sets = set()
+        for r in runs:
+            e = frozenset(pc.expr for pc in r.path_conditions)
+            if e:
+                sets.add(e)
+        coeval = set()
+        for e in maximal_sets(sets):
+            es = sorted(e)
+            for i, a in enumerate(es):
+                for b in es[i + 1:]:
+                    coeval.add(frozenset((a, b)))
+        kept, inert = [], 0
+        for a in aset.assumptions:
+            if isinstance(a, IndependenceAssumption) and \
+                    frozenset((a.expr_a, a.expr_b)) not in coeval:
+                inert += 1
+                continue
+            kept.append(a)
+        import sys
+        print(f"[assumptions] declared={len(kept)} "
+              f"INERT(never-co-evaluated, not declared)={inert} "
+              f"OVERNIGHT_PINS={len(_pins)} "
+              f"RENDER_IDENTITY={len(_rid)} "
+              f"RENDER_TEXT_SOURCE={len(_rts)}", file=sys.stderr)
+        aset.assumptions = kept
     return aset
