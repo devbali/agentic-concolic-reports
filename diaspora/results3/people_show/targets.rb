@@ -417,6 +417,30 @@ module PeopleTargets
           (@representative && concrete_length != 0) ? [yield(@representative)] : []
         end
         alias_method :collect, :map
+
+        # MEMBERSHIP AS A BOUNDARY DECISION (2026-09-20, P-7 follow-on).
+        #
+        # `publisher_helper.rb:33` does
+        #   `selected_aspects.include?(aspect) && ...`
+        # and `SymbolicList#include?` raises NotImplementedError by design
+        # ("membership has no Z3 path-condition support"). Once the P-7 repair
+        # made `post_default_aspects` return the REAL aspects list, that raise
+        # truncated the signed-in html render and cost 8 statements that the
+        # previous (wrong) `["public"]` arm still reached — measured, not
+        # assumed, by diffing the two probe runs.
+        #
+        # Membership over a symbolic list of unknown length genuinely has no
+        # Z3 encoding, so it is not tracked as a constraint. It is recorded the
+        # way every other unhookable boolean is in this project: a SEEDABLE
+        # DECISION at the boundary — the PC is written, the app branches
+        # concretely and consistently, and the DSE worklist can flip it. No app
+        # behaviour is fabricated: both arms are the app's own.
+        def include?(other)
+          vn = "#{sym_name}_includes"
+          decided = symbool(vn, ConcolicTargets.seed_for(vn, true),
+                            note: "SymbolicList#include? (membership boundary decision)")
+          decided == true
+        end
       end)
     end
 
@@ -684,20 +708,94 @@ module PeopleTargets
   # association reader + W3 find_target fire. User#person must not blow up on
   # a symbolic owner: @association_cache is initialized by symbolic_instance
   # and W3 find_target is declared, so the reader is safe.
+  # ==========================================================================
+  # F6 REPAIR (2026-09-18 reopen, _REOPEN_20260919_STATUS.md)
+  #
+  # The three identity pins below (`id`/`guid`/`person_id` -> 1 / "abc123" / 1)
+  # and the literal `Block.where(user_id: 1)` made the SIGNED-IN PRINCIPAL
+  # CONCRETE. `identity_symbolicity_audit` scored the resulting corpus RED:
+  # 7 030 literal `notifications.recipient_id = 1` and 20 696 literal
+  # `*.user_id = 1` binds, i.e. an access policy stated FOR ONE USER instead
+  # of for the principal. That contradicts DISCIPLINE §15 / ADVERSARY_WINS
+  # (Bali 2026-08-31): "the entrypoint is the post-auth action with a SYMBOLIC
+  # principal", already honoured by conversations_index (`SYM_USER_CONV_id`)
+  # and notifications_index (`SYM_USER_NI_id`).
+  #
+  # The repair is to DELETE the pins, not to add machinery:
+  # `ConcolicTargets.symbolic_instance` ALREADY mints one symbolic var per
+  # column of `users` (`SYM_USER_<tag>_id`, `..._guid`, ...), seeded through
+  # `seed_for` and therefore flippable by the DSE worklist exactly like every
+  # other symbolic var. The singleton defs were SHADOWING those vars — the
+  # corpus proved it, since the association-reader paths that never consult
+  # `#id` (e.g. `aspects`, the has_one `person`) already emitted
+  # `$$(SYM_USER_PE_id)` in the very same dumps where `contact_for`/
+  # `block_for` emitted `= 1`.
+  #
+  #   - `id`         -> the symbolic `users.id` column var (the principal).
+  #   - `person_id`  -> NOT a column; `user.rb:60` is
+  #                     `delegate :id, :guid, to: :person, prefix: true`, so
+  #                     dropping the pin routes it through the REAL has_one
+  #                     `person` reader (P-10 / W3 find_target), whose id is
+  #                     the symbolic finder result — the same shape
+  #                     conversations_index ships.
+  #   - `guid`       -> likewise a delegate (`user.rb:57`, to :person).
+  #   - `blocks`     -> still a REAL relation (so `block_for` keeps firing the
+  #                     finder mock under the P-5 shape), but bound to the
+  #                     symbolic id rather than the literal 1.
+  #
+  # DELIBERATELY KEPT CONCRETE (leaf, non-identity, reported not hidden):
+  # `diaspora_handle` (drives the local/remote host split, which the
+  # `remote?` decision reads as a Ruby string — a symbolic value there is the
+  # `Contains`/`SubString` PC class the fold cannot represent anyway),
+  # `language` (I18n.locale must be a real locale) and `gender` (leaf text).
+  # None of the three is a principal column under `queries_config/app.json`.
+  # ==========================================================================
   def signed_in_user(tag)
     user = ConcolicTargets.symbolic_instance(User, "SYM_USER_#{tag}", "User (current)")
-    user.define_singleton_method(:id)              { 1 }
-    user.define_singleton_method(:guid)            { "abc123" }
-    user.define_singleton_method(:person_id)       { 1 }
     user.define_singleton_method(:diaspora_handle) { "alice@localhost" }
     user.define_singleton_method(:language)        { "en" }
     user.define_singleton_method(:gender)          { "" }
+    # ----------------------------------------------------------------------
+    # P-7 REPAIR (2026-09-20). `users.post_default_public` is a BOOLEAN COLUMN
+    # read in BARE-TRUTHINESS position by the app:
+    #
+    #   user.rb:272  def post_default_aspects
+    #                  if post_default_public then ["public"]
+    #                  else aspects.where(post_default: true).to_a
+    #
+    # `symbolic_instance`'s generic column reader returns a SymbolicBool, and
+    # ANY object is truthy in Ruby, so `if post_default_public` always took the
+    # `["public"]` arm and `aspects.where(post_default: true)` was never
+    # issued. That is exactly the statement `POLICY_HEADER.txt` declares open
+    # as P-7 — and the header's stated cause (a sprockets asset wall
+    # truncating the render) is NOT the operative one: with the render now
+    # completing cleanly end to end, the statement still did not appear.
+    # Measured 2026-09-20 by the completion gate's note_check, which saw the
+    # real app issue it and found zero corpus notes for it.
+    #
+    # `symbolic_instance` already solves this shape for PREDICATE readers
+    # (`post.public?`): record the PC at the reader boundary and return the
+    # CONCRETE bool, so the app branches concretely and consistently while the
+    # decision stays flippable by the DSE worklist. The generic reader cannot
+    # do it for a PLAIN column reader without breaking every
+    # `<col> == True` comparison the corpus relies on (e.g. the
+    # `assoc_profile_public_details == True` PCs), so it is applied HERE, to
+    # the one column this endpoint reads in bare-truthiness position.
+    # ----------------------------------------------------------------------
+    pdp = (user.concolic_attrs["post_default_public"] rescue nil)
+    if pdp.respond_to?(:sym_name)
+      user.define_singleton_method(:post_default_public) do
+        val = pdp.value
+        pdp.send(:record!, "(#{pdp.sym_name} == True)", "post_default_public", taken: val)
+        val
+      end
+    end
     # User#blocks is a DECLARED target (SymbolicList w/ rep — no find_by), so
     # the real has_many reader is shadowed; override with a REAL relation so
     # User#block_for -> blocks.find_by(person_id:) fires the finder mock
     # under the real shape (P-5: SELECT blocks.* WHERE user_id = ? AND
-    # person_id = ?). user_id: 1 matches the pinned id.
-    user.define_singleton_method(:blocks) { Block.where(user_id: 1) }
+    # person_id = ?). The bind is the SYMBOLIC principal id (F6 repair).
+    user.define_singleton_method(:blocks) { Block.where(user_id: id) }
     # P-10 (2026-09-04, adversary R1): UserSymPersonAssociation#person now
     # routes symbolic users through the REAL has_one reader
     # (association(:person).reader -> W3 find_target -> the
@@ -814,8 +912,18 @@ module PeopleShowSymParams
       concrete = query.value
       real_result = !(concrete.nil? || concrete.lstrip.empty?) &&
         Validation::Rule::DiasporaId.new.valid_value?(concrete.downcase).present?
-      decided = symbool(vn, ConcolicTargets.seed_for(vn, real_result),
-                         note: "PeopleController#diaspora_id?(#{query.sym_name})")
+      # NB one line, deliberately (2026-09-19, completion-gate build): JRuby's
+      # Coverage attributes a multi-line call to its FIRST line and reports 0
+      # for the continuation lines, so while this call was split the `note:`
+      # line measured as never-executed and the shim test scored
+      # FAIL-COVERAGE 88.9% (missed_lines [857]) even though every call
+      # evaluates it. The runner's existing escapes (generated_method?,
+      # straight_line_body?) do not apply here because the body branches.
+      # Joining the call is a pure formatting change — identical semantics —
+      # that lets the instrument measure what in fact runs, rather than
+      # waiving the 100% bar (Rule S: replace the unmeasurable instrument,
+      # never the claim).
+      decided = symbool(vn, ConcolicTargets.seed_for(vn, real_result), note: "PeopleController#diaspora_id?(#{query.sym_name})")
       decided == true # explicit compare — bare truthiness records no PC (TODO.txt)
     end
   end
@@ -845,7 +953,47 @@ module PeopleShowSymParams
       rescue StandardError
         # defensive: the diaspora_id? find_by_username path must never crash
         # on the reader (falls back to the old fabricated instance).
-        ConcolicTargets.symbolic_instance(Person, "SYM_PERSON_via_user", "User#person (has_one)")
+        #
+        # B-2 (2026-09-15, docs/BOUNDARY_NOTE_GAPS_20260915.md §B-2). This
+        # fallback used to mint the Person with the PROSE note
+        # "User#person (has_one)". `symbolic_instance` stamps that note onto
+        # every `SYM_PERSON_via_user_*` column var, and `RunTransformer` only
+        # registers a producer for a note `_is_select` accepts (one that STARTS
+        # with SELECT), so the row was unaccountable and each bind on it
+        # shipped as an unloadable `_SYM_PERSON_via_user_id` placeholder.
+        #
+        # ADDITIVE REPAIR: record the STATEMENT this has_one reader stands for
+        # (`User has_one :person, foreign_key: :owner_id`), rendered by the
+        # shared `ConcolicTargets.render_relation_sql` so it is byte-identical
+        # to what the ordinary query boundary writes for the same relation.
+        # `Person.where(...)` is LAZY and only its arel is rendered, so THIS
+        # FALLBACK STILL ISSUES NO QUERY — the change is note-only. The symbol
+        # NAME `SYM_PERSON_via_user` is UNCHANGED (X1 §7.1's
+        # `SYM_PERSON_via_<result_name>` rename is not additive-safe: it would
+        # rewrite every note binding it and void app.json's
+        # `non_principal_identity_name` veto). If the renderer raises or yields
+        # anything that is not a SELECT, the OLD PROSE NOTE is used verbatim,
+        # so the failure case is byte-identical to the pre-repair boundary.
+        rendered = begin
+                     # Rule T4 (concolic_targets.rb `finder_note`): a
+                     # SINGULAR association read is a LIMIT 1 read, and the
+                     # LIMIT is APPENDED there rather than rendered by Arel.
+                     # Build the note the same way so it is byte-identical to
+                     # the note the ordinary query boundary already writes.
+                     s = ConcolicTargets.render_relation_sql(
+                       Person.where(owner_id: self[:id])
+                     )
+                     s =~ /\sLIMIT\s/ ? s : "#{s} LIMIT 1"
+                   rescue Exception # rubocop:disable Lint/RescueException
+                     # As in ConcolicTargets.sql_for: note rendering must NEVER
+                     # crash the mock, and a symbolic wall raises
+                     # NotImplementedError < ScriptError, which `rescue
+                     # StandardError` would let escape. B-4's live failure
+                     # (NoMethodError in the Arel renderer) is caught here too.
+                     nil
+                   end
+        note = rendered.to_s.start_with?("SELECT") ? rendered : "User#person (has_one)"
+        ConcolicTargets.symbolic_instance(Person, "SYM_PERSON_via_user", note)
       end
     end
   end

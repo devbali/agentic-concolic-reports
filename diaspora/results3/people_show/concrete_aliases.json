@@ -1,42 +1,85 @@
 {
- "ActiveRecord::Relation.to_a": [
-  "ActiveRecord::Relation.records"
+ "ActiveRecord::Associations::CollectionAssociation.find_target": [
+  "ActiveRecord::Relation.records",
+  "ActiveRecord::Relation.to_a",
+  "ActiveRecord::Associations::CollectionProxy.records",
+  "ActiveRecord::Associations::CollectionProxy.load_target",
+  "ActiveRecord::FinderMethods.first",
+  "ActiveRecord::FinderMethods.take"
  ],
- "ActiveRecord::Relation.records": [
-  "ActiveRecord::Relation.to_a"
+ "ActiveRecord::Associations::CollectionAssociation.load_target": [
+  "ActiveRecord::Relation.records",
+  "ActiveRecord::Relation.to_a",
+  "ActiveRecord::Associations::CollectionProxy.records",
+  "ActiveRecord::Associations::CollectionProxy.load_target",
+  "ActiveRecord::FinderMethods.first",
+  "ActiveRecord::FinderMethods.take"
+ ],
+ "ActiveRecord::Associations::CollectionProxy.load_target": [
+  "ActiveRecord::Associations::CollectionProxy.records"
  ],
  "ActiveRecord::Associations::CollectionProxy.records": [
   "ActiveRecord::Associations::CollectionProxy.to_a",
   "ActiveRecord::Associations::CollectionProxy.load_target"
  ],
- "ActiveRecord::Associations::CollectionProxy.load_target": [
-  "ActiveRecord::Associations::CollectionProxy.records"
- ],
- "ActiveRecord::FinderMethods.first": [
+ "ActiveRecord::Associations::SingularAssociation.find_target": [
+  "ActiveRecord::Associations::CollectionProxy.load_target",
+  "ActiveRecord::Associations::CollectionProxy.records",
   "ActiveRecord::Core::ClassMethods.find_by",
-  "ActiveRecord::FinderMethods.first"
+  "ActiveRecord::FinderMethods.find_by",
+  "ActiveRecord::FinderMethods.first",
+  "ActiveRecord::FinderMethods.take",
+  "ActiveRecord::Relation.records",
+  "ActiveRecord::Relation.to_a"
+ ],
+ "ActiveRecord::Base.update_column": [
+  "ActiveRecord::Base.update_column",
+  "ActiveRecord::Base.update_columns",
+  "ActiveRecord::Persistence.update_column",
+  "ActiveRecord::Persistence.update_columns"
+ ],
+ "ActiveRecord::Base.update_columns": [
+  "ActiveRecord::Base.update_column",
+  "ActiveRecord::Base.update_columns",
+  "ActiveRecord::Persistence.update_column",
+  "ActiveRecord::Persistence.update_columns"
+ ],
+ "ActiveRecord::FinderMethods.exists?": [
+  "ActiveRecord::FinderMethods.exists?"
  ],
  "ActiveRecord::FinderMethods.find_by": [
   "ActiveRecord::Core::ClassMethods.find_by",
   "ActiveRecord::FinderMethods.find_by"
  ],
- "ActiveRecord::FinderMethods.exists?": [
-  "ActiveRecord::FinderMethods.exists?"
+ "ActiveRecord::FinderMethods.first": [
+  "ActiveRecord::Core::ClassMethods.find_by",
+  "ActiveRecord::FinderMethods.first"
+ ],
+ "ActiveRecord::FinderMethods.take": [
+  "ActiveRecord::Associations::SingularAssociation.find_target",
+  "ActiveRecord::Relation.records"
  ],
  "ActiveRecord::Persistence.update_column": [
   "ActiveRecord::Base.update_column",
-  "ActiveRecord::Persistence.update_column"
- ],
- "ActiveRecord::Base.update_column": [
-  "ActiveRecord::Persistence.update_column",
-  "ActiveRecord::Base.update_column"
- ],
- "ActiveRecord::Persistence.update_columns": [
   "ActiveRecord::Base.update_columns",
+  "ActiveRecord::Persistence.update_column",
   "ActiveRecord::Persistence.update_columns"
  ],
- "ActiveRecord::Base.update_columns": [
-  "ActiveRecord::Persistence.update_columns",
-  "ActiveRecord::Base.update_columns"
+ "ActiveRecord::Persistence.update_columns": [
+  "ActiveRecord::Base.update_column",
+  "ActiveRecord::Base.update_columns",
+  "ActiveRecord::Persistence.update_column",
+  "ActiveRecord::Persistence.update_columns"
+ ],
+ "ActiveRecord::Relation.records": [
+  "ActiveRecord::Associations::CollectionProxy.load_target",
+  "ActiveRecord::Associations::CollectionProxy.records",
+  "ActiveRecord::FinderMethods.first",
+  "ActiveRecord::FinderMethods.take",
+  "ActiveRecord::Relation.records",
+  "ActiveRecord::Relation.to_a"
+ ],
+ "ActiveRecord::Relation.to_a": [
+  "ActiveRecord::Relation.records"
  ]
 }

@@ -396,8 +396,27 @@ def other_value(parsed)
   end
 end
 
+# NAME BOUNDARY (2026-09-14) — keep length decisions FLIPPABLE.
+#
+# The runtimes used to mint a list's cardinality variable as `len(X)`; they now
+# mint `SYM_LEN_X`, because `len(X)` is not a legal Python identifier and
+# `concolic_engine/solver.py` exec/evals its declarations. The flip matchers
+# below are written in the OLD spelling, so a new dump's `(SYM_LEN_X != 0)`
+# would MISS the dedicated length branch — and the generic `(VAR op LIT)`
+# matcher would catch it instead, producing a seed that IGNORES `want_taken`.
+# That is a silently WRONG flip, not a clean miss: DSE would stop exploring
+# list-cardinality decisions and never say so.
+#
+# Normalise to the matchers' spelling on the way in. Seed keys stay
+# `len(...)`-spelled, which `concolic_targets.rb`'s `seed_for` accepts in both
+# spellings, so pre-existing seed files and snapshots are unaffected.
+# See reports/diaspora/docs/NAME_BOUNDARY_PLAN_20260914.md.
+def canon_len(expr)
+  expr.to_s.strip.gsub(/SYM_LEN_([A-Za-z0-9_]+)/, 'len(\1)')
+end
+
 def flip_seed(expr, want_taken)
-  s = expr.to_s.strip
+  s = canon_len(expr)
 
   # `diaspora_handle.split('@')[0]` (Person#username -> #atom_url, reached
   # from layout_helper.rb's current_user_atom_tag on EVERY html render, now
@@ -590,6 +609,28 @@ def explore(prefix)
   capped      = nil
 
   stack = [[{}, 0]]
+  # -------------------------------------------------------------------------
+  # GATE REPLAY PROTOCOL (2026-09-19, completion-gate build).
+  #
+  # `assumption_checker.run_probe` replays a probe by launching THIS runner
+  # with SEEDS_ONLY=1, EXTRA_SEEDS_JSON=<file of seed dicts> and
+  # LABEL_SUFFIX=<token>, then globbing `dump_*<suffix>*.json` out of the batch
+  # directory. None of that existed here, so the assumption gate could not run
+  # against people_show at all. Ported from people_stream/run_dse.rb:455-465 +
+  # 495-512 + 549-558 (itself ported from notifications_index), adapted to this
+  # runner's `[seeds_hash, min_k]` stack items rather than the
+  # `[parent_id, flip_json]` items people_stream uses.
+  #
+  # EVERY branch below is env-guarded: with none of these variables set the
+  # exploration is byte-for-byte what it was.
+  # -------------------------------------------------------------------------
+  if ENV["EXTRA_SEEDS_JSON"] && File.exist?(ENV["EXTRA_SEEDS_JSON"])
+    _extra = JSON.parse(File.read(ENV["EXTRA_SEEDS_JSON"]))
+    _roots = _extra.map { |h| [h, 0] }
+    stack  = ENV["SEEDS_ONLY"] ? _roots : (_roots + stack)
+    puts format("[seeds] %d extra roots from %s (SEEDS_ONLY=%s)",
+                _roots.size, ENV["EXTRA_SEEDS_JSON"], ENV["SEEDS_ONLY"] ? "1" : "0")
+  end
   first_run = true
 
   until stack.empty?
@@ -606,16 +647,45 @@ def explore(prefix)
 
     seeds, min_k = stack.pop
     key = digest(JSON.generate(seeds.sort.to_h) + "|#{min_k}")
-    next if seen_seeds.include?(key)
-    seen_seeds << key
+    # SEEDS_ONLY REPLAY (drift fix, people_stream/run_dse.rb:495-512): state
+    # dedup is for FRONTIER exploration. In a replay EVERY root must produce
+    # its own dump, because the caller matches a probe back by the recorded
+    # `concolic_seeds`; a root skipped here leaves it unable to tell whether
+    # its seed was honoured, contradicted, or never evaluated.
+    unless ENV["SEEDS_ONLY"]
+      next if seen_seeds.include?(key)
+      seen_seeds << key
+    end
 
     flippable = []
 
     runs += 1
-    label = format("%s_%04d", prefix, runs)
+    label = format("%s_%04d%s", prefix, runs, ENV["LABEL_SUFFIX"].to_s)
 
     begin
       dump = run_one(prefix, label, seeds)
+      # GATE REPLAY PROTOCOL (2026-09-19): record the seed dict the runner was
+      # HANDED. `assumption_checker.seeds_as_written` reads exactly this key to
+      # decide which base a probe may be built on and whether a replayed seed
+      # was honoured; without it every dump reports `{}` and the gate cannot
+      # attribute anything. people_stream/run_dse.rb:516 does the same.
+      dump["concolic_seeds"] = seeds if dump.is_a?(Hash)
+      # GATE REPLAY PROTOCOL, part 2 (2026-09-19). `assumption_checker`'s
+      # corpus index reads a dump's scenario from `concolic_scenario.name`
+      # (_index_row:464) and replays each probe in THAT scenario via the
+      # manifest's `env_by_scenario`. Without it every dump indexes as
+      # scenario `nil`, so each probe launch replays ALL NINE scenarios —
+      # nine times the cost, and it evaluates a seed in scenarios it was
+      # never explored in. comments_index / conversations_index /
+      # notifications_index / posts_show all record this; people_stream does
+      # not, and its gate is the 14 h one.
+      if dump.is_a?(Hash)
+        dump["concolic_scenario"] = {
+          "name"      => prefix,
+          "format"    => (scen_cfg = SCENARIOS.fetch(prefix))[:format].to_s,
+          "signed_in" => scen_cfg[:sign_in] == true,
+        }
+      end
     rescue Exception => e # rubocop:disable Lint/RescueException
       puts "  [#{label}] HARNESS FAILURE #{e.class}: #{e.message.to_s[0, 200]}"
       errors["harness:#{e.class}"] += 1
@@ -627,7 +697,7 @@ def explore(prefix)
     pcs = path_conditions(dump)
     sig = digest(sig_of(pcs))
 
-    if first_run || !seen_paths.include?(sig)
+    if first_run || ENV["SEEDS_ONLY"] || !seen_paths.include?(sig)
       seen_paths << sig
       first_run = false
       written += 1
@@ -637,7 +707,14 @@ def explore(prefix)
                   dump["error"] ? "error=#{dump['error']['type']}" : "")
     end
 
+    # SEEDS_ONLY REPLAY, second half of the drift fix (people_stream
+    # run_dse.rb:549-558): a rooted round must replay ITS ROOTS, nothing else.
+    # Without this, SEEDS_ONLY would only change which roots START the
+    # worklist — every replayed root would still push its whole flip frontier
+    # (and its composed children below), so a 2-seed probe would run to the
+    # MAX_RUNS cap and the caller could not attribute a hit to a seed.
     pcs.each_with_index do |(expr, taken), k|
+      next if ENV["SEEDS_ONLY"]
       next if k < min_k
       fl = flip_any(expr, !taken)
       if fl.nil?
@@ -658,7 +735,7 @@ def explore(prefix)
     # depth to reach the missing dot×guid×stream×branch-B conjunctions
     # (STRUCTURAL_GAPS blockers #1/#5). Same dedup key scheme; bounded per
     # run (COMPOSE_CAP, default 6 per way).
-    DseCompose.compose_children(seeds, flippable, cap: COMPOSE_CAP).each do |child, mk|
+    DseCompose.compose_children(seeds, flippable, cap: (ENV["SEEDS_ONLY"] ? 0 : COMPOSE_CAP)).each do |child, mk|
       ckey = digest(JSON.generate(child.sort.to_h) + "|#{mk}")
       next if seen_seeds.include?(ckey)
       seen_seeds << ckey
@@ -688,7 +765,27 @@ end
 
 DIR = HERE
 FileUtils.mkdir_p(DIR)
-Dir.glob(File.join(DIR, "dump_*.json")).each { |f| File.delete(f) }
+# CORPUS WIPE — GUARDED (2026-09-19, completion-gate build).
+#
+# This line used to be unconditional, which made people_show the one endpoint
+# that could not be gated or demand-driven: `assumption_checker.run_probe`
+# launches this runner once per probe, so the FIRST probe would have deleted
+# the entire corpus it was being probed against. (It also meant any accidental
+# launch destroyed an adversarially-verified artifact with no undo — the
+# reopen brief had to call that out explicitly.)
+#
+# Policy, matching people_stream/run_dse.rb:596-598: wipe only when explicitly
+# asked, and NEVER while seeding. A gate probe always sets EXTRA_SEEDS_JSON, so
+# it can never reach the delete.
+#
+#   KEEP_DUMPS=0          -> wipe (the old behaviour, now opt-in)
+#   EXTRA_SEEDS_JSON set  -> never wipe, regardless of KEEP_DUMPS
+#   default               -> never wipe (accumulate)
+#
+# A full fresh drive therefore passes KEEP_DUMPS=0 deliberately.
+if ENV["KEEP_DUMPS"] == "0" && !ENV["EXTRA_SEEDS_JSON"]
+  Dir.glob(File.join(DIR, "dump_*.json")).each { |f| File.delete(f) }
+end
 
 t0 = Time.now
 scenario_keys = SCENARIOS.keys
@@ -703,7 +800,13 @@ summary = {
   "scenarios"       => scenario_summaries,
   "total_elapsed_seconds" => (Time.now - t0).round(1),
 }
-File.write(File.join(DIR, "exploration_summary.json"), JSON.pretty_generate(summary))
+# SUMMARY_SUFFIX (2026-09-19): so several SCENARIO_ONLY drives can run in
+# PARALLEL without clobbering each other's summary. Dumps already carry the
+# scenario in their filename, so only this file collided. Unset => the usual
+# `exploration_summary.json`, unchanged. A parallel drive merges the parts
+# back into that canonical name afterwards (_merge_summaries.py).
+File.write(File.join(DIR, "exploration_summary#{ENV['SUMMARY_SUFFIX']}.json"),
+           JSON.pretty_generate(summary))
 
 puts "\n== people_show run_dse.rb done (#{(Time.now - t0).round(1)}s) =="
 scenario_summaries.each do |s|

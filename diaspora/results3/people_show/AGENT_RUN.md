@@ -933,3 +933,61 @@ the frozen layout/template layer, which is out of scope for this repair.
 - A future round (adversary R2, independent real-run) may revisit these items
   if the template walls are lifted; until then they are the documented
   residual missing set for people_show.
+
+---
+
+# EXTRACTION + SET-ASIDE (coordinator, 2026-09-07)
+
+User decision: extract the policy from this corpus the normal way, then set
+the endpoint aside and move on to notifications_index.
+
+## What was run (in order)
+
+| step | command | result |
+|---|---|---|
+| F2 vanilla | `skipped_pcs_audit <batch>` | parsed 421 355 · dropped **48 047** · by-design 55 976 → RED |
+| F2 patched | `skipped_pcs_audit <batch> --patched _experiment/variant_d` | parsed 443 340 · dropped **26 062** → still RED |
+| F5 | `statement_note_lint <batch>` | **pass** — no red-level note findings (134 799 junk-note events, 9 distinct, all documented walls) |
+| F4 | `tools/complement_audit.py <batch>` | **exit 0** — every `Contains`/`SubString` handle branch has note families on BOTH sides, mergeable to unscoped |
+| F1+F3 | `bind_resolution_audit <batch>` | **pass** — 243 243 bind occurrences, resolved 187 604, param/leaf 55 639, AMBIGUOUS 0, UNRESOLVABLE 0, DERIVED-MISBOUND 0 |
+| F6 | `identity_symbolicity_audit <batch>` | **RED** — owner_id 11 436 sym / 0 literal; recipient_id 6 599 sym / **7 030 literal**; user_id 27 008 sym / **20 696 literal** |
+| extract | `_extract_people_show_streaming.py` (variant_d fold installed) | 341 665 raw → 66 distinct → 8 subsumed → **58 views**, 12 997/12 997 dumps loaded, 0 errors, 6m07s, run in its own systemd unit at MemoryMax=6300M |
+
+`pc_visibility_audit` was NOT run (it needs the Phase-1 gate-column list, which
+this batch never produced).
+
+## The two findings carried into the policy header
+
+1. **A dropped PC class no fold recovers.** The `variant_d` patch is mandatory
+   here (it recovers 21 985 `(VAR == VAR(_))` / `(VAR != VAR(_))` records,
+   exactly as on comments_index) and is installed by the extractor. But 26 062
+   records — `Contains(VAR(_), VAR)`, `Not(Contains(…))`, `IndexOf(…) == N`,
+   `Contains(VAR(_), SubString(…))`, `(SubString(…) == '_')`, 4.96% of all PCs
+   — survive it: the app's '@'/'.' decisions on `people.diaspora_handle` (the
+   local-vs-remote split). The fold's PC grammar has no SQL form for a
+   substring predicate. Per-scenario census + `complement_audit` establish that
+   these do not gate WHICH statements are issued, so the view SET is unaffected
+   and the loss is WHERE precision — the views are broader, never narrower.
+   This is the first endpoint where this class appears; conversations_index and
+   comments_index were measured clean of it.
+
+2. **F6 RED — the principal is concrete on every signed-in arm.** The
+   signed-in harness added during the R1 repair instantiates the principal
+   concretely (fixture user 9 / person 1), so 27 726 principal binds are
+   literal and the fold emits the literal id where it cannot see a symbolic
+   one. View #1 of the emitted file shows both in one statement:
+   `share_visibilities.user_id = 1` beside `people0.owner_id = _MY_UID`.
+   Those views are stated FOR ONE USER. Not repaired — the repair is a re-run
+   of the `auth_*` scenarios with a symbolic principal (DISCIPLINE §15), which
+   regenerates the corpus and is out of scope for an extract-and-set-aside.
+   **This is the thing to fix first if people_show is ever reopened.**
+
+## Deliverables
+
+- `results3/queries_from_runs/people_show.sql` — 58 views, canonical header
+  applied from `results3/people_show/POLICY_HEADER.txt`
+- `results3/queries_from_runs/_summary_people_show.json`
+- `results3/queries_from_runs/_extract_people_show_streaming.py`
+- `results3/people_show/POLICY_HEADER.txt` (new; canonical, re-applied by every
+  future extraction) — carries the scope, the standing of the file, the P-7/P-8
+  declared-open items, the fold-fidelity residue and the F6 disposition

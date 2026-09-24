@@ -82,8 +82,61 @@ module ConcolicTargets
 
   module_function
 
+  # Sentinel distinguishing "seeded with nil/false" from "not seeded at all".
+  SEED_MISS = Object.new.freeze
+
+  # ------------------------------------------------------------------
+  # NAME BOUNDARY (2026-09-14) — seed keys accept BOTH length spellings
+  # ------------------------------------------------------------------
+  #
+  # The runtimes used to mint a container's cardinality variable literally as
+  # `len(X)`, and every batch renamed it to `SYM_LEN_X` at load because
+  # `len(X)` is not a legal PYTHON identifier and `concolic_engine/solver.py`
+  # transports Z3 terms as Python source it `exec`/`eval`s. The runtimes now
+  # mint the solver-legal spelling directly (`SymbolicVar.len_var_name`), so
+  # the second dialect is gone going forward.
+  #
+  # But `seed_for` matches EXACTLY and falls back to `default` SILENTLY. Every
+  # seed file and every dump snapshot written before that change keys its
+  # length seeds `len(X)`, so without this shim a pre-change seed replayed
+  # under the new runtime would be quietly IGNORED — no error, no log, just an
+  # inert knob and a flip that "did not take". That is the same silent-miss
+  # failure the rename was made to end, so both spellings are accepted here.
+  # The asked-for spelling always wins; the sibling is only consulted on a
+  # miss. See reports/diaspora/docs/NAME_BOUNDARY_PLAN_20260914.md.
+  LEGACY_LEN_RE  = /\Alen\((.+)\)\z/.freeze
+  SYM_LEN_PREFIX = "SYM_LEN_"
+
+  # True when `var_name` names a container's cardinality, in either spelling.
+  def length_var?(var_name)
+    s = var_name.to_s
+    s.start_with?(SYM_LEN_PREFIX) || !LEGACY_LEN_RE.match(s).nil?
+  end
+
+  # Every spelling a seed dict might key `var_name` by, asked-for form FIRST.
+  def seed_aliases(var_name)
+    s = var_name.to_s
+    m = LEGACY_LEN_RE.match(s)
+    if m
+      [var_name, "#{SYM_LEN_PREFIX}#{m[1]}"]
+    elsif s.start_with?(SYM_LEN_PREFIX)
+      [var_name, "len(#{s[SYM_LEN_PREFIX.length..-1]})"]
+    else
+      [var_name]
+    end
+  end
+
+  # The seed override for `var_name` under any accepted spelling, or the
+  # sentinel `miss` when none is present.
+  def seed_lookup(var_name, miss)
+    ov = ConcolicTargets.seed_overrides
+    seed_aliases(var_name).each { |k| return ov[k] if ov.key?(k) }
+    miss
+  end
+
   def seed_for(var_name, default)
-    ConcolicTargets.seed_overrides.fetch(var_name, default)
+    v = seed_lookup(var_name, SEED_MISS)
+    v.equal?(SEED_MISS) ? default : v
   end
 
   # ---------------------------------------------------------------------
@@ -164,12 +217,40 @@ module ConcolicTargets
   # see activerecord .../dynamic_matchers.rb -- so one fix here covers all of
   # them). Previously this branch printed a useless "args=..." string for
   # every call. See ../PHASE_A_PATCH.md Patch 2 for full provenance.
+  # RC-1 (2026-09-19, _RAILS_ENV_MOD_FIX_20260919.md): render the model's REAL
+  # default projection instead of a hardcoded `"table".*`. A default_scope that
+  # narrows the select list — e.g. lazy_columns' `lazy_load :bio, :gender,
+  # :birthday, :location` in app/models/profile.rb, active only when
+  # `Rails.env.include?("mod")` — is otherwise invisible to the note, so the
+  # corpus records a star projection that expand_star() widens to all 18
+  # columns and the conditional disclosure of those 4 is lost.
+  #
+  # Ported VERBATIM from `_redrive_20260919/_proto/concolic_targets.rb`
+  # (validated end-to-end on comments_index: disclosure_precision
+  # 0.9604 -> 1.0000, 0 branching drift over 26 528 dumps).
+  #
+  # App-agnostic: `Profile` is the only model in this app that calls
+  # `lazy_load`, and `grep -rn "default_scope" app/ lib/` finds nothing else,
+  # so for every other model `select_values` is empty and this returns the
+  # star unchanged.
+  def default_projection(klass)
+    tbl = klass.respond_to?(:table_name) ? klass.table_name : nil
+    star = tbl ? %("#{tbl}".*) : "*"
+    return star unless klass.respond_to?(:all)
+    sel = klass.all.select_values
+    return star if sel.nil? || sel.empty?
+    sel.map(&:to_s).join(", ")
+  rescue Exception # rubocop:disable Lint/RescueException
+    tbl ? %("#{tbl}".*) : "*"
+  end
+
   def class_finder_sql(klass, args)
     table = klass.respond_to?(:table_name) ? klass.table_name : klass.name
     where_hash = extract_finder_where(klass, args)
     if where_hash && !where_hash.empty?
       conditions = where_hash.map { |k, v| %("#{table}"."#{k}" = #{render_arg_value(v)}) }.join(" AND ")
-      %(SELECT "#{table}".* FROM "#{table}" WHERE #{conditions})
+      # RC-1 (2026-09-19): real default projection, not a hardcoded star.
+      %(SELECT #{default_projection(klass)} FROM "#{table}" WHERE #{conditions})
     else
       "#{klass.name} query (class-level finder; WHERE unavailable -- interceptor " \
       "drops kwargs for *rest-signature finder methods called with keyword " \
@@ -293,6 +374,23 @@ module ConcolicTargets
   # Render one bind value: symbolic -> $$(SYMNAME); else inspect. The raw
   # value may be wrapped in a QueryAttribute (value_before_type_cast) or be
   # the bare value.
+  #
+  # 2026-09-21 (people_show flip-both false-FAIL fix): a Time/Date/DateTime
+  # bind (Stream::Base#max_time -- `posts.created_at < <bound>`, defaults to
+  # `Time.now + 1` -- Post.for_a_stream) used to fall through to `raw.inspect`,
+  # which renders UNQUOTED ("2026-09-20 23:40:14 +0000") -- and is also just
+  # wrong: real emitted SQL quotes a timestamp literal. call_shape()
+  # (src/concolic_engine/assumptions.py) wildcards QUOTED string literals
+  # only (`'[^']*'` -> `'?'`); an unquoted literal survives into the shape
+  # identity verbatim. Because max_time is freshly minted on every single
+  # replay, that made the `records`/`to_a` "posts WHERE public = true ..."
+  # shape carry a DIFFERENT note on every execution -- base, flip-A, flip-B
+  # and flip-both each mint their own timestamp -- so the assumption gate's
+  # flip-both "novel shape" check could never match it back to base/flip-A/
+  # flip-B and FAILed every IndependenceAssumption whose downstream trace
+  # reaches this query, regardless of the decisions actually being
+  # independent. Quoting Time-likes here (same as String) makes call_shape's
+  # existing wildcard collapse them to '?', same as any other literal.
   def render_bind_value(v)
     raw = if v.respond_to?(:value_before_type_cast)
             v.value_before_type_cast
@@ -304,6 +402,9 @@ module ConcolicTargets
     if raw.respond_to?(:sym_name) && raw.sym_name
       "$$(#{raw.sym_name})"
     elsif raw.is_a?(String)
+      "'#{raw}'"
+    elsif raw.is_a?(Time) || raw.is_a?(Date) ||
+          (defined?(ActiveSupport::TimeWithZone) && raw.is_a?(ActiveSupport::TimeWithZone))
       "'#{raw}'"
     else
       raw.inspect
@@ -321,7 +422,39 @@ module ConcolicTargets
   # column returning symbolic values chosen by column type. All attr vars
   # carry note: sql. Also overrides []/read_attribute/_read_attribute so
   # every access path bypasses AR type-casting.
+  # STI REPRESENTATIVE FAITHFULNESS (2026-09-20, P-7 work).
+  #
+  # `services` is a Single-Table-Inheritance table: EVERY row is a
+  # `Services::*` subclass, and base `Service` is never instantiated by the
+  # app. A representative built as a base `Service` is therefore not a
+  # faithful stand-in for any row the endpoint can read, and the difference is
+  # not cosmetic: `publisher_helper.rb:14` does `service.class::MAX_CHARACTERS`,
+  # a constant defined ONLY on the subclasses (services/twitter.rb:6,
+  # tumblr.rb:4, wordpress.rb:5). With a base-`Service` rep the signed-in html
+  # render dies there with `uninitialized constant Service::MAX_CHARACTERS` —
+  # measured in 328 of the 332 auth_self_html dumps of the pre-reopen corpus —
+  # truncating the publisher partial.
+  #
+  # EXPLICIT and auditable, never inferred: one entry, justified above. A rep
+  # of any other class is untouched.
+  STI_REP_SUBCLASS = { "Service" => "Services::Twitter" }.freeze
+
+  def sti_faithful_class(klass)
+    name = klass.respond_to?(:name) ? klass.name.to_s : nil
+    sub = STI_REP_SUBCLASS[name]
+    return klass unless sub
+    # `constantize`, not a const_get inject: under `eager_load = false` the
+    # `Services` NAMESPACE is not a loaded constant until Rails' autoloader is
+    # asked for the full path, so `Object.const_get("Services")` raises and a
+    # silent rescue fell back to the base class (measured 2026-09-20 — the
+    # substitution appeared to do nothing and the MAX_CHARACTERS wall stayed).
+    resolved = (sub.respond_to?(:safe_constantize) ? sub.safe_constantize : nil)
+    resolved = (sub.constantize rescue nil) if resolved.nil?
+    (resolved && resolved < klass) ? resolved : klass
+  end
+
   def symbolic_instance(klass, base_name, sql)
+    klass = sti_faithful_class(klass)
     obj = klass.allocate
     attrs = {}
     klass.columns_hash.each do |col, meta|
@@ -697,7 +830,13 @@ module ConcolicTargets
       interceptor.declare_target(rel, m, returns: lambda do |receiver, args, name|
         vn = "#{name}_rows"
         rep = symbolic_instance(model_class(receiver), "#{name}_row", sql_for(receiver, args))
-        SymbolicList.new(seed_for("len(#{vn})", 1), name: vn,
+        # Same idiom as the `records`/`load_target` mock below (line ~902):
+        # prefer the batch-local iterable subclass when it is defined, so a
+        # list produced HERE has the same `each`/`map`/`include?` surface as
+        # one produced by targets.rb's rows_mock. Resolved at CALL time, so
+        # targets.rb having loaded later is not a problem.
+        list_class_1b = defined?(IterableSymbolicList) ? IterableSymbolicList : SymbolicList
+        list_class_1b.new(seed_for(SymbolicVar.len_var_name(vn), 1), name: vn,
                        note: sql_for(receiver, args), representative: rep)
       end)
     end
@@ -740,7 +879,58 @@ module ConcolicTargets
         symint(vn, seed_for(vn, m == :count ? 1 : 0), note: note)
       end)
     end
-    %i[pluck ids average minimum maximum calculate].each do |m|
+    # --- [ DESIGN #5c ] D3. Calculations#ids -> symbolic id list ------------
+    # Boundary gap B-5 (docs/BOUNDARY_NOTE_GAPS_20260915.md), repaired
+    # 2026-09-15. `ids` was UNSUPPORTED in the shared boundary, so it recorded
+    # NOTHING and any batch needing it had to redeclare it locally.
+    #
+    # WHAT B-5 ACTUALLY IS (measured on results3/posts_show, whose targets.rb
+    # carries such a local declaration): the statement IS recorded -- on the
+    # `Calculations.ids` call event and on the representative
+    # `<result>_id`/`len(<result>_ids)` vars. What is missing is a RESOLVABLE
+    # NAME. That local mock names the LIST `<result>_ids`, and `ids` is not a
+    # column of the relation, so when the list is handed to a later
+    # `where(...)` as a bind, render_bind_value emits `$$(<result>_ids)` --
+    # and transform.py's bind recursion resolves `<producer>_<column>` only,
+    # so it stays an unresolved placeholder
+    # (`"notifications"."target_id" = $$(SYM_RESULT_ActiveRecord__
+    # Calculations_ids_1_ids)`, 72 notes / 150 dumps).
+    #
+    # So the shared declaration names the list after the relation's REAL
+    # primary key (`<result>_<pk>`), which is exactly the column the list
+    # holds; a bind naming it then resolves as that column of THIS query by
+    # the ordinary recursion, with no new config regex. The representative
+    # carries the same name -- list and representative ARE the same column --
+    # and the length var (`len(...)` / `SYM_LEN_...`) stays distinct by
+    # construction. The note carries the real projection
+    # (`SELECT "t"."id" FROM ...`) rather than `SELECT "t".*`: `ids` reads one
+    # column, and `SELECT *` would overstate it. Same descent §5b took for
+    # `pluck`.
+    if calc.method_defined?(:ids)
+      interceptor.declare_target(calc, :ids, returns: lambda do |receiver, args, name|
+        note = sql_for(receiver, args)
+        pk = begin
+          k = model_class(receiver)
+          (k.respond_to?(:primary_key) && k.primary_key) || "id"
+        rescue StandardError
+          "id"
+        end
+        begin
+          tbl = (receiver.respond_to?(:table_name) && receiver.table_name) ||
+                (receiver.respond_to?(:klass) && receiver.klass.table_name)
+          proj = tbl ? %("#{tbl}"."#{pk}") : %("#{pk}")
+          note = note.sub(/\ASELECT\s+(DISTINCT\s+)?.*?\s+FROM /m, "SELECT #{proj} FROM ")
+        rescue StandardError
+          nil # projection rewrite must never crash the mock
+        end
+        vn  = "#{name}_#{pk}"
+        rep = symint(vn, seed_for(vn, 1), note: note)
+        list_class = defined?(IterableSymbolicList) ? IterableSymbolicList : SymbolicList
+        list_class.new(seed_for(SymbolicVar.len_var_name(vn), 1), name: vn,
+                       note: note, representative: rep)
+      end)
+    end
+    %i[pluck average minimum maximum calculate].each do |m|
       interceptor.declare_target(calc, m, returns: ->(_r, _a, _n) { UNSUPPORTED.call("Calculations##{m}") })
     end
 
@@ -1142,7 +1332,11 @@ module ConcolicTargets
                   col = refl.foreign_key
                   fk_raw = owner[refl.active_record_primary_key]
                 end
-                %(SELECT "#{table}".* FROM "#{table}" WHERE "#{table}"."#{col}" = #{render_arg_value(fk_raw)} LIMIT 1)
+                # RC-1 (2026-09-19): real default projection, not a hardcoded
+                # star. THIS is the site that produced all 34 884 bare
+                # `SELECT "profiles".*` reads in the pre-reopen people_show
+                # corpus (every single one of them came from here).
+                %(SELECT #{default_projection(klass)} FROM "#{table}" WHERE "#{table}"."#{col}" = #{render_arg_value(fk_raw)} LIMIT 1)
               rescue StandardError
                 "SingularAssociation##{refl.name}"
               end
@@ -1305,8 +1499,36 @@ module ConcolicTargets
           rescue StandardError
             receiver.is_a?(Array) ? receiver.first.class : Post
           end
-          rep = symbolic_instance(klass, "#{name}_row", "ActsAsApi::Collection#as_api_response")
-          symlist(name, 1, representative: rep, note: "ActsAsApi::Collection#as_api_response")
+          # Boundary gap B-3 (docs/BOUNDARY_NOTE_GAPS_20260915.md), repaired
+          # 2026-09-15. This is a SERIALIZER, not a query, and it must NOT be
+          # given an invented statement -- but the rows it serialises were
+          # fetched by a query that IS in hand on the receiver, and dropping
+          # that link is what made every `<name>_row_<col>` unaccountable
+          # (people_stream `_row_id` 122 + 65 / 150 dumps). So CARRY THE
+          # SOURCE'S NOTE THROUGH rather than mint one:
+          #   * a Relation / CollectionProxy / AssociationRelation -> render
+          #     its own SQL (the same helper B-4 fixed; before that fix this
+          #     branch would have raised and fallen back to prose);
+          #   * a SymbolicList -> the note it already carries;
+          #   * an Array of already-minted symbolic rows -> the row's
+          #     #concolic_note (set by symbolic_instance).
+          # The guard keeps the change ADDITIVE: anything that is not a
+          # SELECT falls back BYTE-IDENTICALLY to today's prose note, so no
+          # existing note shape can move.
+          src_note = begin
+            if receiver.respond_to?(:arel) && receiver.arel
+              render_relation_sql(receiver)
+            elsif receiver.respond_to?(:note) && receiver.note
+              receiver.note
+            elsif receiver.is_a?(Array) && receiver.first.respond_to?(:concolic_note)
+              receiver.first.concolic_note
+            end
+          rescue Exception # rubocop:disable Lint/RescueException
+            nil # note-carrying must never crash the mock (NotImplementedError)
+          end
+          note = src_note.to_s.start_with?("SELECT") ? src_note.to_s : "ActsAsApi::Collection#as_api_response"
+          rep = symbolic_instance(klass, "#{name}_row", note)
+          symlist(name, 1, representative: rep, note: note)
         end
       )
     end

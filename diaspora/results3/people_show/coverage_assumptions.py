@@ -546,4 +546,57 @@ def build() -> AssumptionSet:
     # on either branch), and every combination they induce is witnessed
     # directly in the dumps (16 anon_handle + 10 anon_json distinct paths).
 
+    # ------------------------------------------------------------------
+    # RETIREMENT BY GATE REFUTATION (2026-09-20, first real gate run).
+    #
+    # The assumption gate refuted 38 declared claims on its own replays:
+    # 36 IndependenceAssumptions by the X10 FLIP-BOTH probe ("combination
+    # (flip both) produced 2-3 target-call shape(s) absent from either single
+    # flip") and 2 OneSideUntrackedPathAssumptions ("untracked side adds 3
+    # target-call shape(s) the tracked side lacks").
+    #
+    # DISCIPLINE §16c's table names flip-both as THE refutation for a declared
+    # independence claim, so these are refutations, not instrument noise. The
+    # same section warns that confinement's criterion (iv) must NOT be applied
+    # to declared claims (it would withdraw true mutually-exclusive dispatch
+    # pairs and re-open four closed endpoints) — criterion (iv) is NOT what
+    # refuted these; the flip-both probe is.
+    #
+    # A refuted claim is REMOVED, not rewritten into a weaker one: an
+    # IndependenceAssumption's only effect is to delete an edge so a
+    # combination is not demanded, and once the gate has shown the combination
+    # really does reach new target-call shapes, that edge must come back.
+    # Removing it can only GROW demand — verified: with all 38 retired the
+    # checker still reports MISSING=0 / TREE_MISSING=0 / DEMAND_SETS unchanged,
+    # so none of them was load-bearing for the completeness claim.
+    #
+    # The list is the GATE'S OWN OUTPUT (`_refuted_pairs.json`, written from
+    # `_assumption_results.json`), never hand-curated, so it cannot drift from
+    # the evidence and a future gate run regenerates it.
+    # ------------------------------------------------------------------
+    import json as _json
+    import os as _os
+    _rp = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)),
+                        "_refuted_pairs.json")
+    if _os.path.exists(_rp):
+        with open(_rp) as _fh:
+            _refuted = _json.load(_fh)
+        _pairs = {tuple(sorted((a, b))) for a, b in _refuted if b}
+        _singles = {a for a, b in _refuted if not b}
+        _before = len(assumptions)
+
+        def _is_refuted(x):
+            ea = getattr(x, "expr_a", None)
+            eb = getattr(x, "expr_b", None)
+            if ea is not None and eb is not None:
+                return tuple(sorted((ea, eb))) in _pairs
+            e = getattr(x, "expr", None)
+            return e is not None and e in _singles
+
+        assumptions = [x for x in assumptions if not _is_refuted(x)]
+        _n = _before - len(assumptions)
+        if _n:
+            print(f"[coverage_assumptions] retired {_n} gate-refuted assumption(s) "
+                  f"({len(_pairs)} pair(s) + {len(_singles)} single(s) on the ledger)")
+
     return AssumptionSet(assumptions=assumptions)

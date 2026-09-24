@@ -1,64 +1,106 @@
 {
   "endpoint": "people_show",
   "coverage_complete": true,
-  "tree_nodes": 97,
+  "tree_nodes": 109,
   "missing_branches": 0,
+  "demand_sets": 333,
+  "tree_complete": true,
+  "tree_missing": [],
+  "foreclosures": 25659,
+  "foreclosures_ignored": 722,
+  "foreclosures_provisional": false,
+  "foreclosure_gates": [
+    [
+      "(SYM_RESULT_Person_remote__1_remote == True) :: taken",
+      3232
+    ],
+    [
+      "(SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows != 0) :: not_taken",
+      1498
+    ],
+    [
+      "(assoc_person_closed_account == True) :: taken",
+      1477
+    ],
+    [
+      "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found == True) :: taken",
+      1164
+    ],
+    [
+      "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id == assoc_person_id) :: taken",
+      1146
+    ],
+    [
+      "(assoc_person_id == SYM_RESULT_ActiveRecord__FinderMethods_first_1_id) :: taken",
+      1141
+    ],
+    [
+      "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_not_found == True) :: taken",
+      1097
+    ],
+    [
+      "(SYM_RESULT_ActiveRecord__FinderMethods_first_2_closed_account == True) :: taken",
+      1057
+    ],
+    [
+      "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id == assoc_person_id) :: not_taken",
+      921
+    ],
+    [
+      "(assoc_person_id == SYM_RESULT_ActiveRecord__FinderMethods_first_1_id) :: not_taken",
+      921
+    ],
+    [
+      "(SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2_rows > 0) :: not_taken",
+      880
+    ],
+    [
+      "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True) :: taken",
+      848
+    ],
+    [
+      "(assoc_profile_birthday_year <= 1004) :: taken",
+      840
+    ],
+    [
+      "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_closed_account == True) :: taken",
+      809
+    ],
+    [
+      "(SYM_RESULT_Person_remote__3_remote == True) :: taken",
+      789
+    ],
+    [
+      "(SYM_RESULT_Person_remote__2_remote == True) :: taken",
+      699
+    ],
+    [
+      "(SYM_USER_PE_post_default_public == True) :: taken",
+      697
+    ],
+    [
+      "(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_not_found == True) :: taken",
+      633
+    ],
+    [
+      "(assoc_profile_public_details == True) :: taken",
+      576
+    ],
+    [
+      "(SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found == True) :: taken",
+      565
+    ]
+  ],
   "truncated": false,
   "solver_lost": 0,
   "unevaluable_exprs": [],
-  "total_runs": 12997,
-  "total_path_conditions": 525378,
+  "total_runs": 74010,
+  "total_path_conditions": 2794165,
   "dump_errors": {
-    "ActionView::Template::Error": 4784,
-    "Warden::Unauthenticated => 401 (warden_401, NM-1)": 6
+    "ActionView::Template::Error": 30454,
+    "Warden::Unauthenticated => 401 (warden_401, NM-1)": 11
   },
   "assumptions": [
-    {
-      "type": "IndependenceAssumption",
-      "description": "mutually exclusive per app control flow \u2014 see agent_notes",
-      "agent_notes": "people_controller.rb:129-138 `find_person`: `@person = diaspora_id?(username) ? Person.where(...).first : Person.find_from_guid_or_username(...)` \u2014 an if/else. Branch-A-only vars (first_1_*, including the atom-url handle-split family below) only exist when `diaspora_id?==True`; branch-B-only vars (find_by_1_* / via_user_*) only exist when False. Exactly one branch runs per request, so the other branch's vars are simply absent from that run's trace \u2014 mutually exclusive per the IndependenceAssumption safety test's criterion 1 (\"different if/elif/else branches\").",
-      "source_a": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "source_b": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "expr_a": "(SYM_DECISION_diaspora_id_username == True)",
-      "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)"
-    },
-    {
-      "type": "IndependenceAssumption",
-      "description": "mutually exclusive per app control flow \u2014 see agent_notes",
-      "agent_notes": "people_controller.rb:129-138 `find_person`: `@person = diaspora_id?(username) ? Person.where(...).first : Person.find_from_guid_or_username(...)` \u2014 an if/else. Branch-A-only vars (first_1_*, including the atom-url handle-split family below) only exist when `diaspora_id?==True`; branch-B-only vars (find_by_1_* / via_user_*) only exist when False. Exactly one branch runs per request, so the other branch's vars are simply absent from that run's trace \u2014 mutually exclusive per the IndependenceAssumption safety test's criterion 1 (\"different if/elif/else branches\").",
-      "source_a": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "source_b": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "expr_a": "(SYM_DECISION_diaspora_id_username == True)",
-      "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_closed_account == True)"
-    },
     {
       "type": "IndependenceAssumption",
       "description": "mutually exclusive per app control flow \u2014 see agent_notes",
@@ -356,75 +398,6 @@
         "str": ":0"
       },
       "expr_a": "(SYM_DECISION_diaspora_id_username == True)",
-      "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid == '')"
-    },
-    {
-      "type": "IndependenceAssumption",
-      "description": "mutually exclusive per app control flow \u2014 see agent_notes",
-      "agent_notes": "people_controller.rb:129-138 `find_person`: `@person = diaspora_id?(username) ? Person.where(...).first : Person.find_from_guid_or_username(...)` \u2014 an if/else. Branch-A-only vars (first_1_*, including the atom-url handle-split family below) only exist when `diaspora_id?==True`; branch-B-only vars (find_by_1_* / via_user_*) only exist when False. Exactly one branch runs per request, so the other branch's vars are simply absent from that run's trace \u2014 mutually exclusive per the IndependenceAssumption safety test's criterion 1 (\"different if/elif/else branches\").",
-      "source_a": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "source_b": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "expr_a": "(SYM_DECISION_diaspora_id_username == True)",
-      "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid != StringVal(''))"
-    },
-    {
-      "type": "IndependenceAssumption",
-      "description": "mutually exclusive per app control flow \u2014 see agent_notes",
-      "agent_notes": "people_controller.rb:129-138 `find_person`: `@person = diaspora_id?(username) ? Person.where(...).first : Person.find_from_guid_or_username(...)` \u2014 an if/else. Branch-A-only vars (first_1_*, including the atom-url handle-split family below) only exist when `diaspora_id?==True`; branch-B-only vars (find_by_1_* / via_user_*) only exist when False. Exactly one branch runs per request, so the other branch's vars are simply absent from that run's trace \u2014 mutually exclusive per the IndependenceAssumption safety test's criterion 1 (\"different if/elif/else branches\").",
-      "source_a": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "source_b": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "expr_a": "(SYM_DECISION_diaspora_id_username == True)",
-      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_not_found == True)"
-    },
-    {
-      "type": "IndependenceAssumption",
-      "description": "mutually exclusive per app control flow \u2014 see agent_notes",
-      "agent_notes": "people_controller.rb:129-138 `find_person`: `@person = diaspora_id?(username) ? Person.where(...).first : Person.find_from_guid_or_username(...)` \u2014 an if/else. Branch-A-only vars (first_1_*, including the atom-url handle-split family below) only exist when `diaspora_id?==True`; branch-B-only vars (find_by_1_* / via_user_*) only exist when False. Exactly one branch runs per request, so the other branch's vars are simply absent from that run's trace \u2014 mutually exclusive per the IndependenceAssumption safety test's criterion 1 (\"different if/elif/else branches\").",
-      "source_a": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "source_b": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "expr_a": "(SYM_DECISION_diaspora_id_username == True)",
       "expr_b": "(SYM_PERSON_via_user_closed_account == True)"
     },
     {
@@ -518,29 +491,6 @@
       },
       "expr_a": "(SYM_DECISION_diaspora_id_username == True)",
       "expr_b": "IndexOf(SYM_PERSON_via_user_diaspora_handle, StringVal('@')) == 2"
-    },
-    {
-      "type": "IndependenceAssumption",
-      "description": "mutually exclusive per app control flow \u2014 see agent_notes",
-      "agent_notes": "people_controller.rb:140-141 `find_person`: `raise ActiveRecord::RecordNotFound if @person.nil?` then `raise Diaspora::AccountClosed if @person.closed_account?` \u2014 sequential guards on the SAME @person. If the first raises (not_found==True), the method exits before the second line ever executes, so the closed_account check's PC is never recorded in that run. Not-found and closed-account can never both appear in one run's trace.",
-      "source_a": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "source_b": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
-      "expr_b": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_closed_account == True)"
     },
     {
       "type": "IndependenceAssumption",
@@ -3461,29 +3411,6 @@
         "str": ":0"
       },
       "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid == '')",
-      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_not_found == True)"
-    },
-    {
-      "type": "IndependenceAssumption",
-      "description": "mutually exclusive per app control flow \u2014 see agent_notes",
-      "agent_notes": "people_controller.rb:129-138 `find_person`: `@person = diaspora_id?(username) ? Person.where(...).first : Person.find_from_guid_or_username(...)` \u2014 an if/else. Branch-A-only vars (first_1_*, including the atom-url handle-split family below) only exist when `diaspora_id?==True`; branch-B-only vars (find_by_1_* / via_user_*) only exist when False. Exactly one branch runs per request, so the other branch's vars are simply absent from that run's trace \u2014 mutually exclusive per the IndependenceAssumption safety test's criterion 1 (\"different if/elif/else branches\").",
-      "source_a": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "source_b": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid == '')",
       "expr_b": "(SYM_PERSON_via_user_closed_account == True)"
     },
     {
@@ -3577,29 +3504,6 @@
       },
       "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid == '')",
       "expr_b": "IndexOf(SYM_PERSON_via_user_diaspora_handle, StringVal('@')) == 2"
-    },
-    {
-      "type": "IndependenceAssumption",
-      "description": "mutually exclusive per app control flow \u2014 see agent_notes",
-      "agent_notes": "people_controller.rb:129-138 `find_person`: `@person = diaspora_id?(username) ? Person.where(...).first : Person.find_from_guid_or_username(...)` \u2014 an if/else. Branch-A-only vars (first_1_*, including the atom-url handle-split family below) only exist when `diaspora_id?==True`; branch-B-only vars (find_by_1_* / via_user_*) only exist when False. Exactly one branch runs per request, so the other branch's vars are simply absent from that run's trace \u2014 mutually exclusive per the IndependenceAssumption safety test's criterion 1 (\"different if/elif/else branches\").",
-      "source_a": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "source_b": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid != StringVal(''))",
-      "expr_b": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_not_found == True)"
     },
     {
       "type": "IndependenceAssumption",
@@ -3737,29 +3641,6 @@
         "str": ":0"
       },
       "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
-      "expr_b": "(assoc_profile_public_details == True)"
-    },
-    {
-      "type": "IndependenceAssumption",
-      "description": "mutually exclusive per app control flow \u2014 see agent_notes",
-      "agent_notes": "people_controller.rb:17-27 `rescue_from ActiveRecord::RecordNotFound` (renders 404) and `rescue_from Diaspora::AccountClosed` (redirects) both terminate the request from the `find_person` before_action before `PeopleController#show` (line 69) ever runs. Profile rendering (public_details?/birthday_year/block-contact NullRelation checks) AND the layout's atom-url handle-split family (current_user_atom_tag, layout_helper.rb:33-36, reached only via `respond_with`/`show`'s successful completion) both live entirely inside `show`'s execution, so a not-found or closed-account outcome on EITHER branch forecloses ALL of it in that run \u2014 the guard variable and any show-stage variable never co-occur.",
-      "source_a": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "source_b": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
       "expr_b": "(assoc_profile_birthday_year <= 1004)"
     },
     {
@@ -3783,191 +3664,7 @@
         "str": ":0"
       },
       "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
-      "expr_b": "(SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1 != 0)"
-    },
-    {
-      "type": "IndependenceAssumption",
-      "description": "mutually exclusive per app control flow \u2014 see agent_notes",
-      "agent_notes": "people_controller.rb:17-27 `rescue_from ActiveRecord::RecordNotFound` (renders 404) and `rescue_from Diaspora::AccountClosed` (redirects) both terminate the request from the `find_person` before_action before `PeopleController#show` (line 69) ever runs. Profile rendering (public_details?/birthday_year/block-contact NullRelation checks) AND the layout's atom-url handle-split family (current_user_atom_tag, layout_helper.rb:33-36, reached only via `respond_with`/`show`'s successful completion) both live entirely inside `show`'s execution, so a not-found or closed-account outcome on EITHER branch forecloses ALL of it in that run \u2014 the guard variable and any show-stage variable never co-occur.",
-      "source_a": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "source_b": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
-      "expr_b": "(SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2 != 0)"
-    },
-    {
-      "type": "IndependenceAssumption",
-      "description": "mutually exclusive per app control flow \u2014 see agent_notes",
-      "agent_notes": "people_controller.rb:17-27 `rescue_from ActiveRecord::RecordNotFound` (renders 404) and `rescue_from Diaspora::AccountClosed` (redirects) both terminate the request from the `find_person` before_action before `PeopleController#show` (line 69) ever runs. Profile rendering (public_details?/birthday_year/block-contact NullRelation checks) AND the layout's atom-url handle-split family (current_user_atom_tag, layout_helper.rb:33-36, reached only via `respond_with`/`show`'s successful completion) both live entirely inside `show`'s execution, so a not-found or closed-account outcome on EITHER branch forecloses ALL of it in that run \u2014 the guard variable and any show-stage variable never co-occur.",
-      "source_a": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "source_b": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
       "expr_b": "(SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows > 0)"
-    },
-    {
-      "type": "IndependenceAssumption",
-      "description": "mutually exclusive per app control flow \u2014 see agent_notes",
-      "agent_notes": "people_controller.rb:17-27 `rescue_from ActiveRecord::RecordNotFound` (renders 404) and `rescue_from Diaspora::AccountClosed` (redirects) both terminate the request from the `find_person` before_action before `PeopleController#show` (line 69) ever runs. Profile rendering (public_details?/birthday_year/block-contact NullRelation checks) AND the layout's atom-url handle-split family (current_user_atom_tag, layout_helper.rb:33-36, reached only via `respond_with`/`show`'s successful completion) both live entirely inside `show`'s execution, so a not-found or closed-account outcome on EITHER branch forecloses ALL of it in that run \u2014 the guard variable and any show-stage variable never co-occur.",
-      "source_a": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "source_b": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
-      "expr_b": "(SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows != 0)"
-    },
-    {
-      "type": "IndependenceAssumption",
-      "description": "mutually exclusive per app control flow \u2014 see agent_notes",
-      "agent_notes": "people_controller.rb:17-27 `rescue_from ActiveRecord::RecordNotFound` (renders 404) and `rescue_from Diaspora::AccountClosed` (redirects) both terminate the request from the `find_person` before_action before `PeopleController#show` (line 69) ever runs. Profile rendering (public_details?/birthday_year/block-contact NullRelation checks) AND the layout's atom-url handle-split family (current_user_atom_tag, layout_helper.rb:33-36, reached only via `respond_with`/`show`'s successful completion) both live entirely inside `show`'s execution, so a not-found or closed-account outcome on EITHER branch forecloses ALL of it in that run \u2014 the guard variable and any show-stage variable never co-occur.",
-      "source_a": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "source_b": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
-      "expr_b": "(assoc_profile_nsfw == True)"
-    },
-    {
-      "type": "IndependenceAssumption",
-      "description": "mutually exclusive per app control flow \u2014 see agent_notes",
-      "agent_notes": "people_controller.rb:17-27 `rescue_from ActiveRecord::RecordNotFound` (renders 404) and `rescue_from Diaspora::AccountClosed` (redirects) both terminate the request from the `find_person` before_action before `PeopleController#show` (line 69) ever runs. Profile rendering (public_details?/birthday_year/block-contact NullRelation checks) AND the layout's atom-url handle-split family (current_user_atom_tag, layout_helper.rb:33-36, reached only via `respond_with`/`show`'s successful completion) both live entirely inside `show`'s execution, so a not-found or closed-account outcome on EITHER branch forecloses ALL of it in that run \u2014 the guard variable and any show-stage variable never co-occur.",
-      "source_a": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "source_b": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
-      "expr_b": "(assoc_author_guid == '')"
-    },
-    {
-      "type": "IndependenceAssumption",
-      "description": "mutually exclusive per app control flow \u2014 see agent_notes",
-      "agent_notes": "people_controller.rb:17-27 `rescue_from ActiveRecord::RecordNotFound` (renders 404) and `rescue_from Diaspora::AccountClosed` (redirects) both terminate the request from the `find_person` before_action before `PeopleController#show` (line 69) ever runs. Profile rendering (public_details?/birthday_year/block-contact NullRelation checks) AND the layout's atom-url handle-split family (current_user_atom_tag, layout_helper.rb:33-36, reached only via `respond_with`/`show`'s successful completion) both live entirely inside `show`'s execution, so a not-found or closed-account outcome on EITHER branch forecloses ALL of it in that run \u2014 the guard variable and any show-stage variable never co-occur.",
-      "source_a": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "source_b": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
-      "expr_b": "(SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name == StringVal('mobile'))"
-    },
-    {
-      "type": "IndependenceAssumption",
-      "description": "mutually exclusive per app control flow \u2014 see agent_notes",
-      "agent_notes": "people_controller.rb:17-27 `rescue_from ActiveRecord::RecordNotFound` (renders 404) and `rescue_from Diaspora::AccountClosed` (redirects) both terminate the request from the `find_person` before_action before `PeopleController#show` (line 69) ever runs. Profile rendering (public_details?/birthday_year/block-contact NullRelation checks) AND the layout's atom-url handle-split family (current_user_atom_tag, layout_helper.rb:33-36, reached only via `respond_with`/`show`'s successful completion) both live entirely inside `show`'s execution, so a not-found or closed-account outcome on EITHER branch forecloses ALL of it in that run \u2014 the guard variable and any show-stage variable never co-occur.",
-      "source_a": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "source_b": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
-      "expr_b": "(SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public == True)"
-    },
-    {
-      "type": "IndependenceAssumption",
-      "description": "mutually exclusive per app control flow \u2014 see agent_notes",
-      "agent_notes": "people_controller.rb:17-27 `rescue_from ActiveRecord::RecordNotFound` (renders 404) and `rescue_from Diaspora::AccountClosed` (redirects) both terminate the request from the `find_person` before_action before `PeopleController#show` (line 69) ever runs. Profile rendering (public_details?/birthday_year/block-contact NullRelation checks) AND the layout's atom-url handle-split family (current_user_atom_tag, layout_helper.rb:33-36, reached only via `respond_with`/`show`'s successful completion) both live entirely inside `show`'s execution, so a not-found or closed-account outcome on EITHER branch forecloses ALL of it in that run \u2014 the guard variable and any show-stage variable never co-occur.",
-      "source_a": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "source_b": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
-      "expr_b": "(SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 0)"
     },
     {
       "type": "IndependenceAssumption",
@@ -4013,53 +3710,7 @@
         "str": ":0"
       },
       "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
-      "expr_b": "(SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows > 0)"
-    },
-    {
-      "type": "IndependenceAssumption",
-      "description": "mutually exclusive per app control flow \u2014 see agent_notes",
-      "agent_notes": "people_controller.rb:17-27 `rescue_from ActiveRecord::RecordNotFound` (renders 404) and `rescue_from Diaspora::AccountClosed` (redirects) both terminate the request from the `find_person` before_action before `PeopleController#show` (line 69) ever runs. Profile rendering (public_details?/birthday_year/block-contact NullRelation checks) AND the layout's atom-url handle-split family (current_user_atom_tag, layout_helper.rb:33-36, reached only via `respond_with`/`show`'s successful completion) both live entirely inside `show`'s execution, so a not-found or closed-account outcome on EITHER branch forecloses ALL of it in that run \u2014 the guard variable and any show-stage variable never co-occur.",
-      "source_a": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "source_b": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == True)",
       "expr_b": "(SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid == '')"
-    },
-    {
-      "type": "IndependenceAssumption",
-      "description": "mutually exclusive per app control flow \u2014 see agent_notes",
-      "agent_notes": "people_controller.rb:17-27 `rescue_from ActiveRecord::RecordNotFound` (renders 404) and `rescue_from Diaspora::AccountClosed` (redirects) both terminate the request from the `find_person` before_action before `PeopleController#show` (line 69) ever runs. Profile rendering (public_details?/birthday_year/block-contact NullRelation checks) AND the layout's atom-url handle-split family (current_user_atom_tag, layout_helper.rb:33-36, reached only via `respond_with`/`show`'s successful completion) both live entirely inside `show`'s execution, so a not-found or closed-account outcome on EITHER branch forecloses ALL of it in that run \u2014 the guard variable and any show-stage variable never co-occur.",
-      "source_a": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "source_b": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_closed_account == True)",
-      "expr_b": "(assoc_profile_public_details == True)"
     },
     {
       "type": "IndependenceAssumption",
@@ -4105,191 +3756,7 @@
         "str": ":0"
       },
       "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_closed_account == True)",
-      "expr_b": "(SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1 != 0)"
-    },
-    {
-      "type": "IndependenceAssumption",
-      "description": "mutually exclusive per app control flow \u2014 see agent_notes",
-      "agent_notes": "people_controller.rb:17-27 `rescue_from ActiveRecord::RecordNotFound` (renders 404) and `rescue_from Diaspora::AccountClosed` (redirects) both terminate the request from the `find_person` before_action before `PeopleController#show` (line 69) ever runs. Profile rendering (public_details?/birthday_year/block-contact NullRelation checks) AND the layout's atom-url handle-split family (current_user_atom_tag, layout_helper.rb:33-36, reached only via `respond_with`/`show`'s successful completion) both live entirely inside `show`'s execution, so a not-found or closed-account outcome on EITHER branch forecloses ALL of it in that run \u2014 the guard variable and any show-stage variable never co-occur.",
-      "source_a": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "source_b": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_closed_account == True)",
-      "expr_b": "(SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2 != 0)"
-    },
-    {
-      "type": "IndependenceAssumption",
-      "description": "mutually exclusive per app control flow \u2014 see agent_notes",
-      "agent_notes": "people_controller.rb:17-27 `rescue_from ActiveRecord::RecordNotFound` (renders 404) and `rescue_from Diaspora::AccountClosed` (redirects) both terminate the request from the `find_person` before_action before `PeopleController#show` (line 69) ever runs. Profile rendering (public_details?/birthday_year/block-contact NullRelation checks) AND the layout's atom-url handle-split family (current_user_atom_tag, layout_helper.rb:33-36, reached only via `respond_with`/`show`'s successful completion) both live entirely inside `show`'s execution, so a not-found or closed-account outcome on EITHER branch forecloses ALL of it in that run \u2014 the guard variable and any show-stage variable never co-occur.",
-      "source_a": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "source_b": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_closed_account == True)",
       "expr_b": "(SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows > 0)"
-    },
-    {
-      "type": "IndependenceAssumption",
-      "description": "mutually exclusive per app control flow \u2014 see agent_notes",
-      "agent_notes": "people_controller.rb:17-27 `rescue_from ActiveRecord::RecordNotFound` (renders 404) and `rescue_from Diaspora::AccountClosed` (redirects) both terminate the request from the `find_person` before_action before `PeopleController#show` (line 69) ever runs. Profile rendering (public_details?/birthday_year/block-contact NullRelation checks) AND the layout's atom-url handle-split family (current_user_atom_tag, layout_helper.rb:33-36, reached only via `respond_with`/`show`'s successful completion) both live entirely inside `show`'s execution, so a not-found or closed-account outcome on EITHER branch forecloses ALL of it in that run \u2014 the guard variable and any show-stage variable never co-occur.",
-      "source_a": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "source_b": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_closed_account == True)",
-      "expr_b": "(SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows != 0)"
-    },
-    {
-      "type": "IndependenceAssumption",
-      "description": "mutually exclusive per app control flow \u2014 see agent_notes",
-      "agent_notes": "people_controller.rb:17-27 `rescue_from ActiveRecord::RecordNotFound` (renders 404) and `rescue_from Diaspora::AccountClosed` (redirects) both terminate the request from the `find_person` before_action before `PeopleController#show` (line 69) ever runs. Profile rendering (public_details?/birthday_year/block-contact NullRelation checks) AND the layout's atom-url handle-split family (current_user_atom_tag, layout_helper.rb:33-36, reached only via `respond_with`/`show`'s successful completion) both live entirely inside `show`'s execution, so a not-found or closed-account outcome on EITHER branch forecloses ALL of it in that run \u2014 the guard variable and any show-stage variable never co-occur.",
-      "source_a": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "source_b": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_closed_account == True)",
-      "expr_b": "(assoc_profile_nsfw == True)"
-    },
-    {
-      "type": "IndependenceAssumption",
-      "description": "mutually exclusive per app control flow \u2014 see agent_notes",
-      "agent_notes": "people_controller.rb:17-27 `rescue_from ActiveRecord::RecordNotFound` (renders 404) and `rescue_from Diaspora::AccountClosed` (redirects) both terminate the request from the `find_person` before_action before `PeopleController#show` (line 69) ever runs. Profile rendering (public_details?/birthday_year/block-contact NullRelation checks) AND the layout's atom-url handle-split family (current_user_atom_tag, layout_helper.rb:33-36, reached only via `respond_with`/`show`'s successful completion) both live entirely inside `show`'s execution, so a not-found or closed-account outcome on EITHER branch forecloses ALL of it in that run \u2014 the guard variable and any show-stage variable never co-occur.",
-      "source_a": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "source_b": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_closed_account == True)",
-      "expr_b": "(assoc_author_guid == '')"
-    },
-    {
-      "type": "IndependenceAssumption",
-      "description": "mutually exclusive per app control flow \u2014 see agent_notes",
-      "agent_notes": "people_controller.rb:17-27 `rescue_from ActiveRecord::RecordNotFound` (renders 404) and `rescue_from Diaspora::AccountClosed` (redirects) both terminate the request from the `find_person` before_action before `PeopleController#show` (line 69) ever runs. Profile rendering (public_details?/birthday_year/block-contact NullRelation checks) AND the layout's atom-url handle-split family (current_user_atom_tag, layout_helper.rb:33-36, reached only via `respond_with`/`show`'s successful completion) both live entirely inside `show`'s execution, so a not-found or closed-account outcome on EITHER branch forecloses ALL of it in that run \u2014 the guard variable and any show-stage variable never co-occur.",
-      "source_a": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "source_b": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_closed_account == True)",
-      "expr_b": "(SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name == StringVal('mobile'))"
-    },
-    {
-      "type": "IndependenceAssumption",
-      "description": "mutually exclusive per app control flow \u2014 see agent_notes",
-      "agent_notes": "people_controller.rb:17-27 `rescue_from ActiveRecord::RecordNotFound` (renders 404) and `rescue_from Diaspora::AccountClosed` (redirects) both terminate the request from the `find_person` before_action before `PeopleController#show` (line 69) ever runs. Profile rendering (public_details?/birthday_year/block-contact NullRelation checks) AND the layout's atom-url handle-split family (current_user_atom_tag, layout_helper.rb:33-36, reached only via `respond_with`/`show`'s successful completion) both live entirely inside `show`'s execution, so a not-found or closed-account outcome on EITHER branch forecloses ALL of it in that run \u2014 the guard variable and any show-stage variable never co-occur.",
-      "source_a": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "source_b": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_closed_account == True)",
-      "expr_b": "(SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public == True)"
-    },
-    {
-      "type": "IndependenceAssumption",
-      "description": "mutually exclusive per app control flow \u2014 see agent_notes",
-      "agent_notes": "people_controller.rb:17-27 `rescue_from ActiveRecord::RecordNotFound` (renders 404) and `rescue_from Diaspora::AccountClosed` (redirects) both terminate the request from the `find_person` before_action before `PeopleController#show` (line 69) ever runs. Profile rendering (public_details?/birthday_year/block-contact NullRelation checks) AND the layout's atom-url handle-split family (current_user_atom_tag, layout_helper.rb:33-36, reached only via `respond_with`/`show`'s successful completion) both live entirely inside `show`'s execution, so a not-found or closed-account outcome on EITHER branch forecloses ALL of it in that run \u2014 the guard variable and any show-stage variable never co-occur.",
-      "source_a": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "source_b": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_closed_account == True)",
-      "expr_b": "(SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 0)"
     },
     {
       "type": "IndependenceAssumption",
@@ -4335,53 +3802,7 @@
         "str": ":0"
       },
       "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_closed_account == True)",
-      "expr_b": "(SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_3_rows > 0)"
-    },
-    {
-      "type": "IndependenceAssumption",
-      "description": "mutually exclusive per app control flow \u2014 see agent_notes",
-      "agent_notes": "people_controller.rb:17-27 `rescue_from ActiveRecord::RecordNotFound` (renders 404) and `rescue_from Diaspora::AccountClosed` (redirects) both terminate the request from the `find_person` before_action before `PeopleController#show` (line 69) ever runs. Profile rendering (public_details?/birthday_year/block-contact NullRelation checks) AND the layout's atom-url handle-split family (current_user_atom_tag, layout_helper.rb:33-36, reached only via `respond_with`/`show`'s successful completion) both live entirely inside `show`'s execution, so a not-found or closed-account outcome on EITHER branch forecloses ALL of it in that run \u2014 the guard variable and any show-stage variable never co-occur.",
-      "source_a": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "source_b": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "expr_a": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_closed_account == True)",
       "expr_b": "(SYM_RESULT_ActiveRecord__Relation_to_a_1_row_guid == '')"
-    },
-    {
-      "type": "IndependenceAssumption",
-      "description": "mutually exclusive per app control flow \u2014 see agent_notes",
-      "agent_notes": "people_controller.rb:17-27 `rescue_from ActiveRecord::RecordNotFound` (renders 404) and `rescue_from Diaspora::AccountClosed` (redirects) both terminate the request from the `find_person` before_action before `PeopleController#show` (line 69) ever runs. Profile rendering (public_details?/birthday_year/block-contact NullRelation checks) AND the layout's atom-url handle-split family (current_user_atom_tag, layout_helper.rb:33-36, reached only via `respond_with`/`show`'s successful completion) both live entirely inside `show`'s execution, so a not-found or closed-account outcome on EITHER branch forecloses ALL of it in that run \u2014 the guard variable and any show-stage variable never co-occur.",
-      "source_a": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "source_b": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "expr_a": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_not_found == True)",
-      "expr_b": "(assoc_profile_public_details == True)"
     },
     {
       "type": "IndependenceAssumption",
@@ -4474,144 +3895,6 @@
       },
       "expr_a": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_not_found == True)",
       "expr_b": "(SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1_rows > 0)"
-    },
-    {
-      "type": "IndependenceAssumption",
-      "description": "mutually exclusive per app control flow \u2014 see agent_notes",
-      "agent_notes": "people_controller.rb:17-27 `rescue_from ActiveRecord::RecordNotFound` (renders 404) and `rescue_from Diaspora::AccountClosed` (redirects) both terminate the request from the `find_person` before_action before `PeopleController#show` (line 69) ever runs. Profile rendering (public_details?/birthday_year/block-contact NullRelation checks) AND the layout's atom-url handle-split family (current_user_atom_tag, layout_helper.rb:33-36, reached only via `respond_with`/`show`'s successful completion) both live entirely inside `show`'s execution, so a not-found or closed-account outcome on EITHER branch forecloses ALL of it in that run \u2014 the guard variable and any show-stage variable never co-occur.",
-      "source_a": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "source_b": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "expr_a": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_not_found == True)",
-      "expr_b": "(SYM_LEN_SYM_RESULT_ActiveRecord__Relation_to_a_1_rows != 0)"
-    },
-    {
-      "type": "IndependenceAssumption",
-      "description": "mutually exclusive per app control flow \u2014 see agent_notes",
-      "agent_notes": "people_controller.rb:17-27 `rescue_from ActiveRecord::RecordNotFound` (renders 404) and `rescue_from Diaspora::AccountClosed` (redirects) both terminate the request from the `find_person` before_action before `PeopleController#show` (line 69) ever runs. Profile rendering (public_details?/birthday_year/block-contact NullRelation checks) AND the layout's atom-url handle-split family (current_user_atom_tag, layout_helper.rb:33-36, reached only via `respond_with`/`show`'s successful completion) both live entirely inside `show`'s execution, so a not-found or closed-account outcome on EITHER branch forecloses ALL of it in that run \u2014 the guard variable and any show-stage variable never co-occur.",
-      "source_a": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "source_b": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "expr_a": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_not_found == True)",
-      "expr_b": "(assoc_profile_nsfw == True)"
-    },
-    {
-      "type": "IndependenceAssumption",
-      "description": "mutually exclusive per app control flow \u2014 see agent_notes",
-      "agent_notes": "people_controller.rb:17-27 `rescue_from ActiveRecord::RecordNotFound` (renders 404) and `rescue_from Diaspora::AccountClosed` (redirects) both terminate the request from the `find_person` before_action before `PeopleController#show` (line 69) ever runs. Profile rendering (public_details?/birthday_year/block-contact NullRelation checks) AND the layout's atom-url handle-split family (current_user_atom_tag, layout_helper.rb:33-36, reached only via `respond_with`/`show`'s successful completion) both live entirely inside `show`'s execution, so a not-found or closed-account outcome on EITHER branch forecloses ALL of it in that run \u2014 the guard variable and any show-stage variable never co-occur.",
-      "source_a": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "source_b": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "expr_a": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_not_found == True)",
-      "expr_b": "(assoc_author_guid == '')"
-    },
-    {
-      "type": "IndependenceAssumption",
-      "description": "mutually exclusive per app control flow \u2014 see agent_notes",
-      "agent_notes": "people_controller.rb:17-27 `rescue_from ActiveRecord::RecordNotFound` (renders 404) and `rescue_from Diaspora::AccountClosed` (redirects) both terminate the request from the `find_person` before_action before `PeopleController#show` (line 69) ever runs. Profile rendering (public_details?/birthday_year/block-contact NullRelation checks) AND the layout's atom-url handle-split family (current_user_atom_tag, layout_helper.rb:33-36, reached only via `respond_with`/`show`'s successful completion) both live entirely inside `show`'s execution, so a not-found or closed-account outcome on EITHER branch forecloses ALL of it in that run \u2014 the guard variable and any show-stage variable never co-occur.",
-      "source_a": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "source_b": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "expr_a": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_not_found == True)",
-      "expr_b": "(SYM_RESULT_ActiveRecord__Relation_to_a_1_row_provider_display_name == StringVal('mobile'))"
-    },
-    {
-      "type": "IndependenceAssumption",
-      "description": "mutually exclusive per app control flow \u2014 see agent_notes",
-      "agent_notes": "people_controller.rb:17-27 `rescue_from ActiveRecord::RecordNotFound` (renders 404) and `rescue_from Diaspora::AccountClosed` (redirects) both terminate the request from the `find_person` before_action before `PeopleController#show` (line 69) ever runs. Profile rendering (public_details?/birthday_year/block-contact NullRelation checks) AND the layout's atom-url handle-split family (current_user_atom_tag, layout_helper.rb:33-36, reached only via `respond_with`/`show`'s successful completion) both live entirely inside `show`'s execution, so a not-found or closed-account outcome on EITHER branch forecloses ALL of it in that run \u2014 the guard variable and any show-stage variable never co-occur.",
-      "source_a": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "source_b": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "expr_a": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_not_found == True)",
-      "expr_b": "(SYM_RESULT_ActiveRecord__Relation_to_a_1_row_public == True)"
-    },
-    {
-      "type": "IndependenceAssumption",
-      "description": "mutually exclusive per app control flow \u2014 see agent_notes",
-      "agent_notes": "people_controller.rb:17-27 `rescue_from ActiveRecord::RecordNotFound` (renders 404) and `rescue_from Diaspora::AccountClosed` (redirects) both terminate the request from the `find_person` before_action before `PeopleController#show` (line 69) ever runs. Profile rendering (public_details?/birthday_year/block-contact NullRelation checks) AND the layout's atom-url handle-split family (current_user_atom_tag, layout_helper.rb:33-36, reached only via `respond_with`/`show`'s successful completion) both live entirely inside `show`'s execution, so a not-found or closed-account outcome on EITHER branch forecloses ALL of it in that run \u2014 the guard variable and any show-stage variable never co-occur.",
-      "source_a": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "source_b": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "expr_a": "(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_not_found == True)",
-      "expr_b": "(SYM_RESULT_ActiveRecord__Relation_to_a_1_row_comments_count == 0)"
     },
     {
       "type": "IndependenceAssumption",
@@ -5831,29 +5114,6 @@
       },
       "expr_a": "(SYM_PERSON_via_user_closed_account == True)",
       "expr_b": "IndexOf(SYM_PERSON_via_user_diaspora_handle, StringVal('@')) == 2"
-    },
-    {
-      "type": "IndependenceAssumption",
-      "description": "mutually exclusive per app control flow \u2014 see agent_notes",
-      "agent_notes": "person_presenter.rb:78-86 `full_hash_with_profile`: `attrs = full_hash` (reads public_details? into show_profile_info) then `if attrs[:show_profile_info] ... private_hash ... else ... public_hash`. `formatted_birthday`/birthday_year (people_helper.rb, called from profile_presenter.rb `private_hash`) is reached ONLY via private_hash. For this endpoint's anonymous-only scenarios (current_user nil throughout \u2014 run_dse.rb header), own_profile? and person_is_following_current_user are both concretely false, so show_profile_info == public_details? exactly: public_details?==False selects public_hash and birthday_year is never read in that run. Confirmed in the dumps themselves: every PD=False dump has no birthday_year PC; every PD=True dump does.",
-      "source_a": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "source_b": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "expr_a": "(assoc_profile_public_details == True)",
-      "expr_b": "(assoc_profile_birthday_year <= 1004)"
     },
     {
       "type": "SymbolicConstraintAssumption",
@@ -6097,36 +5357,6 @@
     },
     {
       "type": "OneSideUntrackedPathAssumption",
-      "description": "non-empty side proven unreachable by direct DSE probe (NullRelation)",
-      "agent_notes": "person_presenter.rb has_contact?/is_blocked? .present? on Block.none/Contact.none for the anonymous scenario \u2014 see module docstring.",
-      "source": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "tracked_side": "not_taken",
-      "expr": "(SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_1 != 0)"
-    },
-    {
-      "type": "OneSideUntrackedPathAssumption",
-      "description": "non-empty side proven unreachable by direct DSE probe (NullRelation)",
-      "agent_notes": "person_presenter.rb has_contact?/is_blocked? .present? on Block.none/Contact.none for the anonymous scenario \u2014 see module docstring.",
-      "source": {
-        "file": "",
-        "lineno": 0,
-        "col_offset": 0,
-        "function": "",
-        "snippet": "",
-        "str": ":0"
-      },
-      "tracked_side": "not_taken",
-      "expr": "(SYM_LEN_SYM_RESULT_ActiveRecord__Relation_records_2 != 0)"
-    },
-    {
-      "type": "OneSideUntrackedPathAssumption",
       "description": "empty-side unreachable: only input (H=='') crashes split interceptor before recording (verified 109 Template::Error dumps, handle value '') ",
       "agent_notes": "string.rb:266 SymbolicString#split IndexError on empty concrete value (\"\".split('@') -> []); DiasporaId validation forbids empty handles in production.",
       "source": {
@@ -6216,44 +5446,748 @@
       "expr": "(SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_via_user_diaspora_handle) - 0) == '')"
     }
   ],
-  "assumptions_used": 130,
+  "assumptions_used": 92,
+  "withdrawn_pairs_fed_back": 8,
   "missing": [],
-  "declared_open": {
-    "endpoint": "people_show",
-    "date": "2026-09-05",
-    "user_approval": "Option A (explicit user decision)",
-    "note": "Documented residual demand, NOT repaired. Endpoint-level template walls outside the 4 sanctioned boundary families (write/exists?/pluck/owner_id). No assumptions added; verdict numbers unchanged.",
-    "items": [
+  "completion": {
+    "audits": [
       {
-        "id": "P-7",
-        "name": "publisher aspects.post_default",
-        "real_shapes": [
-          "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = ? AND \"aspects\".\"post_default\" = ? ORDER BY order_id ASC",
-          "SELECT COUNT(*) FROM \"aspects\" WHERE \"aspects\".\"user_id\" = ?"
-        ],
-        "wall": "html-layout sprockets asset wall: couldn't find file 'underscore' \u2014 render truncated before publisher partial aspects queries",
-        "source": "app/models/user.rb post_default_aspects; aspect_global_helper.rb publisher_aspects_for",
-        "status": "declared-open (Option A)"
+        "name": "identity_symbolicity",
+        "exit": 0,
+        "green": true,
+        "output_tail": "   principal: users.id + columns owner_id,recipient_id,user_id\n== identity_symbolicity_audit: 74010 dumps ==\n-- principal-column binds --\n  owner_id       symbolic  70910   literal      0\n  recipient_id   symbolic 114500   literal      0\n  user_id        symbolic 447732   literal      0\n\nRESULT: pass \u2014 every principal bind is symbolic.\n",
+        "stderr_tail": ""
       },
       {
-        "id": "P-8",
-        "name": "mobile stream content queries (likes/mentions/polls/locations/photos)",
-        "real_shapes": [
-          "SELECT \"likes\".* FROM \"likes\" WHERE \"likes\".\"author_id\" = ? AND \"likes\".\"target_id\" IN (?, ?) AND \"likes\".\"target_type\" = ?",
-          "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = ? AND \"mentions\".\"mentions_container_type\" = ?",
-          "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_type\" = ? AND \"mentions\".\"mentions_container_id\" IN (?, ?)",
-          "SELECT \"polls\".* FROM \"polls\" WHERE \"polls\".\"status_message_id\" = ? LIMIT ?",
-          "SELECT \"locations\".* FROM \"locations\" WHERE \"locations\".\"status_message_id\" = ? LIMIT ?",
-          "SELECT \"photos\".* FROM \"photos\" WHERE \"photos\".\"status_message_guid\" = ? ORDER BY \"photos\".\"id\" ASC LIMIT ?",
-          "SELECT COUNT(*) FROM \"photos\" WHERE \"photos\".\"status_message_guid\" = ?"
-        ],
-        "wall": "mobile-layout route-generation wall: No route matches {:action=>\"show\", :controller=>\"people\", :format=>\"mobile\", :username=><SymStr>} \u2014 symbolic username reaching the URL builder before per-post associations fire",
-        "source": "lib/stream/base.rb like_posts_for_stream!; mentions eager load; polls/locations/photos post associations; show.mobile.haml/shared/_stream_element.mobile.haml",
-        "closed_subshapes": [
-          "#1 SELECT DISTINCT posts.* LEFT OUTER JOIN share_visibilities (closed by drain campaign; present in all 6,370 auth_mobile dumps)"
-        ],
-        "status": "declared-open (Option A)"
+        "name": "exception_note",
+        "exit": 0,
+        "green": true,
+        "output_tail": "== exception_note_audit ==\n   corpus : /home/dev/project/reports/diaspora/results3/people_show\n   dumps  : 150 scanned of 74010 in corpus\n   notes that captured an exception: 0\n\nRESULT: pass \u2014 no note captured an exception.\n",
+        "stderr_tail": ""
+      },
+      {
+        "name": "empty_relation_emission",
+        "exit": 0,
+        "green": true,
+        "output_tail": "== empty_relation_emission_audit: 74010 dumps, 31217 empty-list states ==\n\nRESULT: pass \u2014 no note binds a row of a list that is empty in the same run.\n",
+        "stderr_tail": ""
       }
-    ]
-  }
+    ],
+    "shims_extracted": 43,
+    "shims": [
+      {
+        "key": "target_klass.stash_finder_kwargs",
+        "owner": "target_klass",
+        "method": "stash_finder_kwargs",
+        "kind": "prepend",
+        "module": "PeopleShowFindByKwargs",
+        "file": "targets.rb",
+        "line": 178,
+        "verdict": "PASS",
+        "targets_reached": [
+          "ActiveRecord::FinderMethods#exists?",
+          "ActiveRecord::FinderMethods#find_by",
+          "ActiveRecord::FinderMethods#take",
+          "ActiveRecord::Relation#records"
+        ],
+        "targets_declared": [
+          "ActiveRecord::FinderMethods#exists?",
+          "ActiveRecord::FinderMethods#find_by",
+          "ActiveRecord::FinderMethods#take",
+          "ActiveRecord::Relation#records"
+        ],
+        "coverage_pct": 100.0,
+        "invoked": true,
+        "generated": false,
+        "coverage_waiver": null,
+        "missed_lines": []
+      },
+      {
+        "key": "fm_mod.stash_finder_kwargs",
+        "owner": "fm_mod",
+        "method": "stash_finder_kwargs",
+        "kind": "prepend",
+        "module": "PeopleShowFindByKwargs",
+        "file": "targets.rb",
+        "line": 182,
+        "verdict": "PASS",
+        "targets_reached": [
+          "ActiveRecord::FinderMethods#find_by",
+          "ActiveRecord::FinderMethods#take",
+          "ActiveRecord::Relation#records"
+        ],
+        "targets_declared": [
+          "ActiveRecord::FinderMethods#find_by",
+          "ActiveRecord::FinderMethods#take",
+          "ActiveRecord::Relation#records"
+        ],
+        "coverage_pct": 100.0,
+        "invoked": true,
+        "generated": false,
+        "coverage_waiver": null,
+        "missed_lines": []
+      },
+      {
+        "key": "Person.posts",
+        "owner": "Person",
+        "method": "posts",
+        "kind": "prepend",
+        "module": "PersonSymAssociations",
+        "file": "targets.rb",
+        "line": 190,
+        "verdict": "PASS",
+        "targets_reached": [],
+        "targets_declared": [],
+        "coverage_pct": 100.0,
+        "invoked": true,
+        "generated": false,
+        "coverage_waiver": null,
+        "missed_lines": []
+      },
+      {
+        "key": "h.image_path",
+        "owner": "h",
+        "method": "image_path",
+        "kind": "rep_plumbing",
+        "file": "targets.rb",
+        "line": 281,
+        "verdict": "PASS",
+        "targets_reached": [],
+        "targets_declared": [],
+        "coverage_pct": 100.0,
+        "invoked": true,
+        "generated": false,
+        "coverage_waiver": null,
+        "missed_lines": []
+      },
+      {
+        "key": "h.path_to_image",
+        "owner": "h",
+        "method": "path_to_image",
+        "kind": "rep_plumbing",
+        "file": "targets.rb",
+        "line": 282,
+        "verdict": "PASS",
+        "targets_reached": [],
+        "targets_declared": [],
+        "coverage_pct": 100.0,
+        "invoked": false,
+        "generated": false,
+        "coverage_waiver": null,
+        "missed_lines": []
+      },
+      {
+        "key": "rel.pluck",
+        "owner": "rel",
+        "method": "pluck",
+        "kind": "prepend",
+        "module": "PeopleShowPluckArgs",
+        "file": "targets.rb",
+        "line": 521,
+        "verdict": "PASS",
+        "targets_reached": [
+          "ActiveRecord::Calculations#pluck"
+        ],
+        "targets_declared": [
+          "ActiveRecord::Calculations#pluck"
+        ],
+        "coverage_pct": 100.0,
+        "invoked": true,
+        "generated": false,
+        "coverage_waiver": null,
+        "missed_lines": []
+      },
+      {
+        "key": "user.id",
+        "owner": "user",
+        "method": "id",
+        "kind": "rep_plumbing",
+        "file": "targets.rb",
+        "line": 666,
+        "verdict": "PROTOCOL",
+        "detail": "runtime rep machinery: the real class defines this only through the AR/Ruby protocol (or not at all) \u2014 no app body to run against"
+      },
+      {
+        "key": "user.guid",
+        "owner": "user",
+        "method": "guid",
+        "kind": "rep_plumbing",
+        "file": "targets.rb",
+        "line": 667,
+        "verdict": "PASS",
+        "targets_reached": [],
+        "targets_declared": [],
+        "coverage_pct": 100.0,
+        "invoked": false,
+        "generated": true,
+        "coverage_waiver": null,
+        "missed_lines": []
+      },
+      {
+        "key": "user.person",
+        "owner": "user",
+        "method": "person",
+        "kind": "rep_plumbing",
+        "file": "targets.rb",
+        "line": 668,
+        "verdict": "PASS",
+        "targets_reached": [],
+        "targets_declared": [],
+        "coverage_pct": 100.0,
+        "invoked": false,
+        "generated": true,
+        "coverage_waiver": null,
+        "missed_lines": []
+      },
+      {
+        "key": "user.person_id",
+        "owner": "user",
+        "method": "person_id",
+        "kind": "rep_plumbing",
+        "file": "targets.rb",
+        "line": 669,
+        "verdict": "PASS",
+        "targets_reached": [],
+        "targets_declared": [],
+        "coverage_pct": 100.0,
+        "invoked": false,
+        "generated": true,
+        "coverage_waiver": null,
+        "missed_lines": []
+      },
+      {
+        "key": "user.diaspora_handle",
+        "owner": "user",
+        "method": "diaspora_handle",
+        "kind": "rep_plumbing",
+        "file": "targets.rb",
+        "line": 670,
+        "verdict": "PASS",
+        "targets_reached": [],
+        "targets_declared": [],
+        "coverage_pct": 100.0,
+        "invoked": false,
+        "generated": true,
+        "coverage_waiver": null,
+        "missed_lines": []
+      },
+      {
+        "key": "user.language",
+        "owner": "user",
+        "method": "language",
+        "kind": "rep_plumbing",
+        "file": "targets.rb",
+        "line": 671,
+        "verdict": "PASS",
+        "targets_reached": [],
+        "targets_declared": [],
+        "coverage_pct": 100.0,
+        "invoked": false,
+        "generated": true,
+        "coverage_waiver": null,
+        "missed_lines": []
+      },
+      {
+        "key": "user.gender",
+        "owner": "user",
+        "method": "gender",
+        "kind": "rep_plumbing",
+        "file": "targets.rb",
+        "line": 672,
+        "verdict": "PASS",
+        "targets_reached": [],
+        "targets_declared": [],
+        "coverage_pct": 100.0,
+        "invoked": false,
+        "generated": true,
+        "coverage_waiver": null,
+        "missed_lines": []
+      },
+      {
+        "key": "user.contacts",
+        "owner": "user",
+        "method": "contacts",
+        "kind": "rep_plumbing",
+        "file": "targets.rb",
+        "line": 673,
+        "verdict": "PASS",
+        "targets_reached": [],
+        "targets_declared": [],
+        "coverage_pct": 100.0,
+        "invoked": false,
+        "generated": true,
+        "coverage_waiver": null,
+        "missed_lines": []
+      },
+      {
+        "key": "user.blocks",
+        "owner": "user",
+        "method": "blocks",
+        "kind": "rep_plumbing",
+        "file": "targets.rb",
+        "line": 674,
+        "verdict": "PASS",
+        "targets_reached": [],
+        "targets_declared": [],
+        "coverage_pct": 100.0,
+        "invoked": false,
+        "generated": true,
+        "coverage_waiver": null,
+        "missed_lines": []
+      },
+      {
+        "key": "user.aspects",
+        "owner": "user",
+        "method": "aspects",
+        "kind": "rep_plumbing",
+        "file": "targets.rb",
+        "line": 675,
+        "verdict": "PASS",
+        "targets_reached": [],
+        "targets_declared": [],
+        "coverage_pct": 100.0,
+        "invoked": false,
+        "generated": true,
+        "coverage_waiver": null,
+        "missed_lines": []
+      },
+      {
+        "key": "user.contact_for",
+        "owner": "user",
+        "method": "contact_for",
+        "kind": "rep_plumbing",
+        "file": "targets.rb",
+        "line": 676,
+        "verdict": "PASS",
+        "targets_reached": [
+          "ActiveRecord::FinderMethods#find_by",
+          "ActiveRecord::FinderMethods#take",
+          "ActiveRecord::Relation#records",
+          "ActiveRecord::Relation#to_ary"
+        ],
+        "targets_declared": [
+          "ActiveRecord::FinderMethods#find_by",
+          "ActiveRecord::FinderMethods#take",
+          "ActiveRecord::Relation#records",
+          "ActiveRecord::Relation#to_ary"
+        ],
+        "coverage_pct": 100.0,
+        "invoked": false,
+        "generated": true,
+        "coverage_waiver": null,
+        "missed_lines": []
+      },
+      {
+        "key": "user.block_for",
+        "owner": "user",
+        "method": "block_for",
+        "kind": "rep_plumbing",
+        "file": "targets.rb",
+        "line": 679,
+        "verdict": "PASS",
+        "targets_reached": [],
+        "targets_declared": [],
+        "coverage_pct": 100.0,
+        "invoked": false,
+        "generated": true,
+        "coverage_waiver": null,
+        "missed_lines": []
+      },
+      {
+        "key": "user.posts_from",
+        "owner": "user",
+        "method": "posts_from",
+        "kind": "rep_plumbing",
+        "file": "targets.rb",
+        "line": 680,
+        "verdict": "PASS",
+        "targets_reached": [],
+        "targets_declared": [],
+        "coverage_pct": 100.0,
+        "invoked": false,
+        "generated": true,
+        "coverage_waiver": null,
+        "missed_lines": []
+      },
+      {
+        "key": "user.diaspora_handle",
+        "owner": "user",
+        "method": "diaspora_handle",
+        "kind": "rep_plumbing",
+        "file": "targets.rb",
+        "line": 755,
+        "verdict": "PASS",
+        "targets_reached": [],
+        "targets_declared": [],
+        "coverage_pct": 100.0,
+        "invoked": false,
+        "generated": true,
+        "coverage_waiver": null,
+        "missed_lines": []
+      },
+      {
+        "key": "user.language",
+        "owner": "user",
+        "method": "language",
+        "kind": "rep_plumbing",
+        "file": "targets.rb",
+        "line": 756,
+        "verdict": "PASS",
+        "targets_reached": [],
+        "targets_declared": [],
+        "coverage_pct": 100.0,
+        "invoked": false,
+        "generated": true,
+        "coverage_waiver": null,
+        "missed_lines": []
+      },
+      {
+        "key": "user.gender",
+        "owner": "user",
+        "method": "gender",
+        "kind": "rep_plumbing",
+        "file": "targets.rb",
+        "line": 757,
+        "verdict": "PASS",
+        "targets_reached": [],
+        "targets_declared": [],
+        "coverage_pct": 100.0,
+        "invoked": false,
+        "generated": true,
+        "coverage_waiver": null,
+        "missed_lines": []
+      },
+      {
+        "key": "user.post_default_public",
+        "owner": "user",
+        "method": "post_default_public",
+        "kind": "rep_plumbing",
+        "file": "targets.rb",
+        "line": 787,
+        "verdict": "PASS",
+        "targets_reached": [],
+        "targets_declared": [],
+        "coverage_pct": 100.0,
+        "invoked": false,
+        "generated": true,
+        "coverage_waiver": null,
+        "missed_lines": []
+      },
+      {
+        "key": "user.blocks",
+        "owner": "user",
+        "method": "blocks",
+        "kind": "rep_plumbing",
+        "file": "targets.rb",
+        "line": 798,
+        "verdict": "PASS",
+        "targets_reached": [],
+        "targets_declared": [],
+        "coverage_pct": 100.0,
+        "invoked": false,
+        "generated": true,
+        "coverage_waiver": null,
+        "missed_lines": []
+      },
+      {
+        "key": "person.id",
+        "owner": "person",
+        "method": "id",
+        "kind": "rep_plumbing",
+        "file": "targets.rb",
+        "line": 811,
+        "verdict": "PROTOCOL",
+        "detail": "runtime rep machinery: the real class defines this only through the AR/Ruby protocol (or not at all) \u2014 no app body to run against"
+      },
+      {
+        "key": "PeopleController.diaspora_id?",
+        "owner": "PeopleController",
+        "method": "diaspora_id?",
+        "kind": "prepend",
+        "module": "DiasporaIdBoundaryMock",
+        "file": "targets.rb",
+        "line": 1016,
+        "verdict": "PASS",
+        "targets_reached": [],
+        "targets_declared": [],
+        "coverage_pct": 100.0,
+        "invoked": true,
+        "generated": false,
+        "coverage_waiver": null,
+        "missed_lines": []
+      },
+      {
+        "key": "User.person",
+        "owner": "User",
+        "method": "person",
+        "kind": "prepend",
+        "module": "UserSymPersonAssociation",
+        "file": "targets.rb",
+        "line": 1017,
+        "verdict": "PASS",
+        "targets_reached": [
+          "ActiveRecord::Associations::SingularAssociation#find_target"
+        ],
+        "targets_declared": [
+          "ActiveRecord::Associations::SingularAssociation#find_target"
+        ],
+        "coverage_pct": 100.0,
+        "invoked": true,
+        "generated": false,
+        "coverage_waiver": null,
+        "missed_lines": []
+      },
+      {
+        "key": "Post.location",
+        "owner": "Post",
+        "method": "location",
+        "kind": "prepend",
+        "module": "PostSymLocation",
+        "file": "targets.rb",
+        "line": 1018,
+        "verdict": "PASS",
+        "targets_reached": [
+          "ActiveRecord::Associations::SingularAssociation#find_target",
+          "ActiveRecord::FinderMethods#find",
+          "ActiveRecord::FinderMethods#take",
+          "ActiveRecord::Relation#records"
+        ],
+        "targets_declared": [
+          "ActiveRecord::Associations::SingularAssociation#find_target",
+          "ActiveRecord::FinderMethods#find",
+          "ActiveRecord::FinderMethods#take",
+          "ActiveRecord::Relation#records"
+        ],
+        "coverage_pct": 100.0,
+        "invoked": true,
+        "generated": false,
+        "coverage_waiver": null,
+        "missed_lines": []
+      },
+      {
+        "key": "obj.read_attribute",
+        "owner": "obj",
+        "method": "read_attribute",
+        "kind": "rep_plumbing",
+        "file": "concolic_targets.rb",
+        "line": 485,
+        "verdict": "PROTOCOL",
+        "detail": "runtime rep machinery: the real class defines this only through the AR/Ruby protocol (or not at all) \u2014 no app body to run against"
+      },
+      {
+        "key": "obj._read_attribute",
+        "owner": "obj",
+        "method": "_read_attribute",
+        "kind": "rep_plumbing",
+        "file": "concolic_targets.rb",
+        "line": 486,
+        "verdict": "PROTOCOL",
+        "detail": "runtime rep machinery: the real class defines this only through the AR/Ruby protocol (or not at all) \u2014 no app body to run against"
+      },
+      {
+        "key": "obj.concolic_attrs",
+        "owner": "obj",
+        "method": "concolic_attrs",
+        "kind": "rep_plumbing",
+        "file": "concolic_targets.rb",
+        "line": 487,
+        "verdict": "PROTOCOL",
+        "detail": "runtime rep machinery: the real class defines this only through the AR/Ruby protocol (or not at all) \u2014 no app body to run against"
+      },
+      {
+        "key": "obj.concolic_note",
+        "owner": "obj",
+        "method": "concolic_note",
+        "kind": "rep_plumbing",
+        "file": "concolic_targets.rb",
+        "line": 491,
+        "verdict": "PROTOCOL",
+        "detail": "runtime rep machinery: the real class defines this only through the AR/Ruby protocol (or not at all) \u2014 no app body to run against"
+      },
+      {
+        "key": "obj.attributes",
+        "owner": "obj",
+        "method": "attributes",
+        "kind": "rep_plumbing",
+        "file": "concolic_targets.rb",
+        "line": 499,
+        "verdict": "PROTOCOL",
+        "detail": "runtime rep machinery: the real class defines this only through the AR/Ruby protocol (or not at all) \u2014 no app body to run against"
+      },
+      {
+        "key": "obj.write_attribute",
+        "owner": "obj",
+        "method": "write_attribute",
+        "kind": "rep_plumbing",
+        "file": "concolic_targets.rb",
+        "line": 500,
+        "verdict": "PROTOCOL",
+        "detail": "runtime rep machinery: the real class defines this only through the AR/Ruby protocol (or not at all) \u2014 no app body to run against"
+      },
+      {
+        "key": "obj._write_attribute",
+        "owner": "obj",
+        "method": "_write_attribute",
+        "kind": "rep_plumbing",
+        "file": "concolic_targets.rb",
+        "line": 501,
+        "verdict": "PROTOCOL",
+        "detail": "runtime rep machinery: the real class defines this only through the AR/Ruby protocol (or not at all) \u2014 no app body to run against"
+      },
+      {
+        "key": "obj.image_url",
+        "owner": "obj",
+        "method": "image_url",
+        "kind": "rep_plumbing",
+        "file": "concolic_targets.rb",
+        "line": 508,
+        "verdict": "PASS",
+        "targets_reached": [],
+        "targets_declared": [],
+        "coverage_pct": 100.0,
+        "invoked": true,
+        "generated": false,
+        "coverage_waiver": null,
+        "missed_lines": []
+      },
+      {
+        "key": "obj.hidden_shareables",
+        "owner": "obj",
+        "method": "hidden_shareables",
+        "kind": "rep_plumbing",
+        "file": "concolic_targets.rb",
+        "line": 530,
+        "verdict": "PASS",
+        "targets_reached": [],
+        "targets_declared": [],
+        "coverage_pct": 100.0,
+        "invoked": true,
+        "generated": false,
+        "coverage_waiver": null,
+        "missed_lines": []
+      },
+      {
+        "key": "obj.post_location",
+        "owner": "obj",
+        "method": "post_location",
+        "kind": "rep_plumbing",
+        "file": "concolic_targets.rb",
+        "line": 539,
+        "verdict": "PROTOCOL",
+        "detail": "Post#post_location is defined by the AR/Ruby protocol \u2014 verified against the real class"
+      },
+      {
+        "key": "obj.inspect",
+        "owner": "obj",
+        "method": "inspect",
+        "kind": "rep_plumbing",
+        "file": "concolic_targets.rb",
+        "line": 545,
+        "verdict": "PROTOCOL",
+        "detail": "runtime rep machinery: the real class defines this only through the AR/Ruby protocol (or not at all) \u2014 no app body to run against"
+      },
+      {
+        "key": "ActiveRecord::Associations::SingularAssociation.find_target",
+        "owner": "ActiveRecord::Associations::SingularAssociation",
+        "method": "find_target",
+        "kind": "prepend",
+        "module": "singular_loaded_target_memo",
+        "file": "concolic_targets.rb",
+        "line": 1380,
+        "verdict": "PASS",
+        "targets_reached": [
+          "ActiveRecord::Associations::SingularAssociation#find_target"
+        ],
+        "targets_declared": [
+          "ActiveRecord::Associations::SingularAssociation#find_target"
+        ],
+        "coverage_pct": 100.0,
+        "invoked": true,
+        "generated": false,
+        "coverage_waiver": null,
+        "missed_lines": []
+      },
+      {
+        "key": "::Gon.singleton_class.preloads",
+        "owner": "::Gon.singleton_class",
+        "method": "preloads",
+        "kind": "prepend",
+        "module": "gon_preloads_shim",
+        "file": "concolic_targets.rb",
+        "line": 1636,
+        "verdict": "PASS",
+        "targets_reached": [],
+        "targets_declared": [],
+        "coverage_pct": 100.0,
+        "invoked": true,
+        "generated": false,
+        "coverage_waiver": null,
+        "missed_lines": []
+      },
+      {
+        "key": "ActiveRecord::Base.singleton_class.DYNAMIC",
+        "owner": "ActiveRecord::Base.singleton_class",
+        "method": "DYNAMIC",
+        "kind": "value_class",
+        "module": "ConcolicKwargsToPositional",
+        "file": "concolic_targets.rb",
+        "line": 2053,
+        "note": "dynamically-named define_method \u2014 engine requires manual entry or waiver",
+        "verdict": "PASS",
+        "targets_reached": [
+          "ActiveRecord::Core::ClassMethods#find_by!"
+        ],
+        "targets_declared": [
+          "ActiveRecord::Core::ClassMethods#find_by!"
+        ],
+        "coverage_pct": 100.0,
+        "invoked": true,
+        "generated": false,
+        "coverage_waiver": null,
+        "missed_lines": []
+      },
+      {
+        "key": "ActiveRecord::Relation.DYNAMIC",
+        "owner": "ActiveRecord::Relation",
+        "method": "DYNAMIC",
+        "kind": "value_class",
+        "module": "ConcolicKwargsToPositional",
+        "file": "concolic_targets.rb",
+        "line": 2054,
+        "note": "dynamically-named define_method \u2014 engine requires manual entry or waiver",
+        "verdict": "PROTOCOL",
+        "detail": "runtime rep machinery: the real class defines this only through the AR/Ruby protocol (or not at all) \u2014 no app body to run against"
+      }
+    ],
+    "shim_verdict_counts": {
+      "PASS": 31,
+      "PROTOCOL": 12
+    },
+    "note_check": {
+      "exit": 0,
+      "green": true,
+      "output": "corpus notes from 74010 dumps (whole batch directory)\n== mock_note_check: 7 target frames issued real SELECTs; 15 targets carry corpus notes ==\n\nNOTE-OK       ActiveRecord::Associations::CollectionAssociation.find_target  (2 real shapes matched)\nNOTE-OK       ActiveRecord::Associations::SingularAssociation.find_target  (3 real shapes matched)\nNOTE-OK*      ActiveRecord::Calculations.count  (1 shape(s) matched under a DIFFERENT target \u2014 frame nesting)\nNOTE-OK       ActiveRecord::Calculations.pluck  (1 real shapes matched)\nNOTE-OK       ActiveRecord::FinderMethods.exists?  (1 real shapes matched)\nNOTE-OK       ActiveRecord::Persistence.update_columns  (1 real shapes matched)\nNOTE-OK*      ActiveRecord::Relation.records  (4 shape(s) matched under a DIFFERENT target \u2014 frame nesting)\n\nRESULT: every SQL-issuing target's notes match its real statements.\n"
+    },
+    "assumptions": {
+      "declared": 246,
+      "distinct_tested": 246,
+      "verdict_counts": {
+        "NOT-TESTABLE": 227,
+        "PASS": 19
+      },
+      "confinement_tested": 0,
+      "confinement_withdrawn": [],
+      "confinement_unverified": [],
+      "failures": [],
+      "driver_exit": 0,
+      "output_tail": "sumption   Not(Contains(StringVal('@'), SYM_PERSON_via_user_diaspora_handle))\n      cannot derive seed dimension from expr\n  NOT-TESTABLE  OneSideUntrackedPathAssumption   IndexOf(SYM_PERSON_via_user_diaspora_handle, StringVal('@')) == 1\n      cannot derive seed dimension from expr\n  NOT-TESTABLE  OneSideUntrackedPathAssumption   IndexOf(SYM_PERSON_via_user_diaspora_handle, StringVal('@')) == 2\n      cannot derive seed dimension from expr\n  NOT-TESTABLE  OneSideUntrackedPathAssumption   Contains(StringVal('@'), SYM_RESULT_ActiveRecord__FinderMethods_first_\n      cannot derive seed dimension from expr\n  NOT-TESTABLE  OneSideUntrackedPathAssumption   Not(Contains(StringVal('@'), SYM_RESULT_ActiveRecord__FinderMethods_fi\n      cannot derive seed dimension from expr\n  NOT-TESTABLE  OneSideUntrackedPathAssumption   IndexOf(SYM_RESULT_ActiveRecord__FinderMethods_first_2_diaspora_handle\n      cannot derive seed dimension from expr\n  NOT-TESTABLE  OneSideUntrackedPathAssumption   (SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_han\n      cannot derive seed dimension from expr\n  NOT-TESTABLE  OneSideUntrackedPathAssumption   (SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_han\n      cannot derive seed dimension from expr\n  NOT-TESTABLE  OneSideUntrackedPathAssumption   (SubString(SYM_RESULT_ActiveRecord__FinderMethods_first_1_diaspora_han\n      cannot derive seed dimension from expr\n  NOT-TESTABLE  OneSideUntrackedPathAssumption   (SubString(SYM_PERSON_via_user_diaspora_handle, 0, 1) == '')\n      cannot derive seed dimension from expr\n  NOT-TESTABLE  OneSideUntrackedPathAssumption   (SubString(SYM_PERSON_via_user_diaspora_handle, 0, 2) == '')\n      cannot derive seed dimension from expr\n  NOT-TESTABLE  OneSideUntrackedPathAssumption   (SubString(SYM_PERSON_via_user_diaspora_handle, 0, Length(SYM_PERSON_v\n      cannot derive seed dimension from expr\n\nRESULT: 246 distinct tested \u2014 PASS 19, FAIL 0, ERROR 0, NOT-TESTABLE 227, NOT-COMPARABLE 0\n",
+      "stderr_tail": "",
+      "failure_log": null,
+      "green": true
+    },
+    "foreclosure": null,
+    "complete": true,
+    "blocking": []
+  },
+  "complete": true
 }
