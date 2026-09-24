@@ -244,6 +244,13 @@ def main() -> int:
         "coverage_complete": bool(result.complete),
         "tree_nodes": result.total_nodes,
         "missing_branches": len(result.missing),
+        # 2026-09-10 (DISCIPLINE §16): the demand universe is now the maximal
+        # OBSERVED EVALUATION SETS, and the combination claim is CONDITIONAL on
+        # the tree layer being complete. Both are reported so a summary says
+        # what its `coverage_complete` was a claim about.
+        "demand_sets": getattr(result, "demand_sets", None),
+        "tree_complete": getattr(result, "tree_complete", None),
+        "tree_missing": list(getattr(result, "tree_missing", ()))[:200],
         "truncated": result.truncated,
         "solver_lost": result.solver_lost,
         "unevaluable_exprs": list(result.unevaluable_exprs),

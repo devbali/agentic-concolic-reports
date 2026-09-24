@@ -55,20 +55,17 @@
     "user.person": "real has_one :person (SingularAssociation#find_target, owner_id = $$(devise_user_first_1_id))",
     "anon scenario": "none — before_action :authenticate_user! with no except:"
   },
-  "runs_executed": 30,
-  "distinct_paths": 30,
-  "path_conditions_written": 448,
-  "states_tried": 30,
+  "runs_executed": 4,
+  "distinct_paths": 4,
+  "path_conditions_written": 170,
+  "states_tried": 4,
   "stack_remaining": 0,
   "worklist_exhausted": true,
   "max_runs": 4000,
   "time_budget": 1500,
-  "elapsed_seconds": 2.7,
+  "elapsed_seconds": 12.6,
   "run_errors": {
-    "run:ActiveModel::RangeError": 10,
-    "run:ActionView::Template::Error": 4,
-    "run:ActionController::UnknownFormat": 4
-  },
+},
   "unflippable_pcs": {
 }
 }

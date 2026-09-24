@@ -2,6 +2,10 @@
 # The EIGHT SQL-consumer audits + the hardening lint over the FULL corpus.
 # None of these run Z3, so none takes the heavy lock.
 set -u
+# E12 (2026-09-11): src/queries_from_runs is app-agnostic and REQUIRES an
+# app config; bind_resolution_audit and identity_symbolicity_audit read the
+# schema and the principal columns from it and go RED without one.
+export QFR_APP_CONFIG="${QFR_APP_CONFIG:-/home/dev/project/reports/diaspora/queries_config/app.json}"
 unset JAVA_TOOL_OPTIONS
 B=/home/dev/project/reports/diaspora/results3/conversations_index
 cd /home/dev/project

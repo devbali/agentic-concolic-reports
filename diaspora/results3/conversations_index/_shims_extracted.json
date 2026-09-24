@@ -1,5 +1,6 @@
 [
   {
+    "key": "conv.id",
     "owner": "conv",
     "method": "id",
     "kind": "rep_plumbing",
@@ -7,272 +8,309 @@
     "line": 465
   },
   {
+    "key": "k.conversation_visibilities",
     "owner": "k",
     "method": "conversation_visibilities",
     "kind": "prepend",
     "module": "ConvoSymAssociations",
     "file": "targets.rb",
-    "line": 1073
+    "line": 1079
   },
   {
+    "key": "rel.pluck",
     "owner": "rel",
     "method": "pluck",
     "kind": "prepend",
     "module": "ConvLoadedRelation",
     "file": "targets.rb",
-    "line": 1155
+    "line": 1161
   },
   {
+    "key": "wp.total_entries",
     "owner": "wp",
     "method": "total_entries",
     "kind": "prepend",
     "module": "ConvPaginatedTotal",
     "file": "targets.rb",
-    "line": 1158
+    "line": 1164
   },
   {
+    "key": "cp.loaded?",
     "owner": "cp",
     "method": "loaded?",
     "kind": "prepend",
     "module": "ConvLoadedProxy",
     "file": "targets.rb",
-    "line": 1316
+    "line": 1322
   },
   {
+    "key": "obj.convidx_dirty",
     "owner": "obj",
     "method": "convidx_dirty",
     "kind": "rep_plumbing",
     "file": "targets.rb",
-    "line": 1519
+    "line": 1525
   },
   {
+    "key": "obj.convidx_access",
     "owner": "obj",
     "method": "convidx_access",
     "kind": "rep_plumbing",
     "file": "targets.rb",
-    "line": 1528
+    "line": 1534
   },
   {
+    "key": "obj.changed?",
     "owner": "obj",
     "method": "changed?",
     "kind": "rep_plumbing",
     "file": "targets.rb",
-    "line": 1538
+    "line": 1544
   },
   {
+    "key": "obj.has_changes_to_save?",
     "owner": "obj",
     "method": "has_changes_to_save?",
     "kind": "rep_plumbing",
     "file": "targets.rb",
-    "line": 1539
+    "line": 1545
   },
   {
+    "key": "obj.guid",
     "owner": "obj",
     "method": "guid",
     "kind": "rep_plumbing",
     "file": "targets.rb",
-    "line": 1614
+    "line": 1620
   },
   {
+    "key": "obj.hash",
     "owner": "obj",
     "method": "hash",
     "kind": "rep_plumbing",
     "file": "targets.rb",
-    "line": 1641
+    "line": 1647
   },
   {
+    "key": "obj.text",
     "owner": "obj",
     "method": "text",
     "kind": "rep_plumbing",
     "file": "targets.rb",
-    "line": 1694
+    "line": 1700
   },
   {
+    "key": "obj.name",
     "owner": "obj",
     "method": "name",
     "kind": "rep_plumbing",
     "file": "targets.rb",
-    "line": 1711
+    "line": 1717
   },
   {
+    "key": "Person.name_from_attrs",
     "owner": "Person",
     "method": "name_from_attrs",
     "kind": "rep_plumbing",
     "file": "targets.rb",
-    "line": 1745
+    "line": 1751
   },
   {
+    "key": "receiver.concolic_note",
     "owner": "receiver",
     "method": "concolic_note",
     "kind": "rep_plumbing",
     "file": "targets.rb",
-    "line": 2003
+    "line": 2011
   },
   {
+    "key": "h.image_path",
     "owner": "h",
     "method": "image_path",
     "kind": "rep_plumbing",
     "file": "targets.rb",
-    "line": 2054
+    "line": 2062
   },
   {
+    "key": "h.path_to_image",
     "owner": "h",
     "method": "path_to_image",
     "kind": "rep_plumbing",
     "file": "targets.rb",
-    "line": 2055
+    "line": 2063
   },
   {
+    "key": "u.persisted?",
     "owner": "u",
     "method": "persisted?",
     "kind": "rep_plumbing",
     "file": "targets.rb",
-    "line": 2154
+    "line": 2162
   },
   {
+    "key": "u.new_record?",
     "owner": "u",
     "method": "new_record?",
     "kind": "rep_plumbing",
     "file": "targets.rb",
-    "line": 2155
+    "line": 2163
   },
   {
+    "key": "u.username",
     "owner": "u",
     "method": "username",
     "kind": "rep_plumbing",
     "file": "targets.rb",
-    "line": 2169
+    "line": 2177
   },
   {
+    "key": "User.authenticatable_salt",
     "owner": "User",
     "method": "authenticatable_salt",
     "kind": "prepend",
     "module": "salt_shim",
     "file": "targets.rb",
-    "line": 2189
+    "line": 2197
   },
   {
+    "key": "OrmAdapter::ActiveRecord.get",
     "owner": "OrmAdapter::ActiveRecord",
     "method": "get",
     "kind": "prepend",
     "module": "OrmAdapterGetNaming",
     "file": "targets.rb",
-    "line": 2195
+    "line": 2203
   },
   {
+    "key": "obj.read_attribute",
     "owner": "obj",
     "method": "read_attribute",
     "kind": "rep_plumbing",
     "file": "concolic_targets.rb",
-    "line": 492
+    "line": 565
   },
   {
+    "key": "obj._read_attribute",
     "owner": "obj",
     "method": "_read_attribute",
     "kind": "rep_plumbing",
     "file": "concolic_targets.rb",
-    "line": 493
+    "line": 566
   },
   {
+    "key": "obj.concolic_attrs",
     "owner": "obj",
     "method": "concolic_attrs",
     "kind": "rep_plumbing",
     "file": "concolic_targets.rb",
-    "line": 494
+    "line": 567
   },
   {
+    "key": "obj.concolic_note",
     "owner": "obj",
     "method": "concolic_note",
     "kind": "rep_plumbing",
     "file": "concolic_targets.rb",
-    "line": 498
+    "line": 571
   },
   {
+    "key": "obj.attributes",
     "owner": "obj",
     "method": "attributes",
     "kind": "rep_plumbing",
     "file": "concolic_targets.rb",
-    "line": 506
+    "line": 579
   },
   {
+    "key": "obj.write_attribute",
     "owner": "obj",
     "method": "write_attribute",
     "kind": "rep_plumbing",
     "file": "concolic_targets.rb",
-    "line": 507
+    "line": 580
   },
   {
+    "key": "obj._write_attribute",
     "owner": "obj",
     "method": "_write_attribute",
-    "kind": "rep_plumbing",
-    "file": "concolic_targets.rb",
-    "line": 508
-  },
-  {
-    "owner": "obj",
-    "method": "image_url",
-    "kind": "rep_plumbing",
-    "file": "concolic_targets.rb",
-    "line": 515
-  },
-  {
-    "owner": "obj",
-    "method": "hidden_shareables",
-    "kind": "rep_plumbing",
-    "file": "concolic_targets.rb",
-    "line": 525
-  },
-  {
-    "owner": "obj",
-    "method": "post_location",
-    "kind": "rep_plumbing",
-    "file": "concolic_targets.rb",
-    "line": 534
-  },
-  {
-    "owner": "obj",
-    "method": "inspect",
-    "kind": "rep_plumbing",
-    "file": "concolic_targets.rb",
-    "line": 540
-  },
-  {
-    "owner": "obj",
-    "method": "persisted?",
     "kind": "rep_plumbing",
     "file": "concolic_targets.rb",
     "line": 581
   },
   {
+    "key": "obj.image_url",
+    "owner": "obj",
+    "method": "image_url",
+    "kind": "rep_plumbing",
+    "file": "concolic_targets.rb",
+    "line": 588
+  },
+  {
+    "key": "obj.hidden_shareables",
+    "owner": "obj",
+    "method": "hidden_shareables",
+    "kind": "rep_plumbing",
+    "file": "concolic_targets.rb",
+    "line": 598
+  },
+  {
+    "key": "obj.post_location",
+    "owner": "obj",
+    "method": "post_location",
+    "kind": "rep_plumbing",
+    "file": "concolic_targets.rb",
+    "line": 607
+  },
+  {
+    "key": "obj.inspect",
+    "owner": "obj",
+    "method": "inspect",
+    "kind": "rep_plumbing",
+    "file": "concolic_targets.rb",
+    "line": 613
+  },
+  {
+    "key": "obj.persisted?",
+    "owner": "obj",
+    "method": "persisted?",
+    "kind": "rep_plumbing",
+    "file": "concolic_targets.rb",
+    "line": 654
+  },
+  {
+    "key": "obj.new_record?",
     "owner": "obj",
     "method": "new_record?",
     "kind": "rep_plumbing",
     "file": "concolic_targets.rb",
-    "line": 582
+    "line": 655
   },
   {
+    "key": "ActionDispatch::Journey::Router::Utils.escape_segment",
     "owner": "ActionDispatch::Journey::Router::Utils",
     "method": "escape_segment",
     "kind": "rep_plumbing",
     "file": "concolic_targets.rb",
-    "line": 1550
+    "line": 1675
   },
   {
+    "key": "ActiveRecord::Base.singleton_class.DYNAMIC",
     "owner": "ActiveRecord::Base.singleton_class",
     "method": "DYNAMIC",
     "kind": "value_class",
     "module": "ConcolicKwargsToPositional",
     "file": "concolic_targets.rb",
-    "line": 1600,
+    "line": 1725,
     "note": "dynamically-named define_method \u2014 engine requires manual entry or waiver"
   },
   {
+    "key": "ActiveRecord::Relation.DYNAMIC",
     "owner": "ActiveRecord::Relation",
     "method": "DYNAMIC",
     "kind": "value_class",
     "module": "ConcolicKwargsToPositional",
     "file": "concolic_targets.rb",
-    "line": 1601,
+    "line": 1726,
     "note": "dynamically-named define_method \u2014 engine requires manual entry or waiver"
   }
 ]

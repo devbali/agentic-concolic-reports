@@ -712,7 +712,10 @@ module ConversationsIndexTargets
           bindv = bind_of.call(owner_col)
           next if bindv.nil?
           keys = key_set_for(ct, owner, k, owner_col, bindv, n_owners, base, note)
-          psql = %(SELECT "#{r2.table_name}".* FROM "#{r2.table_name}" WHERE #{pred_for(ct, r2.table_name, "id", keys)})
+          # RC-1 (2026-09-19): real default projection when the table we select
+          # FROM is the association target's own table.
+          pproj = ((r2.klass.table_name rescue nil) == r2.table_name) ? ct.default_projection(r2.klass) : %("#{r2.table_name}".*)
+          psql = %(SELECT #{pproj} FROM "#{r2.table_name}" WHERE #{pred_for(ct, r2.table_name, "id", keys)})
           fallback_bind = lambda { |col| col == "id" ? bindv : nil }
         else
           bindv = bind_of.call("id")
@@ -721,7 +724,10 @@ module ConversationsIndexTargets
           keys = key_set_for(ct, owner, k, "id", bindv, n_owners, base, note)
           thr = (r2.respond_to?(:through_reflection) && r2.through_reflection) || nil
           t   = thr || r2
-          psql = %(SELECT "#{t.table_name}".* FROM "#{t.table_name}" WHERE #{pred_for(ct, t.table_name, t.foreign_key, keys)})
+          # RC-1 (2026-09-19): narrow only when `t` IS the target model's own
+          # table — for a through reflection `t` is the join table, so keep the star.
+          pproj = ((r2.klass.table_name rescue nil) == t.table_name) ? ct.default_projection(r2.klass) : %("#{t.table_name}".*)
+          psql = %(SELECT #{pproj} FROM "#{t.table_name}" WHERE #{pred_for(ct, t.table_name, t.foreign_key, keys)})
           fallback_bind = lambda { |_col| nil } # child ids unknown — stop chain honestly
         end
         ConcolicThroughLoadProbe.load_intermediate(psql)
@@ -1784,7 +1790,8 @@ module ConversationsIndexTargets
             col = refl.foreign_key
             fk_raw = owner[refl.active_record_primary_key]
           end
-          %(SELECT "#{table}".* FROM "#{table}" WHERE "#{table}"."#{col}" = #{ct.render_arg_value(fk_raw)} LIMIT 1)
+          # RC-1 (2026-09-19): real default projection, not a hardcoded star.
+          %(SELECT #{ct.default_projection(klass)} FROM "#{table}" WHERE "#{table}"."#{col}" = #{ct.render_arg_value(fk_raw)} LIMIT 1)
         rescue StandardError
           "SingularAssociation##{refl.name}"
         end
@@ -1829,7 +1836,8 @@ module ConversationsIndexTargets
               fk = receiver.concolic_attrs[r2.foreign_key.to_s]
               next if fk.nil?
               ConcolicThroughLoadProbe.load_intermediate(
-                %(SELECT "#{r2.table_name}".* FROM "#{r2.table_name}" WHERE "#{r2.table_name}"."#{r2.association_primary_key}" = #{ct.render_arg_value(fk)} LIMIT 1))
+                # RC-1 (2026-09-19): real default projection, not a hardcoded star.
+                %(SELECT #{ct.default_projection(r2.klass)} FROM "#{r2.table_name}" WHERE "#{r2.table_name}"."#{r2.association_primary_key}" = #{ct.render_arg_value(fk)} LIMIT 1))
             end
             dirty = receiver.respond_to?(:convidx_dirty) ? receiver.convidx_dirty : []
             if dirty.empty?

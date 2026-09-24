@@ -517,6 +517,25 @@ def other_value(v, negated)
   end
 end
 
+# NAME BOUNDARY (2026-09-14) — keep length decisions FLIPPABLE.
+#
+# The runtimes used to mint a list's cardinality variable as `len(X)`; they now
+# mint `SYM_LEN_X`, because `len(X)` is not a legal Python identifier and
+# `concolic_engine/solver.py` exec/evals its declarations. The flip matchers
+# below are written in the OLD spelling, so a new dump's `(SYM_LEN_X != 0)`
+# would MISS the dedicated length branch — and the generic `(VAR op LIT)`
+# matcher would catch it instead, producing a seed that IGNORES `want_taken`.
+# That is a silently WRONG flip, not a clean miss: DSE would stop exploring
+# list-cardinality decisions and never say so.
+#
+# Normalise to the matchers' spelling on the way in. Seed keys stay
+# `len(...)`-spelled, which `concolic_targets.rb`'s `seed_for` accepts in both
+# spellings, so pre-existing seed files and snapshots are unaffected.
+# See reports/diaspora/docs/NAME_BOUNDARY_PLAN_20260914.md.
+def canon_len(expr)
+  expr.to_s.strip.gsub(/SYM_LEN_([A-Za-z0-9_]+)/, 'len(\1)')
+end
+
 # 2026-08-26: VAR-vs-VAR compares (`(convidx_conv_lookup_1_id == first_1_id)`,
 # `(to_ary_1_row_id == records_1_row_author_id)`, ... — the app's own
 # `conversation.id == selected_id` / `Array#uniq` / `- [current_user.person]`
@@ -525,7 +544,7 @@ end
 # the LHS var to the RHS var's CURRENT concrete value (taken) or to a value
 # one off it (not taken); `vals` is the run's symbolic_vars name->value map.
 def flip_seed(expr, want_taken, vals = {})
-  s = expr.to_s.strip
+  s = canon_len(expr)
   return nil unless s.start_with?("(") && s.end_with?(")")
   m = /\A(.+?) (==|!=|<=|>=|<|>) (.+)\z/m.match(s[1..-2].strip)
   return nil unless m

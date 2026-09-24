@@ -1,22 +1,22 @@
 [
   {
+    "key": "conv.id",
     "owner": "conv",
     "method": "id",
     "kind": "rep_plumbing",
     "file": "targets.rb",
     "line": 465,
-    "key": "conv.id",
     "verdict": "PROTOCOL",
     "detail": "runtime rep machinery: the real class defines this only through the AR/Ruby protocol (or not at all) — no app body to run against"
   },
   {
+    "key": "k.conversation_visibilities",
     "owner": "k",
     "method": "conversation_visibilities",
     "kind": "prepend",
     "module": "ConvoSymAssociations",
     "file": "targets.rb",
-    "line": 1073,
-    "key": "k.conversation_visibilities",
+    "line": 1079,
     "verdict": "PASS",
     "targets_reached": [
 
@@ -34,13 +34,13 @@
     ]
   },
   {
+    "key": "rel.pluck",
     "owner": "rel",
     "method": "pluck",
     "kind": "prepend",
     "module": "ConvLoadedRelation",
     "file": "targets.rb",
-    "line": 1155,
-    "key": "rel.pluck",
+    "line": 1161,
     "verdict": "PASS",
     "targets_reached": [
       "ActiveRecord::Calculations#pluck",
@@ -59,13 +59,13 @@
     ]
   },
   {
+    "key": "wp.total_entries",
     "owner": "wp",
     "method": "total_entries",
     "kind": "prepend",
     "module": "ConvPaginatedTotal",
     "file": "targets.rb",
-    "line": 1158,
-    "key": "wp.total_entries",
+    "line": 1164,
     "verdict": "PASS",
     "targets_reached": [
       "ActiveRecord::Calculations#count"
@@ -82,13 +82,13 @@
     ]
   },
   {
+    "key": "cp.loaded?",
     "owner": "cp",
     "method": "loaded?",
     "kind": "prepend",
     "module": "ConvLoadedProxy",
     "file": "targets.rb",
-    "line": 1316,
-    "key": "cp.loaded?",
+    "line": 1322,
     "verdict": "PASS",
     "targets_reached": [
       "ActiveRecord::Associations::CollectionProxy#records",
@@ -107,92 +107,92 @@
     ]
   },
   {
+    "key": "obj.convidx_dirty",
     "owner": "obj",
     "method": "convidx_dirty",
     "kind": "rep_plumbing",
     "file": "targets.rb",
-    "line": 1519,
-    "key": "obj.convidx_dirty",
+    "line": 1525,
     "verdict": "PROTOCOL",
     "detail": "runtime rep machinery: the real class defines this only through the AR/Ruby protocol (or not at all) — no app body to run against"
   },
   {
+    "key": "obj.convidx_access",
     "owner": "obj",
     "method": "convidx_access",
     "kind": "rep_plumbing",
     "file": "targets.rb",
-    "line": 1528,
-    "key": "obj.convidx_access",
+    "line": 1534,
     "verdict": "PROTOCOL",
     "detail": "User#convidx_access is defined by the AR/Ruby protocol — verified against the real class"
   },
   {
+    "key": "obj.changed?",
     "owner": "obj",
     "method": "changed?",
     "kind": "rep_plumbing",
     "file": "targets.rb",
-    "line": 1538,
-    "key": "obj.changed?",
+    "line": 1544,
     "verdict": "PROTOCOL",
     "detail": "User#changed? is defined by the AR/Ruby protocol — verified against the real class"
   },
   {
+    "key": "obj.has_changes_to_save?",
     "owner": "obj",
     "method": "has_changes_to_save?",
     "kind": "rep_plumbing",
     "file": "targets.rb",
-    "line": 1539,
-    "key": "obj.has_changes_to_save?",
+    "line": 1545,
     "verdict": "PROTOCOL",
     "detail": "User#has_changes_to_save? is defined by the AR/Ruby protocol — verified against the real class"
   },
   {
+    "key": "obj.guid",
     "owner": "obj",
     "method": "guid",
     "kind": "rep_plumbing",
     "file": "targets.rb",
-    "line": 1614,
-    "key": "obj.guid",
+    "line": 1620,
     "verdict": "PROTOCOL",
     "detail": "Message#guid is defined by the AR/Ruby protocol — verified against the real class"
   },
   {
+    "key": "obj.hash",
     "owner": "obj",
     "method": "hash",
     "kind": "rep_plumbing",
     "file": "targets.rb",
-    "line": 1641,
-    "key": "obj.hash",
+    "line": 1647,
     "verdict": "PROTOCOL",
     "detail": "runtime rep machinery: the real class defines this only through the AR/Ruby protocol (or not at all) — no app body to run against"
   },
   {
+    "key": "obj.text",
     "owner": "obj",
     "method": "text",
     "kind": "rep_plumbing",
     "file": "targets.rb",
-    "line": 1694,
-    "key": "obj.text",
+    "line": 1700,
     "verdict": "PROTOCOL",
     "detail": "Message#text is defined by the AR/Ruby protocol — verified against the real class"
   },
   {
+    "key": "obj.name",
     "owner": "obj",
     "method": "name",
     "kind": "rep_plumbing",
     "file": "targets.rb",
-    "line": 1711,
-    "key": "obj.name",
+    "line": 1717,
     "verdict": "PROTOCOL",
     "detail": "Aspect#name is defined by the AR/Ruby protocol — verified against the real class"
   },
   {
+    "key": "Person.name_from_attrs",
     "owner": "Person",
     "method": "name_from_attrs",
     "kind": "rep_plumbing",
     "file": "targets.rb",
-    "line": 1745,
-    "key": "Person.name_from_attrs",
+    "line": 1751,
     "verdict": "PASS",
     "targets_reached": [
 
@@ -209,22 +209,22 @@
     ]
   },
   {
+    "key": "receiver.concolic_note",
     "owner": "receiver",
     "method": "concolic_note",
     "kind": "rep_plumbing",
     "file": "targets.rb",
-    "line": 2003,
-    "key": "receiver.concolic_note",
+    "line": 2011,
     "verdict": "PROTOCOL",
     "detail": "runtime rep machinery: the real class defines this only through the AR/Ruby protocol (or not at all) — no app body to run against"
   },
   {
+    "key": "h.image_path",
     "owner": "h",
     "method": "image_path",
     "kind": "rep_plumbing",
     "file": "targets.rb",
-    "line": 2054,
-    "key": "h.image_path",
+    "line": 2062,
     "verdict": "PASS",
     "targets_reached": [
 
@@ -241,12 +241,12 @@
     ]
   },
   {
+    "key": "h.path_to_image",
     "owner": "h",
     "method": "path_to_image",
     "kind": "rep_plumbing",
     "file": "targets.rb",
-    "line": 2055,
-    "key": "h.path_to_image",
+    "line": 2063,
     "verdict": "PASS",
     "targets_reached": [
 
@@ -263,43 +263,43 @@
     ]
   },
   {
+    "key": "u.persisted?",
     "owner": "u",
     "method": "persisted?",
     "kind": "rep_plumbing",
     "file": "targets.rb",
-    "line": 2154,
-    "key": "u.persisted?",
+    "line": 2162,
     "verdict": "PROTOCOL",
     "detail": "runtime rep machinery: the real class defines this only through the AR/Ruby protocol (or not at all) — no app body to run against"
   },
   {
+    "key": "u.new_record?",
     "owner": "u",
     "method": "new_record?",
     "kind": "rep_plumbing",
     "file": "targets.rb",
-    "line": 2155,
-    "key": "u.new_record?",
+    "line": 2163,
     "verdict": "PROTOCOL",
     "detail": "runtime rep machinery: the real class defines this only through the AR/Ruby protocol (or not at all) — no app body to run against"
   },
   {
+    "key": "u.username",
     "owner": "u",
     "method": "username",
     "kind": "rep_plumbing",
     "file": "targets.rb",
-    "line": 2169,
-    "key": "u.username",
+    "line": 2177,
     "verdict": "PROTOCOL",
     "detail": "User#username is defined by the AR/Ruby protocol — verified against the real class"
   },
   {
+    "key": "User.authenticatable_salt",
     "owner": "User",
     "method": "authenticatable_salt",
     "kind": "prepend",
     "module": "salt_shim",
     "file": "targets.rb",
-    "line": 2189,
-    "key": "User.authenticatable_salt",
+    "line": 2197,
     "verdict": "PASS",
     "targets_reached": [
 
@@ -316,13 +316,13 @@
     ]
   },
   {
+    "key": "OrmAdapter::ActiveRecord.get",
     "owner": "OrmAdapter::ActiveRecord",
     "method": "get",
     "kind": "prepend",
     "module": "OrmAdapterGetNaming",
     "file": "targets.rb",
-    "line": 2195,
-    "key": "OrmAdapter::ActiveRecord.get",
+    "line": 2203,
     "verdict": "PASS",
     "targets_reached": [
       "ActiveRecord::FinderMethods#first",
@@ -343,82 +343,82 @@
     ]
   },
   {
+    "key": "obj.read_attribute",
     "owner": "obj",
     "method": "read_attribute",
     "kind": "rep_plumbing",
     "file": "concolic_targets.rb",
-    "line": 492,
-    "key": "obj.read_attribute",
+    "line": 565,
     "verdict": "PROTOCOL",
     "detail": "runtime rep machinery: the real class defines this only through the AR/Ruby protocol (or not at all) — no app body to run against"
   },
   {
+    "key": "obj._read_attribute",
     "owner": "obj",
     "method": "_read_attribute",
     "kind": "rep_plumbing",
     "file": "concolic_targets.rb",
-    "line": 493,
-    "key": "obj._read_attribute",
+    "line": 566,
     "verdict": "PROTOCOL",
     "detail": "runtime rep machinery: the real class defines this only through the AR/Ruby protocol (or not at all) — no app body to run against"
   },
   {
+    "key": "obj.concolic_attrs",
     "owner": "obj",
     "method": "concolic_attrs",
     "kind": "rep_plumbing",
     "file": "concolic_targets.rb",
-    "line": 494,
-    "key": "obj.concolic_attrs",
+    "line": 567,
     "verdict": "PROTOCOL",
     "detail": "runtime rep machinery: the real class defines this only through the AR/Ruby protocol (or not at all) — no app body to run against"
   },
   {
+    "key": "obj.concolic_note",
     "owner": "obj",
     "method": "concolic_note",
     "kind": "rep_plumbing",
     "file": "concolic_targets.rb",
-    "line": 498,
-    "key": "obj.concolic_note",
+    "line": 571,
     "verdict": "PROTOCOL",
     "detail": "runtime rep machinery: the real class defines this only through the AR/Ruby protocol (or not at all) — no app body to run against"
   },
   {
+    "key": "obj.attributes",
     "owner": "obj",
     "method": "attributes",
     "kind": "rep_plumbing",
     "file": "concolic_targets.rb",
-    "line": 506,
-    "key": "obj.attributes",
+    "line": 579,
     "verdict": "PROTOCOL",
     "detail": "runtime rep machinery: the real class defines this only through the AR/Ruby protocol (or not at all) — no app body to run against"
   },
   {
+    "key": "obj.write_attribute",
     "owner": "obj",
     "method": "write_attribute",
     "kind": "rep_plumbing",
     "file": "concolic_targets.rb",
-    "line": 507,
-    "key": "obj.write_attribute",
+    "line": 580,
     "verdict": "PROTOCOL",
     "detail": "runtime rep machinery: the real class defines this only through the AR/Ruby protocol (or not at all) — no app body to run against"
   },
   {
+    "key": "obj._write_attribute",
     "owner": "obj",
     "method": "_write_attribute",
     "kind": "rep_plumbing",
     "file": "concolic_targets.rb",
-    "line": 508,
-    "key": "obj._write_attribute",
+    "line": 581,
     "verdict": "PROTOCOL",
     "detail": "runtime rep machinery: the real class defines this only through the AR/Ruby protocol (or not at all) — no app body to run against"
   },
   {
+    "key": "obj.image_url",
     "owner": "obj",
     "method": "image_url",
     "kind": "rep_plumbing",
     "file": "concolic_targets.rb",
-    "line": 515,
-    "key": "obj.image_url",
+    "line": 588,
     "verdict": "PASS",
     "targets_reached": [
 
@@ -435,12 +435,12 @@
     ]
   },
   {
+    "key": "obj.hidden_shareables",
     "owner": "obj",
     "method": "hidden_shareables",
     "kind": "rep_plumbing",
     "file": "concolic_targets.rb",
-    "line": 525,
-    "key": "obj.hidden_shareables",
+    "line": 598,
     "verdict": "PASS",
     "targets_reached": [
 
@@ -457,12 +457,12 @@
     ]
   },
   {
+    "key": "obj.post_location",
     "owner": "obj",
     "method": "post_location",
     "kind": "rep_plumbing",
     "file": "concolic_targets.rb",
-    "line": 534,
-    "key": "obj.post_location",
+    "line": 607,
     "verdict": "PASS",
     "targets_reached": [
 
@@ -480,42 +480,42 @@
     ]
   },
   {
+    "key": "obj.inspect",
     "owner": "obj",
     "method": "inspect",
     "kind": "rep_plumbing",
     "file": "concolic_targets.rb",
-    "line": 540,
-    "key": "obj.inspect",
+    "line": 613,
     "verdict": "PROTOCOL",
     "detail": "runtime rep machinery: the real class defines this only through the AR/Ruby protocol (or not at all) — no app body to run against"
   },
   {
+    "key": "obj.persisted?",
     "owner": "obj",
     "method": "persisted?",
     "kind": "rep_plumbing",
     "file": "concolic_targets.rb",
-    "line": 581,
-    "key": "obj.persisted?",
+    "line": 654,
     "verdict": "PROTOCOL",
     "detail": "runtime rep machinery: the real class defines this only through the AR/Ruby protocol (or not at all) — no app body to run against"
   },
   {
+    "key": "obj.new_record?",
     "owner": "obj",
     "method": "new_record?",
     "kind": "rep_plumbing",
     "file": "concolic_targets.rb",
-    "line": 582,
-    "key": "obj.new_record?",
+    "line": 655,
     "verdict": "PROTOCOL",
     "detail": "runtime rep machinery: the real class defines this only through the AR/Ruby protocol (or not at all) — no app body to run against"
   },
   {
+    "key": "ActionDispatch::Journey::Router::Utils.escape_segment",
     "owner": "ActionDispatch::Journey::Router::Utils",
     "method": "escape_segment",
     "kind": "rep_plumbing",
     "file": "concolic_targets.rb",
-    "line": 1550,
-    "key": "ActionDispatch::Journey::Router::Utils.escape_segment",
+    "line": 1675,
     "verdict": "PASS",
     "targets_reached": [
 
@@ -532,14 +532,14 @@
     ]
   },
   {
+    "key": "ActiveRecord::Base.singleton_class.DYNAMIC",
     "owner": "ActiveRecord::Base.singleton_class",
     "method": "DYNAMIC",
     "kind": "value_class",
     "module": "ConcolicKwargsToPositional",
     "file": "concolic_targets.rb",
-    "line": 1600,
+    "line": 1725,
     "note": "dynamically-named define_method — engine requires manual entry or waiver",
-    "key": "ActiveRecord::Base.singleton_class.DYNAMIC",
     "verdict": "PASS",
     "targets_reached": [
       "ActiveRecord::FinderMethods#find_by",
@@ -558,14 +558,14 @@
     ]
   },
   {
+    "key": "ActiveRecord::Relation.DYNAMIC",
     "owner": "ActiveRecord::Relation",
     "method": "DYNAMIC",
     "kind": "value_class",
     "module": "ConcolicKwargsToPositional",
     "file": "concolic_targets.rb",
-    "line": 1601,
+    "line": 1726,
     "note": "dynamically-named define_method — engine requires manual entry or waiver",
-    "key": "ActiveRecord::Relation.DYNAMIC",
     "verdict": "PASS",
     "targets_reached": [
       "ActiveRecord::FinderMethods#find_by",

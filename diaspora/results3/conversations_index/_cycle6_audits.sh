@@ -1,6 +1,10 @@
 #!/bin/bash
 # cycle 6 — the six SQL-consumer audits + hardening lint, on the pruned corpus.
 set -u
+# E12 (2026-09-11): src/queries_from_runs is app-agnostic and REQUIRES an
+# app config; bind_resolution_audit and identity_symbolicity_audit read the
+# schema and the principal columns from it and go RED without one.
+export QFR_APP_CONFIG="${QFR_APP_CONFIG:-/home/dev/project/reports/diaspora/queries_config/app.json}"
 unset JAVA_TOOL_OPTIONS
 B=/home/dev/project/reports/diaspora/results3/conversations_index
 cd /home/dev/project

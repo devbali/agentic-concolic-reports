@@ -144,8 +144,61 @@ module ConcolicTargets
 
   module_function
 
+  # Sentinel distinguishing "seeded with nil/false" from "not seeded at all".
+  SEED_MISS = Object.new.freeze
+
+  # ------------------------------------------------------------------
+  # NAME BOUNDARY (2026-09-14) — seed keys accept BOTH length spellings
+  # ------------------------------------------------------------------
+  #
+  # The runtimes used to mint a container's cardinality variable literally as
+  # `len(X)`, and every batch renamed it to `SYM_LEN_X` at load because
+  # `len(X)` is not a legal PYTHON identifier and `concolic_engine/solver.py`
+  # transports Z3 terms as Python source it `exec`/`eval`s. The runtimes now
+  # mint the solver-legal spelling directly (`SymbolicVar.len_var_name`), so
+  # the second dialect is gone going forward.
+  #
+  # But `seed_for` matches EXACTLY and falls back to `default` SILENTLY. Every
+  # seed file and every dump snapshot written before that change keys its
+  # length seeds `len(X)`, so without this shim a pre-change seed replayed
+  # under the new runtime would be quietly IGNORED — no error, no log, just an
+  # inert knob and a flip that "did not take". That is the same silent-miss
+  # failure the rename was made to end, so both spellings are accepted here.
+  # The asked-for spelling always wins; the sibling is only consulted on a
+  # miss. See reports/diaspora/docs/NAME_BOUNDARY_PLAN_20260914.md.
+  LEGACY_LEN_RE  = /\Alen\((.+)\)\z/.freeze
+  SYM_LEN_PREFIX = "SYM_LEN_"
+
+  # True when `var_name` names a container's cardinality, in either spelling.
+  def length_var?(var_name)
+    s = var_name.to_s
+    s.start_with?(SYM_LEN_PREFIX) || !LEGACY_LEN_RE.match(s).nil?
+  end
+
+  # Every spelling a seed dict might key `var_name` by, asked-for form FIRST.
+  def seed_aliases(var_name)
+    s = var_name.to_s
+    m = LEGACY_LEN_RE.match(s)
+    if m
+      [var_name, "#{SYM_LEN_PREFIX}#{m[1]}"]
+    elsif s.start_with?(SYM_LEN_PREFIX)
+      [var_name, "len(#{s[SYM_LEN_PREFIX.length..-1]})"]
+    else
+      [var_name]
+    end
+  end
+
+  # The seed override for `var_name` under any accepted spelling, or the
+  # sentinel `miss` when none is present.
+  def seed_lookup(var_name, miss)
+    ov = ConcolicTargets.seed_overrides
+    seed_aliases(var_name).each { |k| return ov[k] if ov.key?(k) }
+    miss
+  end
+
   def seed_for(var_name, default)
-    ConcolicTargets.seed_overrides.fetch(var_name, default)
+    v = seed_lookup(var_name, SEED_MISS)
+    v.equal?(SEED_MISS) ? default : v
   end
 
   # ---------------------------------------------------------------------
@@ -606,7 +659,7 @@ module ConcolicTargets
       interceptor.declare_target(rel, m, returns: lambda do |receiver, args, name|
         vn = "#{name}_rows"
         rep = symbolic_instance(model_class(receiver), "#{name}_row", sql_for(receiver, args))
-        SymbolicList.new(seed_for("len(#{vn})", 1), name: vn,
+        SymbolicList.new(seed_for(SymbolicVar.len_var_name(vn), 1), name: vn,
                        note: sql_for(receiver, args), representative: rep)
       end)
     end
