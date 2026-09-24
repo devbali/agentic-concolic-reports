@@ -223,6 +223,18 @@ module PeopleStreamTargets
       vn  = "#{name}_rows"
       rep = ct.symbolic_instance(ct.model_class(receiver), "#{name}_row",
                                  ct.sql_for(receiver, args))
+      # X7 (2026-09-11) — THE STATUS-MESSAGE READ SET. See
+      # attach_status_message_read_set! below for the full argument: the
+      # representative is minted as the relation's klass, which for this
+      # endpoint's stream is the STI BASE class `Post`, whose photos/poll/
+      # location readers are the app's own no-op stubs (post.rb:79
+      # `def photos; []; end`). No real stream row is ever a base `Post`
+      # (Stream::Base::TYPES_OF_POST_IN_STREAM = StatusMessage + Reshare), so
+      # the whole StatusMessage read set was invisible BY CONSTRUCTION and the
+      # three statements the concrete round issues under it —
+      # photos/status_message_guid, polls/status_message_id,
+      # locations/status_message_id — had no note anywhere in the corpus (D1).
+      PeopleStreamTargets.attach_status_message_read_set!(rep)
       IterableSymbolicList.new(ct.seed_for("len(#{vn})", 1), name: vn,
                                note: ct.sql_for(receiver, args),
                                representative: rep)
@@ -343,6 +355,39 @@ module PeopleStreamTargets
   # 6. Per-run request-state reset (verbatim port of §6) — Gon.preloads uses
   # the CLASS-level Gon, not the `gon` helper the shared file stubs.
   # -----------------------------------------------------------------------
+  # §2b helper (X7). Give a symbolic base-`Post` representative the reader set
+  # its real subclass (StatusMessage) defines, as the REAL association scopes —
+  # `Photo.where(status_message_guid:)`, `Poll.where(status_message_id:)`,
+  # `Location.where(status_message_id:)` — so the ordinary query boundary notes
+  # them. `post_location` is re-defined here too: the shared boundary gives a
+  # symbolic Post a `{address: nil, lat: nil, lng: nil}` singleton stub, which
+  # swallows the `locations` read that StatusMessage#post_location (status_
+  # message.rb:98-104) really performs. Defining it on the SAME instance after
+  # the boundary did wins (later singleton definition), so no boundary edit.
+  # NOTE (measured, not assumed): the constants are referenced DIRECTLY, never
+  # behind `defined?(::Location)` — `defined?` does NOT trigger Rails
+  # autoloading and `location` is not in the boundary's eager_files list, so
+  # the first attempt silently returned nil and the `locations` statement
+  # stayed missing.  No rescue arms anywhere in these four bodies: every line
+  # here runs on every call, which is what Rule S's 100 %-coverage claim
+  # measures.
+  def attach_status_message_read_set!(rep)
+    return rep unless rep.is_a?(::Post) && rep.respond_to?(:concolic_attrs)
+    rep.define_singleton_method(:photos)   { ::Photo.where(status_message_guid: rep[:guid]) }
+    # `.take`, NOT `.first`: a has_one materialises as `SELECT … LIMIT 1` with
+    # NO ordering, and `.first` would (correctly for ITSELF) render
+    # `ORDER BY "polls"."id" ASC LIMIT 1` — three ORDER-DIFF rows in
+    # note_fidelity_audit against the real statement. `take` is the finder whose
+    # statement shape IS the association's.
+    rep.define_singleton_method(:poll)     { ::Poll.where(status_message_id: rep[:id]).take }
+    rep.define_singleton_method(:location) { ::Location.where(status_message_id: rep[:id]).take }
+    rep.define_singleton_method(:post_location) do
+      loc = rep.location
+      { address: loc.try(:address), lat: loc.try(:lat), lng: loc.try(:lng) }
+    end
+    rep
+  end
+
   def begin_run!
     return unless defined?(Gon::Request) && defined?(RequestStore)
     req = Gon::Request.new({})
@@ -388,7 +433,18 @@ module PeopleStreamTargets
   # relation.
   # -----------------------------------------------------------------------
   def apply_user_overrides!(user, person)
-    user.define_singleton_method(:person) { person }
+    # X7 (2026-09-11): `user.person` is a REAL has_one (User has_one :person,
+    # foreign_key: :owner_id). The old body returned the pinned symbolic person
+    # and issued NOTHING, so the statement the concrete round proves the app
+    # issues — SELECT "people".* FROM "people" WHERE "people"."owner_id" = ?
+    # LIMIT ? — had no note anywhere in the corpus (D1: a mock may replace
+    # execution, never evidence). Build and materialise the association's own
+    # relation once per run so the statement is NOTED, then return the pinned
+    # person (the identity every other override in this file closes over).
+    user.define_singleton_method(:person) do
+      @__ps_person_noted ||= (Person.where(owner_id: user.id).take; true)
+      person
+    end
     user.define_singleton_method(:language) { "en" }
     user.define_singleton_method(:gender)   { "" }
 
@@ -409,7 +465,24 @@ module PeopleStreamTargets
     # Overridden here, rescoped to the real FK (`author_id: person.id`)
     # rather than the source batch's unscoped `Post.all`, so the symbolic
     # person id lands in the SQL as a genuine $$() bind.
-    user.define_singleton_method(:posts_from) { |p| Post.where(author_id: p.id) }
+    # X7 (2026-09-11): OVERRIDE REMOVED — the real `User#posts_from`
+    # (user/querying.rb:70) runs. `Post.where(author_id: p.id)` was NOT
+    # statement-preserving: the real body is
+    # `Post.from_person_visible_by_user(self, person).order("posts.created_at
+    # desc")` (lib/diaspora/shareable.rb:71-77), which is
+    # `with_visibility.where(author_id:).where(share_visibilities.user_id = $ OR
+    # posts.public).select("DISTINCT posts.*")` — a LEFT OUTER JOIN on
+    # share_visibilities that the concrete round issues and this policy did not
+    # contain (X7-iii). Under D1 a mock may replace execution, never evidence,
+    # so the relation is now BUILT for real and NOTED by the ordinary query
+    # boundary. Two things this also buys, both measured:
+    #   * `person == user.person` (shareable.rb:72, the owned_by_user
+    #     short-circuit) becomes a genuine PC over two symbolic ids instead of
+    #     a decision the mock made silently (D2);
+    #   * the join renders only because the bug-2b re-sync landed in this
+    #     batch's concolic_targets.rb footer — before it, `collect_binds`
+    #     raised NoMethodError on the `posts.public = true` Casted node and the
+    #     whole note collapsed to "Post query (render_relation_sql failed: ...)".
     user
   end
 
@@ -449,14 +522,15 @@ module PersonSymAssociations
     respond_to?(:concolic_attrs) ? Post.where(author_id: self[:id]) : super
   end
 
-  def profile
-    if respond_to?(:concolic_attrs)
-      ConcolicTargets.symbolic_instance(Profile, "SYM_PROFILE_PERSON",
-                                        "Person#profile (has_one)")
-    else
-      super
-    end
-  end
+  # X7 (2026-09-11): override REMOVED. `Person#profile` is a real has_one; the
+  # shared boundary's W3 SingularAssociation#find_target mock already returns a
+  # symbolic instance AND renders the real SQL as its note. Minting the instance
+  # here instead short-circuited the association entirely, so
+  # `SELECT "profiles".* FROM "profiles" WHERE "profiles"."person_id" = ? LIMIT ?`
+  # — which the concrete round issues on every scenario — appeared in ZERO notes
+  # in the whole corpus (D1). Letting the real relation build is the preferred
+  # repair: the note is the evidence the policy is made of.
+
 
   # results3/people_stream FIX: same rescoping as #posts above, for
   # consistency (Block belongs_to :person via person_id, app/models/
@@ -477,8 +551,67 @@ end
 # cleanly and a re-`install!` is idempotent (mirrors §1's PersonSymAssociations
 # above). See §8's `install!` comment for why this is needed now.
 module UserSymPersonAssociation
+  # X7 (2026-09-11). The `respond_to?(:concolic_attrs)` arm used to mint the
+  # instance and issue NOTHING — the same D1 defect as §4's `user.person`:
+  # `User has_one :person, foreign_key: :owner_id`, and the concrete round
+  # issues `SELECT "people".* FROM "people" WHERE "people"."owner_id" = ?
+  # LIMIT ?` under `SingularAssociation#find_target`, which appeared in ZERO
+  # corpus notes. Build the association's own relation once per receiver so the
+  # statement is NOTED by the ordinary query boundary, then return the pinned
+  # `SYM_PERSON_via_user` instance the rest of this batch (and the shipped
+  # policy's `_SYM_PERSON_via_user_id` placeholder family) is keyed on.
+  # B-2 (2026-09-15, docs/BOUNDARY_NOTE_GAPS_20260915.md §B-2). The `.take`
+  # above makes the ordinary query boundary record the statement as its OWN
+  # call event, but the MINTED SYMBOL's note was the prose
+  # "User#person (has_one)". `symbolic_instance` stamps that note onto all 12
+  # `SYM_PERSON_via_user_*` column vars, so `RunTransformer` registered NO bind
+  # producer for them (`transform.py` only registers a note that `_is_select`
+  # accepts, i.e. one that STARTS with SELECT) and every bind naming one
+  # shipped as an unloadable `_SYM_PERSON_via_user_id` placeholder.
+  #
+  # ADDITIVE REPAIR: record the STATEMENT on the symbol, rendered by the SAME
+  # `ConcolicTargets.render_relation_sql` that produced the call-event note, so
+  # the two are byte-identical
+  # (`SELECT "people".* FROM "people" WHERE "people"."owner_id" = $$(...) LIMIT 1`).
+  # Nothing else moves:
+  #   * the symbol NAME `SYM_PERSON_via_user` is UNCHANGED — renaming it to
+  #     `SYM_PERSON_via_<result_name>` (X1 §7.1) would rewrite every note that
+  #     binds it and would void app.json's `non_principal_identity_name` veto,
+  #     so it is NOT additive-safe and was deliberately not done;
+  #   * `Person.where(...)` is LAZY — building `rel` outside the `||=` issues
+  #     no SQL; `rel.take` still fires exactly once per receiver;
+  #   * if the renderer raises, or yields anything that is not a SELECT, the
+  #     OLD PROSE NOTE is used verbatim, so the failure case is byte-identical
+  #     to the pre-repair boundary.
+  # This does NOT make the bind resolve to the principal: X1's name veto
+  # (`^SYM_PERSON_via_user(?:_|$)`) and `identity_prefix` (`^SYM_PERSON_`) both
+  # still fire in `_bind_value`. It only gives provenance the producing query
+  # so it can reach X1's conclusion — "the person named in the URL", i.e.
+  # `people.owner_id = <the find_by user row's id>` — on its own.
   def person
-    respond_to?(:concolic_attrs) ? ConcolicTargets.symbolic_instance(Person, "SYM_PERSON_via_user", "User#person (has_one)") : super
+    return super unless respond_to?(:concolic_attrs)
+    rel = Person.where(owner_id: self[:id])
+    @__ps_via_user_noted ||= (rel.take; true)
+    @__ps_via_user_note ||= begin
+      rendered = begin
+                   # Rule T4 (concolic_targets.rb `finder_note`): a SINGULAR
+                   # association read is a LIMIT 1 read, and the LIMIT is
+                   # APPENDED there rather than rendered by Arel. Build the
+                   # note the same way so it is byte-identical to the note the
+                   # ordinary query boundary already writes for this relation.
+                   s = ConcolicTargets.render_relation_sql(rel)
+                   s =~ /\sLIMIT\s/ ? s : "#{s} LIMIT 1"
+                 rescue Exception # rubocop:disable Lint/RescueException
+                   # As in ConcolicTargets.sql_for: note rendering must NEVER
+                   # crash the mock, and a symbolic wall raises
+                   # NotImplementedError < ScriptError, which `rescue
+                   # StandardError` would let escape. B-4's live failure
+                   # (NoMethodError in the Arel renderer) is caught here too.
+                   nil
+                 end
+      rendered.to_s.start_with?("SELECT") ? rendered : "User#person (has_one)"
+    end
+    ConcolicTargets.symbolic_instance(Person, "SYM_PERSON_via_user", @__ps_via_user_note)
   end
 end
 

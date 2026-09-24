@@ -314,8 +314,27 @@ def other_value(parsed)
   end
 end
 
+# NAME BOUNDARY (2026-09-14) — keep length decisions FLIPPABLE.
+#
+# The runtimes used to mint a list's cardinality variable as `len(X)`; they now
+# mint `SYM_LEN_X`, because `len(X)` is not a legal Python identifier and
+# `concolic_engine/solver.py` exec/evals its declarations. The flip matchers
+# below are written in the OLD spelling, so a new dump's `(SYM_LEN_X != 0)`
+# would MISS the dedicated length branch — and the generic `(VAR op LIT)`
+# matcher would catch it instead, producing a seed that IGNORES `want_taken`.
+# That is a silently WRONG flip, not a clean miss: DSE would stop exploring
+# list-cardinality decisions and never say so.
+#
+# Normalise to the matchers' spelling on the way in. Seed keys stay
+# `len(...)`-spelled, which `concolic_targets.rb`'s `seed_for` accepts in both
+# spellings, so pre-existing seed files and snapshots are unaffected.
+# See reports/diaspora/docs/NAME_BOUNDARY_PLAN_20260914.md.
+def canon_len(expr)
+  expr.to_s.strip.gsub(/SYM_LEN_([A-Za-z0-9_]+)/, 'len(\1)')
+end
+
 def flip_seed(expr, want_taken)
-  s = expr.to_s.strip
+  s = canon_len(expr)
 
   if (m = /\A\(len\((.+)\) != 0\)\z/m.match(s))
     return { "len(#{m[1]})" => (want_taken ? 1 : 0) }
@@ -433,6 +452,20 @@ def explore(prefix)
   # is untouched by that subtree and always gets explored either way.
   stack       = [[0, JSON.generate({ PID_SYM_NAME => "", diaspora_id_var => false })],
                  [0, nil]]
+  # DEMAND-ROUND HOOK (ported from notifications_index/run_dse.rb, 2026-09-09).
+  # EXTRA_SEEDS_JSON is a JSON array of seed hashes; each becomes a worklist
+  # ROOT (parent 0), so a demanded outcome assignment can be reached IN
+  # CONTEXT. SEEDS_ONLY replays just those roots without further flipping.
+  # Without this the endpoint cannot run demand rounds at all — see
+  # _NEXT_BLOCKER.md.
+  if ENV["EXTRA_SEEDS_JSON"] && File.exist?(ENV["EXTRA_SEEDS_JSON"])
+    _extra = JSON.parse(File.read(ENV["EXTRA_SEEDS_JSON"]))
+    _roots = _extra.map { |h| [0, JSON.generate(h)] }
+    stack  = ENV["SEEDS_ONLY"] ? _roots : (_roots + stack)
+    puts format("[seeds] %d extra roots from %s (SEEDS_ONLY=%s)",
+                _roots.size, ENV["EXTRA_SEEDS_JSON"], ENV["SEEDS_ONLY"] ? "1" : "0")
+  end
+
   seen_seeds  = Set.new
   seen_paths  = Set.new
   unflippable = Hash.new(0)
@@ -459,14 +492,29 @@ def explore(prefix)
     seeds.merge!(JSON.parse(flip_json)) if flip_json
 
     key = digest(JSON.generate(seeds.sort.to_h))
-    next if seen_seeds.include?(key)
-    seen_seeds << key
+    # SEEDS_ONLY REPLAY (drift fix, 2026-09-10 — mirrors
+    # notifications_index/run_dse.rb:400-412 verbatim). STATE- and PATH-dedup
+    # are for FRONTIER exploration. In SEEDS_ONLY replay EVERY root must
+    # produce its own dump: a rooted/demand/tree seed is matched back by the
+    # recorded `concolic_seeds`, so a root skipped here leaves the caller
+    # unable to tell whether its seed was honoured, contradicted, or never
+    # evaluated — which is exactly the evidence a demand round is FOR. Both
+    # notifications drive scripts (_chunk_drive.sh, _tree_drive.sh,
+    # _diverse_drive.sh) run with SEEDS_ONLY=1, so a port of them against an
+    # unconditional dedup silently under-produces.
+    # UNTESTED against JRuby at the time of writing (preflight ran no runner):
+    # smoke it with a 2-seed SEEDS_ONLY replay before any bulk drive.
+    unless ENV["SEEDS_ONLY"]
+      next if seen_seeds.include?(key)
+      seen_seeds << key
+    end
 
     runs += 1
-    label = format("%s%04d", prefix, runs)
+    label = format("%s%04d%s", prefix, runs, ENV["LABEL_SUFFIX"].to_s)
 
     begin
       dump = run_one(prefix, label, seeds)
+      dump["concolic_seeds"] = seeds if dump.is_a?(Hash)
     rescue Exception => e # rubocop:disable Lint/RescueException
       puts "[people_stream/#{label}] HARNESS FAILURE #{e.class}: #{e.message.to_s[0, 200]}"
       errors["harness:#{e.class}"] += 1
@@ -478,7 +526,7 @@ def explore(prefix)
     pcs = path_conditions(dump)
     sig = digest(sig_of(pcs))
 
-    next if seen_paths.include?(sig)
+    next if !ENV["SEEDS_ONLY"] && seen_paths.include?(sig)
 
     seen_paths << sig
     written += 1
@@ -498,6 +546,16 @@ def explore(prefix)
         unflippable[expr] += 1
         next
       end
+      # SEEDS_ONLY REPLAY, second half of the drift fix (2026-09-10, found by
+      # the smoke). notifications_index/run_dse.rb:455 has `next if
+      # ENV["SEEDS_ONLY"]` HERE, and people_stream's port did not. Without it
+      # SEEDS_ONLY only changed which roots start the worklist: every replayed
+      # root still pushed its whole flip frontier, so a 2-seed replay ran 50
+      # runs per scenario (MAX_RUNS cap) and wrote 150 dumps instead of 6 —
+      # and with the path-dedup correctly disabled for replay, 144 of those
+      # were duplicate paths. A rooted round must replay ITS ROOTS, nothing
+      # else, or the caller cannot attribute a hit to a seed.
+      next if ENV["SEEDS_ONLY"]
       ckey = digest(JSON.generate(seeds.merge(fl).sort.to_h))
       next if seen_seeds.include?(ckey)
       if stack.size >= STACK_LIMIT
@@ -530,8 +588,29 @@ def explore(prefix)
 end
 
 t0 = Time.now
-Dir.glob(File.join(HERE, "dump_*.json")).each { |f| File.delete(f) }
-scenario_summaries = SCENARIOS.keys.map { |p| explore(p) }
+# CORPUS ACCUMULATION (2026-09-09). This runner originally WIPED the corpus on
+# every invocation, which makes incremental corpus building impossible: a base
+# round 2 deleted round 1 and rewrote it (net 0 dumps), and the first demand
+# round REPLACED the 201-dump base corpus with its own 152. notifications_index
+# never deletes — it accumulates, which is what the demand loop requires.
+# Wipe only when explicitly asked (KEEP_DUMPS=0), never when seeding.
+if ENV["KEEP_DUMPS"] == "0" && !ENV["EXTRA_SEEDS_JSON"]
+  Dir.glob(File.join(HERE, "dump_*.json")).each { |f| File.delete(f) }
+end
+# SCENARIO_ONLY (2026-09-18, note-refresh re-drive). Runner-local knob, same
+# shape as people_show/run_dse.rb's. Needed for a FAITHFUL SEEDS_ONLY replay:
+# a seed set belongs to exactly ONE scenario (the one that produced it), but
+# this loop otherwise replays every seed under all three, which would both
+# triple the corpus and evaluate seeds in scenarios they were never explored
+# in. Exploration itself is unchanged — omit the variable and all scenarios
+# run exactly as before.
+scenario_keys = SCENARIOS.keys
+if ENV["SCENARIO_ONLY"] && !ENV["SCENARIO_ONLY"].empty?
+  scenario_keys = ENV["SCENARIO_ONLY"].split(",").map(&:strip).reject(&:empty?)
+  missing = scenario_keys - SCENARIOS.keys
+  raise "SCENARIO_ONLY names unknown scenario(s): #{missing.inspect}" unless missing.empty?
+end
+scenario_summaries = scenario_keys.map { |p| explore(p) }
 
 overall = {
   "entrypoint" => "people_stream",

@@ -271,6 +271,38 @@ SHIM_TESTS = {
       raise "rep arm gave #{p.inspect}" unless p.respond_to?(:concolic_attrs)
       urep.person                                     # rep arm, memo HIT
       raise "memo not set" unless urep.instance_variable_get(:@__ps_via_user_noted)
+      raise "note arm lost" unless urep.instance_variable_get(:@__ps_via_user_note)
+                                        .to_s.start_with?("SELECT")
+      # B-2 RESCUE ARM (added 2026-09-23). The X7/B-2 repair replaced this
+      # body's one-line note with a RENDERED statement guarded by
+      # `rescue Exception => nil`, and nothing drove that arm: shim coverage
+      # fell 100% -> 90.9% with the bare `nil` as the only missed line, which
+      # is the `User.person: FAIL-COVERAGE` that blocked completion from
+      # 2026-09-11 onward. The arm's own documented trigger is a SYMBOLIC WALL
+      # in the renderer (`NotImplementedError < ScriptError`, which
+      # `rescue StandardError` would let escape) — so that is exactly what is
+      # raised here, on the REAL `ConcolicTargets.render_relation_sql`, with
+      # the original method restored in `ensure`. The claim tested is the one
+      # targets.rb states verbatim: "if the renderer raises ... the OLD PROSE
+      # NOTE is used verbatim, so the failure case is byte-identical to the
+      # pre-repair boundary." No application logic is stubbed: the wall is
+      # injected into the batch's OWN note renderer, not into diaspora.
+      orig_render = ConcolicTargets.method(:render_relation_sql)
+      begin
+        ConcolicTargets.define_singleton_method(:render_relation_sql) do |_rel|
+          raise NotImplementedError, "shim_tests: forced symbolic wall in the renderer"
+        end
+        wrep = User.find(9)                           # fresh receiver: memos unset
+        wrep.define_singleton_method(:concolic_attrs) { {} }
+        pw = wrep.person
+        raise "rescue arm gave #{pw.inspect}" unless pw.respond_to?(:concolic_attrs)
+        wnote = wrep.instance_variable_get(:@__ps_via_user_note)
+        raise "rescue arm note #{wnote.inspect}" unless wnote == "User#person (has_one)"
+      ensure
+        ConcolicTargets.define_singleton_method(:render_relation_sql, orig_render)
+      end
+      raise "renderer not restored" unless ConcolicTargets.render_relation_sql(
+        Person.where(owner_id: 9)).to_s.start_with?("SELECT")
       u = User.find(9)                                # real arm: `super`
       raise "super lost person" unless u.person && u.person.id == 1
     } },

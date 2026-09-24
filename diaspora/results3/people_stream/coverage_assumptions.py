@@ -73,6 +73,7 @@ after this file was applied, if anything.
 """
 from __future__ import annotations
 
+import os
 import sys
 
 sys.path.insert(0, "/home/dev/project/src")
@@ -81,7 +82,31 @@ from concolic_engine.assumptions import (  # noqa: E402
     AssumptionSet,
     IndependenceAssumption,
     OneSideUntrackedPathAssumption,
+    AliasAssumption,
 )
+from concolic_engine.coverage import maximal_sets  # noqa: E402
+
+# --- Alias (ported from notifications_index, 2026-09-09) -----------
+# The residual missing set is combinations over ordinal-named list reads: the
+# SAME logical read (a post row's text / comments_count / guid) is
+# `Relation_records_1` on some paths and `Relation_records_4` on others,
+# because a symbolic result is named by WHEN the call happened
+# (SymbolicFunc.next_call_idx), not by WHAT it is. This module's own docstring
+# above lists R1T/R1C and R4T/R4G/R4C as SEPARATE expressions — that is the
+# conflation, not five independent facts. Measured: in the R1 demand dumps
+# records_4 fired 288x vs records_1 72x, and 10 rooted seeds naming records_1
+# landed in runs where that ordinal never occurred, so the seed was inert.
+# Re-key each read by the statement it resolved to (binds kept, literals
+# wildcarded) so one fact is one variable. Verified by the gate's Alias
+# derived test, which FAILS on an unsound alias.
+ALIAS_PATTERN = (r"SYM_RESULT_ActiveRecord__(?:Associations__CollectionProxy_records"
+                 r"|Relation_records|Relation_to_ary)_\d+")
+ALIASES = [AliasAssumption(
+    result_pattern=ALIAS_PATTERN, key="statement",
+    description="ordinal-named list reads identified by their statement (binds kept)",
+    agent_notes=("the ordinal of the stream's post/comment list reads is a function of "
+                 "the path prefix; re-keyed by statement so one fact is one variable."))]
+
 
 # ---------------------------------------------------------------------------
 # find_person's 12-var universe (results2/people_stream Arguments 1-5,
@@ -136,21 +161,6 @@ CLOSED_ACCOUNT_FORECLOSES = (
     "vars are read) never runs. Verified: every closed_account==True dump "
     "has EXACTLY 3 PCs (A + not_found + closed_account), nothing from "
     "stream's body ever appears."
-)
-
-ARM_VS_ARM = (
-    "person.rb:196-206 `find_from_guid_or_username`'s "
-    "`if params[:id].present? ... elsif params[:username].present? && u = "
-    "User.find_by_username(...) ... else nil end` -- an if/elsif whose two "
-    "non-else arms (id-guid via Person.find_by(guid:) vs username via "
-    "User.find_by_username+u.person) are mutually exclusive per request, "
-    "structurally, independent of params[:id].present? itself not being a "
-    "tracked PC (same documented Ruby-truthiness-decides-concretely "
-    "pattern as every other blank?/present? call in this experiment -- "
-    "run_dse.rb build_params). Confirmed: no dump ever records vars from "
-    "both the {find_by_1_closed_account,find_by_1_guid} family and the "
-    "{SYM_PERSON_via_user_closed_account,SYM_PERSON_via_user_guid} family "
-    "together."
 )
 
 A_VS_ARM_FAMILY = (
@@ -210,38 +220,167 @@ A_VS_STREAM_BODY = (
     "json body (confirmed -- auth_json corpus contains both)."
 )
 
-SCENARIO_MUTUAL_EXCLUSION = (
-    "R1T/R1C (`records_1_row_*`) and the auth-only cluster {FB1, FB2, R4T, "
-    "R4G, R4C} never co-occur in any run, VERIFIED empirically (grepped the "
-    "full corpus's path_condition events by scenario prefix): records_1_row "
-    "vars appear ONLY in anon_json dumps, the auth-only cluster appears "
-    "ONLY in auth_json dumps. Root cause: `Stream::Base#like_posts_for_"
-    "stream!` (lib/stream/base.rb) `return posts unless @user` -- the ENTIRE "
-    "post_ids/attach_user_likes/Like.where chain (which is what produces "
-    "FB1 and, via ordinal-shifting the outer stream_posts.map's own "
-    "#records call to '_4' instead of '_1', R4T/R4G/R4C too) is SQL-free "
-    "no-op for anon (@user is nil in anon_json/anon_all -- run_dse.rb's "
-    "SCENARIOS/run_one) and only actually queries when a signed-in "
-    "@user is present (auth_json). `Post#reshare_for` (FB2, post.rb) has "
-    "its own explicit `return unless user` guard, same root cause. This is "
-    "a scenario-level mutual exclusion (run_dse.rb's `signed_in` flag is "
-    "FIXED per scenario, never flips within one run), the same class of "
-    "argument as FORMAT_MUTUAL_EXCLUSION below, just keyed on user "
-    "identity presence instead of response format."
+# ---------------------------------------------------------------------------
+# ARGUMENT 5b — THE OVERNIGHT PIN (2026-09-10, installed by the completion
+# drive agent).  A SEPARATE, COUNTED TIER: it is printed on its own
+# (`OVERNIGHT_PINS=` in the `[assumptions]` line) and reversed by one edit
+# (`_OVERNIGHT_PINS = ()`), so no number that depends on it is ever quoted
+# without saying so.  `NO_PINS=1` builds the set WITHOUT it.
+#
+# WHY IT EXISTS.  `tree_missing` named exactly one branch outcome on this
+# endpoint —
+#     (SYM_RESULT_ActsAsApi__Collection_as_api_response_1_row_guid
+#      != StringVal('')) :: taken
+# — and `COMPLETE=False` was caused by that alone (MISSING=0).  The FOURTH
+# instance of the framework short-circuit Arguments 5's three siblings (E, I,
+# L) already carry, at the SAME two source sites.  Reached from the
+# `format.json` arm via `CommentPresenter#as_json` ->
+# `@comment.author.as_api_response(:backbone)` -> `Person#as_json`
+# (app/models/person.rb:344-356), whose line 351 is
+# `url: Rails.application.routes.url_helpers.person_path(self)` — the SAME
+# route helper as the `format.all { redirect_to person_path(@person) }` arm
+# the siblings are declared for.
+#
+# THE DRIVE CAME FIRST, AND IT FAILED — that is what authorises the pin.
+# Owner instruction 2026-09-10 (overnight): "continue working till all
+# endpoints are complete", with the standing direction (notifications
+# `_COMPLETION_CAMPAIGN_20260910.md` §8) to INSTALL an unreachable-side pin
+# rather than leave it a proposal.  `_PREFLIGHT_20260910.md` §2 required the
+# falsifier to be RUN before installation.  It was, twice, by the agent that
+# installs this:
+#
+#   round TR0910a   the preflight's 5 rooted seeds  (verbatim base seeds of a
+#                   run that evaluates the `!=` site, guid flipped non-blank),
+#                   3 scenarios ->  15 runs
+#   round TR0910w   EVERY distinct rooted seed dict in the corpus that reaches
+#                   the `!=` site — 61 of them — x 3 scenarios -> 183 runs
+#
+#   `_tree_check.py` over both, through the engine's own load path
+#   (`canonicalize_ordinals`):   HIT=0  other=0  in all 198 runs.
+#   Not "the branch went the other way": the expression was NOT EVALUATED at
+#   all, which IS the line-40 break the argument predicts.
+#
+# GROUND-TRUTH DIFFERENTIAL, re-measured on the 1109-dump corpus (not a
+# sample, not the preflight's 755):
+#
+#     eq=(False,)  ne=()        runs=340   guid non-blank -> formatter.rb:40
+#                                          BREAKS; the `!=` never evaluated
+#     eq=(True,)   ne=(False,)  runs=272   guid blank -> line 41 runs and
+#                                          `'' != ''` is forced False
+#     ne taken: 0 of 612.
+#
+# SITE IDENTITY across all four instances, over the same corpus and the same
+# load path — `==` at `blank?`
+# (activesupport/lib/active_support/core_ext/object/blank.rb), `!=` at
+# `block in generate`
+# (actionpack-5.2.4.3/lib/action_dispatch/journey/formatter.rb), and in EVERY
+# family the `!=` population equals the `== ''` TRUE population exactly:
+#
+#     E first_1   eq True=29  False=52  | ne taken=0 not_taken=29
+#     I find_by_1 eq True= 4  False=24  | ne taken=0 not_taken= 4
+#     L via_user  eq True= 4  False=29  | ne taken=0 not_taken= 4
+#     THIS        eq True=272 False=340 | ne taken=0 not_taken=272
+#
+# The engine infers the same fact for itself: `(..._row_guid == '') ::
+# not_taken` is this endpoint's TOP foreclosure gate (24 applied pairs).
+#
+# THE MECHANISM, in the stock gem (actionpack 5.2.4.3, verified unmodified at
+# /home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/.../journey/formatter.rb):
+#
+#     route.parts.reverse_each do |key|
+#       break if defaults[key].nil? && parameterized_parts[key].present?  # 40
+#       next if parameterized_parts[key].to_s != defaults[key].to_s       # 41
+#
+# Line 40 breaks the loop before line 41 whenever the guid is non-blank, so
+# the only path that reaches the `!=` is the one that has just established
+# the guid IS blank — where `'' != nil.to_s` is False.  The True outcome has
+# no producing path.
+#
+# THE FALSIFIER, stated so it can be checked without this file.  The argument
+# rests on `defaults[:id]` being NIL for `person_path`.  Two ways to refute:
+#   (1) a RUN in which the expression is recorded `taken` — 198 rooted runs
+#       and 1109 corpus dumps produce none;
+#   (2) a route table in which the `person_path` `:id` segment acquires ANY
+#       non-nil default.  Then line 40 stops breaking, line 41 runs with a
+#       non-blank guid, and the True side becomes reachable.  diaspora's
+#       config/routes.rb:179 is `resources :people, only: %i(show index)` —
+#       no default, no constraint on :id.
+#
+# WHAT A CONSUMER MUST NOT CONCLUDE.  This pin says the True side is
+# unreachable IN THIS ROUTE TABLE.  It does not say the serialiser cannot
+# produce a non-blank guid — 340 runs do exactly that; it says the ROUTE
+# GENERATOR never compares one to a default.  Per DISCIPLINE §16b an
+# untracked expression is in no demand set, so it can neither foreclose nor
+# be foreclosed: pinning this one REMOVES it from the tree layer and leaves
+# every other decision's demand unchanged (verified: NODES, DEMAND_SETS and
+# MISSING are identical with and without the pin).
+# ---------------------------------------------------------------------------
+AAR1 = "(SYM_RESULT_ActsAsApi__Collection_as_api_response_1_row_guid != StringVal(''))"
+
+GUID_TRUE_UNREACHABLE_JSON_ARM = GUID_TRUE_UNREACHABLE.replace(
+    "reached via stream's `format.all { redirect_to person_path(@person) }` "
+    "for WHICHEVER @person the arm produced",
+    "reached via Person#as_json's `person_path(self)` "
+    "(app/models/person.rb:351) on the `format.json` arm -- the SAME route "
+    "helper, the SAME two actionpack lines, the SAME outcome as the three "
+    "declared instances on the `format.all` arm",
+) + (
+    " FOURTH INSTANCE, installed 2026-09-10 by the completion drive AFTER "
+    "the falsifier was run and failed: 198 rooted runs (5 preflight seeds + "
+    "all 61 distinct corpus rooted seed dicts, x3 scenarios) recorded the "
+    "expression 0 times taken and 0 times evaluated at all; 1109-dump "
+    "differential eq=(False,)/ne=() 340 runs, eq=(True,)/ne=(False,) 272 "
+    "runs, ne taken 0 of 612; site identity with E/I/L confirmed through the "
+    "engine's load path (blank? / block in generate). Falsifier: any run "
+    "recording it taken, or a non-nil default on person_path's :id segment "
+    "(config/routes.rb:179 has none)."
 )
 
-FORMAT_MUTUAL_EXCLUSION = (
-    "PeopleController#stream's `respond_to do |format| format.all { "
-    "redirect_to ... }; format.json { render json: ... } end` "
-    "(mime_responds.rb `Collector#negotiate_format` -> `request.negotiate_"
-    "mime`) resolves to EXACTLY ONE format per request. D/E/H/I/K/L are "
-    "read only by the html arm's `person_path(@person)` route generation "
-    "(ActionDispatch::Journey::Formatter, only invoked for a redirect); the "
-    "8 NEW vars are read only by the json arm's real render pipeline. A "
-    "single run's request.format is fixed per scenario (anon_all is html, "
-    "anon_json/auth_json are json -- run_dse.rb SCENARIOS), so no run ever "
-    "records a var from both families -- confirmed: zero dumps in the "
-    "corpus contain both a guid-pair var and any NEW var."
+# SECOND ORDINAL OF THE SAME SITE (2026-09-11). `Person#as_json` calls
+# `person_path(self)` more than once per render, so the SAME decision is minted
+# under a second call ordinal. The engine's tree layer reported exactly one
+# unobserved branch on the closed 13 677-dump corpus —
+# `(…as_api_response_2_row_guid != StringVal('')) :: taken` — and the corpus
+# measurement is the SAME one that justifies the ordinal-1 pin:
+#
+#     8102 taken=False    0 taken=True   (…_1_row_guid != StringVal(''))   <- pinned
+#     2928 taken=False    0 taken=True   (…_2_row_guid != StringVal(''))   <- this one
+#     2923 taken=False 2928 taken=True   (…_2_row_guid == '')              <- two-sided, NOT pinned
+#
+# This is the `!=` SPELLING — the one the gate PASSED for ordinal 1 — not the
+# `== ''` spelling the gate refused on 2026-09-11 (see the withdrawn
+# `.withdrawn_5b_spelling`). The `== ''` compare genuinely goes both ways; only
+# the `!=` compare at journey/formatter.rb:41 is one-sided, because line 40
+# breaks the parts loop whenever the guid is non-blank. Same site, same
+# mechanism, same falsifier: any run recording it taken, or a non-nil default on
+# person_path's :id segment (config/routes.rb:179 has none).
+AAR2 = "(SYM_RESULT_ActsAsApi__Collection_as_api_response_2_row_guid != StringVal(''))"
+
+_OVERNIGHT_PINS = (
+    OneSideUntrackedPathAssumption(
+        expr=AAR2,
+        tracked_side="not_taken",
+        description=("guid!='' can only ever be observed False (framework "
+                     "short-circuit) -- json-render arm, SECOND call ordinal "
+                     "of the same site, OVERNIGHT PIN"),
+        agent_notes=("SECOND ORDINAL of the pin below, same site and same "
+                     "mechanism. Measured over the closed 13677-dump corpus: "
+                     "2928 not_taken, 0 taken, while the `== ''` spelling of "
+                     "the same variable is two-sided (2923/2928) and is "
+                     "deliberately NOT pinned. journey/formatter.rb:40 breaks "
+                     "the parts loop on a non-blank guid, so the only path "
+                     "reaching line 41 has just established it IS blank. "
+                     "Falsifier: any run recording it taken, or a non-nil "
+                     "default on person_path's :id segment "
+                     "(config/routes.rb:179 has none)."),
+    ),
+    OneSideUntrackedPathAssumption(
+        expr=AAR1,
+        tracked_side="not_taken",
+        description=("guid!='' can only ever be observed False (framework "
+                     "short-circuit) -- json-render arm, OVERNIGHT PIN"),
+        agent_notes=GUID_TRUE_UNREACHABLE_JSON_ARM,
+    ),
 )
 
 
@@ -253,7 +392,25 @@ def _pair(expr_a: str, expr_b: str, why: str) -> IndependenceAssumption:
     )
 
 
-def build() -> AssumptionSet:
+def _coeval_pairs(runs):
+    """The corpus's CO-EVALUATION relation — every pair of decisions some run
+    evaluated together, derived exactly as the engine derives its demand
+    universe (the runs' evaluation sets, reduced to the MAXIMAL ones)."""
+    sets = set()
+    for r in runs or ():
+        s = frozenset(pc.expr for pc in r.path_conditions)
+        if s:
+            sets.add(s)
+    out = set()
+    for s in maximal_sets(sets):
+        es = sorted(s)
+        for i, a in enumerate(es):
+            for b in es[i + 1:]:
+                out.add(frozenset((a, b)))
+    return out
+
+
+def build(runs=None) -> AssumptionSet:
     assumptions = []
 
     # --- Argument 1: not_found forecloses closed_account + redirect, per arm (9 pairs) ---
@@ -266,19 +423,27 @@ def build() -> AssumptionSet:
         for r in redir:
             assumptions.append(_pair(closed, r, CLOSED_ACCOUNT_FORECLOSES))
 
-    # --- Argument 3: id-guid arm vs username arm, all cross pairs (9 pairs) ---
-    for x in (G, H, I):
-        for y in (J, K, L):
-            assumptions.append(_pair(x, y, ARM_VS_ARM))
-
-    # --- Argument 4: A vs every other OLD tracked var (11 pairs) ---
-    for g in (B, C, D, E, F, G, H, I, J, K, L):
-        assumptions.append(_pair(A, g, A_VS_ARM_FAMILY))
-
-    # --- Argument 4b: TRUE-arm tier vs FALSE-arm tier, full cross (28 pairs) ---
-    for t in (B, C, D, E):
-        for f in (F, G, H, I, J, K, L):
-            assumptions.append(_pair(t, f, A_VS_ARM_FAMILY))
+    # --- Argument 4: WITHDRAWN 2026-09-11 (the gate FAILED it) -------------
+    # The assumption gate, running for the first time on this endpoint with the
+    # X10 `_runtime_key(sd, db)` fix (so independence pairs are actually
+    # PROBED on a canonicalising corpus), returned:
+    #
+    #   FAIL IndependenceAssumption
+    #     (SYM_RESULT_PeopleController_diaspora_id__1_result == True)
+    #     x (SYM_RESULT_ActiveRecord__FinderMethods_first_1_closed_account == True)
+    #     combination (flip both) produced 1 target-call shape absent from
+    #     base / flip-A / flip-B:
+    #       ActiveRecord::Relation.records  SELECT "posts".* FROM "posts"
+    #                                       WHERE "posts"."author_id" = ?
+    #
+    # That is the A2 probe doing exactly its job: the two decisions are NOT
+    # independent at the EVIDENCE layer, because their combination reaches a
+    # statement neither single flip reaches. Under the standing rule a FAIL
+    # WITHDRAWS THE CLASS, not just the pair — so all eleven A-vs-arm pairs go,
+    # and the combinations they were relaxing return to being demanded.
+    # (Argument 7, A vs the NEW stream-body universe, is a DIFFERENT argument
+    # over a different family and passed its own probes; it stays.)
+    _ARG4_WITHDRAWN = 11  # kept as a number so the withdrawal is countable
 
     # --- Argument 5: guid '!=' side untracked-true, per arm (3 pairs) ---
     for taken_true_expr in (E, I, L):
@@ -298,18 +463,32 @@ def build() -> AssumptionSet:
     for n in NEW:
         assumptions.append(_pair(A, n, A_VS_STREAM_BODY))
 
-    # --- Argument 8 (NEW): html-only guid pairs vs NEW (json-only), mutually
-    #     exclusive response formats (6*8=48 pairs) ---
-    for html_var in (D, E, H, I, K, L):
-        for n in NEW:
-            assumptions.append(_pair(html_var, n, FORMAT_MUTUAL_EXCLUSION))
+    # --- Argument 5b: THE OVERNIGHT PIN (separate, counted, reversible) ---
+    _pins = () if os.environ.get("NO_PINS") else _OVERNIGHT_PINS
+    assumptions.extend(_pins)
 
-    # --- Argument 9 (NEW): anon-json-only R1 family vs auth-json-only
-    #     cluster, mutually exclusive per signed_in scenario (2*5=10 pairs) ---
-    for r1 in (R1T, R1C):
-        for auth_only in (FB1, FB2, R4T, R4G, R4C):
-            assumptions.append(_pair(r1, auth_only, SCENARIO_MUTUAL_EXCLUSION))
-
+    # CO-EVALUATION FILTER (2026-09-10). The engine demands a combination only
+    # over decisions some run evaluated TOGETHER, so an independence over a
+    # pair no run co-evaluates relaxes nothing. Four whole arguments went with
+    # that rule — 3 (arm vs arm), 4b (TRUE-arm tier vs FALSE-arm tier), 8
+    # (html-only vs json-only) and 9 (anon-json vs auth-json), 95 declared
+    # pairs, every one of them a MUTUAL-EXCLUSION argument, i.e. exactly the
+    # claim the engine now makes for itself. This filter drops any survivor
+    # with the same property and says how many, so the deletions are auditable
+    # rather than asserted.
+    if runs is not None:
+        coeval = _coeval_pairs(runs)
+        kept, inert = [], 0
+        for a in assumptions:
+            if isinstance(a, IndependenceAssumption) and \
+                    frozenset((a.expr_a, a.expr_b)) not in coeval:
+                inert += 1
+                continue
+            kept.append(a)
+        print(f"[assumptions] declared={len(kept)} "
+              f"INERT(never-co-evaluated, not declared)={inert} "
+              f"OVERNIGHT_PINS={len(_pins)}", file=sys.stderr)
+        assumptions = kept
     return AssumptionSet(assumptions=assumptions)
 
 
