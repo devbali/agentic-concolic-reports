@@ -55,7 +55,7 @@ defect reopens **every** endpoint from scratch (`DISCIPLINE.md` §8, Rule T2).
 
 | tool | run by | what it decides |
 |---|---|---|
-| `concolic_engine/coverage.py` (via the batch's `coverage_report.py`) | batch agent | every branch combination is covered or exempted by a declared assumption |
+| `concolic_engine/coverage.py` (via the batch's `coverage_report.py`) | batch agent | every branch combination **that some run evaluated together** is covered or exempted by a declared assumption, AND every decision has been taken both ways (`tree_complete` — the precondition; DISCIPLINE §16, 2026-09-10) |
 | `concolic_engine/completion.py` | same call | orchestrates the gate; writes `completion` + `complete` into `coverage_summary.json`; a missing note check or assumption gate is itself BLOCKING |
 | `end_to_end_completion_checker/assumption/assumption_checker.py` | the engine (mandatory) | every declared assumption, tested by type via replay (Independence / UntrackedPath / OneSideUntracked / SymbolicConstraint) |
 | `end_to_end_completion_checker/mock/mock_note_check.py` | the engine | each target's real statements have a corpus note of that shape |
@@ -63,7 +63,9 @@ defect reopens **every** endpoint from scratch (`DISCIPLINE.md` §8, Rule T2).
 | `ruby_runtime/completion_checker/concrete_run_probe.rb` + `concrete_env.rb` | batch agent & adversary | a REAL run (sqlite fixtures, no mocks) with frame-tagged target calls and statements |
 
 **SQL-consumer checks (`src/queries_from_runs/audits/`, coordinator runs them):**
-`identity_symbolicity_audit` (principal binds symbolic) · `statement_note_lint`
+`identity_symbolicity_audit` (principal binds symbolic) ·
+`policy_loadability_audit <batch> <policy.sql>` (POLICY-side, after extraction:
+every statement of the shipped file LOADS and no bind is left unresolved) · `statement_note_lint`
 (Class S note shapes) · `bind_resolution_audit` (every `$(VAR)` resolves under
 the fold's rules) · `skipped_pcs_audit --patched <fold dir>` — the dir MUST be
 `_experiment/variant_d`: `variant_e` lacks the violation-8 `StringVal`
@@ -159,9 +161,251 @@ command it is given, with the env it is given.
 - a coverage-only pass (SKIP_COMPLETION) writes `complete: false` with
   "completion gate did not run" — never trust a summary whose `completion`
   section is empty, and never read a summary from a killed report;
+- **`MAX_MISSING_PER_CLIQUE` is no longer needed for driving** (2026-09-12,
+  DISCIPLINE §16d). The checker now spends ONE Z3 query per demand set and
+  the per-set witness cap defaults to **1**: a covered set proves itself with
+  a single UNSAT, an uncovered one names one leaf, and the counterexample in
+  that leaf's `concrete_values` is what the next run is built from — one
+  counterexample is one run, so a second witness for the same set buys the
+  demand round nothing and costs a full query on a larger formula. Drop the
+  variable from the launch line; set it only to LOOK at a set (a diagnostic,
+  not a stage). On the people_stream 70 % subset the whole check went from
+  765 s (old engine, cap 4) to 24 s at the new default, with the same 12
+  demand sets flagged and the same `tree_missing`. Two consequences to
+  expect in a summary: `missing_branches` is now roughly "sets with a gap"
+  rather than up to four witnesses each, and `truncated` is True on any
+  incomplete pass (the pass stops AT the cap by design — `complete` was
+  already false, so nothing is weakened, but `truncated` no longer
+  distinguishes "cut short" from "incomplete");
+- **`FORECLOSURE_CONJUNCTIONS` — foreclosure over gate CONJUNCTIONS**
+  (2026-09-13, DISCIPLINE §16e). `CoverageChecker(foreclosure_conjunctions=
+  True)` infers the §16b relation over the gate conjunctions the demand
+  already contains: for a leaf group's gate prefix `P`, a surviving member
+  `d` no run matching `P` ever evaluates is not part of that leaf. It is
+  **OFF by default in the engine** — every summary written before that date
+  reproduces byte-for-byte with the flag unset, which is what keeps the
+  closed endpoints closed — and a batch turns it on in its OWN
+  `coverage_report.py` where `CoverageChecker(` is built.
+  notifications_index has the knob wired as `FORECLOSURE_CONJUNCTIONS`
+  (default `1` THERE; set `0` for the differential half). Three things to
+  expect in a summary: `conjunction_foreclosures` /
+  `conjunction_foreclosure_groups` (the pairs and leaf groups applied, with
+  a capped `conjunction_foreclosure_list`), a `PROVISIONAL` marker whenever
+  `tree_complete` is False (same reading as a §16b foreclosure), and
+  **`unmatched_gate_conjunctions`** — the `A = 0` class, leaf groups whose
+  gate prefix NO run of the corpus matches. That class is NOT an inference
+  and its demand is NOT dropped: the prefixes are printed so the driver can
+  CONSTRUCT them. The flag is part of the step-6 checkpoint key, so a
+  checkpoint written with it off is rotated to `<file>.stale` rather than
+  replayed with it on — keep the two settings on different checkpoint paths
+  if you want both to resume. The inferred foreclosures also reach the
+  assumption gate through `assumptions_to_dict()` as
+  `ConjunctionForeclosureAssumption` (`inferred: True`), whose derived test
+  builds a run matching `P` with the member's own inputs seeded to force its
+  evaluation: the member being evaluated is a FAIL and withdraws the
+  foreclosure;
+- **`FORECLOSURE_SUBCONJUNCTIONS` — foreclosure over a SUB-conjunction**
+  (2026-09-13, DISCIPLINE §16f). `CoverageChecker(foreclosure_subconjunctions
+  =True, foreclosure_conjunction_width=W)` — W defaults to **3** — infers the
+  same relation one conjunction NARROWER: a member `d` is foreclosed under
+  any conjunction `C` of literals already fixed EARLIER in the leaf's walk,
+  `|C| <= W`, with `A(C) > 0` and `B(C, d) = 0`. Two things §16e cannot do
+  and this can: `C` may contain NON-gate members, and `d` may itself be a
+  GATE. It is **OFF by default in the engine** and turning it on IMPLIES
+  `foreclosure_conjunctions` (§16f's drop set is §16e's union the walk's,
+  which is what makes the nesting hold by construction); with it off, a
+  `foreclosure_conjunctions=True` pass is byte-identical to a pre-§16f one.
+  notifications_index has the knob wired as `FORECLOSURE_SUBCONJUNCTIONS`
+  (default `0`; `FORECLOSURE_CONJUNCTION_WIDTH` sets W). Expect in a summary:
+  `subconjunction_foreclosures` / `subconjunction_foreclosure_conditions`
+  with a capped, structured `subconjunction_foreclosure_list` carrying
+  `(C, member, A)`, the same `PROVISIONAL` marker, and — because a GATE can
+  now be foreclosed — a FALL in `unmatched_gate_conjunctions` where the A = 0
+  class was one unrealisable gate. The flag AND the width are part of the
+  step-6 checkpoint key, so the three settings never share a checkpoint
+  path. Cost is bounded by W: the minimal-`C` search is a bounded set cover
+  (`minimal_subconjunction`), memoized per (fixed literals, member), and
+  `foreclosure_conjunction_budget` (default 20 000 nodes) makes exhaustion a
+  NON-inference rather than a hang. The inferred classes reach the assumption
+  gate as `SubconjunctionForeclosureAssumption` (`inferred: True`), whose
+  derived test is §16e's probe with `C` in place of `P`;
+
+- **`FORECLOSURE_WELLFOUNDED_DROPS` — WELL-FOUNDED drops, `C` from the whole
+  leaf** (2026-09-14, DISCIPLINE §16g). `CoverageChecker(foreclosure_
+  wellfounded_drops=True, foreclosure_conjunction_width=W)` — W defaults to
+  **3** — lifts §16f's `C ⊆ acc` (walk-prefix) restriction: `C` may be drawn
+  from ANYWHERE in the leaf's own cube, including literals that sit LATER in
+  the walk than the member they foreclose, provided **every literal of `C`
+  belongs to a member that is itself KEPT**. That condition is resolved as
+  the LEAST FIXED POINT of a monotone operator (`coverage.
+  wellfounded_drop_set`), so the answer is unique and independent of the
+  order the members are visited in; two members that foreclose each other
+  drop NEITHER. A second condition is not optional: the reduced leaf must be
+  MATCHED by at least one profile (`A(reduced) > 0`), or the whole drop set
+  is refused — §16e's "A = 0 is absence, not evidence" applied to the LEAF.
+  It is **OFF by default in the engine** and turning it on IMPLIES
+  `foreclosure_subconjunctions` (hence `foreclosure_conjunctions`); with it
+  off, a `foreclosure_subconjunctions=True` pass is byte-identical to a
+  pre-§16g one — proved on people_stream and comments_index, whose summaries
+  reproduce to the byte against the pre-edit engine. notifications_index has
+  the knob wired as `FORECLOSURE_WELLFOUNDED_DROPS` (default `0`). Expect in
+  a summary: `wellfounded_drops` / `wellfounded_drop_conditions` with a
+  capped, structured `wellfounded_drop_list` carrying `(C, member, A)`, the
+  same `PROVISIONAL` marker, and a `WF_DROPS=...;WF_CONDS=...` verdict line.
+  The flag is folded into the step-6 checkpoint key **only when it is on**,
+  so every §16e/§16f checkpoint written before 2026-09-14 still replays
+  untouched. Cost is the same bounded set cover §16f uses, on a pool that is
+  the whole cube instead of a prefix. The inferred classes reach the
+  assumption gate as `SubconjunctionForeclosureAssumption` marked
+  `wellfounded: True` / `section: "16g"` — the SAME payload and the SAME
+  probe, because `C` is still at most W literals to flip from a base that
+  records the member. **One caveat to carry into any report**: unlike §16f,
+  §16g cannot promise the leaf COUNT is monotone or that every printed
+  witness lies inside a printed §16f witness. Its drop set depends on the
+  leaf AND on the pins its §16e/§16f justifications leave, so one §16f leaf
+  can coarsen two ways; every §16g leaf is still a strict SUB-cube of its
+  §16f leaf (weaker demand, not larger) and §16f-complete still implies
+  §16g-complete, which is the claim. See DISCIPLINE §16g;
 - agents must wait with Monitor until-loops on a log marker and re-check the
   log themselves; the coordinator keeps a 15-min stall tick and nudges any
   agent whose job finished while it slept.
+
+### Long jobs must run CHECKPOINTED (owner rule, 2026-09-12)
+
+**Anything that can run longer than ~10 minutes is launched with its
+checkpoint on, so a kill costs the unit in flight and nothing else.** The rule
+came from the two final passes of 2026-09-11, which held everything in memory
+for 2 h 30 and would have written their first byte at the end. Every mechanism
+below is OPT-IN and keyed on its own inputs — with the variable unset the job
+behaves exactly as it always did, and a checkpoint whose key does not match
+(a changed corpus, assumption set, knob, or the engine's own source) is
+DISCARDED with a notice and rotated to `<file>.stale`, never silently reused.
+Set them in the `env …` line of the stage that launches the job, not globally,
+and give each stage its OWN file next to its other artefacts:
+`COVERAGE_CHECKPOINT=$B/_cov_<tag>.ckpt.jsonl` for `coverage_report.py` (the
+checker's per-demand-set Z3 enumeration — the hours-long phase; a resumed pass
+skips every set already recorded and produces a byte-identical summary);
+`ACHK_CHECKPOINT=$B/_achk_probes.jsonl` for the assumption gate (one record per
+JRuby probe replay, which is the whole cost of the gate ONCE the probes start)
+plus `ACHK_RESULTS_JSONL=$B/_achk_rows.jsonl` so a killed gate leaves the verdict
+rows it did produce (`--json-out` alone writes an EMPTY file on a kill) and
+`ACHK_INDEX_CHECKPOINT=$B/_achk_index.ckpt.jsonl` +
+`ACHK_DERIVE_CHECKPOINT=$B/_achk_derive.ckpt.jsonl` for the gate's two
+PRE-PROBE phases — see the paragraph below, which is where posts_show spent
+5 h 59 m on 2026-09-12 without launching one probe;
+`ENGINE_CHECKPOINT=1` for `_engine_section.py` (skips the stage outright when
+`SUMMARY_OUT` is already there for these exact inputs, and turns on the gate's
+probe log for it); `AUDITS_CHECKPOINT=1` for `_c7_audits.sh` (each audit's
+output is kept under `$B/_c7_audits.done/` and an audit that finished with
+`EXIT=0` is replayed into the log instead of re-run — the whole directory is
+dropped when the corpus or the script changes); `SUBSUME_CACHE=$B/_subsume.jsonl`
+for the blockaid subsumption stage (the verdicts for one query set, so a rerun
+of an extraction does not redo the ~42-minute JVM pass; the cached unit is the
+whole call — a kill *during* the JVM still loses it). A rerun without the same
+path is a rerun from zero: keep the path stable across a stage's retries, and
+delete the file (not edit it) when you want a genuinely fresh pass.
+
+**2026-09-13 — the two WHOLE-STAGE keys now digest every input, not a sample of
+them.** `_engine_section.py`'s `<SUMMARY_OUT>.checkpoint_key` (format v2, all
+three copies identical) keys on SUMMARY_IN + `completion_config.json` *and* on
+every file the config or one of its commands names — `shim_tests.rb`,
+`_shims_extracted.json`, `targets.rb` / `concolic_targets.rb`, `concrete_run` +
+aliases, the assumption manifest and gate wrapper, and each `audit_cmds` /
+`extra_audit_cmds` SCRIPT's source — plus the batch's `coverage_assumptions.py`
+/ `_confinement_withdrawn.json` / `_prior_footprints.json` (a missing optional
+file digests as `ABSENT`, never an error), the engine sources
+(`completion.py`, `assumption_checker.py`) and the `ACHK_*` / `CONCOLIC_*` /
+`COMPLETION_*` / `QFR_APP_CONFIG` knobs as the process received them, because
+v1 digested only the first two and would have skipped the stage and replayed a
+stale `OVERALL_COMPLETE=False` after comments_index ported two shim tests
+(`comments_index/_RESTORED_20260913.md` §3); `_c7_audits.sh`'s
+`AUDITS_CHECKPOINT` key adds the audit scripts' own source (every `*.py` under
+`src/queries_from_runs/audits` and `reports/diaspora/tools`, plus the batch's
+own audit scripts) and `QFR_APP_CONFIG` to its corpus + self hash, closing its
+stated "the key does not see a CHANGE to an audit TOOL" limit; both now log a
+`[checkpoint] key inputs: …` line naming every component, and the engine
+section's sidecar carries a format note plus one `#   label path digest` row
+per input, so the record shows what was digested.
+
+**A long job must also SAY what it is doing.** The gate's cost is not only its
+probes: before the first probe it parses every dump in the batch
+(`corpus_index`) and then derives, per declaration, which probes the verdicts
+will need. On 2026-09-12 posts_show's engine section sat in that phase for
+5 h 59 m at 2.5-3.7 GB — zero JRuby children, an empty `_achk_rows.jsonl`, four
+lines in the log — and was killed as a suspected hang. Measured on a 2 000-dump
+slice of that corpus: index 54 s, derivation 69 s PER confined pair, 1 571 dump
+re-parses per pair, because a pair re-derived from scratch what is a property
+of a DECISION (posts_show's 2 315 pairs are 112 distinct decisions) and every
+snapshot selection re-scanned the whole index. Three variables, all opt-in:
+`ACHK_HEARTBEAT_S=60` prints `[corpus-index] … 41000/194262 elapsed 640s rate
+64/s eta 2400s rss 2900MB` and the same for `[derive-probes]` and `[verdicts]`,
+so a slow phase can be told from a hung one (0 turns it off);
+`ACHK_INDEX_CHECKPOINT=$B/_achk_index.ckpt.jsonl` records one row per dump
+(~350 MB on posts_show), keyed on the corpus, the declared set, the
+canonicalization hook and the engine's source, so a relaunch replays the index
+in minutes instead of re-reading 36 GB of JSON;
+**2026-09-14 — that key is now INCREMENTAL: only what decides how a row is
+COMPUTED (the engine's source, the canonicalization hook and the ALIAS
+declarations) still invalidates the whole log, while corpus membership is
+settled row by row against each dump's own size and mtime, so a round that
+added dumps re-indexes exactly those dumps (comments_index, 26 528 dumps:
+35.7 s from scratch, 2.1 s to resume unchanged, 2.4 s for 400 new, every one
+of them byte-identical in fingerprint to a from-scratch index of the same
+corpus — a full rebuild was the reason notifications' C22 declined to run its
+engine section at all), a dump that vanished loses its row and the log is
+compacted, and the rest of the declared set — which reaches a row only
+through the aliases — no longer moves the key, so one round's index serves
+the next: point every round of an endpoint at ONE index log, never a
+per-round name, and note that a SECOND gate in the same batch directory
+cannot share the log (one writer takes a `<log>.lock`; the other indexes
+uncached, which is a full pass) — evidence in
+`results3/_idx_proof_20260914/`.**
+`ACHK_DERIVE_CHECKPOINT=$B/_achk_derive.ckpt.jsonl` does the same for the
+derivation that follows it — one row per confined DECISION, holding its profile
+representatives and their flipped seeds as deltas against the index, so a
+resumed gate opens no dump for them at all — that one is deliberately NOT
+incremental and stays keyed on the corpus and the declared set, because a
+representative set and the profile COUNT that decides testability are
+properties of the corpus as a whole, so a corpus that grew can legitimately
+change a derivation and keeping the old record would be unsound.
+`ACHK_CONF_PROFILES` is unchanged
+and still a budget knob, not a speed one. `ENGINE_CHECKPOINT=1` sets all of these for you
+in `_engine_section.py`. NOTE where the lines come out: `completion.py` CAPTURES
+the gate's stdout, so the live file is the gate wrapper's tee —
+`$B/_c1/_gate_engine.log` — not the stage log.
+
+**And a long job must not be able to lose a finished result.** The gate's
+dump-side audits ran under a hard-coded 1800 s in
+`concolic_engine/completion.py:run_audits`, and a `TimeoutExpired` there came
+out of `attach_to_summary` — so on 2026-09-11 notifications_index's final pass
+threw away an 8 962 s coverage phase because `cardinality_consistency_audit`
+(which needs ~59 min on that 289 733-dump directory) was killed at 30 min and
+`coverage_report.py` writes its summary only AFTER the gate. Two rules follow.
+(1) Run the FINAL pass SPLIT: `SKIP_COMPLETION=1` + `SUMMARY_OUT` for the
+coverage layer, then `_engine_section.py` with `SUMMARY_IN` for the gate
+(posts_show `_p13c.sh` 13c-1/13c-2 is the model; notifications_index
+`_c12_rerun_after_restart.sh` is the ported one). (2) Size the audit limit:
+`COMPLETION_AUDIT_TIMEOUT=<s>` for one invocation, `audit_timeout` in the
+batch's `completion_config.json` as its standing default, or `timeout` on a
+single `audit_cmds` entry — precedence in that order, 1800 s when all are
+unset. A timeout is now a RED audit row (`timed_out: <s>`), which blocks
+`complete` but leaves the section, and the summary, intact. Remember the audits
+take `{batch}` and scan the batch DIRECTORY, so their cost tracks the dumps on
+disk, not the pass's `DUMP_LIST`.
+
+*Availability, 2026-09-12:* `COVERAGE_CHECKPOINT` is LIVE
+(`src/concolic_engine/checkpoint.py` + `coverage.py`), and so are
+`ACHK_CHECKPOINT` / `ACHK_RESULTS_JSONL` / `ACHK_INDEX_CHECKPOINT` /
+`ACHK_DERIVE_CHECKPOINT` / `ACHK_HEARTBEAT_S` (`assumption_checker.py`; tests
+`src/test_assumption_checker_checkpoint.py`, `…_index.py`). The other four were
+written while the 2026-09-11 chains were still running and are staged as
+`<file>.checkpoint_next` — see
+`reports/diaspora/results3/_CHECKPOINT_STAGED_20260912.md` for the apply list;
+until it is applied, setting those variables does nothing. The audit-timeout patch above
+(`completion.py` + `test_completion_audit_timeout.py`) is in the same apply
+list. Two long jobs are NOT covered yet and that file says why:
+`_exact_enum.py` (11-26 min) and the JRuby drives (resume only per chunk,
+within one TAG).
 
 ---
 
@@ -290,6 +534,84 @@ For each wall the endpoint hits:
   REGENERATE saturation/context seeds from the fresh corpus and run
   those rounds — stale seed files reference dead var names).
 - ▸ gate: `run errors: {}` in every round; crash isolation per seed.
+- ▸ **THE NAME BOUNDARY — use `concolic_engine.names`, do not hand-roll it.**
+  A symbolic variable has two spellings and two forms, and which one you get
+  depends on which STAGE wrote it down:
+    * LENGTH: the runtime and the dumps write `len(X)`; the checker, the
+      enumerator and every summary write `SYM_LEN_X`
+      (`coverage_report.fix_len_names` converts at load).
+    * ORDINAL vs CANONICAL: `call_interceptor` names a result by WHEN it ran
+      (`records_2`); an AliasAssumption renames it by WHAT it did
+      (`records_mentions_66022a8b`), via `canonicalize_ordinals` /
+      `alias_map_for` / `renamer`. The map is MANY-TO-ONE — seeding one
+      backing ordinal contradicts the demand whenever the path takes another,
+      so ALL of them must be written.
+  A lookup that crosses that boundary and misses is **silent**: `.get()`
+  returns `None`, `k in seeds` is False, `LIDX.get(L)` is None — and every
+  caller reads that falsy answer as a MEANINGFUL NEGATIVE ("never minted",
+  "not seedable", "no compatible base", "never evaluated", "no seed needed",
+  "pin unachievable").
+
+  **Documentation alone did not work.** This paragraph has said "convert both
+  ways" since 2026-09-11 and the trap was hit FOUR more times in the single
+  night of 2026-09-13/14, by four different agents, after it was written down:
+  the seeder dropped every `SYM_LEN_*` value (18.5 % of one corpus, 29.8 % of
+  another, 31 variables) as "no seed needed"; the confinement gate collapsed
+  to a 40x slower single-replay path for ~10 h because the canonicalisation
+  hook renamed seeds inside loaded dumps so a probe never matched its own
+  launch (`seeds_as_written` fixed it); posts_show class A called 3,746 cubes
+  unachievable and gave the OPPOSITE answer once the names were put through
+  `canonicalize_ordinals` + `fix_len_names`; posts_show class D read "never
+  minted" for a variable the corpus mints in 68 % of runs.
+
+  **So the rule is now mechanical, not advisory:**
+
+  > **A BARE DICT LOOKUP ACROSS THE NAME BOUNDARY IS A DEFECT.**
+  > Use `concolic_engine.names.NameSpace`. Reviewers reject the bare lookup.
+
+  ```python
+  from concolic_engine.names import NameSpace, to_checker, to_runtime
+  ns = NameSpace(seeds, name="concolic_seeds", alias_map=amap)
+  ns.get(k)        # raises WrongSpelling IFF the table holds the SAME
+                   # variable under another spelling; a genuine absence
+                   # returns None, silently, exactly like dict.get
+  ns.resolve(k)    # forgiving: answers under whichever spelling is stored
+  ns.keys_for(k)   # EVERY backing key — the many-to-one seed resolution
+  ns.audit(keys)   # which of these names your table has been answering "no" to
+  ```
+
+  The genuine-absence distinction is the whole design: the raise is
+  conditioned on a POSITIVE observation — a sibling key that IS present —
+  never on the absence itself, so it cannot turn real absences into
+  exceptions. Use `get` for a tripwire (a miss on spelling should stop the
+  job), `resolve`/`keys_for` when the lookup should simply work.
+  `src/test_names.py` pins all of it, including the four failures above as
+  named regression tests. Audited call sites and the ones still staged:
+  `results3/_staged_20260914/NAME_BOUNDARY_STAGED.md`.
+- ▸ demand rounds are CONSTRUCTED, not sampled: each `missing[]` entry
+  carries a Z3 counterexample and the checker's foreclosure relation says
+  which gates make each member evaluable — ask the solver for the cube's
+  outcomes AND `g != o` for every `(g, o)` foreclosing a member (so the model
+  carries the path), overlay it on a base run whose profile already walks
+  the whole set, then explain the round per key (honoured / contradicted /
+  never evaluated). Measured 2026-09-10 on notifications: bulk seeds
+  0.0004 closed/run, a counterexample on an arbitrary base 0.014-0.19,
+  because 70 % of keys are never reached; seeds are honoured 97 % when
+  reached. Batch at the DRIVER level (Bali, 2026-09-10): take every remaining
+  cube from the exact enumerator (`_exact_enum.py`, ~100 s) rather than the
+  checker's capped witnesses (a pass, hours), build one seed per cube, drive
+  the whole batch, re-enumerate; the checker pass runs once, to CERTIFY.
+  Build seeds per SET, not per cube: one compatible base per set, every
+  cube by overlay; Z3 only for conflicts, in a pool, pipelined into the
+  drive (Bali, 2026-09-11). "No run produced this combination" is a
+  statement about the corpus, not the program: before calling any
+  combination residue, CONSTRUCT it — fix the gate AND member outcomes
+  (the enumerator proved SAT; the assignment is the model), seed every
+  ordinal backing each canonical, replay, classify per key; only a gate
+  that flips back despite its seed is impossibility evidence
+  (people_stream 2026-09-11: 768 "residue" cubes, 12/12 reachable,
+  driven to 0 with no declaration).
+  Stop a method that falls below ~0.05/run for two rounds.
 - Ops invariants: systemd caps, flock serialization, extraction later
   in a FRESH unit (page-cache cgroup accounting).
 
@@ -305,6 +627,32 @@ python3  pc_visibility_audit.py   <batch> --gate <cols-from-Phase-1>   # T1c/C2-
 ```
 ```
 python3  identity_symbolicity_audit.py <batch>   # F6 — principal must be symbolic
+python3  exception_note_audit.py       <batch>   # F8 — no note may be a
+                                  #      captured exception (prose where a
+                                  #      statement belongs)
+```
+EXTRACTION itself is `queries_from_runs.dump` — four stages, one command:
+
+```bash
+PYTHONPATH=src python3 -m queries_from_runs --results results3 \
+    --out results3/queries_from_runs --endpoint <endpoint> [--no-subsume] \
+    [--sample N --sample-seed S] [--suffix S] --verbose
+```
+
+`extract_statements` (binds resolved by provenance, qualifying path conditions
+rendered as predicates) -> `prune_conditions` (the corpus drops every predicate
+it shows the same query running both WITH and WITHOUT) -> `drop_subsumed` ->
+`render_policy`. The per-endpoint input is the corpus directory and an optional
+`POLICY_HEADER.txt` beside the dumps. The rules are stated in
+`src/queries_from_runs/README.md` rule 4.
+
+AFTER EXTRACTION, on the file about to ship (F7, 2026-09-15):
+```
+python3  policy_loadability_audit.py <batch> <queries_from_runs/<endpoint>.sql>
+                                  # F7 — no placeholder in the shipped SQL body
+                                  #      may be a value the corpus proves is
+                                  #      principal-determined; _MY_UID must be
+                                  #      the only spelling of the principal
 ```
 All six must be green (or every red finding dispositioned in the batch
 ledger with a repair or a written why-not). Any repair → back to Phase
@@ -408,9 +756,35 @@ the outer's note). Depth-0 misses stay RED.
 
 - ▸ extraction with the fold patches installed; complement merge in the
   view-build using Phase 3's F4 output; re-run
-  `bind_resolution_audit` baseline comparison.
+  `bind_resolution_audit` baseline comparison. (Both that audit and
+  `identity_symbolicity_audit` now read the schema and the principal columns
+  from the app config and go RED without one — every `*audits*.sh` in the
+  batches exports `QFR_APP_CONFIG`; a new one must too.)
 - ▸ optional C3 if a reference policy happens to exist — any residue it
   finds means Phases 3-5 have a gap: fix the CHECK too (rule P).
+- ▸ **ALL of `src/queries_from_runs` is app-agnostic and REQUIRES an app
+  config** — since 2026-09-11 (E12) that is true of RECONSTRUCTION too, not
+  only the subsume/blockaid harness. Export
+  `QFR_APP_CONFIG=reports/diaspora/queries_config/app.json`, or pass
+  `--app-config`, or run the harness through
+  `reports/diaspora/queries_config/check_subsumed.sh`. Every extractor,
+  `tools/blockaid_*.py`, `_blockaid_fold.py` and the variant runners set the
+  variable themselves, so existing invocations keep working; a NEW driver that
+  forgets it gets a ConfigError naming the flag, never a wrong policy.
+- ▸ `app.json` now carries values that decide the SQL TEXT of every shipped
+  view: the principal/identity tables and columns, the pinned principal
+  values, the symbol-name shapes `targets.rb` mints, the inflections. **An
+  edit to it is an extractor change** — it needs the same corpus differential
+  a `transform.py` change needs, and `principal.binds` is coupled to
+  `targets.rb` under Rule T. Run
+  `reports/diaspora/queries_config/validate_app_json.py` (checks every
+  table/column/FK/regex/path that `schema.rb` can confirm) after any edit, and
+  the corpus differential in
+  `reports/diaspora/tools/extraction_differential/` (old-vs-new view sets over
+  all six corpora; `RUNS DIFFERING` / `VIEWS DIFFERING` must be 0, or the
+  statements that moved are a shipped-policy finding for the owner).
+- ▸ `diff.py`'s `--reference` has no default and `cli.reference_dir` is null:
+  the reference policies stay QUARANTINED unless someone passes the path.
 
 **COMPLETE =** mock checker green (every ledger mock) + Phase 3 fold
 diagnostics green + assumption checker green at the final evidence
@@ -515,6 +889,32 @@ path by property test (same cache, same launch count).
 box, so 2 workers; raising it risks the OOM kills of 2026-08-27. Set both
 knobs together (`CONCOLIC_SLOTS=2 CONCOLIC_PROBE_WORKERS=2`); slots without
 workers changes nothing, workers without slots serialises on the lock.
+
+> **2026-09-15 — that ceiling is stale, and the knobs are now visible.**
+> The 7.9 GB box is gone: this host has **16 cores and 68 GB**. At ~1.2 GB per
+> JRuby the memory argument no longer justifies 2, and the companion finding in
+> `_RESTART_HANDOFF_20260911.md` — "`CONCOLIC_PROBE_WORKERS` was useless ONLY
+> because of the core count, and that conclusion expires with more cores" —
+> expired with the same upgrade. The defaults are deliberately UNCHANGED (a
+> default change is a behaviour change, and two campaigns are running); raise
+> them on purpose after re-measuring.
+>
+> Every parallelism/resource knob now also has a CLI flag, under the rule
+> **explicit flag > environment variable > default**. Every existing variable
+> keeps working exactly as it does today.
+>
+> * `tools/slot --num-workers N ...`      (`$CONCOLIC_SLOTS`, default 2)
+> * `python3 -m queries_from_runs.subsume --help`   (`$SUBSUME_SOLVER_THREADS`,
+>   `$SUBSUME_TIMEOUT_MS`) — and `prune_subsumed(..., workers=N)` now exists
+> * `python3 -m queries_from_runs.diff --help`      (`--parallel` /
+>   `--timeout-ms` still work as aliases)
+> * `python3 -m concolic_engine.completion --help`  (`$COMPLETION_AUDIT_TIMEOUT`)
+> * `python3 -m resource_knobs --list` — **the whole inventory**, including the
+>   env-only knobs of the frozen `assumption_checker.py`.
+>
+> `--show-knobs` on any of them prints what each knob resolved to and whether
+> it came from the flag, the environment or the default — worth putting in a
+> long run's log so the tuning is recorded.
 
 ### MANDATORY before every extraction (2026-09-01, comments C12)
 

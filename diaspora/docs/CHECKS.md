@@ -425,6 +425,60 @@ Discriminates cleanly: comments (agent run) RED on 1,202 literal
 engine now runs ALL dump-side audits itself — the experiment showed an
 agent can reach `complete` while skipping them).
 
+### F8 — exception notes (added 2026-09-15, from the B-4 boundary defect)
+**Claim:** no note in the corpus is a captured exception.
+**Why it exists:** a boundary renderer that raises has its exception text
+stored AS THE NOTE. The note field then looks populated and NOTHING downstream
+can tell prose from a statement — `noteless_call_audit` sees a note and passes,
+the fold sees a non-SELECT and quietly leaves the bind unresolved, and the
+shipped policy carries a placeholder no SQL consumer can load. B-4 lived this
+way for about four weeks and through a full endpoint closure: `collect_binds`
+called `#value` on an `Arel::Nodes::Casted`, which arel-9.0.0 does not define,
+so every STI relation raised — 1 574 occurrences per 150 posts_show dumps, the
+largest single gap in that corpus, and it was only found by auditing
+placeholders in a SHIPPED policy, i.e. two steps downstream.
+**Method:** `exception_note_audit.py <batch>` — grep every event and var note
+for captured-exception text (`<x> failed:`, a Ruby exception class name,
+`undefined method`), skipping anything that is already a SELECT. Pure text
+scan: no runtime, no re-render, and it works retroactively on corpora already
+on disk.
+**Discriminates cleanly (2026-09-15, 120 dumps each):** RED on posts_show
+(4 457 notes), **pass on all five others** — which independently confirms the
+`TODO.md` T-DIV finding, since posts_show is precisely the copy that never
+received the 2026-08-19 "bug-2b" repair.
+**Status:** implemented (`src/queries_from_runs/audits/exception_note_audit.py`).
+A second, stronger option — prefixing captured-exception notes with a reserved
+sentinel so they are machine-classifiable — was deliberately NOT taken: it
+moves every existing degenerate note and so needs a corpus-wide ruling, and
+this audit gets most of the value without it.
+
+### F7 — policy loadability (added 2026-09-15, from the conversations_index placeholder defect)
+**Claim:** every statement of a SHIPPED policy LOADS in the project's own SQL
+loader, and no bind is left unresolved.
+**Why it exists:** every other check here is DUMP-side; none opens the file
+that ships. `subsume.py`'s contract is that a query the loader cannot take
+"participates in no pair and always survives" — it stays in the policy, is
+counted as a view, and means nothing to any consumer. conversations_index
+shipped the authenticated user's own person id as
+`_SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_person_id`,
+43 times, with a fully symbolic corpus, F6 green, engine complete and
+adversary R7 zero wins. An unresolved bind is not just unparseable, it is
+OVER-PERMISSIVE: a bare token constrains nothing where the run proves the
+value is the row some recorded query returned. Measured on the six shipped
+policies before the fix: conversations_index 11 of 58 statements loadable.
+**Method:** `policy_loadability_audit.py <batch> <policy.sql>` — feeds the
+file's statements to `subsume/check_subsumed.sh` (Calcite parse + the app
+config's schema + blockaid's type probe) and reports `written` / `loadable`;
+then, for each unresolved bind, prints what the corpus recorded for it, which
+separates a RESOLVER defect (a SELECT was recorded and should have become a
+join) from a BOUNDARY-INSTRUMENTATION defect (the note is a description, an
+error, or absent — no resolver can recover a statement that was never
+recorded).
+**Status:** implemented
+(`src/queries_from_runs/audits/policy_loadability_audit.py`); run it on the
+file about to ship. The sibling tool `tools/policy_loadability.py` does the
+same measurement across several policies at once for a differential.
+
 ### F5 — statement-note lint
 **Method:** cheap corpus-wide lint of every emitted note: junk-fallback
 notes ("WHERE unavailable", "render failed"), finder-family notes with
