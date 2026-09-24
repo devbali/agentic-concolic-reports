@@ -1,168 +1,682 @@
-SELECT `people`.* FROM `people` INNER JOIN `notification_actors` ON `people`.`id` = `notification_actors`.`person_id`, `notifications`, `people` AS `people0`, `notification_actors` AS `notification_actors0` WHERE `notification_actors`.`notification_id` = `notifications`.`id` AND `notifications`.`recipient_id` = `people0`.`id` AND `people0`.`id` = `notification_actors0`.`person_id` AND `notification_actors0`.`notification_id` = `notifications`.`id` AND `notifications`.`type` <> 'Notifications::StartedSharing';
+-- notifications_index — NotificationsController#index  (GET /notifications)
+--
+-- CANONICAL HEADER. This text is maintained at
+-- reports/diaspora/results3/notifications_index/POLICY_HEADER.txt and MUST be
+-- re-applied to the top of this file by every extraction. Under the M-17
+-- resolution below, the declaration IS the safeguard: a policy file that
+-- simply stops at the wall is indistinguishable from one that covers
+-- everything, so the exclusion may not live only in a report.
+--
+-- SCOPE (DISCIPLINE §15): the entrypoint is the POST-AUTH action with a
+-- SYMBOLIC principal. The authentication stages run ABOVE the entrypoint and
+-- are not part of this file; the endpoint's complete policy is THIS FILE
+-- UNION §2 of results3/_auth_boundary/BOUNDARY_POLICY.md. On this controller
+-- `authenticate_user!` is a `before_action` with no `except:`, so every
+-- request reaching the action has been through the boundary.
+--
+-- THE LAYOUT AND THE FILTER CHAIN ARE ENDPOINT MATERIAL. `ApplicationController`
+-- declares `layout proc { request.format == :mobile ? "application" :
+-- "with_header_with_footer" }`, so html and mobile requests render site chrome
+-- inside this action's own request, and `gon_set_current_user` builds a
+-- `UserPresenter` whose serialisation happens at `include_gon` time. Those
+-- reads — `aspects` by user_id, `services`, `tags` ⋈ `tag_followings`, the two
+-- `roles` existence probes, `COUNT(*) contacts`, and
+-- `SUM(conversation_visibilities.unread)` — belong to THIS policy, not to the
+-- auth boundary. json and xml render no layout and issue none of them.
+--
+-- ============================================================================
+-- KNOWN LIMITS OF THE STATEMENT TEXT BELOW
+-- ============================================================================
+-- * A predicate rendered as `"notifications"."unread" = true` is a predicate ON
+--   THE `unread` COLUMN. The literal is an artefact of rendering the note from
+--   Arel (`Notification.unread` puts the value INTO the relation and
+--   `Arel#to_sql` inlines it) where the real statement logs `= ?`. It is NOT a
+--   claim that only the `true` case is reachable; both polarities are explored.
+-- * Bulk preload predicates carry a REPRESENTATIVE key-set arity. The list model
+--   renders one bind per row actually loaded and its MANY is 3 (4 for a
+--   preloaded association), where real pages hold 2, 4, 5 and 25 rows, so
+--   `IN (@, @, @)` will not match a real `IN (@, @)` byte for byte. Tables,
+--   predicate columns and the bulk operator are faithful; the arity is a
+--   designed limit of the sampled-list model, not a claim about page size.
+-- * Per-request statement MULTIPLICITY here is an upper bound, not a production
+--   count. Every measurement in this project dispatches through
+--   `ActionController::TestCase#process`, which never runs
+--   `ActionDispatch::Executor`, so ActiveRecord's query cache never engages
+--   (M-18 / T-ae). Measured on this endpoint, both ways, same fixtures:
+--   html 42 statements unwrapped -> 30 inside `Rails.application.executor.wrap`;
+--   mobile 35 -> 25; **27 and 22 distinct SHAPES respectively, unchanged in
+--   both directions**. Caching removes duplicates, never a shape, so shape
+--   PRESENCE — which is what this policy asserts — is unaffected.
+--
+-- ============================================================================
+-- COMPLETENESS OF THIS POLICY, AND THE ONE PLACE IT STOPS  (M-17 / M-15, C7)
+-- ============================================================================
+-- This file describes the endpoint's data access on EVERY PATH A REAL REQUEST
+-- IN THIS ENVIRONMENT CAN TAKE.
+--
+-- There is exactly one place where the description ends before the application
+-- does. Rendering a person's name calls `Person#name`
+-- (app/models/person.rb:246-250), which on a person with no `profiles` row
+-- calls `Person#fix_profile` (:371-375), which calls
+-- `DiasporaFederation::Discovery::Discovery#fetch_and_save` and then `reload`.
+-- That method has two arms.
+--
+--   * the RAISING arm — the arm this endpoint takes, modelled here in full.
+--     Reached by a `people.diaspora_handle` whose domain is not a legal URI
+--     host: Faraday parses the webfinger URL with `URI.parse` BEFORE the
+--     typhoeus adapter, raises `URI::InvalidURIError` in pure Ruby, and
+--     `fetch_and_save` converts it to `DiscoveryError`. Measured on this batch,
+--     not inherited — `_c7_discovery_probe.rb` / `_c7_fixprofile_probe.rb`:
+--     `fix_profile` ENTERED, `fetch_and_save` ENTERED, 53 target calls,
+--     12 statements, **0 JVM aborts**, and `reload` NEVER REACHED because the
+--     raise precedes it. The reads that come before it and the resulting
+--     terminal ARE in this file.
+--     `_c7_fixprofile_probe.log`: "[F1] EXIT  Person#fix_profile; statements
+--     issued INSIDE it: 0" — the walled body issues NO SQL before it raises, so
+--     walling it drops no read.
+--
+--   * the SUCCESS arm — UNREACHABLE in this environment, and therefore
+--     DECLARED UNMODELLED, NOT SHOWN ABSENT. Returning normally requires two
+--     live HTTP fetches (`discovery.rb` `webfinger` and `hcard`, both
+--     `HttpClient.get`). Measured here, as a contrast rather than an assertion:
+--     the same probe with a PARSEABLE host (`wraith@unreachable-pod.invalid`,
+--     `_c7_disc_parseable_probe.rb`) aborts the JVM — unit **exit 134** — while
+--     the URI-hostile handle exits 0.
+--
+-- TERMINAL SUBSTITUTION, STATED RATHER THAN GLOSSED. The corpus reaches this
+-- arm by declaring `Person#fix_profile` a target, which skips `Discovery.new`,
+-- `fetch_and_save` and `reload` together; the render then raises `NoMethodError`
+-- on the nil profile where the application raises `DiscoveryError`. The
+-- STATEMENT SETS are identical and the request 500s either way, but a consumer
+-- reading TERMINAL CLASSES should know the substitution was made and why: a
+-- wall that raises inside its `returns` lambda loses its note (the interceptor
+-- pushes the record AFTER the lambda returns), so the note is preserved by
+-- letting the application fail one step later instead.
+-- THE TERMINAL POPULATION, RE-MEASURED ON THE WHOLE CORPUS (C29, 2026-09-14).
+-- The earlier text here said "There are TWO such nil-profile consumers, both
+-- truncating the same way", measured on a 144-dump smoke. That undercounts.
+-- Over the corpus of record (`_snapshot_c27_R8.txt`, 136 028 runs;
+-- `_c29_errcensus.py`, a regex census of the raw dump bytes) there are
+-- **48 646 `ActionView::Template::Error` (35.8 % of the corpus) in TEN message
+-- shapes raised at TEN DISTINCT APPLICATION SITES**, plus one
+-- `I18n::InvalidLocale` (the deliberate C32A locale probe). The two shapes
+-- named above cover 38 275 of the 48 646 (78.7 %); the other 10 371 (21.3 %)
+-- were not named here at all:
+--
+--   DECLARED (the nil-profile consumers this section explains)
+--     22 809  undefined method `first_name' for nil:NilClass
+--               Person#name -> Person.name_from_attrs, app/models/person.rb:251
+--               (this file previously said :250)
+--     15 466  undefined method `as_api_response' for nil:NilClass
+--               app/presenters/user_presenter.rb:12 (the people_helper
+--               presenter path)
+--   NOT PREVIOUSLY NAMED — 10 371 runs, 21.3 % of the class
+--      4 383  undefined method `mentions_container' for nil
+--               app/models/notifications/mentioned.rb:8
+--      2 074  No route matches {:action=>"show", :controller=>"people",
+--             :username=><SymStr ... = "">}, possible unmatched constraints:
+--             [:username]
+--               raised from app/views/layouts/_drawer.mobile.haml:33 through
+--               actionpack journey/formatter.rb:57  -- NOT A NIL CONSUMER; see
+--               the separate note below
+--      1 715  Photo#author_name delegated to author.name, author nil
+--               lib/diaspora/shareable.rb:21
+--        629  undefined method `message' for nil    app/helpers/posts_helper.rb:14
+--        578  undefined method `[]' for nil         app/helpers/gon_helper.rb:6
+--        505  Photo#status_message_author_name delegated to
+--             status_message.author_name, status_message nil  app/models/photo.rb:45
+--        300  undefined method `diaspora_handle' for nil
+--               lib/diaspora/mentionable.rb:35
+--        187  undefined method `contact_for' for nil
+--               app/models/notifications/started_sharing.rb:19
+--
+-- NINE of the ten are the same declared mechanism -- a nil association or nil
+-- profile reaching a consumer in application code, the render truncating there
+-- -- so the MECHANISM this section describes is right; the SURFACE was
+-- undercounted five-fold in shapes and by 27 % in runs. The class has not grown
+-- into something new: its share of the corpus is flat (34.8 % at C20R4,
+-- 35.7 % at C26R1, 35.8 % here) and every shape is present in the OLDEST drive
+-- tags as well as the newest.
+--
+-- THE ROUTING SHAPE IS NOT A NIL CONSUMER, AND ITS STATUS IS NOW MEASURED
+-- RATHER THAN ASSERTED. `user_profile_path(current_user.username)`
+-- (`_drawer.mobile.haml:33`) generates against
+-- `get '/u/:username' => 'people#show', :constraints => { :username => /[^\/]+/ }`
+-- (config/routes.rb:189). An EMPTY username fails that constraint, so Rails
+-- raises `ActionController::UrlGenerationError` and ActionView wraps it. Two
+-- measurements decide whether that is the application's behaviour or the rig's:
+--
+--   * the value, not the wrapper. Over all 136 028 runs, mobile scenarios,
+--     username value x outcome:
+--         non-empty username : 22 662 clean renders + 11 219 other-error runs,
+--                              and **0 routing errors**
+--         username == ""     : 2 074 routing errors + 3 248 runs that raised
+--                              earlier, and **0 clean renders**
+--     22 662 runs rendered that very line with a SYMBOLIC username and
+--     generated the URL, so the failure follows the VALUE and not the fact
+--     that the value is symbolic.
+--   * the value is SEEDED. `""` appears only where a constructed seed wrote
+--     `concolic_seeds["SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_username"] = ""`;
+--     the unseeded default is the variable's own name, which routes.
+--
+-- So the MECHANISM is faithful -- any Rails application raises exactly this for
+-- an empty required dynamic segment -- but the PRECONDITION is not reachable in
+-- the application: `app/models/user.rb:37-38` validates `username` for presence
+-- and against `/\A[A-Za-z0-9_]+\z/`, so a persisted User cannot carry `""`.
+-- The 2 074 runs are therefore a faithful Rails response to a state OUTSIDE the
+-- application-valid codomain of the `users.username` column mock -- an M-SNAP
+-- shaped codomain observation about that mock, not a nil consumer, and not a
+-- defect in the routing layer. It is REPORTED here, not declared away.
+--
+-- Measured on the repaired model, 144-dump smoke, whole population: 5 and 2
+-- occurrences of the two declared shapes respectively, 5 `WALL
+-- Person#fix_profile` events, and **0** `ActiveRecord::Base#reload` events (the
+-- pre-repair corpus emitted 1 906 of them on this arm, none of which the
+-- application issues).
+--
+-- SO: THE ABSENCE OF DISCOVERY-SUCCESS STATEMENTS BELOW IS A DECLARED GAP, NOT
+-- A FINDING THAT THE PATH READS NOTHING. If that arm ever became reachable (a
+-- working HTTP adapter), the policy would GAIN, from the application's own
+-- `:save_person_after_webfinger` callback — measured by THIS batch, with no
+-- network, by running the callback directly
+-- (`_c7_disc_gap_probe.rb` -> `_c7_discovery_gap_evidence.json`):
+--
+--     COUNTING RULE, stated so a reader who disagrees with it can redo the sum:
+--     these are APPLICATION statements. Schema introspection issued by the
+--     sqlite adapter (`PRAGMA table_info`, `SELECT sql FROM (... sqlite_master
+--     ...)`, `SELECT name FROM sqlite_master`) is EXCLUDED as not data access —
+--     4 of 17 raw statements in the new-person branch and 17 of 27 in the
+--     existing-person branch. The raw sequences, including the excluded
+--     statements, are in `_c7_discovery_gap_evidence.json`.
+--
+--     new-person branch — 13 application statements of 17 raw
+--     (6 SELECT, 3 INSERT, 2 BEGIN, 2 COMMIT):
+--       writes : INSERT INTO "pods", INSERT INTO "people", INSERT INTO "profiles"
+--       reads  : people by diaspora_handle; pods by host with port IS NULL;
+--                a people-by-guid uniqueness probe;
+--                a `people.diaspora_handle` projection by guid excluding the
+--                own handle; a people-by-diaspora_handle uniqueness probe;
+--                tags INNER JOIN taggings by taggable
+--
+--     existing-person branch — 10 application statements of 27 raw
+--     (5 SELECT, 1 INSERT, 2 BEGIN, 1 COMMIT, 1 ROLLBACK). It did NOT complete
+--     under this batch's fixture: `ActiveRecord::RecordInvalid: "Specify an
+--     owner or a pod, not both"` (the person.rb `owner_xor_pod` validation),
+--     after issuing the people-by-handle read, the profiles-by-person read,
+--     INSERT INTO "profiles", the tags INNER JOIN taggings read and both
+--     uniqueness probes, then ROLLBACK.
+--
+-- Those statements are NOT asserted in this file, because no real run of this
+-- endpoint in this environment can issue them and this project verifies every
+-- note against a real endpoint statement. They are recorded here so a consumer
+-- knows the boundary of what is claimed.
+-- ============================================================================
+--
+-- ============================================================================
+-- WHAT `COMPLETE` COVERS, AND WHAT IT DOES NOT  (C30, 2026-09-15)
+-- ============================================================================
+-- THE VERDICT THIS FILE SHIPS UNDER, verbatim from the run that produced it:
+--
+--   coverage pass  C30OFF5   CONFINEMENT=0   corpus _snapshot_c30_R5.txt
+--                            138 912 runs (the batch DIRECTORY holds 313 977
+--                            dumps; the snapshot is the corpus of record)
+--     COMPLETE=True; NODES=441; MISSING=4; BLOCKING=0; PCS=8883622
+--     GENUINE=True; TRUNCATED=False; SOLVER_LOST=0; UNEVALUABLE=[]
+--   engine section            OVERALL_COMPLETE=True; COMPLETION=True
+--                             completion.blocking = []   (coverage_summary.json)
+--     5 fixed audits green, NOTE-CHECK green, ASSUMPTIONS green
+--     (declared 27 231, distinct_tested 2 004,
+--      PASS 1 907 / NOT-COMPARABLE 32 / NOT-TESTABLE 65)
+--
+-- `COMPLETE` is a statement about DECISIONS: every satisfiable leaf of every
+-- demand set is walked by a run in that corpus. It is NOT a statement that the
+-- list below is everything a request could ever read. The five places it stops
+-- are named here, each with the measurement behind it.
+--
+-- (1) THE FOUR UNTRACKED TRANSPARENCY ENTRIES. `MISSING=4` with `BLOCKING=0`
+--     means four branches are REPORTED AND NOT COUNTED, because the engine
+--     cannot track them. All four are the same shape, one per `to_ary
+--     notifications` statement variant:
+--
+--       (SYM_RESULT_..._notifications_3aa8587a_row_actors_row_guid != StringVal(''))
+--       (SYM_RESULT_..._notifications_c7e6a7ca_row_actors_row_guid != StringVal(''))
+--       (SYM_RESULT_..._notifications_10254800_row_actors_row_guid != StringVal(''))
+--       (SYM_RESULT_..._notifications_cf379872_row_actors_row_guid != StringVal(''))
+--
+--     raised at actionpack-5.2.4.3 `action_dispatch/journey/formatter.rb:41`
+--     (`block in generate`) — URL generation off an actor's guid inside the
+--     framework, not application code. They are listed so a reader can see
+--     they are the same four, and not something new.
+--
+-- (2) THE INFERENCE STACK, AND ITS EVIDENCE GRADE PER LAYER. `BLOCKING=0` is
+--     reached with three INFERRED relations switched on (DISCIPLINE §16e,
+--     §16f, §16g). Nothing is declared for them, no `AssumptionSet` entry
+--     exists, and each re-derives itself from the corpus on every pass — but
+--     each REMOVES demand, so a wrong one would produce a FALSE completion.
+--     They were therefore probed under §17/X12 (a derived test probes K bases,
+--     not one; `FALS_K=8`, `_c30_fals_C30OFF5.*`), on the classes THIS pass
+--     actually applied, extracted from THIS summary:
+--
+--       §16e  gate-conjunction foreclosure  89 classes
+--             ACTIVELY CONFIRMED 89/89 — 448 confirming per-base replays,
+--             264 per-base NOT-TESTABLE, 0 refutations
+--       §16f  sub-conjunction foreclosure   26 classes  (W=3, budget 20 000)
+--             CONFIRMED 20, NOT-TESTABLE 6 — 115 per-base PASS, 93 N-T, 0 FAIL
+--       §16g  well-founded drops            26 classes  (W=3)
+--             CONFIRMED 4, NOT-TESTABLE 22 — 32 per-base PASS, 176 N-T, 0 FAIL
+--
+--     **ZERO REFUTATIONS AT EIGHT BASES ON ALL THREE LAYERS.** And the part a
+--     reader should not have to infer: **28 of the 141 applied classes (6 §16f
+--     + 22 §16g) are NOT-TESTABLE — no probed base realises their conditioning
+--     set, so they are UN-EVIDENCED, not confirmed.** Under §24.4 a
+--     NOT-TESTABLE is SILENCE, never a licence. This `COMPLETE` is exactly as
+--     strong as that: 113 of 141 actively confirmed, 28 unvouched.
+--     The §16e class file is NOT byte-identical to the set C27 probed, so no
+--     carry-over was claimed and all 89 were re-probed here.
+--
+-- (3) CONFINEMENT (§16c) IS **OFF**. `CONFINEMENT=0` on the pass that produced
+--     this file. The confinement-ON configuration also reaches
+--     `COMPLETE=True/BLOCKING=0`, and it was NOT used, deliberately: it rests
+--     on 578 confinement licences of which 510 (88.2 %) have never been
+--     probed, on an endpoint whose confinement gate refuted 84.9 % and then
+--     76.5 % of everything it DID test. Nothing in this file depends on a
+--     confinement licence: `confinement_tested: 0`, `confinement_withdrawn:
+--     []`, `confinement_unverified: []` in the engine section's own record.
+--     The 1 884 pairs already withdrawn stay withdrawn and are fed back into
+--     the pass as prior footprints; that direction only ADDS demand.
+--
+-- (4) THE TWO AUDIT REDS, NAMED RATHER THAN LEFT FOR THE READER TO FIND.
+--     The C7 suite is 16 audits; 14 exit 0 and 2 exit 1:
+--       * `skipped_pcs_VANILLA` — RED **BY DESIGN**. It measures the VANILLA
+--         `src/` fold, which discards 3 176 849 `(VAR == VAR(_))` and 32 422
+--         `(VAR != VAR(_))` PC records. That is RUNBOOK gap 3 (the fold
+--         patches are not upstreamed), and it is why this extraction installs
+--         `_experiment/variant_d`'s `AssocFoldingTransformer`. Measured BOTH
+--         ways on this corpus, as the RUNBOOK requires:
+--           vanilla  parsed 10 469 094 | DROPPED 3 209 271   -> RED
+--           patched  parsed 14 008 744 | dropped         0   -> pass
+--         The shipped file is the PATCHED one, so the red is a statement
+--         about `src/`, not about this policy.
+--       * `hardening_lint` — 2 checks still need an answer:
+--           H3 (opaque notes) 2 targets with no SQL note and not a documented
+--              wall: `CollectionProxy.load_target` (note "preloaded
+--              association #actors: answered from the loaded target") and
+--              `ActiveRecord::Base.to_param`.
+--           H6 (over-emission) 6 note shapes no concrete run issued —
+--              3 `CollectionProxy.records` photos reads, `find_by` on
+--              `people.diaspora_handle`, `Relation.size` on reports, and
+--              `load_intermediate` on tag_followings. Over-emission INFLATES
+--              a policy; it does not lose a statement.
+--         Neither is new and neither is waived here; both are reported.
+--
+-- (5) THE THREE DECLARATIONS, WITH THEIR FALSIFIERS AND KILL SWITCHES. A
+--     declaration removes demand by asserting something about the MOCK, so
+--     each is stated with the test that would refute it:
+--       * `M-SNAP` (8 constraints, `NO_MSNAP=1`) — the actors-list mock's
+--         codomain has holes at 2 and 3: `len(..._row_actors_row_rows) != 2`
+--         and `!= 3`, one pair per `to_ary notifications` variant, emitted
+--         only where the corpus records the `> 3` decision.
+--         FALSIFIER: any run minting one of those lengths at 2 or 3.
+--       * `RE-MINT-IDENTITY` (25 constraints, `NO_REMINT_IDENTITY=1`) — a
+--         re-minted association length EQUALS its upstream materialize
+--         length, because `targets.rb`'s loaded-target early return returns
+--         the very list the upstream mock produced. Census: 29 pairs,
+--         139 585 paired observations, EQUAL 139 585, DIFFERENT 0; active
+--         falsification 320 constructed replays, 835 pairs, DIFFERENT 0.
+--         FALSIFIER: any run recording the two with different values
+--         (`_c18_identity_census.py` is that test over any dump list). A
+--         Rule T change making the loaded-target return independently
+--         seedable refutes the tier.
+--       * `GATE-CONJ-INFEASIBLE` (4 constraints, `NO_GATE_CONJ=1`) —
+--         `Not( SYM_NOTE_TYPE_PROFILE out of range AND the mention container
+--         was FOUND )`, one per statement variant. Only the FOUND direction
+--         is declared: over a free Z3 Bool, excluding BOTH outcomes collapses
+--         to `Not(out-of-range)`, which 9 270 runs refute, so the other side
+--         is left free and that asymmetry is reported rather than hidden.
+--         FALSIFIER: any run with all eight dispatch literals not_taken and
+--         `..._row_target_mentions_container_not_found` recorded not_taken
+--         (`_c18_profile_diff.py`). 576 runs were CONSTRUCTED to try exactly
+--         that and none produced it.
+--     None of the three is testable by the shipped derived test (it derives a
+--     violating value for `VAR op INT`, and none of these has that form), so
+--     an ACTIVE falsification was run in each one's place and is recorded
+--     above — that substitution is itself part of the grade.
+--
+-- (6) THE STAGED B-8 REPAIR IS STILL STAGED, AND THIS CORPUS WAS BUILT
+--     WITHOUT IT. `concolic_targets.rb`'s ONE-FACT cache-replay arm returns a
+--     memoised `nil` without publishing its statement, so the replayed call is
+--     recorded as a note-less `symbolic_call`. `noteless_call_audit` is GREEN
+--     with 0 UNVERIFIED because it VERIFIES the invariant per event rather
+--     than waiving it: 14 308/14 308 of those events over the full
+--     313 977-dump corpus have their statement already published in the same
+--     run by the nil-returning MISS, and 0 of them mint a variable or record
+--     a PC. So the policy loses no statement and the coverage loses no
+--     decision. The fix is held as a SPLICE at
+--     `notifications_index/concolic_targets.rb.b8_next` — ONE line plus its
+--     comment, spliced before the single `next fval`, with
+--     `_c21_b8_diff.rb` as its ground-truth differential (expect 0 new
+--     decisions, 0 new statement shapes). It is NOT a file to copy: the
+--     earlier whole-file version of it was built from the Aug-29 base and
+--     landing it wholesale would have silently REVERTED the 2026-09-14
+--     name-boundary shim, which is shared by all eight batches.
+--
+-- (7) THE INDEPENDENCE GATE IS AN **ADDITIVE-ONLY** INSTRUMENT (X11, OPEN).
+--     `complete` here rests on the assumption gate's
+--       PASS 1 907 / NOT-COMPARABLE 32 / NOT-TESTABLE 65   over 2 004 distinct
+--       tested claims, out of 27 231 declared
+--     and 27 041 of those declarations are `IndependenceAssumption`s. Those
+--     PASSes are real probes — each replays the claim's two decisions flipped
+--     singly and together and compares the traces — but the probe can only
+--     see dependence that ADDS: a flip that makes a read or a shape APPEAR.
+--     Dependence that REMOVES — a finder that stops finding, a list that comes
+--     back with no rows — leaves the both-flipped trace a SUBSET of the single
+--     flips' and passes. That is X11, and it is still open on this path:
+--     DISCIPLINE.md:1518-1519, in the §16c/confinement acceptance record,
+--     says it in those words — "The existing independence flip test is
+--     untouched; X11's symmetric fix stays a filed proposal." X11 was fixed
+--     for CONFINEMENT (`_test_confinement`'s symmetric criteria); it was never
+--     fixed for INDEPENDENCE.
+--
+--     **What this is, and what it is not.** It is a WEAKER INSTRUMENT, not a
+--     known false claim: no independence PASS on this endpoint has been
+--     refuted, and the symmetric test that could refute one has not been
+--     built. The measured base rate for the shape it misses is not zero —
+--     posts_show's census found 44 overlapping pairs among 1 733 candidates
+--     that the flip probe passed (DISCIPLINE §X11) — so the exposure is real
+--     and is stated rather than rounded away.
+--
+--     **Two things that BOUND it, in the same breath.** First, every one of
+--     this endpoint's 27 041 independence declarations is EXPR-KEYED — checked
+--     here, not assumed: each row carries `expr_a`/`expr_b` ground expression
+--     pairs and **0 of 27 041 use the source-pattern form** (the same holds
+--     across the whole results tree, 38 486 rows). A wildcard pattern would
+--     have licensed every pair it matched; a ground pair licenses exactly
+--     itself, so the blast radius is one pair per row and not one per match.
+--     Second, and this is the strength of the OFF configuration: the
+--     INFERRED confinement pairs — the population X11 was found in — are
+--     **not in play at all here**. `confinement_tested: 0`,
+--     `confinement_withdrawn: []`, `confinement_unverified: []`; this file
+--     was produced with `CONFINEMENT=0` and depends on no derived
+--     confinement licence (item (3)).
+--
+--     A note on a number a reader may otherwise misread: 27 041 of the 27 231
+--     declarations are DISPATCH claims (the `SYM_NOTE_TYPE_PROFILE` seed
+--     against the association lengths) which would violate confinement's
+--     criterion (iv) while being true. That is expected and correct for a
+--     DECLARED claim — criterion (iv) is a test for INFERRED pairs — and it is
+--     recorded here so it is not mistaken for a defect.
+--
+-- (8) THE DECLARED PAIRS, MEASURED AGAINST THE CORPUS 2x2 — 4 586 OF 27 041
+--     SHOW AN INTERACTION. Item (7) says the independence probe is blind to
+--     dependence that REMOVES. There is a second blind spot with a cheap
+--     measurement, and it has now been taken on this endpoint rather than
+--     left as a worry: the probe FAILs only on a NOVEL shape, so it cannot
+--     see dependence that appears as an **AND cell** — a shape present only
+--     when BOTH decisions go one way, which no single flip produces.
+--     `reports/diaspora/tools/declared_pair_2x2.py` applies the engine's own
+--     `infer_pair_tables` + `classify_cells` to the DECLARED pairs (read-only,
+--     `KEEP_NOTES=1` so the shape currency keeps note/args, 138 912 dumps,
+--     114 454 distinct (outcome, trace) profiles, 91 distinct shapes, 1 750 s):
+--
+--       BENIGN          10 652   no combination yields a presence the singles
+--                                do not explain (OR / A-only / B-only /
+--                                ALWAYS / NEVER)
+--       INTERACTION      4 586   at least one shape classifies AND or
+--                                NON-MONOTONE                        (17.0 %)
+--       OPEN            11 063   at least one shape UNDETERMINED(AND?)
+--       ONE CELL ONLY      740   the corpus never separates the two decisions
+--       ------------------------
+--       total           27 041   every declared pair IS co-evaluated somewhere
+--
+--     A sample, so the reader can judge the kind rather than take the count.
+--     The heaviest are the dispatch-independence declarations —
+--     `SYM_NOTE_TYPE_PROFILE == k` against a notification-list length:
+--
+--       (SYM_NOTE_TYPE_PROFILE == 7) || (LEN ..._notifications_10254800_rows == 0)
+--         32 shapes AND, 42 benign, 4 cells. AND-classified include
+--           SELECT "posts".* FROM "posts" WHERE "posts"."id" = ?
+--           SELECT "people".* FROM "people" WHERE "people"."id" = ? LIMIT 1
+--           SELECT "photos".* FROM "photos" WHERE "photos"."status_message_guid" = ? AND (1=0)
+--       (SYM_NOTE_TYPE_PROFILE == 6) || (LEN ..._notifications_3aa8587a_rows == 0)
+--         29 shapes AND, 44 benign. AND-classified include
+--           SELECT "mentions".* FROM "mentions" WHERE "mentions"."id" IN (?, ?, ?)
+--
+--     **What this is.** An AND cell is evidence that a declaration deserves
+--     scrutiny; it is not a refutation, and nothing is withdrawn on it here.
+--     The mechanism in the sample is legible and unsurprising — a dispatch arm
+--     reads its own target only when the notification list is non-empty, so
+--     neither decision alone produces the read — but "legible" is not
+--     "verified", and the number is reported because the instrument that
+--     licensed these pairs cannot see it.
+--
+--     **No audit for declared pairs exists in `src/`.** Declared independence
+--     cuts the edge at `coverage.py` step 5, BEFORE confinement (step 5d) ever
+--     sees the demand sets, so no footprint is ever measured for a declared
+--     pair and §16c can neither classify it OVERLAPPING nor withdraw it. The
+--     measurement above is OUT-OF-TREE and REPORT-ONLY; it gates nothing and
+--     no shipped verdict depends on it.
+--
+--     **And confinement being OFF (item (3)) is NOT mitigation here — it is
+--     the opposite.** Nothing else covers these 27 041 declarations: the §16c
+--     machinery that would have measured footprints for them is switched off
+--     on this configuration, so this census is the only measurement they have.
+--     The same was true of comments_index (725 interactions of 4 182 declared
+--     pairs), conversations_index (875 of 6 123) and people_stream (2 of 25),
+--     all shipped inside `OVERALL_COMPLETE=True`; this endpoint is simply the
+--     largest declaration corpus in the project and the last to be measured.
+--
+-- (9) FORECLOSURE INFERENCE WAS NOT WITNESS-TESTED. The verdict applies
+--     foreclosure inference — §16b base (`FORECLOSURES=5345`), §16e
+--     conjunction (89), §16f sub-conjunction (26, W=3), §16g well-founded
+--     drops (26, W=3) — and these were **not** witness-tested. A witness test
+--     for §16f exists as of 2026-09-15
+--     (`src/end_to_end_completion_checker/assumption/foreclosure_gate.py`) and
+--     has been run on posts_show only.
+-- ============================================================================
+--
+-- EXTRACTION PROVENANCE
+--   corpus  : results3/notifications_index, 138912 dumps, 138912 runs loaded
+--   queries : 3083506 raw -> 708 distinct -> 609 subsumed -> 99 views
+--   fold    : _experiment/variant_d AssocFoldingTransformer (mandatory —
+--             the vanilla src/ fold drops every `(VAR == VAR(_))` /
+--             StringVal equality PC; measured by skipped_pcs_audit BOTH
+--             ways on this corpus, see _c7_audits.log)
+--
 
-SELECT `people`.* FROM `people`, `mentions`, `comments`, `mentions` AS `mentions0`, `notifications` WHERE `people`.`id` = `mentions`.`person_id` AND `mentions`.`mentions_container_id` = `comments`.`commentable_id` AND `mentions`.`mentions_container_type` = 'Post' AND `comments`.`id` = `mentions0`.`mentions_container_id` AND `mentions0`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = _MY_UID AND `notifications`.`type` <> 'Notifications::StartedSharing';
+SELECT `aspects`.* FROM `aspects`, `aspect_memberships`, `contacts`, `users`, `contacts` AS `contacts0`, `notifications` WHERE `aspects`.`id` = `aspect_memberships`.`aspect_id` AND `aspect_memberships`.`contact_id` = `contacts`.`id` AND `contacts`.`user_id` = `users`.`id` AND `contacts`.`person_id` = `contacts0`.`person_id` AND `users`.`id` = _MY_UID AND `contacts0`.`user_id` = `notifications`.`recipient_id` AND `contacts0`.`person_id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = `users`.`id` AND `notifications`.`type` = 'Notifications::StartedSharing';
 
-SELECT `people`.* FROM `people`, `mentions`, `notifications`, `people` AS `people0`, `notification_actors` WHERE `people`.`id` = `mentions`.`person_id` AND `mentions`.`mentions_container_id` = `notifications`.`target_id` AND `mentions`.`mentions_container_type` = 'Post' AND `notifications`.`recipient_id` = `people0`.`id` AND `people0`.`id` = `notification_actors`.`person_id` AND `notification_actors`.`notification_id` = `notifications`.`id` AND `notifications`.`type` <> 'Notifications::StartedSharing';
+SELECT `people`.* FROM `people`, `mentions`, `comments`, `mentions` AS `mentions0`, `notifications`, `users` WHERE `people`.`id` = `mentions`.`person_id` AND `mentions`.`mentions_container_id` = `comments`.`commentable_id` AND `mentions`.`mentions_container_type` = 'Post' AND `comments`.`id` = `mentions0`.`mentions_container_id` AND `mentions0`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
 
-SELECT `people`.* FROM `people`, `posts`, `comments`, `mentions`, `notifications` WHERE `people`.`id` = `posts`.`author_id` AND `posts`.`id` = `comments`.`commentable_id` AND `comments`.`id` = `mentions`.`mentions_container_id` AND `mentions`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = _MY_UID AND `notifications`.`type` <> 'Notifications::StartedSharing';
+SELECT `people`.* FROM `people`, `mentions`, `comments`, `mentions` AS `mentions0`, `notifications`, `users` WHERE `people`.`id` = `mentions`.`person_id` AND `mentions`.`mentions_container_id` = `comments`.`commentable_id` AND `mentions`.`mentions_container_type` = 'Post' AND `comments`.`id` = `mentions0`.`mentions_container_id` AND `mentions0`.`id` IN (`notifications`.`target_id`, `notifications`.`target_id`, `notifications`.`target_id`) AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
 
-SELECT `people`.* FROM `people`, `posts`, `notifications`, `people` AS `people0`, `notification_actors` WHERE `people`.`id` = `posts`.`author_id` AND `posts`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = `people0`.`id` AND `people0`.`id` = `notification_actors`.`person_id` AND `notification_actors`.`notification_id` = `notifications`.`id` AND `notifications`.`type` <> 'Notifications::StartedSharing';
+SELECT `people`.* FROM `people`, `mentions`, `comments`, `mentions` AS `mentions0`, `notifications`, `users` WHERE `people`.`id` IN (`mentions`.`person_id`, `mentions`.`person_id`, `mentions`.`person_id`) AND `mentions`.`mentions_container_id` = `comments`.`commentable_id` AND `mentions`.`mentions_container_type` = 'Post' AND `comments`.`id` = `mentions0`.`mentions_container_id` AND `mentions0`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
 
-SELECT `photos`.* FROM `photos`, `posts`, `comments`, `mentions`, `notifications` WHERE `photos`.`status_message_guid` = `posts`.`guid` AND `posts`.`id` = `comments`.`commentable_id` AND `comments`.`id` = `mentions`.`mentions_container_id` AND `mentions`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = _MY_UID AND `notifications`.`type` <> 'Notifications::StartedSharing';
+SELECT `people`.* FROM `people`, `mentions`, `comments`, `mentions` AS `mentions0`, `notifications`, `users` WHERE `people`.`id` IN (`mentions`.`person_id`, `mentions`.`person_id`, `mentions`.`person_id`) AND `mentions`.`mentions_container_id` = `comments`.`commentable_id` AND `mentions`.`mentions_container_type` = 'Post' AND `comments`.`id` = `mentions0`.`mentions_container_id` AND `mentions0`.`id` IN (`notifications`.`target_id`, `notifications`.`target_id`, `notifications`.`target_id`) AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
 
-SELECT `photos`.* FROM `photos`, `posts`, `notifications`, `people`, `notification_actors` WHERE `photos`.`status_message_guid` = `posts`.`guid` AND `posts`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = `people`.`id` AND `people`.`id` = `notification_actors`.`person_id` AND `notification_actors`.`notification_id` = `notifications`.`id` AND `notifications`.`type` <> 'Notifications::StartedSharing';
+SELECT `people`.* FROM `people`, `posts`, `comments`, `mentions`, `notifications`, `users` WHERE `people`.`id` = `posts`.`author_id` AND `posts`.`id` = `comments`.`commentable_id` AND `comments`.`id` = `mentions`.`mentions_container_id` AND `mentions`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
 
-SELECT `profiles`.* FROM `profiles`, `mentions`, `comments`, `mentions` AS `mentions0`, `notifications` WHERE `profiles`.`person_id` = `mentions`.`person_id` AND `mentions`.`mentions_container_id` = `comments`.`commentable_id` AND `mentions`.`mentions_container_type` = 'Post' AND `comments`.`id` = `mentions0`.`mentions_container_id` AND `mentions0`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = _MY_UID AND `notifications`.`type` <> 'Notifications::StartedSharing';
+SELECT `people`.* FROM `people`, `posts`, `comments`, `mentions`, `notifications`, `users` WHERE `people`.`id` = `posts`.`author_id` AND `posts`.`id` = `comments`.`commentable_id` AND `comments`.`id` = `mentions`.`mentions_container_id` AND `mentions`.`id` IN (`notifications`.`target_id`, `notifications`.`target_id`, `notifications`.`target_id`) AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
 
-SELECT `profiles`.* FROM `profiles`, `mentions`, `notifications`, `people`, `notification_actors` WHERE `profiles`.`person_id` = `mentions`.`person_id` AND `mentions`.`mentions_container_id` = `notifications`.`target_id` AND `mentions`.`mentions_container_type` = 'Post' AND `notifications`.`recipient_id` = `people`.`id` AND `people`.`id` = `notification_actors`.`person_id` AND `notification_actors`.`notification_id` = `notifications`.`id` AND `notifications`.`type` <> 'Notifications::StartedSharing';
+SELECT `photos`.* FROM `photos`, `posts`, `comments`, `mentions`, `notifications`, `users` WHERE `photos`.`status_message_guid` = `posts`.`guid` AND `posts`.`id` = `comments`.`commentable_id` AND `comments`.`id` = `mentions`.`mentions_container_id` AND `mentions`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
 
-SELECT `profiles`.* FROM `profiles`, `people`, `notification_actors`, `notifications`, `users` WHERE `profiles`.`person_id` = `people`.`id` AND `people`.`id` = `notification_actors`.`person_id` AND `notification_actors`.`notification_id` = `notifications`.`id` AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID AND `notifications`.`type` <> 'Notifications::StartedSharing';
+SELECT `photos`.* FROM `photos`, `posts`, `comments`, `mentions`, `notifications`, `users` WHERE `photos`.`status_message_guid` = `posts`.`guid` AND `posts`.`id` = `comments`.`commentable_id` AND `comments`.`id` = `mentions`.`mentions_container_id` AND `mentions`.`id` IN (`notifications`.`target_id`, `notifications`.`target_id`, `notifications`.`target_id`) AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
 
-SELECT `profiles`.* FROM `profiles`, `posts`, `comments`, `mentions`, `notifications` WHERE `profiles`.`person_id` = `posts`.`author_id` AND `posts`.`id` = `comments`.`commentable_id` AND `comments`.`id` = `mentions`.`mentions_container_id` AND `mentions`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = _MY_UID AND `notifications`.`type` <> 'Notifications::StartedSharing';
+SELECT `profiles`.* FROM `profiles`, `mentions`, `comments`, `mentions` AS `mentions0`, `notifications`, `users` WHERE `profiles`.`person_id` = `mentions`.`person_id` AND `mentions`.`mentions_container_id` = `comments`.`commentable_id` AND `mentions`.`mentions_container_type` = 'Post' AND `comments`.`id` = `mentions0`.`mentions_container_id` AND `mentions0`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
 
-SELECT `profiles`.* FROM `profiles`, `posts`, `notifications`, `people`, `notification_actors` WHERE `profiles`.`person_id` = `posts`.`author_id` AND `posts`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = `people`.`id` AND `people`.`id` = `notification_actors`.`person_id` AND `notification_actors`.`notification_id` = `notifications`.`id` AND `notifications`.`type` <> 'Notifications::StartedSharing';
+SELECT `profiles`.* FROM `profiles`, `mentions`, `comments`, `mentions` AS `mentions0`, `notifications`, `users` WHERE `profiles`.`person_id` = `mentions`.`person_id` AND `mentions`.`mentions_container_id` = `comments`.`commentable_id` AND `mentions`.`mentions_container_type` = 'Post' AND `comments`.`id` = `mentions0`.`mentions_container_id` AND `mentions0`.`id` IN (`notifications`.`target_id`, `notifications`.`target_id`, `notifications`.`target_id`) AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
 
-SELECT `tags`.`name`, `taggings`.`id` FROM `tags` INNER JOIN `taggings` ON `tags`.`id` = `taggings`.`tag_id`, `profiles`, `contacts`, `notifications` WHERE `taggings`.`taggable_id` = `profiles`.`id` AND `taggings`.`taggable_type` = 'Profile' AND `taggings`.`context` = 'tags' AND `profiles`.`person_id` = `contacts`.`person_id` AND `contacts`.`user_id` = `notifications`.`recipient_id` AND `contacts`.`person_id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = _MY_UID AND `notifications`.`type` = 'Notifications::StartedSharing';
+SELECT `profiles`.* FROM `profiles`, `mentions`, `comments`, `mentions` AS `mentions0`, `notifications`, `users` WHERE `profiles`.`person_id` IN (`mentions`.`person_id`, `mentions`.`person_id`, `mentions`.`person_id`) AND `mentions`.`mentions_container_id` = `comments`.`commentable_id` AND `mentions`.`mentions_container_type` = 'Post' AND `comments`.`id` = `mentions0`.`mentions_container_id` AND `mentions0`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
 
-SELECT `aspects`.* FROM `aspects`, `aspect_memberships`, `contacts`, `notifications` WHERE `aspects`.`id` = `aspect_memberships`.`aspect_id` AND `aspect_memberships`.`contact_id` = `contacts`.`id` AND `contacts`.`user_id` = `notifications`.`recipient_id` AND `contacts`.`person_id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = _MY_UID AND `notifications`.`type` = 'Notifications::StartedSharing';
+SELECT `profiles`.* FROM `profiles`, `mentions`, `comments`, `mentions` AS `mentions0`, `notifications`, `users` WHERE `profiles`.`person_id` IN (`mentions`.`person_id`, `mentions`.`person_id`, `mentions`.`person_id`) AND `mentions`.`mentions_container_id` = `comments`.`commentable_id` AND `mentions`.`mentions_container_type` = 'Post' AND `comments`.`id` = `mentions0`.`mentions_container_id` AND `mentions0`.`id` IN (`notifications`.`target_id`, `notifications`.`target_id`, `notifications`.`target_id`) AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
 
-SELECT `aspects`.* FROM `aspects`, `people`, `notification_actors`, `notifications` WHERE `aspects`.`user_id` = `people`.`id` AND `people`.`id` = `notification_actors`.`person_id` AND `notification_actors`.`notification_id` = `notifications`.`id` AND `notifications`.`recipient_id` = `people`.`id`;
+SELECT `profiles`.* FROM `profiles`, `posts`, `comments`, `mentions`, `notifications`, `users` WHERE `profiles`.`person_id` = `posts`.`author_id` AND `posts`.`id` = `comments`.`commentable_id` AND `comments`.`id` = `mentions`.`mentions_container_id` AND `mentions`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
 
-SELECT `contacts`.* FROM `contacts`, `people`, `notification_actors`, `notifications` WHERE `contacts`.`user_id` = `people`.`id` AND `contacts`.`receiving` = TRUE AND `people`.`id` = `notification_actors`.`person_id` AND `notification_actors`.`notification_id` = `notifications`.`id` AND `notifications`.`recipient_id` = `people`.`id`;
+SELECT `profiles`.* FROM `profiles`, `posts`, `comments`, `mentions`, `notifications`, `users` WHERE `profiles`.`person_id` = `posts`.`author_id` AND `posts`.`id` = `comments`.`commentable_id` AND `comments`.`id` = `mentions`.`mentions_container_id` AND `mentions`.`id` IN (`notifications`.`target_id`, `notifications`.`target_id`, `notifications`.`target_id`) AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
 
-SELECT `mentions`.* FROM `mentions`, `comments`, `mentions` AS `mentions0`, `notifications` WHERE `mentions`.`mentions_container_id` = `comments`.`commentable_id` AND `mentions`.`mentions_container_type` = 'Post' AND `comments`.`id` = `mentions0`.`mentions_container_id` AND `mentions0`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = _MY_UID AND `notifications`.`type` <> 'Notifications::StartedSharing';
+SELECT `tags`.`name` FROM `tags` INNER JOIN `taggings` ON `tags`.`id` = `taggings`.`tag_id`, `profiles`, `contacts`, `notifications`, `users` WHERE `taggings`.`taggable_id` = `profiles`.`id` AND `taggings`.`taggable_type` = 'Profile' AND `taggings`.`context` = 'tags' AND `profiles`.`person_id` = `contacts`.`person_id` AND `contacts`.`user_id` = `notifications`.`recipient_id` AND `contacts`.`person_id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID AND `notifications`.`type` = 'Notifications::StartedSharing';
 
-SELECT `mentions`.* FROM `mentions`, `notifications`, `people`, `notification_actors` WHERE `mentions`.`mentions_container_id` = `notifications`.`target_id` AND `mentions`.`mentions_container_type` = 'Post' AND `notifications`.`recipient_id` = `people`.`id` AND `people`.`id` = `notification_actors`.`person_id` AND `notification_actors`.`notification_id` = `notifications`.`id` AND `notifications`.`type` <> 'Notifications::StartedSharing';
+SELECT `aspect_memberships`.* FROM `aspect_memberships`, `contacts`, `users`, `contacts` AS `contacts0`, `notifications` WHERE `aspect_memberships`.`contact_id` = `contacts`.`id` AND `contacts`.`user_id` = `users`.`id` AND `contacts`.`person_id` = `contacts0`.`person_id` AND `users`.`id` = _MY_UID AND `contacts0`.`user_id` = `notifications`.`recipient_id` AND `contacts0`.`person_id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = `users`.`id` AND `notifications`.`type` = 'Notifications::StartedSharing';
 
-SELECT `notification_actors`.* FROM `notification_actors`, `notifications`, `people`, `notification_actors` AS `notification_actors0` WHERE `notification_actors`.`notification_id` = `notifications`.`id` AND `notifications`.`recipient_id` = `people`.`id` AND `people`.`id` = `notification_actors0`.`person_id` AND `notification_actors0`.`notification_id` = `notifications`.`id`;
+SELECT `mentions`.* FROM `mentions`, `comments`, `mentions` AS `mentions0`, `notifications`, `users` WHERE `mentions`.`mentions_container_id` = `comments`.`commentable_id` AND `mentions`.`mentions_container_type` = 'Post' AND `comments`.`id` = `mentions0`.`mentions_container_id` AND `mentions0`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
 
-SELECT `notifications`.* FROM `notifications`, `people`, `notification_actors`, `notifications` AS `notifications0` WHERE `notifications`.`recipient_id` = `people`.`id` AND `people`.`id` = `notification_actors`.`person_id` AND `notification_actors`.`notification_id` = `notifications0`.`id` AND `notifications0`.`recipient_id` = `people`.`id`;
+SELECT `mentions`.* FROM `mentions`, `comments`, `mentions` AS `mentions0`, `notifications`, `users` WHERE `mentions`.`mentions_container_id` = `comments`.`commentable_id` AND `mentions`.`mentions_container_type` = 'Post' AND `comments`.`id` = `mentions0`.`mentions_container_id` AND `mentions0`.`id` IN (`notifications`.`target_id`, `notifications`.`target_id`, `notifications`.`target_id`) AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
 
-SELECT `people`.* FROM `people` INNER JOIN `notification_actors` ON `people`.`id` = `notification_actors`.`person_id`, `notifications`, `users` WHERE `notification_actors`.`notification_id` = `notifications`.`id` AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID AND `notifications`.`type` <> 'Notifications::StartedSharing';
+SELECT `people`.* FROM `people`, `mentions`, `mentions` AS `mentions0`, `notifications`, `users` WHERE `people`.`id` = `mentions`.`person_id` AND `mentions`.`mentions_container_id` = `mentions0`.`mentions_container_id` AND `mentions`.`mentions_container_type` = 'Post' AND `mentions0`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
 
-SELECT `people`.* FROM `people`, `mentions`, `mentions` AS `mentions0`, `notifications` WHERE `people`.`id` = `mentions`.`person_id` AND `mentions`.`mentions_container_id` = `mentions0`.`mentions_container_id` AND `mentions`.`mentions_container_type` = 'Post' AND `mentions0`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = _MY_UID AND `notifications`.`type` <> 'Notifications::StartedSharing';
+SELECT `people`.* FROM `people`, `mentions`, `mentions` AS `mentions0`, `notifications`, `users` WHERE `people`.`id` = `mentions`.`person_id` AND `mentions`.`mentions_container_id` = `mentions0`.`mentions_container_id` AND `mentions`.`mentions_container_type` = 'Post' AND `mentions0`.`id` IN (`notifications`.`target_id`, `notifications`.`target_id`, `notifications`.`target_id`) AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
 
-SELECT `people`.* FROM `people`, `mentions`, `notifications`, `users` WHERE `people`.`id` = `mentions`.`person_id` AND `mentions`.`mentions_container_id` = `notifications`.`target_id` AND `mentions`.`mentions_container_type` = 'Post' AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID AND `notifications`.`type` <> 'Notifications::StartedSharing';
+SELECT `people`.* FROM `people`, `mentions`, `mentions` AS `mentions0`, `notifications`, `users` WHERE `people`.`id` IN (`mentions`.`person_id`, `mentions`.`person_id`, `mentions`.`person_id`) AND `mentions`.`mentions_container_id` = `mentions0`.`mentions_container_id` AND `mentions`.`mentions_container_type` = 'Post' AND `mentions0`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
 
-SELECT `people`.* FROM `people`, `posts`, `mentions`, `notifications` WHERE `people`.`id` = `posts`.`author_id` AND `posts`.`id` = `mentions`.`mentions_container_id` AND `mentions`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = _MY_UID AND `notifications`.`type` <> 'Notifications::StartedSharing';
+SELECT `people`.* FROM `people`, `mentions`, `mentions` AS `mentions0`, `notifications`, `users` WHERE `people`.`id` IN (`mentions`.`person_id`, `mentions`.`person_id`, `mentions`.`person_id`) AND `mentions`.`mentions_container_id` = `mentions0`.`mentions_container_id` AND `mentions`.`mentions_container_type` = 'Post' AND `mentions0`.`id` IN (`notifications`.`target_id`, `notifications`.`target_id`, `notifications`.`target_id`) AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
 
-SELECT `people`.* FROM `people`, `posts`, `notifications`, `users` WHERE `people`.`id` = `posts`.`author_id` AND `posts`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID AND `notifications`.`type` <> 'Notifications::StartedSharing';
+SELECT `people`.* FROM `people`, `people` AS `people0`, `notification_actors`, `notifications`, `users` WHERE `people`.`id` IN (`people0`.`id`, `notification_actors`.`id`, `notification_actors`.`id`) AND `people0`.`id` IN (`people0`.`id`, `notification_actors`.`id`, `notification_actors`.`id`) AND `notification_actors`.`notification_id` IN (`notifications`.`id`, `notifications`.`id`, `notifications`.`id`) AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
 
-SELECT `photos`.* FROM `photos`, `posts`, `mentions`, `notifications` WHERE `photos`.`status_message_guid` = `posts`.`guid` AND `posts`.`id` = `mentions`.`mentions_container_id` AND `mentions`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = _MY_UID AND `notifications`.`type` <> 'Notifications::StartedSharing';
+SELECT `people`.* FROM `people`, `people` AS `people0`, `notification_actors`, `notifications`, `users` WHERE `people`.`id` IN (`people0`.`id`, `notification_actors`.`id`, `notification_actors`.`id`, `notification_actors`.`id`) AND `people0`.`id` IN (`people0`.`id`, `notification_actors`.`id`, `notification_actors`.`id`, `notification_actors`.`id`) AND `notification_actors`.`notification_id` = `notifications`.`id` AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
 
-SELECT `posts`.* FROM `posts`, `comments`, `mentions`, `notifications` WHERE `posts`.`id` = `comments`.`commentable_id` AND `comments`.`id` = `mentions`.`mentions_container_id` AND `mentions`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = _MY_UID AND `notifications`.`type` <> 'Notifications::StartedSharing';
+SELECT `people`.* FROM `people`, `posts`, `mentions`, `notifications`, `users` WHERE `people`.`id` = `posts`.`author_id` AND `posts`.`id` = `mentions`.`mentions_container_id` AND `mentions`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
 
-SELECT `posts`.* FROM `posts`, `notifications`, `people`, `notification_actors` WHERE `posts`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = `people`.`id` AND `people`.`id` = `notification_actors`.`person_id` AND `notification_actors`.`notification_id` = `notifications`.`id` AND `notifications`.`type` <> 'Notifications::StartedSharing';
+SELECT `people`.* FROM `people`, `posts`, `mentions`, `notifications`, `users` WHERE `people`.`id` = `posts`.`author_id` AND `posts`.`id` = `mentions`.`mentions_container_id` AND `mentions`.`id` IN (`notifications`.`target_id`, `notifications`.`target_id`, `notifications`.`target_id`) AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
 
-SELECT `profiles`.* FROM `profiles`, `mentions`, `mentions` AS `mentions0`, `notifications` WHERE `profiles`.`person_id` = `mentions`.`person_id` AND `mentions`.`mentions_container_id` = `mentions0`.`mentions_container_id` AND `mentions`.`mentions_container_type` = 'Post' AND `mentions0`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = _MY_UID AND `notifications`.`type` <> 'Notifications::StartedSharing';
+SELECT `people`.* FROM `people`, `posts`, `photos`, `notifications`, `users` WHERE `people`.`id` = `posts`.`author_id` AND `posts`.`type` IN ('StatusMessage') AND `posts`.`guid` = `photos`.`status_message_guid` AND `photos`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
 
-SELECT `profiles`.* FROM `profiles`, `mentions`, `notifications`, `users` WHERE `profiles`.`person_id` = `mentions`.`person_id` AND `mentions`.`mentions_container_id` = `notifications`.`target_id` AND `mentions`.`mentions_container_type` = 'Post' AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID AND `notifications`.`type` <> 'Notifications::StartedSharing';
+SELECT `people`.* FROM `people`, `posts`, `photos`, `notifications`, `users` WHERE `people`.`id` = `posts`.`author_id` AND `posts`.`type` IN ('StatusMessage') AND `posts`.`guid` = `photos`.`status_message_guid` AND `photos`.`id` IN (`notifications`.`target_id`, `notifications`.`target_id`, `notifications`.`target_id`) AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
 
-SELECT `profiles`.* FROM `profiles`, `people`, `notification_actors`, `notifications` WHERE `profiles`.`person_id` = `people`.`id` AND `people`.`id` = `notification_actors`.`person_id` AND `notification_actors`.`notification_id` = `notifications`.`id` AND `notifications`.`recipient_id` = _MY_UID AND `notifications`.`type` <> 'Notifications::StartedSharing';
+SELECT `photos`.* FROM `photos`, `posts`, `mentions`, `notifications`, `users` WHERE `photos`.`status_message_guid` = `posts`.`guid` AND `posts`.`id` = `mentions`.`mentions_container_id` AND `mentions`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
 
-SELECT `profiles`.* FROM `profiles`, `people`, `notification_actors`, `notifications` WHERE `profiles`.`person_id` = `people`.`id` AND `people`.`id` = `notification_actors`.`person_id` AND `notification_actors`.`notification_id` = `notifications`.`id` AND `notifications`.`recipient_id` = _MY_UID AND `notifications`.`type` = 'Notifications::StartedSharing';
+SELECT `photos`.* FROM `photos`, `posts`, `mentions`, `notifications`, `users` WHERE `photos`.`status_message_guid` = `posts`.`guid` AND `posts`.`id` = `mentions`.`mentions_container_id` AND `mentions`.`id` IN (`notifications`.`target_id`, `notifications`.`target_id`, `notifications`.`target_id`) AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
 
-SELECT `profiles`.* FROM `profiles`, `people`, `notification_actors`, `notifications` WHERE `profiles`.`person_id` = `people`.`id` AND `people`.`id` = `notification_actors`.`person_id` AND `notification_actors`.`notification_id` = `notifications`.`id` AND `notifications`.`recipient_id` = `people`.`id` AND `notifications`.`type` <> 'Notifications::StartedSharing';
+SELECT `posts`.* FROM `posts`, `comments`, `mentions`, `notifications`, `users` WHERE `posts`.`id` = `comments`.`commentable_id` AND `comments`.`id` = `mentions`.`mentions_container_id` AND `mentions`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
 
-SELECT `profiles`.* FROM `profiles`, `posts`, `mentions`, `notifications` WHERE `profiles`.`person_id` = `posts`.`author_id` AND `posts`.`id` = `mentions`.`mentions_container_id` AND `mentions`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = _MY_UID AND `notifications`.`type` <> 'Notifications::StartedSharing';
+SELECT `posts`.* FROM `posts`, `comments`, `mentions`, `notifications`, `users` WHERE `posts`.`id` = `comments`.`commentable_id` AND `comments`.`id` = `mentions`.`mentions_container_id` AND `mentions`.`id` IN (`notifications`.`target_id`, `notifications`.`target_id`, `notifications`.`target_id`) AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
 
-SELECT `profiles`.* FROM `profiles`, `posts`, `notifications`, `users` WHERE `profiles`.`person_id` = `posts`.`author_id` AND `posts`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID AND `notifications`.`type` <> 'Notifications::StartedSharing';
+SELECT `profiles`.* FROM `profiles`, `mentions`, `mentions` AS `mentions0`, `notifications`, `users` WHERE `profiles`.`person_id` = `mentions`.`person_id` AND `mentions`.`mentions_container_id` = `mentions0`.`mentions_container_id` AND `mentions`.`mentions_container_type` = 'Post' AND `mentions0`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
 
-SELECT `services`.* FROM `services`, `people`, `notification_actors`, `notifications` WHERE `services`.`user_id` = `people`.`id` AND `people`.`id` = `notification_actors`.`person_id` AND `notification_actors`.`notification_id` = `notifications`.`id` AND `notifications`.`recipient_id` = `people`.`id`;
+SELECT `profiles`.* FROM `profiles`, `mentions`, `mentions` AS `mentions0`, `notifications`, `users` WHERE `profiles`.`person_id` = `mentions`.`person_id` AND `mentions`.`mentions_container_id` = `mentions0`.`mentions_container_id` AND `mentions`.`mentions_container_type` = 'Post' AND `mentions0`.`id` IN (`notifications`.`target_id`, `notifications`.`target_id`, `notifications`.`target_id`) AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
 
-SELECT `aspect_memberships`.* FROM `aspect_memberships`, `contacts`, `notifications` WHERE `aspect_memberships`.`contact_id` = `contacts`.`id` AND `contacts`.`user_id` = `notifications`.`recipient_id` AND `contacts`.`person_id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = _MY_UID AND `notifications`.`type` = 'Notifications::StartedSharing';
+SELECT `profiles`.* FROM `profiles`, `mentions`, `mentions` AS `mentions0`, `notifications`, `users` WHERE `profiles`.`person_id` IN (`mentions`.`person_id`, `mentions`.`person_id`, `mentions`.`person_id`) AND `mentions`.`mentions_container_id` = `mentions0`.`mentions_container_id` AND `mentions`.`mentions_container_type` = 'Post' AND `mentions0`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
 
-SELECT `comments`.* FROM `comments`, `mentions`, `notifications` WHERE `comments`.`id` = `mentions`.`mentions_container_id` AND `mentions`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = _MY_UID AND `notifications`.`type` <> 'Notifications::StartedSharing';
+SELECT `profiles`.* FROM `profiles`, `mentions`, `mentions` AS `mentions0`, `notifications`, `users` WHERE `profiles`.`person_id` IN (`mentions`.`person_id`, `mentions`.`person_id`, `mentions`.`person_id`) AND `mentions`.`mentions_container_id` = `mentions0`.`mentions_container_id` AND `mentions`.`mentions_container_type` = 'Post' AND `mentions0`.`id` IN (`notifications`.`target_id`, `notifications`.`target_id`, `notifications`.`target_id`) AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
 
-SELECT `contacts`.* FROM `contacts`, `contacts` AS `contacts0`, `notifications` WHERE `contacts`.`user_id` = _MY_UID AND `contacts`.`person_id` = `contacts0`.`person_id` AND `contacts0`.`user_id` = `notifications`.`recipient_id` AND `contacts0`.`person_id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = _MY_UID AND `notifications`.`type` = 'Notifications::StartedSharing';
+SELECT `profiles`.* FROM `profiles`, `people`, `notification_actors`, `notifications`, `users` WHERE `profiles`.`person_id` IN (`people`.`id`, `notification_actors`.`id`, `notification_actors`.`id`) AND `people`.`id` IN (`people`.`id`, `notification_actors`.`id`, `notification_actors`.`id`) AND `notification_actors`.`notification_id` IN (`notifications`.`id`, `notifications`.`id`, `notifications`.`id`) AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
 
-SELECT `conversation_visibilities`.* FROM `conversation_visibilities`, `people`, `users` WHERE `conversation_visibilities`.`person_id` = `people`.`id` AND `people`.`owner_id` = `users`.`id` AND `users`.`id` = _MY_UID;
+SELECT `profiles`.* FROM `profiles`, `people`, `notification_actors`, `notifications`, `users` WHERE `profiles`.`person_id` IN (`people`.`id`, `notification_actors`.`id`, `notification_actors`.`id`, `notification_actors`.`id`) AND `people`.`id` IN (`people`.`id`, `notification_actors`.`id`, `notification_actors`.`id`, `notification_actors`.`id`) AND `notification_actors`.`notification_id` = `notifications`.`id` AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
 
-SELECT `mentions`.* FROM `mentions`, `mentions` AS `mentions0`, `notifications` WHERE `mentions`.`mentions_container_id` = `mentions0`.`mentions_container_id` AND `mentions`.`mentions_container_type` = 'Post' AND `mentions0`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = _MY_UID AND `notifications`.`type` <> 'Notifications::StartedSharing';
+SELECT `profiles`.* FROM `profiles`, `posts`, `mentions`, `notifications`, `users` WHERE `profiles`.`person_id` = `posts`.`author_id` AND `posts`.`id` = `mentions`.`mentions_container_id` AND `mentions`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
 
-SELECT `mentions`.* FROM `mentions`, `notifications`, `users` WHERE `mentions`.`mentions_container_id` = `notifications`.`target_id` AND `mentions`.`mentions_container_type` = 'Post' AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID AND `notifications`.`type` <> 'Notifications::StartedSharing';
+SELECT `profiles`.* FROM `profiles`, `posts`, `mentions`, `notifications`, `users` WHERE `profiles`.`person_id` = `posts`.`author_id` AND `posts`.`id` = `mentions`.`mentions_container_id` AND `mentions`.`id` IN (`notifications`.`target_id`, `notifications`.`target_id`, `notifications`.`target_id`) AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
+
+SELECT `profiles`.* FROM `profiles`, `posts`, `photos`, `notifications`, `users` WHERE `profiles`.`person_id` = `posts`.`author_id` AND `posts`.`type` IN ('StatusMessage') AND `posts`.`guid` = `photos`.`status_message_guid` AND `photos`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
+
+SELECT `profiles`.* FROM `profiles`, `posts`, `photos`, `notifications`, `users` WHERE `profiles`.`person_id` = `posts`.`author_id` AND `posts`.`type` IN ('StatusMessage') AND `posts`.`guid` = `photos`.`status_message_guid` AND `photos`.`id` IN (`notifications`.`target_id`, `notifications`.`target_id`, `notifications`.`target_id`) AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
+
+SELECT `blocks`.* FROM `blocks`, `users`, `contacts`, `notifications` WHERE `blocks`.`user_id` = `users`.`id` AND `blocks`.`person_id` = `contacts`.`person_id` AND `users`.`id` = _MY_UID AND `contacts`.`user_id` = `notifications`.`recipient_id` AND `contacts`.`person_id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = `users`.`id` AND `notifications`.`type` = 'Notifications::StartedSharing';
+
+SELECT `comments`.* FROM `comments`, `mentions`, `notifications`, `users` WHERE `comments`.`id` = `mentions`.`mentions_container_id` AND `mentions`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
+
+SELECT `comments`.* FROM `comments`, `mentions`, `notifications`, `users` WHERE `comments`.`id` = `mentions`.`mentions_container_id` AND `mentions`.`id` IN (`notifications`.`target_id`, `notifications`.`target_id`, `notifications`.`target_id`) AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
+
+SELECT `contacts`.* FROM `contacts`, `users`, `contacts` AS `contacts0`, `notifications` WHERE `contacts`.`user_id` = `users`.`id` AND `contacts`.`person_id` = `contacts0`.`person_id` AND `users`.`id` = _MY_UID AND `contacts0`.`user_id` = `notifications`.`recipient_id` AND `contacts0`.`person_id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = `users`.`id` AND `notifications`.`type` = 'Notifications::StartedSharing';
+
+SELECT `mentions`.* FROM `mentions`, `mentions` AS `mentions0`, `notifications`, `users` WHERE `mentions`.`mentions_container_id` = `mentions0`.`mentions_container_id` AND `mentions`.`mentions_container_type` = 'Post' AND `mentions0`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
+
+SELECT `mentions`.* FROM `mentions`, `mentions` AS `mentions0`, `notifications`, `users` WHERE `mentions`.`mentions_container_id` = `mentions0`.`mentions_container_id` AND `mentions`.`mentions_container_type` = 'Post' AND `mentions0`.`id` IN (`notifications`.`target_id`, `notifications`.`target_id`, `notifications`.`target_id`) AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
+
+SELECT `people`.* FROM `people`, `contacts`, `notifications`, `users` WHERE `people`.`id` = `contacts`.`person_id` AND `contacts`.`user_id` = `notifications`.`recipient_id` AND `contacts`.`person_id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID AND `notifications`.`type` = 'Notifications::StartedSharing';
+
+SELECT `people`.* FROM `people`, `mentions`, `notifications`, `users` WHERE `people`.`id` = `mentions`.`person_id` AND `mentions`.`mentions_container_id` = `notifications`.`target_id` AND `mentions`.`mentions_container_type` = 'Post' AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
+
+SELECT `people`.* FROM `people`, `mentions`, `notifications`, `users` WHERE `people`.`id` IN (`mentions`.`person_id`, `mentions`.`person_id`, `mentions`.`person_id`) AND `mentions`.`mentions_container_id` = `notifications`.`target_id` AND `mentions`.`mentions_container_type` = 'Post' AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
+
+SELECT `people`.* FROM `people`, `photos`, `notifications`, `users` WHERE `people`.`id` = `photos`.`author_id` AND `photos`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
+
+SELECT `people`.* FROM `people`, `photos`, `notifications`, `users` WHERE `people`.`id` = `photos`.`author_id` AND `photos`.`id` IN (`notifications`.`target_id`, `notifications`.`target_id`, `notifications`.`target_id`) AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
+
+SELECT `people`.* FROM `people`, `posts`, `notifications`, `users` WHERE `people`.`id` = `posts`.`author_id` AND `posts`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
+
+SELECT `people`.* FROM `people`, `posts`, `notifications`, `users` WHERE `people`.`id` = `posts`.`author_id` AND `posts`.`id` IN (`notifications`.`target_id`, `notifications`.`target_id`, `notifications`.`target_id`) AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
+
+SELECT `photos`.* FROM `photos`, `posts`, `notifications`, `users` WHERE `photos`.`status_message_guid` = `posts`.`guid` AND `posts`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
+
+SELECT `photos`.* FROM `photos`, `posts`, `notifications`, `users` WHERE `photos`.`status_message_guid` = `posts`.`guid` AND `posts`.`id` IN (`notifications`.`target_id`, `notifications`.`target_id`, `notifications`.`target_id`) AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
+
+SELECT `posts`.* FROM `posts`, `mentions`, `notifications`, `users` WHERE `posts`.`id` = `mentions`.`mentions_container_id` AND `mentions`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
+
+SELECT `posts`.* FROM `posts`, `mentions`, `notifications`, `users` WHERE `posts`.`id` = `mentions`.`mentions_container_id` AND `mentions`.`id` IN (`notifications`.`target_id`, `notifications`.`target_id`, `notifications`.`target_id`) AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
+
+SELECT `posts`.* FROM `posts`, `photos`, `notifications`, `users` WHERE `posts`.`type` IN ('StatusMessage') AND `posts`.`guid` = `photos`.`status_message_guid` AND `photos`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
+
+SELECT `posts`.* FROM `posts`, `photos`, `notifications`, `users` WHERE `posts`.`type` IN ('StatusMessage') AND `posts`.`guid` = `photos`.`status_message_guid` AND `photos`.`id` IN (`notifications`.`target_id`, `notifications`.`target_id`, `notifications`.`target_id`) AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
+
+SELECT `profiles`.* FROM `profiles`, `contacts`, `notifications`, `users` WHERE `profiles`.`person_id` = `contacts`.`person_id` AND `contacts`.`user_id` = `notifications`.`recipient_id` AND `contacts`.`person_id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID AND `notifications`.`type` = 'Notifications::StartedSharing';
+
+SELECT `profiles`.* FROM `profiles`, `mentions`, `notifications`, `users` WHERE `profiles`.`person_id` = `mentions`.`person_id` AND `mentions`.`mentions_container_id` = `notifications`.`target_id` AND `mentions`.`mentions_container_type` = 'Post' AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
+
+SELECT `profiles`.* FROM `profiles`, `mentions`, `notifications`, `users` WHERE `profiles`.`person_id` IN (`mentions`.`person_id`, `mentions`.`person_id`, `mentions`.`person_id`) AND `mentions`.`mentions_container_id` = `notifications`.`target_id` AND `mentions`.`mentions_container_type` = 'Post' AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
+
+SELECT `profiles`.* FROM `profiles`, `photos`, `notifications`, `users` WHERE `profiles`.`person_id` = `photos`.`author_id` AND `photos`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
+
+SELECT `profiles`.* FROM `profiles`, `photos`, `notifications`, `users` WHERE `profiles`.`person_id` = `photos`.`author_id` AND `photos`.`id` IN (`notifications`.`target_id`, `notifications`.`target_id`, `notifications`.`target_id`) AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
+
+SELECT `profiles`.* FROM `profiles`, `posts`, `notifications`, `users` WHERE `profiles`.`person_id` = `posts`.`author_id` AND `posts`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
+
+SELECT `profiles`.* FROM `profiles`, `posts`, `notifications`, `users` WHERE `profiles`.`person_id` = `posts`.`author_id` AND `posts`.`id` IN (`notifications`.`target_id`, `notifications`.`target_id`, `notifications`.`target_id`) AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
+
+SELECT 1 AS one FROM `roles`, `people`, `users` WHERE `roles`.`name` IN ('moderator', 'admin') AND `roles`.`person_id` = `people`.`id` AND `people`.`owner_id` = `users`.`id` AND `users`.`id` = _MY_UID;
+
+SELECT 1 AS one FROM `roles`, `people`, `users` WHERE `roles`.`person_id` = `people`.`id` AND `roles`.`name` = 'admin' AND `people`.`owner_id` = `users`.`id` AND `users`.`id` = _MY_UID;
+
+SELECT SUM(`conversation_visibilities`.`unread`) FROM `conversation_visibilities`, `people`, `users` WHERE `conversation_visibilities`.`person_id` = `people`.`id` AND `people`.`owner_id` = `users`.`id` AND `users`.`id` = _MY_UID;
+
+SELECT `mentions`.* FROM `mentions`, `notifications`, `users` WHERE `mentions`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
+
+SELECT `mentions`.* FROM `mentions`, `notifications`, `users` WHERE `mentions`.`id` IN (`notifications`.`target_id`, `notifications`.`target_id`, `notifications`.`target_id`) AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
+
+SELECT `mentions`.* FROM `mentions`, `notifications`, `users` WHERE `mentions`.`mentions_container_id` = `notifications`.`target_id` AND `mentions`.`mentions_container_type` = 'Post' AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
 
 SELECT `notification_actors`.* FROM `notification_actors`, `notifications`, `users` WHERE `notification_actors`.`notification_id` = `notifications`.`id` AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
 
-SELECT `notifications`.* FROM `notifications`, `people`, `notification_actors` WHERE `notifications`.`recipient_id` = `people`.`id` AND `people`.`id` = `notification_actors`.`person_id` AND `notification_actors`.`notification_id` = `notifications`.`id`;
+SELECT `notification_actors`.* FROM `notification_actors`, `notifications`, `users` WHERE `notification_actors`.`notification_id` IN (`notifications`.`id`, `notifications`.`id`, `notifications`.`id`) AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
 
-SELECT `people`.* FROM `people` INNER JOIN `notification_actors` ON `people`.`id` = `notification_actors`.`person_id`, `notifications` WHERE `notification_actors`.`notification_id` = `notifications`.`id` AND `notifications`.`recipient_id` = _MY_UID AND `notifications`.`type` <> 'Notifications::StartedSharing';
+SELECT `people`.* FROM `people`, `notifications`, `users` WHERE `people`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
 
-SELECT `people`.* FROM `people` INNER JOIN `notification_actors` ON `people`.`id` = `notification_actors`.`person_id`, `notifications` WHERE `notification_actors`.`notification_id` = `notifications`.`id` AND `notifications`.`recipient_id` = _MY_UID AND `notifications`.`type` = 'Notifications::StartedSharing';
+SELECT `people`.* FROM `people`, `notifications`, `users` WHERE `people`.`id` IN (`notifications`.`target_id`, `notifications`.`target_id`, `notifications`.`target_id`) AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
 
-SELECT `people`.* FROM `people` INNER JOIN `notification_actors` ON `people`.`id` = `notification_actors`.`person_id`, `notifications` WHERE `notification_actors`.`notification_id` = `notifications`.`id` AND `notifications`.`recipient_id` = `people`.`id` AND `notifications`.`type` <> 'Notifications::StartedSharing';
+SELECT `photos`.* FROM `photos`, `notifications`, `users` WHERE `photos`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
 
-SELECT `people`.* FROM `people`, `comments`, `notifications` WHERE `people`.`id` = `comments`.`author_id` AND `comments`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = _MY_UID AND `notifications`.`type` <> 'Notifications::StartedSharing';
+SELECT `photos`.* FROM `photos`, `notifications`, `users` WHERE `photos`.`id` IN (`notifications`.`target_id`, `notifications`.`target_id`, `notifications`.`target_id`) AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
 
-SELECT `people`.* FROM `people`, `contacts`, `notifications` WHERE `people`.`id` = `contacts`.`person_id` AND `contacts`.`user_id` = `notifications`.`recipient_id` AND `contacts`.`person_id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = _MY_UID AND `notifications`.`type` = 'Notifications::StartedSharing';
+SELECT `posts`.* FROM `posts`, `notifications`, `users` WHERE `posts`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
 
-SELECT `people`.* FROM `people`, `mentions`, `notifications` WHERE `people`.`id` = `mentions`.`person_id` AND `mentions`.`mentions_container_id` = `notifications`.`target_id` AND `mentions`.`mentions_container_type` = 'Comment' AND `notifications`.`recipient_id` = _MY_UID AND `notifications`.`type` <> 'Notifications::StartedSharing';
-
-SELECT `people`.* FROM `people`, `mentions`, `notifications` WHERE `people`.`id` = `mentions`.`person_id` AND `mentions`.`mentions_container_id` = `notifications`.`target_id` AND `mentions`.`mentions_container_type` = 'Post' AND `notifications`.`recipient_id` = _MY_UID AND `notifications`.`type` <> 'Notifications::StartedSharing';
-
-SELECT `people`.* FROM `people`, `posts`, `notifications` WHERE `people`.`id` = `posts`.`author_id` AND `posts`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = _MY_UID AND `notifications`.`type` <> 'Notifications::StartedSharing';
-
-SELECT `photos`.* FROM `photos`, `posts`, `notifications` WHERE `photos`.`status_message_guid` = `posts`.`guid` AND `posts`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = _MY_UID AND `notifications`.`type` <> 'Notifications::StartedSharing';
-
-SELECT `posts`.* FROM `posts`, `mentions`, `notifications` WHERE `posts`.`id` = `mentions`.`mentions_container_id` AND `mentions`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = _MY_UID AND `notifications`.`type` <> 'Notifications::StartedSharing';
-
-SELECT `posts`.* FROM `posts`, `notifications`, `users` WHERE `posts`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID AND `notifications`.`type` <> 'Notifications::StartedSharing';
-
-SELECT `profiles`.* FROM `profiles`, `comments`, `notifications` WHERE `profiles`.`person_id` = `comments`.`author_id` AND `comments`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = _MY_UID AND `notifications`.`type` <> 'Notifications::StartedSharing';
-
-SELECT `profiles`.* FROM `profiles`, `contacts`, `notifications` WHERE `profiles`.`person_id` = `contacts`.`person_id` AND `contacts`.`user_id` = `notifications`.`recipient_id` AND `contacts`.`person_id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = _MY_UID AND `notifications`.`type` = 'Notifications::StartedSharing';
-
-SELECT `profiles`.* FROM `profiles`, `mentions`, `notifications` WHERE `profiles`.`person_id` = `mentions`.`person_id` AND `mentions`.`mentions_container_id` = `notifications`.`target_id` AND `mentions`.`mentions_container_type` = 'Comment' AND `notifications`.`recipient_id` = _MY_UID AND `notifications`.`type` <> 'Notifications::StartedSharing';
-
-SELECT `profiles`.* FROM `profiles`, `mentions`, `notifications` WHERE `profiles`.`person_id` = `mentions`.`person_id` AND `mentions`.`mentions_container_id` = `notifications`.`target_id` AND `mentions`.`mentions_container_type` = 'Post' AND `notifications`.`recipient_id` = _MY_UID AND `notifications`.`type` <> 'Notifications::StartedSharing';
+SELECT `posts`.* FROM `posts`, `notifications`, `users` WHERE `posts`.`id` IN (`notifications`.`target_id`, `notifications`.`target_id`, `notifications`.`target_id`) AND `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
 
 SELECT `profiles`.* FROM `profiles`, `people`, `users` WHERE `profiles`.`person_id` = `people`.`id` AND `people`.`owner_id` = `users`.`id` AND `users`.`id` = _MY_UID;
 
-SELECT `profiles`.* FROM `profiles`, `posts`, `notifications` WHERE `profiles`.`person_id` = `posts`.`author_id` AND `posts`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = _MY_UID AND `notifications`.`type` <> 'Notifications::StartedSharing';
+SELECT `tags`.* FROM `tags` INNER JOIN `tag_followings` ON `tags`.`id` = `tag_followings`.`tag_id`, `users` WHERE `tag_followings`.`user_id` = `users`.`id` AND `users`.`id` = _MY_UID;
 
-SELECT `roles`.* FROM `roles`, `people`, `users` WHERE `roles`.`name` IN ('moderator', 'admin') AND `roles`.`person_id` = `people`.`id` AND `people`.`owner_id` = `users`.`id` AND `users`.`id` = _MY_UID;
+SELECT `users`.* FROM `users`, `notifications`, `users` AS `users0` WHERE `users`.`id` = `notifications`.`recipient_id` AND `notifications`.`recipient_id` = `users0`.`id` AND `users0`.`id` = _MY_UID AND `notifications`.`type` = 'Notifications::StartedSharing';
 
-SELECT `roles`.* FROM `roles`, `people`, `users` WHERE `roles`.`person_id` = `people`.`id` AND `roles`.`name` = `admin` AND `people`.`owner_id` = `users`.`id` AND `users`.`id` = _MY_UID;
+SELECT COUNT(*) FROM `contacts`, `users` WHERE `contacts`.`user_id` = `users`.`id` AND `contacts`.`receiving` = TRUE AND `users`.`id` = _MY_UID;
+
+SELECT COUNT(*) FROM `notifications`, `users` WHERE `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
 
 SELECT `aspects`.* FROM `aspects`, `users` WHERE `aspects`.`user_id` = `users`.`id` AND `users`.`id` = _MY_UID;
 
-SELECT `comments`.* FROM `comments`, `notifications` WHERE `comments`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = _MY_UID AND `notifications`.`type` <> 'Notifications::StartedSharing';
-
-SELECT `contacts`.* FROM `contacts`, `users` WHERE `contacts`.`user_id` = `users`.`id` AND `contacts`.`receiving` = TRUE AND `users`.`id` = _MY_UID;
-
-SELECT `mentions`.* FROM `mentions`, `notifications` WHERE `mentions`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = _MY_UID AND `notifications`.`type` <> 'Notifications::StartedSharing';
-
-SELECT `mentions`.* FROM `mentions`, `notifications` WHERE `mentions`.`mentions_container_id` = `notifications`.`target_id` AND `mentions`.`mentions_container_type` = 'Comment' AND `notifications`.`recipient_id` = _MY_UID AND `notifications`.`type` <> 'Notifications::StartedSharing';
-
-SELECT `mentions`.* FROM `mentions`, `notifications` WHERE `mentions`.`mentions_container_id` = `notifications`.`target_id` AND `mentions`.`mentions_container_type` = 'Post' AND `notifications`.`recipient_id` = _MY_UID AND `notifications`.`type` <> 'Notifications::StartedSharing';
-
-SELECT `notification_actors`.* FROM `notification_actors`, `notifications` WHERE `notification_actors`.`notification_id` = `notifications`.`id` AND `notifications`.`recipient_id` = _MY_UID;
-
 SELECT `notifications`.* FROM `notifications`, `users` WHERE `notifications`.`recipient_id` = `users`.`id` AND `users`.`id` = _MY_UID;
 
-SELECT `people`.* FROM `people`, `notifications` WHERE `people`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = _MY_UID AND `notifications`.`type` <> 'Notifications::StartedSharing';
-
-SELECT `people`.* FROM `people`, `notifications` WHERE `people`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = _MY_UID AND `notifications`.`type` = 'Notifications::StartedSharing';
+SELECT `people`.* FROM `people`, `people` AS `people0` WHERE `people`.`id` = `people0`.`id` AND `people0`.`id` = `people0`.`id`;
 
 SELECT `people`.* FROM `people`, `users` WHERE `people`.`owner_id` = `users`.`id` AND `users`.`id` = _MY_UID;
 
-SELECT `posts`.* FROM `posts`, `notifications` WHERE `posts`.`id` = `notifications`.`target_id` AND `notifications`.`recipient_id` = _MY_UID AND `notifications`.`type` <> 'Notifications::StartedSharing';
+SELECT `profiles`.* FROM `profiles`, `people` WHERE `profiles`.`person_id` = `people`.`id` AND `people`.`diaspora_handle` = 'concolic_mention@example.org';
+
+SELECT `profiles`.* FROM `profiles`, `people` WHERE `profiles`.`person_id` = `people`.`id` AND `people`.`id` = `people`.`id`;
 
 SELECT `services`.* FROM `services`, `users` WHERE `services`.`user_id` = `users`.`id` AND `users`.`id` = _MY_UID;
 
-SELECT `users`.* FROM `users`, `notifications` WHERE `users`.`id` = `notifications`.`recipient_id` AND `notifications`.`recipient_id` = _MY_UID AND `notifications`.`type` = 'Notifications::StartedSharing';
+SELECT `tag_followings`.* FROM `tag_followings`, `users` WHERE `tag_followings`.`user_id` = `users`.`id` AND `users`.`id` = _MY_UID;
 
-SELECT `blocks`.* FROM `blocks` WHERE `blocks`.`user_id` = _MY_UID;
+SELECT 1 AS one FROM `posts`;
 
--- NOTE: unresolved symbolic binds kept as placeholders: _SYM_RESULT_ActiveRecord__FinderMethods_first_1_person_id
-SELECT `conversation_visibilities`.* FROM `conversation_visibilities` WHERE `conversation_visibilities`.`person_id` = _SYM_RESULT_ActiveRecord__FinderMethods_first_1_person_id;
-
-SELECT `notifications`.* FROM `notifications` WHERE `notifications`.`recipient_id` = _MY_UID;
-
--- NOTE: unresolved symbolic binds kept as placeholders: _SYM_RESULT_ActiveRecord__FinderMethods_first_1_person_id
-SELECT `roles`.* FROM `roles` WHERE `roles`.`name` IN ('moderator', 'admin') AND `roles`.`person_id` = _SYM_RESULT_ActiveRecord__FinderMethods_first_1_person_id;
-
--- NOTE: unresolved symbolic binds kept as placeholders: _SYM_RESULT_ActiveRecord__FinderMethods_first_1_person_id
-SELECT `roles`.* FROM `roles` WHERE `roles`.`person_id` = _SYM_RESULT_ActiveRecord__FinderMethods_first_1_person_id AND `roles`.`name` = `admin`;
+SELECT COUNT(*) FROM `reports` WHERE `reports`.`reviewed` = FALSE;
 
 SELECT `users`.* FROM `users` WHERE `users`.`id` = _MY_UID;

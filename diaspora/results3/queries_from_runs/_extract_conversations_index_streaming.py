@@ -24,8 +24,44 @@ import sys
 from collections import Counter
 
 sys.path.insert(0, "/home/dev/project/src")
+# App-specific input for src/queries_from_runs (E12, 2026-09-11): the
+# package is app-agnostic and REQUIRES an app config (schema, FKs,
+# principal/identity conventions, symbol-name shapes, inflections).
+# Set before ANY queries_from_runs import that reads it at module level.
+os.environ.setdefault("QFR_APP_CONFIG",
+                      "/home/dev/project/reports/diaspora/queries_config/app.json")
+# 2026-09-08: OPT-IN blockaid-consumable output (BLOCKAID_NORMALISE=1) — results3-local
+# normaliser _blockaid_fold.py (E1-E11), src/ untouched.  When the variable is unset this
+# driver behaves exactly as before and writes the canonical <endpoint>.sql; when set it
+# writes _rewritten/<endpoint>.blockaid.sql instead and NEVER touches the canonical file.
+BLOCKAID_NORMALISE = os.environ.get("BLOCKAID_NORMALISE") == "1"
+if BLOCKAID_NORMALISE:
+    sys.path.insert(0, "/home/dev/project/reports/diaspora/results3/_experiment/variant_d")
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    import _blockaid_fold as BF                                  # noqa: E402
+    BF.install()
+
+# THE PATCHED FOLD — ported 2026-09-09 EXACTLY as _extract_comments_index_streaming.py
+# and _extract_people_show_streaming.py carry it (E1 fix, night report §1). Until
+# this port the conversations driver was the only one still instantiating the base
+# RunTransformer. (RUNBOOK gap 3: the patches are not upstreamed into src/.)
+sys.path.insert(0, "/home/dev/project/reports/diaspora/results3/_experiment/variant_d")
+import assoc_fold                                               # noqa: E402
+assoc_fold.install()
+# E1 (2026-09-09): install() ONLY monkeypatches _Build._bind_value and
+# pcs.parse_pc — it does NOT swap the transformer. Using the base
+# RunTransformer left every `assoc_*` bind UNRESOLVED as a placeholder
+# (measured on people_show: 6 placeholder families vs 3, and the 3 that
+# disappear are assoc_author_id / assoc_person_id / assoc_profile_id, folded
+# into real joins). Those placeholders are also why blockaid quarantined most
+# of the views. The folding transformer is the one to use.
+from assoc_fold import AssocFoldingTransformer                   # noqa: E402
 
 from queries_from_runs import subsume as subsume_mod            # noqa: E402
+# App-specific input for the subsume harness: src/queries_from_runs is
+# app-agnostic and requires an app config; the diaspora side supplies it.
+os.environ.setdefault("QFR_APP_CONFIG",
+                      "/home/dev/project/reports/diaspora/queries_config/app.json")
 from queries_from_runs.dump import (                            # noqa: E402
     EndpointSummary, _load_run, _pc_shape, discover_param_pool,
 )
@@ -33,8 +69,14 @@ from queries_from_runs.transform import RunTransformer          # noqa: E402
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 DUMP_DIR = os.path.join(os.path.dirname(HERE), "conversations_index")
-OUT_PATH = os.path.join(HERE, "conversations_index.sql")
-SUMMARY_PATH = os.path.join(HERE, "_summary_conversations_index.json")
+# OUT_SQL / SUMMARY_JSON (2026-09-15): a dry run writes elsewhere and NEVER
+# touches the shipped file. Unset => the canonical paths, as before.
+OUT_PATH = os.environ.get("OUT_SQL") or os.path.join(HERE, "conversations_index.sql")
+SUMMARY_PATH = (os.environ.get("SUMMARY_JSON")
+                or os.path.join(HERE, "_summary_conversations_index.json"))
+if BLOCKAID_NORMALISE:
+    OUT_PATH = os.path.join(HERE, "_rewritten", "conversations_index.blockaid.sql")
+    SUMMARY_PATH = os.path.join(HERE, "_rewritten", "_summary_conversations_index.blockaid.json")
 
 
 def main() -> int:
@@ -56,7 +98,7 @@ def main() -> int:
             continue
         n_runs += 1
         try:
-            rt = RunTransformer(run, param_pool=param_pool)
+            rt = (BF.Transformer if BLOCKAID_NORMALISE else AssocFoldingTransformer)(run, param_pool=param_pool)
             rq = rt.transform_all()
         except Exception as e:  # noqa: BLE001
             errors.append(f"{os.path.basename(path)}: {type(e).__name__}: {e}")
@@ -64,7 +106,7 @@ def main() -> int:
         errors.extend(f"{os.path.basename(path)}: {m}" for m in rq.errors)
         for expr in rq.skipped_pcs:
             skipped_pcs[_pc_shape(expr)] += 1
-        for q in rq.queries:
+        for q in ([q2 for q0 in rq.queries for q2 in BF.finalize(q0)] if BLOCKAID_NORMALISE else rq.queries):
             n_raw += 1
             for f in q.flags:
                 flags[f] += 1
@@ -90,16 +132,28 @@ def main() -> int:
         ]
         can_subsume = [
             "finder-without-where" not in q.flags and "unscoped" not in q.flags
+            and not any(f.startswith("broadened-") for f in q.flags)
             for q in deduped
         ]
         try:
-            survivors, _pairs, subsume_errors = subsume_mod.prune_subsumed(
-                sqls, eligible=eligible, can_subsume=can_subsume,
-                checker=subsume_mod.DEFAULT_CHECKER,
-            )
-            final = [deduped[i] for i in survivors]
-            n_dropped = len(deduped) - len(final)
-            subsume_ran = True
+            # SKIP_SUBSUME=1 (2026-09-15): syntactic stage only, no JVM. Same
+            # switch the other extractors carry; for a DRY RUN that only needs
+            # the distinct-view count and the rendering, never for a ship.
+            if os.environ.get("SKIP_SUBSUME") == "1":
+                syn = subsume_mod.syntactic_subsumed_pairs(sqls, can_subsume)
+                drop = subsume_mod._drop_from_pairs(syn, set())
+                final = [q for k, q in enumerate(deduped) if k not in drop]
+                n_dropped = len(deduped) - len(final)
+                subsume_ran = None
+                errors.append("subsumption SOLVER STAGE NOT ATTEMPTED: SKIP_SUBSUME=1")
+            else:
+                survivors, _pairs, subsume_errors = subsume_mod.prune_subsumed(
+                    sqls, eligible=eligible, can_subsume=can_subsume,
+                    checker=subsume_mod.DEFAULT_CHECKER,
+                )
+                final = [deduped[i] for i in survivors]
+                n_dropped = len(deduped) - len(final)
+                subsume_ran = True
         except Exception as e:  # noqa: BLE001
             errors.append(f"subsumption check failed: {type(e).__name__}: {e}")
 
@@ -116,6 +170,20 @@ def main() -> int:
                 "-- NOTE: join compares columns of different types, as recorded "
                 "by the runtime (known result-var naming bug)"
             )
+        _bf_notes = {
+            "count-as-pk": "COUNT(*) rendered as the pk of every FROM table (blockaid StripCountStar convention)",
+            "sum-as-pk-col": "SUM(col) rendered as pk + col (blockaid convention)",
+            "left-join-split": "LEFT OUTER JOIN with an OR arm split into its two arms (set semantics)",
+            "left-as-inner": "LEFT OUTER JOIN rendered INNER (FK-backed)",
+            "literal-principal": "concrete principal id of this corpus read as _MY_UID (POLICY_HEADER F6)",
+        }
+        for f in sorted(q.flags):
+            if f.startswith("broadened-bind:"):
+                lines.append("-- NOTE: bind " + f.split(":", 1)[1] + " has no SQL form; its predicate is BROADENED away (statement is wider than the app's)")
+            elif f.startswith("broadened-param:"):
+                lines.append("-- NOTE: request-param bind " + f.split(":", 1)[1] + " broadened away")
+            elif f in _bf_notes:
+                lines.append("-- NOTE: " + _bf_notes[f])
         if q.placeholders:
             lines.append(
                 "-- NOTE: unresolved symbolic binds kept as placeholders: "
@@ -131,6 +199,9 @@ def main() -> int:
         "-- Extracted from the concolic corpus (results3/conversations_index):",
         f"--   {len(json_paths)} dumps, {n_runs} runs loaded, {n_raw} raw queries,",
         f"--   {len(deduped)} distinct, {n_dropped} subsumed, {len(final)} views.",
+        "--   fold    : _experiment/variant_d AssocFoldingTransformer (E1 port, 2026-09-09)",
+        *(["--   normalised : _blockaid_fold E1-E11 (2026-09-08) — every statement is blockaid-consumable;",
+           "--                this file is the NORMALISED variant, not the canonical policy"] if BLOCKAID_NORMALISE else []),
         "--",
         "-- SCOPE (Bali decision, 2026-08-31; DISCIPLINE §15): this endpoint's",
         "-- entrypoint is the POST-AUTH action with a SYMBOLIC principal. The",
@@ -166,6 +237,23 @@ def main() -> int:
     )
     with open(SUMMARY_PATH, "w") as f:
         json.dump({endpoint: dataclasses.asdict(summary)}, f, indent=1)
+    # CHECK (E11, 2026-09-09): an unparseable note means a statement the app
+    # REALLY ISSUED was dropped from this policy. That must be RED, not a
+    # summary field — E11 hid will_paginate's pagination COUNT behind 21,037
+    # such errors on conversations_index, and nothing failed. RUNBOOK rule P:
+    # residue found later means the CHECK was missing too.
+    _unparseable = [e for e in errors if "unparseable note" in e]
+    if _unparseable:
+        import collections as _c
+        _by = _c.Counter(e.split("unparseable note on ", 1)[-1].split(":", 1)[0]
+                         for e in _unparseable)
+        print(f"\n*** RED: {len(_unparseable)} UNPARSEABLE NOTES — statements the app "
+              f"issued are MISSING from this policy ***")
+        for _name, _n in _by.most_common(8):
+            print(f"      {_n:7d}  {_name}")
+        print("      Fix the note parser (src/queries_from_runs/transform.py "
+              "_primary_table / _split_limit) before trusting this file.\n")
+
     print(f"{endpoint}: {summary.n_queries_final} queries "
           f"({summary.n_queries_deduped} distinct, {n_dropped} subsumed) "
           f"from {n_runs}/{len(json_paths)} dumps; subsume_ran={subsume_ran}")
