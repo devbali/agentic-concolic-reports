@@ -8,6 +8,7 @@ cd /home/dev/project
 flock /tmp/concolic-slot.lock systemd-run --user -p MemoryMax=3200M -p MemorySwapMax=0 --wait --unit=vbdiff4_$$ bash -c '
 cd /home/dev/project
 SUBSUME_TIMEOUT_MS=15000 SUBSUME_SOLVER_THREADS=1 PYTHONPATH=src venvs/queries_from_runs/bin/python -m queries_from_runs.diff \
+  --app-config /home/dev/project/reports/diaspora/queries_config/app.json \
   --reference ruby_examples/dse-apps/policies/extracted/diaspora/per-endpoint \
   --ours reports/diaspora/results3/_experiment/variant_b/diff_ours \
   --out reports/diaspora/results3/_experiment/variant_b/diff \

@@ -14,6 +14,10 @@ import json, subprocess, sys, os, time, argparse
 ROOT = "/home/dev/project"
 NEW_DIR = f"{ROOT}/reports/diaspora/results3/queries_from_runs"
 OLD_DIR = f"{ROOT}/ruby_examples/dse-apps/policies/extracted/diaspora/per-endpoint"
+# App-specific input for the subsume harness: src/queries_from_runs is
+# app-agnostic and requires an app config; the diaspora side supplies it.
+os.environ.setdefault("QFR_APP_CONFIG",
+                      "/home/dev/project/reports/diaspora/queries_config/app.json")
 CHECKER = f"{ROOT}/src/queries_from_runs/subsume/check_subsumed.sh"
 DEFAULT_OUT = f"{ROOT}/reports/diaspora/results3/blockaid_new_vs_old"
 TIMEOUT_MS = os.environ.get("SUBSUME_TIMEOUT_MS", "30000")

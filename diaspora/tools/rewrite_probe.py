@@ -7,6 +7,10 @@ ROOT = "/home/dev/project"
 SRC = ROOT + "/reports/diaspora/results3/queries_from_runs"
 DST = SRC + "/_rewritten"
 os.makedirs(DST, exist_ok=True)
+# App-specific input for the subsume harness: src/queries_from_runs is
+# app-agnostic and requires an app config; the diaspora side supplies it.
+os.environ.setdefault("QFR_APP_CONFIG",
+                      "/home/dev/project/reports/diaspora/queries_config/app.json")
 CHECKER = ROOT + "/src/queries_from_runs/subsume/check_subsumed.sh"
 EPS = ["comments_index", "conversations_index"]
 

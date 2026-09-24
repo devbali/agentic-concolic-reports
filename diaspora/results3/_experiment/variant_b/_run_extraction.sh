@@ -8,6 +8,7 @@ flock /tmp/concolic-slot.lock systemd-run --user -p MemoryMax=2500M -p MemorySwa
 cd /home/dev/project
 unset JAVA_TOOL_OPTIONS
 PYTHONPATH=src venvs/queries_from_runs/bin/python -m queries_from_runs.dump \
+  --app-config /home/dev/project/reports/diaspora/queries_config/app.json \
   --results reports/diaspora/results3/_experiment \
   --out reports/diaspora/results3/_experiment/variant_b/queries_out \
   --endpoint variant_b \

@@ -20,7 +20,15 @@ invocation, argument-for-argument):
       --summary-json reports/diaspora/results3/_experiment/variant_d/queries_out/_summary.json \
       --verbose
 """
+import os
 import sys
+
+# App-specific input for src/queries_from_runs (E12, 2026-09-11): the
+# package is app-agnostic and REQUIRES an app config (schema, FKs,
+# principal/identity conventions, symbol-name shapes, inflections).
+# Set before ANY queries_from_runs import that reads it at module level.
+os.environ.setdefault("QFR_APP_CONFIG",
+                      "/home/dev/project/reports/diaspora/queries_config/app.json")
 
 import assoc_fold
 

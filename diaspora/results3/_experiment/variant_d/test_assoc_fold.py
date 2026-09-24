@@ -21,6 +21,13 @@ from __future__ import annotations
 import json
 import os
 
+# App-specific input for src/queries_from_runs (E12, 2026-09-11): the
+# package is app-agnostic and REQUIRES an app config (schema, FKs,
+# principal/identity conventions, symbol-name shapes, inflections).
+# Set before ANY queries_from_runs import that reads it at module level.
+os.environ.setdefault("QFR_APP_CONFIG",
+                      "/home/dev/project/reports/diaspora/queries_config/app.json")
+
 from concolic_engine.run import Run
 from queries_from_runs.transform import RunTransformer
 

@@ -7,4 +7,5 @@
 exec systemd-run --user --pipe --quiet -p MemoryMax=3800M -p MemorySwapMax=0 \
   --setenv=SUBSUME_TIMEOUT_MS="${SUBSUME_TIMEOUT_MS:-15000}" \
   --setenv=SUBSUME_SOLVER_THREADS="${SUBSUME_SOLVER_THREADS:-1}" \
+  --setenv=QFR_APP_CONFIG="${QFR_APP_CONFIG:-/home/dev/project/reports/diaspora/queries_config/app.json}" \
   /home/dev/project/src/queries_from_runs/subsume/check_subsumed.sh "$@"
