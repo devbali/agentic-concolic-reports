@@ -21,7 +21,7 @@
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_id",
       "sort": "Int",
-      "value": 1,
+      "value": 24642315,
       "note": "{\"refs\": {\"p0\": \"SYM_PARAM_post_id\"}, \"text\": \"SELECT \\\"posts\\\".* FROM \\\"posts\\\" WHERE \\\"posts\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"posts\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "int",
       "origin": {
@@ -33,7 +33,7 @@
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_author_id",
       "sort": "Int",
-      "value": 0,
+      "value": 41408718,
       "note": "{\"refs\": {\"p0\": \"SYM_PARAM_post_id\"}, \"text\": \"SELECT \\\"posts\\\".* FROM \\\"posts\\\" WHERE \\\"posts\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"posts\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "int",
       "origin": {
@@ -135,7 +135,7 @@
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_o_embed_cache_id",
       "sort": "Int",
-      "value": 0,
+      "value": 237513284,
       "note": "{\"refs\": {\"p0\": \"SYM_PARAM_post_id\"}, \"text\": \"SELECT \\\"posts\\\".* FROM \\\"posts\\\" WHERE \\\"posts\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"posts\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "int",
       "origin": {
@@ -177,7 +177,7 @@
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_open_graph_cache_id",
       "sort": "Int",
-      "value": 0,
+      "value": 622843565,
       "note": "{\"refs\": {\"p0\": \"SYM_PARAM_post_id\"}, \"text\": \"SELECT \\\"posts\\\".* FROM \\\"posts\\\" WHERE \\\"posts\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"posts\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "int",
       "origin": {
@@ -219,7 +219,7 @@
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_1_row_id",
       "sort": "Int",
-      "value": 1,
+      "value": 335555720,
       "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_first_1_id\"}, \"text\": \"SELECT \\\"comments\\\".* FROM \\\"comments\\\" WHERE \\\"comments\\\".\\\"commentable_id\\\" = $$(p0) AND \\\"comments\\\".\\\"commentable_type\\\" = 'Post' ORDER BY created_at ASC\"}",
       "type": "int",
       "origin": {
@@ -237,7 +237,7 @@
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_1_row_commentable_id",
       "sort": "Int",
-      "value": 0,
+      "value": 189538404,
       "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_first_1_id\"}, \"text\": \"SELECT \\\"comments\\\".* FROM \\\"comments\\\" WHERE \\\"comments\\\".\\\"commentable_id\\\" = $$(p0) AND \\\"comments\\\".\\\"commentable_type\\\" = 'Post' ORDER BY created_at ASC\"}",
       "type": "int",
       "origin": {
@@ -249,7 +249,7 @@
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id",
       "sort": "Int",
-      "value": 0,
+      "value": 922216658,
       "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_first_1_id\"}, \"text\": \"SELECT \\\"comments\\\".* FROM \\\"comments\\\" WHERE \\\"comments\\\".\\\"commentable_id\\\" = $$(p0) AND \\\"comments\\\".\\\"commentable_type\\\" = 'Post' ORDER BY created_at ASC\"}",
       "type": "int",
       "origin": {
@@ -362,7 +362,7 @@
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_owner_id",
       "sort": "Int",
-      "value": 0,
+      "value": 115236010,
       "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}"
     },
     {
@@ -392,7 +392,7 @@
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_pod_id",
       "sort": "Int",
-      "value": 0,
+      "value": 309244837,
       "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}"
     },
     {
@@ -427,7 +427,7 @@
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_id",
       "sort": "Int",
-      "value": 1,
+      "value": 267549847,
       "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id\"}, \"text\": \"SELECT \\\"profiles\\\".* FROM \\\"profiles\\\" WHERE \\\"profiles\\\".\\\"person_id\\\" = $$(p0)\"}"
     },
     {
@@ -493,7 +493,7 @@
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_person_id",
       "sort": "Int",
-      "value": 0,
+      "value": 96615357,
       "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id\"}, \"text\": \"SELECT \\\"profiles\\\".* FROM \\\"profiles\\\" WHERE \\\"profiles\\\".\\\"person_id\\\" = $$(p0)\"}"
     },
     {
@@ -562,7 +562,7 @@
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_2_row_id",
       "sort": "Int",
-      "value": 1,
+      "value": 397851117,
       "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_1_row_id\"}, \"text\": \"SELECT \\\"mentions\\\".* FROM \\\"mentions\\\" WHERE \\\"mentions\\\".\\\"mentions_container_id\\\" = $$(p0) AND \\\"mentions\\\".\\\"mentions_container_type\\\" = 'Comment'\"}",
       "type": "int",
       "origin": {
@@ -574,7 +574,7 @@
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_2_row_mentions_container_id",
       "sort": "Int",
-      "value": 0,
+      "value": 885783343,
       "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_1_row_id\"}, \"text\": \"SELECT \\\"mentions\\\".* FROM \\\"mentions\\\" WHERE \\\"mentions\\\".\\\"mentions_container_id\\\" = $$(p0) AND \\\"mentions\\\".\\\"mentions_container_type\\\" = 'Comment'\"}",
       "type": "int",
       "origin": {
@@ -586,7 +586,7 @@
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id",
       "sort": "Int",
-      "value": 0,
+      "value": 569602364,
       "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_1_row_id\"}, \"text\": \"SELECT \\\"mentions\\\".* FROM \\\"mentions\\\" WHERE \\\"mentions\\\".\\\"mentions_container_id\\\" = $$(p0) AND \\\"mentions\\\".\\\"mentions_container_type\\\" = 'Comment'\"}",
       "type": "int",
       "origin": {
@@ -651,7 +651,7 @@
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_owner_id",
       "sort": "Int",
-      "value": 0,
+      "value": 787311025,
       "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}"
     },
     {
@@ -681,7 +681,7 @@
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_pod_id",
       "sort": "Int",
-      "value": 0,
+      "value": 852139175,
       "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}"
     },
     {
@@ -716,7 +716,7 @@
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_id",
       "sort": "Int",
-      "value": 1,
+      "value": 976813006,
       "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id\"}, \"text\": \"SELECT \\\"profiles\\\".* FROM \\\"profiles\\\" WHERE \\\"profiles\\\".\\\"person_id\\\" = $$(p0)\"}"
     },
     {
@@ -782,7 +782,7 @@
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_person_id",
       "sort": "Int",
-      "value": 0,
+      "value": 286499383,
       "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id\"}, \"text\": \"SELECT \\\"profiles\\\".* FROM \\\"profiles\\\" WHERE \\\"profiles\\\".\\\"person_id\\\" = $$(p0)\"}"
     },
     {
@@ -900,7 +900,6 @@
       "args": {
 },
       "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
-      "result_value": "#<Post:0x1581c6fe>",
       "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/services/post_service.rb",
       "lineno": 52,
       "function": "find_public!",
@@ -954,7 +953,7 @@
       "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_public == True)",
       "taken": true,
       "file": "/home/dev/project/reports/diaspora/results4/comments_index/concolic_targets.rb",
-      "lineno": 441,
+      "lineno": 468,
       "function": "block in symbolic_instance"
     },
     {
@@ -1463,8 +1462,7 @@
       "type": "call",
       "target": "ActionController::Rendering#_set_rendered_content_type",
       "args": {
-        "format": "application/json"
-      },
+},
       "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/abstract_controller/rendering.rb",
       "lineno": 29,
       "function": "render"
@@ -1473,12 +1471,8 @@
       "type": "symbolic_call",
       "target": "ActionController::Rendering#_set_rendered_content_type",
       "args": {
-        "format": "application/json"
-      },
+},
       "result_name": "SYM_RESULT_ActionController__Rendering__set_rendered_content_type_1",
-      "result_value": {
-        "format": "application/json"
-      },
       "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/abstract_controller/rendering.rb",
       "lineno": 29,
       "function": "render",
@@ -1883,8 +1877,7 @@
   "symbolic_results": [
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
-      "type": "obj<?>?",
-      "value": "#<Post:0x1581c6fe>"
+      "type": "obj<?>?"
     },
     {
       "name": "SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_1",
@@ -1960,10 +1953,7 @@
     },
     {
       "name": "SYM_RESULT_ActionController__Rendering__set_rendered_content_type_1",
-      "type": "[?]",
-      "value": {
-        "format": "application/json"
-      }
+      "type": "[?]"
     }
   ],
   "script": "run_dse.rb",

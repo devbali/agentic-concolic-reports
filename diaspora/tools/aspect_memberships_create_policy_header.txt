@@ -1,0 +1,100 @@
+# aspect_memberships_create — the policy IR from this corpus
+#
+# Pipeline (dumps_to_policy/README.md's "the one call"), run for real:
+#
+#     Run.from_dict -> build_policy(entrypoint="aspect_memberships_create")
+#                   -> normalize_detailed  (§6: merge, subsume, simplify)
+#                   -> print_policy
+#
+# Corpus: all 10 dumps in this directory tree —
+#   ./dump_auth_json_dse0001..0006.json          (main set, MAX_RUNS=6)
+#   ./write_path/dump_auth_json_dse0001..0004.json  (seeded replay; carries
+#                                                   the real INSERT DML)
+# Runtime: src_new/runtimes/ruby_runtime, after the 2026-09-24 fixes to
+# call_interceptor.rb (identity-based call/record pairing; the pending-note
+# channel scoped per call). Certificate: none — no coverage/completion pass
+# was run against this corpus, so `outcome=UNDECIDED` throughout.
+#
+# EVERY DUMP BUILDS, AND ALL TEN MERGE INTO ONE POLICY.
+#
+# THIS FILE USED TO BE SIX SEPARATE POLICIES. Until 2026-09-24 `build_policy`
+# refused most pairs of these dumps:
+#
+#     BuildError: two dumps declare different types for the same value
+#     (list[?] and int) — §5.2: a declaration is a contract, and
+#     unifying two is inventing a third.
+#
+# (The type in that message was spelled `list[opaque]` when it was written;
+# since 2026-09-25 an unknown-element list is `[?]` in both IRs, and `opaque`
+# means only "examined, and it has no §5 structure" — see DESIGN_IR §5.2.)
+#
+# That was a BUILDER DEFECT, not a property of the corpus. The "same value"
+# was a call variable `cN`, and `cN` is `_Names`'s POSITIONAL identity — the
+# N-th target call ON ONE PATH. Across runs of a prefix-directed DSE the N-th
+# call is a different call whenever an earlier flip changed how many calls
+# precede it: `c15` is `_set_rendered_content_type` in dse0001 and
+# `find_by_sql` in dse0002. `build_policy` merged the §5.4 type observations
+# of every run into one corpus-wide table keyed by that identity, so two
+# unrelated calls that happened to sit at the same index looked like one
+# value declared two ways. 22 such collisions over these 10 dumps.
+#
+# The fix scopes the run-local observation keys per run before merging. A
+# term is run-local exactly when `Term.refs()` is non-empty — when it reads
+# a `cN` — which covers `c3`, `c3.author_id`, `len(c3.rows)` and `-c3`. An
+# entrypoint input (`$SYM_PARAM_aspect_id`) reads no `cN`, is named by WHICH
+# ARGUMENT OF THE ENTRYPOINT it is rather than by a position on a path, and
+# still merges corpus-wide — which is what gives a ten-run policy one
+# `EntrySignature`. The corpus-wide agreements keyed by TARGET NAME (kinds,
+# argument types, declared return types) and §5.2's fixed-object attribute
+# table are untouched, and a real disagreement in any of them still ends the
+# build.
+#
+#
+# ---------------------------------------------------------------------------
+# 2026-09-24, SECOND FIX: THE `write_path` DUMPS BUILD AGAIN (PROVENANCE)
+# ---------------------------------------------------------------------------
+#
+# Between the build above and this one, `src_new` made provenance REQUIRED
+# (`concolic/model/origin.py`, `concolic/model/provenance.py` R2): a
+# `symbolic_call` whose `result_type` is structured must have its parts
+# declared as relations to the symbol minted for that call,
+#     origin: {"kind": "attr", "of": "<result symbol>", "name": "<field>"}
+# and the interceptor emits them by walking the returned value's own
+# structure. All four `write_path/` dumps were then refused:
+#
+#     BuildError: run 'auth_json_dse0001': events[32]
+#     (ActiveRecord::Associations::SingularAssociation#writer) returns
+#     obj<?> as 'SYM_RESULT_…SingularAssociation_writer_1', and NOT ONE
+#     symbol in this run declares itself an attribute of it.
+#
+# The rule is right; the DECLARATION was wrong. That mock is an IDENTITY —
+# it writes the belongs_to foreign key (without which this endpoint's
+# defining INSERT loses `aspect_id`) and hands BACK ITS ARGUMENT. It
+# produces no value, so the aspect's fields are attributes of the ASPECT's
+# own symbol, already declared under the finder that built it; the symbol
+# minted for the writer's return stands for a value another event produced
+# and nothing can ever declare a part of it. Measured: that symbol occurred
+# exactly twice per dump — as `events[N].result_name` and as its own
+# `symbolic_results` entry — and nowhere else, no path condition and no
+# later argument. Ruby settles why: `obj.assoc = v` evaluates to `v`
+# whatever the writer returns, and AR's `assign_attributes` discards it.
+#
+# So the writer stopped being a declared target. ./targets.rb §7 now
+# `prepend`s `AmSingularAssociationWriterFk`, whose `writer(record)` carries
+# the identical foreign-key body as ordinary application code. The effect is
+# unchanged and the fabricated symbol is gone: no
+# `SingularAssociation#writer` event in any of the ten dumps, two fewer
+# events per write-path run (`call` + `symbolic_call`), 17 symbolic results
+# where there were 18, and `INSERT INTO "aspect_memberships" ("aspect_id",
+# "contact_id")` still bound to the aspect finder's id and the contact's.
+#
+# WHAT WAS *NOT* DONE, AND WHY. The IR cannot say "this call returned the
+# value that symbol already names": `origin`'s four kinds are `attr`,
+# `elem`, `result` and `input`, `declare_target` has no pass-through form
+# (its only `returns:` convention is `[value, sort]`), and re-declaring the
+# record's attributes under the new name raises `TypeConflict` ("an origin
+# … has exactly one answer"). A generic interceptor fix is recommended and
+# NOT applied — `src_new` is separately owned. See ./POLICY_EXAMPLE.md,
+# "The interceptor gap".
+#
+# What follows is therefore ONE policy over the whole corpus.

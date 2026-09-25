@@ -68,6 +68,8 @@ module ConcolicEscapeSegmentShim
   end
 end
 
+require "digest" # D8: deterministic name-derived default ids (see default_int)
+
 module ConcolicTargets
   UNSUPPORTED = ->(op) {
     raise NotImplementedError, "unimplemented concolic operation: #{op} (contents out of scope)"
@@ -371,6 +373,31 @@ module ConcolicTargets
   # every association var names its owner chain: `assoc_target_profile`,
   # `SYM_RESULT_..._row_person_profile`, etc. Falls back to the old bare
   # name when the owner carries no symbolic id (concrete fixtures).
+  # D8 SECOND HALF (2026-09-25) — THE QUALIFICATION ITSELF ALIASES.
+  # `<pre>_<refl>` plus `symbolic_instance`'s `<base>_<col>` makes an
+  # association rep's `id` variable spell EXACTLY the owner's own
+  # `<refl>_id` column variable: `contacts.user_id` and `contact.user`'s
+  # `id` are both `SYM_RESULT_..._find_by_1_user_id`. Measured on this
+  # endpoint, 8 of the 8 aliased pairs are belongs_to associations
+  # (`contacts.user_id`/`person_id`, `people.owner_id`/`pod_id`,
+  # `aspects.user_id`, `aspect_memberships.aspect_id`/`contact_id`,
+  # `profiles.person_id`, `users.invited_by_id`/
+  # `auto_follow_back_aspect_id`), where `owner.<fk>_id == owner.<refl>.id`
+  # is a TRUE ActiveRecord invariant — so the aliasing is correct, and
+  # with name-derived defaults (see `default_int`) it is now also
+  # CONSISTENT, instead of resolving to whichever `symint` registered
+  # first.
+  #
+  # IT IS NOT CORRECT IN GENERAL. The shape that breaks it is a has_one /
+  # has_many named `X` on a table that ALSO has a column `X_id`: then
+  # `owner.X.id` and `owner.X_id` are different rows' ids and this would
+  # weld them into one symbol. It does not occur on this endpoint —
+  # `users` has no `person_id` column, so `user.person`'s id aliases
+  # nothing — but it is not excluded by construction, and a rename would
+  # have to keep the belongs_to identification while breaking this one.
+  # Reported, not changed: renaming churns every variable name in the
+  # corpus and would DROP a true invariant to fix a case that does not
+  # arise here.
   def assoc_base_name(owner, refl_name)
     pre = nil
     begin
@@ -422,7 +449,7 @@ module ConcolicTargets
       var_name = "#{base_name}_#{col}"
       attrs[col] = case meta.type
                    when :integer, :bigint
-                     symint(var_name, seed_for(var_name, default_int(col)), note: sql)
+                     symint(var_name, seed_for(var_name, default_int(col, var_name)), note: sql)
                    when :boolean
                      symbool(var_name, seed_for(var_name, false), note: sql)
                    else
@@ -555,8 +582,79 @@ module ConcolicTargets
     obj
   end
 
-  def default_int(col)
-    col == "id" ? 1 : 0
+  # ------------------------------------------------------------------
+  # D8 (2026-09-25) — DISTINCT DEFAULT IDENTITIES FOR DISTINCT ENTITIES
+  # ------------------------------------------------------------------
+  # Before: every symbolic row's `id` defaulted to 1 and every foreign key
+  # to 0, so ANY two independently-loaded records compared EQUAL by default
+  # (`ActiveRecord::Core#==` is `other.instance_of?(self.class) && other.id
+  # == id`). On aspect_memberships#create that made `Contact
+  # #not_contact_for_self` (`person.owner == user`) fire on the DEFAULT run:
+  # the contact was always invalid, `share_with` always returned false, and
+  # the 409 "cannot add yourself" arm — a rare real state — was presented as
+  # the endpoint's default outcome, with the INSERT one flip away and out of
+  # budget.
+  #
+  # MEASURED, `dump_auth_json_dse0001.json`: 21 id variables took FOUR
+  # distinct values (14 of them 0, 5 of them 1). After this change, 26 id
+  # variables take 26 distinct values.
+  #
+  # THE SEED IS DERIVED FROM THE VARIABLE'S OWN NAME, not from a counter.
+  # A per-symbol counter would be ORDER-DEPENDENT: the same symbol would get
+  # a different id depending on which decisions a run took before minting it,
+  # so two runs over the same seeds could disagree and the corpus would stop
+  # being reproducible. `Digest::MD5` of the name is a pure function of the
+  # name, so:
+  #   * the same name always gets the same id, in every run, in every
+  #     process, in any order, with no shared state;
+  #   * two different names get different ids (with the span below, the
+  #     birthday probability over the ~300 names this corpus mints is ~5e-5,
+  #     and a collision is DETECTED and warned about rather than silent);
+  #   * `String#hash` is deliberately NOT used — Ruby/JRuby seed it per
+  #     process, which is exactly the non-determinism being avoided.
+  #
+  # WHAT STAYS EQUAL. The seed is keyed on the FULL variable name, so the
+  # name aliasing between a belongs_to FK column and its target's id
+  # (`<rep>_user_id` is both `contacts.user_id` and the var for
+  # `contact.user`'s `id` — see `assoc_base_name`) keeps both spellings on
+  # ONE value. That identification is the true AR invariant
+  # (`contact.user_id == contact.user.id`), and it is now consistent by
+  # construction instead of depending on which of the two `symint` calls
+  # happened to register first (it was the FK's, which is why every id in
+  # the pre-fix dumps read 0, not 1).
+  #
+  # SCOPE: only `id` and `*_id` columns. Every other integer column keeps
+  # its 0 default — a count, a counter cache or a numeric flag has no
+  # identity semantics, and moving those would change app behaviour
+  # (`if x.n > 0`) for no gain.
+  ID_SEED_MIN  = 10_000_000
+  ID_SEED_SPAN = 990_000_000
+  ID_SEED_SEEN = {}
+
+  def id_column?(col)
+    c = col.to_s
+    c == "id" || c.end_with?("_id")
+  end
+
+  # Deterministic, order-independent, name-derived identity. Pure function
+  # of `var_name`; no process state, no counter, no clock.
+  def name_derived_id(var_name)
+    n = var_name.to_s
+    v = ID_SEED_MIN + (Digest::MD5.hexdigest(n)[0, 15].to_i(16) % ID_SEED_SPAN)
+    prev = ID_SEED_SEEN[v]
+    if prev.nil?
+      ID_SEED_SEEN[v] = n
+    elsif prev != n
+      warn "[concolic][D8] default-id COLLISION: #{prev} and #{n} both seed #{v}"
+    end
+    v
+  end
+
+  # `var_name` is optional so an older caller still gets the old behaviour
+  # (1 for an id, 0 otherwise) rather than a silently different one.
+  def default_int(col, var_name = nil)
+    return 0 unless id_column?(col)
+    var_name.nil? ? 1 : name_derived_id(var_name)
   end
 
   # Shared single-record finder mock. raise_on_missing: true  -> find/!-style

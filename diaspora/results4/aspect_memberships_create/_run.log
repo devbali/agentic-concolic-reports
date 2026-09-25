@@ -66,18 +66,18 @@ Rack::SSL is enabled
 [am_create] AspectMembershipsTargets installed
 [am_create devise] AmDeviseUserNaming installed
 == aspect_memberships_create :: prefix-directed DSE (MAX_RUNS=6, TIME_BUDGET=600s) ==
-[auth_json_dse0001] paths=1 runs=1 pcs=14 stack=0 
-[auth_json_dse0002] paths=2 runs=2 pcs=13 stack=13 
-[auth_json_dse0003] paths=3 runs=3 pcs=2 stack=25 
-[auth_json_dse0004] paths=4 runs=4 pcs=3 stack=25 
-[auth_json_dse0005] paths=5 runs=5 pcs=14 stack=27 
-[auth_json_dse0006] paths=6 runs=6 pcs=5 stack=40 
+[auth_json_dse0001] paths=1 runs=1 pcs=16 stack=0 
+[auth_json_dse0002] paths=2 runs=2 pcs=15 stack=15 
+[auth_json_dse0003] paths=3 runs=3 pcs=2 stack=29 
+[auth_json_dse0004] paths=4 runs=4 pcs=3 stack=29 
+[auth_json_dse0005] paths=5 runs=5 pcs=15 stack=31 
+[auth_json_dse0006] paths=6 runs=6 pcs=5 stack=45 
 [stop] MAX_RUNS reached
 
 == aspect_memberships_create exploration done ==
   runs executed  : 6
   distinct paths : 6
   worklist empty : false
-  elapsed        : 9.7s
+  elapsed        : 14.5s
   run errors     : {}
   unflippable    : 0 distinct PC shapes

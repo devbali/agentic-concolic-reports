@@ -20,7 +20,7 @@
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id",
       "sort": "Int",
-      "value": 1,
+      "value": 808098486,
       "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "int",
       "origin": {
@@ -374,7 +374,7 @@
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_auto_follow_back_aspect_id",
       "sort": "Int",
-      "value": 0,
+      "value": 524783429,
       "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "int",
       "origin": {
@@ -458,7 +458,7 @@
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_invited_by_id",
       "sort": "Int",
-      "value": 0,
+      "value": 140104987,
       "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "int",
       "origin": {
@@ -488,7 +488,7 @@
     {
       "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id",
       "sort": "Int",
-      "value": 1,
+      "value": 830002356,
       "note": "{\"refs\": {\"p0\": \"SYM_PARAM_person_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "int",
       "origin": {
@@ -530,7 +530,7 @@
     {
       "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_owner_id",
       "sort": "Int",
-      "value": 0,
+      "value": 619028894,
       "note": "{\"refs\": {\"p0\": \"SYM_PARAM_person_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "int",
       "origin": {
@@ -590,7 +590,7 @@
     {
       "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_pod_id",
       "sort": "Int",
-      "value": 0,
+      "value": 821812144,
       "note": "{\"refs\": {\"p0\": \"SYM_PARAM_person_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "int",
       "origin": {
@@ -625,7 +625,7 @@
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_id",
       "sort": "Int",
-      "value": 1,
+      "value": 308159203,
       "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id\", \"p1\": \"SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id\"}, \"text\": \"SELECT \\\"contacts\\\".* FROM \\\"contacts\\\" WHERE \\\"contacts\\\".\\\"user_id\\\" = $$(p0) AND \\\"contacts\\\".\\\"person_id\\\" = $$(p1) LIMIT 1\"}",
       "type": "int",
       "origin": {
@@ -637,7 +637,7 @@
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id",
       "sort": "Int",
-      "value": 0,
+      "value": 358859050,
       "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id\", \"p1\": \"SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id\"}, \"text\": \"SELECT \\\"contacts\\\".* FROM \\\"contacts\\\" WHERE \\\"contacts\\\".\\\"user_id\\\" = $$(p0) AND \\\"contacts\\\".\\\"person_id\\\" = $$(p1) LIMIT 1\"}",
       "type": "int",
       "origin": {
@@ -649,7 +649,7 @@
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id",
       "sort": "Int",
-      "value": 0,
+      "value": 32662832,
       "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id\", \"p1\": \"SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id\"}, \"text\": \"SELECT \\\"contacts\\\".* FROM \\\"contacts\\\" WHERE \\\"contacts\\\".\\\"user_id\\\" = $$(p0) AND \\\"contacts\\\".\\\"person_id\\\" = $$(p1) LIMIT 1\"}",
       "type": "int",
       "origin": {
@@ -1051,7 +1051,7 @@
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_auto_follow_back_aspect_id",
       "sort": "Int",
-      "value": 0,
+      "value": 109899222,
       "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "int",
       "origin": {
@@ -1135,7 +1135,7 @@
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_invited_by_id",
       "sort": "Int",
-      "value": 0,
+      "value": 573159847,
       "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "int",
       "origin": {
@@ -1189,7 +1189,7 @@
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id",
       "sort": "Int",
-      "value": 0,
+      "value": 760954875,
       "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "int",
       "origin": {
@@ -1249,7 +1249,7 @@
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_pod_id",
       "sort": "Int",
-      "value": 0,
+      "value": 830882146,
       "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "int",
       "origin": {
@@ -1609,7 +1609,7 @@
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_auto_follow_back_aspect_id",
       "sort": "Int",
-      "value": 0,
+      "value": 318842284,
       "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "int",
       "origin": {
@@ -1693,7 +1693,7 @@
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_invited_by_id",
       "sort": "Int",
-      "value": 0,
+      "value": 151423488,
       "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "int",
       "origin": {
@@ -1724,14 +1724,6 @@
       "sort": "Bool",
       "value": false,
       "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id\", \"p1\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id\"}, \"text\": \"SELECT 1 AS one FROM \\\"blocks\\\" WHERE \\\"blocks\\\".\\\"user_id\\\" = $$(p0) AND \\\"blocks\\\".\\\"person_id\\\" = $$(p1) LIMIT 1\"}"
-    },
-    {
-      "name": "SYM_RESULT_ActionController__Rendering__set_rendered_content_type_1",
-      "type": "[?]"
-    },
-    {
-      "name": "SYM_RESULT_ActionController__Rendering__set_rendered_content_type_2",
-      "type": "[?]"
     }
   ],
   "events": [
@@ -1750,7 +1742,6 @@
       "args": {
 },
       "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1",
-      "result_value": "#<User:0xeb3ceb4>",
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb",
       "lineno": 1378,
       "function": "get",
@@ -1820,7 +1811,6 @@
         }
       },
       "result_name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1",
-      "result_value": "#<Person:0x3453014b>",
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb",
       "lineno": 1169,
       "function": "find",
@@ -1845,7 +1835,7 @@
       },
       "taken": false,
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb",
-      "lineno": 569,
+      "lineno": 667,
       "function": "block in finder_mock"
     },
     {
@@ -1910,7 +1900,6 @@
       "args": {
 },
       "result_name": "SYM_RESULT_User_blocks_1",
-      "result_value": "#<Block::ActiveRecord_Associations_CollectionProxy:0x281c8eda>",
       "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/models/user/connecting.rb",
       "lineno": 14,
       "function": "share_with",
@@ -1926,9 +1915,6 @@
             "value": "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
           }
         },
-        "binds": [
-          "#<ActiveRecord::Relation::QueryAttribute:0xe700641>"
-        ],
         "preparable": {
           "lit": {
             "sort": "bool",
@@ -1950,9 +1936,6 @@
             "value": "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
           }
         },
-        "binds": [
-          "#<ActiveRecord::Relation::QueryAttribute:0xe700641>"
-        ],
         "preparable": {
           "lit": {
             "sort": "bool",
@@ -1976,7 +1959,7 @@
       "args": {
 },
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb",
-      "lineno": 1769,
+      "lineno": 1867,
       "function": "block"
     },
     {
@@ -1991,7 +1974,7 @@
         }
       },
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb",
-      "lineno": 1769,
+      "lineno": 1867,
       "function": "block in exists?",
       "result_type": "bool?",
       "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id\", \"p1\": \"SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id\"}, \"text\": \"SELECT 1 AS one FROM \\\"blocks\\\" WHERE \\\"blocks\\\".\\\"user_id\\\" = $$(p0) AND \\\"blocks\\\".\\\"person_id\\\" = $$(p1) LIMIT 1\"}"
@@ -2023,7 +2006,7 @@
       "args": {
 },
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb",
-      "lineno": 1769,
+      "lineno": 1867,
       "function": "block"
     },
     {
@@ -2032,9 +2015,8 @@
       "args": {
 },
       "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1",
-      "result_value": "#<Contact:0x1e26bf55>",
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb",
-      "lineno": 1769,
+      "lineno": 1867,
       "function": "block in find_by",
       "result_type": "obj<?>?",
       "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id\", \"p1\": \"SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id\"}, \"text\": \"SELECT \\\"contacts\\\".* FROM \\\"contacts\\\" WHERE \\\"contacts\\\".\\\"user_id\\\" = $$(p0) AND \\\"contacts\\\".\\\"person_id\\\" = $$(p1) LIMIT 1\"}"
@@ -2066,7 +2048,7 @@
       "args": {
 },
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb",
-      "lineno": 1209,
+      "lineno": 1307,
       "function": "find_target"
     },
     {
@@ -2075,9 +2057,8 @@
       "args": {
 },
       "result_name": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1",
-      "result_value": "#<User:0x32d3bc83>",
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb",
-      "lineno": 1209,
+      "lineno": 1307,
       "function": "find_target",
       "result_type": "obj<?>?",
       "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}"
@@ -2130,7 +2111,7 @@
       "args": {
 },
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb",
-      "lineno": 1209,
+      "lineno": 1307,
       "function": "find_target"
     },
     {
@@ -2139,9 +2120,8 @@
       "args": {
 },
       "result_name": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_2",
-      "result_value": "#<Person:0x7ef59e5d>",
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb",
-      "lineno": 1209,
+      "lineno": 1307,
       "function": "find_target",
       "result_type": "obj<?>?",
       "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}"
@@ -2152,7 +2132,7 @@
       "args": {
 },
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb",
-      "lineno": 1769,
+      "lineno": 1867,
       "function": "block"
     },
     {
@@ -2167,7 +2147,7 @@
         }
       },
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb",
-      "lineno": 1769,
+      "lineno": 1867,
       "function": "block in exists?",
       "result_type": "bool?",
       "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id\", \"p1\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id\"}, \"text\": \"SELECT 1 AS one FROM \\\"contacts\\\" WHERE \\\"contacts\\\".\\\"person_id\\\" = $$(p0) AND \\\"contacts\\\".\\\"id\\\" IS NOT NULL AND \\\"contacts\\\".\\\"user_id\\\" = $$(p1) LIMIT 1\"}"
@@ -2199,7 +2179,7 @@
       "args": {
 },
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb",
-      "lineno": 1209,
+      "lineno": 1307,
       "function": "find_target"
     },
     {
@@ -2208,9 +2188,8 @@
       "args": {
 },
       "result_name": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_3",
-      "result_value": "#<User:0x70b9cdcc>",
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb",
-      "lineno": 1209,
+      "lineno": 1307,
       "function": "find_target",
       "result_type": "obj<?>?",
       "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}"
@@ -2270,7 +2249,7 @@
           }
         ]
       },
-      "taken": true,
+      "taken": false,
       "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/core.rb",
       "lineno": 425,
       "function": "=="
@@ -2290,7 +2269,6 @@
       "args": {
 },
       "result_name": "SYM_RESULT_User_blocks_2",
-      "result_value": "#<Block::ActiveRecord_Associations_CollectionProxy:0x5b4e1899>",
       "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/models/contact.rb",
       "lineno": 100,
       "function": "not_blocked_user",
@@ -2306,9 +2284,6 @@
             "value": "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
           }
         },
-        "binds": [
-          "#<ActiveRecord::Relation::QueryAttribute:0x745690d7>"
-        ],
         "preparable": {
           "lit": {
             "sort": "bool",
@@ -2330,9 +2305,6 @@
             "value": "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
           }
         },
-        "binds": [
-          "#<ActiveRecord::Relation::QueryAttribute:0x745690d7>"
-        ],
         "preparable": {
           "lit": {
             "sort": "bool",
@@ -2356,7 +2328,7 @@
       "args": {
 },
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb",
-      "lineno": 1769,
+      "lineno": 1867,
       "function": "block"
     },
     {
@@ -2371,7 +2343,7 @@
         }
       },
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb",
-      "lineno": 1769,
+      "lineno": 1867,
       "function": "block in exists?",
       "result_type": "bool?",
       "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id\", \"p1\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id\"}, \"text\": \"SELECT 1 AS one FROM \\\"blocks\\\" WHERE \\\"blocks\\\".\\\"user_id\\\" = $$(p0) AND \\\"blocks\\\".\\\"person_id\\\" = $$(p1) LIMIT 1\"}"
@@ -2402,95 +2374,16 @@
       "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_closed_account == True)",
       "taken": false,
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb",
-      "lineno": 441,
+      "lineno": 468,
       "function": "block in symbolic_instance"
     },
     {
-      "type": "call",
-      "target": "ActionController::Rendering#_set_rendered_content_type",
-      "args": {
-        "format": "application/json"
-      },
-      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/mime_responds.rb",
-      "lineno": 201,
-      "function": "respond_to"
-    },
-    {
-      "type": "symbolic_call",
-      "target": "ActionController::Rendering#_set_rendered_content_type",
-      "args": {
-        "format": "application/json"
-      },
-      "result_name": "SYM_RESULT_ActionController__Rendering__set_rendered_content_type_1",
-      "result_value": {
-        "format": "application/json"
-      },
-      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/mime_responds.rb",
-      "lineno": 201,
-      "function": "respond_to",
-      "result_type": "[?]"
-    },
-    {
-      "type": "call",
-      "target": "ActionController::Metal#status=",
-      "args": {
-        "arg": {
-          "lit": {
-            "sort": "int",
-            "value": 409
-          }
-        }
-      },
-      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/rendering.rb",
-      "lineno": 115,
-      "function": "_process_options"
-    },
-    {
-      "type": "symbolic_call",
-      "target": "ActionController::Metal#status=",
-      "args": {
-        "arg": {
-          "lit": {
-            "sort": "int",
-            "value": 409
-          }
-        }
-      },
-      "result_name": "SYM_RESULT_ActionController__Metal_status__1",
-      "result_value": {
-        "lit": {
-          "sort": "null"
-        }
-      },
-      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/rendering.rb",
-      "lineno": 115,
-      "function": "_process_options",
-      "result_type": "int?"
-    },
-    {
-      "type": "call",
-      "target": "ActionController::Rendering#_set_rendered_content_type",
-      "args": {
-        "format": "application/json"
-      },
-      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/abstract_controller/rendering.rb",
-      "lineno": 29,
-      "function": "render"
-    },
-    {
-      "type": "symbolic_call",
-      "target": "ActionController::Rendering#_set_rendered_content_type",
-      "args": {
-        "format": "application/json"
-      },
-      "result_name": "SYM_RESULT_ActionController__Rendering__set_rendered_content_type_2",
-      "result_value": {
-        "format": "application/json"
-      },
-      "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/abstract_controller/rendering.rb",
-      "lineno": 29,
-      "function": "render",
-      "result_type": "[?]"
+      "type": "path_condition",
+      "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_receiving == True)",
+      "taken": false,
+      "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb",
+      "lineno": 468,
+      "function": "block in symbolic_instance"
     }
   ],
   "types": {
@@ -2835,13 +2728,11 @@
   "symbolic_results": [
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1",
-      "type": "obj<?>",
-      "value": "#<User:0xeb3ceb4>"
+      "type": "obj<?>"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1",
-      "type": "obj<?>",
-      "value": "#<Person:0x3453014b>"
+      "type": "obj<?>"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
@@ -2854,8 +2745,7 @@
     },
     {
       "name": "SYM_RESULT_User_blocks_1",
-      "type": "[?]",
-      "value": "#<Block::ActiveRecord_Associations_CollectionProxy:0x281c8eda>"
+      "type": "[?]"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Querying_find_by_sql_1",
@@ -2875,18 +2765,15 @@
     },
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1",
-      "type": "obj<?>?",
-      "value": "#<Contact:0x1e26bf55>"
+      "type": "obj<?>?"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1",
-      "type": "obj<?>?",
-      "value": "#<User:0x32d3bc83>"
+      "type": "obj<?>?"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_2",
-      "type": "obj<?>?",
-      "value": "#<Person:0x7ef59e5d>"
+      "type": "obj<?>?"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_exists__2",
@@ -2899,13 +2786,11 @@
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_3",
-      "type": "obj<?>?",
-      "value": "#<User:0x70b9cdcc>"
+      "type": "obj<?>?"
     },
     {
       "name": "SYM_RESULT_User_blocks_2",
-      "type": "[?]",
-      "value": "#<Block::ActiveRecord_Associations_CollectionProxy:0x5b4e1899>"
+      "type": "[?]"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Querying_find_by_sql_2",
@@ -2922,29 +2807,6 @@
           "sort": "null"
         }
       }
-    },
-    {
-      "name": "SYM_RESULT_ActionController__Rendering__set_rendered_content_type_1",
-      "type": "[?]",
-      "value": {
-        "format": "application/json"
-      }
-    },
-    {
-      "name": "SYM_RESULT_ActionController__Metal_status__1",
-      "type": "int?",
-      "value": {
-        "lit": {
-          "sort": "null"
-        }
-      }
-    },
-    {
-      "name": "SYM_RESULT_ActionController__Rendering__set_rendered_content_type_2",
-      "type": "[?]",
-      "value": {
-        "format": "application/json"
-      }
     }
   ],
   "script": "run_dse.rb",
@@ -2955,5 +2817,10 @@
     "name": "auth_json",
     "format": "json",
     "signed_in": true
+  },
+  "concolic_terminal": {
+    "type": "ActiveRecord::AssociationTypeMismatch",
+    "cause": null,
+    "message": "Aspect(#4692) expected, got nil which is an instance of NilClass(#4696)"
   }
 }

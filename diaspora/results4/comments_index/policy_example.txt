@@ -1,10 +1,10 @@
 policy comments_index
-  cert   report=none  outcome=UNDECIDED  app=results4/comments_index  atoms=11  minimal=full  inferred=126  declared=88  elided=0
+  cert   report=none  outcome=UNDECIDED  app=results4/comments_index  atoms=11  minimal=full  inferred=0  declared=0  elided=0
   entry  comments_index($"Length(SYM_PARAM_post_id)": int, $SYM_PARAM_post_id: str, $SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found: bool, $SYM_RESULT_ActiveRecord__FinderMethods_first_1_type: str)
 
-  sig ActionController::Head#head(status: str) -> str shim
+  sig ActionController::Head#head() -> str shim
   sig ActionController::Metal#status=(arg: int) -> int? shim
-  sig ActionController::Rendering#_set_rendered_content_type(format: str) -> [?] shim
+  sig ActionController::Rendering#_set_rendered_content_type() -> [?] shim
   sig ActiveRecord::FinderMethods#first() -> obj<?>? target_function
   sig ActiveRecord::Relation#records() -> [?] target_function
   sig ConcolicThroughLoadProbe.load_intermediate() -> [?] target_function

@@ -21,7 +21,7 @@
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_id",
       "sort": "Int",
-      "value": 1,
+      "value": 24642315,
       "note": "{\"refs\": {\"p0\": \"SYM_PARAM_post_id\"}, \"text\": \"SELECT \\\"posts\\\".* FROM \\\"posts\\\" WHERE \\\"posts\\\".\\\"guid\\\" = $$(p0) ORDER BY \\\"posts\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "int",
       "origin": {
@@ -33,7 +33,7 @@
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_author_id",
       "sort": "Int",
-      "value": 0,
+      "value": 41408718,
       "note": "{\"refs\": {\"p0\": \"SYM_PARAM_post_id\"}, \"text\": \"SELECT \\\"posts\\\".* FROM \\\"posts\\\" WHERE \\\"posts\\\".\\\"guid\\\" = $$(p0) ORDER BY \\\"posts\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "int",
       "origin": {
@@ -135,7 +135,7 @@
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_o_embed_cache_id",
       "sort": "Int",
-      "value": 0,
+      "value": 237513284,
       "note": "{\"refs\": {\"p0\": \"SYM_PARAM_post_id\"}, \"text\": \"SELECT \\\"posts\\\".* FROM \\\"posts\\\" WHERE \\\"posts\\\".\\\"guid\\\" = $$(p0) ORDER BY \\\"posts\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "int",
       "origin": {
@@ -177,7 +177,7 @@
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_open_graph_cache_id",
       "sort": "Int",
-      "value": 0,
+      "value": 622843565,
       "note": "{\"refs\": {\"p0\": \"SYM_PARAM_post_id\"}, \"text\": \"SELECT \\\"posts\\\".* FROM \\\"posts\\\" WHERE \\\"posts\\\".\\\"guid\\\" = $$(p0) ORDER BY \\\"posts\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "int",
       "origin": {
@@ -254,7 +254,6 @@
       "args": {
 },
       "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
-      "result_value": "#<Post:0x52fe7c0f>",
       "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/services/post_service.rb",
       "lineno": 52,
       "function": "find_public!",
@@ -308,7 +307,7 @@
       "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_public == True)",
       "taken": false,
       "file": "/home/dev/project/reports/diaspora/results4/comments_index/concolic_targets.rb",
-      "lineno": 441,
+      "lineno": 468,
       "function": "block in public?"
     }
   ],
@@ -653,8 +652,7 @@
   "symbolic_results": [
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
-      "type": "obj<?>?",
-      "value": "#<Post:0x52fe7c0f>"
+      "type": "obj<?>?"
     }
   ],
   "script": "run_dse.rb",
