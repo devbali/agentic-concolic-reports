@@ -115,12 +115,12 @@ run "anon_json_dse0003" schema=1
        @ "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/services/post_service.rb":66 in "post_key"
   1: void ActiveRecord::FinderMethods#first()
        @ "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/services/post_service.rb":52 in "find_public!"
-  2: call ActiveRecord::FinderMethods#first() -> $SYM_RESULT_ActiveRecord__FinderMethods_first_1: Int type opaque? = null
+  2: call ActiveRecord::FinderMethods#first() -> $SYM_RESULT_ActiveRecord__FinderMethods_first_1 type opaque? = null
        note "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
        @ "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/services/post_service.rb":52 in "find_public!"
   3: pc ($SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == true) taken
        @ "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb":514 in "block in finder_mock_faithful"
   4: void ActionController::Head#head(status: ~"not_found")
        @ "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/comments_controller.rb":13 in "block"
-  5: call ActionController::Head#head(status: ~"not_found") -> $SYM_RESULT_ActionController__Head_head_1: Int type opaque = ~"head_reached"
+  5: call ActionController::Head#head(status: ~"not_found") -> $SYM_RESULT_ActionController__Head_head_1 type opaque = ~"head_reached"
        @ "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/comments_controller.rb":13 in "block in CommentsController"

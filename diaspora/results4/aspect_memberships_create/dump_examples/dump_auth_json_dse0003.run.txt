@@ -131,13 +131,13 @@ run "auth_json_dse0003" schema=1
   var $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_remember_created_at: String type str origin attr($SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1, remember_created_at) = "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_remember_created_at_v" note "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
   var $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_invited_by_id: Int type int origin attr($SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1, invited_by_id) = 0 note "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
   var $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_authentication_token: String type str origin attr($SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1, authentication_token) = "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_authentication_token_v" note "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
-  result $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1 = ~"#<User:0x7c458ad3>"
+  result $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1 = ~"#<User:0x496de48b>"
   script "run_dse.rb"
   0: void ActiveRecord::FinderMethods#devise_user_first()
-       @ "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb":870 in "get"
-  1: call ActiveRecord::FinderMethods#devise_user_first() -> $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1: Int type obj<?> = ~"#<User:0x7c458ad3>"
+       @ "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb":952 in "get"
+  1: call ActiveRecord::FinderMethods#devise_user_first() -> $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1 type obj<?> = ~"#<User:0x496de48b>"
        note "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
-       @ "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb":870 in "get"
+       @ "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb":952 in "get"
   2: pc ($SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_language == "pl") not-taken
        @ "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb":618 in "symbolic_instance"
   3: pc ($SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_language == "xx") taken

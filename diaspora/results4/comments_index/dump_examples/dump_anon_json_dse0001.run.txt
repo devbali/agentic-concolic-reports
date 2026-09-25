@@ -128,13 +128,13 @@ run "anon_json_dse0001" schema=1
   var $SYM_RESULT_ActiveRecord__FinderMethods_first_1_created_at_year: Int = 1990 note "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
   var $SYM_RESULT_ActiveRecord__FinderMethods_first_1_updated_at_year: Int = 1990 note "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
   var $SYM_RESULT_ActiveRecord__FinderMethods_first_1_interacted_at_year: Int = 1990 note "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
-  result $SYM_RESULT_ActiveRecord__FinderMethods_first_1 = ~"#<Post:0x68b2ce71>"
+  result $SYM_RESULT_ActiveRecord__FinderMethods_first_1 = ~"#<Post:0x6f3628c2>"
   script "run_dse.rb"
   0: pc ($"Length(SYM_PARAM_post_id)" < 16) taken
        @ "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/services/post_service.rb":66 in "post_key"
   1: void ActiveRecord::FinderMethods#first()
        @ "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/services/post_service.rb":52 in "find_public!"
-  2: call ActiveRecord::FinderMethods#first() -> $SYM_RESULT_ActiveRecord__FinderMethods_first_1: Int type obj<?> = ~"#<Post:0x68b2ce71>"
+  2: call ActiveRecord::FinderMethods#first() -> $SYM_RESULT_ActiveRecord__FinderMethods_first_1 type obj<?> = ~"#<Post:0x6f3628c2>"
        note "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
        @ "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/services/post_service.rb":52 in "find_public!"
   3: pc ($SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == true) not-taken

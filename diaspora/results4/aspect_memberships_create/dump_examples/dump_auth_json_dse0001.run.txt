@@ -160,7 +160,7 @@ run "auth_json_dse0001" schema=1
   var $SYM_RESULT_ActiveRecord__FinderMethods_first_1_order_id: Int type int origin attr($SYM_RESULT_ActiveRecord__FinderMethods_first_1, order_id) = 0 note "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"aspects\".\"id\" = $$(SYM_PARAM_aspect_id) ORDER BY order_id ASC LIMIT 1"
   var $SYM_RESULT_ActiveRecord__FinderMethods_first_1_chat_enabled: Bool type bool origin attr($SYM_RESULT_ActiveRecord__FinderMethods_first_1, chat_enabled) = false note "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"aspects\".\"id\" = $$(SYM_PARAM_aspect_id) ORDER BY order_id ASC LIMIT 1"
   var $SYM_RESULT_ActiveRecord__FinderMethods_first_1_post_default: Bool type bool origin attr($SYM_RESULT_ActiveRecord__FinderMethods_first_1, post_default) = false note "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"aspects\".\"id\" = $$(SYM_PARAM_aspect_id) ORDER BY order_id ASC LIMIT 1"
-  var $SYM_RESULT_ActiveRecord__Querying_find_by_sql_1_rows: Int type [?] note "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
+  var $SYM_RESULT_ActiveRecord__Querying_find_by_sql_1_rows type [?] note "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
   var $SYM_RESULT_ActiveRecord__FinderMethods_exists__1_exists: Bool = false note "SELECT 1 AS one FROM \"blocks\" WHERE \"blocks\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"blocks\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
   var $SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found: Bool = false note "SELECT \"contacts\".* FROM \"contacts\" WHERE \"contacts\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"contacts\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
   var $SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_id: Int type int origin attr($SYM_RESULT_ActiveRecord__FinderMethods_find_by_1, id) = 1 note "SELECT \"contacts\".* FROM \"contacts\" WHERE \"contacts\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"contacts\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
@@ -256,77 +256,77 @@ run "auth_json_dse0001" schema=1
   var $SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_remember_created_at: String type str origin attr($SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_3, remember_created_at) = "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_remember_created_at_v" note "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)"
   var $SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_invited_by_id: Int type int origin attr($SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_3, invited_by_id) = 0 note "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)"
   var $SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_authentication_token: String type str origin attr($SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_3, authentication_token) = "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_authentication_token_v" note "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)"
-  var $SYM_RESULT_ActiveRecord__Querying_find_by_sql_2_rows: Int type [?] note "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
+  var $SYM_RESULT_ActiveRecord__Querying_find_by_sql_2_rows type [?] note "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
   var $SYM_RESULT_ActiveRecord__FinderMethods_exists__3_exists: Bool = false note "SELECT 1 AS one FROM \"blocks\" WHERE \"blocks\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id) AND \"blocks\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id) LIMIT 1"
-  var $SYM_RESULT_ActionController__Rendering__set_rendered_content_type_1: Int type [?]
-  var $SYM_RESULT_ActionController__Rendering__set_rendered_content_type_2: Int type [?]
+  var $SYM_RESULT_ActionController__Rendering__set_rendered_content_type_1 type [?]
+  var $SYM_RESULT_ActionController__Rendering__set_rendered_content_type_2 type [?]
   result $SYM_RESULT_ActionController__Metal_status__1 = null
   result $SYM_RESULT_ActionController__Rendering__set_rendered_content_type_1 = <opaque>
   result $SYM_RESULT_ActionController__Rendering__set_rendered_content_type_2 = <opaque>
-  result $SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1 = ~"#<User:0x6bd2dd5d>"
-  result $SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_2 = ~"#<Person:0x47d0c2e0>"
-  result $SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_3 = ~"#<User:0x311a569d>"
-  result $SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1 = ~"#<Person:0x65accb85>"
-  result $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1 = ~"#<User:0x29db6eb1>"
+  result $SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1 = ~"#<User:0x684f20ea>"
+  result $SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_2 = ~"#<Person:0x81bc4da>"
+  result $SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_3 = ~"#<User:0x6a022b0e>"
+  result $SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1 = ~"#<Person:0x570b2d9b>"
+  result $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1 = ~"#<User:0x1353f515>"
   result $SYM_RESULT_ActiveRecord__FinderMethods_exists__1 = null
   result $SYM_RESULT_ActiveRecord__FinderMethods_exists__2 = null
   result $SYM_RESULT_ActiveRecord__FinderMethods_exists__3 = null
-  result $SYM_RESULT_ActiveRecord__FinderMethods_find_by_1 = ~"#<Contact:0x68a1d32f>"
+  result $SYM_RESULT_ActiveRecord__FinderMethods_find_by_1 = ~"#<Contact:0x6626ae40>"
   result $SYM_RESULT_ActiveRecord__FinderMethods_first_1 = ~"SYM_RESULT_ActiveRecord__FinderMethods_first_1_name_v"
   result $SYM_RESULT_ActiveRecord__Querying_find_by_sql_1 = $SYM_RESULT_ActiveRecord__Querying_find_by_sql_1_rows
   result $SYM_RESULT_ActiveRecord__Querying_find_by_sql_2 = $SYM_RESULT_ActiveRecord__Querying_find_by_sql_2_rows
-  result $SYM_RESULT_User_blocks_1 = ~"#<Block::ActiveRecord_Associations_CollectionProxy:0x6309e4fb>"
-  result $SYM_RESULT_User_blocks_2 = ~"#<Block::ActiveRecord_Associations_CollectionProxy:0x57c4d33a>"
+  result $SYM_RESULT_User_blocks_1 = ~"#<Block::ActiveRecord_Associations_CollectionProxy:0x3b5b6df4>"
+  result $SYM_RESULT_User_blocks_2 = ~"#<Block::ActiveRecord_Associations_CollectionProxy:0x3985cca0>"
   script "run_dse.rb"
   0: void ActiveRecord::FinderMethods#devise_user_first()
-       @ "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb":870 in "get"
-  1: call ActiveRecord::FinderMethods#devise_user_first() -> $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1: Int type obj<?> = ~"#<User:0x29db6eb1>"
+       @ "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb":952 in "get"
+  1: call ActiveRecord::FinderMethods#devise_user_first() -> $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1 type obj<?> = ~"#<User:0x1353f515>"
        note "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
-       @ "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb":870 in "get"
+       @ "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb":952 in "get"
   2: pc ($SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_language == "pl") not-taken
        @ "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb":618 in "symbolic_instance"
   3: pc ($SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_language == "xx") not-taken
        @ "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb":620 in "symbolic_instance"
   4: void ActiveRecord::Core::ClassMethods#find(ids: $SYM_PARAM_person_id)
-       @ "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb":793 in "find"
-  5: call ActiveRecord::Core::ClassMethods#find(ids: $SYM_PARAM_person_id) -> $SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1: Int type obj<?> = ~"#<Person:0x65accb85>"
+       @ "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb":816 in "find"
+  5: call ActiveRecord::Core::ClassMethods#find(ids: $SYM_PARAM_person_id) -> $SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1 type obj<?> = ~"#<Person:0x570b2d9b>"
        note "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_PARAM_person_id)"
-       @ "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb":793 in "find"
+       @ "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb":816 in "find"
   6: pc ($SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_not_found == true) not-taken
        @ "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb":540 in "block in finder_mock"
   7: void ActiveRecord::FinderMethods#first()
        @ "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/aspect_memberships_controller.rb":43 in "create"
-  8: call ActiveRecord::FinderMethods#first() -> $SYM_RESULT_ActiveRecord__FinderMethods_first_1: Int type obj<?> = ~"SYM_RESULT_ActiveRecord__FinderMethods_first_1_name_v"
+  8: call ActiveRecord::FinderMethods#first() -> $SYM_RESULT_ActiveRecord__FinderMethods_first_1 type obj<?> = ~"SYM_RESULT_ActiveRecord__FinderMethods_first_1_name_v"
        note "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"aspects\".\"id\" = $$(SYM_PARAM_aspect_id) ORDER BY order_id ASC LIMIT 1"
        @ "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/aspect_memberships_controller.rb":43 in "create"
   9: pc ($SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == true) not-taken
        @ "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb":102 in "block in finder_mock_faithful"
   10: void User#blocks()
        @ "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/models/user/connecting.rb":14 in "share_with"
-  11: call User#blocks() -> $SYM_RESULT_User_blocks_1: Int type opaque = ~"#<Block::ActiveRecord_Associations_CollectionProxy:0x6309e4fb>"
+  11: call User#blocks() -> $SYM_RESULT_User_blocks_1 type opaque = ~"#<Block::ActiveRecord_Associations_CollectionProxy:0x3b5b6df4>"
        @ "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/models/user/connecting.rb":14 in "share_with"
   12: void ActiveRecord::Querying#find_by_sql(sql: "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", binds: <opaque>, preparable: true)
        @ "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/statement_cache.rb":108 in "execute"
-  13: call ActiveRecord::Querying#find_by_sql(sql: "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", binds: <opaque>, preparable: true) -> $SYM_RESULT_ActiveRecord__Querying_find_by_sql_1: Int type [?] = $SYM_RESULT_ActiveRecord__Querying_find_by_sql_1_rows
+  13: call ActiveRecord::Querying#find_by_sql(sql: "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", binds: <opaque>, preparable: true) -> $SYM_RESULT_ActiveRecord__Querying_find_by_sql_1 type [?] = $SYM_RESULT_ActiveRecord__Querying_find_by_sql_1_rows
        note "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
        @ "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/statement_cache.rb":108 in "execute"
   14: void ActiveRecord::FinderMethods#exists?()
        @ "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb":1709 in "block"
-  15: call ActiveRecord::FinderMethods#exists?() -> $SYM_RESULT_ActiveRecord__FinderMethods_exists__1: Int type opaque? = null
+  15: call ActiveRecord::FinderMethods#exists?() -> $SYM_RESULT_ActiveRecord__FinderMethods_exists__1 type opaque? = null
        note "SELECT 1 AS one FROM \"blocks\" WHERE \"blocks\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"blocks\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
        @ "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb":1709 in "block in exists?"
   16: pc ($SYM_RESULT_ActiveRecord__FinderMethods_exists__1_exists == true) not-taken
        @ "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb":382 in "block in install!"
   17: void ActiveRecord::FinderMethods#find_by()
        @ "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb":1709 in "block"
-  18: call ActiveRecord::FinderMethods#find_by() -> $SYM_RESULT_ActiveRecord__FinderMethods_find_by_1: Int type obj<?> = ~"#<Contact:0x68a1d32f>"
+  18: call ActiveRecord::FinderMethods#find_by() -> $SYM_RESULT_ActiveRecord__FinderMethods_find_by_1 type obj<?> = ~"#<Contact:0x6626ae40>"
        note "SELECT \"contacts\".* FROM \"contacts\" WHERE \"contacts\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"contacts\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
        @ "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb":1709 in "block in find_by"
   19: pc ($SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found == true) not-taken
        @ "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb":102 in "block in finder_mock_faithful"
   20: void ActiveRecord::Associations::SingularAssociation#find_target()
        @ "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb":1164 in "find_target"
-  21: call ActiveRecord::Associations::SingularAssociation#find_target() -> $SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1: Int type obj<?> = ~"#<User:0x6bd2dd5d>"
+  21: call ActiveRecord::Associations::SingularAssociation#find_target() -> $SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1 type obj<?> = ~"#<User:0x684f20ea>"
        note "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)"
        @ "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb":1164 in "find_target"
   22: pc ($SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_language == "pl") not-taken
@@ -335,19 +335,19 @@ run "auth_json_dse0001" schema=1
        @ "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb":620 in "symbolic_instance"
   24: void ActiveRecord::Associations::SingularAssociation#find_target()
        @ "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb":1164 in "find_target"
-  25: call ActiveRecord::Associations::SingularAssociation#find_target() -> $SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_2: Int type obj<?> = ~"#<Person:0x47d0c2e0>"
+  25: call ActiveRecord::Associations::SingularAssociation#find_target() -> $SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_2 type obj<?> = ~"#<Person:0x81bc4da>"
        note "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id)"
        @ "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb":1164 in "find_target"
   26: void ActiveRecord::FinderMethods#exists?()
        @ "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb":1709 in "block"
-  27: call ActiveRecord::FinderMethods#exists?() -> $SYM_RESULT_ActiveRecord__FinderMethods_exists__2: Int type opaque? = null
+  27: call ActiveRecord::FinderMethods#exists?() -> $SYM_RESULT_ActiveRecord__FinderMethods_exists__2 type opaque? = null
        note "SELECT 1 AS one FROM \"contacts\" WHERE \"contacts\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id) AND \"contacts\".\"id\" IS NOT NULL AND \"contacts\".\"user_id\" = nil LIMIT 1"
        @ "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb":1709 in "block in exists?"
   28: pc ($SYM_RESULT_ActiveRecord__FinderMethods_exists__2_exists == true) not-taken
        @ "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb":382 in "block in install!"
   29: void ActiveRecord::Associations::SingularAssociation#find_target()
        @ "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb":1164 in "find_target"
-  30: call ActiveRecord::Associations::SingularAssociation#find_target() -> $SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_3: Int type obj<?> = ~"#<User:0x311a569d>"
+  30: call ActiveRecord::Associations::SingularAssociation#find_target() -> $SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_3 type obj<?> = ~"#<User:0x6a022b0e>"
        note "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)"
        @ "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb":1164 in "find_target"
   31: pc ($SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_language == "pl") not-taken
@@ -358,16 +358,16 @@ run "auth_json_dse0001" schema=1
        @ "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/core.rb":425 in "=="
   34: void User#blocks()
        @ "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/models/contact.rb":100 in "not_blocked_user"
-  35: call User#blocks() -> $SYM_RESULT_User_blocks_2: Int type opaque = ~"#<Block::ActiveRecord_Associations_CollectionProxy:0x57c4d33a>"
+  35: call User#blocks() -> $SYM_RESULT_User_blocks_2 type opaque = ~"#<Block::ActiveRecord_Associations_CollectionProxy:0x3985cca0>"
        @ "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/models/contact.rb":100 in "not_blocked_user"
   36: void ActiveRecord::Querying#find_by_sql(sql: "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", binds: <opaque>, preparable: true)
        @ "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/statement_cache.rb":108 in "execute"
-  37: call ActiveRecord::Querying#find_by_sql(sql: "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", binds: <opaque>, preparable: true) -> $SYM_RESULT_ActiveRecord__Querying_find_by_sql_2: Int type [?] = $SYM_RESULT_ActiveRecord__Querying_find_by_sql_2_rows
+  37: call ActiveRecord::Querying#find_by_sql(sql: "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", binds: <opaque>, preparable: true) -> $SYM_RESULT_ActiveRecord__Querying_find_by_sql_2 type [?] = $SYM_RESULT_ActiveRecord__Querying_find_by_sql_2_rows
        note "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
        @ "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/statement_cache.rb":108 in "execute"
   38: void ActiveRecord::FinderMethods#exists?()
        @ "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb":1709 in "block"
-  39: call ActiveRecord::FinderMethods#exists?() -> $SYM_RESULT_ActiveRecord__FinderMethods_exists__3: Int type opaque? = null
+  39: call ActiveRecord::FinderMethods#exists?() -> $SYM_RESULT_ActiveRecord__FinderMethods_exists__3 type opaque? = null
        note "SELECT 1 AS one FROM \"blocks\" WHERE \"blocks\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id) AND \"blocks\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id) LIMIT 1"
        @ "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb":1709 in "block in exists?"
   40: pc ($SYM_RESULT_ActiveRecord__FinderMethods_exists__3_exists == true) not-taken
@@ -376,13 +376,13 @@ run "auth_json_dse0001" schema=1
        @ "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb":412 in "block in symbolic_instance"
   42: void ActionController::Rendering#_set_rendered_content_type(format: ~"application/json")
        @ "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/mime_responds.rb":201 in "respond_to"
-  43: call ActionController::Rendering#_set_rendered_content_type(format: ~"application/json") -> $SYM_RESULT_ActionController__Rendering__set_rendered_content_type_1: Int type [?] = <opaque>
+  43: call ActionController::Rendering#_set_rendered_content_type(format: ~"application/json") -> $SYM_RESULT_ActionController__Rendering__set_rendered_content_type_1 type [?] = <opaque>
        @ "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/mime_responds.rb":201 in "respond_to"
   44: void ActionController::Metal#status=(arg: 409)
        @ "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/rendering.rb":115 in "_process_options"
-  45: call ActionController::Metal#status=(arg: 409) -> $SYM_RESULT_ActionController__Metal_status__1: Int type opaque? = null
+  45: call ActionController::Metal#status=(arg: 409) -> $SYM_RESULT_ActionController__Metal_status__1 type opaque? = null
        @ "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/rendering.rb":115 in "_process_options"
   46: void ActionController::Rendering#_set_rendered_content_type(format: ~"application/json")
        @ "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/abstract_controller/rendering.rb":29 in "render"
-  47: call ActionController::Rendering#_set_rendered_content_type(format: ~"application/json") -> $SYM_RESULT_ActionController__Rendering__set_rendered_content_type_2: Int type [?] = <opaque>
+  47: call ActionController::Rendering#_set_rendered_content_type(format: ~"application/json") -> $SYM_RESULT_ActionController__Rendering__set_rendered_content_type_2 type [?] = <opaque>
        @ "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/abstract_controller/rendering.rb":29 in "render"

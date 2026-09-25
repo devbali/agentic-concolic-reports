@@ -1,5 +1,5 @@
 policy aspect_memberships_create
-  cert   report=none  outcome=UNDECIDED  app=aspect_memberships_create  atoms=36  minimal=full  inferred=0  declared=0  elided=0
+  cert   report=none  outcome=UNDECIDED  app=results4/aspect_memberships_create  atoms=36  minimal=full  inferred=68  declared=718  elided=35
   entry  aspect_memberships_create($SYM_PARAM_person_id: str, $SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_not_found: bool)
 
   sig ActionController::Metal#status=(arg: int) -> opaque? shim
@@ -52,7 +52,7 @@ atom 6
   assert c4.not_found != true
   c5 = ActiveRecord::FinderMethods#first()  // "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"aspects\".\"id\" = $$(SYM_PARAM_aspect_id) ORDER BY order_id ASC LIMIT 1"
   assert c5.not_found != true
-  access c7 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", "('#<ActiveRecord::Relation::QueryAttribute:0x508b9c16>',)", true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
+  access c7 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", ["#<ActiveRecord::Relation::QueryAttribute:0x74d74701>"], true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
 
 atom 7
   c1 = ActiveRecord::FinderMethods#devise_user_first()  // "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
@@ -63,7 +63,7 @@ atom 7
   assert c4.not_found != true
   c5 = ActiveRecord::FinderMethods#first()  // "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"aspects\".\"id\" = $$(SYM_PARAM_aspect_id) ORDER BY order_id ASC LIMIT 1"
   assert c5.not_found != true
-  c7 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", "('#<ActiveRecord::Relation::QueryAttribute:0x508b9c16>',)", true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
+  c7 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", ["#<ActiveRecord::Relation::QueryAttribute:0x74d74701>"], true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
   access c8 = ActiveRecord::FinderMethods#exists?()  // "SELECT 1 AS one FROM \"blocks\" WHERE \"blocks\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"blocks\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
 
 atom 8
@@ -75,7 +75,7 @@ atom 8
   assert c4.not_found != true
   c5 = ActiveRecord::FinderMethods#first()  // "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"aspects\".\"id\" = $$(SYM_PARAM_aspect_id) ORDER BY order_id ASC LIMIT 1"
   assert c5.not_found != true
-  c7 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", "('#<ActiveRecord::Relation::QueryAttribute:0x508b9c16>',)", true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
+  c7 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", ["#<ActiveRecord::Relation::QueryAttribute:0x74d74701>"], true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
   c8 = ActiveRecord::FinderMethods#exists?()  // "SELECT 1 AS one FROM \"blocks\" WHERE \"blocks\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"blocks\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
   assert c8.exists != true
   access c9 = ActiveRecord::FinderMethods#find_by()  // "SELECT \"contacts\".* FROM \"contacts\" WHERE \"contacts\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"contacts\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
@@ -89,7 +89,7 @@ atom 9
   assert c4.not_found != true
   c5 = ActiveRecord::FinderMethods#first()  // "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"aspects\".\"id\" = $$(SYM_PARAM_aspect_id) ORDER BY order_id ASC LIMIT 1"
   assert c5.not_found != true
-  c7 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", "('#<ActiveRecord::Relation::QueryAttribute:0x508b9c16>',)", true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
+  c7 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", ["#<ActiveRecord::Relation::QueryAttribute:0x74d74701>"], true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
   c8 = ActiveRecord::FinderMethods#exists?()  // "SELECT 1 AS one FROM \"blocks\" WHERE \"blocks\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"blocks\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
   assert c8.exists != true
   c9 = ActiveRecord::FinderMethods#find_by()  // "SELECT \"contacts\".* FROM \"contacts\" WHERE \"contacts\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"contacts\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
@@ -105,7 +105,7 @@ atom 10
   assert c4.not_found != true
   c5 = ActiveRecord::FinderMethods#first()  // "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"aspects\".\"id\" = $$(SYM_PARAM_aspect_id) ORDER BY order_id ASC LIMIT 1"
   assert c5.not_found != true
-  c7 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", "('#<ActiveRecord::Relation::QueryAttribute:0x508b9c16>',)", true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
+  c7 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", ["#<ActiveRecord::Relation::QueryAttribute:0x74d74701>"], true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
   c8 = ActiveRecord::FinderMethods#exists?()  // "SELECT 1 AS one FROM \"blocks\" WHERE \"blocks\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"blocks\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
   assert c8.exists != true
   c9 = ActiveRecord::FinderMethods#find_by()  // "SELECT \"contacts\".* FROM \"contacts\" WHERE \"contacts\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"contacts\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
@@ -124,7 +124,7 @@ atom 11
   assert c4.not_found != true
   c5 = ActiveRecord::FinderMethods#first()  // "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"aspects\".\"id\" = $$(SYM_PARAM_aspect_id) ORDER BY order_id ASC LIMIT 1"
   assert c5.not_found != true
-  c7 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", "('#<ActiveRecord::Relation::QueryAttribute:0x508b9c16>',)", true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
+  c7 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", ["#<ActiveRecord::Relation::QueryAttribute:0x74d74701>"], true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
   c8 = ActiveRecord::FinderMethods#exists?()  // "SELECT 1 AS one FROM \"blocks\" WHERE \"blocks\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"blocks\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
   assert c8.exists != true
   c9 = ActiveRecord::FinderMethods#find_by()  // "SELECT \"contacts\".* FROM \"contacts\" WHERE \"contacts\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"contacts\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
@@ -144,7 +144,7 @@ atom 12
   assert c4.not_found != true
   c5 = ActiveRecord::FinderMethods#first()  // "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"aspects\".\"id\" = $$(SYM_PARAM_aspect_id) ORDER BY order_id ASC LIMIT 1"
   assert c5.not_found != true
-  c7 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", "('#<ActiveRecord::Relation::QueryAttribute:0x508b9c16>',)", true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
+  c7 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", ["#<ActiveRecord::Relation::QueryAttribute:0x74d74701>"], true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
   c8 = ActiveRecord::FinderMethods#exists?()  // "SELECT 1 AS one FROM \"blocks\" WHERE \"blocks\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"blocks\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
   assert c8.exists != true
   c9 = ActiveRecord::FinderMethods#find_by()  // "SELECT \"contacts\".* FROM \"contacts\" WHERE \"contacts\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"contacts\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
@@ -166,7 +166,7 @@ atom 13
   assert c4.not_found != true
   c5 = ActiveRecord::FinderMethods#first()  // "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"aspects\".\"id\" = $$(SYM_PARAM_aspect_id) ORDER BY order_id ASC LIMIT 1"
   assert c5.not_found != true
-  c7 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", "('#<ActiveRecord::Relation::QueryAttribute:0x508b9c16>',)", true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
+  c7 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", ["#<ActiveRecord::Relation::QueryAttribute:0x74d74701>"], true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
   c8 = ActiveRecord::FinderMethods#exists?()  // "SELECT 1 AS one FROM \"blocks\" WHERE \"blocks\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"blocks\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
   assert c8.exists != true
   c9 = ActiveRecord::FinderMethods#find_by()  // "SELECT \"contacts\".* FROM \"contacts\" WHERE \"contacts\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"contacts\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
@@ -181,7 +181,7 @@ atom 13
   c12 = ActiveRecord::FinderMethods#exists?()  // "SELECT 1 AS one FROM \"contacts\" WHERE \"contacts\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id) AND \"contacts\".\"id\" IS NOT NULL AND \"contacts\".\"user_id\" = nil LIMIT 1"
   assert c12.exists != true
   c13 = ActiveRecord::Associations::SingularAssociation#find_target()  // "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)"
-  access c15 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", "('#<ActiveRecord::Relation::QueryAttribute:0x6e530ccc>',)", true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
+  access c15 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", ["#<ActiveRecord::Relation::QueryAttribute:0x3f77cd24>"], true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
 
 atom 14
   c1 = ActiveRecord::FinderMethods#devise_user_first()  // "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
@@ -192,7 +192,7 @@ atom 14
   assert c4.not_found != true
   c5 = ActiveRecord::FinderMethods#first()  // "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"aspects\".\"id\" = $$(SYM_PARAM_aspect_id) ORDER BY order_id ASC LIMIT 1"
   assert c5.not_found != true
-  c7 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", "('#<ActiveRecord::Relation::QueryAttribute:0x508b9c16>',)", true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
+  c7 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", ["#<ActiveRecord::Relation::QueryAttribute:0x74d74701>"], true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
   c8 = ActiveRecord::FinderMethods#exists?()  // "SELECT 1 AS one FROM \"blocks\" WHERE \"blocks\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"blocks\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
   assert c8.exists != true
   c9 = ActiveRecord::FinderMethods#find_by()  // "SELECT \"contacts\".* FROM \"contacts\" WHERE \"contacts\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"contacts\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
@@ -207,7 +207,7 @@ atom 14
   c12 = ActiveRecord::FinderMethods#exists?()  // "SELECT 1 AS one FROM \"contacts\" WHERE \"contacts\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id) AND \"contacts\".\"id\" IS NOT NULL AND \"contacts\".\"user_id\" = nil LIMIT 1"
   assert c12.exists != true
   c13 = ActiveRecord::Associations::SingularAssociation#find_target()  // "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)"
-  c15 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", "('#<ActiveRecord::Relation::QueryAttribute:0x6e530ccc>',)", true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
+  c15 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", ["#<ActiveRecord::Relation::QueryAttribute:0x3f77cd24>"], true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
   access c16 = ActiveRecord::FinderMethods#exists?()  // "SELECT 1 AS one FROM \"blocks\" WHERE \"blocks\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id) AND \"blocks\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id) LIMIT 1"
 
 atom 15
@@ -231,8 +231,8 @@ atom 17
   c2 = ActiveRecord::Core::ClassMethods#find($SYM_PARAM_person_id)  // "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_PARAM_person_id)"
   assert c2.not_found != true
   c3 = ActiveRecord::FinderMethods#first()  // "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"aspects\".\"id\" = $$(SYM_PARAM_aspect_id) ORDER BY order_id ASC LIMIT 1"
-  assert c3.not_found != true
-  access c5 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", "('#<ActiveRecord::Relation::QueryAttribute:0x1afd9827>',)", true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
+  assert c3.not_found == true
+  access c5 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", ["#<ActiveRecord::Relation::QueryAttribute:0x1b047ad>"], true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
 
 atom 18
   c1 = ActiveRecord::FinderMethods#devise_user_first()  // "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
@@ -241,8 +241,8 @@ atom 18
   c2 = ActiveRecord::Core::ClassMethods#find($SYM_PARAM_person_id)  // "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_PARAM_person_id)"
   assert c2.not_found != true
   c3 = ActiveRecord::FinderMethods#first()  // "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"aspects\".\"id\" = $$(SYM_PARAM_aspect_id) ORDER BY order_id ASC LIMIT 1"
-  assert c3.not_found != true
-  c5 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", "('#<ActiveRecord::Relation::QueryAttribute:0x1afd9827>',)", true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
+  assert c3.not_found == true
+  c5 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", ["#<ActiveRecord::Relation::QueryAttribute:0x1b047ad>"], true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
   access c6 = ActiveRecord::FinderMethods#exists?()  // "SELECT 1 AS one FROM \"blocks\" WHERE \"blocks\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"blocks\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
 
 atom 19
@@ -252,8 +252,8 @@ atom 19
   c2 = ActiveRecord::Core::ClassMethods#find($SYM_PARAM_person_id)  // "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_PARAM_person_id)"
   assert c2.not_found != true
   c3 = ActiveRecord::FinderMethods#first()  // "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"aspects\".\"id\" = $$(SYM_PARAM_aspect_id) ORDER BY order_id ASC LIMIT 1"
-  assert c3.not_found != true
-  c5 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", "('#<ActiveRecord::Relation::QueryAttribute:0x1afd9827>',)", true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
+  assert c3.not_found == true
+  c5 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", ["#<ActiveRecord::Relation::QueryAttribute:0x1b047ad>"], true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
   c6 = ActiveRecord::FinderMethods#exists?()  // "SELECT 1 AS one FROM \"blocks\" WHERE \"blocks\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"blocks\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
   assert c6.exists != true
   access c7 = ActiveRecord::FinderMethods#find_by()  // "SELECT \"contacts\".* FROM \"contacts\" WHERE \"contacts\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"contacts\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
@@ -265,8 +265,8 @@ atom 20
   c2 = ActiveRecord::Core::ClassMethods#find($SYM_PARAM_person_id)  // "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_PARAM_person_id)"
   assert c2.not_found != true
   c3 = ActiveRecord::FinderMethods#first()  // "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"aspects\".\"id\" = $$(SYM_PARAM_aspect_id) ORDER BY order_id ASC LIMIT 1"
-  assert c3.not_found != true
-  c5 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", "('#<ActiveRecord::Relation::QueryAttribute:0x1afd9827>',)", true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
+  assert c3.not_found == true
+  c5 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", ["#<ActiveRecord::Relation::QueryAttribute:0x1b047ad>"], true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
   c6 = ActiveRecord::FinderMethods#exists?()  // "SELECT 1 AS one FROM \"blocks\" WHERE \"blocks\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"blocks\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
   assert c6.exists != true
   c7 = ActiveRecord::FinderMethods#find_by()  // "SELECT \"contacts\".* FROM \"contacts\" WHERE \"contacts\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"contacts\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
@@ -280,8 +280,8 @@ atom 21
   c2 = ActiveRecord::Core::ClassMethods#find($SYM_PARAM_person_id)  // "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_PARAM_person_id)"
   assert c2.not_found != true
   c3 = ActiveRecord::FinderMethods#first()  // "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"aspects\".\"id\" = $$(SYM_PARAM_aspect_id) ORDER BY order_id ASC LIMIT 1"
-  assert c3.not_found != true
-  c5 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", "('#<ActiveRecord::Relation::QueryAttribute:0x1afd9827>',)", true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
+  assert c3.not_found == true
+  c5 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", ["#<ActiveRecord::Relation::QueryAttribute:0x1b047ad>"], true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
   c6 = ActiveRecord::FinderMethods#exists?()  // "SELECT 1 AS one FROM \"blocks\" WHERE \"blocks\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"blocks\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
   assert c6.exists != true
   c7 = ActiveRecord::FinderMethods#find_by()  // "SELECT \"contacts\".* FROM \"contacts\" WHERE \"contacts\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"contacts\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
@@ -298,8 +298,8 @@ atom 22
   c2 = ActiveRecord::Core::ClassMethods#find($SYM_PARAM_person_id)  // "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_PARAM_person_id)"
   assert c2.not_found != true
   c3 = ActiveRecord::FinderMethods#first()  // "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"aspects\".\"id\" = $$(SYM_PARAM_aspect_id) ORDER BY order_id ASC LIMIT 1"
-  assert c3.not_found != true
-  c5 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", "('#<ActiveRecord::Relation::QueryAttribute:0x1afd9827>',)", true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
+  assert c3.not_found == true
+  c5 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", ["#<ActiveRecord::Relation::QueryAttribute:0x1b047ad>"], true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
   c6 = ActiveRecord::FinderMethods#exists?()  // "SELECT 1 AS one FROM \"blocks\" WHERE \"blocks\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"blocks\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
   assert c6.exists != true
   c7 = ActiveRecord::FinderMethods#find_by()  // "SELECT \"contacts\".* FROM \"contacts\" WHERE \"contacts\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"contacts\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
@@ -317,8 +317,8 @@ atom 23
   c2 = ActiveRecord::Core::ClassMethods#find($SYM_PARAM_person_id)  // "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_PARAM_person_id)"
   assert c2.not_found != true
   c3 = ActiveRecord::FinderMethods#first()  // "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"aspects\".\"id\" = $$(SYM_PARAM_aspect_id) ORDER BY order_id ASC LIMIT 1"
-  assert c3.not_found != true
-  c5 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", "('#<ActiveRecord::Relation::QueryAttribute:0x1afd9827>',)", true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
+  assert c3.not_found == true
+  c5 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", ["#<ActiveRecord::Relation::QueryAttribute:0x1b047ad>"], true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
   c6 = ActiveRecord::FinderMethods#exists?()  // "SELECT 1 AS one FROM \"blocks\" WHERE \"blocks\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"blocks\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
   assert c6.exists != true
   c7 = ActiveRecord::FinderMethods#find_by()  // "SELECT \"contacts\".* FROM \"contacts\" WHERE \"contacts\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"contacts\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
@@ -338,8 +338,8 @@ atom 24
   c2 = ActiveRecord::Core::ClassMethods#find($SYM_PARAM_person_id)  // "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_PARAM_person_id)"
   assert c2.not_found != true
   c3 = ActiveRecord::FinderMethods#first()  // "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"aspects\".\"id\" = $$(SYM_PARAM_aspect_id) ORDER BY order_id ASC LIMIT 1"
-  assert c3.not_found != true
-  c5 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", "('#<ActiveRecord::Relation::QueryAttribute:0x1afd9827>',)", true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
+  assert c3.not_found == true
+  c5 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", ["#<ActiveRecord::Relation::QueryAttribute:0x1b047ad>"], true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
   c6 = ActiveRecord::FinderMethods#exists?()  // "SELECT 1 AS one FROM \"blocks\" WHERE \"blocks\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"blocks\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
   assert c6.exists != true
   c7 = ActiveRecord::FinderMethods#find_by()  // "SELECT \"contacts\".* FROM \"contacts\" WHERE \"contacts\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"contacts\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
@@ -354,7 +354,7 @@ atom 24
   c10 = ActiveRecord::FinderMethods#exists?()  // "SELECT 1 AS one FROM \"contacts\" WHERE \"contacts\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id) AND \"contacts\".\"id\" IS NOT NULL AND \"contacts\".\"user_id\" = nil LIMIT 1"
   assert c10.exists != true
   c11 = ActiveRecord::Associations::SingularAssociation#find_target()  // "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)"
-  access c13 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", "('#<ActiveRecord::Relation::QueryAttribute:0x2a01d4aa>',)", true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
+  access c13 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", ["#<ActiveRecord::Relation::QueryAttribute:0x37533190>"], true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
 
 atom 25
   c1 = ActiveRecord::FinderMethods#devise_user_first()  // "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
@@ -363,8 +363,8 @@ atom 25
   c2 = ActiveRecord::Core::ClassMethods#find($SYM_PARAM_person_id)  // "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_PARAM_person_id)"
   assert c2.not_found != true
   c3 = ActiveRecord::FinderMethods#first()  // "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"aspects\".\"id\" = $$(SYM_PARAM_aspect_id) ORDER BY order_id ASC LIMIT 1"
-  assert c3.not_found != true
-  c5 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", "('#<ActiveRecord::Relation::QueryAttribute:0x1afd9827>',)", true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
+  assert c3.not_found == true
+  c5 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", ["#<ActiveRecord::Relation::QueryAttribute:0x1b047ad>"], true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
   c6 = ActiveRecord::FinderMethods#exists?()  // "SELECT 1 AS one FROM \"blocks\" WHERE \"blocks\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"blocks\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
   assert c6.exists != true
   c7 = ActiveRecord::FinderMethods#find_by()  // "SELECT \"contacts\".* FROM \"contacts\" WHERE \"contacts\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"contacts\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
@@ -379,7 +379,7 @@ atom 25
   c10 = ActiveRecord::FinderMethods#exists?()  // "SELECT 1 AS one FROM \"contacts\" WHERE \"contacts\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id) AND \"contacts\".\"id\" IS NOT NULL AND \"contacts\".\"user_id\" = nil LIMIT 1"
   assert c10.exists != true
   c11 = ActiveRecord::Associations::SingularAssociation#find_target()  // "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)"
-  c13 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", "('#<ActiveRecord::Relation::QueryAttribute:0x2a01d4aa>',)", true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
+  c13 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", ["#<ActiveRecord::Relation::QueryAttribute:0x37533190>"], true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
   access c14 = ActiveRecord::FinderMethods#exists?()  // "SELECT 1 AS one FROM \"blocks\" WHERE \"blocks\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id) AND \"blocks\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id) LIMIT 1"
 
 atom 26
@@ -390,7 +390,7 @@ atom 26
   assert c2.not_found != true
   c3 = ActiveRecord::FinderMethods#first()  // "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"aspects\".\"id\" = $$(SYM_PARAM_aspect_id) ORDER BY order_id ASC LIMIT 1"
   assert c3.not_found != true
-  access c5 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", "('#<ActiveRecord::Relation::QueryAttribute:0x294e4c35>',)", true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
+  access c5 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", ["#<ActiveRecord::Relation::QueryAttribute:0x6766260e>"], true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
 
 atom 27
   c1 = ActiveRecord::FinderMethods#devise_user_first()  // "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
@@ -400,7 +400,7 @@ atom 27
   assert c2.not_found != true
   c3 = ActiveRecord::FinderMethods#first()  // "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"aspects\".\"id\" = $$(SYM_PARAM_aspect_id) ORDER BY order_id ASC LIMIT 1"
   assert c3.not_found != true
-  c5 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", "('#<ActiveRecord::Relation::QueryAttribute:0x294e4c35>',)", true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
+  c5 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", ["#<ActiveRecord::Relation::QueryAttribute:0x6766260e>"], true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
   access c6 = ActiveRecord::FinderMethods#exists?()  // "SELECT 1 AS one FROM \"blocks\" WHERE \"blocks\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"blocks\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
 
 atom 28
@@ -410,8 +410,8 @@ atom 28
   c2 = ActiveRecord::Core::ClassMethods#find($SYM_PARAM_person_id)  // "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_PARAM_person_id)"
   assert c2.not_found != true
   c3 = ActiveRecord::FinderMethods#first()  // "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"aspects\".\"id\" = $$(SYM_PARAM_aspect_id) ORDER BY order_id ASC LIMIT 1"
-  assert c3.not_found == true
-  access c5 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", "('#<ActiveRecord::Relation::QueryAttribute:0x4aab04cf>',)", true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
+  assert c3.not_found != true
+  access c5 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", ["#<ActiveRecord::Relation::QueryAttribute:0x6ad11552>"], true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
 
 atom 29
   c1 = ActiveRecord::FinderMethods#devise_user_first()  // "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
@@ -420,8 +420,8 @@ atom 29
   c2 = ActiveRecord::Core::ClassMethods#find($SYM_PARAM_person_id)  // "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_PARAM_person_id)"
   assert c2.not_found != true
   c3 = ActiveRecord::FinderMethods#first()  // "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"aspects\".\"id\" = $$(SYM_PARAM_aspect_id) ORDER BY order_id ASC LIMIT 1"
-  assert c3.not_found == true
-  c5 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", "('#<ActiveRecord::Relation::QueryAttribute:0x4aab04cf>',)", true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
+  assert c3.not_found != true
+  c5 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", ["#<ActiveRecord::Relation::QueryAttribute:0x6ad11552>"], true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
   access c6 = ActiveRecord::FinderMethods#exists?()  // "SELECT 1 AS one FROM \"blocks\" WHERE \"blocks\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"blocks\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
 
 atom 30
@@ -431,8 +431,8 @@ atom 30
   c2 = ActiveRecord::Core::ClassMethods#find($SYM_PARAM_person_id)  // "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_PARAM_person_id)"
   assert c2.not_found != true
   c3 = ActiveRecord::FinderMethods#first()  // "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"aspects\".\"id\" = $$(SYM_PARAM_aspect_id) ORDER BY order_id ASC LIMIT 1"
-  assert c3.not_found == true
-  c5 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", "('#<ActiveRecord::Relation::QueryAttribute:0x4aab04cf>',)", true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
+  assert c3.not_found != true
+  c5 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", ["#<ActiveRecord::Relation::QueryAttribute:0x6ad11552>"], true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
   c6 = ActiveRecord::FinderMethods#exists?()  // "SELECT 1 AS one FROM \"blocks\" WHERE \"blocks\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"blocks\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
   assert c6.exists != true
   access c7 = ActiveRecord::FinderMethods#find_by()  // "SELECT \"contacts\".* FROM \"contacts\" WHERE \"contacts\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"contacts\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
@@ -444,8 +444,8 @@ atom 31
   c2 = ActiveRecord::Core::ClassMethods#find($SYM_PARAM_person_id)  // "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_PARAM_person_id)"
   assert c2.not_found != true
   c3 = ActiveRecord::FinderMethods#first()  // "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"aspects\".\"id\" = $$(SYM_PARAM_aspect_id) ORDER BY order_id ASC LIMIT 1"
-  assert c3.not_found == true
-  c5 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", "('#<ActiveRecord::Relation::QueryAttribute:0x4aab04cf>',)", true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
+  assert c3.not_found != true
+  c5 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", ["#<ActiveRecord::Relation::QueryAttribute:0x6ad11552>"], true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
   c6 = ActiveRecord::FinderMethods#exists?()  // "SELECT 1 AS one FROM \"blocks\" WHERE \"blocks\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"blocks\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
   assert c6.exists != true
   c7 = ActiveRecord::FinderMethods#find_by()  // "SELECT \"contacts\".* FROM \"contacts\" WHERE \"contacts\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"contacts\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
@@ -459,8 +459,8 @@ atom 32
   c2 = ActiveRecord::Core::ClassMethods#find($SYM_PARAM_person_id)  // "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_PARAM_person_id)"
   assert c2.not_found != true
   c3 = ActiveRecord::FinderMethods#first()  // "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"aspects\".\"id\" = $$(SYM_PARAM_aspect_id) ORDER BY order_id ASC LIMIT 1"
-  assert c3.not_found == true
-  c5 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", "('#<ActiveRecord::Relation::QueryAttribute:0x4aab04cf>',)", true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
+  assert c3.not_found != true
+  c5 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", ["#<ActiveRecord::Relation::QueryAttribute:0x6ad11552>"], true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
   c6 = ActiveRecord::FinderMethods#exists?()  // "SELECT 1 AS one FROM \"blocks\" WHERE \"blocks\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"blocks\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
   assert c6.exists != true
   c7 = ActiveRecord::FinderMethods#find_by()  // "SELECT \"contacts\".* FROM \"contacts\" WHERE \"contacts\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"contacts\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
@@ -477,8 +477,8 @@ atom 33
   c2 = ActiveRecord::Core::ClassMethods#find($SYM_PARAM_person_id)  // "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_PARAM_person_id)"
   assert c2.not_found != true
   c3 = ActiveRecord::FinderMethods#first()  // "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"aspects\".\"id\" = $$(SYM_PARAM_aspect_id) ORDER BY order_id ASC LIMIT 1"
-  assert c3.not_found == true
-  c5 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", "('#<ActiveRecord::Relation::QueryAttribute:0x4aab04cf>',)", true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
+  assert c3.not_found != true
+  c5 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", ["#<ActiveRecord::Relation::QueryAttribute:0x6ad11552>"], true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
   c6 = ActiveRecord::FinderMethods#exists?()  // "SELECT 1 AS one FROM \"blocks\" WHERE \"blocks\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"blocks\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
   assert c6.exists != true
   c7 = ActiveRecord::FinderMethods#find_by()  // "SELECT \"contacts\".* FROM \"contacts\" WHERE \"contacts\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"contacts\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
@@ -496,8 +496,8 @@ atom 34
   c2 = ActiveRecord::Core::ClassMethods#find($SYM_PARAM_person_id)  // "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_PARAM_person_id)"
   assert c2.not_found != true
   c3 = ActiveRecord::FinderMethods#first()  // "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"aspects\".\"id\" = $$(SYM_PARAM_aspect_id) ORDER BY order_id ASC LIMIT 1"
-  assert c3.not_found == true
-  c5 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", "('#<ActiveRecord::Relation::QueryAttribute:0x4aab04cf>',)", true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
+  assert c3.not_found != true
+  c5 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", ["#<ActiveRecord::Relation::QueryAttribute:0x6ad11552>"], true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
   c6 = ActiveRecord::FinderMethods#exists?()  // "SELECT 1 AS one FROM \"blocks\" WHERE \"blocks\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"blocks\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
   assert c6.exists != true
   c7 = ActiveRecord::FinderMethods#find_by()  // "SELECT \"contacts\".* FROM \"contacts\" WHERE \"contacts\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"contacts\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
@@ -517,8 +517,8 @@ atom 35
   c2 = ActiveRecord::Core::ClassMethods#find($SYM_PARAM_person_id)  // "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_PARAM_person_id)"
   assert c2.not_found != true
   c3 = ActiveRecord::FinderMethods#first()  // "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"aspects\".\"id\" = $$(SYM_PARAM_aspect_id) ORDER BY order_id ASC LIMIT 1"
-  assert c3.not_found == true
-  c5 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", "('#<ActiveRecord::Relation::QueryAttribute:0x4aab04cf>',)", true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
+  assert c3.not_found != true
+  c5 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", ["#<ActiveRecord::Relation::QueryAttribute:0x6ad11552>"], true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
   c6 = ActiveRecord::FinderMethods#exists?()  // "SELECT 1 AS one FROM \"blocks\" WHERE \"blocks\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"blocks\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
   assert c6.exists != true
   c7 = ActiveRecord::FinderMethods#find_by()  // "SELECT \"contacts\".* FROM \"contacts\" WHERE \"contacts\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"contacts\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
@@ -533,7 +533,7 @@ atom 35
   c10 = ActiveRecord::FinderMethods#exists?()  // "SELECT 1 AS one FROM \"contacts\" WHERE \"contacts\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id) AND \"contacts\".\"id\" IS NOT NULL AND \"contacts\".\"user_id\" = nil LIMIT 1"
   assert c10.exists != true
   c11 = ActiveRecord::Associations::SingularAssociation#find_target()  // "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)"
-  access c13 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", "('#<ActiveRecord::Relation::QueryAttribute:0x72d44be3>',)", true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
+  access c13 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", ["#<ActiveRecord::Relation::QueryAttribute:0x285cf30a>"], true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
 
 atom 36
   c1 = ActiveRecord::FinderMethods#devise_user_first()  // "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
@@ -542,8 +542,8 @@ atom 36
   c2 = ActiveRecord::Core::ClassMethods#find($SYM_PARAM_person_id)  // "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_PARAM_person_id)"
   assert c2.not_found != true
   c3 = ActiveRecord::FinderMethods#first()  // "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"aspects\".\"id\" = $$(SYM_PARAM_aspect_id) ORDER BY order_id ASC LIMIT 1"
-  assert c3.not_found == true
-  c5 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", "('#<ActiveRecord::Relation::QueryAttribute:0x4aab04cf>',)", true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
+  assert c3.not_found != true
+  c5 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", ["#<ActiveRecord::Relation::QueryAttribute:0x6ad11552>"], true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
   c6 = ActiveRecord::FinderMethods#exists?()  // "SELECT 1 AS one FROM \"blocks\" WHERE \"blocks\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"blocks\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
   assert c6.exists != true
   c7 = ActiveRecord::FinderMethods#find_by()  // "SELECT \"contacts\".* FROM \"contacts\" WHERE \"contacts\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"contacts\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
@@ -558,5 +558,5 @@ atom 36
   c10 = ActiveRecord::FinderMethods#exists?()  // "SELECT 1 AS one FROM \"contacts\" WHERE \"contacts\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id) AND \"contacts\".\"id\" IS NOT NULL AND \"contacts\".\"user_id\" = nil LIMIT 1"
   assert c10.exists != true
   c11 = ActiveRecord::Associations::SingularAssociation#find_target()  // "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)"
-  c13 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", "('#<ActiveRecord::Relation::QueryAttribute:0x72d44be3>',)", true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
+  c13 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?", ["#<ActiveRecord::Relation::QueryAttribute:0x285cf30a>"], true)  // "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = ?"
   access c14 = ActiveRecord::FinderMethods#exists?()  // "SELECT 1 AS one FROM \"blocks\" WHERE \"blocks\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id) AND \"blocks\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id) LIMIT 1"

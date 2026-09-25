@@ -296,7 +296,6 @@
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_1_rows",
-      "sort": "Int",
       "note": "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id) AND \"comments\".\"commentable_type\" = 'Post' ORDER BY created_at ASC",
       "type": "[?]"
     },
@@ -308,7 +307,6 @@
     },
     {
       "name": "SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_1_rows",
-      "sort": "Int",
       "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)",
       "type": "[?]"
     },
@@ -386,7 +384,6 @@
     },
     {
       "name": "SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_2_rows",
-      "sort": "Int",
       "note": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)",
       "type": "[?]"
     },
@@ -548,7 +545,6 @@
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_2_rows",
-      "sort": "Int",
       "note": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_id) AND \"mentions\".\"mentions_container_type\" = 'Comment'",
       "type": "[?]"
     },
@@ -560,7 +556,6 @@
     },
     {
       "name": "SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_3_rows",
-      "sort": "Int",
       "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)",
       "type": "[?]"
     },
@@ -644,7 +639,6 @@
     },
     {
       "name": "SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_4_rows",
-      "sort": "Int",
       "note": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)",
       "type": "[?]"
     },
@@ -782,19 +776,16 @@
     },
     {
       "name": "SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_5_rows",
-      "sort": "Int",
       "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)",
       "type": "[?]"
     },
     {
       "name": "SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_6_rows",
-      "sort": "Int",
       "note": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)",
       "type": "[?]"
     },
     {
       "name": "SYM_RESULT_ActionController__Rendering__set_rendered_content_type_1",
-      "sort": "Int",
       "type": "[?]"
     }
   ],
@@ -835,8 +826,7 @@
       "args": {
 },
       "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
-      "result_value": "#<Post:0x1b9b8759>",
-      "result_sort": "Int",
+      "result_value": "#<Post:0x2d739a6f>",
       "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/services/post_service.rb",
       "lineno": 52,
       "function": "find_public!",
@@ -911,7 +901,6 @@
       "result_value": {
         "sym": "SYM_RESULT_ActiveRecord__Relation_records_1_rows"
       },
-      "result_sort": "Int",
       "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/relation/delegation.rb",
       "lineno": 71,
       "function": "each",
@@ -1016,7 +1005,6 @@
       "result_value": {
         "sym": "SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_1_rows"
       },
-      "result_sort": "Int",
       "file": "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb",
       "lineno": 363,
       "function": "block in emit_includes_preloads",
@@ -1053,7 +1041,6 @@
       "result_value": {
         "sym": "SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_2_rows"
       },
-      "result_sort": "Int",
       "file": "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb",
       "lineno": 363,
       "function": "block in emit_includes_preloads",
@@ -1107,7 +1094,6 @@
       "result_value": {
         "sym": "SYM_RESULT_ActiveRecord__Relation_records_2_rows"
       },
-      "result_sort": "Int",
       "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/relation/delegation.rb",
       "lineno": 71,
       "function": "each",
@@ -1170,7 +1156,6 @@
       "result_value": {
         "sym": "SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_3_rows"
       },
-      "result_sort": "Int",
       "file": "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb",
       "lineno": 363,
       "function": "block in emit_includes_preloads",
@@ -1228,7 +1213,6 @@
       "result_value": {
         "sym": "SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_4_rows"
       },
-      "result_sort": "Int",
       "file": "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb",
       "lineno": 363,
       "function": "block in emit_includes_preloads",
@@ -1282,7 +1266,6 @@
       "result_value": {
         "sym": "SYM_RESULT_ActiveRecord__Relation_records_2_rows"
       },
-      "result_sort": "Int",
       "file": "/home/dev/.gem/jruby/2.6.0/gems/activerecord-5.2.4.3/lib/active_record/relation/delegation.rb",
       "lineno": 71,
       "function": "each",
@@ -1345,7 +1328,6 @@
       "result_value": {
         "sym": "SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_5_rows"
       },
-      "result_sort": "Int",
       "file": "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb",
       "lineno": 363,
       "function": "block in emit_includes_preloads",
@@ -1403,7 +1385,6 @@
       "result_value": {
         "sym": "SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_6_rows"
       },
-      "result_sort": "Int",
       "file": "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb",
       "lineno": 363,
       "function": "block in emit_includes_preloads",
@@ -1471,7 +1452,6 @@
           "sort": "null"
         }
       },
-      "result_sort": "Int",
       "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/rendering.rb",
       "lineno": 115,
       "function": "_process_options",
@@ -1497,7 +1477,6 @@
       "result_value": {
         "format": "application/json"
       },
-      "result_sort": "Int",
       "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/abstract_controller/rendering.rb",
       "lineno": 29,
       "function": "render",
@@ -1821,13 +1800,11 @@
   "symbolic_results": [
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
-      "sort": "Int",
       "type": "obj<?>",
-      "value": "#<Post:0x1b9b8759>"
+      "value": "#<Post:0x2d739a6f>"
     },
     {
       "name": "SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_1",
-      "sort": "Int",
       "type": "[?]",
       "value": {
         "sym": "SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_1_rows"
@@ -1835,7 +1812,6 @@
     },
     {
       "name": "SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_2",
-      "sort": "Int",
       "type": "[?]",
       "value": {
         "sym": "SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_2_rows"
@@ -1843,7 +1819,6 @@
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_1",
-      "sort": "Int",
       "type": "[?]",
       "value": {
         "sym": "SYM_RESULT_ActiveRecord__Relation_records_1_rows"
@@ -1851,7 +1826,6 @@
     },
     {
       "name": "SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_3",
-      "sort": "Int",
       "type": "[?]",
       "value": {
         "sym": "SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_3_rows"
@@ -1859,7 +1833,6 @@
     },
     {
       "name": "SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_4",
-      "sort": "Int",
       "type": "[?]",
       "value": {
         "sym": "SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_4_rows"
@@ -1867,7 +1840,6 @@
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_2",
-      "sort": "Int",
       "type": "[?]",
       "value": {
         "sym": "SYM_RESULT_ActiveRecord__Relation_records_2_rows"
@@ -1875,7 +1847,6 @@
     },
     {
       "name": "SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_5",
-      "sort": "Int",
       "type": "[?]",
       "value": {
         "sym": "SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_5_rows"
@@ -1883,7 +1854,6 @@
     },
     {
       "name": "SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_6",
-      "sort": "Int",
       "type": "[?]",
       "value": {
         "sym": "SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_6_rows"
@@ -1891,7 +1861,6 @@
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_3",
-      "sort": "Int",
       "type": "[?]",
       "value": {
         "sym": "SYM_RESULT_ActiveRecord__Relation_records_2_rows"
@@ -1899,7 +1868,6 @@
     },
     {
       "name": "SYM_RESULT_ActionController__Metal_status__1",
-      "sort": "Int",
       "type": "opaque?",
       "value": {
         "lit": {
@@ -1909,7 +1877,6 @@
     },
     {
       "name": "SYM_RESULT_ActionController__Rendering__set_rendered_content_type_1",
-      "sort": "Int",
       "type": "[?]",
       "value": {
         "format": "application/json"

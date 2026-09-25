@@ -487,7 +487,7 @@
       "args": {
 },
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb",
-      "lineno": 870,
+      "lineno": 952,
       "function": "get"
     },
     {
@@ -496,10 +496,9 @@
       "args": {
 },
       "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1",
-      "result_value": "#<User:0x7c458ad3>",
-      "result_sort": "Int",
+      "result_value": "#<User:0x496de48b>",
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb",
-      "lineno": 870,
+      "lineno": 952,
       "function": "get",
       "result_type": "obj<?>",
       "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
@@ -819,9 +818,8 @@
   "symbolic_results": [
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1",
-      "sort": "Int",
       "type": "obj<?>",
-      "value": "#<User:0x7c458ad3>"
+      "value": "#<User:0x496de48b>"
     }
   ],
   "script": "run_dse.rb",
