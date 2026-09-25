@@ -103,11 +103,11 @@ run "anon_json_dse0003" schema=1
   target User#confirm_email = shim
   target User#mine? = shim
   target User#retract = shim
-  sig ActionController::Head#head(status: str) -> opaque shim
-  sig ActiveRecord::FinderMethods#first() -> opaque? target_function
+  sig ActionController::Head#head(status: str) -> str shim
+  sig ActiveRecord::FinderMethods#first() -> obj<?>? target_function
   var $SYM_PARAM_post_id: String = "5"
   var $"Length(SYM_PARAM_post_id)": Int = 1
-  var $SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found: Bool = true note "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+  var $SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found: Bool = true note "{\"refs\": {\"p0\": \"SYM_PARAM_post_id\"}, \"text\": \"SELECT \\\"posts\\\".* FROM \\\"posts\\\" WHERE \\\"posts\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"posts\\\".\\\"id\\\" ASC LIMIT 1\"}"
   result $SYM_RESULT_ActionController__Head_head_1 = ~"head_reached"
   result $SYM_RESULT_ActiveRecord__FinderMethods_first_1 = null
   script "run_dse.rb"
@@ -115,12 +115,12 @@ run "anon_json_dse0003" schema=1
        @ "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/services/post_service.rb":66 in "post_key"
   1: void ActiveRecord::FinderMethods#first()
        @ "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/services/post_service.rb":52 in "find_public!"
-  2: call ActiveRecord::FinderMethods#first() -> $SYM_RESULT_ActiveRecord__FinderMethods_first_1 type opaque? = null
-       note "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+  2: call ActiveRecord::FinderMethods#first() -> $SYM_RESULT_ActiveRecord__FinderMethods_first_1 type obj<?>? = null
+       note "{\"refs\": {\"p0\": \"SYM_PARAM_post_id\"}, \"text\": \"SELECT \\\"posts\\\".* FROM \\\"posts\\\" WHERE \\\"posts\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"posts\\\".\\\"id\\\" ASC LIMIT 1\"}"
        @ "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/services/post_service.rb":52 in "find_public!"
   3: pc ($SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found == true) taken
-       @ "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb":514 in "block in finder_mock_faithful"
+       @ "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb":555 in "block in finder_mock_faithful"
   4: void ActionController::Head#head(status: ~"not_found")
        @ "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/comments_controller.rb":13 in "block"
-  5: call ActionController::Head#head(status: ~"not_found") -> $SYM_RESULT_ActionController__Head_head_1 type opaque = ~"head_reached"
+  5: call ActionController::Head#head(status: ~"not_found") -> $SYM_RESULT_ActionController__Head_head_1 type str = ~"head_reached"
        @ "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/comments_controller.rb":13 in "block in CommentsController"

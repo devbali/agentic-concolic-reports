@@ -21,7 +21,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id",
       "sort": "Int",
       "value": 1,
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "int",
       "origin": {
         "kind": "attr",
@@ -33,7 +33,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_username",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_username_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -45,7 +45,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_serialized_private_key",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_serialized_private_key_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -57,7 +57,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_getting_started",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "bool",
       "origin": {
         "kind": "attr",
@@ -69,7 +69,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_disable_mail",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "bool",
       "origin": {
         "kind": "attr",
@@ -81,13 +81,13 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_language",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_language_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_email",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_email_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -99,7 +99,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_encrypted_password",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_encrypted_password_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -111,7 +111,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_created_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_created_at_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -123,7 +123,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_updated_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_updated_at_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -135,7 +135,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_locked_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_locked_at_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -147,7 +147,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_sign_in_count",
       "sort": "Int",
       "value": 0,
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "int",
       "origin": {
         "kind": "attr",
@@ -159,7 +159,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_current_sign_in_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_current_sign_in_at_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -171,7 +171,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_last_sign_in_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_last_sign_in_at_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -183,7 +183,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_current_sign_in_ip",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_current_sign_in_ip_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -195,7 +195,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_last_sign_in_ip",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_last_sign_in_ip_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -207,7 +207,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_hidden_shareables",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_hidden_shareables_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -219,7 +219,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_reset_password_sent_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_reset_password_sent_at_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -231,7 +231,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_last_seen",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_last_seen_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -243,7 +243,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_remove_after",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_remove_after_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -255,7 +255,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_export",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_export_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -267,7 +267,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_exported_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_exported_at_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -279,7 +279,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_exporting",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "bool",
       "origin": {
         "kind": "attr",
@@ -291,7 +291,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_strip_exif",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "bool",
       "origin": {
         "kind": "attr",
@@ -303,7 +303,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_exported_photos_file",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_exported_photos_file_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -315,7 +315,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_exported_photos_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_exported_photos_at_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -327,7 +327,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_exporting_photos",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "bool",
       "origin": {
         "kind": "attr",
@@ -339,7 +339,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_color_theme",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_color_theme_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -351,7 +351,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_post_default_public",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "bool",
       "origin": {
         "kind": "attr",
@@ -363,7 +363,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_auto_follow_back",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "bool",
       "origin": {
         "kind": "attr",
@@ -375,7 +375,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_auto_follow_back_aspect_id",
       "sort": "Int",
       "value": 0,
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "int",
       "origin": {
         "kind": "attr",
@@ -387,7 +387,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_show_community_spotlight_in_stream",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "bool",
       "origin": {
         "kind": "attr",
@@ -399,7 +399,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_otp_required_for_login",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "bool",
       "origin": {
         "kind": "attr",
@@ -411,7 +411,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_otp_backup_codes",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_otp_backup_codes_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -423,7 +423,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_plain_otp_secret",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_plain_otp_secret_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -435,7 +435,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_reset_password_token",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_reset_password_token_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -447,7 +447,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_remember_created_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_remember_created_at_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -459,7 +459,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_invited_by_id",
       "sort": "Int",
       "value": 0,
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "int",
       "origin": {
         "kind": "attr",
@@ -471,7 +471,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_authentication_token",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_authentication_token_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -483,7 +483,7 @@
       "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_not_found",
       "sort": "Bool",
       "value": true,
-      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_PARAM_person_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_person_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActionController__Rendering__set_rendered_content_type_1",
@@ -497,7 +497,7 @@
       "args": {
 },
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb",
-      "lineno": 952,
+      "lineno": 1219,
       "function": "get"
     },
     {
@@ -506,12 +506,12 @@
       "args": {
 },
       "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1",
-      "result_value": "#<User:0x48405f04>",
+      "result_value": "#<User:0x38eaac79>",
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb",
-      "lineno": 952,
+      "lineno": 1219,
       "function": "get",
       "result_type": "obj<?>",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}"
     },
     {
       "type": "path_condition",
@@ -531,7 +531,7 @@
       },
       "taken": false,
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb",
-      "lineno": 618,
+      "lineno": 666,
       "function": "symbolic_instance"
     },
     {
@@ -552,7 +552,7 @@
       },
       "taken": false,
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb",
-      "lineno": 620,
+      "lineno": 668,
       "function": "symbolic_instance"
     },
     {
@@ -564,7 +564,7 @@
         }
       },
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb",
-      "lineno": 816,
+      "lineno": 1010,
       "function": "find"
     },
     {
@@ -585,7 +585,7 @@
       },
       "taken": true,
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb",
-      "lineno": 540,
+      "lineno": 569,
       "function": "block in finder_mock"
     },
     {
@@ -623,7 +623,7 @@
       "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/rendering.rb",
       "lineno": 115,
       "function": "_process_options",
-      "result_type": "opaque?"
+      "result_type": "int?"
     },
     {
       "type": "call",
@@ -924,11 +924,11 @@
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1",
       "type": "obj<?>",
-      "value": "#<User:0x48405f04>"
+      "value": "#<User:0x38eaac79>"
     },
     {
       "name": "SYM_RESULT_ActionController__Metal_status__1",
-      "type": "opaque?",
+      "type": "int?",
       "value": {
         "lit": {
           "sort": "null"

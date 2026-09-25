@@ -16,7 +16,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found",
       "sort": "Bool",
       "value": true,
-      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_post_id\"}, \"text\": \"SELECT \\\"posts\\\".* FROM \\\"posts\\\" WHERE \\\"posts\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"posts\\\".\\\"id\\\" ASC LIMIT 1\"}"
     }
   ],
   "events": [
@@ -64,8 +64,8 @@
       "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/services/post_service.rb",
       "lineno": 52,
       "function": "find_public!",
-      "result_type": "opaque?",
-      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+      "result_type": "obj<?>?",
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_post_id\"}, \"text\": \"SELECT \\\"posts\\\".* FROM \\\"posts\\\" WHERE \\\"posts\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"posts\\\".\\\"id\\\" ASC LIMIT 1\"}"
     },
     {
       "type": "path_condition",
@@ -85,7 +85,7 @@
       },
       "taken": true,
       "file": "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb",
-      "lineno": 514,
+      "lineno": 555,
       "function": "block in finder_mock_faithful"
     },
     {
@@ -109,7 +109,7 @@
       "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/comments_controller.rb",
       "lineno": 13,
       "function": "block in CommentsController",
-      "result_type": "opaque"
+      "result_type": "str"
     }
   ],
   "declarations": {
@@ -429,7 +429,7 @@
   "symbolic_results": [
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
-      "type": "opaque?",
+      "type": "obj<?>?",
       "value": {
         "lit": {
           "sort": "null"
@@ -438,7 +438,7 @@
     },
     {
       "name": "SYM_RESULT_ActionController__Head_head_1",
-      "type": "opaque",
+      "type": "str",
       "value": "head_reached"
     }
   ],

@@ -37,9 +37,9 @@ All in `./targets.rb`. `./concolic_targets.rb` is a byte-identical copy of `../c
 
 **Not mocked, per D7 discipline:** `User#share_with` runs for real; every line is SQL or a call into a declared target. Same for `Contact`'s validations, `find_or_initialize_by`, and the presenters (SQL-free field reads).
 
-## 4. Nine defects found — all measured, none patched in `src_new/`
+## 4. Eleven defects found — all measured, none patched in `src_new/`
 
-Per the "ask before `src/` changes" rule these are reported with batch-local workarounds only. D1, D2, D4, D5, D6, D7 and D8 are not specific to this endpoint.
+Per the "ask before `src/` changes" rule these are reported with batch-local workarounds only. D1, D2, D4, D5, D6, D7, D8 and D11 are not specific to this endpoint.
 
 **D1 — a mock returning bare `false` is TRUTHY (Class B, foreclosed branch).** `to_symbolic(false)` is `SymbolicBool.new(false)`, a Ruby object, hence truthy. A mock meaning "no" makes every `if <mocked predicate>` take the TRUE branch unconditionally. Live effect here: `blocks.exists?`'s negative arm fired unconditionally, `share_with` always returned nil, every run took the 409 arm with no write. Workaround: return `nil` on the negative arm. **The shared `exists?/any?/none?/one?/many?/empty?` family needs a sweep for this.**
 
@@ -59,13 +59,19 @@ Per the "ask before `src/` changes" rule these are reported with batch-local wor
 
 **D9 — a raising finder's pending note lands on the next target call (Class S).** Not fixable from a mock; statement isn't lost, just mis-attributed.
 
+**D10 — `UniquenessValidator` binds the CAST value, not the symbol (Class S).** `validates :person_id, uniqueness: {scope: :user_id}` reads its values through AR's type-cast pipeline — `record.read_attribute_for_validation(attribute)` for the validated column and `record._read_attribute(scope_item)` for each scope column — both of which run `ActiveModel::Type::Integer#cast` -> `CastableSymbolicInt#to_i` and hand back a bare Integer. The relation the probe is then rendered from carries concrete binds, and the note came out
+`… "contacts"."person_id" = 1 AND "contacts"."user_id" = 1 …` on the write arm. The record still holds BOTH symbols in `attributes_before_type_cast` (probed); only the two readers drop them. Fixed batch-locally in `./targets.rb` §8 (`AmUniquenessSymbolicBinds`, a prepend that substitutes by COLUMN NAME — never by value: D8 makes a value lookup ambiguous by construction).
+
+**D11 — `?` placeholders and collected binds are two different lists (Class S, silent mis-attribution).** `ConcolicTargets.render_relation_sql` renders the SQL with one pass (`visitor.accept` -> `"?"` per emitted bind) and collects the binds with another (`collect_binds` over the AST), then zips them positionally with `sql.gsub("?")`. The lists are not the same length: activerecord-5.2.4.3 wraps EVERY hash condition in a `BindParam`, nil ones included (`where.not(id: nil)`, which the uniqueness validator adds for a persisted record), while arel-9 short-circuits a bind whose `nil?` is true and emits `IS NULL` / `IS NOT NULL` with NO placeholder. Probed on the real relation: `qmarks = 2, collected = 3`, so the user_id placeholder consumed the nil `id` bind. **Every bind after the first nullable condition is shifted onto the wrong value** — here it happened to land on nil, but the same shift renders `$$(<wrong producer>)`. Two instances in these dumps: the uniqueness probe's `user_id`, and `AspectMembership.where(contact_id: <nil>, aspect_id: <sym>)` (14 notes/dump). Fixed batch-locally in `./targets.rb` §9: substitute at the single point that emits a placeholder (`Arel::Collectors::SQLString#add_bind`), which makes the mapping exact by construction and also removes a second latent bug (a literal `?` inside a quoted SQL string consumed a bind).
+
 ## 5. Open / not done
 
 1. The write is not in the main 6-run set — cause is D8, not a wall. More runs alone won't fix it.
 2. `worklist_exhausted: false` (45 seeds queued). No completeness claim; no `CoverageChecker` pass was run — first pass, as scoped.
 3. `User#deliver_profile_update` is shimmed, eliding an access that's dormant on every explored path but is a recorded cost.
-4. `"contacts"."user_id" = nil` appears in one uniqueness-probe note on some paths — undiagnosed.
-5. **`concolic_targets.rb` divergence needs a ruling.** The canonical shared `/home/dev/project/reports/diaspora/concolic_targets.rb` has 71 `declare_target` calls and zero `kind:` arguments — it would raise `MissingKind` immediately under the current runtime. The `results4/comments_index` copy this batch cloned differs from it by ~800 diff lines in both directions. Someone should decide which is canonical before the next batch.
+4. ~~`"contacts"."user_id" = nil` appears in one uniqueness-probe note on some paths — undiagnosed.~~ **DIAGNOSED AND CLOSED (2026-09-25)** — it was not a nil value but a bind/placeholder misalignment; see D11. The probe now renders `"person_id" = $$(…) AND "id" IS NOT NULL AND "user_id" = $$(…)` on the persisted arm and `"person_id" = $$(…) AND "user_id" = $$(…)` on the build arm, in both the main and `write_path` sets.
+5. One key column in the corpus still renders against a non-`$$` right-hand side: `SELECT "blocks".* FROM "blocks" WHERE "blocks"."user_id" = ?` (`ActiveRecord::Querying#find_by_sql`, from `statement_cache.rb:108`). It is a PREPARED-STATEMENT TEMPLATE, not a lost value — AR's `StatementCache` renders the SQL once with its own placeholder and passes the values separately, and the shared `find_by_sql` mock notes `args["sql"]`, which is that template. The bound values ARE reachable (`args["binds"]` holds the `QueryAttribute`s), so this is reducible, but not from a prepend: re-declaring `find_by_sql` hits D5, and rewriting the `sql` ARGUMENT would recreate the `$$(…)`-inside-an-argument leak that `CallInterceptor` unresolves. Left for a ruling.
+6. **`concolic_targets.rb` divergence needs a ruling.** The canonical shared `/home/dev/project/reports/diaspora/concolic_targets.rb` has 71 `declare_target` calls and zero `kind:` arguments — it would raise `MissingKind` immediately under the current runtime. The `results4/comments_index` copy this batch cloned differs from it by ~800 diff lines in both directions. Someone should decide which is canonical before the next batch.
 
 ## 6. Files
 

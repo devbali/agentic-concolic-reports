@@ -202,6 +202,49 @@ module AspectMembershipsTargets
     at.is_a?(::Hash) ? at.reject { |_k, v| v.nil? } : nil
   end
 
+  # ---------------------------------------------------------------------
+  # symbolic_attr — the symbol standing behind ONE NAMED COLUMN of a record.
+  # ---------------------------------------------------------------------
+  # Returns the SymbolicVar the application assigned to `record.<name>`, or
+  # nil when that column holds no symbol. Used by §8 (the uniqueness-probe
+  # binds) and safe for any other "AR handed me a concrete value but the
+  # record still remembers the symbol" site.
+  #
+  # NAME-BASED BY CONSTRUCTION, NEVER VALUE-BASED. The column name is the
+  # only key. A value->symbol lookup is inadmissible here: D8 (./REPORT.md)
+  # is that EVERY id column seeds to the same `1`, so matching a concrete
+  # value back to a symbol is ambiguous by construction and would attach the
+  # WRONG name — strictly worse than the bare literal it replaced.
+  #
+  # Two sources, in fidelity order:
+  #   1. `concolic_attrs` — a `ConcolicTargets.symbolic_instance` keeps its
+  #      symbolic columns here (`klass.allocate` leaves @attributes nil, so
+  #      `attributes_before_type_cast` would raise on it).
+  #   2. `attributes_before_type_cast` — a REAL AR record (the
+  #      `find_or_initialize_by` MISS arm builds one) keeps the value AS
+  #      ASSIGNED here. §4a's whole point: `CastableSymbolicInt#to_i` feeds
+  #      the type cast a concrete Integer WITHOUT concretizing the
+  #      attribute, so the before-cast slot still holds the symbol.
+  def symbolic_attr(record, name)
+    col = name.to_s
+    raw = nil
+    if record.respond_to?(:concolic_attrs)
+      raw = begin
+        record.concolic_attrs[col]
+      rescue StandardError
+        nil
+      end
+    end
+    if raw.nil? && record.respond_to?(:attributes_before_type_cast)
+      raw = begin
+        record.attributes_before_type_cast[col]
+      rescue StandardError
+        nil
+      end
+    end
+    (raw.respond_to?(:sym_name) && raw.sym_name) ? raw : nil
+  end
+
   # persisted? FIRST: on a symbolic instance (`klass.allocate`) @new_record is
   # nil, so `new_record?` returns nil (not false) while `persisted?` — which
   # is `!(@new_record || @destroyed)` — correctly returns true. A symbolic
@@ -336,11 +379,12 @@ module AspectMembershipsTargets
     # `contacts.find_or_initialize_by(person_id:)` all bottom out here and
     # each issues a real SELECT.
     %i[first last take find_by].each do |m|
-      interceptor.declare_target(fm, m, kind: CallInterceptor::TARGET_FUNCTION,
+      # type: obj<?>? -- the not-found arm returns nil.
+      interceptor.declare_target(fm, m, kind: CallInterceptor::TARGET_FUNCTION, type: "obj<?>?",
                                         returns: finder_mock_faithful(ct, raise_on_missing: false, kind: m))
     end
     %i[first! last! find_by!].each do |m|
-      interceptor.declare_target(fm, m, kind: CallInterceptor::TARGET_FUNCTION,
+      interceptor.declare_target(fm, m, kind: CallInterceptor::TARGET_FUNCTION, type: "obj<?>",
                                         returns: finder_mock_faithful(ct, raise_on_missing: true, kind: m))
     end
 
@@ -374,7 +418,8 @@ module AspectMembershipsTargets
     # COST: `check_returns_symbol!` books a TOTALITY_GAP for the nil return
     # (TOTALITY is false, so it does not raise). That is the honest trade:
     # a booked gap versus a foreclosed branch.
-    interceptor.declare_target(fm, :exists?, kind: CallInterceptor::TARGET_FUNCTION, returns: lambda do |receiver, args, name|
+    # type: bool? -- the negative arm returns nil, not false (see the note above).
+    interceptor.declare_target(fm, :exists?, kind: CallInterceptor::TARGET_FUNCTION, type: "bool?", returns: lambda do |receiver, args, name|
       note = AspectMembershipsTargets.exists_sql_for(ct, receiver, args)
       vn = "#{name}_exists"
       ex = symbool(vn, ct.seed_for(vn, false), note: note)
@@ -404,7 +449,8 @@ module AspectMembershipsTargets
     # itself an access is a shim, and only a shim is exempt from
     # `check_returns_symbol!` (the return here is an AR proxy, not a symbol).
     if defined?(User)
-      interceptor.declare_target(User, :blocks, kind: CallInterceptor::SHIM, returns: lambda do |receiver, _args, _name|
+      # type: [?] -- the real association reader hands back an AR CollectionProxy.
+      interceptor.declare_target(User, :blocks, kind: CallInterceptor::SHIM, type: "[?]", returns: lambda do |receiver, _args, _name|
         receiver.association(:blocks).reader
       end)
     end
@@ -422,7 +468,7 @@ module AspectMembershipsTargets
       next unless base.instance_methods.include?(m) ||
                   base.private_instance_methods.include?(m) ||
                   base.protected_instance_methods.include?(m)
-      interceptor.declare_target(base, m, kind: CallInterceptor::TARGET_FUNCTION, returns: lambda do |receiver, args, name|
+      interceptor.declare_target(base, m, kind: CallInterceptor::TARGET_FUNCTION, type: "bool", returns: lambda do |receiver, args, name|
         note = if %i[destroy destroy!].include?(m)
                  begin
                    t = receiver.class.table_name
@@ -444,7 +490,7 @@ module AspectMembershipsTargets
     end
 
     %i[update_all delete_all].each do |m|
-      interceptor.declare_target(rel, m, kind: CallInterceptor::TARGET_FUNCTION, returns: lambda do |receiver, args, name|
+      interceptor.declare_target(rel, m, kind: CallInterceptor::TARGET_FUNCTION, type: "int", returns: lambda do |receiver, args, name|
         note = if m == :update_all
                  AspectMembershipsTargets.update_all_note(ct, receiver, args)
                else
@@ -474,12 +520,14 @@ module AspectMembershipsTargets
     # alternative (letting it run) drags the whole federation entity
     # validation chain in, which is a documented wall on every batch.
     if defined?(Diaspora::Federation::Dispatcher)
+      # type: str? -- the real defer_dispatch returns perform_async's job id; mock records null.
       interceptor.declare_target(Diaspora::Federation::Dispatcher.singleton_class, :defer_dispatch,
-                                 kind: CallInterceptor::SHIM, returns: ->(_r, _a, _n) { nil })
+                                 kind: CallInterceptor::SHIM, type: "str?", returns: ->(_r, _a, _n) { nil })
     end
     if defined?(User) && User.method_defined?(:deliver_profile_update)
+      # type: str? -- delegates to defer_dispatch (a job id); this mock records null.
       interceptor.declare_target(User, :deliver_profile_update,
-                                 kind: CallInterceptor::SHIM, returns: ->(_r, _a, _n) { nil })
+                                 kind: CallInterceptor::SHIM, type: "str?", returns: ->(_r, _a, _n) { nil })
     end
 
     # =====================================================================
@@ -781,6 +829,152 @@ module AspectMembershipsTargets
       ActiveRecord::Relation.prepend(AmUpdateAllValueNaming)
     end
 
+    # =====================================================================
+    # §8. The uniqueness probe must bind SYMBOLS, not the cast Integers.
+    # =====================================================================
+    # MEASURED CLASS-S MIS-SHAPE — the LAST bare-literal key comparison in
+    # the corpus. On the `find_or_initialize_by` MISS arm (the arm that
+    # actually writes), `contact.valid?` runs `validates :person_id,
+    # uniqueness: {scope: :user_id}` (app/models/contact.rb:13) and the
+    # probe it issues rendered
+    #     SELECT 1 AS one FROM "contacts"
+    #      WHERE "contacts"."person_id" = 1 AND "contacts"."user_id" = 1
+    #      LIMIT 1
+    # — two concrete `1`s where both of this endpoint's producer chains
+    # belong (write_path/dump_0001,0002).
+    #
+    # THE REAL MECHANISM (probed, not inferred — activerecord-5.2.4.3
+    # validations/uniqueness.rb:19-96). The validator reads its values
+    # through AR's TYPE-CAST pipeline, twice, and NEITHER read is the mock's:
+    #
+    #   ActiveModel::EachValidator#validate
+    #     value = record.read_attribute_for_validation(:person_id)
+    #       -> the generated reader -> @attributes.fetch_value
+    #       -> ActiveModel::Type::Integer#cast -> CastableSymbolicInt#to_i
+    #       -> 5                                     # plain Integer
+    #   UniquenessValidator#validate_each(record, :person_id, 5)
+    #     build_relation -> predicate_builder.build_bind_attribute("person_id", 5)
+    #       -> QueryAttribute(value_before_type_cast: 5)
+    #       -> connection.case_sensitive_comparison -> table[:person_id].eq(qa)
+    #     scope_relation
+    #       scope_value = record._read_attribute(:user_id) -> 1
+    #       relation.where(user_id: 1)
+    #
+    # By the time `FinderMethods#exists?` (§0) renders the note from the
+    # relation's binds, `value_before_type_cast` IS the cast Integer: the
+    # symbol was lost one and two frames EARLIER, at the two reads above.
+    # PROBED on the real record (`u.contacts.new(person_id: <sym>)`):
+    #   attributes_before_type_cast -> {"user_id"=><SymInt SYM_USER_id=1>,
+    #                                   "person_id"=><SymInt …=5>}
+    #   read_attribute_for_validation(:person_id) -> 5
+    #   _read_attribute(:user_id)                 -> 1
+    # The record still holds BOTH symbols. Only the readers drop them.
+    #
+    # WHY THE FIX IS HERE AND NOT FURTHER DOWN. Three layers were tried:
+    #   (1) render the note from the record instead of the relation —
+    #       `exists?` is a RELATION-receiver target; the validator's
+    #       relation is `Contact.unscoped.where!(…)`, an object with no back
+    #       pointer to the record that built it. Unreachable from the mock.
+    #   (2) map each rendered bind back to a symbol — REFUSED, and would be
+    #       wrong: see `symbolic_attr`'s header (D8, every id seeds to 1).
+    #   (3) hand the validator the symbol it is entitled to. Probed that the
+    #       rest of the chain already carries a symbol end-to-end:
+    #         table[:person_id].eq(build_bind_attribute("person_id", <sym>))
+    #           -> "… "person_id" = $$(p0)"     (the build_relation shape)
+    #         Contact.unscoped.where(person_id: <sym>)
+    #           -> "… "person_id" = $$(p0)"     (the scope_relation shape)
+    #       Both already render as binds today. The ONLY broken link is the
+    #       two reads, so that is the only thing replaced.
+    #
+    # WHAT IT DOES NOT CHANGE — this is a RENDERING fix and must not move a
+    # branch. `validate_each` is entered with the same record on the same
+    # paths (the `allow_nil`/`allow_blank` skip in `EachValidator#validate`
+    # is evaluated on the READER's value, untouched); `build_relation`'s one
+    # value-dependent branch is `value.nil?`, and a symbol is substituted
+    # only where the record HAS one, so nil stays nil; the enum remap is
+    # skipped for any enum-backed column (a symbol is not a key of
+    # `defined_enums`, so remapping would silently nil the value); and
+    # `relation.exists?` is the §0 mock, whose answer comes from the
+    # `<name>_exists` seed and never from the relation's contents. Verified:
+    # same 4 runs, same 4 paths, same PCs.
+    #
+    # KIND: NOT A TARGET — a plain `prepend`, same standing as §7. It mints
+    # no symbol and records no decision; it only restores the identity of a
+    # value the application had already computed.
+    if defined?(ActiveRecord::Validations::UniquenessValidator) &&
+       !(ActiveRecord::Validations::UniquenessValidator <
+         AmUniquenessSymbolicBinds)
+      ActiveRecord::Validations::UniquenessValidator
+        .prepend(AmUniquenessSymbolicBinds)
+    end
+
+    # =====================================================================
+    # §9. `?` PLACEHOLDERS AND COLLECTED BINDS MUST BE THE SAME LIST.
+    # =====================================================================
+    # MEASURED CLASS-S MIS-ATTRIBUTION, and the cause of the LAST wrong
+    # value in this endpoint's uniqueness probe (./REPORT.md §5 open item 4,
+    # "`"contacts"."user_id" = nil` … undiagnosed"). §8 above restored the
+    # symbol on BOTH sides of that probe, and the persisted arm STILL
+    # rendered
+    #     … "person_id" = $$(p0) AND "id" IS NOT NULL AND "user_id" = nil
+    # with `SYM_…_find_by_1_user_id` sitting right there on the record.
+    #
+    # THE MECHANISM — `ConcolicTargets.render_relation_sql` builds the note
+    # in two INDEPENDENT passes and zips them positionally:
+    #   pass 1  visitor.accept(ast, SQLString)   -> "?" per emitted bind
+    #   pass 2  collect_binds(ast, binds)        -> every BindParam in the tree
+    #   zip     sql.gsub("?") { render_bind_value(binds[i]); i += 1 }
+    # The two lists are NOT the same length. activerecord-5.2.4.3's
+    # `PredicateBuilder#build_bind_attribute` wraps EVERY hash condition in a
+    # BindParam — INCLUDING a nil one (`where.not(id: nil)`, which
+    # `UniquenessValidator#validate_each` adds for a persisted record) —
+    # while arel-9's `visit_Arel_Nodes_Equality`/`NotEqual` short-circuit a
+    # bind whose `nil?` is true (`Arel::Nodes::BindParam#nil?` delegates to
+    # `ActiveRecord::Relation::QueryAttribute#nil?`) and emit `IS NULL` /
+    # `IS NOT NULL` with NO placeholder. Probed on the exact relation:
+    #     … "person_id" = ? AND "id" IS NOT NULL AND "user_id" = ?
+    #     qmarks = 2   collected = 3
+    #     bind0 person_id=<sym>   bind1 id=nil   bind2 user_id=<sym>
+    # So `?`#2 (user_id's) consumed bind1 — the NIL id — and rendered `nil`,
+    # and the user_id symbol fell off the end. EVERY bind after the first
+    # nullable condition is shifted onto the wrong value. It is luck, not
+    # design, that the shifted slot here held nil rather than another
+    # column's symbol: the same shift renders `$$(<wrong producer>)`, which
+    # is a SILENT mis-chaining, the worst outcome in this corpus.
+    # Second instance in the same dumps, same cause:
+    #   AspectMembership.where(contact_id: <nil>, aspect_id: <sym>)
+    #     -> "contact_id" IS NULL AND "aspect_id" = nil   (14 notes/dump)
+    #
+    # THE FIX — stop guessing the correspondence and take it from the one
+    # place that knows: the collector. `Arel::Visitors::ToSql
+    # #visit_Arel_Nodes_BindParam` is the ONLY producer of a placeholder,
+    # and it calls `collector.add_bind(o.value) { "?" }`. Substituting there
+    # makes the mapping exact by construction — one bind, one rendered
+    # value, in emission order — and it also removes a second latent bug in
+    # the `gsub("?")` zip: a literal `?` inside a quoted SQL string (a LIKE
+    # pattern, a JSON value) consumed a bind and shifted the rest.
+    #
+    # WHY HERE AND NOT IN `concolic_targets.rb`: that file is this batch's
+    # PRIVATE, byte-identical copy of `../comments_index/concolic_targets.rb`
+    # (./REPORT.md §3) and the re-sync defect in MEMORY is exactly what
+    # happens when a local definition is edited into such a copy. Overriding
+    # from this file is the same technique §4a uses for `symbolic_instance`.
+    # Nothing about WHICH values are bound changes — only which rendered
+    # text each one lands in.
+    unless ct.respond_to?(:render_relation_sql_without_am_bind_alignment)
+      class << ConcolicTargets
+        alias_method :render_relation_sql_without_am_bind_alignment,
+                     :render_relation_sql
+
+        def render_relation_sql(rel)
+          return "#{rel.class.name} (no arel)" unless rel.respond_to?(:arel) && rel.arel
+
+          visitor = ConcolicSymbolicToSql.new(rel.connection)
+          visitor.accept(rel.arel.ast, AmBindSubstitutingCollector.new).value
+        end
+      end
+    end
+
     warn "[am_create] AspectMembershipsTargets installed"
   end
 end
@@ -880,6 +1074,79 @@ module AmSingularAssociationWriterFk
   end
 end
 
+# =============================================================================
+# AmBindSubstitutingCollector — render each bind WHERE IT IS EMITTED.
+# =============================================================================
+# Derivation and the measurement: install! §9. `Arel::Collectors::SQLString
+# #add_bind` is the single funnel every `?` passes through
+# (`ToSql#visit_Arel_Nodes_BindParam` -> `collector.add_bind(o.value) { "?" }`),
+# so substituting here is exact by construction, where the old
+# walk-the-AST-then-`gsub("?")` zip silently shifted every bind that followed
+# a nullable condition (arel emits `IS NULL` for it, with no placeholder).
+#
+# `@bind_index` is kept in step with the superclass even though nothing reads
+# it here: this collector is a drop-in for `SQLString`, not a fork of it.
+class AmBindSubstitutingCollector < Arel::Collectors::SQLString
+  def add_bind(bind)
+    self << ConcolicTargets.render_bind_value(bind)
+    @bind_index += 1
+    self
+  end
+end
+
+
+# =============================================================================
+# `UniquenessValidator` — THE PROBE MUST BIND SYMBOLS
+# =============================================================================
+# Derivation, measurements and the three candidate layers: install! §8.
+# In one line — activerecord-5.2.4.3 reads the validated attribute through
+# the generated reader and each scope column through `_read_attribute`, both
+# of which run AR's type cast and hand back a bare Integer, so the relation
+# the probe is rendered from carries concrete binds even though the record
+# still holds the symbols in `attributes_before_type_cast`.
+#
+# Two methods, one substitution each, by COLUMN NAME (never by value — D8).
+module AmUniquenessSymbolicBinds
+  # The validated attribute. Rails: `validate_each(record, attribute, value)`
+  # where `value` came from `record.read_attribute_for_validation(attribute)`.
+  def validate_each(record, attribute, value)
+    sym = AspectMembershipsTargets.symbolic_attr(record, attribute)
+    # An enum-backed column is remapped by `map_enum_attribute`
+    # (`mapping[value]`), and a symbol is not a key of that mapping — the
+    # remap would nil it and flip `build_relation` onto its IS NULL arm.
+    # Contact has no enums; the guard keeps the prepend honest app-wide.
+    enum = begin
+      record.class.defined_enums.key?(attribute.to_s)
+    rescue StandardError
+      true
+    end
+    value = sym if sym && !enum
+    super(record, attribute, value)
+  end
+
+  private
+
+  # FAITHFUL COPY of activerecord-5.2.4.3
+  # lib/active_record/validations/uniqueness.rb:85-95, with ONE line changed:
+  # the non-association branch prefers the record's own symbol over the
+  # type-cast `_read_attribute` value. `super` is not usable here — the
+  # substitution has to happen between the read and the `where`, and Rails
+  # does both in the same expression.
+  def scope_relation(record, relation)
+    Array(options[:scope]).each do |scope_item|
+      scope_value = if record.class._reflect_on_association(scope_item)
+                      record.association(scope_item).reader
+                    else
+                      AspectMembershipsTargets.symbolic_attr(record, scope_item) ||
+                        record._read_attribute(scope_item)
+                    end
+      relation = relation.where(scope_item => scope_value)
+    end
+
+    relation
+  end
+end
+
 
 # =============================================================================
 # AmDeviseUserNaming — signed-in principal through REAL Devise.
@@ -916,7 +1183,7 @@ module AmDeviseUserNaming
     # WHERE "users"."id" = $$(SYM_USER_CI_id) ORDER BY … LIMIT 1` that the
     # session resolution issues. Only the not_found DECISION is suppressed
     # (see header), not the statement.
-    interceptor.declare_target(fm, :devise_user_first, kind: CallInterceptor::TARGET_FUNCTION, returns: lambda do |receiver, args, name|
+    interceptor.declare_target(fm, :devise_user_first, kind: CallInterceptor::TARGET_FUNCTION, type: "obj<?>", returns: lambda do |receiver, args, name|
       u = ct.symbolic_instance(ct.model_class(receiver), name,
                                AspectMembershipsTargets.finder_note(ct, receiver, args, :first))
       if u.respond_to?(:define_singleton_method)

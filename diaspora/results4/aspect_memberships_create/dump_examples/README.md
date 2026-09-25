@@ -1,8 +1,12 @@
 # `dump_examples/` — aspect_memberships_create
 
-Six representative copies of the 10 generated dumps, kept under their original
-names (`write_path/` preserved as a subdirectory, since both sets number from
-`dse0001`). Generated 2026-09-24:
+**ALL TEN** generated dumps, kept under their original names (`write_path/`
+preserved as a subdirectory, since both sets number from `dse0001`) --
+regenerated 2026-09-25 with the §5.0 type declarations and §4.1.1c's note
+envelope in place, which is why this is now the whole set rather than six
+representatives: every dump is a new artefact and none of them is a copy of
+something already on disk. The per-path table below still calls out the six
+that illustrate distinct shapes. Generated with:
 
 * main set — `MAX_RUNS=6 TIME_BUDGET=600 scripts/diaspora-concolic ../run_dse.rb`
 * write path — the same runner with

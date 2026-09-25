@@ -16,13 +16,13 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_post_id\"}, \"text\": \"SELECT \\\"posts\\\".* FROM \\\"posts\\\" WHERE \\\"posts\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"posts\\\".\\\"id\\\" ASC LIMIT 1\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_id",
       "sort": "Int",
       "value": 1,
-      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_post_id\"}, \"text\": \"SELECT \\\"posts\\\".* FROM \\\"posts\\\" WHERE \\\"posts\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"posts\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "int",
       "origin": {
         "kind": "attr",
@@ -34,7 +34,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_author_id",
       "sort": "Int",
       "value": 0,
-      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_post_id\"}, \"text\": \"SELECT \\\"posts\\\".* FROM \\\"posts\\\" WHERE \\\"posts\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"posts\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "int",
       "origin": {
         "kind": "attr",
@@ -46,7 +46,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_public",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_post_id\"}, \"text\": \"SELECT \\\"posts\\\".* FROM \\\"posts\\\" WHERE \\\"posts\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"posts\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "bool",
       "origin": {
         "kind": "attr",
@@ -58,19 +58,19 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid_v",
-      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_post_id\"}, \"text\": \"SELECT \\\"posts\\\".* FROM \\\"posts\\\" WHERE \\\"posts\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"posts\\\".\\\"id\\\" ASC LIMIT 1\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_type",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_type_v",
-      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_post_id\"}, \"text\": \"SELECT \\\"posts\\\".* FROM \\\"posts\\\" WHERE \\\"posts\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"posts\\\".\\\"id\\\" ASC LIMIT 1\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_text",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_text_v",
-      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_post_id\"}, \"text\": \"SELECT \\\"posts\\\".* FROM \\\"posts\\\" WHERE \\\"posts\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"posts\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -82,19 +82,19 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_created_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_created_at_v",
-      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_post_id\"}, \"text\": \"SELECT \\\"posts\\\".* FROM \\\"posts\\\" WHERE \\\"posts\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"posts\\\".\\\"id\\\" ASC LIMIT 1\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_updated_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_updated_at_v",
-      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_post_id\"}, \"text\": \"SELECT \\\"posts\\\".* FROM \\\"posts\\\" WHERE \\\"posts\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"posts\\\".\\\"id\\\" ASC LIMIT 1\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_provider_display_name",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_provider_display_name_v",
-      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_post_id\"}, \"text\": \"SELECT \\\"posts\\\".* FROM \\\"posts\\\" WHERE \\\"posts\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"posts\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -106,13 +106,13 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_root_guid",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_root_guid_v",
-      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_post_id\"}, \"text\": \"SELECT \\\"posts\\\".* FROM \\\"posts\\\" WHERE \\\"posts\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"posts\\\".\\\"id\\\" ASC LIMIT 1\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_likes_count",
       "sort": "Int",
       "value": 0,
-      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_post_id\"}, \"text\": \"SELECT \\\"posts\\\".* FROM \\\"posts\\\" WHERE \\\"posts\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"posts\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "int",
       "origin": {
         "kind": "attr",
@@ -124,7 +124,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_comments_count",
       "sort": "Int",
       "value": 0,
-      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_post_id\"}, \"text\": \"SELECT \\\"posts\\\".* FROM \\\"posts\\\" WHERE \\\"posts\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"posts\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "int",
       "origin": {
         "kind": "attr",
@@ -136,7 +136,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_o_embed_cache_id",
       "sort": "Int",
       "value": 0,
-      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_post_id\"}, \"text\": \"SELECT \\\"posts\\\".* FROM \\\"posts\\\" WHERE \\\"posts\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"posts\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "int",
       "origin": {
         "kind": "attr",
@@ -148,7 +148,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_reshares_count",
       "sort": "Int",
       "value": 0,
-      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_post_id\"}, \"text\": \"SELECT \\\"posts\\\".* FROM \\\"posts\\\" WHERE \\\"posts\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"posts\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "int",
       "origin": {
         "kind": "attr",
@@ -160,13 +160,13 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_interacted_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_interacted_at_v",
-      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_post_id\"}, \"text\": \"SELECT \\\"posts\\\".* FROM \\\"posts\\\" WHERE \\\"posts\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"posts\\\".\\\"id\\\" ASC LIMIT 1\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_tweet_id",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_tweet_id_v",
-      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_post_id\"}, \"text\": \"SELECT \\\"posts\\\".* FROM \\\"posts\\\" WHERE \\\"posts\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"posts\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -178,7 +178,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_open_graph_cache_id",
       "sort": "Int",
       "value": 0,
-      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_post_id\"}, \"text\": \"SELECT \\\"posts\\\".* FROM \\\"posts\\\" WHERE \\\"posts\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"posts\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "int",
       "origin": {
         "kind": "attr",
@@ -190,7 +190,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_tumblr_ids",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_tumblr_ids_v",
-      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_post_id\"}, \"text\": \"SELECT \\\"posts\\\".* FROM \\\"posts\\\" WHERE \\\"posts\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"posts\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -202,19 +202,19 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_created_at_year",
       "sort": "Int",
       "value": 1990,
-      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_post_id\"}, \"text\": \"SELECT \\\"posts\\\".* FROM \\\"posts\\\" WHERE \\\"posts\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"posts\\\".\\\"id\\\" ASC LIMIT 1\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_updated_at_year",
       "sort": "Int",
       "value": 1990,
-      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_post_id\"}, \"text\": \"SELECT \\\"posts\\\".* FROM \\\"posts\\\" WHERE \\\"posts\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"posts\\\".\\\"id\\\" ASC LIMIT 1\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_interacted_at_year",
       "sort": "Int",
       "value": 1990,
-      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_post_id\"}, \"text\": \"SELECT \\\"posts\\\".* FROM \\\"posts\\\" WHERE \\\"posts\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"posts\\\".\\\"id\\\" ASC LIMIT 1\"}"
     }
   ],
   "events": [
@@ -254,12 +254,12 @@
       "args": {
 },
       "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
-      "result_value": "#<Post:0x6f3628c2>",
+      "result_value": "#<Post:0x40fdcbd5>",
       "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/services/post_service.rb",
       "lineno": 52,
       "function": "find_public!",
-      "result_type": "obj<?>",
-      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+      "result_type": "obj<?>?",
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_post_id\"}, \"text\": \"SELECT \\\"posts\\\".* FROM \\\"posts\\\" WHERE \\\"posts\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"posts\\\".\\\"id\\\" ASC LIMIT 1\"}"
     },
     {
       "type": "path_condition",
@@ -279,7 +279,7 @@
       },
       "taken": false,
       "file": "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb",
-      "lineno": 514,
+      "lineno": 555,
       "function": "block in finder_mock_faithful"
     },
     {
@@ -300,7 +300,7 @@
       },
       "taken": false,
       "file": "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb",
-      "lineno": 1279,
+      "lineno": 1330,
       "function": "symbolic_instance"
     },
     {
@@ -308,7 +308,7 @@
       "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_public == True)",
       "taken": false,
       "file": "/home/dev/project/reports/diaspora/results4/comments_index/concolic_targets.rb",
-      "lineno": 412,
+      "lineno": 441,
       "function": "block in public?"
     }
   ],
@@ -629,8 +629,8 @@
   "symbolic_results": [
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
-      "type": "obj<?>",
-      "value": "#<Post:0x6f3628c2>"
+      "type": "obj<?>?",
+      "value": "#<Post:0x40fdcbd5>"
     }
   ],
   "script": "run_dse.rb",

@@ -201,7 +201,7 @@ module ConcolicTargets
 
   def render_arg_value(v)
     if v.respond_to?(:sym_name) && v.sym_name
-      "$$(#{v.sym_name})"
+      SymbolicFunc.bind_ref(v.sym_name)
     else
       raw = v.respond_to?(:value) ? v.value : v
       # SQL literal quoting: Ruby String#inspect double-quotes, which SQL
@@ -210,6 +210,35 @@ module ConcolicTargets
       # comments_index first extraction, 2026-08-25). Single-quote strings.
       raw.is_a?(String) ? "'#{raw.gsub("'", "''")}'" : raw.inspect
     end
+  end
+
+  # Read an owner's column PRESERVING symbolic identity where possible.
+  # `owner[col]` on a REAL (non-symbolic_instance) AR record — e.g. the
+  # `Contact.new(person_id: person.id)` `find_or_initialize_by` builds on its
+  # not-found arm — runs the normal read_attribute/type-cast pipeline; for a
+  # CastableSymbolicInt (targets.rb §4a) that pipeline calls `#to_i` and
+  # hands back a plain, concrete Integer, so the symbolic identity is gone
+  # before `render_arg_value` ever sees the value and a bind that DOES exist
+  # renders as a bare literal (measured: `find_target`'s own note rendered
+  # `"people"."id" = 1` instead of `$$(...)` on the write_path dumps).
+  # `attributes_before_type_cast` holds the value AS ASSIGNED — still the
+  # CastableSymbolicInt object — so prefer it when present. A `symbolic_instance`
+  # object (`klass.allocate`) doesn't support it (`@attributes` is nil, so the
+  # real implementation raises); fall back to its own symbolic-preserving `[]`
+  # override in that case, or for any column it genuinely has no before-cast
+  # value for.
+  def raw_owner_attr(owner, col)
+    if owner.respond_to?(:attributes_before_type_cast)
+      raw = begin
+        owner.attributes_before_type_cast[col.to_s]
+      rescue StandardError
+        nil
+      end
+      return raw unless raw.nil?
+    end
+    owner[col]
+  rescue StandardError
+    nil
   end
 
   # results3 Phase A Patch 2: render REAL SQL for class-level finders
@@ -367,7 +396,7 @@ module ConcolicTargets
             v
           end
     if raw.respond_to?(:sym_name) && raw.sym_name
-      "$$(#{raw.sym_name})"
+      SymbolicFunc.bind_ref(raw.sym_name)
     elsif raw.is_a?(String)
       "'#{raw}'"
     else
@@ -620,10 +649,11 @@ module ConcolicTargets
 
     # --- [ DESIGN #1 ] A. Single-record finders -> symbolic model instance --
     %i[find take! first! last! find_by!].each do |m|
-      interceptor.declare_target(fm, m, kind: CallInterceptor::TARGET_FUNCTION, returns: finder_mock(raise_on_missing: true))
+      interceptor.declare_target(fm, m, kind: CallInterceptor::TARGET_FUNCTION, type: "obj<?>", returns: finder_mock(raise_on_missing: true))
     end
     %i[find_by take first last].each do |m|
-      interceptor.declare_target(fm, m, kind: CallInterceptor::TARGET_FUNCTION, returns: finder_mock(raise_on_missing: false))
+      # type: obj<?>? -- the not-found arm returns nil.
+      interceptor.declare_target(fm, m, kind: CallInterceptor::TARGET_FUNCTION, type: "obj<?>?", returns: finder_mock(raise_on_missing: false))
     end
     # Ordinal finders (second..forty_two) — declare only if diaspora uses them.
 
@@ -638,9 +668,9 @@ module ConcolicTargets
     # app today (verified: 0 multi-id/IN queries in current dumps) — if it ever
     # fires, route it to the collection mock (a length-only SymbolicList).
     core = ActiveRecord::Core::ClassMethods
-    interceptor.declare_target(core, :find,     kind: CallInterceptor::TARGET_FUNCTION, returns: finder_mock(raise_on_missing: true))
-    interceptor.declare_target(core, :find_by,  kind: CallInterceptor::TARGET_FUNCTION, returns: finder_mock(raise_on_missing: false))
-    interceptor.declare_target(core, :find_by!, kind: CallInterceptor::TARGET_FUNCTION, returns: finder_mock(raise_on_missing: true))
+    interceptor.declare_target(core, :find,     kind: CallInterceptor::TARGET_FUNCTION, type: "obj<?>", returns: finder_mock(raise_on_missing: true))
+    interceptor.declare_target(core, :find_by,  kind: CallInterceptor::TARGET_FUNCTION, type: "obj<?>?", returns: finder_mock(raise_on_missing: false))
+    interceptor.declare_target(core, :find_by!, kind: CallInterceptor::TARGET_FUNCTION, type: "obj<?>", returns: finder_mock(raise_on_missing: true))
 
     # --- [ DESIGN #3 ] B. Existence / emptiness -> SymbolicBool -------------
     # NOTE: `if Post.exists?(...)` hits the Ruby truthiness gap (TODO.txt) —
@@ -653,7 +683,7 @@ module ConcolicTargets
       many?:   [rel, false],
       empty?:  [rel, false],
     }.each do |m, (mod, seed)|
-      interceptor.declare_target(mod, m, kind: CallInterceptor::TARGET_FUNCTION, returns: lambda do |receiver, args, name|
+      interceptor.declare_target(mod, m, kind: CallInterceptor::TARGET_FUNCTION, type: "bool", returns: lambda do |receiver, args, name|
         vn = "#{name}_#{m.to_s.delete('?')}"
         symbool(vn, seed_for(vn, seed), note: sql_for(receiver, args))
       end)
@@ -665,14 +695,14 @@ module ConcolicTargets
     # SQL-free display/serialisation iteration completes (sampled-content);
     # the representative is a symbolic instance of the relation's klass.
     %i[to_a to_ary records].each do |m|
-      interceptor.declare_target(rel, m, kind: CallInterceptor::TARGET_FUNCTION, returns: lambda do |receiver, args, name|
+      interceptor.declare_target(rel, m, kind: CallInterceptor::TARGET_FUNCTION, type: "[?]", returns: lambda do |receiver, args, name|
         vn = "#{name}_rows"
         rep = symbolic_instance(model_class(receiver), "#{name}_row", sql_for(receiver, args))
         SymbolicList.new(seed_for(SymbolicVar.len_var_name(vn), 1), name: vn,
                        note: sql_for(receiver, args), representative: rep)
       end)
     end
-    interceptor.declare_target(rel, :size, kind: CallInterceptor::TARGET_FUNCTION, returns: lambda do |receiver, args, name|
+    interceptor.declare_target(rel, :size, kind: CallInterceptor::TARGET_FUNCTION, type: "int", returns: lambda do |receiver, args, name|
       vn = "#{name}_size"
       note = sql_for(receiver, args)
       begin
@@ -685,7 +715,7 @@ module ConcolicTargets
 
     # --- [ DESIGN #5 ] D. Calculations -> SymbolicInt -----------------------
     %i[count sum].each do |m|
-      interceptor.declare_target(calc, m, kind: CallInterceptor::TARGET_FUNCTION, returns: lambda do |receiver, args, name|
+      interceptor.declare_target(calc, m, kind: CallInterceptor::TARGET_FUNCTION, type: "int", returns: lambda do |receiver, args, name|
         vn = "#{name}_#{m}"
         note = sql_for(receiver, args)
         begin
@@ -737,7 +767,7 @@ module ConcolicTargets
     # column, and `SELECT *` would overstate it. Same descent §5b took for
     # `pluck`.
     if calc.method_defined?(:ids)
-      interceptor.declare_target(calc, :ids, kind: CallInterceptor::TARGET_FUNCTION, returns: lambda do |receiver, args, name|
+      interceptor.declare_target(calc, :ids, kind: CallInterceptor::TARGET_FUNCTION, type: "[?]", returns: lambda do |receiver, args, name|
         note = sql_for(receiver, args)
         pk = begin
           k = model_class(receiver)
@@ -761,21 +791,23 @@ module ConcolicTargets
       end)
     end
     %i[pluck average minimum maximum calculate].each do |m|
-      interceptor.declare_target(calc, m, kind: CallInterceptor::TARGET_FUNCTION, returns: ->(_r, _a, _n) { UNSUPPORTED.call("Calculations##{m}") })
+      # type: void -- the mock raises, so no return value is ever recorded.
+      interceptor.declare_target(calc, m, kind: CallInterceptor::TARGET_FUNCTION, type: "void", returns: ->(_r, _a, _n) { UNSUPPORTED.call("Calculations##{m}") })
     end
 
     # --- [ DESIGN #6 ] Batches + contents ops -> unsupported ----------------
     %i[find_each find_in_batches in_batches].each do |m|
-      interceptor.declare_target(batches, m, kind: CallInterceptor::TARGET_FUNCTION, returns: ->(_r, _a, _n) { UNSUPPORTED.call("Batches##{m}") })
+      # type: void -- the mock raises, so no return value is ever recorded.
+      interceptor.declare_target(batches, m, kind: CallInterceptor::TARGET_FUNCTION, type: "void", returns: ->(_r, _a, _n) { UNSUPPORTED.call("Batches##{m}") })
     end
 
     # --- [ DESIGN #7 ] E. Relation-level DML --------------------------------
     %i[update_all delete_all].each do |m|
-      interceptor.declare_target(rel, m, kind: CallInterceptor::TARGET_FUNCTION, returns: lambda do |receiver, args, name|
+      interceptor.declare_target(rel, m, kind: CallInterceptor::TARGET_FUNCTION, type: "int", returns: lambda do |receiver, args, name|
         symint("#{name}_#{m}_count", 1, note: sql_for(receiver, args))
       end)
     end
-    interceptor.declare_target(rel, :destroy_all, kind: CallInterceptor::TARGET_FUNCTION, returns: lambda do |receiver, args, name|
+    interceptor.declare_target(rel, :destroy_all, kind: CallInterceptor::TARGET_FUNCTION, type: "[?]", returns: lambda do |receiver, args, name|
       SymbolicList.new(1, name: "#{name}_destroyed", note: sql_for(receiver, args))
     end)
 
@@ -799,17 +831,17 @@ module ConcolicTargets
       next unless base.instance_methods.include?(m) ||
                   base.private_instance_methods.include?(m) ||
                   base.protected_instance_methods.include?(m)
-      interceptor.declare_target(base, m, kind: CallInterceptor::TARGET_FUNCTION, returns: lambda do |receiver, args, name|
+      interceptor.declare_target(base, m, kind: CallInterceptor::TARGET_FUNCTION, type: "bool", returns: lambda do |receiver, args, name|
         symbool("#{name}_#{m}_ok", true, note: "#{receiver.class.name}##{m} args=#{args.inspect}")
       end)
     end
 
     # --- [ DESIGN #9 ] G. Raw SQL entry points ------------------------------
     querying = ActiveRecord::Querying
-    interceptor.declare_target(querying, :find_by_sql, kind: CallInterceptor::TARGET_FUNCTION, returns: lambda do |receiver, args, name|
+    interceptor.declare_target(querying, :find_by_sql, kind: CallInterceptor::TARGET_FUNCTION, type: "[?]", returns: lambda do |receiver, args, name|
       SymbolicList.new(1, name: "#{name}_rows", note: args["sql"].to_s)
     end)
-    interceptor.declare_target(querying, :count_by_sql, kind: CallInterceptor::TARGET_FUNCTION, returns: lambda do |receiver, args, name|
+    interceptor.declare_target(querying, :count_by_sql, kind: CallInterceptor::TARGET_FUNCTION, type: "int", returns: lambda do |receiver, args, name|
       symint("#{name}_count", 1, note: args["sql"].to_s)
     end)
 
@@ -838,7 +870,7 @@ module ConcolicTargets
     # and let the each/where cascade surface honestly as a documented limit.
     # user.blocks -> SymbolicList of Block reps (design rows 1-3 association).
     # Declared so any direct `user.blocks` read yields rep-carrying rows too.
-    interceptor.declare_target(User, :blocks, kind: CallInterceptor::TARGET_FUNCTION, returns: lambda do |receiver, args, name|
+    interceptor.declare_target(User, :blocks, kind: CallInterceptor::TARGET_FUNCTION, type: "[?]", returns: lambda do |receiver, args, name|
       # results3 Phase A Patch 3: render the real SQL this stands in for
       # (Block belongs_to :user, default FK "user_id") instead of the junk
       # "User#blocks" note. See ../PHASE_A_PATCH.md Patch 3.
@@ -876,7 +908,8 @@ module ConcolicTargets
     # user.visible_shareables(..., :by_members_of => aspect_ids) — the concrete
     # [1] lets that SQL path stay real without a list-quote cascade.
     if defined?(Stream::Aspect)
-      interceptor.declare_target(Stream::Aspect, :aspect_ids, kind: CallInterceptor::SHIM, returns: lambda do |_r, _a, _name|
+      # type: [int] -- a concrete Array of aspect ids.
+      interceptor.declare_target(Stream::Aspect, :aspect_ids, kind: CallInterceptor::SHIM, type: "[int]", returns: lambda do |_r, _a, _name|
         [1]
       end)
     end
@@ -894,7 +927,8 @@ module ConcolicTargets
     # real), returning a real relation that for_a_stream can chain — exactly
     # like the Aspect stream's real visible_shareables path.
     if defined?(Stream::FollowedTag)
-      interceptor.declare_target(Stream::FollowedTag, :tag_ids, kind: CallInterceptor::SHIM, returns: lambda do |_r, _a, _name|
+      # type: [int]? -- the real tag_ids is tags.map(&:id); this mock records null.
+      interceptor.declare_target(Stream::FollowedTag, :tag_ids, kind: CallInterceptor::SHIM, type: "[int]?", returns: lambda do |_r, _a, _name|
         nil
       end)
     end
@@ -904,7 +938,8 @@ module ConcolicTargets
     # `Like.where(:target_id => post_ids(posts))`. Return a CONCRETE [1] so
     # the Like.where IN bind-var is plain and no SymbolicList#map cascade fires.
     if defined?(Stream::Base)
-      interceptor.declare_target(Stream::Base, :post_ids, kind: CallInterceptor::SHIM, returns: lambda do |_r, _a, _name|
+      # type: [int] -- a concrete Array of post ids.
+      interceptor.declare_target(Stream::Base, :post_ids, kind: CallInterceptor::SHIM, type: "[int]", returns: lambda do |_r, _a, _name|
         [1]
       end)
     end
@@ -914,7 +949,8 @@ module ConcolicTargets
     # iteration; returns the posts unchanged (behaviour-preserving: the method
     # is a no-op for coverage purposes — side effects mutate the post rows).
     if defined?(Stream::Base)
-      interceptor.declare_target(Stream::Base, :attach_user_likes, kind: CallInterceptor::SHIM, returns: lambda do |receiver, args, _name|
+      # type: [?] -- hands back the posts collection it was given.
+      interceptor.declare_target(Stream::Base, :attach_user_likes, kind: CallInterceptor::SHIM, type: "[?]", returns: lambda do |receiver, args, _name|
         args["posts"]
       end)
     end
@@ -929,7 +965,7 @@ module ConcolicTargets
     # rule it must run for real.
     if defined?(StreamsController)
       warn "[GATE1B] StreamsController defined; decorating target #{StreamsController.name}"
-      interceptor.declare_target(StreamsController, :decorated_stream_posts, kind: CallInterceptor::SHIM, returns: lambda do |receiver, args, name|
+      interceptor.declare_target(StreamsController, :decorated_stream_posts, kind: CallInterceptor::SHIM, type: "[?]", returns: lambda do |receiver, args, name|
         rep = symbolic_instance(Post, "#{name}_decorated", "StreamsController#decorated_stream_posts")
         symlist(name, 1, representative: rep, note: "StreamsController#decorated_stream_posts")
       end)
@@ -948,7 +984,7 @@ module ConcolicTargets
     # invited_by.try(:person). Pure string-building (no SQL); the string result
     # is supplied symbolically.
     if defined?(Stream::Multi)
-      interceptor.declare_target(Stream::Multi, :publisher_prefill, kind: CallInterceptor::SHIM, returns: lambda do |_r, _a, name|
+      interceptor.declare_target(Stream::Multi, :publisher_prefill, kind: CallInterceptor::SHIM, type: "str", returns: lambda do |_r, _a, name|
         symstr("#{name}_prefill", seed_for("#{name}_prefill", ""), note: "Stream::Multi#publisher_prefill")
       end)
     end
@@ -957,7 +993,7 @@ module ConcolicTargets
     # uniq!. Pure transform (no SQL). Mock the transform so @tags is supplied
     # symbolically as a SymbolicList of tag-hash reps.
     if defined?(TagsController)
-      interceptor.declare_target(TagsController, :prep_tags_for_javascript, kind: CallInterceptor::SHIM, returns: lambda do |receiver, args, name|
+      interceptor.declare_target(TagsController, :prep_tags_for_javascript, kind: CallInterceptor::SHIM, type: "[?]", returns: lambda do |receiver, args, name|
         rep = symbolic_instance(ActsAsTaggableOn::Tag, "#{name}_tag", "TagsController#prep_tags_for_javascript")
         symlist(name, 1, representative: rep, note: "TagsController#prep_tags_for_javascript")
       end)
@@ -977,8 +1013,10 @@ module ConcolicTargets
     # contains the app SQL (enqueue is strictly a queue write), so this is not
     # a D7 violation — nothing SQL-bearing is mocked.
     if defined?(Sidekiq::Client)
-      interceptor.declare_target(Sidekiq::Client, :push, kind: CallInterceptor::SHIM, returns: ->(_r, _a, _n) { nil })
-      interceptor.declare_target(Sidekiq::Client, :push_bulk, kind: CallInterceptor::SHIM, returns: ->(_r, _a, _n) { nil })
+      # type: str? -- a real push returns a job-id String; this mock records null.
+      interceptor.declare_target(Sidekiq::Client, :push, kind: CallInterceptor::SHIM, type: "str?", returns: ->(_r, _a, _n) { nil })
+      # type: [str]? -- a real push_bulk returns the job ids; this mock records null.
+      interceptor.declare_target(Sidekiq::Client, :push_bulk, kind: CallInterceptor::SHIM, type: "[str]?", returns: ->(_r, _a, _n) { nil })
     end
 
     # --- [ CRASH-STOP (agent) ] Y. Generic framework-level walls ---
@@ -992,7 +1030,8 @@ module ConcolicTargets
     # Module::DelegationError (13+ crashes). status= only writes a header; the
     # value is not branched on. No-op it.
     if defined?(ActionController::Metal)
-      interceptor.declare_target(ActionController::Metal, :status=, kind: CallInterceptor::SHIM, returns: ->(_r, _a, _n) { nil })
+      # type: int? -- a setter returns its argument (the status code); this mock records null.
+      interceptor.declare_target(ActionController::Metal, :status=, kind: CallInterceptor::SHIM, type: "int?", returns: ->(_r, _a, _n) { nil })
     end
 
     # Y2. Implicit render (UnknownFormat, 14 crashes). An action that runs its
@@ -1004,7 +1043,8 @@ module ConcolicTargets
     # (default_render lives on ActionController::ImplicitRender, included into
     # Metal; explicit `render` is already handled in section Z.)
     if defined?(ActionController::ImplicitRender)
-      interceptor.declare_target(ActionController::ImplicitRender, :default_render, kind: CallInterceptor::SHIM, returns: ->(_r, _a, _n) { :render_reached })
+      # type: str -- a Symbol sentinel; the type language has no symbol kind.
+      interceptor.declare_target(ActionController::ImplicitRender, :default_render, kind: CallInterceptor::SHIM, type: "str", returns: ->(_r, _a, _n) { :render_reached })
     end
 
     # Y3. redirect_to / url_for — engine/Devise routes are not loaded in the
@@ -1015,10 +1055,11 @@ module ConcolicTargets
     # benign no-op returning a concrete URL string (Symbol passes through
     # unchanged).
     if defined?(ActionController::Redirecting)
-      interceptor.declare_target(ActionController::Redirecting, :redirect_to, kind: CallInterceptor::SHIM, returns: ->(_r, _a, _n) { :redirect_reached })
+      # type: str -- a Symbol sentinel; the type language has no symbol kind.
+      interceptor.declare_target(ActionController::Redirecting, :redirect_to, kind: CallInterceptor::SHIM, type: "str", returns: ->(_r, _a, _n) { :redirect_reached })
     end
     if defined?(ActionDispatch::Routing::UrlFor)
-      interceptor.declare_target(ActionDispatch::Routing::UrlFor, :url_for, kind: CallInterceptor::SHIM, returns: ->(_r, _a, _n) { "/concolic_url" })
+      interceptor.declare_target(ActionDispatch::Routing::UrlFor, :url_for, kind: CallInterceptor::SHIM, type: "str", returns: ->(_r, _a, _n) { "/concolic_url" })
     end
 
     # Y4. Devise controllers call assert_is_devise_resource! up-front, which
@@ -1026,7 +1067,7 @@ module ConcolicTargets
     # ActionNotFound (4 crashes). Skip the check (the rig already supplies
     # current_user plumbing; the check is routing config, not concolic logic).
     if defined?(DeviseController)
-      interceptor.declare_target(DeviseController, :assert_is_devise_resource!, kind: CallInterceptor::SHIM, returns: ->(_r, _a, _n) { true })
+      interceptor.declare_target(DeviseController, :assert_is_devise_resource!, kind: CallInterceptor::SHIM, type: "bool", returns: ->(_r, _a, _n) { true })
     end
 
     # --- [ CRASH-STOP (agent) ] Z. Render boundary — render is TERMINAL ---
@@ -1049,7 +1090,8 @@ module ConcolicTargets
     # events for it). Kept as an inert, never-iterated table for the diff.
     render_mod = ActionController::Rendering
     {}.each do |m, marker|
-      interceptor.declare_target(render_mod, m, kind: CallInterceptor::SHIM, returns: lambda do |receiver, args, name|
+      # type: str -- a Symbol sentinel; the type language has no symbol kind.
+      interceptor.declare_target(render_mod, m, kind: CallInterceptor::SHIM, type: "str", returns: lambda do |receiver, args, name|
         # Guard against nil @_response for controllers that set status/headers
         # before/after render. (render's own _process_options is never reached
         # because we skip the body.)
@@ -1076,9 +1118,10 @@ module ConcolicTargets
     # concolic coverage and the eventual save is already symbolic). This is a
     # framework wall equivalent to section Y/Z (no app SQL is mocked).
     if defined?(ActiveRecord::Associations::SingularAssociation)
+      # type: obj<?>? -- hands back the assigned record, which may be nil.
       interceptor.declare_target(
         ActiveRecord::Associations::SingularAssociation, :writer,
-        kind: CallInterceptor::SHIM, returns: ->(_r, args, _n) { args["record"] }
+        kind: CallInterceptor::SHIM, type: "obj<?>?", returns: ->(_r, args, _n) { args["record"] }
       )
     end
 
@@ -1089,8 +1132,9 @@ module ConcolicTargets
     # RecordNotFound -> head :not_found), so treat it as a completion marker.
     if defined?(ActionController::Metal) &&
        ActionController::Metal.instance_methods.include?(:head)
+      # type: str -- a Symbol sentinel; the type language has no symbol kind.
       interceptor.declare_target(ActionController::Metal, :head,
-                                 kind: CallInterceptor::SHIM, returns: ->(_r, _a, _n) { :head_reached })
+                                 kind: CallInterceptor::SHIM, type: "str", returns: ->(_r, _a, _n) { :head_reached })
     end
 
     # W3. SingularAssociation#find_target -> symbolic instance.
@@ -1102,9 +1146,10 @@ module ConcolicTargets
     # (family 4 generic reader wall). Covers photos_destroy/poll/parts_create
     # `author` reader crashes and similar. (The real SQL never runs.)
     if defined?(ActiveRecord::Associations::SingularAssociation)
+      # type: obj<?>? -- a symbolic instance, or nil when the reflection has no class.
       interceptor.declare_target(
         ActiveRecord::Associations::SingularAssociation, :find_target,
-        kind: CallInterceptor::TARGET_FUNCTION, returns: lambda do |receiver, _args, _name|
+        kind: CallInterceptor::TARGET_FUNCTION, type: "obj<?>?", returns: lambda do |receiver, _args, _name|
           begin
             refl = receiver.reflection
             klass = refl.klass
@@ -1118,10 +1163,10 @@ module ConcolicTargets
                 table = klass.table_name
                 if refl.belongs_to?
                   col = refl.association_primary_key(klass)
-                  fk_raw = owner[refl.foreign_key]
+                  fk_raw = raw_owner_attr(owner, refl.foreign_key)
                 else
                   col = refl.foreign_key
-                  fk_raw = owner[refl.active_record_primary_key]
+                  fk_raw = raw_owner_attr(owner, refl.active_record_primary_key)
                 end
                 %(SELECT "#{table}".* FROM "#{table}" WHERE "#{table}"."#{col}" = #{render_arg_value(fk_raw)})
               rescue StandardError
@@ -1176,8 +1221,9 @@ module ConcolicTargets
     # existing response object).
     if defined?(ActionController::Rendering) &&
        ActionController::Rendering.private_instance_methods.include?(:_set_rendered_content_type)
+      # type: [?] -- returns the args Hash, which is never nil.
       interceptor.declare_target(ActionController::Rendering, :_set_rendered_content_type,
-                                 kind: CallInterceptor::SHIM, returns: ->(_r, _a, _n) { _a || nil })
+                                 kind: CallInterceptor::SHIM, type: "[?]", returns: ->(_r, _a, _n) { _a || nil })
     end
 
     # W5. Photo#url -> SymbolicString. PhotosController#make_profile_photo and
@@ -1185,7 +1231,7 @@ module ConcolicTargets
     # NotImplementedError). URL assembly is display-only; return a symstr.
     if defined?(Photo) &&
        (Photo.instance_methods.include?(:url) || Photo.private_instance_methods.include?(:url))
-      interceptor.declare_target(Photo, :url, kind: CallInterceptor::SHIM, returns: lambda do |receiver, _args, name|
+      interceptor.declare_target(Photo, :url, kind: CallInterceptor::SHIM, type: "str", returns: lambda do |receiver, _args, name|
         symstr("#{name}_url", "/uploads/#{name}_thumb.jpg", note: "Photo#url")
       end)
     end
@@ -1198,7 +1244,7 @@ module ConcolicTargets
     if defined?(Photo) && Photo.respond_to?(:diaspora_initialize)
       interceptor.declare_target(
         Photo.singleton_class, :diaspora_initialize,
-        kind: CallInterceptor::SHIM, returns: lambda do |_r, args, name|
+        kind: CallInterceptor::SHIM, type: "obj<?>", returns: lambda do |_r, args, name|
           symbolic_instance(Photo, name, "Photo.diaspora_initialize params=#{args.inspect}")
         end
       )
@@ -1223,8 +1269,9 @@ module ConcolicTargets
       def dev_stub.fullpath; "/users"; end
       def dev_stub.singular?; true; end
       def dev_stub.to(*_); self; end
+      # type: opaque -- a plain Object stub; examined, and it has no §5 structure.
       interceptor.declare_target(DeviseController, :devise_mapping,
-                                 kind: CallInterceptor::SHIM, returns: ->(_r, _a, _n) { dev_stub })
+                                 kind: CallInterceptor::SHIM, type: "opaque", returns: ->(_r, _a, _n) { dev_stub })
     end
 
     # --- [ CRASH-STOP (agent) ] X. Wall-fixing discipline mocks (posts batch) ---
@@ -1240,8 +1287,9 @@ module ConcolicTargets
     # feeds a symbolic int into a real where -> to_sql -> Arel quote -> to_i.
     # Result is discarded by posts_controller; nil passes through unchanged.
     if defined?(PostService)
+      # type: int? -- the real body ends in an update_all row count; this mock records null.
       interceptor.declare_target(PostService, :mark_user_notifications,
-                                 kind: CallInterceptor::SHIM, returns: ->(_r, _a, _n) { nil })
+                                 kind: CallInterceptor::SHIM, type: "int?", returns: ->(_r, _a, _n) { nil })
     end
 
     # X6g. ActionController::Instrumentation#redirect_to -> terminal. Y3 mocks
@@ -1252,8 +1300,9 @@ module ConcolicTargets
     # called. (Y3 kept for receivers that resolve through Redirecting.)
     if defined?(ActionController::Instrumentation) &&
        ActionController::Instrumentation.instance_methods.include?(:redirect_to)
+      # type: str -- a Symbol sentinel; the type language has no symbol kind.
       interceptor.declare_target(ActionController::Instrumentation, :redirect_to,
-                                 kind: CallInterceptor::SHIM, returns: ->(_r, _a, _n) { :redirect_reached })
+                                 kind: CallInterceptor::SHIM, type: "str", returns: ->(_r, _a, _n) { :redirect_reached })
     end
 
     # X2. Post.diaspora_initialize -> symbolic instance. Clears the
@@ -1264,7 +1313,7 @@ module ConcolicTargets
     if defined?(Post) && Post.respond_to?(:diaspora_initialize)
       interceptor.declare_target(
         Post.singleton_class, :diaspora_initialize,
-        kind: CallInterceptor::SHIM, returns: lambda do |_r, args, name|
+        kind: CallInterceptor::SHIM, type: "obj<?>", returns: lambda do |_r, args, name|
           symbolic_instance(_r || Post, name,
                             "Post.diaspora_initialize params=#{args.inspect}")
         end
@@ -1299,8 +1348,9 @@ module ConcolicTargets
     # create each wall: tag_list= -> tag_list_on -> tags_on(context).map(&:name)
     # over a SymbolicList. One assignment, no SQL.
     if defined?(Diaspora::Taggable)
+      # type: [str]? -- `self.tag_list = tag_strings` yields the tag-name Array; mock records null.
       interceptor.declare_target(Diaspora::Taggable, :build_tags,
-                                 kind: CallInterceptor::SHIM, returns: ->(_r, _a, _n) { nil })
+                                 kind: CallInterceptor::SHIM, type: "[str]?", returns: ->(_r, _a, _n) { nil })
     end
 
     # X4b. StatusMessage#tag_name_max_length -> nil. Same wall: the
@@ -1308,8 +1358,9 @@ module ConcolicTargets
     # stays unset and the tag_name_max_length validator re-enters
     # tag_list_cache_on -> the identical each. One comparison, no SQL.
     if defined?(StatusMessage)
+      # type: [str]? -- the real body returns tag_list from `.each`; this mock records null.
       interceptor.declare_target(StatusMessage, :tag_name_max_length,
-                                 kind: CallInterceptor::SHIM, returns: ->(_r, _a, _n) { nil })
+                                 kind: CallInterceptor::SHIM, type: "[str]?", returns: ->(_r, _a, _n) { nil })
     end
 
     # X5. DiasporaFederation::Entity#validate -> nil. Clears the posts_destroy
@@ -1319,8 +1370,9 @@ module ConcolicTargets
     # stays a genuine Hash (no stub object needed). Clears every federation-
     # validator wall in all batches.
     if defined?(DiasporaFederation::Entity)
+      # type: opaque? -- the real validate returns nil or raises; there is no shape to declare.
       interceptor.declare_target(DiasporaFederation::Entity, :validate,
-                                 kind: CallInterceptor::SHIM, returns: ->(_r, _a, _n) { nil })
+                                 kind: CallInterceptor::SHIM, type: "opaque?", returns: ->(_r, _a, _n) { nil })
     end
 
     # --- [ CRASH-STOP (agent) ] X6. posts batch round 2 walls (nil-@attributes family, render
@@ -1334,8 +1386,9 @@ module ConcolicTargets
     # terminal response (W2's intent); no app SQL.
     if defined?(ActionController::Head) &&
        ActionController::Head.instance_methods.include?(:head)
+      # type: str -- a Symbol sentinel; the type language has no symbol kind.
       interceptor.declare_target(ActionController::Head, :head,
-                                 kind: CallInterceptor::SHIM, returns: ->(_r, _a, _n) { :head_reached })
+                                 kind: CallInterceptor::SHIM, type: "str", returns: ->(_r, _a, _n) { :head_reached })
     end
 
     # X6b. Gon::ControllerHelpers#gon -> run the REAL body, no stub. The real
@@ -1360,8 +1413,9 @@ module ConcolicTargets
     # would re-enter the declared method — infinite recursion), no no-op stub.
     # gon is pure JS-var accumulation; nothing branchable, no SQL.
     if defined?(Gon::ControllerHelpers)
+      # type: opaque -- returns the ::Gon module itself; examined, no §5 structure.
       interceptor.declare_target(Gon::ControllerHelpers, :gon,
-                                 kind: CallInterceptor::SHIM, returns: lambda do |receiver, _args, _name|
+                                 kind: CallInterceptor::SHIM, type: "opaque", returns: lambda do |receiver, _args, _name|
         # Real body, gon-6.3.2 helpers.rb:29-37 (with the rig's RequestStore
         # guard the notifications batch verified).
         req = receiver.respond_to?(:request) ? receiver.request : nil
@@ -1404,8 +1458,9 @@ module ConcolicTargets
     # aspect collection `<<` is a persistence write (mocked at F); returning
     # nil skips the loop only.
     if defined?(User)
+      # type: [?]? -- the real body returns the collection it iterates; this mock records null.
       interceptor.declare_target(User, :add_to_streams,
-                                 kind: CallInterceptor::SHIM, returns: ->(_r, _a, _n) { nil })
+                                 kind: CallInterceptor::SHIM, type: "[?]?", returns: ->(_r, _a, _n) { nil })
     end
 
     # X6e. StatusMessageCreationService#add_to_streams -> nil. The service's OWN
@@ -1415,8 +1470,9 @@ module ConcolicTargets
     # (the user.add_to_streams call inside is already X6c-mocked; photos
     # iteration has no SQL). Return nil skips the loop.
     if defined?(StatusMessageCreationService)
+      # type: [?]? -- the real body returns the photos collection it iterates; mock records null.
       interceptor.declare_target(StatusMessageCreationService, :add_to_streams,
-                                 kind: CallInterceptor::SHIM, returns: ->(_r, _a, _n) { nil })
+                                 kind: CallInterceptor::SHIM, type: "[?]?", returns: ->(_r, _a, _n) { nil })
     end
 
     # X6e. User#retract -> nil. posts_destroy's remaining crash is the
@@ -1430,7 +1486,8 @@ module ConcolicTargets
     # encloses the whole wall; its one real query (target.subscribers) feeds
     # the already-mocked Sidekiq dispatch, not branch logic.
     if defined?(User)
-      interceptor.declare_target(User, :retract, kind: CallInterceptor::SHIM, returns: ->(_r, _a, _n) { nil })
+      # type: bool? -- the real retract ends in logger.info (true); this mock records null.
+      interceptor.declare_target(User, :retract, kind: CallInterceptor::SHIM, type: "bool?", returns: ->(_r, _a, _n) { nil })
     end
 
     # --- X6f REMOVED for results3/comments_index (see this file's header +
@@ -1535,8 +1592,9 @@ module ConcolicTargets
     if defined?(PostPresenter) &&
        (PostPresenter.instance_methods.include?(:build_mentioned_people_json) ||
         PostPresenter.private_instance_methods.include?(:build_mentioned_people_json))
+      # type: [?] -- a concrete empty Array.
       interceptor.declare_target(PostPresenter, :build_mentioned_people_json,
-                                 kind: CallInterceptor::SHIM, returns: ->(_r, _a, _n) { [] })
+                                 kind: CallInterceptor::SHIM, type: "[?]", returns: ->(_r, _a, _n) { [] })
     end
 
     # X6l. MessageRenderer#title -> concrete string. posts_show title render:
@@ -1545,7 +1603,7 @@ module ConcolicTargets
     if defined?(Diaspora::MessageRenderer) &&
        Diaspora::MessageRenderer.instance_methods.include?(:title)
       interceptor.declare_target(Diaspora::MessageRenderer, :title,
-                                 kind: CallInterceptor::SHIM, returns: ->(_r, _a, _n) { "Concolic title" })
+                                 kind: CallInterceptor::SHIM, type: "str", returns: ->(_r, _a, _n) { "Concolic title" })
     end
 
     # X6h. MessageRenderer::Processor.process -> concrete text. posts_show text
@@ -1576,9 +1634,10 @@ module ConcolicTargets
     # for a SymbolicString, plain String unchanged, else nil (federation's own
     # to_xml/to_json return nil for RelatedEntity — "never add to json").
     if defined?(DiasporaFederation::Entity)
+      # type: str? -- a concrete String, or nil for a non-string property.
       interceptor.declare_target(
         DiasporaFederation::Entity, :normalize_property,
-        kind: CallInterceptor::SHIM, returns: lambda do |_receiver, args, _name|
+        kind: CallInterceptor::SHIM, type: "str?", returns: lambda do |_receiver, args, _name|
           v = args["value"]
           if v.is_a?(SymbolicString)
             v.value
@@ -1601,7 +1660,7 @@ module ConcolicTargets
        defined?(AspectMembership)
       interceptor.declare_target(
         ActiveRecord::Associations::CollectionProxy, :create,
-        kind: CallInterceptor::SHIM, returns: lambda do |_receiver, args, name|
+        kind: CallInterceptor::SHIM, type: "obj<?>", returns: lambda do |_receiver, args, name|
           symbolic_instance(AspectMembership, "#{name}_membership",
                             "aspect_memberships.create #{args.inspect}")
         end
@@ -1617,7 +1676,7 @@ module ConcolicTargets
     # success side so the real destroy path + json render are explored. No SQL.
     if defined?(User)
       interceptor.declare_target(User, :mine?,
-                                 kind: CallInterceptor::SHIM, returns: ->(_r, _a, _n) { true })
+                                 kind: CallInterceptor::SHIM, type: "bool", returns: ->(_r, _a, _n) { true })
     end
 
     # --- X8: users_sessions batch (Devise / URL-builder / profile walls) -----
@@ -1630,7 +1689,7 @@ module ConcolicTargets
     # (only nil-guard + route helpers). Return a concrete path.
     if defined?(ApplicationController)
       interceptor.declare_target(ApplicationController, :after_sign_in_path_for,
-                                 kind: CallInterceptor::SHIM, returns: ->(_r, _a, _n) { "/" })
+                                 kind: CallInterceptor::SHIM, type: "str", returns: ->(_r, _a, _n) { "/" })
     end
 
     # X8b. ApplicationController#configure_permitted_parameters -> nil. It
@@ -1640,8 +1699,9 @@ module ConcolicTargets
     # configure_permitted_parameters is a SQL-free no-op permit hook; mock it
     # to skip the Devise sanitizer construction.
     if defined?(ApplicationController)
+      # type: opaque? -- devise's own permit(...) returns nil too; no shape to declare.
       interceptor.declare_target(ApplicationController, :configure_permitted_parameters,
-                                 kind: CallInterceptor::SHIM, returns: ->(_r, _a, _n) { nil })
+                                 kind: CallInterceptor::SHIM, type: "opaque?", returns: ->(_r, _a, _n) { nil })
     end
 
     # X8c. User#confirm_email -> true. users#confirm_email:
@@ -1651,7 +1711,7 @@ module ConcolicTargets
     # and save is already a persistence mock). Return true.
     if defined?(User)
       interceptor.declare_target(User, :confirm_email,
-                                 kind: CallInterceptor::SHIM, returns: ->(_r, _a, _n) { true })
+                                 kind: CallInterceptor::SHIM, type: "bool", returns: ->(_r, _a, _n) { true })
     end
 
     # X8d. BOUNDARY HARVEST B-2 (coordinator, 2026-08-28): escape_segment is NO
@@ -1726,7 +1786,7 @@ class ConcolicSymbolicToSql < Arel::Visitors::ToSql
 
   def quoted(val, attribute)
     if val.respond_to?(:sym_name) && val.sym_name
-      "$$(#{val.sym_name})"
+      SymbolicFunc.bind_ref(val.sym_name)
     else
       super
     end

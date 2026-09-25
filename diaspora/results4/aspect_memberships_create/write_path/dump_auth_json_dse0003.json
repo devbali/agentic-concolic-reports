@@ -21,7 +21,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id",
       "sort": "Int",
       "value": 1,
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "int",
       "origin": {
         "kind": "attr",
@@ -33,7 +33,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_username",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_username_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -45,7 +45,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_serialized_private_key",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_serialized_private_key_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -57,7 +57,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_getting_started",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "bool",
       "origin": {
         "kind": "attr",
@@ -69,7 +69,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_disable_mail",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "bool",
       "origin": {
         "kind": "attr",
@@ -81,13 +81,13 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_language",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_language_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_email",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_email_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -99,7 +99,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_encrypted_password",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_encrypted_password_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -111,7 +111,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_created_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_created_at_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -123,7 +123,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_updated_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_updated_at_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -135,7 +135,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_locked_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_locked_at_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -147,7 +147,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_sign_in_count",
       "sort": "Int",
       "value": 0,
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "int",
       "origin": {
         "kind": "attr",
@@ -159,7 +159,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_current_sign_in_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_current_sign_in_at_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -171,7 +171,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_last_sign_in_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_last_sign_in_at_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -183,7 +183,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_current_sign_in_ip",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_current_sign_in_ip_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -195,7 +195,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_last_sign_in_ip",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_last_sign_in_ip_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -207,7 +207,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_hidden_shareables",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_hidden_shareables_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -219,7 +219,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_reset_password_sent_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_reset_password_sent_at_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -231,7 +231,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_last_seen",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_last_seen_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -243,7 +243,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_remove_after",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_remove_after_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -255,7 +255,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_export",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_export_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -267,7 +267,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_exported_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_exported_at_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -279,7 +279,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_exporting",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "bool",
       "origin": {
         "kind": "attr",
@@ -291,7 +291,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_strip_exif",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "bool",
       "origin": {
         "kind": "attr",
@@ -303,7 +303,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_exported_photos_file",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_exported_photos_file_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -315,7 +315,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_exported_photos_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_exported_photos_at_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -327,7 +327,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_exporting_photos",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "bool",
       "origin": {
         "kind": "attr",
@@ -339,7 +339,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_color_theme",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_color_theme_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -351,7 +351,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_post_default_public",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "bool",
       "origin": {
         "kind": "attr",
@@ -363,7 +363,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_auto_follow_back",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "bool",
       "origin": {
         "kind": "attr",
@@ -375,7 +375,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_auto_follow_back_aspect_id",
       "sort": "Int",
       "value": 0,
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "int",
       "origin": {
         "kind": "attr",
@@ -387,7 +387,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_show_community_spotlight_in_stream",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "bool",
       "origin": {
         "kind": "attr",
@@ -399,7 +399,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_otp_required_for_login",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "bool",
       "origin": {
         "kind": "attr",
@@ -411,7 +411,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_otp_backup_codes",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_otp_backup_codes_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -423,7 +423,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_plain_otp_secret",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_plain_otp_secret_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -435,7 +435,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_reset_password_token",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_reset_password_token_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -447,7 +447,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_remember_created_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_remember_created_at_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -459,7 +459,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_invited_by_id",
       "sort": "Int",
       "value": 0,
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "int",
       "origin": {
         "kind": "attr",
@@ -471,7 +471,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_authentication_token",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_authentication_token_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -483,13 +483,13 @@
       "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_not_found",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_PARAM_person_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_person_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id",
       "sort": "Int",
       "value": 1,
-      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_PARAM_person_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_person_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "int",
       "origin": {
         "kind": "attr",
@@ -501,13 +501,13 @@
       "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_guid",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_guid_v",
-      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_PARAM_person_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_person_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_diaspora_handle",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_diaspora_handle_v",
-      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_PARAM_person_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_person_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -519,7 +519,7 @@
       "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_serialized_public_key",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_serialized_public_key_v",
-      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_PARAM_person_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_person_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -531,7 +531,7 @@
       "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_owner_id",
       "sort": "Int",
       "value": 0,
-      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_PARAM_person_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_person_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "int",
       "origin": {
         "kind": "attr",
@@ -543,7 +543,7 @@
       "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_created_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_created_at_v",
-      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_PARAM_person_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_person_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -555,7 +555,7 @@
       "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_updated_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_updated_at_v",
-      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_PARAM_person_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_person_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -567,7 +567,7 @@
       "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_closed_account",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_PARAM_person_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_person_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "bool",
       "origin": {
         "kind": "attr",
@@ -579,7 +579,7 @@
       "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_fetch_status",
       "sort": "Int",
       "value": 0,
-      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_PARAM_person_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_person_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "int",
       "origin": {
         "kind": "attr",
@@ -591,7 +591,7 @@
       "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_pod_id",
       "sort": "Int",
       "value": 0,
-      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_PARAM_person_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_person_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "int",
       "origin": {
         "kind": "attr",
@@ -603,13 +603,13 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"aspects\".\"id\" = $$(SYM_PARAM_aspect_id) ORDER BY order_id ASC LIMIT 1"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id\", \"p1\": \"SYM_PARAM_aspect_id\"}, \"text\": \"SELECT \\\"aspects\\\".* FROM \\\"aspects\\\" WHERE \\\"aspects\\\".\\\"user_id\\\" = $$(p0) AND \\\"aspects\\\".\\\"id\\\" = $$(p1) ORDER BY order_id ASC LIMIT 1\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_id",
       "sort": "Int",
       "value": 1,
-      "note": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"aspects\".\"id\" = $$(SYM_PARAM_aspect_id) ORDER BY order_id ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id\", \"p1\": \"SYM_PARAM_aspect_id\"}, \"text\": \"SELECT \\\"aspects\\\".* FROM \\\"aspects\\\" WHERE \\\"aspects\\\".\\\"user_id\\\" = $$(p0) AND \\\"aspects\\\".\\\"id\\\" = $$(p1) ORDER BY order_id ASC LIMIT 1\"}",
       "type": "int",
       "origin": {
         "kind": "attr",
@@ -621,7 +621,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_name",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_name_v",
-      "note": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"aspects\".\"id\" = $$(SYM_PARAM_aspect_id) ORDER BY order_id ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id\", \"p1\": \"SYM_PARAM_aspect_id\"}, \"text\": \"SELECT \\\"aspects\\\".* FROM \\\"aspects\\\" WHERE \\\"aspects\\\".\\\"user_id\\\" = $$(p0) AND \\\"aspects\\\".\\\"id\\\" = $$(p1) ORDER BY order_id ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -633,7 +633,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_user_id",
       "sort": "Int",
       "value": 0,
-      "note": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"aspects\".\"id\" = $$(SYM_PARAM_aspect_id) ORDER BY order_id ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id\", \"p1\": \"SYM_PARAM_aspect_id\"}, \"text\": \"SELECT \\\"aspects\\\".* FROM \\\"aspects\\\" WHERE \\\"aspects\\\".\\\"user_id\\\" = $$(p0) AND \\\"aspects\\\".\\\"id\\\" = $$(p1) ORDER BY order_id ASC LIMIT 1\"}",
       "type": "int",
       "origin": {
         "kind": "attr",
@@ -645,7 +645,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_created_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_created_at_v",
-      "note": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"aspects\".\"id\" = $$(SYM_PARAM_aspect_id) ORDER BY order_id ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id\", \"p1\": \"SYM_PARAM_aspect_id\"}, \"text\": \"SELECT \\\"aspects\\\".* FROM \\\"aspects\\\" WHERE \\\"aspects\\\".\\\"user_id\\\" = $$(p0) AND \\\"aspects\\\".\\\"id\\\" = $$(p1) ORDER BY order_id ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -657,7 +657,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_updated_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_updated_at_v",
-      "note": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"aspects\".\"id\" = $$(SYM_PARAM_aspect_id) ORDER BY order_id ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id\", \"p1\": \"SYM_PARAM_aspect_id\"}, \"text\": \"SELECT \\\"aspects\\\".* FROM \\\"aspects\\\" WHERE \\\"aspects\\\".\\\"user_id\\\" = $$(p0) AND \\\"aspects\\\".\\\"id\\\" = $$(p1) ORDER BY order_id ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -669,7 +669,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_order_id",
       "sort": "Int",
       "value": 0,
-      "note": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"aspects\".\"id\" = $$(SYM_PARAM_aspect_id) ORDER BY order_id ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id\", \"p1\": \"SYM_PARAM_aspect_id\"}, \"text\": \"SELECT \\\"aspects\\\".* FROM \\\"aspects\\\" WHERE \\\"aspects\\\".\\\"user_id\\\" = $$(p0) AND \\\"aspects\\\".\\\"id\\\" = $$(p1) ORDER BY order_id ASC LIMIT 1\"}",
       "type": "int",
       "origin": {
         "kind": "attr",
@@ -681,7 +681,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_chat_enabled",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"aspects\".\"id\" = $$(SYM_PARAM_aspect_id) ORDER BY order_id ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id\", \"p1\": \"SYM_PARAM_aspect_id\"}, \"text\": \"SELECT \\\"aspects\\\".* FROM \\\"aspects\\\" WHERE \\\"aspects\\\".\\\"user_id\\\" = $$(p0) AND \\\"aspects\\\".\\\"id\\\" = $$(p1) ORDER BY order_id ASC LIMIT 1\"}",
       "type": "bool",
       "origin": {
         "kind": "attr",
@@ -693,7 +693,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_post_default",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"aspects\".\"id\" = $$(SYM_PARAM_aspect_id) ORDER BY order_id ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id\", \"p1\": \"SYM_PARAM_aspect_id\"}, \"text\": \"SELECT \\\"aspects\\\".* FROM \\\"aspects\\\" WHERE \\\"aspects\\\".\\\"user_id\\\" = $$(p0) AND \\\"aspects\\\".\\\"id\\\" = $$(p1) ORDER BY order_id ASC LIMIT 1\"}",
       "type": "bool",
       "origin": {
         "kind": "attr",
@@ -710,19 +710,19 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_exists__1_exists",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT 1 AS one FROM \"blocks\" WHERE \"blocks\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"blocks\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id\", \"p1\": \"SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id\"}, \"text\": \"SELECT 1 AS one FROM \\\"blocks\\\" WHERE \\\"blocks\\\".\\\"user_id\\\" = $$(p0) AND \\\"blocks\\\".\\\"person_id\\\" = $$(p1) LIMIT 1\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_not_found",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"contacts\".* FROM \"contacts\" WHERE \"contacts\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"contacts\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id\", \"p1\": \"SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id\"}, \"text\": \"SELECT \\\"contacts\\\".* FROM \\\"contacts\\\" WHERE \\\"contacts\\\".\\\"user_id\\\" = $$(p0) AND \\\"contacts\\\".\\\"person_id\\\" = $$(p1) LIMIT 1\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_id",
       "sort": "Int",
       "value": 1,
-      "note": "SELECT \"contacts\".* FROM \"contacts\" WHERE \"contacts\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"contacts\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id\", \"p1\": \"SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id\"}, \"text\": \"SELECT \\\"contacts\\\".* FROM \\\"contacts\\\" WHERE \\\"contacts\\\".\\\"user_id\\\" = $$(p0) AND \\\"contacts\\\".\\\"person_id\\\" = $$(p1) LIMIT 1\"}",
       "type": "int",
       "origin": {
         "kind": "attr",
@@ -734,7 +734,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id",
       "sort": "Int",
       "value": 0,
-      "note": "SELECT \"contacts\".* FROM \"contacts\" WHERE \"contacts\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"contacts\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id\", \"p1\": \"SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id\"}, \"text\": \"SELECT \\\"contacts\\\".* FROM \\\"contacts\\\" WHERE \\\"contacts\\\".\\\"user_id\\\" = $$(p0) AND \\\"contacts\\\".\\\"person_id\\\" = $$(p1) LIMIT 1\"}",
       "type": "int",
       "origin": {
         "kind": "attr",
@@ -746,7 +746,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id",
       "sort": "Int",
       "value": 0,
-      "note": "SELECT \"contacts\".* FROM \"contacts\" WHERE \"contacts\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"contacts\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id\", \"p1\": \"SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id\"}, \"text\": \"SELECT \\\"contacts\\\".* FROM \\\"contacts\\\" WHERE \\\"contacts\\\".\\\"user_id\\\" = $$(p0) AND \\\"contacts\\\".\\\"person_id\\\" = $$(p1) LIMIT 1\"}",
       "type": "int",
       "origin": {
         "kind": "attr",
@@ -758,7 +758,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_created_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_created_at_v",
-      "note": "SELECT \"contacts\".* FROM \"contacts\" WHERE \"contacts\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"contacts\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id\", \"p1\": \"SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id\"}, \"text\": \"SELECT \\\"contacts\\\".* FROM \\\"contacts\\\" WHERE \\\"contacts\\\".\\\"user_id\\\" = $$(p0) AND \\\"contacts\\\".\\\"person_id\\\" = $$(p1) LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -770,7 +770,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_updated_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_updated_at_v",
-      "note": "SELECT \"contacts\".* FROM \"contacts\" WHERE \"contacts\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"contacts\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id\", \"p1\": \"SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id\"}, \"text\": \"SELECT \\\"contacts\\\".* FROM \\\"contacts\\\" WHERE \\\"contacts\\\".\\\"user_id\\\" = $$(p0) AND \\\"contacts\\\".\\\"person_id\\\" = $$(p1) LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -782,7 +782,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_sharing",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"contacts\".* FROM \"contacts\" WHERE \"contacts\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"contacts\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id\", \"p1\": \"SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id\"}, \"text\": \"SELECT \\\"contacts\\\".* FROM \\\"contacts\\\" WHERE \\\"contacts\\\".\\\"user_id\\\" = $$(p0) AND \\\"contacts\\\".\\\"person_id\\\" = $$(p1) LIMIT 1\"}",
       "type": "bool",
       "origin": {
         "kind": "attr",
@@ -794,7 +794,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_receiving",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"contacts\".* FROM \"contacts\" WHERE \"contacts\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"contacts\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id\", \"p1\": \"SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id\"}, \"text\": \"SELECT \\\"contacts\\\".* FROM \\\"contacts\\\" WHERE \\\"contacts\\\".\\\"user_id\\\" = $$(p0) AND \\\"contacts\\\".\\\"person_id\\\" = $$(p1) LIMIT 1\"}",
       "type": "bool",
       "origin": {
         "kind": "attr",
@@ -806,7 +806,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_username",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_username_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -818,7 +818,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_serialized_private_key",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_serialized_private_key_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -830,7 +830,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_getting_started",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "bool",
       "origin": {
         "kind": "attr",
@@ -842,7 +842,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_disable_mail",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "bool",
       "origin": {
         "kind": "attr",
@@ -854,13 +854,13 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_language",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_language_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_email",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_email_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -872,7 +872,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_encrypted_password",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_encrypted_password_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -884,7 +884,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_created_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_created_at_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -896,7 +896,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_updated_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_updated_at_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -908,7 +908,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_locked_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_locked_at_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -920,7 +920,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_sign_in_count",
       "sort": "Int",
       "value": 0,
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "int",
       "origin": {
         "kind": "attr",
@@ -932,7 +932,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_current_sign_in_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_current_sign_in_at_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -944,7 +944,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_last_sign_in_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_last_sign_in_at_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -956,7 +956,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_current_sign_in_ip",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_current_sign_in_ip_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -968,7 +968,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_last_sign_in_ip",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_last_sign_in_ip_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -980,7 +980,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_hidden_shareables",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_hidden_shareables_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -992,7 +992,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_reset_password_sent_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_reset_password_sent_at_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -1004,7 +1004,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_last_seen",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_last_seen_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -1016,7 +1016,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_remove_after",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_remove_after_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -1028,7 +1028,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_export",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_export_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -1040,7 +1040,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_exported_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_exported_at_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -1052,7 +1052,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_exporting",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "bool",
       "origin": {
         "kind": "attr",
@@ -1064,7 +1064,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_strip_exif",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "bool",
       "origin": {
         "kind": "attr",
@@ -1076,7 +1076,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_exported_photos_file",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_exported_photos_file_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -1088,7 +1088,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_exported_photos_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_exported_photos_at_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -1100,7 +1100,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_exporting_photos",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "bool",
       "origin": {
         "kind": "attr",
@@ -1112,7 +1112,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_color_theme",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_color_theme_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -1124,7 +1124,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_post_default_public",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "bool",
       "origin": {
         "kind": "attr",
@@ -1136,7 +1136,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_auto_follow_back",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "bool",
       "origin": {
         "kind": "attr",
@@ -1148,7 +1148,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_auto_follow_back_aspect_id",
       "sort": "Int",
       "value": 0,
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "int",
       "origin": {
         "kind": "attr",
@@ -1160,7 +1160,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_show_community_spotlight_in_stream",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "bool",
       "origin": {
         "kind": "attr",
@@ -1172,7 +1172,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_otp_required_for_login",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "bool",
       "origin": {
         "kind": "attr",
@@ -1184,7 +1184,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_otp_backup_codes",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_otp_backup_codes_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -1196,7 +1196,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_plain_otp_secret",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_plain_otp_secret_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -1208,7 +1208,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_reset_password_token",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_reset_password_token_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -1220,7 +1220,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_remember_created_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_remember_created_at_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -1232,7 +1232,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_invited_by_id",
       "sort": "Int",
       "value": 0,
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "int",
       "origin": {
         "kind": "attr",
@@ -1244,7 +1244,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_authentication_token",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_authentication_token_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -1256,13 +1256,13 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_guid",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_guid_v",
-      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_diaspora_handle",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_diaspora_handle_v",
-      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -1274,7 +1274,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_serialized_public_key",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_serialized_public_key_v",
-      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -1286,7 +1286,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id",
       "sort": "Int",
       "value": 2,
-      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "int",
       "origin": {
         "kind": "attr",
@@ -1298,7 +1298,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_created_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_created_at_v",
-      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -1310,7 +1310,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_updated_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_updated_at_v",
-      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -1322,7 +1322,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_closed_account",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "bool",
       "origin": {
         "kind": "attr",
@@ -1334,7 +1334,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_fetch_status",
       "sort": "Int",
       "value": 0,
-      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "int",
       "origin": {
         "kind": "attr",
@@ -1346,7 +1346,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_pod_id",
       "sort": "Int",
       "value": 0,
-      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "int",
       "origin": {
         "kind": "attr",
@@ -1358,13 +1358,13 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_exists__2_exists",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT 1 AS one FROM \"contacts\" WHERE \"contacts\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id) AND \"contacts\".\"id\" IS NOT NULL AND \"contacts\".\"user_id\" = nil LIMIT 1"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id\", \"p1\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id\"}, \"text\": \"SELECT 1 AS one FROM \\\"contacts\\\" WHERE \\\"contacts\\\".\\\"person_id\\\" = $$(p0) AND \\\"contacts\\\".\\\"id\\\" IS NOT NULL AND \\\"contacts\\\".\\\"user_id\\\" = $$(p1) LIMIT 1\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_username",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_username_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -1376,7 +1376,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_serialized_private_key",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_serialized_private_key_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -1388,7 +1388,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_getting_started",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "bool",
       "origin": {
         "kind": "attr",
@@ -1400,7 +1400,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_disable_mail",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "bool",
       "origin": {
         "kind": "attr",
@@ -1412,13 +1412,13 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_language",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_language_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_email",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_email_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -1430,7 +1430,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_encrypted_password",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_encrypted_password_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -1442,7 +1442,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_created_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_created_at_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -1454,7 +1454,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_updated_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_updated_at_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -1466,7 +1466,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_locked_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_locked_at_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -1478,7 +1478,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_sign_in_count",
       "sort": "Int",
       "value": 0,
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "int",
       "origin": {
         "kind": "attr",
@@ -1490,7 +1490,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_current_sign_in_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_current_sign_in_at_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -1502,7 +1502,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_last_sign_in_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_last_sign_in_at_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -1514,7 +1514,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_current_sign_in_ip",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_current_sign_in_ip_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -1526,7 +1526,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_last_sign_in_ip",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_last_sign_in_ip_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -1538,7 +1538,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_hidden_shareables",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_hidden_shareables_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -1550,7 +1550,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_reset_password_sent_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_reset_password_sent_at_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -1562,7 +1562,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_last_seen",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_last_seen_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -1574,7 +1574,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_remove_after",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_remove_after_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -1586,7 +1586,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_export",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_export_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -1598,7 +1598,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_exported_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_exported_at_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -1610,7 +1610,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_exporting",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "bool",
       "origin": {
         "kind": "attr",
@@ -1622,7 +1622,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_strip_exif",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "bool",
       "origin": {
         "kind": "attr",
@@ -1634,7 +1634,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_exported_photos_file",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_exported_photos_file_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -1646,7 +1646,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_exported_photos_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_exported_photos_at_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -1658,7 +1658,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_exporting_photos",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "bool",
       "origin": {
         "kind": "attr",
@@ -1670,7 +1670,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_color_theme",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_color_theme_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -1682,7 +1682,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_post_default_public",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "bool",
       "origin": {
         "kind": "attr",
@@ -1694,7 +1694,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_auto_follow_back",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "bool",
       "origin": {
         "kind": "attr",
@@ -1706,7 +1706,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_auto_follow_back_aspect_id",
       "sort": "Int",
       "value": 0,
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "int",
       "origin": {
         "kind": "attr",
@@ -1718,7 +1718,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_show_community_spotlight_in_stream",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "bool",
       "origin": {
         "kind": "attr",
@@ -1730,7 +1730,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_otp_required_for_login",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "bool",
       "origin": {
         "kind": "attr",
@@ -1742,7 +1742,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_otp_backup_codes",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_otp_backup_codes_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -1754,7 +1754,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_plain_otp_secret",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_plain_otp_secret_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -1766,7 +1766,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_reset_password_token",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_reset_password_token_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -1778,7 +1778,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_remember_created_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_remember_created_at_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -1790,7 +1790,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_invited_by_id",
       "sort": "Int",
       "value": 0,
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "int",
       "origin": {
         "kind": "attr",
@@ -1802,7 +1802,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_authentication_token",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_authentication_token_v",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -1819,25 +1819,25 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_exists__3_exists",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT 1 AS one FROM \"blocks\" WHERE \"blocks\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id) AND \"blocks\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id) LIMIT 1"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id\", \"p1\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id\"}, \"text\": \"SELECT 1 AS one FROM \\\"blocks\\\" WHERE \\\"blocks\\\".\\\"user_id\\\" = $$(p0) AND \\\"blocks\\\".\\\"person_id\\\" = $$(p1) LIMIT 1\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Base_save__1_save!_ok",
       "sort": "Bool",
       "value": true,
-      "note": "INSERT INTO \"aspect_memberships\" (\"aspect_id\", \"contact_id\") VALUES ($$(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id), $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_id))"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_first_1_id\", \"p1\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_id\"}, \"text\": \"INSERT INTO \\\"aspect_memberships\\\" (\\\"aspect_id\\\", \\\"contact_id\\\") VALUES ($$(p0), $$(p1))\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Base_save_1_save_ok",
       "sort": "Bool",
       "value": true,
-      "note": "UPDATE \"contacts\" SET \"contacts\".\"receiving\" = true WHERE \"contacts\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_id\"}, \"text\": \"UPDATE \\\"contacts\\\" SET \\\"contacts\\\".\\\"receiving\\\" = true WHERE \\\"contacts\\\".\\\"id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_update_all_1_update_all_count",
       "sort": "Int",
       "value": 1,
-      "note": "UPDATE \"notifications\" SET \"notifications\".\"unread\" = false WHERE \"notifications\".\"type\" IN ('Notifications::StartedSharing') AND \"notifications\".\"recipient_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"notifications\".\"target_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) AND \"notifications\".\"unread\" = true"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id\", \"p1\": \"SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id\"}, \"text\": \"UPDATE \\\"notifications\\\" SET \\\"notifications\\\".\\\"unread\\\" = false WHERE \\\"notifications\\\".\\\"type\\\" IN ('Notifications::StartedSharing') AND \\\"notifications\\\".\\\"recipient_id\\\" = $$(p0) AND \\\"notifications\\\".\\\"target_id\\\" = $$(p1) AND \\\"notifications\\\".\\\"unread\\\" = true\"}"
     },
     {
       "name": "SYM_RESULT_ActionController__Rendering__set_rendered_content_type_1",
@@ -1847,13 +1847,13 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_not_found",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"aspect_memberships\".* FROM \"aspect_memberships\" WHERE \"aspect_memberships\".\"contact_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_id) AND \"aspect_memberships\".\"aspect_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id) ORDER BY \"aspect_memberships\".\"id\" ASC LIMIT 1"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_id\", \"p1\": \"SYM_RESULT_ActiveRecord__FinderMethods_first_1_id\"}, \"text\": \"SELECT \\\"aspect_memberships\\\".* FROM \\\"aspect_memberships\\\" WHERE \\\"aspect_memberships\\\".\\\"contact_id\\\" = $$(p0) AND \\\"aspect_memberships\\\".\\\"aspect_id\\\" = $$(p1) ORDER BY \\\"aspect_memberships\\\".\\\"id\\\" ASC LIMIT 1\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_id",
       "sort": "Int",
       "value": 1,
-      "note": "SELECT \"aspect_memberships\".* FROM \"aspect_memberships\" WHERE \"aspect_memberships\".\"contact_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_id) AND \"aspect_memberships\".\"aspect_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id) ORDER BY \"aspect_memberships\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_id\", \"p1\": \"SYM_RESULT_ActiveRecord__FinderMethods_first_1_id\"}, \"text\": \"SELECT \\\"aspect_memberships\\\".* FROM \\\"aspect_memberships\\\" WHERE \\\"aspect_memberships\\\".\\\"contact_id\\\" = $$(p0) AND \\\"aspect_memberships\\\".\\\"aspect_id\\\" = $$(p1) ORDER BY \\\"aspect_memberships\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "int",
       "origin": {
         "kind": "attr",
@@ -1865,7 +1865,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_aspect_id",
       "sort": "Int",
       "value": 0,
-      "note": "SELECT \"aspect_memberships\".* FROM \"aspect_memberships\" WHERE \"aspect_memberships\".\"contact_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_id) AND \"aspect_memberships\".\"aspect_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id) ORDER BY \"aspect_memberships\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_id\", \"p1\": \"SYM_RESULT_ActiveRecord__FinderMethods_first_1_id\"}, \"text\": \"SELECT \\\"aspect_memberships\\\".* FROM \\\"aspect_memberships\\\" WHERE \\\"aspect_memberships\\\".\\\"contact_id\\\" = $$(p0) AND \\\"aspect_memberships\\\".\\\"aspect_id\\\" = $$(p1) ORDER BY \\\"aspect_memberships\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "int",
       "origin": {
         "kind": "attr",
@@ -1877,7 +1877,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_contact_id",
       "sort": "Int",
       "value": 0,
-      "note": "SELECT \"aspect_memberships\".* FROM \"aspect_memberships\" WHERE \"aspect_memberships\".\"contact_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_id) AND \"aspect_memberships\".\"aspect_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id) ORDER BY \"aspect_memberships\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_id\", \"p1\": \"SYM_RESULT_ActiveRecord__FinderMethods_first_1_id\"}, \"text\": \"SELECT \\\"aspect_memberships\\\".* FROM \\\"aspect_memberships\\\" WHERE \\\"aspect_memberships\\\".\\\"contact_id\\\" = $$(p0) AND \\\"aspect_memberships\\\".\\\"aspect_id\\\" = $$(p1) ORDER BY \\\"aspect_memberships\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "int",
       "origin": {
         "kind": "attr",
@@ -1889,7 +1889,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_created_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_created_at_v",
-      "note": "SELECT \"aspect_memberships\".* FROM \"aspect_memberships\" WHERE \"aspect_memberships\".\"contact_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_id) AND \"aspect_memberships\".\"aspect_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id) ORDER BY \"aspect_memberships\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_id\", \"p1\": \"SYM_RESULT_ActiveRecord__FinderMethods_first_1_id\"}, \"text\": \"SELECT \\\"aspect_memberships\\\".* FROM \\\"aspect_memberships\\\" WHERE \\\"aspect_memberships\\\".\\\"contact_id\\\" = $$(p0) AND \\\"aspect_memberships\\\".\\\"aspect_id\\\" = $$(p1) ORDER BY \\\"aspect_memberships\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -1901,7 +1901,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_updated_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_updated_at_v",
-      "note": "SELECT \"aspect_memberships\".* FROM \"aspect_memberships\" WHERE \"aspect_memberships\".\"contact_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_id) AND \"aspect_memberships\".\"aspect_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id) ORDER BY \"aspect_memberships\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_id\", \"p1\": \"SYM_RESULT_ActiveRecord__FinderMethods_first_1_id\"}, \"text\": \"SELECT \\\"aspect_memberships\\\".* FROM \\\"aspect_memberships\\\" WHERE \\\"aspect_memberships\\\".\\\"contact_id\\\" = $$(p0) AND \\\"aspect_memberships\\\".\\\"aspect_id\\\" = $$(p1) ORDER BY \\\"aspect_memberships\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -1913,7 +1913,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_aspect_name",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_aspect_name_v",
-      "note": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_aspect_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_first_2_aspect_id\"}, \"text\": \"SELECT \\\"aspects\\\".* FROM \\\"aspects\\\" WHERE \\\"aspects\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -1925,7 +1925,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_aspect_user_id",
       "sort": "Int",
       "value": 0,
-      "note": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_aspect_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_first_2_aspect_id\"}, \"text\": \"SELECT \\\"aspects\\\".* FROM \\\"aspects\\\" WHERE \\\"aspects\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "int",
       "origin": {
         "kind": "attr",
@@ -1937,7 +1937,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_aspect_created_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_aspect_created_at_v",
-      "note": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_aspect_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_first_2_aspect_id\"}, \"text\": \"SELECT \\\"aspects\\\".* FROM \\\"aspects\\\" WHERE \\\"aspects\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -1949,7 +1949,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_aspect_updated_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_aspect_updated_at_v",
-      "note": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_aspect_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_first_2_aspect_id\"}, \"text\": \"SELECT \\\"aspects\\\".* FROM \\\"aspects\\\" WHERE \\\"aspects\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -1961,7 +1961,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_aspect_order_id",
       "sort": "Int",
       "value": 0,
-      "note": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_aspect_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_first_2_aspect_id\"}, \"text\": \"SELECT \\\"aspects\\\".* FROM \\\"aspects\\\" WHERE \\\"aspects\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "int",
       "origin": {
         "kind": "attr",
@@ -1973,7 +1973,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_aspect_chat_enabled",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_aspect_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_first_2_aspect_id\"}, \"text\": \"SELECT \\\"aspects\\\".* FROM \\\"aspects\\\" WHERE \\\"aspects\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "bool",
       "origin": {
         "kind": "attr",
@@ -1985,7 +1985,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_aspect_post_default",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_aspect_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_first_2_aspect_id\"}, \"text\": \"SELECT \\\"aspects\\\".* FROM \\\"aspects\\\" WHERE \\\"aspects\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "bool",
       "origin": {
         "kind": "attr",
@@ -2005,7 +2005,7 @@
       "args": {
 },
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb",
-      "lineno": 952,
+      "lineno": 1219,
       "function": "get"
     },
     {
@@ -2014,12 +2014,12 @@
       "args": {
 },
       "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1",
-      "result_value": "#<User:0x47651c28>",
+      "result_value": "#<User:0x9edb372>",
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb",
-      "lineno": 952,
+      "lineno": 1219,
       "function": "get",
       "result_type": "obj<?>",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_USER_CI_id) ORDER BY \"users\".\"id\" ASC LIMIT 1"
+      "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}"
     },
     {
       "type": "path_condition",
@@ -2039,7 +2039,7 @@
       },
       "taken": false,
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb",
-      "lineno": 618,
+      "lineno": 666,
       "function": "symbolic_instance"
     },
     {
@@ -2060,7 +2060,7 @@
       },
       "taken": false,
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb",
-      "lineno": 620,
+      "lineno": 668,
       "function": "symbolic_instance"
     },
     {
@@ -2072,7 +2072,7 @@
         }
       },
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb",
-      "lineno": 816,
+      "lineno": 1010,
       "function": "find"
     },
     {
@@ -2084,12 +2084,12 @@
         }
       },
       "result_name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1",
-      "result_value": "#<Person:0x5a67843b>",
+      "result_value": "#<Person:0x44bd3dc5>",
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb",
-      "lineno": 816,
+      "lineno": 1010,
       "function": "find",
       "result_type": "obj<?>",
-      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_PARAM_person_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_person_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}"
     },
     {
       "type": "path_condition",
@@ -2109,7 +2109,7 @@
       },
       "taken": false,
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb",
-      "lineno": 540,
+      "lineno": 569,
       "function": "block in finder_mock"
     },
     {
@@ -2131,8 +2131,8 @@
       "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/aspect_memberships_controller.rb",
       "lineno": 43,
       "function": "create",
-      "result_type": "obj<?>",
-      "note": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"aspects\".\"id\" = $$(SYM_PARAM_aspect_id) ORDER BY order_id ASC LIMIT 1"
+      "result_type": "obj<?>?",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id\", \"p1\": \"SYM_PARAM_aspect_id\"}, \"text\": \"SELECT \\\"aspects\\\".* FROM \\\"aspects\\\" WHERE \\\"aspects\\\".\\\"user_id\\\" = $$(p0) AND \\\"aspects\\\".\\\"id\\\" = $$(p1) ORDER BY order_id ASC LIMIT 1\"}"
     },
     {
       "type": "path_condition",
@@ -2170,11 +2170,11 @@
       "args": {
 },
       "result_name": "SYM_RESULT_User_blocks_1",
-      "result_value": "#<Block::ActiveRecord_Associations_CollectionProxy:0x73cf33bd>",
+      "result_value": "#<Block::ActiveRecord_Associations_CollectionProxy:0x77ea06bb>",
       "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/models/user/connecting.rb",
       "lineno": 14,
       "function": "share_with",
-      "result_type": "opaque"
+      "result_type": "[?]"
     },
     {
       "type": "call",
@@ -2187,7 +2187,7 @@
           }
         },
         "binds": [
-          "#<ActiveRecord::Relation::QueryAttribute:0x2f4847d9>"
+          "#<ActiveRecord::Relation::QueryAttribute:0x1e64a724>"
         ],
         "preparable": {
           "lit": {
@@ -2211,7 +2211,7 @@
           }
         },
         "binds": [
-          "#<ActiveRecord::Relation::QueryAttribute:0x2f4847d9>"
+          "#<ActiveRecord::Relation::QueryAttribute:0x1e64a724>"
         ],
         "preparable": {
           "lit": {
@@ -2236,7 +2236,7 @@
       "args": {
 },
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb",
-      "lineno": 1709,
+      "lineno": 1769,
       "function": "block"
     },
     {
@@ -2251,10 +2251,10 @@
         }
       },
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb",
-      "lineno": 1709,
+      "lineno": 1769,
       "function": "block in exists?",
-      "result_type": "opaque?",
-      "note": "SELECT 1 AS one FROM \"blocks\" WHERE \"blocks\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"blocks\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
+      "result_type": "bool?",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id\", \"p1\": \"SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id\"}, \"text\": \"SELECT 1 AS one FROM \\\"blocks\\\" WHERE \\\"blocks\\\".\\\"user_id\\\" = $$(p0) AND \\\"blocks\\\".\\\"person_id\\\" = $$(p1) LIMIT 1\"}"
     },
     {
       "type": "path_condition",
@@ -2274,7 +2274,7 @@
       },
       "taken": false,
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb",
-      "lineno": 382,
+      "lineno": 427,
       "function": "block in install!"
     },
     {
@@ -2283,7 +2283,7 @@
       "args": {
 },
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb",
-      "lineno": 1709,
+      "lineno": 1769,
       "function": "block"
     },
     {
@@ -2292,12 +2292,12 @@
       "args": {
 },
       "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1",
-      "result_value": "#<Contact:0x40a38a44>",
+      "result_value": "#<Contact:0x7a76e1b9>",
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb",
-      "lineno": 1709,
+      "lineno": 1769,
       "function": "block in find_by",
-      "result_type": "obj<?>",
-      "note": "SELECT \"contacts\".* FROM \"contacts\" WHERE \"contacts\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"contacts\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) LIMIT 1"
+      "result_type": "obj<?>?",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id\", \"p1\": \"SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id\"}, \"text\": \"SELECT \\\"contacts\\\".* FROM \\\"contacts\\\" WHERE \\\"contacts\\\".\\\"user_id\\\" = $$(p0) AND \\\"contacts\\\".\\\"person_id\\\" = $$(p1) LIMIT 1\"}"
     },
     {
       "type": "path_condition",
@@ -2326,7 +2326,7 @@
       "args": {
 },
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb",
-      "lineno": 1164,
+      "lineno": 1209,
       "function": "find_target"
     },
     {
@@ -2335,12 +2335,12 @@
       "args": {
 },
       "result_name": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1",
-      "result_value": "#<User:0x26838837>",
+      "result_value": "#<User:0x5708b827>",
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb",
-      "lineno": 1164,
+      "lineno": 1209,
       "function": "find_target",
-      "result_type": "obj<?>",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id)"
+      "result_type": "obj<?>?",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}"
     },
     {
       "type": "path_condition",
@@ -2360,7 +2360,7 @@
       },
       "taken": false,
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb",
-      "lineno": 618,
+      "lineno": 666,
       "function": "symbolic_instance"
     },
     {
@@ -2381,7 +2381,7 @@
       },
       "taken": false,
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb",
-      "lineno": 620,
+      "lineno": 668,
       "function": "symbolic_instance"
     },
     {
@@ -2390,7 +2390,7 @@
       "args": {
 },
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb",
-      "lineno": 1164,
+      "lineno": 1209,
       "function": "find_target"
     },
     {
@@ -2399,12 +2399,12 @@
       "args": {
 },
       "result_name": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_2",
-      "result_value": "#<Person:0x2cdb1581>",
+      "result_value": "#<Person:0x70f0a3a3>",
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb",
-      "lineno": 1164,
+      "lineno": 1209,
       "function": "find_target",
-      "result_type": "obj<?>",
-      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id)"
+      "result_type": "obj<?>?",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}"
     },
     {
       "type": "call",
@@ -2412,7 +2412,7 @@
       "args": {
 },
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb",
-      "lineno": 1709,
+      "lineno": 1769,
       "function": "block"
     },
     {
@@ -2427,10 +2427,10 @@
         }
       },
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb",
-      "lineno": 1709,
+      "lineno": 1769,
       "function": "block in exists?",
-      "result_type": "opaque?",
-      "note": "SELECT 1 AS one FROM \"contacts\" WHERE \"contacts\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id) AND \"contacts\".\"id\" IS NOT NULL AND \"contacts\".\"user_id\" = nil LIMIT 1"
+      "result_type": "bool?",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id\", \"p1\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id\"}, \"text\": \"SELECT 1 AS one FROM \\\"contacts\\\" WHERE \\\"contacts\\\".\\\"person_id\\\" = $$(p0) AND \\\"contacts\\\".\\\"id\\\" IS NOT NULL AND \\\"contacts\\\".\\\"user_id\\\" = $$(p1) LIMIT 1\"}"
     },
     {
       "type": "path_condition",
@@ -2450,7 +2450,7 @@
       },
       "taken": false,
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb",
-      "lineno": 382,
+      "lineno": 427,
       "function": "block in install!"
     },
     {
@@ -2459,7 +2459,7 @@
       "args": {
 },
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb",
-      "lineno": 1164,
+      "lineno": 1209,
       "function": "find_target"
     },
     {
@@ -2468,12 +2468,12 @@
       "args": {
 },
       "result_name": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_3",
-      "result_value": "#<User:0x4140f94c>",
+      "result_value": "#<User:0x4b16671e>",
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb",
-      "lineno": 1164,
+      "lineno": 1209,
       "function": "find_target",
-      "result_type": "obj<?>",
-      "note": "SELECT \"users\".* FROM \"users\" WHERE \"users\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id)"
+      "result_type": "obj<?>?",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_owner_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0)\"}"
     },
     {
       "type": "path_condition",
@@ -2493,7 +2493,7 @@
       },
       "taken": false,
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb",
-      "lineno": 618,
+      "lineno": 666,
       "function": "symbolic_instance"
     },
     {
@@ -2514,7 +2514,7 @@
       },
       "taken": false,
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb",
-      "lineno": 620,
+      "lineno": 668,
       "function": "symbolic_instance"
     },
     {
@@ -2550,11 +2550,11 @@
       "args": {
 },
       "result_name": "SYM_RESULT_User_blocks_2",
-      "result_value": "#<Block::ActiveRecord_Associations_CollectionProxy:0x1d6daa8a>",
+      "result_value": "#<Block::ActiveRecord_Associations_CollectionProxy:0x6203cec>",
       "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/models/contact.rb",
       "lineno": 100,
       "function": "not_blocked_user",
-      "result_type": "opaque"
+      "result_type": "[?]"
     },
     {
       "type": "call",
@@ -2567,7 +2567,7 @@
           }
         },
         "binds": [
-          "#<ActiveRecord::Relation::QueryAttribute:0x27154b20>"
+          "#<ActiveRecord::Relation::QueryAttribute:0x147b758f>"
         ],
         "preparable": {
           "lit": {
@@ -2591,7 +2591,7 @@
           }
         },
         "binds": [
-          "#<ActiveRecord::Relation::QueryAttribute:0x27154b20>"
+          "#<ActiveRecord::Relation::QueryAttribute:0x147b758f>"
         ],
         "preparable": {
           "lit": {
@@ -2616,7 +2616,7 @@
       "args": {
 },
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb",
-      "lineno": 1709,
+      "lineno": 1769,
       "function": "block"
     },
     {
@@ -2631,10 +2631,10 @@
         }
       },
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb",
-      "lineno": 1709,
+      "lineno": 1769,
       "function": "block in exists?",
-      "result_type": "opaque?",
-      "note": "SELECT 1 AS one FROM \"blocks\" WHERE \"blocks\".\"user_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id) AND \"blocks\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id) LIMIT 1"
+      "result_type": "bool?",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_user_id\", \"p1\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_id\"}, \"text\": \"SELECT 1 AS one FROM \\\"blocks\\\" WHERE \\\"blocks\\\".\\\"user_id\\\" = $$(p0) AND \\\"blocks\\\".\\\"person_id\\\" = $$(p1) LIMIT 1\"}"
     },
     {
       "type": "path_condition",
@@ -2654,7 +2654,7 @@
       },
       "taken": false,
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb",
-      "lineno": 382,
+      "lineno": 427,
       "function": "block in install!"
     },
     {
@@ -2662,7 +2662,7 @@
       "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_person_closed_account == True)",
       "taken": false,
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb",
-      "lineno": 412,
+      "lineno": 441,
       "function": "block in symbolic_instance"
     },
     {
@@ -2670,7 +2670,7 @@
       "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_receiving == True)",
       "taken": false,
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb",
-      "lineno": 412,
+      "lineno": 441,
       "function": "block in symbolic_instance"
     },
     {
@@ -2695,8 +2695,8 @@
       "lineno": 77,
       "function": "save_through_record",
       "result_sort": "Bool",
-      "result_type": "opaque",
-      "note": "INSERT INTO \"aspect_memberships\" (\"aspect_id\", \"contact_id\") VALUES ($$(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id), $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_id))"
+      "result_type": "bool",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_first_1_id\", \"p1\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_id\"}, \"text\": \"INSERT INTO \\\"aspect_memberships\\\" (\\\"aspect_id\\\", \\\"contact_id\\\") VALUES ($$(p0), $$(p1))\"}"
     },
     {
       "type": "call",
@@ -2720,15 +2720,15 @@
       "lineno": 22,
       "function": "share_with",
       "result_sort": "Bool",
-      "result_type": "opaque",
-      "note": "UPDATE \"contacts\" SET \"contacts\".\"receiving\" = true WHERE \"contacts\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_id)"
+      "result_type": "bool",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_id\"}, \"text\": \"UPDATE \\\"contacts\\\" SET \\\"contacts\\\".\\\"receiving\\\" = true WHERE \\\"contacts\\\".\\\"id\\\" = $$(p0)\"}"
     },
     {
       "type": "call",
       "target": "Diaspora::Federation::Dispatcher.defer_dispatch",
       "args": {
-        "sender": "#<User:0x47651c28>",
-        "object": "#<Contact:0x40a38a44>"
+        "sender": "#<User:0x9edb372>",
+        "object": "#<Contact:0x7a76e1b9>"
       },
       "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/models/user/connecting.rb",
       "lineno": 25,
@@ -2738,8 +2738,8 @@
       "type": "symbolic_call",
       "target": "Diaspora::Federation::Dispatcher.defer_dispatch",
       "args": {
-        "sender": "#<User:0x47651c28>",
-        "object": "#<Contact:0x40a38a44>"
+        "sender": "#<User:0x9edb372>",
+        "object": "#<Contact:0x7a76e1b9>"
       },
       "result_name": "SYM_RESULT_Diaspora__Federation__Dispatcher_defer_dispatch_1",
       "result_value": {
@@ -2750,7 +2750,7 @@
       "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/models/user/connecting.rb",
       "lineno": 25,
       "function": "share_with",
-      "result_type": "opaque?"
+      "result_type": "str?"
     },
     {
       "type": "call",
@@ -2758,7 +2758,7 @@
       "args": {
 },
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb",
-      "lineno": 801,
+      "lineno": 995,
       "function": "update_all"
     },
     {
@@ -2771,11 +2771,11 @@
         "sym": "SYM_RESULT_ActiveRecord__Relation_update_all_1_update_all_count"
       },
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb",
-      "lineno": 801,
+      "lineno": 995,
       "function": "update_all",
       "result_sort": "Int",
-      "result_type": "opaque",
-      "note": "UPDATE \"notifications\" SET \"notifications\".\"unread\" = false WHERE \"notifications\".\"type\" IN ('Notifications::StartedSharing') AND \"notifications\".\"recipient_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id) AND \"notifications\".\"target_id\" = $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id) AND \"notifications\".\"unread\" = true"
+      "result_type": "int",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_id\", \"p1\": \"SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1_id\"}, \"text\": \"UPDATE \\\"notifications\\\" SET \\\"notifications\\\".\\\"unread\\\" = false WHERE \\\"notifications\\\".\\\"type\\\" IN ('Notifications::StartedSharing') AND \\\"notifications\\\".\\\"recipient_id\\\" = $$(p0) AND \\\"notifications\\\".\\\"target_id\\\" = $$(p1) AND \\\"notifications\\\".\\\"unread\\\" = true\"}"
     },
     {
       "type": "call",
@@ -2817,12 +2817,12 @@
       "args": {
 },
       "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2",
-      "result_value": "#<AspectMembership:0x5316255e>",
+      "result_value": "#<AspectMembership:0x61e33118>",
       "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/controllers/aspect_memberships_controller.rb",
       "lineno": 51,
       "function": "block in create",
-      "result_type": "obj<?>",
-      "note": "SELECT \"aspect_memberships\".* FROM \"aspect_memberships\" WHERE \"aspect_memberships\".\"contact_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_id) AND \"aspect_memberships\".\"aspect_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id) ORDER BY \"aspect_memberships\".\"id\" ASC LIMIT 1"
+      "result_type": "obj<?>?",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_find_by_1_id\", \"p1\": \"SYM_RESULT_ActiveRecord__FinderMethods_first_1_id\"}, \"text\": \"SELECT \\\"aspect_memberships\\\".* FROM \\\"aspect_memberships\\\" WHERE \\\"aspect_memberships\\\".\\\"contact_id\\\" = $$(p0) AND \\\"aspect_memberships\\\".\\\"aspect_id\\\" = $$(p1) ORDER BY \\\"aspect_memberships\\\".\\\"id\\\" ASC LIMIT 1\"}"
     },
     {
       "type": "path_condition",
@@ -2851,7 +2851,7 @@
       "args": {
 },
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb",
-      "lineno": 1164,
+      "lineno": 1209,
       "function": "find_target"
     },
     {
@@ -2862,10 +2862,10 @@
       "result_name": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_4",
       "result_value": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_aspect_name_v",
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/concolic_targets.rb",
-      "lineno": 1164,
+      "lineno": 1209,
       "function": "find_target",
-      "result_type": "obj<?>",
-      "note": "SELECT \"aspects\".* FROM \"aspects\" WHERE \"aspects\".\"id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_2_aspect_id)"
+      "result_type": "obj<?>?",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_first_2_aspect_id\"}, \"text\": \"SELECT \\\"aspects\\\".* FROM \\\"aspects\\\" WHERE \\\"aspects\\\".\\\"id\\\" = $$(p0)\"}"
     },
     {
       "type": "call",
@@ -3166,22 +3166,22 @@
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1",
       "type": "obj<?>",
-      "value": "#<User:0x47651c28>"
+      "value": "#<User:0x9edb372>"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Core__ClassMethods_find_1",
       "type": "obj<?>",
-      "value": "#<Person:0x5a67843b>"
+      "value": "#<Person:0x44bd3dc5>"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
-      "type": "obj<?>",
+      "type": "obj<?>?",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_name_v"
     },
     {
       "name": "SYM_RESULT_User_blocks_1",
-      "type": "opaque",
-      "value": "#<Block::ActiveRecord_Associations_CollectionProxy:0x73cf33bd>"
+      "type": "[?]",
+      "value": "#<Block::ActiveRecord_Associations_CollectionProxy:0x77ea06bb>"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Querying_find_by_sql_1",
@@ -3192,7 +3192,7 @@
     },
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_exists__1",
-      "type": "opaque?",
+      "type": "bool?",
       "value": {
         "lit": {
           "sort": "null"
@@ -3201,22 +3201,22 @@
     },
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_find_by_1",
-      "type": "obj<?>",
-      "value": "#<Contact:0x40a38a44>"
+      "type": "obj<?>?",
+      "value": "#<Contact:0x7a76e1b9>"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_1",
-      "type": "obj<?>",
-      "value": "#<User:0x26838837>"
+      "type": "obj<?>?",
+      "value": "#<User:0x5708b827>"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_2",
-      "type": "obj<?>",
-      "value": "#<Person:0x2cdb1581>"
+      "type": "obj<?>?",
+      "value": "#<Person:0x70f0a3a3>"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_exists__2",
-      "type": "opaque?",
+      "type": "bool?",
       "value": {
         "lit": {
           "sort": "null"
@@ -3225,13 +3225,13 @@
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_3",
-      "type": "obj<?>",
-      "value": "#<User:0x4140f94c>"
+      "type": "obj<?>?",
+      "value": "#<User:0x4b16671e>"
     },
     {
       "name": "SYM_RESULT_User_blocks_2",
-      "type": "opaque",
-      "value": "#<Block::ActiveRecord_Associations_CollectionProxy:0x1d6daa8a>"
+      "type": "[?]",
+      "value": "#<Block::ActiveRecord_Associations_CollectionProxy:0x6203cec>"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Querying_find_by_sql_2",
@@ -3242,7 +3242,7 @@
     },
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_exists__3",
-      "type": "opaque?",
+      "type": "bool?",
       "value": {
         "lit": {
           "sort": "null"
@@ -3252,7 +3252,7 @@
     {
       "name": "SYM_RESULT_ActiveRecord__Base_save__1",
       "sort": "Bool",
-      "type": "opaque",
+      "type": "bool",
       "value": {
         "sym": "SYM_RESULT_ActiveRecord__Base_save__1_save!_ok"
       }
@@ -3260,14 +3260,14 @@
     {
       "name": "SYM_RESULT_ActiveRecord__Base_save_1",
       "sort": "Bool",
-      "type": "opaque",
+      "type": "bool",
       "value": {
         "sym": "SYM_RESULT_ActiveRecord__Base_save_1_save_ok"
       }
     },
     {
       "name": "SYM_RESULT_Diaspora__Federation__Dispatcher_defer_dispatch_1",
-      "type": "opaque?",
+      "type": "str?",
       "value": {
         "lit": {
           "sort": "null"
@@ -3277,7 +3277,7 @@
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_update_all_1",
       "sort": "Int",
-      "type": "opaque",
+      "type": "int",
       "value": {
         "sym": "SYM_RESULT_ActiveRecord__Relation_update_all_1_update_all_count"
       }
@@ -3291,12 +3291,12 @@
     },
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_2",
-      "type": "obj<?>",
-      "value": "#<AspectMembership:0x5316255e>"
+      "type": "obj<?>?",
+      "value": "#<AspectMembership:0x61e33118>"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Associations__SingularAssociation_find_target_4",
-      "type": "obj<?>",
+      "type": "obj<?>?",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_2_aspect_name_v"
     },
     {

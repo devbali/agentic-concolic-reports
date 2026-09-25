@@ -225,6 +225,47 @@ module CommentsTargets
   #
   # `keys` is the modelled distinct-key SET for this step: one bind, or two
   # (2 stands for "two or more", the same convention as the link chain's 4).
+  # ---------------------------------------------------------------------
+  # with_through_load_sql — the preload step's statement, WITHOUT duplicating it
+  # into an argument literal.
+  # ---------------------------------------------------------------------
+  # The probe's SQL used to be passed positionally
+  # (`load_intermediate(psql)`) and the mock read it back as `args["sql"]`
+  # to note the row list it returns. That made the SAME text land in TWO
+  # places on the event:
+  #   note -> sealed:   {"refs":{"p0":"SYM_…_row_author_id"},
+  #                      "text":"… \"people\".\"id\" = $$(p0)"}    ✔
+  #   args.sql -> Lit:  "… \"people\".\"id\" = $$(SYM_…_row_author_id)"  ✘
+  # An ARGUMENT gets no envelope, so `CallInterceptor` (call_interceptor.rb,
+  # "A `$$(pN)` PLACEHOLDER MAY NOT BE RECORDED AS AN ARGUMENT") correctly
+  # unresolves the placeholder back to the raw symbol name rather than
+  # recording a key nothing defines. The result is a string literal that
+  # LOOKS like it binds `SYM_…_row_author_id` while nothing in the rendered
+  # document declares that name there — a reader cannot tell it from a bind
+  # that resolves, and `_canon_note` cannot canonicalise it because it is
+  # opaque argument data, not a note.
+  #
+  # The note is the ONLY place this statement belongs, and it already
+  # carries it. So hand the mock its text out of band and call the probe
+  # with NO arguments: one statement, one home, zero undefined references.
+  # Same thread-local hand-off the finder-conditions channel uses.
+  #
+  # TAKES A BLOCK, and the block makes the call: `file`/`lineno`/`function`
+  # on the recorded event are the CALLER's frame, so calling the probe from
+  # inside this helper would stamp every emission with this helper's own
+  # line and collapse the two emission sites (the preload walk and the
+  # join-table fetch) onto one source. `PathSource` participates in
+  # canonicalisation (`concolic/model/run.py::_canon`), so that is a real
+  # loss of provenance, not cosmetics. With a block the frame stays at the
+  # call site, exactly where it was before this change.
+  def with_through_load_sql(sql)
+    prev = Thread.current[:concolic_through_load_sql]
+    Thread.current[:concolic_through_load_sql] = sql
+    yield
+  ensure
+    Thread.current[:concolic_through_load_sql] = prev
+  end
+
   def pred_for(ct, keys)
     rendered = keys.map { |k| ct.render_arg_value(k) }
     rendered.length > 1 ? "IN (#{rendered.join(', ')})" : "= #{rendered.first}"
@@ -360,7 +401,7 @@ module CommentsTargets
           end
         max_keys = keys.length if keys.length > max_keys
         psql = %(SELECT "#{table}".* FROM "#{table}" WHERE "#{table}"."#{pcol}" #{pred_for(ct, keys)})
-        ConcolicThroughLoadProbe.load_intermediate(psql)
+        with_through_load_sql(psql) { ConcolicThroughLoadProbe.load_intermediate }
         child = nil
         loaded_keys = keys
         if r2.belongs_to? || r2.macro == :has_one
@@ -562,7 +603,8 @@ module CommentsTargets
     if defined?(ActiveRecord::Associations::BelongsToPolymorphicAssociation)
       btpa = ActiveRecord::Associations::BelongsToPolymorphicAssociation
 
-      interceptor.declare_target(btpa, :klass, kind: CallInterceptor::SHIM, returns: lambda do |receiver, _args, _name|
+      # type: opaque -- returns a Ruby Class; examined, and it has no §5 structure.
+      interceptor.declare_target(btpa, :klass, kind: CallInterceptor::SHIM, type: "opaque", returns: lambda do |receiver, _args, _name|
         poly_klass(receiver)
       end)
 
@@ -594,7 +636,7 @@ module CommentsTargets
       # kept/patched anyway per the discipline (this file is shared across
       # this controller's actions even though only :index is DSE-driven
       # here) and to stay diff-auditable against the Phase A patch note.
-      interceptor.declare_target(btpa, :find_target, kind: CallInterceptor::TARGET_FUNCTION, returns: lambda do |receiver, _args, name|
+      interceptor.declare_target(btpa, :find_target, kind: CallInterceptor::TARGET_FUNCTION, type: "obj<?>", returns: lambda do |receiver, _args, name|
         nm = receiver.reflection.name
         klass = poly_klass(receiver)
         sql = begin
@@ -837,20 +879,29 @@ module CommentsTargets
     # a symbolic_call EVENT carrying the through-load intermediate SQL as
     # its note (extraction emits queries from events, transform.py:225).
     unless defined?(::ConcolicThroughLoadProbe)
+      # NO PARAMETER (2026-09-25): the SQL arrives on
+      # `Thread.current[:concolic_through_load_sql]` (see
+      # `CommentsTargets.with_through_load_sql`). A parameter would put the
+      # statement into the event's `args` as a Lit string carrying raw
+      # `$$(SYM_…)` markers that nothing in the document defines, while the
+      # note already carries the same statement sealed with real refs.
       ::Object.const_set(:ConcolicThroughLoadProbe, Module.new do
-        def self.load_intermediate(sql)
-          sql
+        def self.load_intermediate
+          Thread.current[:concolic_through_load_sql]
         end
       end)
       interceptor.declare_target(
         ::ConcolicThroughLoadProbe.singleton_class, :load_intermediate,
-        kind: CallInterceptor::TARGET_FUNCTION, returns: lambda do |_r, args, name|
+        kind: CallInterceptor::TARGET_FUNCTION, type: "[?]", returns: lambda do |_r, args, name|
           # cycle 3 (adversary N2, return-kind fidelity): a preload step
           # returns a ROW LIST, not a count. Length-only sampled list (no
           # representative — the preloaded rows are reached through the
           # owner's association readers, which mint their own reps).
           IterableSymbolicList.new(ConcolicTargets.seed_for("len(#{name}_rows)", 1),
-                                   name: "#{name}_rows", note: args["sql"].to_s, representative: nil)
+                                   name: "#{name}_rows",
+                                   note: (Thread.current[:concolic_through_load_sql] ||
+                                          args["sql"]).to_s,
+                                   representative: nil)
         end
       )
     end
@@ -969,7 +1020,7 @@ module CommentsTargets
           owner = assoc.owner
           oid = owner.respond_to?(:[]) ? owner[:id] : owner.id
           isql = %(SELECT "#{tr.table_name}".* FROM "#{tr.table_name}" WHERE "#{tr.table_name}"."#{tr.foreign_key}" IN (#{ct.render_arg_value(oid)}))
-          ConcolicThroughLoadProbe.load_intermediate(isql)
+          CommentsTargets.with_through_load_sql(isql) { ConcolicThroughLoadProbe.load_intermediate }
         end
       rescue StandardError
         nil # note-side extra must never crash the mock (M-family rule)
@@ -978,7 +1029,7 @@ module CommentsTargets
     end
 
     %i[to_a to_ary records].each do |m|
-      interceptor.declare_target(rel, m, kind: CallInterceptor::TARGET_FUNCTION, returns: rows_mock)
+      interceptor.declare_target(rel, m, kind: CallInterceptor::TARGET_FUNCTION, type: "[?]", returns: rows_mock)
     end
 
     # results3 Phase A Patch 4 (../PHASE_A_PATCH.md): collection-ASSOCIATION
@@ -1007,7 +1058,7 @@ module CommentsTargets
       cp = ActiveRecord::Associations::CollectionProxy
       %i[to_a to_ary records load_target].each do |m|
         next unless cp.method_defined?(m) || cp.private_method_defined?(m)
-        interceptor.declare_target(cp, m, kind: CallInterceptor::TARGET_FUNCTION, returns: rows_mock)
+        interceptor.declare_target(cp, m, kind: CallInterceptor::TARGET_FUNCTION, type: "[?]", returns: rows_mock)
       end
     end
 
@@ -1426,7 +1477,8 @@ module CommentsTargets
 
     # 8a. Faithful single-row finder notes (N7): ORDER BY pk + LIMIT 1.
     %i[first last take find_by].each do |m|
-      interceptor.declare_target(fm, m, kind: CallInterceptor::TARGET_FUNCTION, returns: finder_mock_faithful(ct, raise_on_missing: false, kind: m))
+      # type: obj<?>? -- the not-found arm returns nil.
+      interceptor.declare_target(fm, m, kind: CallInterceptor::TARGET_FUNCTION, type: "obj<?>?", returns: finder_mock_faithful(ct, raise_on_missing: false, kind: m))
     end
 
     # 8b. W1 — `FinderMethods#exists?` as the existence-probe target
@@ -1449,7 +1501,8 @@ module CommentsTargets
     # `Thread.current[:concolic_pending_note]` channel that
     # `CallInterceptor.extract_note` reads, so the `exists?` event carries its
     # own statement and the decision var keeps the same note it always had.
-    interceptor.declare_target(fm, :exists?, kind: CallInterceptor::TARGET_FUNCTION, returns: lambda do |receiver, args, name|
+    # type: bool -- returns a bare Ruby bool (`ex == true`), never nil.
+    interceptor.declare_target(fm, :exists?, kind: CallInterceptor::TARGET_FUNCTION, type: "bool", returns: lambda do |receiver, args, name|
       # keyword conditions reach sql_for through the ConcolicKwargsToPositional
       # thread-local (the interceptor drops **kwargs) — rebind those too.
       prev = Thread.current[:concolic_finder_conds]
@@ -1488,7 +1541,8 @@ module CommentsTargets
     # `reload` after federation discovery (Person#fix_profile) has its
     # profile pinned found (Discovery saves the profile or raises).
     sa = ActiveRecord::Associations::SingularAssociation
-    interceptor.declare_target(sa, :find_target, kind: CallInterceptor::TARGET_FUNCTION, returns: lambda do |receiver, _args, _name|
+    # type: obj<?>? -- a symbolic instance, or nil on the not-found / no-class arms.
+    interceptor.declare_target(sa, :find_target, kind: CallInterceptor::TARGET_FUNCTION, type: "obj<?>?", returns: lambda do |receiver, _args, _name|
       begin
         refl  = receiver.reflection
         klass = refl.klass
@@ -1566,7 +1620,8 @@ module CommentsTargets
     #     produced by a finder target in this same run, so "row vanished
     #     mid-request" is not an app state this endpoint can take.
     if defined?(ActiveRecord::Base)
-      interceptor.declare_target(ActiveRecord::Base, :reload, kind: CallInterceptor::TARGET_FUNCTION, returns: lambda do |receiver, _args, _name|
+      # type: obj<?> -- hands back the receiver record.
+      interceptor.declare_target(ActiveRecord::Base, :reload, kind: CallInterceptor::TARGET_FUNCTION, type: "obj<?>", returns: lambda do |receiver, _args, _name|
         next receiver unless receiver.respond_to?(:concolic_attrs)
         table = begin
           receiver.class.table_name
@@ -1721,8 +1776,10 @@ module CommentsTargets
               "concolic: webfinger discovery failed (wall: no HTTP adapter in this environment; " \
               "the success arm and its :save_person_after_webfinger statements are NOT MODELLED)"
       end
-      interceptor.declare_target(::CommentsInertDiscovery, :fetch_and_save, kind: CallInterceptor::SHIM, returns: discovery_returns)
-      interceptor.declare_target(DiasporaFederation::Discovery::Discovery, :fetch_and_save, kind: CallInterceptor::SHIM, returns: discovery_returns)
+      # type: void -- the mock raises, so no return value is ever recorded.
+      interceptor.declare_target(::CommentsInertDiscovery, :fetch_and_save, kind: CallInterceptor::SHIM, type: "void", returns: discovery_returns)
+      # type: void -- the mock raises, so no return value is ever recorded.
+      interceptor.declare_target(DiasporaFederation::Discovery::Discovery, :fetch_and_save, kind: CallInterceptor::SHIM, type: "void", returns: discovery_returns)
       # H3 (hardening lint, 2026-08-28): `Discovery.new` is NO LONGER A TARGET.
       # Constructing the discovery client is not data access — the WALL that
       # matters is `fetch_and_save` (still a declared target, still carrying
@@ -1829,7 +1886,8 @@ module CommentsVisibleShareableNaming
     SITES.each do |site|
       name = :"ci_#{site}_first"
       fm.send(:alias_method, name, :first) unless fm.method_defined?(name)
-      interceptor.declare_target(fm, name, kind: CallInterceptor::TARGET_FUNCTION, returns: CommentsTargets.finder_mock_faithful(ct, raise_on_missing: false, kind: :first))
+      # type: obj<?>? -- the not-found arm returns nil.
+      interceptor.declare_target(fm, name, kind: CallInterceptor::TARGET_FUNCTION, type: "obj<?>?", returns: CommentsTargets.finder_mock_faithful(ct, raise_on_missing: false, kind: :first))
     end
     EvilQuery::VisibleShareableById.prepend(PostBangNaming) unless
       EvilQuery::VisibleShareableById < PostBangNaming
@@ -1891,7 +1949,7 @@ module CommentsDeviseUserNaming
     # missing/failed session 401s upstream, before the controller) — modeling a
     # nil or unpersisted session user would inject auth-middleware artifacts
     # into the coverage universe that this endpoint's logic never branches on.
-    interceptor.declare_target(fm, :devise_user_first, kind: CallInterceptor::TARGET_FUNCTION, returns: lambda do |receiver, args, name|
+    interceptor.declare_target(fm, :devise_user_first, kind: CallInterceptor::TARGET_FUNCTION, type: "obj<?>", returns: lambda do |receiver, args, name|
       u = ct.symbolic_instance(ct.model_class(receiver), name, CommentsTargets.finder_note(ct, receiver, args, :first))
       if u.respond_to?(:define_singleton_method)
         u.define_singleton_method(:persisted?)  { true }
@@ -2038,7 +2096,8 @@ module CommentsMentionLookupNaming
       ATTEMPTS.each do |attempt|
         name = :"mention_lookup_#{site}_#{attempt}"
         core.send(:alias_method, name, :find_by) unless core.method_defined?(name)
-        interceptor.declare_target(core, name, kind: CallInterceptor::TARGET_FUNCTION, returns: ct.finder_mock(raise_on_missing: false))
+        # type: obj<?>? -- the not-found arm returns nil.
+        interceptor.declare_target(core, name, kind: CallInterceptor::TARGET_FUNCTION, type: "obj<?>?", returns: ct.finder_mock(raise_on_missing: false))
       end
     end
 

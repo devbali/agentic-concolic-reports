@@ -16,13 +16,13 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_post_id\"}, \"text\": \"SELECT \\\"posts\\\".* FROM \\\"posts\\\" WHERE \\\"posts\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"posts\\\".\\\"id\\\" ASC LIMIT 1\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_id",
       "sort": "Int",
       "value": 1,
-      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_post_id\"}, \"text\": \"SELECT \\\"posts\\\".* FROM \\\"posts\\\" WHERE \\\"posts\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"posts\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "int",
       "origin": {
         "kind": "attr",
@@ -34,7 +34,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_author_id",
       "sort": "Int",
       "value": 0,
-      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_post_id\"}, \"text\": \"SELECT \\\"posts\\\".* FROM \\\"posts\\\" WHERE \\\"posts\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"posts\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "int",
       "origin": {
         "kind": "attr",
@@ -46,7 +46,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_public",
       "sort": "Bool",
       "value": true,
-      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_post_id\"}, \"text\": \"SELECT \\\"posts\\\".* FROM \\\"posts\\\" WHERE \\\"posts\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"posts\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "bool",
       "origin": {
         "kind": "attr",
@@ -58,19 +58,19 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_guid_v",
-      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_post_id\"}, \"text\": \"SELECT \\\"posts\\\".* FROM \\\"posts\\\" WHERE \\\"posts\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"posts\\\".\\\"id\\\" ASC LIMIT 1\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_type",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_type_v",
-      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_post_id\"}, \"text\": \"SELECT \\\"posts\\\".* FROM \\\"posts\\\" WHERE \\\"posts\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"posts\\\".\\\"id\\\" ASC LIMIT 1\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_text",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_text_v",
-      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_post_id\"}, \"text\": \"SELECT \\\"posts\\\".* FROM \\\"posts\\\" WHERE \\\"posts\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"posts\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -82,19 +82,19 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_created_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_created_at_v",
-      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_post_id\"}, \"text\": \"SELECT \\\"posts\\\".* FROM \\\"posts\\\" WHERE \\\"posts\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"posts\\\".\\\"id\\\" ASC LIMIT 1\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_updated_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_updated_at_v",
-      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_post_id\"}, \"text\": \"SELECT \\\"posts\\\".* FROM \\\"posts\\\" WHERE \\\"posts\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"posts\\\".\\\"id\\\" ASC LIMIT 1\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_provider_display_name",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_provider_display_name_v",
-      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_post_id\"}, \"text\": \"SELECT \\\"posts\\\".* FROM \\\"posts\\\" WHERE \\\"posts\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"posts\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -106,13 +106,13 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_root_guid",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_root_guid_v",
-      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_post_id\"}, \"text\": \"SELECT \\\"posts\\\".* FROM \\\"posts\\\" WHERE \\\"posts\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"posts\\\".\\\"id\\\" ASC LIMIT 1\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_likes_count",
       "sort": "Int",
       "value": 0,
-      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_post_id\"}, \"text\": \"SELECT \\\"posts\\\".* FROM \\\"posts\\\" WHERE \\\"posts\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"posts\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "int",
       "origin": {
         "kind": "attr",
@@ -124,7 +124,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_comments_count",
       "sort": "Int",
       "value": 0,
-      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_post_id\"}, \"text\": \"SELECT \\\"posts\\\".* FROM \\\"posts\\\" WHERE \\\"posts\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"posts\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "int",
       "origin": {
         "kind": "attr",
@@ -136,7 +136,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_o_embed_cache_id",
       "sort": "Int",
       "value": 0,
-      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_post_id\"}, \"text\": \"SELECT \\\"posts\\\".* FROM \\\"posts\\\" WHERE \\\"posts\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"posts\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "int",
       "origin": {
         "kind": "attr",
@@ -148,7 +148,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_reshares_count",
       "sort": "Int",
       "value": 0,
-      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_post_id\"}, \"text\": \"SELECT \\\"posts\\\".* FROM \\\"posts\\\" WHERE \\\"posts\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"posts\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "int",
       "origin": {
         "kind": "attr",
@@ -160,13 +160,13 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_interacted_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_interacted_at_v",
-      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_post_id\"}, \"text\": \"SELECT \\\"posts\\\".* FROM \\\"posts\\\" WHERE \\\"posts\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"posts\\\".\\\"id\\\" ASC LIMIT 1\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_tweet_id",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_tweet_id_v",
-      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_post_id\"}, \"text\": \"SELECT \\\"posts\\\".* FROM \\\"posts\\\" WHERE \\\"posts\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"posts\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -178,7 +178,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_open_graph_cache_id",
       "sort": "Int",
       "value": 0,
-      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_post_id\"}, \"text\": \"SELECT \\\"posts\\\".* FROM \\\"posts\\\" WHERE \\\"posts\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"posts\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "int",
       "origin": {
         "kind": "attr",
@@ -190,7 +190,7 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_tumblr_ids",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_tumblr_ids_v",
-      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1",
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_post_id\"}, \"text\": \"SELECT \\\"posts\\\".* FROM \\\"posts\\\" WHERE \\\"posts\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"posts\\\".\\\"id\\\" ASC LIMIT 1\"}",
       "type": "str",
       "origin": {
         "kind": "attr",
@@ -202,586 +202,586 @@
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_created_at_year",
       "sort": "Int",
       "value": 1990,
-      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_post_id\"}, \"text\": \"SELECT \\\"posts\\\".* FROM \\\"posts\\\" WHERE \\\"posts\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"posts\\\".\\\"id\\\" ASC LIMIT 1\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_updated_at_year",
       "sort": "Int",
       "value": 1990,
-      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_post_id\"}, \"text\": \"SELECT \\\"posts\\\".* FROM \\\"posts\\\" WHERE \\\"posts\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"posts\\\".\\\"id\\\" ASC LIMIT 1\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1_interacted_at_year",
       "sort": "Int",
       "value": 1990,
-      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_post_id\"}, \"text\": \"SELECT \\\"posts\\\".* FROM \\\"posts\\\" WHERE \\\"posts\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"posts\\\".\\\"id\\\" ASC LIMIT 1\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_1_row_id",
       "sort": "Int",
       "value": 1,
-      "note": "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id) AND \"comments\".\"commentable_type\" = 'Post' ORDER BY created_at ASC"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_first_1_id\"}, \"text\": \"SELECT \\\"comments\\\".* FROM \\\"comments\\\" WHERE \\\"comments\\\".\\\"commentable_id\\\" = $$(p0) AND \\\"comments\\\".\\\"commentable_type\\\" = 'Post' ORDER BY created_at ASC\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_1_row_text",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__Relation_records_1_row_text_v",
-      "note": "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id) AND \"comments\".\"commentable_type\" = 'Post' ORDER BY created_at ASC"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_first_1_id\"}, \"text\": \"SELECT \\\"comments\\\".* FROM \\\"comments\\\" WHERE \\\"comments\\\".\\\"commentable_id\\\" = $$(p0) AND \\\"comments\\\".\\\"commentable_type\\\" = 'Post' ORDER BY created_at ASC\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_1_row_commentable_id",
       "sort": "Int",
       "value": 0,
-      "note": "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id) AND \"comments\".\"commentable_type\" = 'Post' ORDER BY created_at ASC"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_first_1_id\"}, \"text\": \"SELECT \\\"comments\\\".* FROM \\\"comments\\\" WHERE \\\"comments\\\".\\\"commentable_id\\\" = $$(p0) AND \\\"comments\\\".\\\"commentable_type\\\" = 'Post' ORDER BY created_at ASC\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id",
       "sort": "Int",
       "value": 0,
-      "note": "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id) AND \"comments\".\"commentable_type\" = 'Post' ORDER BY created_at ASC"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_first_1_id\"}, \"text\": \"SELECT \\\"comments\\\".* FROM \\\"comments\\\" WHERE \\\"comments\\\".\\\"commentable_id\\\" = $$(p0) AND \\\"comments\\\".\\\"commentable_type\\\" = 'Post' ORDER BY created_at ASC\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_1_row_guid",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__Relation_records_1_row_guid_v",
-      "note": "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id) AND \"comments\".\"commentable_type\" = 'Post' ORDER BY created_at ASC"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_first_1_id\"}, \"text\": \"SELECT \\\"comments\\\".* FROM \\\"comments\\\" WHERE \\\"comments\\\".\\\"commentable_id\\\" = $$(p0) AND \\\"comments\\\".\\\"commentable_type\\\" = 'Post' ORDER BY created_at ASC\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_1_row_created_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__Relation_records_1_row_created_at_v",
-      "note": "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id) AND \"comments\".\"commentable_type\" = 'Post' ORDER BY created_at ASC"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_first_1_id\"}, \"text\": \"SELECT \\\"comments\\\".* FROM \\\"comments\\\" WHERE \\\"comments\\\".\\\"commentable_id\\\" = $$(p0) AND \\\"comments\\\".\\\"commentable_type\\\" = 'Post' ORDER BY created_at ASC\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_1_row_updated_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__Relation_records_1_row_updated_at_v",
-      "note": "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id) AND \"comments\".\"commentable_type\" = 'Post' ORDER BY created_at ASC"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_first_1_id\"}, \"text\": \"SELECT \\\"comments\\\".* FROM \\\"comments\\\" WHERE \\\"comments\\\".\\\"commentable_id\\\" = $$(p0) AND \\\"comments\\\".\\\"commentable_type\\\" = 'Post' ORDER BY created_at ASC\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_1_row_likes_count",
       "sort": "Int",
       "value": 0,
-      "note": "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id) AND \"comments\".\"commentable_type\" = 'Post' ORDER BY created_at ASC"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_first_1_id\"}, \"text\": \"SELECT \\\"comments\\\".* FROM \\\"comments\\\" WHERE \\\"comments\\\".\\\"commentable_id\\\" = $$(p0) AND \\\"comments\\\".\\\"commentable_type\\\" = 'Post' ORDER BY created_at ASC\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_1_row_commentable_type",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__Relation_records_1_row_commentable_type_v",
-      "note": "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id) AND \"comments\".\"commentable_type\" = 'Post' ORDER BY created_at ASC"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_first_1_id\"}, \"text\": \"SELECT \\\"comments\\\".* FROM \\\"comments\\\" WHERE \\\"comments\\\".\\\"commentable_id\\\" = $$(p0) AND \\\"comments\\\".\\\"commentable_type\\\" = 'Post' ORDER BY created_at ASC\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_1_row_text_has_mention",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id) AND \"comments\".\"commentable_type\" = 'Post' ORDER BY created_at ASC"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_first_1_id\"}, \"text\": \"SELECT \\\"comments\\\".* FROM \\\"comments\\\" WHERE \\\"comments\\\".\\\"commentable_id\\\" = $$(p0) AND \\\"comments\\\".\\\"commentable_type\\\" = 'Post' ORDER BY created_at ASC\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_1_row_text_has_dlink",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id) AND \"comments\".\"commentable_type\" = 'Post' ORDER BY created_at ASC"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_first_1_id\"}, \"text\": \"SELECT \\\"comments\\\".* FROM \\\"comments\\\" WHERE \\\"comments\\\".\\\"commentable_id\\\" = $$(p0) AND \\\"comments\\\".\\\"commentable_type\\\" = 'Post' ORDER BY created_at ASC\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_1_row_created_at_year",
       "sort": "Int",
       "value": 1990,
-      "note": "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id) AND \"comments\".\"commentable_type\" = 'Post' ORDER BY created_at ASC"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_first_1_id\"}, \"text\": \"SELECT \\\"comments\\\".* FROM \\\"comments\\\" WHERE \\\"comments\\\".\\\"commentable_id\\\" = $$(p0) AND \\\"comments\\\".\\\"commentable_type\\\" = 'Post' ORDER BY created_at ASC\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_1_row_updated_at_year",
       "sort": "Int",
       "value": 1990,
-      "note": "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id) AND \"comments\".\"commentable_type\" = 'Post' ORDER BY created_at ASC"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_first_1_id\"}, \"text\": \"SELECT \\\"comments\\\".* FROM \\\"comments\\\" WHERE \\\"comments\\\".\\\"commentable_id\\\" = $$(p0) AND \\\"comments\\\".\\\"commentable_type\\\" = 'Post' ORDER BY created_at ASC\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_1_rows",
-      "note": "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id) AND \"comments\".\"commentable_type\" = 'Post' ORDER BY created_at ASC",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_first_1_id\"}, \"text\": \"SELECT \\\"comments\\\".* FROM \\\"comments\\\" WHERE \\\"comments\\\".\\\"commentable_id\\\" = $$(p0) AND \\\"comments\\\".\\\"commentable_type\\\" = 'Post' ORDER BY created_at ASC\"}",
       "type": "[?]"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_1_row2_author_id",
       "sort": "Int",
       "value": 2,
-      "note": "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id) AND \"comments\".\"commentable_type\" = 'Post' ORDER BY created_at ASC"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_first_1_id\"}, \"text\": \"SELECT \\\"comments\\\".* FROM \\\"comments\\\" WHERE \\\"comments\\\".\\\"commentable_id\\\" = $$(p0) AND \\\"comments\\\".\\\"commentable_type\\\" = 'Post' ORDER BY created_at ASC\"}"
     },
     {
       "name": "SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_1_rows",
-      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "[?]"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_guid",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_guid_v",
-      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_diaspora_handle",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_diaspora_handle_v",
-      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_serialized_public_key",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_serialized_public_key_v",
-      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_owner_id",
       "sort": "Int",
       "value": 0,
-      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_created_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_created_at_v",
-      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_updated_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_updated_at_v",
-      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_closed_account",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_fetch_status",
       "sort": "Int",
       "value": 0,
-      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_pod_id",
       "sort": "Int",
       "value": 0,
-      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_created_at_year",
       "sort": "Int",
       "value": 1990,
-      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_updated_at_year",
       "sort": "Int",
       "value": 1990,
-      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author2_id",
       "sort": "Int",
       "value": 2,
-      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_2_rows",
-      "note": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id\"}, \"text\": \"SELECT \\\"profiles\\\".* FROM \\\"profiles\\\" WHERE \\\"profiles\\\".\\\"person_id\\\" = $$(p0)\"}",
       "type": "[?]"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_not_found",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id\"}, \"text\": \"SELECT \\\"profiles\\\".* FROM \\\"profiles\\\" WHERE \\\"profiles\\\".\\\"person_id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_id",
       "sort": "Int",
       "value": 1,
-      "note": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id\"}, \"text\": \"SELECT \\\"profiles\\\".* FROM \\\"profiles\\\" WHERE \\\"profiles\\\".\\\"person_id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_diaspora_handle",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_diaspora_handle_v",
-      "note": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id\"}, \"text\": \"SELECT \\\"profiles\\\".* FROM \\\"profiles\\\" WHERE \\\"profiles\\\".\\\"person_id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_first_name",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_first_name_v",
-      "note": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id\"}, \"text\": \"SELECT \\\"profiles\\\".* FROM \\\"profiles\\\" WHERE \\\"profiles\\\".\\\"person_id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_last_name",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_last_name_v",
-      "note": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id\"}, \"text\": \"SELECT \\\"profiles\\\".* FROM \\\"profiles\\\" WHERE \\\"profiles\\\".\\\"person_id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_image_url",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_image_url_v",
-      "note": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id\"}, \"text\": \"SELECT \\\"profiles\\\".* FROM \\\"profiles\\\" WHERE \\\"profiles\\\".\\\"person_id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_image_url_small",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_image_url_small_v",
-      "note": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id\"}, \"text\": \"SELECT \\\"profiles\\\".* FROM \\\"profiles\\\" WHERE \\\"profiles\\\".\\\"person_id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_image_url_medium",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_image_url_medium_v",
-      "note": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id\"}, \"text\": \"SELECT \\\"profiles\\\".* FROM \\\"profiles\\\" WHERE \\\"profiles\\\".\\\"person_id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_birthday",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_birthday_v",
-      "note": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id\"}, \"text\": \"SELECT \\\"profiles\\\".* FROM \\\"profiles\\\" WHERE \\\"profiles\\\".\\\"person_id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_gender",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_gender_v",
-      "note": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id\"}, \"text\": \"SELECT \\\"profiles\\\".* FROM \\\"profiles\\\" WHERE \\\"profiles\\\".\\\"person_id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_bio",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_bio_v",
-      "note": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id\"}, \"text\": \"SELECT \\\"profiles\\\".* FROM \\\"profiles\\\" WHERE \\\"profiles\\\".\\\"person_id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_searchable",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id\"}, \"text\": \"SELECT \\\"profiles\\\".* FROM \\\"profiles\\\" WHERE \\\"profiles\\\".\\\"person_id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_person_id",
       "sort": "Int",
       "value": 0,
-      "note": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id\"}, \"text\": \"SELECT \\\"profiles\\\".* FROM \\\"profiles\\\" WHERE \\\"profiles\\\".\\\"person_id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_created_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_created_at_v",
-      "note": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id\"}, \"text\": \"SELECT \\\"profiles\\\".* FROM \\\"profiles\\\" WHERE \\\"profiles\\\".\\\"person_id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_updated_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_updated_at_v",
-      "note": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id\"}, \"text\": \"SELECT \\\"profiles\\\".* FROM \\\"profiles\\\" WHERE \\\"profiles\\\".\\\"person_id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_location",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_location_v",
-      "note": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id\"}, \"text\": \"SELECT \\\"profiles\\\".* FROM \\\"profiles\\\" WHERE \\\"profiles\\\".\\\"person_id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_full_name",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_full_name_v",
-      "note": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id\"}, \"text\": \"SELECT \\\"profiles\\\".* FROM \\\"profiles\\\" WHERE \\\"profiles\\\".\\\"person_id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_nsfw",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id\"}, \"text\": \"SELECT \\\"profiles\\\".* FROM \\\"profiles\\\" WHERE \\\"profiles\\\".\\\"person_id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_public_details",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id\"}, \"text\": \"SELECT \\\"profiles\\\".* FROM \\\"profiles\\\" WHERE \\\"profiles\\\".\\\"person_id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_birthday_year",
       "sort": "Int",
       "value": 1990,
-      "note": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id\"}, \"text\": \"SELECT \\\"profiles\\\".* FROM \\\"profiles\\\" WHERE \\\"profiles\\\".\\\"person_id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_created_at_year",
       "sort": "Int",
       "value": 1990,
-      "note": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id\"}, \"text\": \"SELECT \\\"profiles\\\".* FROM \\\"profiles\\\" WHERE \\\"profiles\\\".\\\"person_id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_1_row_author_profile_updated_at_year",
       "sort": "Int",
       "value": 1990,
-      "note": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id\"}, \"text\": \"SELECT \\\"profiles\\\".* FROM \\\"profiles\\\" WHERE \\\"profiles\\\".\\\"person_id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_2_row_id",
       "sort": "Int",
       "value": 1,
-      "note": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_id) AND \"mentions\".\"mentions_container_type\" = 'Comment'"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_1_row_id\"}, \"text\": \"SELECT \\\"mentions\\\".* FROM \\\"mentions\\\" WHERE \\\"mentions\\\".\\\"mentions_container_id\\\" = $$(p0) AND \\\"mentions\\\".\\\"mentions_container_type\\\" = 'Comment'\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_2_row_mentions_container_id",
       "sort": "Int",
       "value": 0,
-      "note": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_id) AND \"mentions\".\"mentions_container_type\" = 'Comment'"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_1_row_id\"}, \"text\": \"SELECT \\\"mentions\\\".* FROM \\\"mentions\\\" WHERE \\\"mentions\\\".\\\"mentions_container_id\\\" = $$(p0) AND \\\"mentions\\\".\\\"mentions_container_type\\\" = 'Comment'\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id",
       "sort": "Int",
       "value": 0,
-      "note": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_id) AND \"mentions\".\"mentions_container_type\" = 'Comment'"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_1_row_id\"}, \"text\": \"SELECT \\\"mentions\\\".* FROM \\\"mentions\\\" WHERE \\\"mentions\\\".\\\"mentions_container_id\\\" = $$(p0) AND \\\"mentions\\\".\\\"mentions_container_type\\\" = 'Comment'\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_2_row_mentions_container_type",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__Relation_records_2_row_mentions_container_type_v",
-      "note": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_id) AND \"mentions\".\"mentions_container_type\" = 'Comment'"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_1_row_id\"}, \"text\": \"SELECT \\\"mentions\\\".* FROM \\\"mentions\\\" WHERE \\\"mentions\\\".\\\"mentions_container_id\\\" = $$(p0) AND \\\"mentions\\\".\\\"mentions_container_type\\\" = 'Comment'\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_2_rows",
-      "note": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_id) AND \"mentions\".\"mentions_container_type\" = 'Comment'",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_1_row_id\"}, \"text\": \"SELECT \\\"mentions\\\".* FROM \\\"mentions\\\" WHERE \\\"mentions\\\".\\\"mentions_container_id\\\" = $$(p0) AND \\\"mentions\\\".\\\"mentions_container_type\\\" = 'Comment'\"}",
       "type": "[?]"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_2_row2_person_id",
       "sort": "Int",
       "value": 2,
-      "note": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_id) AND \"mentions\".\"mentions_container_type\" = 'Comment'"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_1_row_id\"}, \"text\": \"SELECT \\\"mentions\\\".* FROM \\\"mentions\\\" WHERE \\\"mentions\\\".\\\"mentions_container_id\\\" = $$(p0) AND \\\"mentions\\\".\\\"mentions_container_type\\\" = 'Comment'\"}"
     },
     {
       "name": "SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_3_rows",
-      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "[?]"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_not_found",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_guid",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_guid_v",
-      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_diaspora_handle",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_diaspora_handle_v",
-      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_serialized_public_key",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_serialized_public_key_v",
-      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_owner_id",
       "sort": "Int",
       "value": 0,
-      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_created_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_created_at_v",
-      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_updated_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_updated_at_v",
-      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_closed_account",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_fetch_status",
       "sort": "Int",
       "value": 0,
-      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_pod_id",
       "sort": "Int",
       "value": 0,
-      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_created_at_year",
       "sort": "Int",
       "value": 1990,
-      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_updated_at_year",
       "sort": "Int",
       "value": 1990,
-      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person2_id",
       "sort": "Int",
       "value": 2,
-      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_4_rows",
-      "note": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id\"}, \"text\": \"SELECT \\\"profiles\\\".* FROM \\\"profiles\\\" WHERE \\\"profiles\\\".\\\"person_id\\\" = $$(p0)\"}",
       "type": "[?]"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_not_found",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id\"}, \"text\": \"SELECT \\\"profiles\\\".* FROM \\\"profiles\\\" WHERE \\\"profiles\\\".\\\"person_id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_id",
       "sort": "Int",
       "value": 1,
-      "note": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id\"}, \"text\": \"SELECT \\\"profiles\\\".* FROM \\\"profiles\\\" WHERE \\\"profiles\\\".\\\"person_id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_diaspora_handle",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_diaspora_handle_v",
-      "note": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id\"}, \"text\": \"SELECT \\\"profiles\\\".* FROM \\\"profiles\\\" WHERE \\\"profiles\\\".\\\"person_id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_first_name",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_first_name_v",
-      "note": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id\"}, \"text\": \"SELECT \\\"profiles\\\".* FROM \\\"profiles\\\" WHERE \\\"profiles\\\".\\\"person_id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_last_name",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_last_name_v",
-      "note": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id\"}, \"text\": \"SELECT \\\"profiles\\\".* FROM \\\"profiles\\\" WHERE \\\"profiles\\\".\\\"person_id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_image_url",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_image_url_v",
-      "note": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id\"}, \"text\": \"SELECT \\\"profiles\\\".* FROM \\\"profiles\\\" WHERE \\\"profiles\\\".\\\"person_id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_image_url_small",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_image_url_small_v",
-      "note": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id\"}, \"text\": \"SELECT \\\"profiles\\\".* FROM \\\"profiles\\\" WHERE \\\"profiles\\\".\\\"person_id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_image_url_medium",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_image_url_medium_v",
-      "note": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id\"}, \"text\": \"SELECT \\\"profiles\\\".* FROM \\\"profiles\\\" WHERE \\\"profiles\\\".\\\"person_id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_birthday",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_birthday_v",
-      "note": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id\"}, \"text\": \"SELECT \\\"profiles\\\".* FROM \\\"profiles\\\" WHERE \\\"profiles\\\".\\\"person_id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_gender",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_gender_v",
-      "note": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id\"}, \"text\": \"SELECT \\\"profiles\\\".* FROM \\\"profiles\\\" WHERE \\\"profiles\\\".\\\"person_id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_bio",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_bio_v",
-      "note": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id\"}, \"text\": \"SELECT \\\"profiles\\\".* FROM \\\"profiles\\\" WHERE \\\"profiles\\\".\\\"person_id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_searchable",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id\"}, \"text\": \"SELECT \\\"profiles\\\".* FROM \\\"profiles\\\" WHERE \\\"profiles\\\".\\\"person_id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_person_id",
       "sort": "Int",
       "value": 0,
-      "note": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id\"}, \"text\": \"SELECT \\\"profiles\\\".* FROM \\\"profiles\\\" WHERE \\\"profiles\\\".\\\"person_id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_created_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_created_at_v",
-      "note": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id\"}, \"text\": \"SELECT \\\"profiles\\\".* FROM \\\"profiles\\\" WHERE \\\"profiles\\\".\\\"person_id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_updated_at",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_updated_at_v",
-      "note": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id\"}, \"text\": \"SELECT \\\"profiles\\\".* FROM \\\"profiles\\\" WHERE \\\"profiles\\\".\\\"person_id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_location",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_location_v",
-      "note": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id\"}, \"text\": \"SELECT \\\"profiles\\\".* FROM \\\"profiles\\\" WHERE \\\"profiles\\\".\\\"person_id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_full_name",
       "sort": "String",
       "value": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_full_name_v",
-      "note": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id\"}, \"text\": \"SELECT \\\"profiles\\\".* FROM \\\"profiles\\\" WHERE \\\"profiles\\\".\\\"person_id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_nsfw",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id\"}, \"text\": \"SELECT \\\"profiles\\\".* FROM \\\"profiles\\\" WHERE \\\"profiles\\\".\\\"person_id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_public_details",
       "sort": "Bool",
       "value": false,
-      "note": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id\"}, \"text\": \"SELECT \\\"profiles\\\".* FROM \\\"profiles\\\" WHERE \\\"profiles\\\".\\\"person_id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_birthday_year",
       "sort": "Int",
       "value": 1990,
-      "note": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id\"}, \"text\": \"SELECT \\\"profiles\\\".* FROM \\\"profiles\\\" WHERE \\\"profiles\\\".\\\"person_id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_created_at_year",
       "sort": "Int",
       "value": 1990,
-      "note": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id\"}, \"text\": \"SELECT \\\"profiles\\\".* FROM \\\"profiles\\\" WHERE \\\"profiles\\\".\\\"person_id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ActiveRecord__Relation_records_2_row_person_profile_updated_at_year",
       "sort": "Int",
       "value": 1990,
-      "note": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id\"}, \"text\": \"SELECT \\\"profiles\\\".* FROM \\\"profiles\\\" WHERE \\\"profiles\\\".\\\"person_id\\\" = $$(p0)\"}"
     },
     {
       "name": "SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_5_rows",
-      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}",
       "type": "[?]"
     },
     {
       "name": "SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_6_rows",
-      "note": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)",
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id\"}, \"text\": \"SELECT \\\"profiles\\\".* FROM \\\"profiles\\\" WHERE \\\"profiles\\\".\\\"person_id\\\" = $$(p0)\"}",
       "type": "[?]"
     },
     {
@@ -826,12 +826,12 @@
       "args": {
 },
       "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
-      "result_value": "#<Post:0x2d739a6f>",
+      "result_value": "#<Post:0x1e2d4645>",
       "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/services/post_service.rb",
       "lineno": 52,
       "function": "find_public!",
-      "result_type": "obj<?>",
-      "note": "SELECT \"posts\".* FROM \"posts\" WHERE \"posts\".\"id\" = $$(SYM_PARAM_post_id) ORDER BY \"posts\".\"id\" ASC LIMIT 1"
+      "result_type": "obj<?>?",
+      "note": "{\"refs\": {\"p0\": \"SYM_PARAM_post_id\"}, \"text\": \"SELECT \\\"posts\\\".* FROM \\\"posts\\\" WHERE \\\"posts\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"posts\\\".\\\"id\\\" ASC LIMIT 1\"}"
     },
     {
       "type": "path_condition",
@@ -851,7 +851,7 @@
       },
       "taken": false,
       "file": "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb",
-      "lineno": 514,
+      "lineno": 555,
       "function": "block in finder_mock_faithful"
     },
     {
@@ -872,7 +872,7 @@
       },
       "taken": false,
       "file": "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb",
-      "lineno": 1279,
+      "lineno": 1330,
       "function": "symbolic_instance"
     },
     {
@@ -880,7 +880,7 @@
       "expr": "(SYM_RESULT_ActiveRecord__FinderMethods_first_1_public == True)",
       "taken": true,
       "file": "/home/dev/project/reports/diaspora/results4/comments_index/concolic_targets.rb",
-      "lineno": 412,
+      "lineno": 441,
       "function": "block in symbolic_instance"
     },
     {
@@ -905,7 +905,7 @@
       "lineno": 71,
       "function": "each",
       "result_type": "[?]",
-      "note": "SELECT \"comments\".* FROM \"comments\" WHERE \"comments\".\"commentable_id\" = $$(SYM_RESULT_ActiveRecord__FinderMethods_first_1_id) AND \"comments\".\"commentable_type\" = 'Post' ORDER BY created_at ASC"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__FinderMethods_first_1_id\"}, \"text\": \"SELECT \\\"comments\\\".* FROM \\\"comments\\\" WHERE \\\"comments\\\".\\\"commentable_id\\\" = $$(p0) AND \\\"comments\\\".\\\"commentable_type\\\" = 'Post' ORDER BY created_at ASC\"}"
     },
     {
       "type": "path_condition",
@@ -925,7 +925,7 @@
       },
       "taken": false,
       "file": "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb",
-      "lineno": 1112,
+      "lineno": 1163,
       "function": "symbolic_instance"
     },
     {
@@ -946,7 +946,7 @@
       },
       "taken": false,
       "file": "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb",
-      "lineno": 1144,
+      "lineno": 1195,
       "function": "symbolic_instance"
     },
     {
@@ -972,80 +972,56 @@
       },
       "taken": false,
       "file": "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb",
-      "lineno": 948,
+      "lineno": 999,
       "function": "block in install!"
     },
     {
       "type": "call",
       "target": "ConcolicThroughLoadProbe.load_intermediate",
       "args": {
-        "sql": {
-          "lit": {
-            "sort": "str",
-            "value": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
-          }
-        }
-      },
+},
       "file": "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb",
-      "lineno": 363,
+      "lineno": 404,
       "function": "block"
     },
     {
       "type": "symbolic_call",
       "target": "ConcolicThroughLoadProbe.load_intermediate",
       "args": {
-        "sql": {
-          "lit": {
-            "sort": "str",
-            "value": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
-          }
-        }
-      },
+},
       "result_name": "SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_1",
       "result_value": {
         "sym": "SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_1_rows"
       },
       "file": "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb",
-      "lineno": 363,
+      "lineno": 404,
       "function": "block in emit_includes_preloads",
       "result_type": "[?]",
-      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}"
     },
     {
       "type": "call",
       "target": "ConcolicThroughLoadProbe.load_intermediate",
       "args": {
-        "sql": {
-          "lit": {
-            "sort": "str",
-            "value": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
-          }
-        }
-      },
+},
       "file": "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb",
-      "lineno": 363,
+      "lineno": 404,
       "function": "block"
     },
     {
       "type": "symbolic_call",
       "target": "ConcolicThroughLoadProbe.load_intermediate",
       "args": {
-        "sql": {
-          "lit": {
-            "sort": "str",
-            "value": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
-          }
-        }
-      },
+},
       "result_name": "SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_2",
       "result_value": {
         "sym": "SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_2_rows"
       },
       "file": "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb",
-      "lineno": 363,
+      "lineno": 404,
       "function": "block in emit_includes_preloads",
       "result_type": "[?]",
-      "note": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_1_row_author_id\"}, \"text\": \"SELECT \\\"profiles\\\".* FROM \\\"profiles\\\" WHERE \\\"profiles\\\".\\\"person_id\\\" = $$(p0)\"}"
     },
     {
       "type": "path_condition",
@@ -1065,7 +1041,7 @@
       },
       "taken": false,
       "file": "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb",
-      "lineno": 388,
+      "lineno": 429,
       "function": "block in emit_includes_preloads"
     },
     {
@@ -1073,7 +1049,7 @@
       "expr": "(len(SYM_RESULT_ActiveRecord__Relation_records_1_rows) != 0)",
       "taken": true,
       "file": "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb",
-      "lineno": 783,
+      "lineno": 825,
       "function": "each"
     },
     {
@@ -1098,7 +1074,7 @@
       "lineno": 71,
       "function": "each",
       "result_type": "[?]",
-      "note": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_id) AND \"mentions\".\"mentions_container_type\" = 'Comment'"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_1_row_id\"}, \"text\": \"SELECT \\\"mentions\\\".* FROM \\\"mentions\\\" WHERE \\\"mentions\\\".\\\"mentions_container_id\\\" = $$(p0) AND \\\"mentions\\\".\\\"mentions_container_type\\\" = 'Comment'\"}"
     },
     {
       "type": "path_condition",
@@ -1123,44 +1099,32 @@
       },
       "taken": false,
       "file": "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb",
-      "lineno": 948,
+      "lineno": 999,
       "function": "block in install!"
     },
     {
       "type": "call",
       "target": "ConcolicThroughLoadProbe.load_intermediate",
       "args": {
-        "sql": {
-          "lit": {
-            "sort": "str",
-            "value": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
-          }
-        }
-      },
+},
       "file": "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb",
-      "lineno": 363,
+      "lineno": 404,
       "function": "block"
     },
     {
       "type": "symbolic_call",
       "target": "ConcolicThroughLoadProbe.load_intermediate",
       "args": {
-        "sql": {
-          "lit": {
-            "sort": "str",
-            "value": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
-          }
-        }
-      },
+},
       "result_name": "SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_3",
       "result_value": {
         "sym": "SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_3_rows"
       },
       "file": "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb",
-      "lineno": 363,
+      "lineno": 404,
       "function": "block in emit_includes_preloads",
       "result_type": "[?]",
-      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}"
     },
     {
       "type": "path_condition",
@@ -1180,44 +1144,32 @@
       },
       "taken": false,
       "file": "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb",
-      "lineno": 388,
+      "lineno": 429,
       "function": "block in emit_includes_preloads"
     },
     {
       "type": "call",
       "target": "ConcolicThroughLoadProbe.load_intermediate",
       "args": {
-        "sql": {
-          "lit": {
-            "sort": "str",
-            "value": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
-          }
-        }
-      },
+},
       "file": "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb",
-      "lineno": 363,
+      "lineno": 404,
       "function": "block"
     },
     {
       "type": "symbolic_call",
       "target": "ConcolicThroughLoadProbe.load_intermediate",
       "args": {
-        "sql": {
-          "lit": {
-            "sort": "str",
-            "value": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
-          }
-        }
-      },
+},
       "result_name": "SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_4",
       "result_value": {
         "sym": "SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_4_rows"
       },
       "file": "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb",
-      "lineno": 363,
+      "lineno": 404,
       "function": "block in emit_includes_preloads",
       "result_type": "[?]",
-      "note": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id\"}, \"text\": \"SELECT \\\"profiles\\\".* FROM \\\"profiles\\\" WHERE \\\"profiles\\\".\\\"person_id\\\" = $$(p0)\"}"
     },
     {
       "type": "path_condition",
@@ -1237,7 +1189,7 @@
       },
       "taken": false,
       "file": "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb",
-      "lineno": 388,
+      "lineno": 429,
       "function": "block in emit_includes_preloads"
     },
     {
@@ -1245,7 +1197,7 @@
       "expr": "(len(SYM_RESULT_ActiveRecord__Relation_records_2_rows) != 0)",
       "taken": true,
       "file": "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb",
-      "lineno": 783,
+      "lineno": 825,
       "function": "each"
     },
     {
@@ -1270,7 +1222,7 @@
       "lineno": 71,
       "function": "each",
       "result_type": "[?]",
-      "note": "SELECT \"mentions\".* FROM \"mentions\" WHERE \"mentions\".\"mentions_container_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_1_row_id) AND \"mentions\".\"mentions_container_type\" = 'Comment'"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_1_row_id\"}, \"text\": \"SELECT \\\"mentions\\\".* FROM \\\"mentions\\\" WHERE \\\"mentions\\\".\\\"mentions_container_id\\\" = $$(p0) AND \\\"mentions\\\".\\\"mentions_container_type\\\" = 'Comment'\"}"
     },
     {
       "type": "path_condition",
@@ -1295,44 +1247,32 @@
       },
       "taken": false,
       "file": "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb",
-      "lineno": 948,
+      "lineno": 999,
       "function": "block in install!"
     },
     {
       "type": "call",
       "target": "ConcolicThroughLoadProbe.load_intermediate",
       "args": {
-        "sql": {
-          "lit": {
-            "sort": "str",
-            "value": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
-          }
-        }
-      },
+},
       "file": "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb",
-      "lineno": 363,
+      "lineno": 404,
       "function": "block"
     },
     {
       "type": "symbolic_call",
       "target": "ConcolicThroughLoadProbe.load_intermediate",
       "args": {
-        "sql": {
-          "lit": {
-            "sort": "str",
-            "value": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
-          }
-        }
-      },
+},
       "result_name": "SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_5",
       "result_value": {
         "sym": "SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_5_rows"
       },
       "file": "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb",
-      "lineno": 363,
+      "lineno": 404,
       "function": "block in emit_includes_preloads",
       "result_type": "[?]",
-      "note": "SELECT \"people\".* FROM \"people\" WHERE \"people\".\"id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id\"}, \"text\": \"SELECT \\\"people\\\".* FROM \\\"people\\\" WHERE \\\"people\\\".\\\"id\\\" = $$(p0)\"}"
     },
     {
       "type": "path_condition",
@@ -1352,44 +1292,32 @@
       },
       "taken": false,
       "file": "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb",
-      "lineno": 388,
+      "lineno": 429,
       "function": "block in emit_includes_preloads"
     },
     {
       "type": "call",
       "target": "ConcolicThroughLoadProbe.load_intermediate",
       "args": {
-        "sql": {
-          "lit": {
-            "sort": "str",
-            "value": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
-          }
-        }
-      },
+},
       "file": "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb",
-      "lineno": 363,
+      "lineno": 404,
       "function": "block"
     },
     {
       "type": "symbolic_call",
       "target": "ConcolicThroughLoadProbe.load_intermediate",
       "args": {
-        "sql": {
-          "lit": {
-            "sort": "str",
-            "value": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
-          }
-        }
-      },
+},
       "result_name": "SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_6",
       "result_value": {
         "sym": "SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_6_rows"
       },
       "file": "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb",
-      "lineno": 363,
+      "lineno": 404,
       "function": "block in emit_includes_preloads",
       "result_type": "[?]",
-      "note": "SELECT \"profiles\".* FROM \"profiles\" WHERE \"profiles\".\"person_id\" = $$(SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id)"
+      "note": "{\"refs\": {\"p0\": \"SYM_RESULT_ActiveRecord__Relation_records_2_row_person_id\"}, \"text\": \"SELECT \\\"profiles\\\".* FROM \\\"profiles\\\" WHERE \\\"profiles\\\".\\\"person_id\\\" = $$(p0)\"}"
     },
     {
       "type": "path_condition",
@@ -1409,7 +1337,7 @@
       },
       "taken": false,
       "file": "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb",
-      "lineno": 388,
+      "lineno": 429,
       "function": "block in emit_includes_preloads"
     },
     {
@@ -1417,7 +1345,7 @@
       "expr": "(len(SYM_RESULT_ActiveRecord__Relation_records_2_rows) != 0)",
       "taken": true,
       "file": "/home/dev/project/reports/diaspora/results4/comments_index/targets.rb",
-      "lineno": 783,
+      "lineno": 825,
       "function": "each"
     },
     {
@@ -1455,7 +1383,7 @@
       "file": "/home/dev/.gem/jruby/2.6.0/gems/actionpack-5.2.4.3/lib/action_controller/metal/rendering.rb",
       "lineno": 115,
       "function": "_process_options",
-      "result_type": "opaque?"
+      "result_type": "int?"
     },
     {
       "type": "call",
@@ -1800,8 +1728,8 @@
   "symbolic_results": [
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
-      "type": "obj<?>",
-      "value": "#<Post:0x2d739a6f>"
+      "type": "obj<?>?",
+      "value": "#<Post:0x1e2d4645>"
     },
     {
       "name": "SYM_RESULT_ConcolicThroughLoadProbe_load_intermediate_1",
@@ -1868,7 +1796,7 @@
     },
     {
       "name": "SYM_RESULT_ActionController__Metal_status__1",
-      "type": "opaque?",
+      "type": "int?",
       "value": {
         "lit": {
           "sort": "null"
