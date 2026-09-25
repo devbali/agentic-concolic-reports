@@ -1,5 +1,5 @@
 policy comments_index
-  cert   report=none  outcome=UNDECIDED  app=results4/comments_index  atoms=11  minimal=full  inferred=0  declared=0  elided=0
+  cert   report=none  outcome=UNDECIDED  app=results4/comments_index  atoms=11  minimal=full  inferred=126  declared=88  elided=0
   entry  comments_index($"Length(SYM_PARAM_post_id)": int, $SYM_PARAM_post_id: str, $SYM_RESULT_ActiveRecord__FinderMethods_first_1_not_found: bool, $SYM_RESULT_ActiveRecord__FinderMethods_first_1_type: str)
 
   sig ActionController::Head#head(status: str) -> str shim
@@ -35,7 +35,7 @@ atom 4
   assert c2.row_text_has_dlink != true
   assert c2.row_text_has_mention != true
   assert len(c2.rows) <= 1
-  access c3 = ConcolicThroughLoadProbe.load_intermediate()  // ~SELECT "people".* FROM "people" WHERE "people"."id" = $$(c2.row_author_id)
+  access c3 = ConcolicThroughLoadProbe.load_intermediate()  // ~SELECT "people".* FROM "people" WHERE "people"."id" = $$(c2[any].author_id)
 
 atom 5
   assert $"Length(SYM_PARAM_post_id)" < 16
@@ -47,8 +47,8 @@ atom 5
   assert c2.row_text_has_dlink != true
   assert c2.row_text_has_mention != true
   assert len(c2.rows) <= 1
-  c3 = ConcolicThroughLoadProbe.load_intermediate()  // ~SELECT "people".* FROM "people" WHERE "people"."id" = $$(c2.row_author_id)
-  access c4 = ConcolicThroughLoadProbe.load_intermediate()  // ~SELECT "profiles".* FROM "profiles" WHERE "profiles"."person_id" = $$(c2.row_author_id)
+  c3 = ConcolicThroughLoadProbe.load_intermediate()  // ~SELECT "people".* FROM "people" WHERE "people"."id" = $$(c2[any].author_id)
+  access c4 = ConcolicThroughLoadProbe.load_intermediate()  // ~SELECT "profiles".* FROM "profiles" WHERE "profiles"."person_id" = $$(c2[any].author_id)
 
 atom 6
   assert $"Length(SYM_PARAM_post_id)" < 16
@@ -62,9 +62,9 @@ atom 6
   assert c2.row_text_has_mention != true
   assert len(c2.rows) != 0
   assert len(c2.rows) <= 1
-  c3 = ConcolicThroughLoadProbe.load_intermediate()  // ~SELECT "people".* FROM "people" WHERE "people"."id" = $$(c2.row_author_id)
-  c4 = ConcolicThroughLoadProbe.load_intermediate()  // ~SELECT "profiles".* FROM "profiles" WHERE "profiles"."person_id" = $$(c2.row_author_id)
-  access c5 = ActiveRecord::Relation#records()  // ~SELECT "mentions".* FROM "mentions" WHERE "mentions"."mentions_container_id" = $$(c2.row_id) AND "mentions"."mentions_container_type" = 'Comment'
+  c3 = ConcolicThroughLoadProbe.load_intermediate()  // ~SELECT "people".* FROM "people" WHERE "people"."id" = $$(c2[any].author_id)
+  c4 = ConcolicThroughLoadProbe.load_intermediate()  // ~SELECT "profiles".* FROM "profiles" WHERE "profiles"."person_id" = $$(c2[any].author_id)
+  access c5 = ActiveRecord::Relation#records()  // ~SELECT "mentions".* FROM "mentions" WHERE "mentions"."mentions_container_id" = $$(c2[any].id) AND "mentions"."mentions_container_type" = 'Comment'
 
 atom 7
   assert $"Length(SYM_PARAM_post_id)" < 16
@@ -78,11 +78,11 @@ atom 7
   assert c2.row_text_has_mention != true
   assert len(c2.rows) != 0
   assert len(c2.rows) <= 1
-  c3 = ConcolicThroughLoadProbe.load_intermediate()  // ~SELECT "people".* FROM "people" WHERE "people"."id" = $$(c2.row_author_id)
-  c4 = ConcolicThroughLoadProbe.load_intermediate()  // ~SELECT "profiles".* FROM "profiles" WHERE "profiles"."person_id" = $$(c2.row_author_id)
-  c5 = ActiveRecord::Relation#records()  // ~SELECT "mentions".* FROM "mentions" WHERE "mentions"."mentions_container_id" = $$(c2.row_id) AND "mentions"."mentions_container_type" = 'Comment'
+  c3 = ConcolicThroughLoadProbe.load_intermediate()  // ~SELECT "people".* FROM "people" WHERE "people"."id" = $$(c2[any].author_id)
+  c4 = ConcolicThroughLoadProbe.load_intermediate()  // ~SELECT "profiles".* FROM "profiles" WHERE "profiles"."person_id" = $$(c2[any].author_id)
+  c5 = ActiveRecord::Relation#records()  // ~SELECT "mentions".* FROM "mentions" WHERE "mentions"."mentions_container_id" = $$(c2[any].id) AND "mentions"."mentions_container_type" = 'Comment'
   assert len(c5.rows) <= 1
-  access c6 = ConcolicThroughLoadProbe.load_intermediate()  // ~SELECT "people".* FROM "people" WHERE "people"."id" = $$(c5.row_person_id)
+  access c6 = ConcolicThroughLoadProbe.load_intermediate()  // ~SELECT "people".* FROM "people" WHERE "people"."id" = $$(c5[any].person_id)
 
 atom 8
   assert $"Length(SYM_PARAM_post_id)" < 16
@@ -96,13 +96,13 @@ atom 8
   assert c2.row_text_has_mention != true
   assert len(c2.rows) != 0
   assert len(c2.rows) <= 1
-  c3 = ConcolicThroughLoadProbe.load_intermediate()  // ~SELECT "people".* FROM "people" WHERE "people"."id" = $$(c2.row_author_id)
-  c4 = ConcolicThroughLoadProbe.load_intermediate()  // ~SELECT "profiles".* FROM "profiles" WHERE "profiles"."person_id" = $$(c2.row_author_id)
-  c5 = ActiveRecord::Relation#records()  // ~SELECT "mentions".* FROM "mentions" WHERE "mentions"."mentions_container_id" = $$(c2.row_id) AND "mentions"."mentions_container_type" = 'Comment'
+  c3 = ConcolicThroughLoadProbe.load_intermediate()  // ~SELECT "people".* FROM "people" WHERE "people"."id" = $$(c2[any].author_id)
+  c4 = ConcolicThroughLoadProbe.load_intermediate()  // ~SELECT "profiles".* FROM "profiles" WHERE "profiles"."person_id" = $$(c2[any].author_id)
+  c5 = ActiveRecord::Relation#records()  // ~SELECT "mentions".* FROM "mentions" WHERE "mentions"."mentions_container_id" = $$(c2[any].id) AND "mentions"."mentions_container_type" = 'Comment'
   assert c5.row_person_not_found != true
   assert len(c5.rows) <= 1
-  c6 = ConcolicThroughLoadProbe.load_intermediate()  // ~SELECT "people".* FROM "people" WHERE "people"."id" = $$(c5.row_person_id)
-  access c7 = ConcolicThroughLoadProbe.load_intermediate()  // ~SELECT "profiles".* FROM "profiles" WHERE "profiles"."person_id" = $$(c5.row_person_id)
+  c6 = ConcolicThroughLoadProbe.load_intermediate()  // ~SELECT "people".* FROM "people" WHERE "people"."id" = $$(c5[any].person_id)
+  access c7 = ConcolicThroughLoadProbe.load_intermediate()  // ~SELECT "profiles".* FROM "profiles" WHERE "profiles"."person_id" = $$(c5[any].person_id)
 
 atom 9
   assert $"Length(SYM_PARAM_post_id)" < 16
@@ -116,16 +116,16 @@ atom 9
   assert c2.row_text_has_mention != true
   assert len(c2.rows) != 0
   assert len(c2.rows) <= 1
-  c3 = ConcolicThroughLoadProbe.load_intermediate()  // ~SELECT "people".* FROM "people" WHERE "people"."id" = $$(c2.row_author_id)
-  c4 = ConcolicThroughLoadProbe.load_intermediate()  // ~SELECT "profiles".* FROM "profiles" WHERE "profiles"."person_id" = $$(c2.row_author_id)
-  c5 = ActiveRecord::Relation#records()  // ~SELECT "mentions".* FROM "mentions" WHERE "mentions"."mentions_container_id" = $$(c2.row_id) AND "mentions"."mentions_container_type" = 'Comment'
+  c3 = ConcolicThroughLoadProbe.load_intermediate()  // ~SELECT "people".* FROM "people" WHERE "people"."id" = $$(c2[any].author_id)
+  c4 = ConcolicThroughLoadProbe.load_intermediate()  // ~SELECT "profiles".* FROM "profiles" WHERE "profiles"."person_id" = $$(c2[any].author_id)
+  c5 = ActiveRecord::Relation#records()  // ~SELECT "mentions".* FROM "mentions" WHERE "mentions"."mentions_container_id" = $$(c2[any].id) AND "mentions"."mentions_container_type" = 'Comment'
   assert c5.row_person_not_found != true
   assert c5.row_person_profile_not_found != true
   assert len(c5.rows) != 0
   assert len(c5.rows) <= 1
-  c6 = ConcolicThroughLoadProbe.load_intermediate()  // ~SELECT "people".* FROM "people" WHERE "people"."id" = $$(c5.row_person_id)
-  c7 = ConcolicThroughLoadProbe.load_intermediate()  // ~SELECT "profiles".* FROM "profiles" WHERE "profiles"."person_id" = $$(c5.row_person_id)
-  access c8 = ActiveRecord::Relation#records()  // ~SELECT "mentions".* FROM "mentions" WHERE "mentions"."mentions_container_id" = $$(c2.row_id) AND "mentions"."mentions_container_type" = 'Comment'
+  c6 = ConcolicThroughLoadProbe.load_intermediate()  // ~SELECT "people".* FROM "people" WHERE "people"."id" = $$(c5[any].person_id)
+  c7 = ConcolicThroughLoadProbe.load_intermediate()  // ~SELECT "profiles".* FROM "profiles" WHERE "profiles"."person_id" = $$(c5[any].person_id)
+  access c8 = ActiveRecord::Relation#records()  // ~SELECT "mentions".* FROM "mentions" WHERE "mentions"."mentions_container_id" = $$(c2[any].id) AND "mentions"."mentions_container_type" = 'Comment'
 
 atom 10
   assert $"Length(SYM_PARAM_post_id)" < 16
@@ -139,17 +139,17 @@ atom 10
   assert c2.row_text_has_mention != true
   assert len(c2.rows) != 0
   assert len(c2.rows) <= 1
-  c3 = ConcolicThroughLoadProbe.load_intermediate()  // ~SELECT "people".* FROM "people" WHERE "people"."id" = $$(c2.row_author_id)
-  c4 = ConcolicThroughLoadProbe.load_intermediate()  // ~SELECT "profiles".* FROM "profiles" WHERE "profiles"."person_id" = $$(c2.row_author_id)
-  c5 = ActiveRecord::Relation#records()  // ~SELECT "mentions".* FROM "mentions" WHERE "mentions"."mentions_container_id" = $$(c2.row_id) AND "mentions"."mentions_container_type" = 'Comment'
+  c3 = ConcolicThroughLoadProbe.load_intermediate()  // ~SELECT "people".* FROM "people" WHERE "people"."id" = $$(c2[any].author_id)
+  c4 = ConcolicThroughLoadProbe.load_intermediate()  // ~SELECT "profiles".* FROM "profiles" WHERE "profiles"."person_id" = $$(c2[any].author_id)
+  c5 = ActiveRecord::Relation#records()  // ~SELECT "mentions".* FROM "mentions" WHERE "mentions"."mentions_container_id" = $$(c2[any].id) AND "mentions"."mentions_container_type" = 'Comment'
   assert c5.row_person_not_found != true
   assert c5.row_person_profile_not_found != true
   assert len(c5.rows) != 0
   assert len(c5.rows) <= 1
-  c6 = ConcolicThroughLoadProbe.load_intermediate()  // ~SELECT "people".* FROM "people" WHERE "people"."id" = $$(c5.row_person_id)
-  c7 = ConcolicThroughLoadProbe.load_intermediate()  // ~SELECT "profiles".* FROM "profiles" WHERE "profiles"."person_id" = $$(c5.row_person_id)
-  c8 = ActiveRecord::Relation#records()  // ~SELECT "mentions".* FROM "mentions" WHERE "mentions"."mentions_container_id" = $$(c2.row_id) AND "mentions"."mentions_container_type" = 'Comment'
-  access c9 = ConcolicThroughLoadProbe.load_intermediate()  // ~SELECT "people".* FROM "people" WHERE "people"."id" = $$(c5.row_person_id)
+  c6 = ConcolicThroughLoadProbe.load_intermediate()  // ~SELECT "people".* FROM "people" WHERE "people"."id" = $$(c5[any].person_id)
+  c7 = ConcolicThroughLoadProbe.load_intermediate()  // ~SELECT "profiles".* FROM "profiles" WHERE "profiles"."person_id" = $$(c5[any].person_id)
+  c8 = ActiveRecord::Relation#records()  // ~SELECT "mentions".* FROM "mentions" WHERE "mentions"."mentions_container_id" = $$(c2[any].id) AND "mentions"."mentions_container_type" = 'Comment'
+  access c9 = ConcolicThroughLoadProbe.load_intermediate()  // ~SELECT "people".* FROM "people" WHERE "people"."id" = $$(c5[any].person_id)
 
 atom 11
   assert $"Length(SYM_PARAM_post_id)" < 16
@@ -163,15 +163,15 @@ atom 11
   assert c2.row_text_has_mention != true
   assert len(c2.rows) != 0
   assert len(c2.rows) <= 1
-  c3 = ConcolicThroughLoadProbe.load_intermediate()  // ~SELECT "people".* FROM "people" WHERE "people"."id" = $$(c2.row_author_id)
-  c4 = ConcolicThroughLoadProbe.load_intermediate()  // ~SELECT "profiles".* FROM "profiles" WHERE "profiles"."person_id" = $$(c2.row_author_id)
-  c5 = ActiveRecord::Relation#records()  // ~SELECT "mentions".* FROM "mentions" WHERE "mentions"."mentions_container_id" = $$(c2.row_id) AND "mentions"."mentions_container_type" = 'Comment'
+  c3 = ConcolicThroughLoadProbe.load_intermediate()  // ~SELECT "people".* FROM "people" WHERE "people"."id" = $$(c2[any].author_id)
+  c4 = ConcolicThroughLoadProbe.load_intermediate()  // ~SELECT "profiles".* FROM "profiles" WHERE "profiles"."person_id" = $$(c2[any].author_id)
+  c5 = ActiveRecord::Relation#records()  // ~SELECT "mentions".* FROM "mentions" WHERE "mentions"."mentions_container_id" = $$(c2[any].id) AND "mentions"."mentions_container_type" = 'Comment'
   assert c5.row_person_not_found != true
   assert c5.row_person_profile_not_found != true
   assert len(c5.rows) != 0
   assert len(c5.rows) <= 1
-  c6 = ConcolicThroughLoadProbe.load_intermediate()  // ~SELECT "people".* FROM "people" WHERE "people"."id" = $$(c5.row_person_id)
-  c7 = ConcolicThroughLoadProbe.load_intermediate()  // ~SELECT "profiles".* FROM "profiles" WHERE "profiles"."person_id" = $$(c5.row_person_id)
-  c8 = ActiveRecord::Relation#records()  // ~SELECT "mentions".* FROM "mentions" WHERE "mentions"."mentions_container_id" = $$(c2.row_id) AND "mentions"."mentions_container_type" = 'Comment'
-  c9 = ConcolicThroughLoadProbe.load_intermediate()  // ~SELECT "people".* FROM "people" WHERE "people"."id" = $$(c5.row_person_id)
-  access c10 = ConcolicThroughLoadProbe.load_intermediate()  // ~SELECT "profiles".* FROM "profiles" WHERE "profiles"."person_id" = $$(c5.row_person_id)
+  c6 = ConcolicThroughLoadProbe.load_intermediate()  // ~SELECT "people".* FROM "people" WHERE "people"."id" = $$(c5[any].person_id)
+  c7 = ConcolicThroughLoadProbe.load_intermediate()  // ~SELECT "profiles".* FROM "profiles" WHERE "profiles"."person_id" = $$(c5[any].person_id)
+  c8 = ActiveRecord::Relation#records()  // ~SELECT "mentions".* FROM "mentions" WHERE "mentions"."mentions_container_id" = $$(c2[any].id) AND "mentions"."mentions_container_type" = 'Comment'
+  c9 = ConcolicThroughLoadProbe.load_intermediate()  // ~SELECT "people".* FROM "people" WHERE "people"."id" = $$(c5[any].person_id)
+  access c10 = ConcolicThroughLoadProbe.load_intermediate()  // ~SELECT "profiles".* FROM "profiles" WHERE "profiles"."person_id" = $$(c5[any].person_id)

@@ -9,6 +9,20 @@ generated 2026-09-24 by
 call/record pairing and per-call note scoping in place. All five build
 cleanly through `dumps_to_policy.build.build_policy`.
 
+**Regenerated 2026-09-25 (second pass, IR validation).** `../targets.rb`
+grew §R — a wrapper that gives `ConcolicTargets.symbolic_instance`'s rows a
+`concolic_name`, a `concolic_type_name` and a `SymbolicFunc.register_type`
+declaration, so a row is a NAMED value of a FIXED type. Metadata only: the
+five dumps' path-condition counts are unchanged (4, 4, 2, 3, 17) and the run
+is still 6 runs / 5 distinct paths / 0 errors. What changed in the dumps:
+origins 36 `attr` -> 45 `attr` + 2 `elem`; nine of those `attr` origins now
+name a field inside a FIXED `obj<Comment>` / `obj<Mention>` (previously
+zero); each dump carries a `types` table (`Post`, `Comment`, `Mention`,
+`Person`, `Profile`). `dump_anon_json_dse0005.json` — the nested-call path
+— is where the list ELEMENT lives and therefore the only dump in this
+corpus that binds §5.2's fixed-attribute contract.
+
+
 | file | path / shape it illustrates |
 |---|---|
 | `dump_anon_json_dse0001.json` | **Short post_id.** `len(post_id) < 16` → the finder reads `posts.id = $$(SYM_PARAM_post_id)`; post found, not a `Photo`, `public == false` → the visibility branch ends the run. The minimal shape: one access, three decisions on its result. |

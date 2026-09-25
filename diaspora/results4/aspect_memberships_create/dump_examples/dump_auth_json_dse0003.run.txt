@@ -1,4 +1,5 @@
 run "auth_json_dse0003" schema=1
+  type User(authentication_token: str, auto_follow_back: bool, auto_follow_back_aspect_id: int, color_theme: str, created_at: str, current_sign_in_at: str, current_sign_in_ip: str, disable_mail: bool, email: str, encrypted_password: str, export: str, exported_at: str, exported_photos_at: str, exported_photos_file: str, exporting: bool, exporting_photos: bool, getting_started: bool, hidden_shareables: str, id: int, invited_by_id: int, language: str, last_seen: str, last_sign_in_at: str, last_sign_in_ip: str, locked_at: str, otp_backup_codes: str, otp_required_for_login: bool, plain_otp_secret: str, post_default_public: bool, remember_created_at: str, remove_after: str, reset_password_sent_at: str, reset_password_token: str, serialized_private_key: str, show_community_spotlight_in_stream: bool, sign_in_count: int, strip_exif: bool, updated_at: str, username: str)
   target ActionController::Head#head = shim
   target ActionController::ImplicitRender#default_render = shim
   target ActionController::Instrumentation#redirect_to = shim
@@ -131,13 +132,13 @@ run "auth_json_dse0003" schema=1
   var $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_remember_created_at: String type str origin attr($SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1, remember_created_at) = "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_remember_created_at_v" note "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}"
   var $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_invited_by_id: Int type int origin attr($SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1, invited_by_id) = 0 note "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}"
   var $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_authentication_token: String type str origin attr($SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1, authentication_token) = "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_authentication_token_v" note "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}"
-  result $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1 = ~"#<User:0x6d512521>"
+  result $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1 = ~"#<User:0xac570e0>"
   script "run_dse.rb"
   0: void ActiveRecord::FinderMethods#devise_user_first()
-       @ "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb":1219 in "get"
-  1: call ActiveRecord::FinderMethods#devise_user_first() -> $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1 type obj<?> = ~"#<User:0x6d512521>"
+       @ "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb":1378 in "get"
+  1: call ActiveRecord::FinderMethods#devise_user_first() -> $SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1 type obj<?> = ~"#<User:0xac570e0>"
        note "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}"
-       @ "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb":1219 in "get"
+       @ "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb":1378 in "get"
   2: pc ($SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_language == "pl") not-taken
        @ "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb":666 in "symbolic_instance"
   3: pc ($SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1_language == "xx") taken

@@ -254,7 +254,7 @@
       "args": {
 },
       "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
-      "result_value": "#<Post:0xad58e2c>",
+      "result_value": "#<Post:0x52fe7c0f>",
       "file": "/home/dev/project/ruby_examples/dse-apps/apps/diaspora/app/services/post_service.rb",
       "lineno": 52,
       "function": "find_public!",
@@ -312,6 +312,30 @@
       "function": "block in public?"
     }
   ],
+  "types": {
+    "Post": {
+      "attrs": {
+        "id": "int",
+        "author_id": "int",
+        "public": "bool",
+        "guid": "str",
+        "type": "str",
+        "text": "str",
+        "created_at": "str",
+        "updated_at": "str",
+        "provider_display_name": "str",
+        "root_guid": "str",
+        "likes_count": "int",
+        "comments_count": "int",
+        "o_embed_cache_id": "int",
+        "reshares_count": "int",
+        "interacted_at": "str",
+        "tweet_id": "str",
+        "open_graph_cache_id": "int",
+        "tumblr_ids": "str"
+      }
+    }
+  },
   "declarations": {
     "ActionController::Head#head": {
       "kind": "shim"
@@ -630,7 +654,7 @@
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_first_1",
       "type": "obj<?>?",
-      "value": "#<Post:0xad58e2c>"
+      "value": "#<Post:0x52fe7c0f>"
     }
   ],
   "script": "run_dse.rb",

@@ -1844,6 +1844,81 @@ module CommentsTargets
       ActiveRecord::Base.instance_variable_set(:@ci_to_param_shim, true)
     end
 
+
+    # =====================================================================
+    # §R. THE ROW IS A NAMED VALUE OF A FIXED TYPE (2026-09-25).
+    # =====================================================================
+    # DESIGN_IR §5.2 / §4.1.1c, and src_new/TODO.txt's "THE DIASPORA ROW
+    # MOCKS DO NOT EXPOSE `concolic_name`" item.
+    #
+    # `ConcolicTargets.symbolic_instance` already builds a row's whole
+    # attribute set out of `klass.columns_hash`. What it never did was SAY
+    # SO, and three separate facts were lost as a result:
+    #
+    #   * `concolic_name` — `CallInterceptor.symbol_name_of` asks for it.
+    #     Without it a row that is the ELEMENT of a SymbolicList has no
+    #     symbol for the `elem` relation to point at, so the interceptor
+    #     declares NOTHING rather than inventing a name. (TODO.txt measured
+    #     this on comments_index dump 5: declared origins 12 -> 23.)
+    #   * `concolic_type_name` — `CallInterceptor.observed_type_of` reads
+    #     it. Without it a row the runtime can enumerate every attribute of
+    #     still types as `obj<?>`: §5.2's fixed attribute set evaporating
+    #     between the mock that knows it and the dump that records it. Every
+    #     `attr` origin in results4 (1 155 of them, measured) therefore
+    #     pointed at an UNFIXED parent, and §5.2's contract — "an `attr`
+    #     origin names a field INSIDE the declared set" — had nothing on
+    #     disk to bind to. `concolic/model/tests/test_dump_ir_corpus.py
+    #     ::test_every_attr_origin_names_a_field_inside_its_fixed_set`
+    #     skipped for exactly this reason.
+    #   * `SymbolicFunc.register_type` — the per-dump type table (§5.2) is
+    #     what makes `obj<Block>` a CONTRACT ("these are the attributes")
+    #     instead of a label. Declared ONCE per type, not once per row.
+    #
+    # ALL THREE ARE METADATA. No path condition, no seeded value and no
+    # rendered statement passes through any of them; they name and type
+    # symbols `symbolic_instance` had already minted. The attribute TYPES
+    # come from the same `columns_hash[col].type` the mock itself switched
+    # on, so a column's declared type is BY CONSTRUCTION the type of the
+    # symbol minted for it, and two rows of one model cannot declare the
+    # set differently (which is what `TypeConflict` exists to catch).
+    #
+    # NOT DECLARED: a klass with no name (anonymous or singleton) has no
+    # type to name, and `obj<?>` is the honest reading — the same rule
+    # `SymbolicInstance#declare` states as change 8.
+    #
+    # WHY HERE AND NOT IN `concolic_targets.rb`: that file is this batch's
+    # PRIVATE, byte-identical copy of the shared boundary, and editing a
+    # local definition into such a copy is precisely the re-sync defect of
+    # 2026-09-09. Overriding from this file is the technique §9 already
+    # uses for `render_relation_sql`.
+    unless ConcolicTargets.respond_to?(:symbolic_instance_without_type_declaration)
+      class << ConcolicTargets
+        alias_method :symbolic_instance_without_type_declaration,
+                     :symbolic_instance
+
+        def symbolic_instance(klass, base_name, sql)
+          obj = symbolic_instance_without_type_declaration(klass, base_name, sql)
+          obj.define_singleton_method(:concolic_name) { base_name }
+          tname = klass.respond_to?(:name) ? klass.name.to_s : ""
+          unless tname.empty?
+            obj.define_singleton_method(:concolic_type_name) { tname }
+            if defined?(SymbolicFunc) && SymbolicFunc.respond_to?(:register_type)
+              decl = {}
+              klass.columns_hash.each do |col, meta|
+                decl[col] = case meta.type
+                            when :integer, :bigint then "int"
+                            when :boolean          then "bool"
+                            else                        "str"
+                            end
+              end
+              SymbolicFunc.register_type(tname, decl)
+            end
+          end
+          obj
+        end
+      end
+    end
+
     warn "[comments] CommentsTargets installed"
   end
 end

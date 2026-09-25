@@ -8,6 +8,14 @@ representatives: every dump is a new artefact and none of them is a copy of
 something already on disk. The per-path table below still calls out the six
 that illustrate distinct shapes. Generated with:
 
+**Regenerated 2026-09-25 (second pass, IR validation).** See
+`../REPORT.md` §7. `../targets.rb` grew §R (rows declare their fixed type)
+and §10 (`find_by_sql`'s note renders its binds instead of the prepared-
+statement template). Metadata only: main set still 6 runs / 6 distinct
+paths / 0 errors, write path still 4 / 4 / 0, and every dump's
+path-condition count is unchanged.
+
+
 * main set — `MAX_RUNS=6 TIME_BUDGET=600 scripts/diaspora-concolic ../run_dse.rb`
 * write path — the same runner with
   `DUMP_OUT=../write_path EXTRA_SEEDS_JSON=../write_path_seeds.json SEEDS_ONLY=1`

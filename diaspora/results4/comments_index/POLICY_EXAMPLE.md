@@ -200,3 +200,15 @@ cd /home/dev/project/src_new
 * `dump_examples/` — five representative dumps with a per-file README.
 * `POLICY_EXAMPLE.md` — this file.
 * `src_new/README.md`'s "Example" section carries a dated pointer here.
+
+
+## Regenerated 2026-09-25 (second pass, IR validation)
+
+The corpus under `..` was regenerated after `../targets.rb` grew §R (a
+symbolic row declares `concolic_name`, `concolic_type_name` and its FIXED
+attribute set). Metadata only — 6 runs / 5 distinct paths / 0 errors and
+unchanged path-condition counts, as before — so the policy is unchanged in
+shape: 13 atoms unmerged, **11** normalized, 6 signatures, 177 lines. The
+visible difference in the dumps is that rows now type as `obj<Comment>` /
+`obj<Mention>` and each dump carries a `types` table. See
+`../../results4/aspect_memberships_create/REPORT.md` §7.2.

@@ -487,7 +487,7 @@
       "args": {
 },
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb",
-      "lineno": 1219,
+      "lineno": 1378,
       "function": "get"
     },
     {
@@ -496,9 +496,9 @@
       "args": {
 },
       "result_name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1",
-      "result_value": "#<User:0x6d512521>",
+      "result_value": "#<User:0xac570e0>",
       "file": "/home/dev/project/reports/diaspora/results4/aspect_memberships_create/targets.rb",
-      "lineno": 1219,
+      "lineno": 1378,
       "function": "get",
       "result_type": "obj<?>",
       "note": "{\"refs\": {\"p0\": \"SYM_USER_CI_id\"}, \"text\": \"SELECT \\\"users\\\".* FROM \\\"users\\\" WHERE \\\"users\\\".\\\"id\\\" = $$(p0) ORDER BY \\\"users\\\".\\\"id\\\" ASC LIMIT 1\"}"
@@ -546,6 +546,51 @@
       "function": "symbolic_instance"
     }
   ],
+  "types": {
+    "User": {
+      "attrs": {
+        "id": "int",
+        "username": "str",
+        "serialized_private_key": "str",
+        "getting_started": "bool",
+        "disable_mail": "bool",
+        "language": "str",
+        "email": "str",
+        "encrypted_password": "str",
+        "created_at": "str",
+        "updated_at": "str",
+        "locked_at": "str",
+        "sign_in_count": "int",
+        "current_sign_in_at": "str",
+        "last_sign_in_at": "str",
+        "current_sign_in_ip": "str",
+        "last_sign_in_ip": "str",
+        "hidden_shareables": "str",
+        "reset_password_sent_at": "str",
+        "last_seen": "str",
+        "remove_after": "str",
+        "export": "str",
+        "exported_at": "str",
+        "exporting": "bool",
+        "strip_exif": "bool",
+        "exported_photos_file": "str",
+        "exported_photos_at": "str",
+        "exporting_photos": "bool",
+        "color_theme": "str",
+        "post_default_public": "bool",
+        "auto_follow_back": "bool",
+        "auto_follow_back_aspect_id": "int",
+        "show_community_spotlight_in_stream": "bool",
+        "otp_required_for_login": "bool",
+        "otp_backup_codes": "str",
+        "plain_otp_secret": "str",
+        "reset_password_token": "str",
+        "remember_created_at": "str",
+        "invited_by_id": "int",
+        "authentication_token": "str"
+      }
+    }
+  },
   "declarations": {
     "ActionController::Head#head": {
       "kind": "shim"
@@ -819,7 +864,7 @@
     {
       "name": "SYM_RESULT_ActiveRecord__FinderMethods_devise_user_first_1",
       "type": "obj<?>",
-      "value": "#<User:0x6d512521>"
+      "value": "#<User:0xac570e0>"
     }
   ],
   "script": "run_dse.rb",

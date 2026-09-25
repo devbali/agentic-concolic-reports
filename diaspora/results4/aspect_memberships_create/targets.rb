@@ -975,6 +975,165 @@ module AspectMembershipsTargets
       end
     end
 
+
+    # =====================================================================
+    # §R. THE ROW IS A NAMED VALUE OF A FIXED TYPE (2026-09-25).
+    # =====================================================================
+    # DESIGN_IR §5.2 / §4.1.1c, and src_new/TODO.txt's "THE DIASPORA ROW
+    # MOCKS DO NOT EXPOSE `concolic_name`" item.
+    #
+    # `ConcolicTargets.symbolic_instance` already builds a row's whole
+    # attribute set out of `klass.columns_hash`. What it never did was SAY
+    # SO, and three separate facts were lost as a result:
+    #
+    #   * `concolic_name` — `CallInterceptor.symbol_name_of` asks for it.
+    #     Without it a row that is the ELEMENT of a SymbolicList has no
+    #     symbol for the `elem` relation to point at, so the interceptor
+    #     declares NOTHING rather than inventing a name. (TODO.txt measured
+    #     this on comments_index dump 5: declared origins 12 -> 23.)
+    #   * `concolic_type_name` — `CallInterceptor.observed_type_of` reads
+    #     it. Without it a row the runtime can enumerate every attribute of
+    #     still types as `obj<?>`: §5.2's fixed attribute set evaporating
+    #     between the mock that knows it and the dump that records it. Every
+    #     `attr` origin in results4 (1 155 of them, measured) therefore
+    #     pointed at an UNFIXED parent, and §5.2's contract — "an `attr`
+    #     origin names a field INSIDE the declared set" — had nothing on
+    #     disk to bind to. `concolic/model/tests/test_dump_ir_corpus.py
+    #     ::test_every_attr_origin_names_a_field_inside_its_fixed_set`
+    #     skipped for exactly this reason.
+    #   * `SymbolicFunc.register_type` — the per-dump type table (§5.2) is
+    #     what makes `obj<Block>` a CONTRACT ("these are the attributes")
+    #     instead of a label. Declared ONCE per type, not once per row.
+    #
+    # ALL THREE ARE METADATA. No path condition, no seeded value and no
+    # rendered statement passes through any of them; they name and type
+    # symbols `symbolic_instance` had already minted. The attribute TYPES
+    # come from the same `columns_hash[col].type` the mock itself switched
+    # on, so a column's declared type is BY CONSTRUCTION the type of the
+    # symbol minted for it, and two rows of one model cannot declare the
+    # set differently (which is what `TypeConflict` exists to catch).
+    #
+    # NOT DECLARED: a klass with no name (anonymous or singleton) has no
+    # type to name, and `obj<?>` is the honest reading — the same rule
+    # `SymbolicInstance#declare` states as change 8.
+    #
+    # WHY HERE AND NOT IN `concolic_targets.rb`: that file is this batch's
+    # PRIVATE, byte-identical copy of the shared boundary, and editing a
+    # local definition into such a copy is precisely the re-sync defect of
+    # 2026-09-09. Overriding from this file is the technique §9 already
+    # uses for `render_relation_sql`.
+    unless ConcolicTargets.respond_to?(:symbolic_instance_without_type_declaration)
+      class << ConcolicTargets
+        alias_method :symbolic_instance_without_type_declaration,
+                     :symbolic_instance
+
+        def symbolic_instance(klass, base_name, sql)
+          obj = symbolic_instance_without_type_declaration(klass, base_name, sql)
+          obj.define_singleton_method(:concolic_name) { base_name }
+          tname = klass.respond_to?(:name) ? klass.name.to_s : ""
+          unless tname.empty?
+            obj.define_singleton_method(:concolic_type_name) { tname }
+            if defined?(SymbolicFunc) && SymbolicFunc.respond_to?(:register_type)
+              decl = {}
+              klass.columns_hash.each do |col, meta|
+                decl[col] = case meta.type
+                            when :integer, :bigint then "int"
+                            when :boolean          then "bool"
+                            else                        "str"
+                            end
+              end
+              SymbolicFunc.register_type(tname, decl)
+            end
+          end
+          obj
+        end
+      end
+    end
+
+
+    # =====================================================================
+    # §10. `find_by_sql`'s NOTE MUST CARRY THE BINDS, NOT THE TEMPLATE.
+    # =====================================================================
+    # ./REPORT.md §5 open item 5, the LAST non-`$$` key column in this
+    # corpus: 26 instances of
+    #     SELECT "blocks".* FROM "blocks" WHERE "blocks"."user_id" = ?
+    # on `SYM_RESULT_ActiveRecord__Querying_find_by_sql_1_rows`.
+    #
+    # THE CAUSE. The shared `find_by_sql` mock notes `args["sql"]`. When the
+    # caller is AR's `StatementCache` (statement_cache.rb:108 — reached here
+    # because §1 restores `User#blocks` to the real association reader, so
+    # the association genuinely LOADS) that argument is a PREPARED-STATEMENT
+    # TEMPLATE: AR renders the SQL once with its own `?` placeholders and
+    # passes the values separately. Nothing is lost — the values are right
+    # there in `args["binds"]`, as `QueryAttribute`s — the note just never
+    # looked at them.
+    #
+    # TWO EARLIER ATTEMPTS WERE REJECTED, BOTH RIGHTLY:
+    #   (a) re-declare `find_by_sql` here -> defect D5. MEASURED AGAIN
+    #       2026-09-25 on a bare runtime: after a second `declare_target`,
+    #       `args.keys` is ["block", "kwargs", "splat_args"] and BOTH
+    #       `args["sql"]` and `args["binds"]` are nil, because
+    #       `declare_target` reads `klass.instance_method(method).parameters`
+    #       and on the second declaration "the method" is the FIRST mock's
+    #       `|*splat_args, **kwargs, &block|` wrapper.
+    #   (b) rewrite the `sql` ARGUMENT -> puts `$$(...)` inside a recorded
+    #       string argument, which is the leak just removed from
+    #       comments_index.
+    #
+    # THE THIRD WAY, and it is a general workaround for D5 rather than a
+    # trick for this one target: D5 is not caused by re-declaring, it is
+    # caused by `declare_target` READING THE WRONG SIGNATURE. So restore the
+    # signature first. `define_method` with the target's REAL parameter list
+    # gives `declare_target` the names to read; the body is never called
+    # (a declaration with `returns:` never invokes the original), so the
+    # stub is a signature and nothing else. Verified on a bare runtime: with
+    # the restore in place the second declaration's `args` are
+    # ["binds", "blk", "preparable", "sql"] with the right values in them.
+    #
+    # The note is then rendered from BOTH halves, and the `$$(...)` lands in
+    # the NOTE — where every other mock in this file puts it — never in an
+    # argument. `render_arg_value` is the shared renderer, so a symbolic
+    # bind becomes `$$(<producer>)` and a concrete one a quoted literal.
+    #
+    # ALIGNMENT IS CHECKED, NOT ASSUMED — §9 above is what happens when a
+    # placeholder list and a bind list are zipped positionally without
+    # checking they are the same list. `StatementCache` builds the template
+    # and the binds together, one `?` per bind, but if that ever stops being
+    # true the note says so instead of mis-attributing a value.
+    if defined?(ActiveRecord::Querying)
+      querying = ActiveRecord::Querying
+      # 1. Restore the true signature (D5 workaround).
+      querying.send(:define_method, :find_by_sql) do |sql, binds = [], preparable: nil, &block|
+        raise "unreachable: replaced by declare_target below"
+      end
+      # 2. Re-declare, same kind and type as the shared declaration.
+      interceptor.declare_target(querying, :find_by_sql,
+                                 kind: CallInterceptor::TARGET_FUNCTION,
+                                 type: "[?]",
+                                 returns: lambda do |_receiver, args, name|
+        raw_sql = args["sql"].to_s
+        binds   = args["binds"]
+        binds   = [] unless binds.is_a?(Array)
+        qmarks  = raw_sql.count("?")
+        note =
+          if binds.empty? || qmarks != binds.length
+            # Not the same list (or nothing to substitute). Say what was
+            # seen rather than guessing a correspondence.
+            binds.empty? ? raw_sql
+                         : "#{raw_sql} /* #{qmarks} placeholders, " \
+                           "#{binds.length} binds -- not substituted */"
+          else
+            i = -1
+            raw_sql.gsub("?") do
+              i += 1
+              b = binds[i]
+              ConcolicTargets.render_arg_value(b.respond_to?(:value) ? b.value : b)
+            end
+          end
+        SymbolicList.new(1, name: "#{name}_rows", note: note)
+      end)
+    end
+
     warn "[am_create] AspectMembershipsTargets installed"
   end
 end

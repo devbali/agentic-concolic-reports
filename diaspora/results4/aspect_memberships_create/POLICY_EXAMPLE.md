@@ -450,3 +450,24 @@ cd /home/dev/project/src_new
   their own README naming the dump that carries the INSERT.
 * `REPORT.md` — the batch report (defects D1–D9, mock ledger, open items).
 * `POLICY_EXAMPLE.md` — this file.
+
+
+## Regenerated 2026-09-25 (second pass, IR validation)
+
+The corpus under `..` and `../write_path` was regenerated after
+`../targets.rb` grew §R (rows declare their fixed type) and §10
+(`find_by_sql`'s note renders its binds instead of the prepared-statement
+template, closing `REPORT.md` §5 open item 5). Metadata only: main set 6
+runs / 6 distinct paths / 0 errors, write path 4 / 4 / 0, every dump's
+path-condition count unchanged. The rebuilt policy is 84 atoms / 14
+signatures / 1669 lines, and the `?` right-hand side is gone from every
+note:
+
+```
+access c7 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* … = ?", […], true)
+  // ~SELECT "blocks".* FROM "blocks" WHERE "blocks"."user_id" = $$(c1.id)
+```
+
+Incidental fix: this file previously documented a `--header` that the
+committed `policy_example.txt` had not been built with. It is now built
+with it, as documented above. See `REPORT.md` §7.

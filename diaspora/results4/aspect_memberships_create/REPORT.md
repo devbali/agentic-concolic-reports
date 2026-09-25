@@ -70,7 +70,7 @@ Per the "ask before `src/` changes" rule these are reported with batch-local wor
 2. `worklist_exhausted: false` (45 seeds queued). No completeness claim; no `CoverageChecker` pass was run — first pass, as scoped.
 3. `User#deliver_profile_update` is shimmed, eliding an access that's dormant on every explored path but is a recorded cost.
 4. ~~`"contacts"."user_id" = nil` appears in one uniqueness-probe note on some paths — undiagnosed.~~ **DIAGNOSED AND CLOSED (2026-09-25)** — it was not a nil value but a bind/placeholder misalignment; see D11. The probe now renders `"person_id" = $$(…) AND "id" IS NOT NULL AND "user_id" = $$(…)` on the persisted arm and `"person_id" = $$(…) AND "user_id" = $$(…)` on the build arm, in both the main and `write_path` sets.
-5. One key column in the corpus still renders against a non-`$$` right-hand side: `SELECT "blocks".* FROM "blocks" WHERE "blocks"."user_id" = ?` (`ActiveRecord::Querying#find_by_sql`, from `statement_cache.rb:108`). It is a PREPARED-STATEMENT TEMPLATE, not a lost value — AR's `StatementCache` renders the SQL once with its own placeholder and passes the values separately, and the shared `find_by_sql` mock notes `args["sql"]`, which is that template. The bound values ARE reachable (`args["binds"]` holds the `QueryAttribute`s), so this is reducible, but not from a prepend: re-declaring `find_by_sql` hits D5, and rewriting the `sql` ARGUMENT would recreate the `$$(…)`-inside-an-argument leak that `CallInterceptor` unresolves. Left for a ruling.
+5. ~~One key column in the corpus still renders against a non-`$$` right-hand side: `SELECT "blocks".* FROM "blocks" WHERE "blocks"."user_id" = ?`.~~ **CLOSED 2026-09-25 — see §7 below.** The third way was to stop treating D5 as a property of re-declaring and treat it as what it is: `declare_target` reading the wrong SIGNATURE. Restoring the signature first makes a second declaration name its real parameters, and the note is then rendered from `sql` AND `binds` together. `grep -cE '"(id|[a-z_]+_id)" = [^$]'` over both `policy_example.txt` files is now `0`.
 6. **`concolic_targets.rb` divergence needs a ruling.** The canonical shared `/home/dev/project/reports/diaspora/concolic_targets.rb` has 71 `declare_target` calls and zero `kind:` arguments — it would raise `MissingKind` immediately under the current runtime. The `results4/comments_index` copy this batch cloned differs from it by ~800 diff lines in both directions. Someone should decide which is canonical before the next batch.
 
 ## 6. Files
@@ -80,3 +80,138 @@ Per the "ask before `src/` changes" rule these are reported with batch-local wor
 - `write_path_seeds.json`, `write_path/dump_auth_json_dse0001..0004.json`, `write_path/exploration_summary.json`
 
 Nothing in `src/`, `src_new/`, the shared `reports/diaspora/concolic_targets.rb`, or the diaspora app source was modified.
+
+
+## 7. Changes of 2026-09-25 (IR validation pass)
+
+Three batch-local changes, all in `./targets.rb` (nothing in
+`./concolic_targets.rb`, which stays byte-identical to
+`../comments_index/concolic_targets.rb`; nothing in `src_new/`). The corpus
+was regenerated with them: main set 6 runs / 6 distinct paths / 0 errors,
+write path 4 runs / 4 distinct paths / 0 errors — the same numbers as §1,
+and every dump's path-condition count is unchanged, which is the check that
+these are metadata and not modelling.
+
+### 7.1 `find_by_sql`'s note carries the binds (closes open item 5)
+
+**§10 of `targets.rb`.** The 26 instances of the bare `?` template are gone
+from the notes; what remains is 14 occurrences inside
+`events[].args.sql`, which is the argument the caller really passed and is a
+faithful record, not a lost value.
+
+Two earlier attempts were rejected for good reasons and both rejections
+stand:
+
+* **re-declare `find_by_sql` → D5.** Measured again on a bare runtime
+  (`ruby` + `src_new/runtimes/ruby_runtime`, no Rails): after a second
+  `declare_target`, `args.keys` is `["block", "kwargs", "splat_args"]` and
+  both `args["sql"]` and `args["binds"]` are `nil`.
+* **rewrite the `sql` argument →** `$$(…)` inside a recorded string
+  argument, the leak just removed from `comments_index`.
+
+**The third way** is that D5 is not caused by re-declaring — it is caused by
+`declare_target` reading `klass.instance_method(method).parameters`, which
+on a second declaration is the first mock's `|*splat_args, **kwargs, &block|`
+wrapper. So restore the signature first:
+
+```ruby
+querying.send(:define_method, :find_by_sql) do |sql, binds = [], preparable: nil, &blk|
+  raise "unreachable: replaced by declare_target below"
+end
+interceptor.declare_target(querying, :find_by_sql, ...)
+```
+
+The stub body is never called (a declaration with `returns:` never invokes
+the original), so this is a signature and nothing else. Measured on the same
+bare runtime: with it in place the second declaration's `args` are
+`["binds", "blk", "preparable", "sql"]` with the right values in them. This
+is a **general workaround for D5**, not a trick for this one target.
+
+The note is then rendered from both halves with the shared
+`render_arg_value`, so a symbolic bind becomes `$$(<producer>)` and the
+`$$(…)` lands in the NOTE — where every other mock in this file puts it —
+never in an argument. Alignment is CHECKED, not assumed (D11 is what happens
+when a placeholder list and a bind list are zipped without checking): the
+substitution only happens when `sql.count("?") == binds.length`, and
+otherwise the note says so rather than mis-attributing a value.
+
+Result, e.g. `dump_auth_json_dse0001.json`:
+
+```
+SYM_RESULT_ActiveRecord__Querying_find_by_sql_1_rows
+  {"refs": {"p0": "SYM_RESULT_..._devise_user_first_1_id"},
+   "text": "SELECT \"blocks\".* FROM \"blocks\" WHERE \"blocks\".\"user_id\" = $$(p0)"}
+```
+
+### 7.2 A symbolic row is a NAMED value of a FIXED type
+
+**§R of `targets.rb`** (and of `../comments_index/targets.rb`, identically).
+`ConcolicTargets.symbolic_instance` already built a row's attribute set out
+of `klass.columns_hash`; it never said so, and three facts were lost:
+`concolic_name` (so a row that is a list ELEMENT had no symbol for the
+`elem` relation to point at — `src_new/TODO.txt` measured this),
+`concolic_type_name` (so a row the runtime can enumerate every attribute of
+still typed as `obj<?>`), and `SymbolicFunc.register_type` (so the per-dump
+type table §5.2 calls a CONTRACT was never written). Added as a wrapper in
+`targets.rb`, the technique §9 already uses — NOT edited into
+`concolic_targets.rb`, which is the 2026-09-09 re-sync hazard.
+
+Measured, `results4/comments_index`, five dumps, before → after:
+
+| | before | after |
+|---|---|---|
+| origins | 36 `attr` | 45 `attr`, 2 `elem` |
+| `attr` origins whose parent is a FIXED `obj<Name>` | **0** | **9** (`obj<Comment>` ×5, `obj<Mention>` ×4) |
+| per-dump `types` table | absent | `Post`, `Comment`, `Mention`, `Person`, `Profile` |
+| path conditions per dump | 4, 4, 2, 3, 17 | 4, 4, 2, 3, 17 |
+
+This is what `concolic/model/tests/test_dump_ir_corpus.py
+::test_every_attr_origin_names_a_field_inside_its_fixed_set` was skipping
+for ("no fixed-object attribute origin in any corpus"). It now runs on real
+corpus data.
+
+On `aspect_memberships_create` the same change writes a `types` table
+(`Aspect`, `Contact`, `Person`, `User`, `Profile`) but binds no `attr`
+contract: every row here is a DIRECT call result, and a direct result takes
+the target's DECLARED type (`result_type_for`: "the declaration is the
+answer"), which for a generic finder is honestly `obj<?>`. Only a row
+reached as a list ELEMENT takes the OBSERVED type.
+
+### 7.3 Artefacts rebuilt
+
+`policy_example.txt` (84 atoms), `policy_example_main.txt` (36 atoms),
+`../comments_index/policy_example.txt` (11 atoms), and all three
+`dump_examples/` trees (each `.run.txt` re-checked with
+`parse_run(print_run(to_text_domain(r))) == to_text_domain(r)`). All ten
+main+write-path dumps and all five `comments_index` dumps still load and
+build with `provenance=True`.
+
+Incidental: `policy_example.txt` had been built WITHOUT the `--header` its
+own `POLICY_EXAMPLE.md` documents. It now has it.
+
+Three acceptance checks, both endpoints: no undefined name (0), no `opaque`
+in the IR (0 — two occurrences remain in the header's historical prose), no
+id column compared to a non-bind (0, was 97 lines).
+
+### 7.4 Reproducibility of these artefacts, measured
+
+The batch was run TWICE with the final `targets.rb` (the second time after
+the §10 stub's block parameter was renamed `&blk` -> `&block` to match
+`ActiveRecord::Querying#find_by_sql` exactly). Both runs: main 6/6/0, write
+path 4/4/0. Normalising Ruby object addresses (`:0x…>`), **all ten dumps of
+the two runs are byte-identical** — so the rename is observationally a
+no-op (no dump contains either parameter name; the block is never supplied,
+so the slot is ABSENT) and the exploration is deterministic.
+
+WITHOUT that normalisation nothing here is reproducible, and that is a
+finding in its own right, not a property of this change: a dump records
+`"result_value": "#<User:0xac570e0>"`, and the address differs every run.
+340 such values across `results4`, in 8 classes. They reach
+`policy_example.txt` verbatim. Logged in `src_new/TODO.txt`; the fix is in
+the runtimes' native-rendering path (`#<User>` says exactly as much and is
+deterministic) and was not made here per the ask-before-`src/` rule.
+
+The artefacts committed in this directory are the FIRST run's, and the
+second run's were discarded: re-installing them would have changed only the
+addresses and forced a rebuild of both policies and all three
+`dump_examples/` trees for no semantic difference.
