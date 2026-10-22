@@ -568,11 +568,11 @@
                    "name": "conflictType"
                   }
                  },
-                 "op": "<=",
+                 "op": "<",
                  "rhs": {
                   "$": "Lit",
                   "f": {
-                   "value": 1
+                   "value": 32
                   }
                  }
                 }
@@ -666,29 +666,11 @@
                    "name": "conflictType"
                   }
                  },
-                 "op": ">",
+                 "op": ">=",
                  "rhs": {
                   "$": "Lit",
                   "f": {
-                   "value": 1
-                  }
-                 }
-                }
-               },
-               {
-                "$": "Predicate",
-                "f": {
-                 "lhs": {
-                  "$": "Sym",
-                  "f": {
-                   "name": "outcome"
-                  }
-                 },
-                 "op": "==",
-                 "rhs": {
-                  "$": "Lit",
-                  "f": {
-                   "value": 0
+                   "value": 32
                   }
                  }
                 }

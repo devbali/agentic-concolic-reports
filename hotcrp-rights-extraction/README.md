@@ -8,7 +8,7 @@ rather than pre-empted.
 | atoms | 40 | 40 |
 | **rendered as SQL** | **6** | **39** |
 | refused | 34 (33 × `ciflags`) | 1 (`bits`, a method argument) |
-| **complete coverage** | 40 | **0** |
+| **complete coverage** | 40 | **0** — see [Why](#why-completeness-is-not-seed-limited) |
 
 The first three rows are the win. **The last one is the catch, and it is not
 a footnote** — see [Soundness](#soundness-what-39-rendered-does-and-does-not-mean).
@@ -89,30 +89,61 @@ the policy anyone who knows the application would state:
 0x8000 — so normalization did not fold it. It is harmless and it is not
 simplified, and a reader should know which of those two it is.
 
-## Soundness: what "39 rendered" does and does not mean
+## Why completeness is not seed-limited
 
-**These policies are sound as observed and not proven complete.** Every
-disjunct is a path some run really took, so nothing in them is invented. But a
-disjunction is the whole policy only if every path was explored, and
-`CoverageChecker` reports **0 of 40 entrypoints complete** (typically 1 missing
-branch each).
+The fixed grid was replaced with the standard concolic loop — run, negate each
+path condition against its prefix, solve, feed the model back as a seed — the
+same expansion `../hotcrp-typed-policies/run_concolic.py` uses, batched one
+PHP process per round so a HotCRP boot is not paid per seed. It roughly
+doubled the traces per entrypoint (22 → 46).
 
-The consequence has a direction, and it is the uncomfortable one: an
-incomplete disjunction is **narrower** than the application. Concretely, the
-grid seeds `roles ∈ {0, 1, 5}` — nobody, PC, chair+PC — so `roles = 2`
-(`ROLE_ADMIN` alone) is never exercised, and no disjunct covers an admin who
-is not a chair. Enforcing such a view would deny an access HotCRP allows.
+**Coverage still reports 0 of 40 complete, and more seeds will not fix it.**
 
-So: use these as an extracted *description* of what the explored paths permit,
-not yet as an enforceable policy. Driving each entrypoint to `complete` is the
-remaining work, and it is the same seed-feedback loop the sibling's
-`run_concolic.py` already implements — this driver uses a fixed grid instead,
-because its question was whether the policy turns relational at all.
+Of the 40 missing branches, **39 are unsatisfiable in PHP**. The engine
+deliberately treats masks as uninterpreted functions — right for a shared
+coverage claim, which must not depend on one language's integer width — and
+the cost is that it demands combinations arithmetic forbids:
 
-A second, smaller caveat: the policies are **not minimal**. `is_author`'s real
-predicate is `conflictType >= 32`, but it renders as three disjuncts differing
-only in role, because each `rights()` path produced its own conjunction and
-normalization did not fold them. Correct, but broader than it needs to be.
+| demanded | why it cannot happen |
+|---|---|
+| `roles & 4 != 0` **and** `roles & 15 == 0` (38 of them) | `ROLE_CHAIR = 4` is *inside* `ROLE_PCLIKE = 15` |
+| `Not(bits & -1 == bits)` | `-1` is all ones, so `x & -1 == x` always |
+
+Tree completeness is blocked separately, by a branch that is genuinely **dead
+in HotCRP**: `((roles & 79) & 32768) != 0` is never taken, and never can be,
+since `79 & 32768 == 0`. It is the same trivially-true conjunct visible in the
+rendered SQL.
+
+Declaring those three as assumptions — two `SymbolicConstraintAssumption`s for
+the mask arithmetic and a `OneSideUntrackedPathAssumption` for the dead branch
+— does bite: `tree_missing` drops to 0 and the reported combination changes.
+But a new combination surfaces in its place, and the entrypoints still report
+one missing each.
+
+That is the finding, and it is about the engine's model rather than the
+corpus: **each pruned artifact reveals another, because what is missing is
+mask semantics, not seeds.** Two honest ways forward, neither of which is
+"explore harder":
+
+1. **A report-local mask lowering.** The sibling already does exactly this for
+   seed generation (`lower()` maps `&` onto `Int2BV`/`BV2Int`), precisely
+   because a seed must replay in real PHP. The coverage query could use the
+   same lowering for this corpus, leaving the shared solver's UF treatment
+   untouched.
+2. **Assumptions per mask fact**, as above — sound, since each is arithmetic
+   rather than judgement, but there is one per mask pair and they accumulate.
+
+## Soundness: what "39 rendered" means
+
+Sound as observed, not proven complete. Every disjunct is a path some run
+really took, so nothing is invented — but a disjunction is the whole policy
+only if every path was explored, and an incomplete one is **narrower** than
+the application, which is the unsafe direction. Do not enforce these; read
+them as a description of what the explored paths permit.
+
+They are also **not minimal**: `is_author`'s real predicate is
+`conflictType >= 32`, but it renders as three disjuncts differing only in
+role, because each `rights()` path produced its own conjunction.
 
 ## Other limits
 

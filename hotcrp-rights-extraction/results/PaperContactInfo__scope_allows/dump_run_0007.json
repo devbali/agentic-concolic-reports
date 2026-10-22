@@ -1,0 +1,458 @@
+{
+  "schema_version": "1.4",
+  "label": "run_0007",
+  "symbolic_vars": [
+    {
+      "name": "conflictType",
+      "type": "int",
+      "sort": "Int",
+      "value": 2,
+      "origin": {
+        "kind": "input",
+        "name": "conflictType"
+      }
+    },
+    {
+      "name": "reviewType",
+      "type": "int",
+      "sort": "Int",
+      "value": -9223372036854775808,
+      "origin": {
+        "kind": "input",
+        "name": "reviewType"
+      }
+    },
+    {
+      "name": "rflags",
+      "type": "int",
+      "sort": "Int",
+      "value": -9223372036854775808,
+      "origin": {
+        "kind": "input",
+        "name": "rflags"
+      }
+    },
+    {
+      "name": "roles",
+      "type": "int",
+      "sort": "Int",
+      "value": -2,
+      "origin": {
+        "kind": "input",
+        "name": "roles"
+      }
+    },
+    {
+      "name": "timeSubmitted",
+      "type": "int",
+      "sort": "Int",
+      "value": -9223372036854775808,
+      "origin": {
+        "kind": "input",
+        "name": "timeSubmitted"
+      }
+    },
+    {
+      "name": "timeWithdrawn",
+      "type": "int",
+      "sort": "Int",
+      "value": -9223372036854775808,
+      "origin": {
+        "kind": "input",
+        "name": "timeWithdrawn"
+      }
+    },
+    {
+      "name": "outcome",
+      "type": "int",
+      "sort": "Int",
+      "value": -9223372036854775808,
+      "origin": {
+        "kind": "input",
+        "name": "outcome"
+      }
+    },
+    {
+      "name": "pdf",
+      "type": "bool",
+      "sort": "Bool",
+      "value": false,
+      "origin": {
+        "kind": "input",
+        "name": "pdf"
+      }
+    },
+    {
+      "name": "bits",
+      "type": "int",
+      "sort": "Int",
+      "value": -9223372036854775808,
+      "origin": {
+        "kind": "input",
+        "name": "bits"
+      }
+    },
+    {
+      "name": "SYM_RESULT_HotCRP_authorized_operation_1",
+      "type": "bool",
+      "sort": "Bool",
+      "value": true
+    }
+  ],
+  "events": [
+    {
+      "type": "path_condition",
+      "expr": {
+        "op": "!=",
+        "args": [
+          {
+            "op": "&",
+            "args": [
+              {
+                "sym": "roles"
+              },
+              {
+                "lit": {
+                  "sort": "int",
+                  "value": 15
+                }
+              }
+            ]
+          },
+          {
+            "lit": {
+              "sort": "int",
+              "value": 0
+            }
+          }
+        ]
+      },
+      "taken": true,
+      "file": "/home/jamie/Documents/University/research/agent-policy-extraction/agentic-concolic-reports/hotcrp-rights-extraction/harness.php",
+      "lineno": 214,
+      "function": "invoke"
+    },
+    {
+      "type": "path_condition",
+      "expr": {
+        "op": "!=",
+        "args": [
+          {
+            "op": "&",
+            "args": [
+              {
+                "sym": "roles"
+              },
+              {
+                "lit": {
+                  "sort": "int",
+                  "value": 4
+                }
+              }
+            ]
+          },
+          {
+            "lit": {
+              "sort": "int",
+              "value": 0
+            }
+          }
+        ]
+      },
+      "taken": true,
+      "file": "/home/jamie/Documents/University/research/agent-policy-extraction/agentic-concolic-reports/hotcrp-rights-extraction/harness.php",
+      "lineno": 215,
+      "function": "invoke"
+    },
+    {
+      "type": "path_condition",
+      "expr": {
+        "op": "<=",
+        "args": [
+          {
+            "sym": "conflictType"
+          },
+          {
+            "lit": {
+              "sort": "int",
+              "value": 1
+            }
+          }
+        ]
+      },
+      "taken": false,
+      "file": "/home/jamie/Documents/University/research/agent-policy-extraction/agentic-concolic-reports/hotcrp-rights-extraction/build/hotcrp/src/contact.php",
+      "lineno": 3764,
+      "function": "rights"
+    },
+    {
+      "type": "path_condition",
+      "expr": {
+        "op": "<=",
+        "args": [
+          {
+            "sym": "conflictType"
+          },
+          {
+            "lit": {
+              "sort": "int",
+              "value": 1
+            }
+          }
+        ]
+      },
+      "taken": false,
+      "file": "/home/jamie/Documents/University/research/agent-policy-extraction/agentic-concolic-reports/hotcrp-rights-extraction/build/hotcrp/src/contact.php",
+      "lineno": 3781,
+      "function": "rights"
+    },
+    {
+      "type": "path_condition",
+      "expr": {
+        "op": "<=",
+        "args": [
+          {
+            "sym": "conflictType"
+          },
+          {
+            "lit": {
+              "sort": "int",
+              "value": 1
+            }
+          }
+        ]
+      },
+      "taken": false,
+      "file": "/home/jamie/Documents/University/research/agent-policy-extraction/agentic-concolic-reports/hotcrp-rights-extraction/build/hotcrp/src/contact.php",
+      "lineno": 3790,
+      "function": "rights"
+    },
+    {
+      "type": "path_condition",
+      "expr": {
+        "op": "==",
+        "args": [
+          {
+            "sym": "reviewType"
+          },
+          {
+            "lit": {
+              "sort": "int",
+              "value": 0
+            }
+          }
+        ]
+      },
+      "taken": false,
+      "file": "/home/jamie/Documents/University/research/agent-policy-extraction/agentic-concolic-reports/hotcrp-rights-extraction/build/hotcrp/src/contact.php",
+      "lineno": 3796,
+      "function": "rights"
+    },
+    {
+      "type": "path_condition",
+      "expr": {
+        "op": ">=",
+        "args": [
+          {
+            "sym": "conflictType"
+          },
+          {
+            "lit": {
+              "sort": "int",
+              "value": 32
+            }
+          }
+        ]
+      },
+      "taken": false,
+      "file": "/home/jamie/Documents/University/research/agent-policy-extraction/agentic-concolic-reports/hotcrp-rights-extraction/build/hotcrp/src/contact.php",
+      "lineno": 3818,
+      "function": "rights"
+    },
+    {
+      "type": "path_condition",
+      "expr": {
+        "op": ">",
+        "args": [
+          {
+            "sym": "conflictType"
+          },
+          {
+            "lit": {
+              "sort": "int",
+              "value": 1
+            }
+          }
+        ]
+      },
+      "taken": true,
+      "file": "/home/jamie/Documents/University/research/agent-policy-extraction/agentic-concolic-reports/hotcrp-rights-extraction/build/hotcrp/src/contact.php",
+      "lineno": 3827,
+      "function": "rights"
+    },
+    {
+      "type": "path_condition",
+      "expr": {
+        "op": ">=",
+        "args": [
+          {
+            "sym": "conflictType"
+          },
+          {
+            "lit": {
+              "sort": "int",
+              "value": 32
+            }
+          }
+        ]
+      },
+      "taken": false,
+      "file": "/home/jamie/Documents/University/research/agent-policy-extraction/agentic-concolic-reports/hotcrp-rights-extraction/build/hotcrp/src/contact.php",
+      "lineno": 3833,
+      "function": "rights"
+    },
+    {
+      "type": "path_condition",
+      "expr": {
+        "op": "!=",
+        "args": [
+          {
+            "sym": "outcome"
+          },
+          {
+            "lit": {
+              "sort": "int",
+              "value": 0
+            }
+          }
+        ]
+      },
+      "taken": true,
+      "file": "/home/jamie/Documents/University/research/agent-policy-extraction/agentic-concolic-reports/hotcrp-rights-extraction/build/hotcrp/src/paperinfo.php",
+      "lineno": 1891,
+      "function": "can_author_view_decision"
+    },
+    {
+      "type": "path_condition",
+      "expr": {
+        "op": "==",
+        "args": [
+          {
+            "op": "&",
+            "args": [
+              {
+                "lit": {
+                  "sort": "int",
+                  "value": -1
+                }
+              },
+              {
+                "sym": "bits"
+              }
+            ]
+          },
+          {
+            "sym": "bits"
+          }
+        ]
+      },
+      "taken": true,
+      "file": "/home/jamie/Documents/University/research/agent-policy-extraction/agentic-concolic-reports/hotcrp-rights-extraction/build/hotcrp/src/paperinfo.php",
+      "lineno": 246,
+      "function": "scope_allows"
+    },
+    {
+      "type": "call",
+      "target": "HotCRP#authorized_operation",
+      "args": {
+        "conflictType": {
+          "sym": "conflictType"
+        },
+        "reviewType": {
+          "sym": "reviewType"
+        },
+        "rflags": {
+          "sym": "rflags"
+        },
+        "roles": {
+          "sym": "roles"
+        },
+        "timeSubmitted": {
+          "sym": "timeSubmitted"
+        },
+        "timeWithdrawn": {
+          "sym": "timeWithdrawn"
+        },
+        "outcome": {
+          "sym": "outcome"
+        },
+        "pdf": {
+          "sym": "pdf"
+        },
+        "bits": {
+          "sym": "bits"
+        }
+      },
+      "file": "/home/jamie/Documents/University/research/agent-policy-extraction/agentic-concolic-reports/hotcrp-rights-extraction/harness.php",
+      "lineno": 296,
+      "function": "{closure:/home/jamie/Documents/University/research/agent-policy-extraction/agentic-concolic-reports/hotcrp-rights-extraction/harness.php:280}"
+    },
+    {
+      "type": "symbolic_call",
+      "target": "HotCRP#authorized_operation",
+      "args": {
+        "conflictType": {
+          "sym": "conflictType"
+        },
+        "reviewType": {
+          "sym": "reviewType"
+        },
+        "rflags": {
+          "sym": "rflags"
+        },
+        "roles": {
+          "sym": "roles"
+        },
+        "timeSubmitted": {
+          "sym": "timeSubmitted"
+        },
+        "timeWithdrawn": {
+          "sym": "timeWithdrawn"
+        },
+        "outcome": {
+          "sym": "outcome"
+        },
+        "pdf": {
+          "sym": "pdf"
+        },
+        "bits": {
+          "sym": "bits"
+        }
+      },
+      "result_name": "SYM_RESULT_HotCRP_authorized_operation_1",
+      "result_type": "bool",
+      "file": "/home/jamie/Documents/University/research/agent-policy-extraction/agentic-concolic-reports/hotcrp-rights-extraction/harness.php",
+      "lineno": 296,
+      "function": "{closure:/home/jamie/Documents/University/research/agent-policy-extraction/agentic-concolic-reports/hotcrp-rights-extraction/harness.php:280}",
+      "result_sort": "Bool",
+      "result_value": {
+        "lit": {
+          "sort": "bool",
+          "value": true
+        }
+      }
+    }
+  ],
+  "types": {},
+  "declarations": {
+    "HotCRP#authorized_operation": {
+      "kind": "target_function"
+    }
+  },
+  "trace": {
+    "scope": [
+      "apps/hotcrp/"
+    ]
+  },
+  "script": "<?php\n\n/**\n * Drive `Contact::can_view_paper` with `rights()` COMPUTING, not pre-empted.\n *\n * The sibling harness in `../hotcrp-typed-policies/` sets `_last_rights`,\n * `_last_rights_paper` and `_last_rights_version` by reflection so `rights()`\n * takes its cache-hit branch -- which makes `ciflags` a free symbolic input\n * and means no query is ever issued. That is why 95/95 of its paths carry no\n * SQL and why 33 of its 40 policy atoms are refused by the domain renderer:\n * they all test a flag word that exists only in process.\n *\n * This harness does the opposite. It boots HotCRP far enough for `rights()`\n * to run for real -- `Conf` with `$connect = false`, so still no database --\n * lets it reach `PaperContactInfo::load_into`, intercepts the query there,\n * and supplies conflict and review rows whose COLUMNS are symbolic. `ciflags`\n * is then a derived term over `conflictType` / `rflags` / `reviewType`, which\n * are real columns, and the policy should be renderable as SQL.\n *\n * Reads the same JSON-on-stdin protocol as the sibling, so `run_concolic.py`'s\n * exploration loop works unchanged.\n */\n\n/** Stands in for mysqli_result: HotCRP iterates nearly every result. */\nfinal class ConcolicResult implements Iterator\n{\n    public $num_rows;\n    private $rows;\n    private $i = 0;\n\n    public function __construct(array $rows = [])\n    {\n        $this->rows = array_values($rows);\n        $this->num_rows = count($this->rows);\n    }\n\n    public function fetch_row()\n    {\n        $r = $this->rows[$this->i] ?? null;\n        if ($r === null) {\n            return null;\n        }\n        $this->i++;\n        return array_values($r);\n    }\n\n    public function fetch_assoc()\n    {\n        $r = $this->rows[$this->i] ?? null;\n        if ($r === null) {\n            return null;\n        }\n        $this->i++;\n        return $r;\n    }\n\n    public function fetch_object()\n    {\n        $r = $this->fetch_assoc();\n        return $r === null ? null : (object) $r;\n    }\n\n    public function close() {}\n    public function free() {}\n    public function free_result() {}\n    public function current(): mixed { return (object) $this->rows[$this->i]; }\n    public function key(): mixed { return $this->i; }\n    public function next(): void { $this->i++; }\n    public function rewind(): void { $this->i = 0; }\n    public function valid(): bool { return isset($this->rows[$this->i]); }\n}\n\n/** Stands in for Dbl's multi-result; load_into walks it with ->next(). */\nfinal class ConcolicMultiResult\n{\n    private $results;\n    private $i = 0;\n\n    public function __construct(array $results)\n    {\n        $this->results = array_values($results);\n    }\n\n    public function next()\n    {\n        return $this->results[$this->i++] ?? false;\n    }\n\n    public function free() {}\n    public function close() {}\n}\n\n$report = __DIR__;\n$root = dirname($report, 2);\n$runtime = $root . '/agentic_concolic_engine/runtimes/php_runtime';\n$app = $root . '/apps/hotcrp';\n$build = $report . '/build/hotcrp';\n\nrequire_once $runtime . '/vendor/autoload.php';\nrequire_once $runtime . '/src/autoload.php';\n\n/**\n * An instrumented COPY of the tree.\n *\n * HotCRP resolves classes through its own autoloader, so there is no import\n * hook to redirect: the only way to make it load instrumented code is to\n * point it at an instrumented tree. Everything under src/ and lib/ is\n * instrumented, not just the files on the expected path -- a symbolic value\n * reaching an uninstrumented file is the one failure this design cannot make\n * loud, since `if ($sym)` on an object is silently true.\n */\nfunction build_tree(string $app, string $build, string $runtime): void\n{\n    $stamp = $build . '/.stamp';\n    $fingerprint = hash('sha256',\n        file_get_contents($runtime . '/src/Instrument.php') .\n        file_get_contents($runtime . '/src/InstrumentVisitor.php'));\n    if (is_file($stamp) && trim(file_get_contents($stamp)) === $fingerprint) {\n        return;\n    }\n\n    fwrite(STDERR, \"building instrumented HotCRP \u2026\\n\");\n    if (is_dir($build)) {\n        exec('rm -rf ' . escapeshellarg($build));\n    }\n    mkdir($build, 0o777, true);\n    exec(sprintf('(cd %s && tar --exclude=.git --exclude=node_modules -cf - .) | tar -xf - -C %s',\n        escapeshellarg($app), escapeshellarg($build)), $o, $rc);\n    if ($rc !== 0) {\n        throw new RuntimeException(\"could not copy the HotCRP tree (exit {$rc})\");\n    }\n\n    // Every call HotCRP makes to its database layer. The one that matters for\n    // rights() is Dbl::multi_qe, which load_into uses for its\n    // PaperConflict/PaperReview pair.\n    $targets = array_fill_keys([\n        'qe', 'qx', 'ql', 'qe_raw', 'q', 'multi_qe', 'Dbl::multi_qe',\n        'Dbl::multi_q', 'fetch_ivalue', 'fetch_first_row', 'fetch_rows',\n        'fetch_value', 'fetch_objects', 'fetch_first_object',\n    ], true);\n\n    $ok = $failed = 0;\n    foreach (['src', 'lib'] as $sub) {\n        $it = new RecursiveIteratorIterator(new RecursiveDirectoryIterator(\"{$build}/{$sub}\"));\n        foreach ($it as $file) {\n            if (!$file->isFile() || $file->getExtension() !== 'php') {\n                continue;\n            }\n            $path = $file->getPathname();\n            try {\n                $warnings = null;\n                $source = Concolic\\Instrument::source(file_get_contents($path), $targets,\n                    str_replace($build . '/', 'apps/hotcrp/', $path), null, $warnings);\n                file_put_contents($path, $source);\n                $ok++;\n            } catch (\\Throwable $e) {\n                $failed++;\n                fwrite(STDERR, \"  [warn] {$path}: {$e->getMessage()}\\n\");\n            }\n        }\n    }\n    fwrite(STDERR, \"instrumented {$ok} files\" . ($failed ? \", {$failed} failed\" : \"\") . \"\\n\");\n    file_put_contents($stamp, $fingerprint);\n}\n\nbuild_tree($app, $build, $runtime);\n\ndefine(\"HOTCRP_TESTHARNESS\", true);\n$Opt = [\n    \"dbName\" => \"hotcrp_concolic\", \"dbUser\" => \"concolic\", \"dbPassword\" => \"\",\n    \"dbHost\" => \"localhost\", \"loaded\" => true, \"include\" => [],\n    \"shortName\" => \"concolic\", \"longName\" => \"concolic\",\n];\nrequire_once $build . '/src/init.php';\n\n// `$connect = false`: Conf keeps a null dblink and refreshes its settings\n// instead of loading them, so the whole run happens with no database and\n// every query is intercepted.\n$CONF = new Conf($Opt, false);\nContact::$main_user = null;\n\n/** The requester's id. Concrete: PHP coerces array keys, and HotCRP caches by id. */\nconst MY_UID = 10000001;\n/** The paper under test. Concrete for the same reason. */\nconst PAPER_ID = 9000007;\n\n/**\n * One run: build the user and paper, then ask the permission question.\n *\n * `ciflags` is NOT seeded. `rights()` computes it from whatever\n * `load_into` returns, which is what makes the resulting condition a\n * predicate over columns rather than over a flag word.\n */\nfunction set_private($object, string $name, $value): void\n{\n    (new ReflectionProperty($object, $name))->setValue($object, $value);\n}\n\nfunction invoke(Concolic\\Runtime $rt, string $entry, array $v)\n{\n    global $CONF;\n\n    $user = Contact::make_email($CONF, 'user@example.edu');\n    $user->contactId = $user->contactXid = MY_UID;\n    // SEED THE COLUMN, NOT THE DERIVED BOOLEANS. `ContactInfo.roles` is a\n    // real column; `isPC` and `privChair` are masks HotCRP takes off it.\n    // Seeding the booleans directly made the extracted condition name\n    // `isPC`, which no table has. Taking the masks here records the\n    // comparison against `roles` instead -- the same thing Contact's own\n    // constructor does -- so the condition names something a view can select\n    // on. The result is a concrete bool, which is correct: the BRANCH is the\n    // decision, and it has been recorded.\n    $user->roles = $v['roles'];\n    $user->isPC = __cmp(__bits($v['roles'], '&', Contact::ROLE_PCLIKE), '!==', 0);\n    $user->privChair = __cmp(__bits($v['roles'], '&', Contact::ROLE_CHAIR), '!==', 0);\n\n    $prow = PaperInfo::make_placeholder($CONF, PAPER_ID);\n    $prow->timeSubmitted = $v['timeSubmitted'];\n    $prow->timeWithdrawn = $v['timeWithdrawn'];\n    $prow->outcome = $v['outcome'];\n    $prow->leadContactId = 0;\n    $prow->managerContactId = 0;\n    $prow->shepherdContactId = 0;\n\n    // SEED THE ROW, NOT THE FLAGS. `PaperContactInfo::load_into` is what\n    // turns a PaperConflict/PaperReview row into these three fields, and it\n    // is skipped here -- `optional_contact_info` returns an entry already in\n    // `_contact_info` once `_rights_version` matches. What is NOT skipped is\n    // `rights()`, which still computes `ciflags` and `scope_bits` from them.\n    //\n    // That is the whole point of this harness. The sibling seeds `ciflags`\n    // directly, so every condition names a flag word that exists only in\n    // process; here the conditions should name `conflictType`, `reviewType`\n    // and `rflags`, which are columns of real tables.\n    $ci = new PaperContactInfo(PAPER_ID, MY_UID);\n    $ci->conflictType = $v['conflictType'];\n    $ci->reviewType = $v['reviewType'];\n    $ci->rflags = $v['rflags'];\n    set_private($prow, '_contact_info', [MY_UID => $ci]);\n    set_private($prow, '_rights_version',\n        (new ReflectionProperty(Contact::class, 'rights_version'))->getValue());\n\n    [$owner, $method] = explode('::', $entry);\n\n    if ($owner === 'Contact') {\n        return match ($method) {\n            'can_view_paper', 'can_view_pdf' => $user->$method($prow),\n            'can_view_comment_tags' => $user->$method($prow,\n                (new ReflectionClass(CommentInfo::class))->newInstanceWithoutConstructor()),\n            default => $user->$method($prow),\n        };\n    }\n\n    // A PaperContactInfo predicate is a test of `ciflags`, so it is only\n    // interesting once `rights()` has COMPUTED that word. Calling the\n    // predicate on the seeded object alone would test a zero.\n    //\n    // `rights()` is private, so it is reached by reflection -- the same\n    // instrument the sibling harness uses, pointed the other way: there it\n    // pre-empts the computation, here it performs it. Its branches land in\n    // the trace, which is correct: they ARE the policy that decides the flag\n    // the predicate then tests.\n    $rights = (new ReflectionMethod(Contact::class, 'rights'));\n    $computed = $rights->invoke($user, $prow);\n\n    return match ($method) {\n        'can_view' => $computed->can_view($v['pdf']),\n        'scope_allows' => $computed->scope_allows($v['bits']),\n        default => $computed->$method(),\n    };\n}\n\n$requests = json_decode(stream_get_contents(STDIN), true, 512, JSON_THROW_ON_ERROR);\n$output = [];\n\nforeach ($requests as $request) {\n    $rt = new Concolic\\Runtime();\n    $allowed = null;\n\n    $dump = $rt->run(function (array $v) use ($rt, $request, &$allowed) {\n        // NO QUERY TARGETS ARE DECLARED. With the contact info seeded,\n        // nothing on this path should reach the database layer at all -- and\n        // if something does, the undeclared-target error is the evidence,\n        // which is better than a mock quietly answering for it.\n        // The ACCESS. `build_policy` anchors an atom on an access event, so\n        // a run that records only path conditions yields no policy at all --\n        // which is exactly what happened the first time this driver ran. It\n        // is a marker for \"the gate let this through\", not an observed read;\n        // the real reads are the ones `rights()` would have issued, and this\n        // harness seeds their result rather than mocking the query.\n        $access = $rt->target('HotCRP#authorized_operation', 'target_function',\n                              'bool', fn() => true);\n\n        $allowed = __truthy(invoke($rt, $request['entry'], $v));\n        if ($allowed) {\n            $access($v);\n        }\n    }, $request['seeds'], $request['label'], ['apps/hotcrp/']);\n\n    $dump['script'] = file_get_contents(__FILE__);\n    $output[] = ['dump' => $dump, 'allowed' => $allowed];\n}\n\necho json_encode($output, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);\n"
+}

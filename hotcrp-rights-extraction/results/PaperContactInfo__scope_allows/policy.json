@@ -603,139 +603,6 @@
                    }
                   }
                  },
-                 "op": "==",
-                 "rhs": {
-                  "$": "Lit",
-                  "f": {
-                   "value": 0
-                  }
-                 }
-                }
-               },
-               {
-                "$": "Predicate",
-                "f": {
-                 "lhs": {
-                  "$": "Arith",
-                  "f": {
-                   "op": "&",
-                   "args": {
-                    "$": "tuple",
-                    "v": [
-                     {
-                      "$": "Sym",
-                      "f": {
-                       "name": "roles"
-                      }
-                     },
-                     {
-                      "$": "Lit",
-                      "f": {
-                       "value": 4
-                      }
-                     }
-                    ]
-                   }
-                  }
-                 },
-                 "op": "==",
-                 "rhs": {
-                  "$": "Lit",
-                  "f": {
-                   "value": 0
-                  }
-                 }
-                }
-               },
-               {
-                "$": "Predicate",
-                "f": {
-                 "lhs": {
-                  "$": "Arith",
-                  "f": {
-                   "op": "&",
-                   "args": {
-                    "$": "tuple",
-                    "v": [
-                     {
-                      "$": "Lit",
-                      "f": {
-                       "value": -1
-                      }
-                     },
-                     {
-                      "$": "Sym",
-                      "f": {
-                       "name": "bits"
-                      }
-                     }
-                    ]
-                   }
-                  }
-                 },
-                 "op": "==",
-                 "rhs": {
-                  "$": "Sym",
-                  "f": {
-                   "name": "bits"
-                  }
-                 }
-                }
-               }
-              ]
-             }
-            }
-           },
-           {
-            "$": "Conjunction",
-            "f": {
-             "preds": {
-              "$": "tuple",
-              "v": [
-               {
-                "$": "Predicate",
-                "f": {
-                 "lhs": {
-                  "$": "Sym",
-                  "f": {
-                   "name": "conflictType"
-                  }
-                 },
-                 "op": "<=",
-                 "rhs": {
-                  "$": "Lit",
-                  "f": {
-                   "value": 1
-                  }
-                 }
-                }
-               },
-               {
-                "$": "Predicate",
-                "f": {
-                 "lhs": {
-                  "$": "Arith",
-                  "f": {
-                   "op": "&",
-                   "args": {
-                    "$": "tuple",
-                    "v": [
-                     {
-                      "$": "Sym",
-                      "f": {
-                       "name": "roles"
-                      }
-                     },
-                     {
-                      "$": "Lit",
-                      "f": {
-                       "value": 15
-                      }
-                     }
-                    ]
-                   }
-                  }
-                 },
                  "op": "!=",
                  "rhs": {
                   "$": "Lit",
@@ -834,180 +701,11 @@
                    "name": "conflictType"
                   }
                  },
-                 "op": ">",
-                 "rhs": {
-                  "$": "Lit",
-                  "f": {
-                   "value": 1
-                  }
-                 }
-                }
-               },
-               {
-                "$": "Predicate",
-                "f": {
-                 "lhs": {
-                  "$": "Sym",
-                  "f": {
-                   "name": "outcome"
-                  }
-                 },
-                 "op": "==",
-                 "rhs": {
-                  "$": "Lit",
-                  "f": {
-                   "value": 0
-                  }
-                 }
-                }
-               },
-               {
-                "$": "Predicate",
-                "f": {
-                 "lhs": {
-                  "$": "Arith",
-                  "f": {
-                   "op": "&",
-                   "args": {
-                    "$": "tuple",
-                    "v": [
-                     {
-                      "$": "Sym",
-                      "f": {
-                       "name": "roles"
-                      }
-                     },
-                     {
-                      "$": "Lit",
-                      "f": {
-                       "value": 15
-                      }
-                     }
-                    ]
-                   }
-                  }
-                 },
-                 "op": "!=",
-                 "rhs": {
-                  "$": "Lit",
-                  "f": {
-                   "value": 0
-                  }
-                 }
-                }
-               },
-               {
-                "$": "Predicate",
-                "f": {
-                 "lhs": {
-                  "$": "Arith",
-                  "f": {
-                   "op": "&",
-                   "args": {
-                    "$": "tuple",
-                    "v": [
-                     {
-                      "$": "Sym",
-                      "f": {
-                       "name": "roles"
-                      }
-                     },
-                     {
-                      "$": "Lit",
-                      "f": {
-                       "value": 4
-                      }
-                     }
-                    ]
-                   }
-                  }
-                 },
-                 "op": "!=",
-                 "rhs": {
-                  "$": "Lit",
-                  "f": {
-                   "value": 0
-                  }
-                 }
-                }
-               },
-               {
-                "$": "Predicate",
-                "f": {
-                 "lhs": {
-                  "$": "Arith",
-                  "f": {
-                   "op": "&",
-                   "args": {
-                    "$": "tuple",
-                    "v": [
-                     {
-                      "$": "Lit",
-                      "f": {
-                       "value": -1
-                      }
-                     },
-                     {
-                      "$": "Sym",
-                      "f": {
-                       "name": "bits"
-                      }
-                     }
-                    ]
-                   }
-                  }
-                 },
-                 "op": "==",
-                 "rhs": {
-                  "$": "Sym",
-                  "f": {
-                   "name": "bits"
-                  }
-                 }
-                }
-               }
-              ]
-             }
-            }
-           },
-           {
-            "$": "Conjunction",
-            "f": {
-             "preds": {
-              "$": "tuple",
-              "v": [
-               {
-                "$": "Predicate",
-                "f": {
-                 "lhs": {
-                  "$": "Sym",
-                  "f": {
-                   "name": "conflictType"
-                  }
-                 },
-                 "op": ">=",
+                 "op": "<",
                  "rhs": {
                   "$": "Lit",
                   "f": {
                    "value": 32
-                  }
-                 }
-                }
-               },
-               {
-                "$": "Predicate",
-                "f": {
-                 "lhs": {
-                  "$": "Sym",
-                  "f": {
-                   "name": "outcome"
-                  }
-                 },
-                 "op": "==",
-                 "rhs": {
-                  "$": "Lit",
-                  "f": {
-                   "value": 0
                   }
                  }
                 }
@@ -1149,9 +847,159 @@
                 "$": "Predicate",
                 "f": {
                  "lhs": {
+                  "$": "Arith",
+                  "f": {
+                   "op": "&",
+                   "args": {
+                    "$": "tuple",
+                    "v": [
+                     {
+                      "$": "Sym",
+                      "f": {
+                       "name": "roles"
+                      }
+                     },
+                     {
+                      "$": "Lit",
+                      "f": {
+                       "value": 15
+                      }
+                     }
+                    ]
+                   }
+                  }
+                 },
+                 "op": "!=",
+                 "rhs": {
+                  "$": "Lit",
+                  "f": {
+                   "value": 0
+                  }
+                 }
+                }
+               },
+               {
+                "$": "Predicate",
+                "f": {
+                 "lhs": {
+                  "$": "Arith",
+                  "f": {
+                   "op": "&",
+                   "args": {
+                    "$": "tuple",
+                    "v": [
+                     {
+                      "$": "Sym",
+                      "f": {
+                       "name": "roles"
+                      }
+                     },
+                     {
+                      "$": "Lit",
+                      "f": {
+                       "value": 4
+                      }
+                     }
+                    ]
+                   }
+                  }
+                 },
+                 "op": "!=",
+                 "rhs": {
+                  "$": "Lit",
+                  "f": {
+                   "value": 0
+                  }
+                 }
+                }
+               },
+               {
+                "$": "Predicate",
+                "f": {
+                 "lhs": {
+                  "$": "Arith",
+                  "f": {
+                   "op": "&",
+                   "args": {
+                    "$": "tuple",
+                    "v": [
+                     {
+                      "$": "Lit",
+                      "f": {
+                       "value": -1
+                      }
+                     },
+                     {
+                      "$": "Sym",
+                      "f": {
+                       "name": "bits"
+                      }
+                     }
+                    ]
+                   }
+                  }
+                 },
+                 "op": "==",
+                 "rhs": {
                   "$": "Sym",
                   "f": {
-                   "name": "outcome"
+                   "name": "bits"
+                  }
+                 }
+                }
+               }
+              ]
+             }
+            }
+           },
+           {
+            "$": "Conjunction",
+            "f": {
+             "preds": {
+              "$": "tuple",
+              "v": [
+               {
+                "$": "Predicate",
+                "f": {
+                 "lhs": {
+                  "$": "Sym",
+                  "f": {
+                   "name": "conflictType"
+                  }
+                 },
+                 "op": ">=",
+                 "rhs": {
+                  "$": "Lit",
+                  "f": {
+                   "value": 32
+                  }
+                 }
+                }
+               },
+               {
+                "$": "Predicate",
+                "f": {
+                 "lhs": {
+                  "$": "Arith",
+                  "f": {
+                   "op": "&",
+                   "args": {
+                    "$": "tuple",
+                    "v": [
+                     {
+                      "$": "Sym",
+                      "f": {
+                       "name": "roles"
+                      }
+                     },
+                     {
+                      "$": "Lit",
+                      "f": {
+                       "value": 15
+                      }
+                     }
+                    ]
+                   }
                   }
                  },
                  "op": "==",
@@ -1159,6 +1007,104 @@
                   "$": "Lit",
                   "f": {
                    "value": 0
+                  }
+                 }
+                }
+               },
+               {
+                "$": "Predicate",
+                "f": {
+                 "lhs": {
+                  "$": "Arith",
+                  "f": {
+                   "op": "&",
+                   "args": {
+                    "$": "tuple",
+                    "v": [
+                     {
+                      "$": "Sym",
+                      "f": {
+                       "name": "roles"
+                      }
+                     },
+                     {
+                      "$": "Lit",
+                      "f": {
+                       "value": 4
+                      }
+                     }
+                    ]
+                   }
+                  }
+                 },
+                 "op": "==",
+                 "rhs": {
+                  "$": "Lit",
+                  "f": {
+                   "value": 0
+                  }
+                 }
+                }
+               },
+               {
+                "$": "Predicate",
+                "f": {
+                 "lhs": {
+                  "$": "Arith",
+                  "f": {
+                   "op": "&",
+                   "args": {
+                    "$": "tuple",
+                    "v": [
+                     {
+                      "$": "Lit",
+                      "f": {
+                       "value": -1
+                      }
+                     },
+                     {
+                      "$": "Sym",
+                      "f": {
+                       "name": "bits"
+                      }
+                     }
+                    ]
+                   }
+                  }
+                 },
+                 "op": "==",
+                 "rhs": {
+                  "$": "Sym",
+                  "f": {
+                   "name": "bits"
+                  }
+                 }
+                }
+               }
+              ]
+             }
+            }
+           },
+           {
+            "$": "Conjunction",
+            "f": {
+             "preds": {
+              "$": "tuple",
+              "v": [
+               {
+                "$": "Predicate",
+                "f": {
+                 "lhs": {
+                  "$": "Sym",
+                  "f": {
+                   "name": "conflictType"
+                  }
+                 },
+                 "op": "<",
+                 "rhs": {
+                  "$": "Lit",
+                  "f": {
+                   "value": 32
                   }
                  }
                 }
@@ -1339,286 +1285,11 @@
                    "name": "conflictType"
                   }
                  },
-                 "op": "<",
+                 "op": ">=",
                  "rhs": {
                   "$": "Lit",
                   "f": {
                    "value": 32
-                  }
-                 }
-                }
-               },
-               {
-                "$": "Predicate",
-                "f": {
-                 "lhs": {
-                  "$": "Sym",
-                  "f": {
-                   "name": "outcome"
-                  }
-                 },
-                 "op": "==",
-                 "rhs": {
-                  "$": "Lit",
-                  "f": {
-                   "value": 0
-                  }
-                 }
-                }
-               },
-               {
-                "$": "Predicate",
-                "f": {
-                 "lhs": {
-                  "$": "Sym",
-                  "f": {
-                   "name": "timeSubmitted"
-                  }
-                 },
-                 "op": ">",
-                 "rhs": {
-                  "$": "Lit",
-                  "f": {
-                   "value": 0
-                  }
-                 }
-                }
-               },
-               {
-                "$": "Predicate",
-                "f": {
-                 "lhs": {
-                  "$": "Arith",
-                  "f": {
-                   "op": "&",
-                   "args": {
-                    "$": "tuple",
-                    "v": [
-                     {
-                      "$": "Sym",
-                      "f": {
-                       "name": "roles"
-                      }
-                     },
-                     {
-                      "$": "Lit",
-                      "f": {
-                       "value": 15
-                      }
-                     }
-                    ]
-                   }
-                  }
-                 },
-                 "op": "!=",
-                 "rhs": {
-                  "$": "Lit",
-                  "f": {
-                   "value": 0
-                  }
-                 }
-                }
-               },
-               {
-                "$": "Predicate",
-                "f": {
-                 "lhs": {
-                  "$": "Arith",
-                  "f": {
-                   "op": "&",
-                   "args": {
-                    "$": "tuple",
-                    "v": [
-                     {
-                      "$": "Sym",
-                      "f": {
-                       "name": "roles"
-                      }
-                     },
-                     {
-                      "$": "Lit",
-                      "f": {
-                       "value": 4
-                      }
-                     }
-                    ]
-                   }
-                  }
-                 },
-                 "op": "==",
-                 "rhs": {
-                  "$": "Lit",
-                  "f": {
-                   "value": 0
-                  }
-                 }
-                }
-               },
-               {
-                "$": "Predicate",
-                "f": {
-                 "lhs": {
-                  "$": "Arith",
-                  "f": {
-                   "op": "&",
-                   "args": {
-                    "$": "tuple",
-                    "v": [
-                     {
-                      "$": "Lit",
-                      "f": {
-                       "value": -1
-                      }
-                     },
-                     {
-                      "$": "Sym",
-                      "f": {
-                       "name": "bits"
-                      }
-                     }
-                    ]
-                   }
-                  }
-                 },
-                 "op": "==",
-                 "rhs": {
-                  "$": "Sym",
-                  "f": {
-                   "name": "bits"
-                  }
-                 }
-                }
-               },
-               {
-                "$": "Predicate",
-                "f": {
-                 "lhs": {
-                  "$": "Arith",
-                  "f": {
-                   "op": "&",
-                   "args": {
-                    "$": "tuple",
-                    "v": [
-                     {
-                      "$": "Arith",
-                      "f": {
-                       "op": "&",
-                       "args": {
-                        "$": "tuple",
-                        "v": [
-                         {
-                          "$": "Sym",
-                          "f": {
-                           "name": "roles"
-                          }
-                         },
-                         {
-                          "$": "Lit",
-                          "f": {
-                           "value": 79
-                          }
-                         }
-                        ]
-                       }
-                      }
-                     },
-                     {
-                      "$": "Lit",
-                      "f": {
-                       "value": 32768
-                      }
-                     }
-                    ]
-                   }
-                  }
-                 },
-                 "op": "==",
-                 "rhs": {
-                  "$": "Lit",
-                  "f": {
-                   "value": 0
-                  }
-                 }
-                }
-               }
-              ]
-             }
-            }
-           },
-           {
-            "$": "Conjunction",
-            "f": {
-             "preds": {
-              "$": "tuple",
-              "v": [
-               {
-                "$": "Predicate",
-                "f": {
-                 "lhs": {
-                  "$": "Sym",
-                  "f": {
-                   "name": "conflictType"
-                  }
-                 },
-                 "op": "<",
-                 "rhs": {
-                  "$": "Lit",
-                  "f": {
-                   "value": 32
-                  }
-                 }
-                }
-               },
-               {
-                "$": "Predicate",
-                "f": {
-                 "lhs": {
-                  "$": "Sym",
-                  "f": {
-                   "name": "outcome"
-                  }
-                 },
-                 "op": "==",
-                 "rhs": {
-                  "$": "Lit",
-                  "f": {
-                   "value": 0
-                  }
-                 }
-                }
-               },
-               {
-                "$": "Predicate",
-                "f": {
-                 "lhs": {
-                  "$": "Sym",
-                  "f": {
-                   "name": "timeSubmitted"
-                  }
-                 },
-                 "op": "<=",
-                 "rhs": {
-                  "$": "Lit",
-                  "f": {
-                   "value": 0
-                  }
-                 }
-                }
-               },
-               {
-                "$": "Predicate",
-                "f": {
-                 "lhs": {
-                  "$": "Sym",
-                  "f": {
-                   "name": "timeWithdrawn"
-                  }
-                 },
-                 "op": "<=",
-                 "rhs": {
-                  "$": "Lit",
-                  "f": {
-                   "value": 0
                   }
                  }
                 }
