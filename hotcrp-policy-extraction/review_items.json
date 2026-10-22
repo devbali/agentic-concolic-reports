@@ -1,0 +1,546 @@
+[
+  {
+    "entrypoint": "Contact::act_author_view",
+    "identity": "unrendered-atom/Contact::act_author_view#1",
+    "evidence": "atom 1 names ciflags: computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process",
+    "consequence": "this atom contributes no SELECT, so the rendered policy is narrower than the extracted one and must not be read as covering this access",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "Contact::act_author_view",
+    "identity": "no-relational-content/Contact::act_author_view",
+    "evidence": "all 1 atom(s) were refused; the entrypoint's decision is computed in process",
+    "consequence": "no view can be generated for this entrypoint from this corpus; the policy is not relational and rendering one would be fiction",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "Contact::act_pc",
+    "identity": "unrendered-atom/Contact::act_pc#1",
+    "evidence": "atom 1 names ciflags: computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process",
+    "consequence": "this atom contributes no SELECT, so the rendered policy is narrower than the extracted one and must not be read as covering this access",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "Contact::act_pc",
+    "identity": "no-relational-content/Contact::act_pc",
+    "evidence": "all 1 atom(s) were refused; the entrypoint's decision is computed in process",
+    "consequence": "no view can be generated for this entrypoint from this corpus; the policy is not relational and rendering one would be fiction",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "Contact::allow_admin",
+    "identity": "unrendered-atom/Contact::allow_admin#1",
+    "evidence": "atom 1 names ciflags: computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process",
+    "consequence": "this atom contributes no SELECT, so the rendered policy is narrower than the extracted one and must not be read as covering this access",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "Contact::allow_admin",
+    "identity": "no-relational-content/Contact::allow_admin",
+    "evidence": "all 1 atom(s) were refused; the entrypoint's decision is computed in process",
+    "consequence": "no view can be generated for this entrypoint from this corpus; the policy is not relational and rendering one would be fiction",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "Contact::allow_manage",
+    "identity": "unrendered-atom/Contact::allow_manage#1",
+    "evidence": "atom 1 names ciflags: computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process",
+    "consequence": "this atom contributes no SELECT, so the rendered policy is narrower than the extracted one and must not be read as covering this access",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "Contact::allow_manage",
+    "identity": "no-relational-content/Contact::allow_manage",
+    "evidence": "all 1 atom(s) were refused; the entrypoint's decision is computed in process",
+    "consequence": "no view can be generated for this entrypoint from this corpus; the policy is not relational and rendering one would be fiction",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "Contact::allow_manage_reviews",
+    "identity": "unrendered-atom/Contact::allow_manage_reviews#1",
+    "evidence": "atom 1 names ciflags: computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process",
+    "consequence": "this atom contributes no SELECT, so the rendered policy is narrower than the extracted one and must not be read as covering this access",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "Contact::allow_manage_reviews",
+    "identity": "no-relational-content/Contact::allow_manage_reviews",
+    "evidence": "all 1 atom(s) were refused; the entrypoint's decision is computed in process",
+    "consequence": "no view can be generated for this entrypoint from this corpus; the policy is not relational and rendering one would be fiction",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "Contact::can_manage",
+    "identity": "unrendered-atom/Contact::can_manage#1",
+    "evidence": "atom 1 names ciflags: computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process",
+    "consequence": "this atom contributes no SELECT, so the rendered policy is narrower than the extracted one and must not be read as covering this access",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "Contact::can_manage",
+    "identity": "no-relational-content/Contact::can_manage",
+    "evidence": "all 1 atom(s) were refused; the entrypoint's decision is computed in process",
+    "consequence": "no view can be generated for this entrypoint from this corpus; the policy is not relational and rendering one would be fiction",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "Contact::can_manage_reviews",
+    "identity": "unrendered-atom/Contact::can_manage_reviews#1",
+    "evidence": "atom 1 names ciflags: computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process",
+    "consequence": "this atom contributes no SELECT, so the rendered policy is narrower than the extracted one and must not be read as covering this access",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "Contact::can_manage_reviews",
+    "identity": "no-relational-content/Contact::can_manage_reviews",
+    "evidence": "all 1 atom(s) were refused; the entrypoint's decision is computed in process",
+    "consequence": "no view can be generated for this entrypoint from this corpus; the policy is not relational and rendering one would be fiction",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "Contact::can_manage_tags",
+    "identity": "unrendered-atom/Contact::can_manage_tags#1",
+    "evidence": "atom 1 names ciflags: computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process",
+    "consequence": "this atom contributes no SELECT, so the rendered policy is narrower than the extracted one and must not be read as covering this access",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "Contact::can_manage_tags",
+    "identity": "no-relational-content/Contact::can_manage_tags",
+    "evidence": "all 1 atom(s) were refused; the entrypoint's decision is computed in process",
+    "consequence": "no view can be generated for this entrypoint from this corpus; the policy is not relational and rendering one would be fiction",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "Contact::can_set_decision",
+    "identity": "unrendered-atom/Contact::can_set_decision#1",
+    "evidence": "atom 1 names ciflags: computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process",
+    "consequence": "this atom contributes no SELECT, so the rendered policy is narrower than the extracted one and must not be read as covering this access",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "Contact::can_set_decision",
+    "identity": "no-relational-content/Contact::can_set_decision",
+    "evidence": "all 1 atom(s) were refused; the entrypoint's decision is computed in process",
+    "consequence": "no view can be generated for this entrypoint from this corpus; the policy is not relational and rendering one would be fiction",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "Contact::can_view_comment_tags",
+    "identity": "unrendered-atom/Contact::can_view_comment_tags#1",
+    "evidence": "atom 1 names ciflags: computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process",
+    "consequence": "this atom contributes no SELECT, so the rendered policy is narrower than the extracted one and must not be read as covering this access",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "Contact::can_view_comment_tags",
+    "identity": "no-relational-content/Contact::can_view_comment_tags",
+    "evidence": "all 1 atom(s) were refused; the entrypoint's decision is computed in process",
+    "consequence": "no view can be generated for this entrypoint from this corpus; the policy is not relational and rendering one would be fiction",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "Contact::can_view_decision",
+    "identity": "unrendered-atom/Contact::can_view_decision#1",
+    "evidence": "atom 1 names ciflags: computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process",
+    "consequence": "this atom contributes no SELECT, so the rendered policy is narrower than the extracted one and must not be read as covering this access",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "Contact::can_view_decision",
+    "identity": "no-relational-content/Contact::can_view_decision",
+    "evidence": "all 1 atom(s) were refused; the entrypoint's decision is computed in process",
+    "consequence": "no view can be generated for this entrypoint from this corpus; the policy is not relational and rendering one would be fiction",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "Contact::can_view_document_history",
+    "identity": "unrendered-atom/Contact::can_view_document_history#1",
+    "evidence": "atom 1 names ciflags: computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process",
+    "consequence": "this atom contributes no SELECT, so the rendered policy is narrower than the extracted one and must not be read as covering this access",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "Contact::can_view_document_history",
+    "identity": "no-relational-content/Contact::can_view_document_history",
+    "evidence": "all 1 atom(s) were refused; the entrypoint's decision is computed in process",
+    "consequence": "no view can be generated for this entrypoint from this corpus; the policy is not relational and rendering one would be fiction",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "Contact::can_view_paper",
+    "identity": "unrendered-atom/Contact::can_view_paper#1",
+    "evidence": "atom 1 names ciflags: computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process",
+    "consequence": "this atom contributes no SELECT, so the rendered policy is narrower than the extracted one and must not be read as covering this access",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "Contact::can_view_paper",
+    "identity": "no-relational-content/Contact::can_view_paper",
+    "evidence": "all 1 atom(s) were refused; the entrypoint's decision is computed in process",
+    "consequence": "no view can be generated for this entrypoint from this corpus; the policy is not relational and rendering one would be fiction",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "Contact::can_view_pdf",
+    "identity": "unrendered-atom/Contact::can_view_pdf#1",
+    "evidence": "atom 1 names ciflags: computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process",
+    "consequence": "this atom contributes no SELECT, so the rendered policy is narrower than the extracted one and must not be read as covering this access",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "Contact::can_view_pdf",
+    "identity": "no-relational-content/Contact::can_view_pdf",
+    "evidence": "all 1 atom(s) were refused; the entrypoint's decision is computed in process",
+    "consequence": "no view can be generated for this entrypoint from this corpus; the policy is not relational and rendering one would be fiction",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "Contact::is_admin",
+    "identity": "unrendered-atom/Contact::is_admin#1",
+    "evidence": "atom 1 names ciflags: computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process",
+    "consequence": "this atom contributes no SELECT, so the rendered policy is narrower than the extracted one and must not be read as covering this access",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "Contact::is_admin",
+    "identity": "no-relational-content/Contact::is_admin",
+    "evidence": "all 1 atom(s) were refused; the entrypoint's decision is computed in process",
+    "consequence": "no view can be generated for this entrypoint from this corpus; the policy is not relational and rendering one would be fiction",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "Contact::is_author_view",
+    "identity": "unrendered-atom/Contact::is_author_view#1",
+    "evidence": "atom 1 names ciflags: computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process",
+    "consequence": "this atom contributes no SELECT, so the rendered policy is narrower than the extracted one and must not be read as covering this access",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "Contact::is_author_view",
+    "identity": "no-relational-content/Contact::is_author_view",
+    "evidence": "all 1 atom(s) were refused; the entrypoint's decision is computed in process",
+    "consequence": "no view can be generated for this entrypoint from this corpus; the policy is not relational and rendering one would be fiction",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "Contact::is_conflict_view",
+    "identity": "unrendered-atom/Contact::is_conflict_view#1",
+    "evidence": "atom 1 names ciflags: computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process",
+    "consequence": "this atom contributes no SELECT, so the rendered policy is narrower than the extracted one and must not be read as covering this access",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "Contact::is_conflict_view",
+    "identity": "no-relational-content/Contact::is_conflict_view",
+    "evidence": "all 1 atom(s) were refused; the entrypoint's decision is computed in process",
+    "consequence": "no view can be generated for this entrypoint from this corpus; the policy is not relational and rendering one would be fiction",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "PaperContactInfo::act_author_view",
+    "identity": "unrendered-atom/PaperContactInfo::act_author_view#1",
+    "evidence": "atom 1 names ciflags: computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process",
+    "consequence": "this atom contributes no SELECT, so the rendered policy is narrower than the extracted one and must not be read as covering this access",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "PaperContactInfo::act_author_view",
+    "identity": "no-relational-content/PaperContactInfo::act_author_view",
+    "evidence": "all 1 atom(s) were refused; the entrypoint's decision is computed in process",
+    "consequence": "no view can be generated for this entrypoint from this corpus; the policy is not relational and rendering one would be fiction",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "PaperContactInfo::allow_admin",
+    "identity": "unrendered-atom/PaperContactInfo::allow_admin#1",
+    "evidence": "atom 1 names ciflags: computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process",
+    "consequence": "this atom contributes no SELECT, so the rendered policy is narrower than the extracted one and must not be read as covering this access",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "PaperContactInfo::allow_admin",
+    "identity": "no-relational-content/PaperContactInfo::allow_admin",
+    "evidence": "all 1 atom(s) were refused; the entrypoint's decision is computed in process",
+    "consequence": "no view can be generated for this entrypoint from this corpus; the policy is not relational and rendering one would be fiction",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "PaperContactInfo::allow_author_edit",
+    "identity": "unrendered-atom/PaperContactInfo::allow_author_edit#1",
+    "evidence": "atom 1 names ciflags: computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process",
+    "consequence": "this atom contributes no SELECT, so the rendered policy is narrower than the extracted one and must not be read as covering this access",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "PaperContactInfo::allow_author_edit",
+    "identity": "no-relational-content/PaperContactInfo::allow_author_edit",
+    "evidence": "all 1 atom(s) were refused; the entrypoint's decision is computed in process",
+    "consequence": "no view can be generated for this entrypoint from this corpus; the policy is not relational and rendering one would be fiction",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "PaperContactInfo::allow_author_view",
+    "identity": "unrendered-atom/PaperContactInfo::allow_author_view#1",
+    "evidence": "atom 1 names ciflags: computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process",
+    "consequence": "this atom contributes no SELECT, so the rendered policy is narrower than the extracted one and must not be read as covering this access",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "PaperContactInfo::allow_author_view",
+    "identity": "no-relational-content/PaperContactInfo::allow_author_view",
+    "evidence": "all 1 atom(s) were refused; the entrypoint's decision is computed in process",
+    "consequence": "no view can be generated for this entrypoint from this corpus; the policy is not relational and rendering one would be fiction",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "PaperContactInfo::allow_manage",
+    "identity": "unrendered-atom/PaperContactInfo::allow_manage#1",
+    "evidence": "atom 1 names ciflags: computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process",
+    "consequence": "this atom contributes no SELECT, so the rendered policy is narrower than the extracted one and must not be read as covering this access",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "PaperContactInfo::allow_manage",
+    "identity": "no-relational-content/PaperContactInfo::allow_manage",
+    "evidence": "all 1 atom(s) were refused; the entrypoint's decision is computed in process",
+    "consequence": "no view can be generated for this entrypoint from this corpus; the policy is not relational and rendering one would be fiction",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "PaperContactInfo::allow_manage_reviews",
+    "identity": "unrendered-atom/PaperContactInfo::allow_manage_reviews#1",
+    "evidence": "atom 1 names ciflags: computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process",
+    "consequence": "this atom contributes no SELECT, so the rendered policy is narrower than the extracted one and must not be read as covering this access",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "PaperContactInfo::allow_manage_reviews",
+    "identity": "no-relational-content/PaperContactInfo::allow_manage_reviews",
+    "evidence": "all 1 atom(s) were refused; the entrypoint's decision is computed in process",
+    "consequence": "no view can be generated for this entrypoint from this corpus; the policy is not relational and rendering one would be fiction",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "PaperContactInfo::allow_pc",
+    "identity": "unrendered-atom/PaperContactInfo::allow_pc#1",
+    "evidence": "atom 1 names ciflags: computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process",
+    "consequence": "this atom contributes no SELECT, so the rendered policy is narrower than the extracted one and must not be read as covering this access",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "PaperContactInfo::allow_pc",
+    "identity": "no-relational-content/PaperContactInfo::allow_pc",
+    "evidence": "all 1 atom(s) were refused; the entrypoint's decision is computed in process",
+    "consequence": "no view can be generated for this entrypoint from this corpus; the policy is not relational and rendering one would be fiction",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "PaperContactInfo::allow_pc_broad",
+    "identity": "unrendered-atom/PaperContactInfo::allow_pc_broad#1",
+    "evidence": "atom 1 names ciflags: computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process",
+    "consequence": "this atom contributes no SELECT, so the rendered policy is narrower than the extracted one and must not be read as covering this access",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "PaperContactInfo::allow_pc_broad",
+    "identity": "no-relational-content/PaperContactInfo::allow_pc_broad",
+    "evidence": "all 1 atom(s) were refused; the entrypoint's decision is computed in process",
+    "consequence": "no view can be generated for this entrypoint from this corpus; the policy is not relational and rendering one would be fiction",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "PaperContactInfo::can_manage",
+    "identity": "unrendered-atom/PaperContactInfo::can_manage#1",
+    "evidence": "atom 1 names ciflags: computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process",
+    "consequence": "this atom contributes no SELECT, so the rendered policy is narrower than the extracted one and must not be read as covering this access",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "PaperContactInfo::can_manage",
+    "identity": "no-relational-content/PaperContactInfo::can_manage",
+    "evidence": "all 1 atom(s) were refused; the entrypoint's decision is computed in process",
+    "consequence": "no view can be generated for this entrypoint from this corpus; the policy is not relational and rendering one would be fiction",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "PaperContactInfo::can_manage_reviews",
+    "identity": "unrendered-atom/PaperContactInfo::can_manage_reviews#1",
+    "evidence": "atom 1 names ciflags: computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process",
+    "consequence": "this atom contributes no SELECT, so the rendered policy is narrower than the extracted one and must not be read as covering this access",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "PaperContactInfo::can_manage_reviews",
+    "identity": "no-relational-content/PaperContactInfo::can_manage_reviews",
+    "evidence": "all 1 atom(s) were refused; the entrypoint's decision is computed in process",
+    "consequence": "no view can be generated for this entrypoint from this corpus; the policy is not relational and rendering one would be fiction",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "PaperContactInfo::can_manage_tags",
+    "identity": "unrendered-atom/PaperContactInfo::can_manage_tags#1",
+    "evidence": "atom 1 names ciflags: computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process",
+    "consequence": "this atom contributes no SELECT, so the rendered policy is narrower than the extracted one and must not be read as covering this access",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "PaperContactInfo::can_manage_tags",
+    "identity": "no-relational-content/PaperContactInfo::can_manage_tags",
+    "evidence": "all 1 atom(s) were refused; the entrypoint's decision is computed in process",
+    "consequence": "no view can be generated for this entrypoint from this corpus; the policy is not relational and rendering one would be fiction",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "PaperContactInfo::can_view",
+    "identity": "unrendered-atom/PaperContactInfo::can_view#1",
+    "evidence": "atom 1 names ciflags: computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process",
+    "consequence": "this atom contributes no SELECT, so the rendered policy is narrower than the extracted one and must not be read as covering this access",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "PaperContactInfo::can_view",
+    "identity": "no-relational-content/PaperContactInfo::can_view",
+    "evidence": "all 1 atom(s) were refused; the entrypoint's decision is computed in process",
+    "consequence": "no view can be generated for this entrypoint from this corpus; the policy is not relational and rendering one would be fiction",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "PaperContactInfo::can_view_decision",
+    "identity": "unrendered-atom/PaperContactInfo::can_view_decision#1",
+    "evidence": "atom 1 names ciflags: computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process",
+    "consequence": "this atom contributes no SELECT, so the rendered policy is narrower than the extracted one and must not be read as covering this access",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "PaperContactInfo::can_view_decision",
+    "identity": "no-relational-content/PaperContactInfo::can_view_decision",
+    "evidence": "all 1 atom(s) were refused; the entrypoint's decision is computed in process",
+    "consequence": "no view can be generated for this entrypoint from this corpus; the policy is not relational and rendering one would be fiction",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "PaperContactInfo::is_admin",
+    "identity": "unrendered-atom/PaperContactInfo::is_admin#1",
+    "evidence": "atom 1 names ciflags: computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process",
+    "consequence": "this atom contributes no SELECT, so the rendered policy is narrower than the extracted one and must not be read as covering this access",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "PaperContactInfo::is_admin",
+    "identity": "no-relational-content/PaperContactInfo::is_admin",
+    "evidence": "all 1 atom(s) were refused; the entrypoint's decision is computed in process",
+    "consequence": "no view can be generated for this entrypoint from this corpus; the policy is not relational and rendering one would be fiction",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "PaperContactInfo::is_author_view",
+    "identity": "unrendered-atom/PaperContactInfo::is_author_view#1",
+    "evidence": "atom 1 names ciflags: computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process",
+    "consequence": "this atom contributes no SELECT, so the rendered policy is narrower than the extracted one and must not be read as covering this access",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "PaperContactInfo::is_author_view",
+    "identity": "no-relational-content/PaperContactInfo::is_author_view",
+    "evidence": "all 1 atom(s) were refused; the entrypoint's decision is computed in process",
+    "consequence": "no view can be generated for this entrypoint from this corpus; the policy is not relational and rendering one would be fiction",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "PaperContactInfo::is_conflict_view",
+    "identity": "unrendered-atom/PaperContactInfo::is_conflict_view#1",
+    "evidence": "atom 1 names ciflags: computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process",
+    "consequence": "this atom contributes no SELECT, so the rendered policy is narrower than the extracted one and must not be read as covering this access",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "PaperContactInfo::is_conflict_view",
+    "identity": "no-relational-content/PaperContactInfo::is_conflict_view",
+    "evidence": "all 1 atom(s) were refused; the entrypoint's decision is computed in process",
+    "consequence": "no view can be generated for this entrypoint from this corpus; the policy is not relational and rendering one would be fiction",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "PaperContactInfo::scope_allows",
+    "identity": "unrendered-atom/PaperContactInfo::scope_allows#1",
+    "evidence": "atom 1 names bits: a method ARGUMENT of scope_allows($bits), not data",
+    "consequence": "this atom contributes no SELECT, so the rendered policy is narrower than the extracted one and must not be read as covering this access",
+    "source": "static",
+    "blocking": true
+  },
+  {
+    "entrypoint": "PaperContactInfo::scope_allows",
+    "identity": "no-relational-content/PaperContactInfo::scope_allows",
+    "evidence": "all 1 atom(s) were refused; the entrypoint's decision is computed in process",
+    "consequence": "no view can be generated for this entrypoint from this corpus; the policy is not relational and rendering one would be fiction",
+    "source": "static",
+    "blocking": true
+  }
+]

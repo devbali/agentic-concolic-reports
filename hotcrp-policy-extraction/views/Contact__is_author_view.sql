@@ -1,0 +1,4 @@
+-- Contact::is_author_view
+-- 0 of 1 atoms rendered
+-- EXCLUDED ATOMS — 1 of 1
+--   atom 1: ciflags — computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process

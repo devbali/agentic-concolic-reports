@@ -1,0 +1,498 @@
+{
+  "domain": "php_hotcrp_sql",
+  "corpus": "../hotcrp-typed-policies/results",
+  "entrypoints": 40,
+  "atoms": 40,
+  "rendered": 6,
+  "refused": 34,
+  "refusals_by_symbol": {
+    "ciflags": 33,
+    "bits": 1
+  },
+  "entries": [
+    {
+      "entrypoint": "Contact::act_author_view",
+      "file": "views/Contact__act_author_view.sql",
+      "atoms": 1,
+      "rendered": 0,
+      "refused": [
+        {
+          "atom": 1,
+          "symbol": "ciflags",
+          "reason": "computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process"
+        }
+      ]
+    },
+    {
+      "entrypoint": "Contact::act_pc",
+      "file": "views/Contact__act_pc.sql",
+      "atoms": 1,
+      "rendered": 0,
+      "refused": [
+        {
+          "atom": 1,
+          "symbol": "ciflags",
+          "reason": "computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process"
+        }
+      ]
+    },
+    {
+      "entrypoint": "Contact::allow_admin",
+      "file": "views/Contact__allow_admin.sql",
+      "atoms": 1,
+      "rendered": 0,
+      "refused": [
+        {
+          "atom": 1,
+          "symbol": "ciflags",
+          "reason": "computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process"
+        }
+      ]
+    },
+    {
+      "entrypoint": "Contact::allow_manage",
+      "file": "views/Contact__allow_manage.sql",
+      "atoms": 1,
+      "rendered": 0,
+      "refused": [
+        {
+          "atom": 1,
+          "symbol": "ciflags",
+          "reason": "computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process"
+        }
+      ]
+    },
+    {
+      "entrypoint": "Contact::allow_manage_reviews",
+      "file": "views/Contact__allow_manage_reviews.sql",
+      "atoms": 1,
+      "rendered": 0,
+      "refused": [
+        {
+          "atom": 1,
+          "symbol": "ciflags",
+          "reason": "computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process"
+        }
+      ]
+    },
+    {
+      "entrypoint": "Contact::can_manage",
+      "file": "views/Contact__can_manage.sql",
+      "atoms": 1,
+      "rendered": 0,
+      "refused": [
+        {
+          "atom": 1,
+          "symbol": "ciflags",
+          "reason": "computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process"
+        }
+      ]
+    },
+    {
+      "entrypoint": "Contact::can_manage_reviews",
+      "file": "views/Contact__can_manage_reviews.sql",
+      "atoms": 1,
+      "rendered": 0,
+      "refused": [
+        {
+          "atom": 1,
+          "symbol": "ciflags",
+          "reason": "computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process"
+        }
+      ]
+    },
+    {
+      "entrypoint": "Contact::can_manage_tags",
+      "file": "views/Contact__can_manage_tags.sql",
+      "atoms": 1,
+      "rendered": 0,
+      "refused": [
+        {
+          "atom": 1,
+          "symbol": "ciflags",
+          "reason": "computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process"
+        }
+      ]
+    },
+    {
+      "entrypoint": "Contact::can_set_decision",
+      "file": "views/Contact__can_set_decision.sql",
+      "atoms": 1,
+      "rendered": 0,
+      "refused": [
+        {
+          "atom": 1,
+          "symbol": "ciflags",
+          "reason": "computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process"
+        }
+      ]
+    },
+    {
+      "entrypoint": "Contact::can_view_comment_tags",
+      "file": "views/Contact__can_view_comment_tags.sql",
+      "atoms": 1,
+      "rendered": 0,
+      "refused": [
+        {
+          "atom": 1,
+          "symbol": "ciflags",
+          "reason": "computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process"
+        }
+      ]
+    },
+    {
+      "entrypoint": "Contact::can_view_decision",
+      "file": "views/Contact__can_view_decision.sql",
+      "atoms": 1,
+      "rendered": 0,
+      "refused": [
+        {
+          "atom": 1,
+          "symbol": "ciflags",
+          "reason": "computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process"
+        }
+      ]
+    },
+    {
+      "entrypoint": "Contact::can_view_document_history",
+      "file": "views/Contact__can_view_document_history.sql",
+      "atoms": 1,
+      "rendered": 0,
+      "refused": [
+        {
+          "atom": 1,
+          "symbol": "ciflags",
+          "reason": "computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process"
+        }
+      ]
+    },
+    {
+      "entrypoint": "Contact::can_view_paper",
+      "file": "views/Contact__can_view_paper.sql",
+      "atoms": 1,
+      "rendered": 0,
+      "refused": [
+        {
+          "atom": 1,
+          "symbol": "ciflags",
+          "reason": "computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process"
+        }
+      ]
+    },
+    {
+      "entrypoint": "Contact::can_view_pdf",
+      "file": "views/Contact__can_view_pdf.sql",
+      "atoms": 1,
+      "rendered": 0,
+      "refused": [
+        {
+          "atom": 1,
+          "symbol": "ciflags",
+          "reason": "computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process"
+        }
+      ]
+    },
+    {
+      "entrypoint": "Contact::is_admin",
+      "file": "views/Contact__is_admin.sql",
+      "atoms": 1,
+      "rendered": 0,
+      "refused": [
+        {
+          "atom": 1,
+          "symbol": "ciflags",
+          "reason": "computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process"
+        }
+      ]
+    },
+    {
+      "entrypoint": "Contact::is_author_view",
+      "file": "views/Contact__is_author_view.sql",
+      "atoms": 1,
+      "rendered": 0,
+      "refused": [
+        {
+          "atom": 1,
+          "symbol": "ciflags",
+          "reason": "computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process"
+        }
+      ]
+    },
+    {
+      "entrypoint": "Contact::is_conflict_view",
+      "file": "views/Contact__is_conflict_view.sql",
+      "atoms": 1,
+      "rendered": 0,
+      "refused": [
+        {
+          "atom": 1,
+          "symbol": "ciflags",
+          "reason": "computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process"
+        }
+      ]
+    },
+    {
+      "entrypoint": "PaperContactInfo::act_author_view",
+      "file": "views/PaperContactInfo__act_author_view.sql",
+      "atoms": 1,
+      "rendered": 0,
+      "refused": [
+        {
+          "atom": 1,
+          "symbol": "ciflags",
+          "reason": "computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process"
+        }
+      ]
+    },
+    {
+      "entrypoint": "PaperContactInfo::allow_admin",
+      "file": "views/PaperContactInfo__allow_admin.sql",
+      "atoms": 1,
+      "rendered": 0,
+      "refused": [
+        {
+          "atom": 1,
+          "symbol": "ciflags",
+          "reason": "computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process"
+        }
+      ]
+    },
+    {
+      "entrypoint": "PaperContactInfo::allow_author_edit",
+      "file": "views/PaperContactInfo__allow_author_edit.sql",
+      "atoms": 1,
+      "rendered": 0,
+      "refused": [
+        {
+          "atom": 1,
+          "symbol": "ciflags",
+          "reason": "computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process"
+        }
+      ]
+    },
+    {
+      "entrypoint": "PaperContactInfo::allow_author_view",
+      "file": "views/PaperContactInfo__allow_author_view.sql",
+      "atoms": 1,
+      "rendered": 0,
+      "refused": [
+        {
+          "atom": 1,
+          "symbol": "ciflags",
+          "reason": "computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process"
+        }
+      ]
+    },
+    {
+      "entrypoint": "PaperContactInfo::allow_manage",
+      "file": "views/PaperContactInfo__allow_manage.sql",
+      "atoms": 1,
+      "rendered": 0,
+      "refused": [
+        {
+          "atom": 1,
+          "symbol": "ciflags",
+          "reason": "computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process"
+        }
+      ]
+    },
+    {
+      "entrypoint": "PaperContactInfo::allow_manage_reviews",
+      "file": "views/PaperContactInfo__allow_manage_reviews.sql",
+      "atoms": 1,
+      "rendered": 0,
+      "refused": [
+        {
+          "atom": 1,
+          "symbol": "ciflags",
+          "reason": "computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process"
+        }
+      ]
+    },
+    {
+      "entrypoint": "PaperContactInfo::allow_pc",
+      "file": "views/PaperContactInfo__allow_pc.sql",
+      "atoms": 1,
+      "rendered": 0,
+      "refused": [
+        {
+          "atom": 1,
+          "symbol": "ciflags",
+          "reason": "computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process"
+        }
+      ]
+    },
+    {
+      "entrypoint": "PaperContactInfo::allow_pc_broad",
+      "file": "views/PaperContactInfo__allow_pc_broad.sql",
+      "atoms": 1,
+      "rendered": 0,
+      "refused": [
+        {
+          "atom": 1,
+          "symbol": "ciflags",
+          "reason": "computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process"
+        }
+      ]
+    },
+    {
+      "entrypoint": "PaperContactInfo::can_manage",
+      "file": "views/PaperContactInfo__can_manage.sql",
+      "atoms": 1,
+      "rendered": 0,
+      "refused": [
+        {
+          "atom": 1,
+          "symbol": "ciflags",
+          "reason": "computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process"
+        }
+      ]
+    },
+    {
+      "entrypoint": "PaperContactInfo::can_manage_reviews",
+      "file": "views/PaperContactInfo__can_manage_reviews.sql",
+      "atoms": 1,
+      "rendered": 0,
+      "refused": [
+        {
+          "atom": 1,
+          "symbol": "ciflags",
+          "reason": "computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process"
+        }
+      ]
+    },
+    {
+      "entrypoint": "PaperContactInfo::can_manage_tags",
+      "file": "views/PaperContactInfo__can_manage_tags.sql",
+      "atoms": 1,
+      "rendered": 0,
+      "refused": [
+        {
+          "atom": 1,
+          "symbol": "ciflags",
+          "reason": "computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process"
+        }
+      ]
+    },
+    {
+      "entrypoint": "PaperContactInfo::can_view",
+      "file": "views/PaperContactInfo__can_view.sql",
+      "atoms": 1,
+      "rendered": 0,
+      "refused": [
+        {
+          "atom": 1,
+          "symbol": "ciflags",
+          "reason": "computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process"
+        }
+      ]
+    },
+    {
+      "entrypoint": "PaperContactInfo::can_view_decision",
+      "file": "views/PaperContactInfo__can_view_decision.sql",
+      "atoms": 1,
+      "rendered": 0,
+      "refused": [
+        {
+          "atom": 1,
+          "symbol": "ciflags",
+          "reason": "computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process"
+        }
+      ]
+    },
+    {
+      "entrypoint": "PaperContactInfo::conflicted",
+      "file": "views/PaperContactInfo__conflicted.sql",
+      "atoms": 1,
+      "rendered": 1,
+      "refused": []
+    },
+    {
+      "entrypoint": "PaperContactInfo::is_admin",
+      "file": "views/PaperContactInfo__is_admin.sql",
+      "atoms": 1,
+      "rendered": 0,
+      "refused": [
+        {
+          "atom": 1,
+          "symbol": "ciflags",
+          "reason": "computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process"
+        }
+      ]
+    },
+    {
+      "entrypoint": "PaperContactInfo::is_author",
+      "file": "views/PaperContactInfo__is_author.sql",
+      "atoms": 1,
+      "rendered": 1,
+      "refused": []
+    },
+    {
+      "entrypoint": "PaperContactInfo::is_author_view",
+      "file": "views/PaperContactInfo__is_author_view.sql",
+      "atoms": 1,
+      "rendered": 0,
+      "refused": [
+        {
+          "atom": 1,
+          "symbol": "ciflags",
+          "reason": "computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process"
+        }
+      ]
+    },
+    {
+      "entrypoint": "PaperContactInfo::is_conflict_view",
+      "file": "views/PaperContactInfo__is_conflict_view.sql",
+      "atoms": 1,
+      "rendered": 0,
+      "refused": [
+        {
+          "atom": 1,
+          "symbol": "ciflags",
+          "reason": "computed in PHP by Contact::rights() from conflict and review rows; absent from schema.sql. It is the flags word the whole permission layer tests, and it exists only in process"
+        }
+      ]
+    },
+    {
+      "entrypoint": "PaperContactInfo::is_reviewer",
+      "file": "views/PaperContactInfo__is_reviewer.sql",
+      "atoms": 1,
+      "rendered": 1,
+      "refused": []
+    },
+    {
+      "entrypoint": "PaperContactInfo::review_submitted",
+      "file": "views/PaperContactInfo__review_submitted.sql",
+      "atoms": 1,
+      "rendered": 1,
+      "refused": []
+    },
+    {
+      "entrypoint": "PaperContactInfo::scope_allows",
+      "file": "views/PaperContactInfo__scope_allows.sql",
+      "atoms": 1,
+      "rendered": 0,
+      "refused": [
+        {
+          "atom": 1,
+          "symbol": "bits",
+          "reason": "a method ARGUMENT of scope_allows($bits), not data"
+        }
+      ]
+    },
+    {
+      "entrypoint": "PaperContactInfo::self_assigned",
+      "file": "views/PaperContactInfo__self_assigned.sql",
+      "atoms": 1,
+      "rendered": 1,
+      "refused": []
+    },
+    {
+      "entrypoint": "PaperContactInfo::unconflicted",
+      "file": "views/PaperContactInfo__unconflicted.sql",
+      "atoms": 1,
+      "rendered": 1,
+      "refused": []
+    }
+  ]
+}
