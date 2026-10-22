@@ -1,0 +1,4 @@
+-- Contact::can_view_paper
+-- 0 of 1 atoms rendered
+-- EXCLUDED ATOMS — 1 of 1
+--   atom 1: outcome — Paper rows are not owned by a contact; scoping a view over Paper.outcome needs a join to PaperConflict or PaperReview, which is not a declared fact
