@@ -1,0 +1,667 @@
+{
+ "schema_version": "1.4",
+ "form": "policy_ir.json/1",
+ "ir": "policy",
+ "policy": {
+  "$": "Policy",
+  "f": {
+   "entry": {
+    "$": "EntrySignature",
+    "f": {
+     "name": "PaperContactInfo::can_view_decision",
+     "params": {
+      "$": "tuple",
+      "v": [
+       {
+        "$": "tuple",
+        "v": [
+         "bits",
+         {
+          "$": "Type",
+          "f": {
+           "kind": "int",
+           "elem": null,
+           "name": null,
+           "fields": {
+            "$": "tuple",
+            "v": []
+           },
+           "nullable": false,
+           "width": null
+          }
+         }
+        ]
+       },
+       {
+        "$": "tuple",
+        "v": [
+         "conflictType",
+         {
+          "$": "Type",
+          "f": {
+           "kind": "int",
+           "elem": null,
+           "name": null,
+           "fields": {
+            "$": "tuple",
+            "v": []
+           },
+           "nullable": false,
+           "width": null
+          }
+         }
+        ]
+       },
+       {
+        "$": "tuple",
+        "v": [
+         "outcome",
+         {
+          "$": "Type",
+          "f": {
+           "kind": "int",
+           "elem": null,
+           "name": null,
+           "fields": {
+            "$": "tuple",
+            "v": []
+           },
+           "nullable": false,
+           "width": null
+          }
+         }
+        ]
+       },
+       {
+        "$": "tuple",
+        "v": [
+         "pdf",
+         {
+          "$": "Type",
+          "f": {
+           "kind": "bool",
+           "elem": null,
+           "name": null,
+           "fields": {
+            "$": "tuple",
+            "v": []
+           },
+           "nullable": false,
+           "width": null
+          }
+         }
+        ]
+       },
+       {
+        "$": "tuple",
+        "v": [
+         "reviewType",
+         {
+          "$": "Type",
+          "f": {
+           "kind": "int",
+           "elem": null,
+           "name": null,
+           "fields": {
+            "$": "tuple",
+            "v": []
+           },
+           "nullable": false,
+           "width": null
+          }
+         }
+        ]
+       },
+       {
+        "$": "tuple",
+        "v": [
+         "rflags",
+         {
+          "$": "Type",
+          "f": {
+           "kind": "int",
+           "elem": null,
+           "name": null,
+           "fields": {
+            "$": "tuple",
+            "v": []
+           },
+           "nullable": false,
+           "width": null
+          }
+         }
+        ]
+       },
+       {
+        "$": "tuple",
+        "v": [
+         "roles",
+         {
+          "$": "Type",
+          "f": {
+           "kind": "int",
+           "elem": null,
+           "name": null,
+           "fields": {
+            "$": "tuple",
+            "v": []
+           },
+           "nullable": false,
+           "width": null
+          }
+         }
+        ]
+       },
+       {
+        "$": "tuple",
+        "v": [
+         "timeSubmitted",
+         {
+          "$": "Type",
+          "f": {
+           "kind": "int",
+           "elem": null,
+           "name": null,
+           "fields": {
+            "$": "tuple",
+            "v": []
+           },
+           "nullable": false,
+           "width": null
+          }
+         }
+        ]
+       },
+       {
+        "$": "tuple",
+        "v": [
+         "timeWithdrawn",
+         {
+          "$": "Type",
+          "f": {
+           "kind": "int",
+           "elem": null,
+           "name": null,
+           "fields": {
+            "$": "tuple",
+            "v": []
+           },
+           "nullable": false,
+           "width": null
+          }
+         }
+        ]
+       }
+      ]
+     },
+     "inferred": true
+    }
+   },
+   "signatures": {
+    "$": "tuple",
+    "v": [
+     {
+      "$": "Signature",
+      "f": {
+       "name": "HotCRP#authorized_operation",
+       "params": {
+        "$": "tuple",
+        "v": [
+         {
+          "$": "tuple",
+          "v": [
+           "conflictType",
+           {
+            "$": "Type",
+            "f": {
+             "kind": "int",
+             "elem": null,
+             "name": null,
+             "fields": {
+              "$": "tuple",
+              "v": []
+             },
+             "nullable": false,
+             "width": null
+            }
+           }
+          ]
+         },
+         {
+          "$": "tuple",
+          "v": [
+           "reviewType",
+           {
+            "$": "Type",
+            "f": {
+             "kind": "int",
+             "elem": null,
+             "name": null,
+             "fields": {
+              "$": "tuple",
+              "v": []
+             },
+             "nullable": false,
+             "width": null
+            }
+           }
+          ]
+         },
+         {
+          "$": "tuple",
+          "v": [
+           "rflags",
+           {
+            "$": "Type",
+            "f": {
+             "kind": "int",
+             "elem": null,
+             "name": null,
+             "fields": {
+              "$": "tuple",
+              "v": []
+             },
+             "nullable": false,
+             "width": null
+            }
+           }
+          ]
+         },
+         {
+          "$": "tuple",
+          "v": [
+           "roles",
+           {
+            "$": "Type",
+            "f": {
+             "kind": "int",
+             "elem": null,
+             "name": null,
+             "fields": {
+              "$": "tuple",
+              "v": []
+             },
+             "nullable": false,
+             "width": null
+            }
+           }
+          ]
+         },
+         {
+          "$": "tuple",
+          "v": [
+           "timeSubmitted",
+           {
+            "$": "Type",
+            "f": {
+             "kind": "int",
+             "elem": null,
+             "name": null,
+             "fields": {
+              "$": "tuple",
+              "v": []
+             },
+             "nullable": false,
+             "width": null
+            }
+           }
+          ]
+         },
+         {
+          "$": "tuple",
+          "v": [
+           "timeWithdrawn",
+           {
+            "$": "Type",
+            "f": {
+             "kind": "int",
+             "elem": null,
+             "name": null,
+             "fields": {
+              "$": "tuple",
+              "v": []
+             },
+             "nullable": false,
+             "width": null
+            }
+           }
+          ]
+         },
+         {
+          "$": "tuple",
+          "v": [
+           "outcome",
+           {
+            "$": "Type",
+            "f": {
+             "kind": "int",
+             "elem": null,
+             "name": null,
+             "fields": {
+              "$": "tuple",
+              "v": []
+             },
+             "nullable": false,
+             "width": null
+            }
+           }
+          ]
+         },
+         {
+          "$": "tuple",
+          "v": [
+           "pdf",
+           {
+            "$": "Type",
+            "f": {
+             "kind": "bool",
+             "elem": null,
+             "name": null,
+             "fields": {
+              "$": "tuple",
+              "v": []
+             },
+             "nullable": false,
+             "width": null
+            }
+           }
+          ]
+         },
+         {
+          "$": "tuple",
+          "v": [
+           "bits",
+           {
+            "$": "Type",
+            "f": {
+             "kind": "int",
+             "elem": null,
+             "name": null,
+             "fields": {
+              "$": "tuple",
+              "v": []
+             },
+             "nullable": false,
+             "width": null
+            }
+           }
+          ]
+         }
+        ]
+       },
+       "returns": {
+        "$": "Type",
+        "f": {
+         "kind": "bool",
+         "elem": null,
+         "name": null,
+         "fields": {
+          "$": "tuple",
+          "v": []
+         },
+         "nullable": false,
+         "width": null
+        }
+       },
+       "inferred": true,
+       "kind": "target_function"
+      }
+     }
+    ]
+   },
+   "atoms": {
+    "$": "tuple",
+    "v": [
+     {
+      "$": "PolicyAtom",
+      "f": {
+       "events": {
+        "$": "tuple",
+        "v": [
+         {
+          "$": "Access",
+          "f": {
+           "target": "HotCRP#authorized_operation",
+           "args": {
+            "$": "tuple",
+            "v": [
+             {
+              "$": "tuple",
+              "v": [
+               "conflictType",
+               {
+                "$": "Sym",
+                "f": {
+                 "name": "conflictType"
+                }
+               }
+              ]
+             },
+             {
+              "$": "tuple",
+              "v": [
+               "reviewType",
+               {
+                "$": "Sym",
+                "f": {
+                 "name": "reviewType"
+                }
+               }
+              ]
+             },
+             {
+              "$": "tuple",
+              "v": [
+               "rflags",
+               {
+                "$": "Sym",
+                "f": {
+                 "name": "rflags"
+                }
+               }
+              ]
+             },
+             {
+              "$": "tuple",
+              "v": [
+               "roles",
+               {
+                "$": "Sym",
+                "f": {
+                 "name": "roles"
+                }
+               }
+              ]
+             },
+             {
+              "$": "tuple",
+              "v": [
+               "timeSubmitted",
+               {
+                "$": "Sym",
+                "f": {
+                 "name": "timeSubmitted"
+                }
+               }
+              ]
+             },
+             {
+              "$": "tuple",
+              "v": [
+               "timeWithdrawn",
+               {
+                "$": "Sym",
+                "f": {
+                 "name": "timeWithdrawn"
+                }
+               }
+              ]
+             },
+             {
+              "$": "tuple",
+              "v": [
+               "outcome",
+               {
+                "$": "Sym",
+                "f": {
+                 "name": "outcome"
+                }
+               }
+              ]
+             },
+             {
+              "$": "tuple",
+              "v": [
+               "pdf",
+               {
+                "$": "Sym",
+                "f": {
+                 "name": "pdf"
+                }
+               }
+              ]
+             },
+             {
+              "$": "tuple",
+              "v": [
+               "bits",
+               {
+                "$": "Sym",
+                "f": {
+                 "name": "bits"
+                }
+               }
+              ]
+             }
+            ]
+           },
+           "result": {
+            "$": "Ref",
+            "f": {
+             "id": "c1"
+            }
+           },
+           "note": null,
+           "interaction": null
+          }
+         }
+        ]
+       },
+       "condition": {
+        "$": "Condition",
+        "f": {
+         "branches": {
+          "$": "tuple",
+          "v": [
+           {
+            "$": "Conjunction",
+            "f": {
+             "preds": {
+              "$": "tuple",
+              "v": [
+               {
+                "$": "Predicate",
+                "f": {
+                 "lhs": {
+                  "$": "Sym",
+                  "f": {
+                   "name": "conflictType"
+                  }
+                 },
+                 "op": "<=",
+                 "rhs": {
+                  "$": "Lit",
+                  "f": {
+                   "value": 1
+                  }
+                 }
+                }
+               },
+               {
+                "$": "Predicate",
+                "f": {
+                 "lhs": {
+                  "$": "Arith",
+                  "f": {
+                   "op": "&",
+                   "args": {
+                    "$": "tuple",
+                    "v": [
+                     {
+                      "$": "Sym",
+                      "f": {
+                       "name": "roles"
+                      }
+                     },
+                     {
+                      "$": "Lit",
+                      "f": {
+                       "value": 15
+                      }
+                     }
+                    ]
+                   }
+                  }
+                 },
+                 "op": "!=",
+                 "rhs": {
+                  "$": "Lit",
+                  "f": {
+                   "value": 0
+                  }
+                 }
+                }
+               },
+               {
+                "$": "Predicate",
+                "f": {
+                 "lhs": {
+                  "$": "Arith",
+                  "f": {
+                   "op": "&",
+                   "args": {
+                    "$": "tuple",
+                    "v": [
+                     {
+                      "$": "Sym",
+                      "f": {
+                       "name": "roles"
+                      }
+                     },
+                     {
+                      "$": "Lit",
+                      "f": {
+                       "value": 4
+                      }
+                     }
+                    ]
+                   }
+                  }
+                 },
+                 "op": "!=",
+                 "rhs": {
+                  "$": "Lit",
+                  "f": {
+                   "value": 0
+                  }
+                 }
+                }
+               }
+              ]
+             }
+            }
+           }
+          ]
+         }
+        }
+       },
+       "reliable": true
+      }
+     }
+    ]
+   },
+   "certificate": null
+  }
+ }
+}
+

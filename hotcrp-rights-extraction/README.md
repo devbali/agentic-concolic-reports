@@ -1,38 +1,35 @@
 # HotCRP with `rights()` computing
 
-A probe with one question: **does letting `Contact::rights()` actually run turn
-the extracted policy relational?**
+All 40 permission entrypoints, driven with `Contact::rights()` **computing**
+rather than pre-empted.
 
-It does.
+| | sibling corpus | here |
+|---|---|---|
+| atoms | 40 | 40 |
+| **rendered as SQL** | **6** | **39** |
+| refused | 34 (33 × `ciflags`) | 1 (`bits`, a method argument) |
+| **complete coverage** | 40 | **0** |
+
+The first three rows are the win. **The last one is the catch, and it is not
+a footnote** — see [Soundness](#soundness-what-39-rendered-does-and-does-not-mean).
 
 ```sh
 python3 extract.py          # 96 seeds -> dumps, policy.json, policy.sql
 ```
 
-## The result
+## What changed
 
-| | sibling harness | this one |
-|---|---|---|
-| `rights()` | pre-empted via `_last_rights` | **computes** |
-| symbols in the conditions | `ciflags`, `scope_bits` | `conflictType`, `reviewType`, `rflags`, `roles`, `outcome` |
-| `ciflags` appears | in 36 of 40 atoms | **never** |
-
-Seeding one paper and one viewer and asking `can_view_paper`:
+Letting `rights()` compute replaces `ciflags` — a flag word that exists only
+in process — with conditions over the rows it is computed *from*. `ciflags`
+appears in 36 of the sibling's 40 atoms and in **none** of these.
 
 ```
-SYMBOLS: {conflictType: 6, isPC: 4, privChair: 2, reviewType: 1, outcome: 1}
-  conflictType <= 1        conflictType >= 32
-  conflictType > 1         reviewType == 0
+PaperContactInfo::is_author     conflictType >= 32            (CONFLICT_AUTHOR)
+Contact::can_view_decision      conflictType <= 1 AND roles&15 AND roles&4
+                                                              (unconflicted chair)
 ```
 
-Those are `PaperConflict.conflictType` and `PaperReview.reviewType` — real
-columns of real tables. The flag word the whole permission layer tests has
-been computed *away* into conditions over the rows it was computed *from*,
-which is exactly what 33 of the 40 refusals in
-[`../hotcrp-policy-extraction/`](../hotcrp-policy-extraction/README.md) were
-waiting for.
-
-96 seeds, 22 distinct traces, 226 path conditions, no errored runs.
+288 seeds per entrypoint, 17–44 distinct traces each, no errored runs.
 
 ## How it differs, in one line each
 
@@ -92,29 +89,42 @@ the policy anyone who knows the application would state:
 0x8000 — so normalization did not fold it. It is harmless and it is not
 simplified, and a reader should know which of those two it is.
 
-## Honest limits of this probe
+## Soundness: what "39 rendered" does and does not mean
 
-- **One entrypoint.** `Contact::can_view_paper` only.
-- **A seed GRID, not solver-driven exploration.** 96 combinations chosen to
-  span the conflict/review/role space. `../hotcrp-typed-policies/run_concolic.py`
-  has the real exploration loop; this answers a narrower question and a grid
-  answers it.
-- **Coverage is not complete** (10 nodes). This probe was not driven to
-  completeness — it was driven until it answered its question.
+**These policies are sound as observed and not proven complete.** Every
+disjunct is a path some run really took, so nothing in them is invented. But a
+disjunction is the whole policy only if every path was explored, and
+`CoverageChecker` reports **0 of 40 entrypoints complete** (typically 1 missing
+branch each).
+
+The consequence has a direction, and it is the uncomfortable one: an
+incomplete disjunction is **narrower** than the application. Concretely, the
+grid seeds `roles ∈ {0, 1, 5}` — nobody, PC, chair+PC — so `roles = 2`
+(`ROLE_ADMIN` alone) is never exercised, and no disjunct covers an admin who
+is not a chair. Enforcing such a view would deny an access HotCRP allows.
+
+So: use these as an extracted *description* of what the explored paths permit,
+not yet as an enforceable policy. Driving each entrypoint to `complete` is the
+remaining work, and it is the same seed-feedback loop the sibling's
+`run_concolic.py` already implements — this driver uses a fixed grid instead,
+because its question was whether the policy turns relational at all.
+
+A second, smaller caveat: the policies are **not minimal**. `is_author`'s real
+predicate is `conflictType >= 32`, but it renders as three disjuncts differing
+only in role, because each `rights()` path produced its own conjunction and
+normalization did not fold them. Correct, but broader than it needs to be.
+
+## Other limits
+
+- **`PaperContactInfo::scope_allows` is refused**, on `bits` — a method
+  argument, not data. That refusal is correct and will not go away.
 - **`load_into` is skipped, so there is still no SQL query event.** The rows
   are seeded at the boundary rather than parsed out of an intercepted
-  statement. Capturing the statement needs the query boundary mocked, and
-  `Runtime::call` can only return a `Value`, never an opaque result handle the
-  application walks — see the parent discussion. That is a separate gap from
-  this one, and it is the one OTE would need.
-- **The join is declared, not inferred.** `Paper.paperId =
-  PaperConflict.paperId` and `ContactInfo.contactId = PaperConflict.contactId`
-  are cited to `schema.sql`; with them removed the same atom is refused again,
-  which `test_an_undeclared_join_is_still_refused` pins.
-- **It did not help the 40-atom corpus**, which stays at 6 rendered / 33
-  `ciflags` refusals. That is the diagnosis confirming itself: those atoms are
-  blocked by the pre-empted `rights()`, not by the mapping, and the fix for
-  them is this harness.
+  statement. Mocking the query needs a target that can return an opaque
+  result handle, and `Runtime::call` only returns a `Value`. That is the gap
+  OTE would need, and it is separate from this one.
 - **The `(int)` cast fix is a prerequisite** and is currently uncommitted
   (see `runtimes/php_runtime/tests/t_cast.php`). Without it, parsing rows
   through `(int) $x[2]` silently yields `1`.
+- **The join is declared, not inferred**, and cited to `schema.sql`; with the
+  joins removed the same atoms are refused again.

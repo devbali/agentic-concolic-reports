@@ -241,9 +241,32 @@ function invoke(Concolic\Runtime $rt, string $entry, array $v)
         (new ReflectionProperty(Contact::class, 'rights_version'))->getValue());
 
     [$owner, $method] = explode('::', $entry);
+
+    if ($owner === 'Contact') {
+        return match ($method) {
+            'can_view_paper', 'can_view_pdf' => $user->$method($prow),
+            'can_view_comment_tags' => $user->$method($prow,
+                (new ReflectionClass(CommentInfo::class))->newInstanceWithoutConstructor()),
+            default => $user->$method($prow),
+        };
+    }
+
+    // A PaperContactInfo predicate is a test of `ciflags`, so it is only
+    // interesting once `rights()` has COMPUTED that word. Calling the
+    // predicate on the seeded object alone would test a zero.
+    //
+    // `rights()` is private, so it is reached by reflection -- the same
+    // instrument the sibling harness uses, pointed the other way: there it
+    // pre-empts the computation, here it performs it. Its branches land in
+    // the trace, which is correct: they ARE the policy that decides the flag
+    // the predicate then tests.
+    $rights = (new ReflectionMethod(Contact::class, 'rights'));
+    $computed = $rights->invoke($user, $prow);
+
     return match ($method) {
-        'can_view_paper', 'can_view_pdf' => $user->$method($prow),
-        default => $user->$method($prow),
+        'can_view' => $computed->can_view($v['pdf']),
+        'scope_allows' => $computed->scope_allows($v['bits']),
+        default => $computed->$method(),
     };
 }
 

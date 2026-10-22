@@ -1,0 +1,3 @@
+-- PaperContactInfo::allow_manage_reviews
+-- 1 of 1 atoms rendered
+SELECT `ContactInfo`.`contactId`, `ContactInfo`.`roles`, `Paper`.`outcome`, `PaperConflict`.`conflictType` FROM `ContactInfo` JOIN `PaperConflict` ON `ContactInfo`.`contactId` = `PaperConflict`.`contactId` JOIN `Paper` ON `Paper`.`paperId` = `PaperConflict`.`paperId` WHERE `ContactInfo`.`contactId` = _MY_UID AND ((`PaperConflict`.`conflictType` <= 1 AND (`ContactInfo`.`roles` & 15) <> 0 AND (`ContactInfo`.`roles` & 4) <> 0) OR (`PaperConflict`.`conflictType` > 1 AND `Paper`.`outcome` = 0 AND (`ContactInfo`.`roles` & 15) <> 0 AND (`ContactInfo`.`roles` & 4) <> 0));

@@ -1,0 +1,4 @@
+-- PaperContactInfo::scope_allows
+-- 0 of 1 atoms rendered
+-- EXCLUDED ATOMS — 1 of 1
+--   atom 1: bits — a method ARGUMENT of scope_allows($bits), not data
