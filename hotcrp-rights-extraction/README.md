@@ -8,14 +8,22 @@ rather than pre-empted.
 | atoms | 40 | 40 |
 | **rendered as SQL** | **6** | **39** |
 | refused | 34 (33 × `ciflags`) | 1 (`bits`, a method argument) |
-| **complete coverage** | 40 | **0** — see [Why](#why-completeness-is-not-seed-limited) |
+| **complete coverage** | 40 | **40** |
 
-The first three rows are the win. **The last one is the catch, and it is not
-a footnote** — see [Soundness](#soundness-what-39-rendered-does-and-does-not-mean).
+Every row is now a win, and the last one took a fix to the engine's
+arithmetic rather than more seeds — see
+[Why](#why-completeness-was-not-seed-limited-and-what-fixed-it).
 
 ```sh
-python3 extract.py          # 96 seeds -> dumps, policy.json, policy.sql
+python3 extract.py          # solver-driven -> dumps, policy.json, policy.sql
 ```
+
+**The measurement, in full.** 40 entrypoints, 22 743 path conditions,
+37–92 distinct traces each. No errored runs, no truncated demand set, no
+solver timeout, no dropped constraint, no budget hit; `tree_complete` on
+every entrypoint and no provisional foreclosure. Those are the ways this
+number could have been bought rather than earned, and `summary.json` carries
+each one per entrypoint.
 
 ## What changed
 
@@ -29,7 +37,7 @@ Contact::can_view_decision      conflictType <= 1 AND roles&15 AND roles&4
                                                               (unconflicted chair)
 ```
 
-288 seeds per entrypoint, 17–44 distinct traces each, no errored runs.
+37–92 distinct traces per entrypoint, no errored runs.
 
 ## How it differs, in one line each
 
@@ -89,61 +97,127 @@ the policy anyone who knows the application would state:
 0x8000 — so normalization did not fold it. It is harmless and it is not
 simplified, and a reader should know which of those two it is.
 
-## Why completeness is not seed-limited
+## Why completeness was not seed-limited, and what fixed it
 
-The fixed grid was replaced with the standard concolic loop — run, negate each
-path condition against its prefix, solve, feed the model back as a seed — the
-same expansion `../hotcrp-typed-policies/run_concolic.py` uses, batched one
-PHP process per round so a HotCRP boot is not paid per seed. It roughly
-doubled the traces per entrypoint (22 → 46).
+The fixed grid was first replaced with the standard concolic loop — run,
+negate each path condition against its prefix, solve, feed the model back as
+a seed. It roughly doubled the traces per entrypoint (22 → 46) and **changed
+nothing**: still 0 of 40 complete. The reason was not the corpus.
 
-**Coverage still reports 0 of 40 complete, and more seeds will not fix it.**
+### The defect: two theories of `&` in one report
 
-Of the 40 missing branches, **39 are unsatisfiable in PHP**. The engine
-deliberately treats masks as uninterpreted functions — right for a shared
-coverage claim, which must not depend on one language's integer width — and
-the cost is that it demands combinations arithmetic forbids:
+The shared solver treats the bitwise operators as UNINTERPRETED FUNCTIONS.
+For *proposing* a seed that is the safe direction — a model the program
+disagrees with is re-driven and re-measured, so a weak theory costs a wasted
+run. **For measuring coverage it is the unsafe direction**, and that is the
+half nobody had looked at: a weaker theory also admits DEMANDS the program
+can never satisfy, and nothing re-measures a demand away.
 
-| demanded | why it cannot happen |
-|---|---|
-| `roles & 4 != 0` **and** `roles & 15 == 0` (38 of them) | `ROLE_CHAIR = 4` is *inside* `ROLE_PCLIKE = 15` |
-| `Not(bits & -1 == bits)` | `-1` is all ones, so `x & -1 == x` always |
+So the checker asked for a run where
 
-Tree completeness is blocked separately, by a branch that is genuinely **dead
-in HotCRP**: `((roles & 79) & 32768) != 0` is never taken, and never can be,
-since `79 & 32768 == 0`. It is the same trivially-true conjunct visible in the
-rendered SQL.
+```
+BitAnd(roles, 4)  != 0     -- a chair
+BitAnd(roles, 15) == 0     -- not pc-like
+```
 
-Declaring those three as assumptions — two `SymbolicConstraintAssumption`s for
-the mask arithmetic and a `OneSideUntrackedPathAssumption` for the dead branch
-— does bite: `tree_missing` drops to 0 and the reported combination changes.
-But a new combination surfaces in its place, and the entrypoints still report
-one missing each.
+which is satisfiable only because the solver cannot see that `ROLE_CHAIR = 4`
+is one of the bits of `ROLE_PCLIKE = 15`. **38 of the 40 missing branches
+were that single pair.** Another demanded `Not(BitAnd(-1, b) == b)`, and
+tree completeness was separately blocked by `((roles & 79) & 32768) != 0` —
+`79 & 32768 == 0`, so the branch is dead in HotCRP and no seed reaches it.
 
-That is the finding, and it is about the engine's model rather than the
-corpus: **each pruned artifact reveals another, because what is missing is
-mask semantics, not seeds.** Two honest ways forward, neither of which is
-"explore harder":
+The asymmetry is the whole bug: `lower()` in this file has ALWAYS lowered
+masks exactly (`Int2BV`/`BV2Int`), because a seed has to replay in real PHP.
+The coverage query did not. Same corpus, same operator, two meanings.
 
-1. **A report-local mask lowering.** The sibling already does exactly this for
-   seed generation (`lower()` maps `&` onto `Int2BV`/`BV2Int`), precisely
-   because a seed must replay in real PHP. The coverage query could use the
-   same lowering for this corpus, leaving the shared solver's UF treatment
-   untouched.
-2. **Assumptions per mask fact**, as above — sound, since each is arithmetic
-   rather than judgement, but there is one per mask pair and they accumulate.
+### The fix: declare the width, once, around the coverage query
 
-## Soundness: what "39 rendered" means
+`concolic/solver.py` grew `machine_integers(width, signed, cite)` — opt-in,
+default OFF, because a corpus spanning runtimes has no single width to
+declare and a shared coverage claim must not depend on one. This corpus is
+one language, so it has one, and `php_int_width()` ASKS the interpreter that
+produced the dumps rather than hard-coding 64: a 32-bit build would answer
+differently, and a wrong width prunes demands that are really reachable.
 
-Sound as observed, not proven complete. Every disjunct is a path some run
-really took, so nothing is invented — but a disjunction is the whole policy
-only if every path was explored, and an incomplete one is **narrower** than
-the application, which is the unsafe direction. Do not enforce these; read
-them as a description of what the explored paths permit.
+The declaration also BOUNDS the variables. `Int2BV` is total — handed an
+`Int` too wide it truncates silently — which showed up as
+`Not(BitAnd(-1, r) == r)` coming back SAT with `r = -(2**64) + 4`, a value no
+PHP integer can spell. Under a declared width those models are excluded.
+
+Three things followed:
+
+| | before | after |
+|---|---|---|
+| the impossible mask pair | demanded | UNSAT |
+| `tree_complete` | False (dead branch) | **True, with no assumption** |
+| remaining demand | phantom | **genuinely reachable** |
+
+### What the honest demand turned out to be
+
+With the phantoms gone, each entrypoint had exactly one real demand left:
+chair, unconflicted, with a review, AND `outcome != 0`. Driving the
+checker's own witness showed why no seed could close it — the run takes
+*every* conjunct except the last, because an unconflicted chair returns
+before `outcome` is ever read.
+
+That is foreclosure, and it is not pairwise: neither `roles & 4` nor
+`conflictType <= 1` alone removes `outcome` from the path, only the two
+together. `foreclosure_subconjunctions=True` infers exactly that, from the
+corpus — `outcome != 0` foreclosed under (chair ∧ unconflicted), width 3,
+**non-provisional**, which it can only be while `tree_complete` holds. The
+lowering is what established that precondition.
+
+It is an inference with a falsifier, not a declaration: any run that matches
+the prefix and *does* evaluate the member removes it on the next pass.
+
+### Two edges that now close the loop
+
+- **Coverage witnesses re-enter the seed queue.** Prefix negation flips one
+  decision against the path before it, so a demand needing several decisions
+  to line up at once is not a seed it can propose; `MissingCoverage.
+  concrete_values` is exactly that assignment. Usable only under the
+  declaration, since the uninterpreted default produced unrepresentable
+  integers.
+- **A dropped constraint fails the entrypoint.** `check_satisfiability` logs
+  a warning and returns UNSAT for an expression it cannot parse, and an unsat
+  demand reads as "nothing missing" — false completeness arriving via a log
+  line nobody reads. The log line is collected; a non-empty one forces
+  `complete=False` and is reported as `dropped_constraints`.
+
+## Soundness: what "39 rendered, 40 complete" means
+
+**Complete is now a claim, and here is exactly what it claims.** Every
+tracked decision was observed with every satisfiable outcome
+(`tree_complete`), and every satisfiable assignment over every observed
+co-evaluation set was observed too, with the bitwise operators carrying
+PHP's own arithmetic. So the disjunction is the whole policy *over the
+symbols the harness makes symbolic*.
+
+**What it does not claim**, and these are the live blind spots:
+
+- **The seeded surface is the boundary.** `conflictType`, `reviewType`,
+  `rflags`, `roles`, `timeSubmitted`, `timeWithdrawn`, `outcome` are
+  symbolic; everything else about the paper, the conference settings and the
+  requester is concrete. A branch on an unseeded field is not missing
+  coverage, it is outside the universe being measured.
+- **The foreclosures are inferred, not proven.** `outcome != 0` is foreclosed
+  under (chair ∧ unconflicted) because no run in this corpus matched that
+  prefix and evaluated it. That is a universal over the corpus with a
+  falsifier, not a theorem about HotCRP — a run that matches and evaluates it
+  retracts the foreclosure and re-opens the demand.
+- **The width is a declaration.** `php -r 'echo PHP_INT_SIZE'` on the
+  interpreter that produced these dumps. On a 32-bit build the masks mean
+  something else and this corpus would have to be re-measured.
 
 They are also **not minimal**: `is_author`'s real predicate is
-`conflictType >= 32`, but it renders as three disjuncts differing only in
+`conflictType >= 32`, but it renders as several disjuncts differing only in
 role, because each `rights()` path produced its own conjunction.
+
+**And one conjunct is trivially true.** 22 of the views carry
+`((roles & 79) & 32768) = 0` — 79 has no bit at 0x8000. The solver now knows
+this (it is what unblocked `tree_complete`), but `normalize` does not fold
+mask arithmetic, so it survives into the SQL. Harmless, unsimplified, and
+a reader should know which of those two it is.
 
 ## Other limits
 

@@ -11,8 +11,8 @@ answers that without a second exploration engine.
 
 from __future__ import annotations
 
-import itertools
 import json
+import logging
 import pathlib
 import subprocess
 import sys
@@ -25,6 +25,7 @@ sys.path.insert(0, str(ROOT / "agentic_concolic_engine"))
 
 from concolic.coverage import CoverageChecker              # noqa: E402
 from concolic.model.run import Run                         # noqa: E402
+from concolic.solver import machine_integers               # noqa: E402
 from domains import load                                   # noqa: E402
 from domains.php_hotcrp_sql.render import render_views     # noqa: E402
 from dumps_to_policy.build import build_policy             # noqa: E402
@@ -52,15 +53,111 @@ ENTRIES = [f"PaperContactInfo::{m}" for m in PCI] + [f"Contact::{m}" for m in CO
 #: four combinations -- which between them is every shape `rights()` branches
 #: on for this entrypoint.
 #: The starting point. Everything at its zero; the solver finds the rest.
-DEFAULTS = {
+#: Row data: the columns `load_into` would have produced.
+ROW_DATA = {
     "conflictType": 0, "reviewType": 0, "rflags": 0, "roles": 0,
     "timeSubmitted": 0, "timeWithdrawn": 0, "outcome": 0,
     "pdf": False, "bits": 1,
 }
 
+#: CONFERENCE CONFIGURATION (`ConcolicConf` in harness.php). Every one of
+#: these answered identically on every run while the Conf was a default one,
+#: so `rights()` branched on them without ever DECIDING anything -- 15
+#: distinct symbolic decisions measured against ~71 branch points. These are
+#: the questions it actually asks.
+CONFERENCE = {
+    "has_tracks": False, "track_view_sensitive": False,
+    "track_view": False, "track_viewpdf": False,
+    "allow_conflicted_pc_view": False,
+    "time_pc_view": False, "time_pc_view_pdf": False,
+    "time_reviewer_view_decision": False,
+    "setting_viewrev_ext": 0, "setting_pc_confpdf": 0,
+}
+
+#: TWO ARMS, BOTH REPRODUCIBLE, because the comparison between them IS the
+#: result. `--rows` measures row data against a default conference and
+#: renders views; `--conference` adds the ten questions above, roughly
+#: doubles the decisions, and renders almost nothing -- because conference
+#: configuration is not row data and no view can express it. Overwriting one
+#: corpus with the other would leave that claim uncheckable.
+ARMS = {"rows": ROW_DATA, "conference": ROW_DATA | CONFERENCE}
+
+ARM = "conference"
+DEFAULTS = ARMS[ARM]
+
 #: Stop expanding one entrypoint after this many distinct traces. A budget,
 #: not a target: hitting it is reported, never silently accepted.
-TRACE_BUDGET = 400
+TRACE_BUDGET = 6000
+
+
+def php_int_width() -> int:
+    """PHP's integer width, ASKED rather than assumed.
+
+    It is the citation `machine_integers` demands, and asking the same
+    interpreter that produced the dumps is a stronger citation than a
+    constant in this file: a build with 32-bit integers would answer 4, and
+    the declaration below would be wrong in the direction that reports
+    coverage that is not there.
+    """
+    out = subprocess.run(["php", "-r", "echo PHP_INT_SIZE;"],
+                         capture_output=True, text=True, check=True)
+    return int(out.stdout.strip()) * 8
+
+
+#: Opened around `check_coverage` and nothing else. Seed generation already
+#: lowers masks exactly (`lower()`, below) because a seed must replay in real
+#: PHP; the coverage query did NOT, and the asymmetry was the whole defect --
+#: the demand universe contained combinations PHP arithmetic forbids
+#: (`roles & 4 != 0` with `roles & 15 == 0`, with ROLE_CHAIR inside
+#: ROLE_PCLIKE), which no seed could ever discharge. This corpus is one
+#: language, so it HAS a width to declare; the shared default stays
+#: uninterpreted for corpora that do not.
+WIDTH = php_int_width()
+
+
+class _SolverWarnings(logging.Handler):
+    """Fail loudly if the solver drops a constraint it could not parse.
+
+    `check_satisfiability` logs a warning and returns UNSATISFIABLE for an
+    expression it cannot evaluate, and under a coverage query an unsat demand
+    reads as "nothing missing". That is false completeness arriving by way of
+    a log line nobody reads, so the log line is collected and reported.
+    """
+
+    def __init__(self) -> None:
+        super().__init__(level=logging.WARNING)
+        self.seen: list[str] = []
+
+    def emit(self, record: logging.LogRecord) -> None:
+        self.seen.append(record.getMessage()[:200])
+
+
+#: Inputs the harness declares `int?` (see harness.php's `$types`).
+#: `Conf::setting()` returns `?int`, and HotCRP reads it as `(… ?? 0)`, so
+#: ABSENT is a distinct decision from any integer value. The engine
+#: synthesises a companion boolean `__concolic_null__<name>` when it lowers a
+#: comparison against null; it is not a declared `symbolic_var`, so a driver
+#: that only models the integers can never propose the absent side -- which
+#: is exactly what `tree_missing` reported.
+NULLABLE = ("setting_viewrev_ext", "setting_pc_confpdf")
+
+
+def null_sym(name: str) -> str:
+    return f"__concolic_null__{name}"
+
+
+def _null_test(term):
+    """`(x == null)` / `(x != null)` -> (symbol, is_equality), else None."""
+    if term.get("op") not in ("==", "!="):
+        return None
+    args = term.get("args") or []
+    if len(args) != 2:
+        return None
+    lits = [a for a in args if "lit" in a and a["lit"].get("sort") == "null"]
+    syms = [a for a in args if "sym" in a]
+    if len(lits) != 1 or len(syms) != 1:
+        return None
+    return syms[0]["sym"], term["op"] == "=="
 
 
 def lower(term, env):
@@ -72,10 +169,19 @@ def lower(term, env):
     generating a seed the PHP will actually replay, so the mask has to mean
     what PHP means. Lifted from ../hotcrp-typed-policies/run_concolic.py.
     """
+    probe = _null_test(term)
+    if probe is not None:
+        name, equality = probe
+        absent = env[null_sym(name)]        # KeyError -> skipped by the caller
+        return absent if equality else z3.Not(absent)
     if "sym" in term:
         return env[term["sym"]]
     if "lit" in term:
         lit = term["lit"]
+        if lit["sort"] == "null":
+            # Only ever meaningful against a symbol, which `_null_test`
+            # handled above. Anywhere else this report cannot lower it.
+            raise KeyError("bare null literal")
         return z3.BoolVal(lit["value"]) if lit["sort"] == "bool" else z3.IntVal(lit["value"])
     args = [lower(a, env) for a in term["args"]]
     op = term["op"]
@@ -100,9 +206,13 @@ def candidates(dump):
     when the solver says the flipped prefix is satisfiable, so every candidate
     is reachable rather than a guess.
     """
-    env = {v["name"]: (z3.Bool(v["name"]) if v["type"] == "bool" else z3.Int(v["name"]))
-           for v in dump["symbolic_vars"]
-           if v.get("origin", {}).get("kind") == "input"}
+    inputs = [v for v in dump["symbolic_vars"]
+              if v.get("origin", {}).get("kind") == "input"]
+    env = {v["name"]: (z3.Bool(v["name"]) if v["type"] == "bool"
+                       else z3.Int(v["name"])) for v in inputs}
+    # The null companions, so the ABSENT side of a nullable is reachable.
+    env.update({null_sym(v["name"]): z3.Bool(null_sym(v["name"]))
+                for v in inputs if v["type"].endswith("?")})
     if not env:
         return
     solver = z3.Solver()
@@ -119,13 +229,32 @@ def candidates(dump):
         solver.push()
         solver.add(z3.Not(observed))
         if solver.check() == z3.sat:
-            model = solver.model()
-            yield {name: (z3.is_true(model.eval(sym, model_completion=True))
-                          if type(DEFAULTS[name]) is bool
-                          else model.eval(sym, model_completion=True).as_long())
-                   for name, sym in env.items()}
+            yield _seed_from(solver.model(), env)
         solver.pop()
         solver.add(observed)
+
+
+def _seed_from(model, env) -> dict:
+    """A model -> the seed dict the harness takes.
+
+    A nullable whose companion is true is seeded as `None`, which reaches the
+    harness as PHP `null` -- the whole point of modelling the companion.
+    """
+    def value(name):
+        got = model.eval(env[name], model_completion=True)
+        return z3.is_true(got) if type(DEFAULTS[name]) is bool else got.as_long()
+
+    seed = {}
+    for name in DEFAULTS:
+        if name not in env:
+            continue
+        absent = null_sym(name)
+        if absent in env and z3.is_true(model.eval(env[absent],
+                                                   model_completion=True)):
+            seed[name] = None
+        else:
+            seed[name] = value(name)
+    return seed
 
 
 def php(requests: list[dict]) -> list[dict]:
@@ -140,6 +269,62 @@ def php(requests: list[dict]) -> list[dict]:
 def trace(dump: dict) -> tuple:
     return tuple((json.dumps(e["expr"], sort_keys=True), e["taken"])
                  for e in dump["events"] if e["type"] == "path_condition")
+
+
+def witness_seeds(coverage) -> list[dict]:
+    """The checker's own witness for each missing demand, as a seed.
+
+    `MissingCoverage.concrete_values` is "a VERDICT plus an actionable
+    witness" (`concolic/coverage.py`) -- the assignment that reaches the
+    combination no run took. Under the declared width those values are
+    representable PHP integers, so they can be handed straight back to the
+    harness; under the uninterpreted default they could not, which is why
+    this feedback edge only became usable with the lowering.
+
+    An `untracked` miss is excluded by a declared assumption and is not a
+    gap to drive, so it is not seeded.
+    """
+    out = []
+    for m in coverage.missing:
+        if m.untracked or not m.concrete_values:
+            continue
+        seed = dict(DEFAULTS)
+        for name, value in m.concrete_values.items():
+            if name in seed:
+                seed[name] = (bool(value) if type(seed[name]) is bool
+                              else int(value))
+            elif name.startswith("__concolic_null__") and value:
+                # the checker is asking for the ABSENT side of a nullable
+                bare = name[len("__concolic_null__"):]
+                if bare in seed:
+                    seed[bare] = None
+        out.append(seed)
+    return out
+
+
+def measure(kept: list[dict]):
+    """`check_coverage` under PHP's integer semantics, with the solver watched."""
+    runs = [Run.from_dict(x) for x in kept]
+    guard = _SolverWarnings()
+    logging.getLogger("concolic.solver").addHandler(guard)
+    try:
+        with machine_integers(WIDTH, signed=True,
+                              cite=f"php -r 'echo PHP_INT_SIZE' == {WIDTH // 8}"):
+            # SUB-CONJUNCTION FORECLOSURE, and why this corpus needs it.
+            # Pairwise foreclosure cannot see a decision that only two gates
+            # ACTING TOGETHER remove from the path, and that is exactly what
+            # HotCRP does: an unconflicted chair returns before `outcome` is
+            # ever read, so neither `roles & 4` nor `conflictType <= 1` alone
+            # forecloses it. The flag is an INFERENCE over the corpus, not a
+            # declaration -- any run matching the prefix that DOES evaluate
+            # the member removes it on the next pass -- and it is reported
+            # non-provisional only while `tree_complete` holds, which is the
+            # precondition the lowering above is what finally established.
+            checker = CoverageChecker(runs, foreclosure_conjunctions=True,
+                                      foreclosure_subconjunctions=True)
+            return checker.check_coverage(), guard.seen
+    finally:
+        logging.getLogger("concolic.solver").removeHandler(guard)
 
 
 def one(entry: str, out: pathlib.Path) -> dict:
@@ -177,6 +362,16 @@ def one(entry: str, out: pathlib.Path) -> dict:
             kept.append(dump)
             queue.extend(candidates(dump))
 
+        # THE FEEDBACK EDGE. Prefix negation flips ONE decision against the
+        # path that preceded it, so a demand that needs several decisions to
+        # line up at once is not a seed it can propose. The coverage checker
+        # computes exactly that assignment, so when the queue runs dry its
+        # witnesses refill it -- and the loop ends when driving them stops
+        # producing a trace nobody has seen.
+        if not queue and kept:
+            coverage, _ = measure(kept)
+            queue = witness_seeds(coverage)
+
     slug = entry.replace("::", "__")
     row: dict = {"entrypoint": entry, "rounds": rounds, "seeds": len(seen_seeds),
                  "traces": len(kept), "errored": len(errors),
@@ -194,10 +389,21 @@ def one(entry: str, out: pathlib.Path) -> dict:
         (d / f"dump_{dump['label']}.json").write_text(json.dumps(dump, indent=2))
 
     runs = [Run.from_dict(x) for x in kept]
-    coverage = CoverageChecker(runs).check_coverage()
+    coverage, warnings = measure(kept)
     row["complete"] = coverage.complete
+    row["tree_complete"] = coverage.tree_complete
+    row["truncated"] = coverage.truncated
+    row["solver_lost"] = coverage.solver_lost
+    row["subconjunction_foreclosures"] = coverage.subconjunction_foreclosures
+    row["foreclosures_provisional"] = coverage.subconjunction_foreclosures_provisional
     row["nodes"] = coverage.total_nodes
     row["missing"] = len(coverage.missing)
+    row["dropped_constraints"] = len(warnings)
+    if warnings:
+        # Not a warning to skim: a dropped constraint makes a demand look
+        # discharged, so `complete` here would be a claim this run cannot make.
+        row["complete"] = False
+        row["solver_warning"] = warnings[0]
     policy = normalize(build_policy(runs, entrypoint=entry))
     (d / "policy.json").write_text(print_json(policy) + "\n")
 
@@ -210,8 +416,15 @@ def one(entry: str, out: pathlib.Path) -> dict:
 
 
 def main() -> int:
-    only = sys.argv[1] if len(sys.argv) > 1 else None
-    out = HERE / "results"
+    global ARM, DEFAULTS
+    args = sys.argv[1:]
+    for flag in list(args):
+        if flag.startswith("--") and flag[2:] in ARMS:
+            ARM, args = flag[2:], [a for a in args if a != flag]
+    DEFAULTS = ARMS[ARM]
+    only = args[0] if args else None
+    # One directory per arm, so neither overwrites the other.
+    out = HERE / ("results" if ARM == "rows" else f"results_{ARM}")
     out.mkdir(exist_ok=True)
 
     rows, atoms, rendered = [], 0, 0
@@ -230,11 +443,14 @@ def main() -> int:
         print(f"{row['entrypoint']:46} {row['traces']:3} traces  "
               f"{row['atoms']:2} atoms  {row['rendered']:2} rendered  {cov}{flag}")
 
-    summary = {"entrypoints": len(rows), "atoms": atoms, "rendered": rendered,
+    summary = {"arm": ARM, "symbolic_inputs": sorted(DEFAULTS),
+               "entrypoints": len(rows), "atoms": atoms, "rendered": rendered,
+               "integer_semantics": {"width": WIDTH, "signed": True,
+                                     "cite": "php -r 'echo PHP_INT_SIZE'"},
                "complete": sum(1 for r in rows if r.get("complete")),
                "refusals_by_symbol": dict(sorted(blockers.items(), key=lambda kv: -kv[1])),
                "entries": rows}
-    (HERE / "summary.json").write_text(json.dumps(summary, indent=2) + "\n")
+    (HERE / f"summary_{ARM}.json").write_text(json.dumps(summary, indent=2) + "\n")
     print(f"\n{len(rows)} entrypoints, {atoms} atoms: {rendered} rendered, "
           f"{summary['complete']} with complete coverage")
     print("refusals by symbol:", summary["refusals_by_symbol"])

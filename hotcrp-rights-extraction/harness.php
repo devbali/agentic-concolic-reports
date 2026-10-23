@@ -173,10 +173,105 @@ $Opt = [
 ];
 require_once $build . '/src/init.php';
 
+/**
+ * CONFERENCE CONFIGURATION, MADE SYMBOLIC.
+ *
+ * `rights()` asks the Conf ten questions, and with a default Conf every one
+ * of them answered the same way on every run. They were not missing
+ * coverage -- they were never DECISIONS, so nothing demanded them. The
+ * measured universe was seven row columns while `rights()` has ~71 branch
+ * points; this class is what closes part of that gap.
+ *
+ * WHY A SUBCLASS AND NOT A TARGET. A target intercepts a boundary the
+ * HARNESS calls. These are calls the APPLICATION makes on an object the
+ * harness owns, so overriding the method is the direct instrument -- and
+ * none of them is `final` or carries a return type, so the override is
+ * legal PHP rather than a reflection trick.
+ *
+ * WHAT IS NOT MODELLED. Each override returns one free symbol, so a run
+ * cannot observe that (say) `check_tracks(VIEW)` and
+ * `check_track_view_sensitivity()` are both computed from the same track
+ * settings and are therefore correlated. That makes the symbol set WIDER
+ * than the real configuration space, which over-reports reachable
+ * combinations rather than under-reporting them -- the safe direction, and
+ * the same direction the engine's other relaxations take.
+ */
+final class ConcolicConf extends Conf {
+    /** The current run's symbolic inputs; set by `invoke`. */
+    public array $sym = [];
+    /**
+     * Whether this run makes the conference symbolic at all.
+     *
+     * BOTH ARMS STAY REPRODUCIBLE, because the comparison between them is
+     * the result: symbolic settings roughly double the decisions and take
+     * renderable views to zero, and a reader can only check that if either
+     * corpus can be regenerated. Off means every method below defers to the
+     * real Conf, which is what this harness did before.
+     */
+    public bool $symbolic = true;
+
+    private function ask(string $name, callable $concrete) {
+        if (!$this->symbolic) {
+            return $concrete();
+        }
+        // Absent means the driver did not seed it, and a silent concrete
+        // answer is exactly the failure this project exists to prevent.
+        if (!array_key_exists($name, $this->sym)) {
+            throw new \RuntimeException("conference setting '{$name}' was not seeded");
+        }
+        return $this->sym[$name];
+    }
+
+    function has_tracks() {
+        return $this->ask('has_tracks', fn() => parent::has_tracks());
+    }
+    function check_track_view_sensitivity() {
+        return $this->ask('track_view_sensitive',
+                          fn() => parent::check_track_view_sensitivity());
+    }
+    function allow_conflicted_pc_view() {
+        return $this->ask('allow_conflicted_pc_view',
+                          fn() => parent::allow_conflicted_pc_view());
+    }
+    function time_reviewer_view_decision($pc, $conflicted) {
+        return $this->ask('time_reviewer_view_decision',
+                          fn() => parent::time_reviewer_view_decision($pc, $conflicted));
+    }
+
+    // The RIGHT distinguishes these: VIEW and VIEWPDF are separate track
+    // permissions in HotCRP, and collapsing them to one symbol would make
+    // two independent configuration choices look like one.
+    function check_tracks(PaperInfo $prow, Contact $user, $right) {
+        return $this->ask($right === Track::VIEWPDF ? 'track_viewpdf' : 'track_view',
+                          fn() => parent::check_tracks($prow, $user, $right));
+    }
+
+    // Likewise `$pdf`: `time_pc_view($prow, false)` and `(…, true)` are two
+    // different questions and `rights()` asks both.
+    function time_pc_view(PaperInfo $prow, $pdf) {
+        return $this->ask($pdf ? 'time_pc_view_pdf' : 'time_pc_view',
+                          fn() => parent::time_pc_view($prow, $pdf));
+    }
+
+    // ONLY the two names `rights()` reads. `setting()` is called throughout
+    // boot and by code far outside this analysis; answering all of them
+    // symbolically would put symbols in branches that have nothing to do
+    // with the permission question, and would most likely not boot.
+    function setting($name) {
+        return match ($name) {
+            'viewrev_ext' => $this->ask('setting_viewrev_ext',
+                                        fn() => parent::setting($name)),
+            'pc_confpdf' => $this->ask('setting_pc_confpdf',
+                                       fn() => parent::setting($name)),
+            default => parent::setting($name),
+        };
+    }
+}
+
 // `$connect = false`: Conf keeps a null dblink and refreshes its settings
 // instead of loading them, so the whole run happens with no database and
 // every query is intercepted.
-$CONF = new Conf($Opt, false);
+$CONF = new ConcolicConf($Opt, false);
 Contact::$main_user = null;
 
 /** The requester's id. Concrete: PHP coerces array keys, and HotCRP caches by id. */
@@ -199,6 +294,12 @@ function set_private($object, string $name, $value): void
 function invoke(Concolic\Runtime $rt, string $entry, array $v)
 {
     global $CONF;
+
+    // Hand this run's symbols to the Conf before anything asks it a question.
+    // A seed set with no conference keys IS the row-data arm: nothing to
+    // answer symbolically, so the real Conf answers.
+    $CONF->sym = $v;
+    $CONF->symbolic = array_key_exists('has_tracks', $v);
 
     $user = Contact::make_email($CONF, 'user@example.edu');
     $user->contactId = $user->contactXid = MY_UID;
@@ -295,7 +396,12 @@ foreach ($requests as $request) {
         if ($allowed) {
             $access($v);
         }
-    }, $request['seeds'], $request['label'], ['apps/hotcrp/']);
+    // `Conf::setting()` really does return `?int` -- `$this->settings[$name]
+    // ?? null` -- and HotCRP reads it as `(… ?? 0)`. Declaring the symbol
+    // nullable is what lets that `??` be a recorded decision instead of a
+    // malformed atom: a non-nullable int compared to null is rule 7.
+    }, $request['seeds'], $request['label'], ['apps/hotcrp/'],
+       ['setting_viewrev_ext' => 'int?', 'setting_pc_confpdf' => 'int?']);
 
     $dump['script'] = file_get_contents(__FILE__);
     $output[] = ['dump' => $dump, 'allowed' => $allowed];
