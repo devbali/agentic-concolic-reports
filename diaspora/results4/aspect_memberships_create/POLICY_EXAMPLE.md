@@ -469,5 +469,24 @@ access c7 = ActiveRecord::Querying#find_by_sql("SELECT \"blocks\".* … = ?", [�
 ```
 
 Incidental fix: this file previously documented a `--header` that the
-committed `policy_example.txt` had not been built with. It is now built
-with it, as documented above. See `REPORT.md` §7.
+committed `policy_example.txt` had not been built with. See `REPORT.md` §7.
+
+> **THE SAME DRIFT IS BACK, and this paragraph was wrong to say it was
+> fixed** (re-measured 2026-10-03). The committed
+> `policy_example.txt` in this directory **has no preamble**: it begins
+> directly with `policy aspect_memberships_create`, so it was not built
+> with `--header` after all. Two further figures above do not describe it
+> either — it is **853 lines and 42 atoms**, against the "84 atoms / 14
+> signatures / 1669 lines" stated two paragraphs up, which is almost
+> exactly double and is consistent with the quoted command's *two* corpus
+> arguments (the main set plus `write_path`) while the committed file
+> carries the main set alone.
+>
+> The header file itself still exists
+> (`reports/diaspora/tools/aspect_memberships_create_policy_header.txt`),
+> so the command above is runnable as written — it simply has not been run
+> to produce the committed artefact. **Treat the command block above as the
+> intended build, not as a description of the file on disk**, and rebuild
+> before relying on either the preamble or the counts. Nothing has been
+> regenerated from here: regenerating a corpus artefact is its own
+> decision.

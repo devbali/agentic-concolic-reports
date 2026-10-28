@@ -1,0 +1,70 @@
+#!/bin/bash
+# PIPELINE 13d — EXTRACTION. Two editions, because the box no longer has a 6 G
+# window (the cage is MemoryMax=6G/High=5G and an editor LSP holds ~3.6 G
+# outside it):
+#   d-1  SKIP_SUBSUME=1 at 2 G — the view/unparseable/rotation numbers. The
+#        extraction LOOP itself measured 56 MB; it is CPU-bound, not memory-bound.
+#   d-2  WITH subsumption at 5 G, ALONE — attempted; if it is killed the
+#        SKIP_SUBSUME edition stands and subsumption is recorded state=None
+#        (null is NEVER folded into false).
+# The canonical file is only replaced when the run prints its own verdict line.
+set +e; unset JAVA_TOOL_OPTIONS
+B=/home/dev/project/reports/diaspora/results3/posts_show
+Q=/home/dev/project/reports/diaspora/results3/queries_from_runs
+. "$B/_cage.sh"
+cd /home/dev/project
+L="$B/_p13d.log"; : > "$L"
+say(){ echo "[$(date -Is)] $*" | tee -a "$L"; }
+V=/home/dev/project/venvs/queries_from_runs/bin/python
+export QFR_APP_CONFIG=/home/dev/project/reports/diaspora/queries_config/app.json
+
+if [ -s "$Q/posts_show.sql.nosub" ]; then
+  say "13d-1: SKIPPED — the early SKIP_SUBSUME extraction already produced it"
+else
+say "13d-1: extraction, SKIP_SUBSUME=1 [2G] — corpus $(find $B -maxdepth 1 -name 'dump_*.json' | wc -l) dumps"
+cage p13ext1.scope 2G env SKIP_SUBSUME=1 QFR_APP_CONFIG="$QFR_APP_CONFIG" \
+  OUT_SQL=$Q/posts_show.sql.nosub OUT_SUMMARY=$Q/_summary_posts_show.json.nosub \
+  JAVA_TOOL_OPTIONS= PYTHONPATH=/home/dev/project/src \
+  $V -u $Q/_extract_posts_show_streaming.py > $Q/_extract_posts_show_NOSUB_20260911.log 2>&1
+say "13d-1 exit=$?"
+grep -E '^posts_show: |unparseable|rotation|E11|R1|subsumption' $Q/_extract_posts_show_NOSUB_20260911.log | head -12 >> "$L"
+fi
+
+say "13d-2: extraction WITH subsumption [3G cap, CAGED, ONE JVM, gated on free -g >= 6]"
+wait_free6 subsume | tee -a "$L"
+wait_alone subsume | tee -a "$L"
+# The subsumption JVM: ONE at a time (src/queries_from_runs/subsume.py calls
+# check_subsumed.sh through a sequential subprocess.run, so there is never
+# more than one), CAGED at 3 G (a child inherits the scope's cgroup), and
+# gated on `free -g >= 6` exactly like the pass. `_jvm_guard.sh` verifies the
+# cgroup at runtime rather than trusting inheritance.
+setsid nohup bash "$B/_jvm_guard.sh" p13ext2.scope >/dev/null 2>&1 </dev/null &
+cage p13ext2.scope 3G env QFR_APP_CONFIG="$QFR_APP_CONFIG" \
+  OUT_SQL=$Q/posts_show.sql.subsume OUT_SUMMARY=$Q/_summary_posts_show.json.subsume \
+  JAVA_TOOL_OPTIONS= PYTHONPATH=/home/dev/project/src \
+  $V -u $Q/_extract_posts_show_streaming.py > $Q/_extract_posts_show_SUBSUME_20260911.log 2>&1
+say "13d-2 exit=$?"
+VER=$(grep -E '^posts_show: ' $Q/_extract_posts_show_SUBSUME_20260911.log)
+say "subsume edition :: ${VER:-NO VERDICT LINE — killed, not done}"
+if [ -n "$VER" ] && grep -q "subsume_ran=True" $Q/_extract_posts_show_SUBSUME_20260911.log; then
+  mv $Q/posts_show.sql.subsume $Q/posts_show.sql
+  mv $Q/_summary_posts_show.json.subsume $Q/_summary_posts_show.json
+  rm -f $Q/posts_show.sql.nosub $Q/_summary_posts_show.json.nosub
+  say "INSTALLED the SUBSUMPTION edition"
+else
+  rm -f $Q/posts_show.sql.subsume $Q/_summary_posts_show.json.subsume
+  if [ -s $Q/posts_show.sql.nosub ]; then
+    mv $Q/posts_show.sql.nosub $Q/posts_show.sql
+    mv $Q/_summary_posts_show.json.nosub $Q/_summary_posts_show.json
+    say "INSTALLED the SKIP_SUBSUME edition — subsumption state=None (never False)"
+  else
+    say "NOTHING INSTALLED — both editions failed; the previous file stands"
+  fi
+fi
+say "13d-3: assemble the residual classes and FILL the header (no TODO may survive)"
+python3 -u "$B/_mk_residual_classes.py" >> "$L" 2>&1
+python3 -u "$B/_fill_header.py" >> "$L" 2>&1 || say "HEADER NOT FILLED — see the log"
+say "13d-4: re-apply POLICY_HEADER.txt to the shipped file"
+python3 -u "$B/_apply_header.py" >> "$L" 2>&1
+say "views=$(grep -c '^SELECT' $Q/posts_show.sql 2>/dev/null) todo=$(grep -c 'TODO(drive)' $Q/posts_show.sql 2>/dev/null)"
+say "pipeline13d done"

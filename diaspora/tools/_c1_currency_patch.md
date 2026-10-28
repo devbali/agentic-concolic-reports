@@ -71,7 +71,36 @@ has no such caveat.
 ## Status
 
 * `comments_index` — applied (see `_RESTORED_20260913.md` §4).
-* `conversations_index` — applied.
+* `conversations_index` — **applied 2026-09-26**, NOT on 2026-09-13.
+
+  > **Correction, 2026-09-26.** This line previously read
+  > "`conversations_index` — applied", with no date. **That was wrong**, and
+  > it contradicted this document's own source: `docs/
+  > CONFINEMENT_PRECISION_20260913.md` §8.1 says the patch
+  > "**Landed in `comments_index` only** ... `conversations_index` is a closed
+  > endpoint outside this work's scope and re-running it was not in budget."
+  > §8.1 is the accurate one. Both pops were still live in
+  > `results3/conversations_index/coverage_report.py` when the
+  > 2026-09-19 -> 2026-09-26 full assumption gate ran, so that gate measured
+  > §16c footprints on **22** shapes where its own `access_trace` measures
+  > **48** — and it FAILed 71 of 113 confined pairs, 55 of them on clauses
+  > (i)/(ii), which are a set difference of shape strings and therefore cannot
+  > pass when one side carries SQL notes and the other does not. The 727
+  > declared footprint entries of that run carry an empty note; under the fix
+  > the same corpus yields 1012 entries of which 865 are noted, and the two
+  > shape-identity sets are **disjoint**. The broken currency also
+  > OVER-licensed: 113 pairs declared where the fixed measurement declares 94,
+  > a strict subset.
+  >
+  > Cost of the fix measured on that batch's 18 633 dumps: peak RSS
+  > 522 -> 610 MB (+17 %), load time unchanged.
+  >
+  > Anyone auditing a `conversations_index` result dated before 2026-09-26
+  > should treat its confinement layer as measured in the wrong currency. Full
+  > write-up, including why the endpoint's coverage verdict does not depend on
+  > the §16c licence at all:
+  > `results3/conversations_index/_C1_CURRENCY_FINDING_20260926.md`.
+
 * `notifications_index` — **NOT applied**: `coverage_report.py` is the script
   the C21 pass is executing right now (pid 1617583), and a running script is
   never edited. The diff above is the whole change; whoever owns C21 should

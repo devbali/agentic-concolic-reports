@@ -1,0 +1,11 @@
+# NOTES drive 9 (local_amc2) batch-1
+- config digest f835fea0ad4f6be4daa59a07fd958f09ff960d3a329be8df9c7e46fe034932ad
+- runner run_dse.rb via launch.sh; DUMP_OUT=batch/run1 ; MAX_RUNS=1500 TIME_BUDGET=3000
+- src_new HEAD 70bca8e (verified git rev-parse)
+- ask: ctl/ask/manifest-workdir.json (manifest workdir vs §9)
+- app 0760b6a2, app_tree_digest 916d3937...954 (measured, matches)
+- run1: 1500 runs / 403 dumps, errors {}, InvalidLocale 112, AssocTypeMismatch 151, unflippable 0, no SELECT "blocks".* anywhere. copied to batch top.
+- shim gate local: 22 keys, PASS 10 / PROTOCOL 12 / FAIL 0 (batch/shim_results.json)
+- coverage: none -> missing 88 trunc; 6 decl -> missing 14 not trunc. sib2: 264/264/54 pairs 0 differ; principal 169/169 differ
+- run2: 14 seeds SEEDS_ONLY _cov2
+- SUBMITTED packet (417 dumps, 6 decl, local gate PASS 6)

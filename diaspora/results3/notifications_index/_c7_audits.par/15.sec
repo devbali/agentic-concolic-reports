@@ -1,0 +1,37 @@
+
+##### variant_tuple_check #####
+run_dse.rb VARIANTS (7): ['html_plain', 'html_typed', 'json_plain', 'json_typed', 'mobile_plain', 'mobile_typed', 'xml_plain']
+
+consumers scanned: 143
+  ok        _c13_construct.py
+  ok        _c13_index.py
+  ok        _c18_fals_construct.py
+  ok        _c20_alias_probes.py
+  ok        _c20_exists_construct.py
+  ok        _c20_ident_construct.py
+  ok        _c20_ord8_sweep.py
+  ok        _c20_round2.py
+  ok        _c20_round4.py
+  ok        _c22_round1.py
+  ok        _c24_construct.py
+  ok        _c28_construct.py
+  ok        _c29_build.py
+  ok        _c30_build_set0.py
+  ok        _c30_build_set0b.py
+  ok        _c30_build_set0c.py
+  ok        _c30_construct.py
+  ok        _dedup.py
+  ok        _dedup2.py
+  ok        _demand_root.py
+  ok        _demand_snapshot.py
+  ok        _enable_root.py
+  ok        _mkroots.py
+  ok        _set_root.py
+  ok        _tree_root.py
+  ok        _tree_scan.py
+  ok        demand_round.py
+
+corpus POPULATION: 313977 dumps; scenario names present: {'mobile_plain': 38948, 'xml_plain': 33466, 'json_plain': 41429, 'html_typed': 66833, 'html_plain': 73826, 'mobile_typed': 32405, 'json_typed': 27070}
+
+RESULT: pass — every consumer tuple matches run_dse.rb
+EXIT=0

@@ -1,0 +1,122 @@
+#!/usr/bin/env python3
+"""ONE-FLIP ROOTED SEEDS — manufacture a matched context for an undecidable decision.
+
+A decision D is UNDECIDABLE when no two runs in the corpus differ ONLY in D, so
+its footprint is unmeasured (never "empty" — §16c keeps it as its own verdict).
+The fix, where it is fixable, is to BUILD the missing pair: take a real run that
+evaluates D, keep its seed dict VERBATIM, flip EXACTLY ONE key (D's dimension),
+replay. If the flip is honoured and nothing else moves, that run and its base
+are a matched pair and D becomes decided in one replay (§9.7's one-flip rule).
+
+ONLY the 29 ADDRESSABLE decisions get seeds. The 45 GATE-LIKE ones are skipped
+BY CONSTRUCTION and counted: flipping a gate changes which other decisions are
+evaluated, so no matched context can exist for it at any corpus size, and a
+seed would only burn JRuby to prove that again. The 5 self-compares are UNSAT.
+"""
+import json, os, re, sys
+from collections import defaultdict
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE); sys.path.insert(0, "/home/dev/project/src")
+from coverage_report import canonicalize_ordinals  # noqa: E402
+from concolic_engine.names import NameSpace, to_runtime  # noqa: E402
+
+K = int(os.environ.get("BASES_PER_DECISION", "4"))
+VARIANTS = ("auth_html", "anon_html", "auth_json", "anon_json")
+addressable = json.load(open(os.path.join(HERE, os.environ.get("UNDEC_IN", "_undecidable_kinds.json"))))["undecidable"]
+def is_gate(e):
+    # 2026-09-14: `to_runtime` first. This test used to read the RUNTIME
+    # spelling `(len(` off exprs that may arrive in CHECKER spelling
+    # `(SYM_LEN_`; the falsy answer meant "not gate-like -> ADDRESSABLE ->
+    # build a seed", contradicting the docstring's "gate-like ones are
+    # skipped BY CONSTRUCTION". The committed `_oneflip_plan.json` proves it
+    # fired: 7 of its 16 targets are `(SYM_LEN_...` gates.
+    e = to_runtime(e)
+    return (e.startswith("(len(") or e.startswith("(Length(")
+            or "_not_found" in e or "_public" in e
+            or re.match(r'^\(([A-Za-z_][A-Za-z0-9_]*) != \1\)$', e.strip()))
+targets = [e for e in addressable if not is_gate(e)]
+print(f"undecidable {len(addressable)} -> ADDRESSABLE targets {len(targets)} "
+      f"(skipped {len(addressable)-len(targets)} gate-like / unsat, by construction)")
+
+VAR = re.compile(r"^\(\s*([A-Za-z_][A-Za-z0-9_]*)\s*(==|!=)")
+def dim_of(e):
+    m = VAR.match(e.strip())
+    return m.group(1) if m else None
+
+files = [l.strip() for l in open(os.environ["DUMP_LIST"]) if l.strip()]
+files = [f if os.path.isabs(f) else os.path.join(HERE, f) for f in files]
+print(f"scanning {len(files)} dumps for bases", flush=True)
+
+best = defaultdict(list)      # canonical expr -> [(nseeds, path, variant, observed)]
+for n, p in enumerate(files):
+    try:
+        d = json.load(open(p))
+    except Exception:
+        continue
+    amap = canonicalize_ordinals(d)
+    inv = defaultdict(list)
+    for o, c in (amap or {}).items():
+        inv[c].append(o)
+    seeds = d.get("concolic_seeds") or {}
+    base = os.path.basename(p)
+    v = next((x for x in VARIANTS if base.startswith("dump_" + x)), None)
+    seen = {}
+    for ev in d.get("events") or ():
+        if ev.get("type") == "path_condition":
+            seen.setdefault(str(ev.get("expr", "")), set()).add(bool(ev.get("taken")))
+    for e in targets:
+        o = seen.get(e)
+        if not o or len(o) != 1:
+            continue                     # absent, or both-sided (ambiguous)
+        best[e].append((len(seeds), p, v, next(iter(o)), dict(inv)))
+        best[e].sort(key=lambda t: -t[0])
+        del best[e][K:]
+    del d
+    if n % 5000 == 0:
+        print(f"  [{n}/{len(files)}] decisions with a base: {len(best)}", flush=True)
+
+per_variant = defaultdict(list)
+made = skipped_nodim = skipped_nokey = 0
+for e, rows in best.items():
+    dim = dim_of(e)
+    if not dim:
+        skipped_nodim += 1
+        continue
+    for nseeds, path, v, observed, inv in rows:
+        try:
+            seeds = dict(json.load(open(path)).get("concolic_seeds") or {})
+        except Exception:
+            continue
+        # canonical dimension -> the RUNTIME ordinal keys that back it.
+        # 2026-09-14 NAME-BOUNDARY FIX: `inv` is keyed by the BARE canonical
+        # result name, so `inv.get(dim)` was an exact-match miss for every
+        # `dim` carrying a suffix (`..._row_text_empty`), and `dim in seeds`
+        # missed too because seeds are ordinal-named and `len(`-spelled. The
+        # falsy answer was printed as "bases whose seed dict lacks the key"
+        # and the decision stayed UNDECIDABLE forever -- the exact conclusion
+        # this script exists to refute (measured: 18 resolved, 37 "no key" on
+        # one base, where the ordinals WERE present). `keys_for` resolves the
+        # suffix, both spellings, and every backing ordinal; [] now means a
+        # genuine absence.
+        keys = NameSpace(seeds, name="base concolic_seeds",
+                         alias_map={o: c for c, os_ in inv.items()
+                                    for o in os_}).keys_for(dim)
+        if not keys:
+            skipped_nokey += 1
+            continue
+        s = dict(seeds)                  # VERBATIM base
+        for k in keys:
+            s[k] = (not observed) if isinstance(seeds[k], bool) else (not observed)
+        per_variant[v or "auth_html"].append(s)
+        made += 1
+print(f"\none-flip seeds built: {made}")
+print(f"  decisions with no parseable dimension : {skipped_nodim}")
+print(f"  bases whose seed dict lacks the key   : {skipped_nokey}")
+for v, lst in per_variant.items():
+    out = os.path.join(HERE, f"_demandR_{v}.json")
+    json.dump(lst, open(out, "w"))
+    print(f"  {v}: {len(lst)} seeds -> {os.path.basename(out)}")
+json.dump({"targets": targets, "made": made,
+           "decisions_with_base": len(best)},
+          open(os.path.join(HERE, "_oneflip_plan.json"), "w"), indent=1)

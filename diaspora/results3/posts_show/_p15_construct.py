@@ -1,0 +1,489 @@
+#!/usr/bin/env python3
+"""P15 — CONSTRUCT one seed per P14 gap (RUNBOOK Phase 2, construct-not-sample).
+
+Successor to `_construct_by_gate.py` (2026-09-11). Same rules, four repairs
+that this drive measured on that script's own output:
+
+ (1) BOTH `len` SPELLINGS. `_construct_by_gate.py` looked a checker-side name
+     (`SYM_LEN_X`) up in a dump-side map (`len(X)`), so every SYM_LEN value it
+     was handed was DROPPED with no error — 4 720 of 25 580 constructed values
+     (18.5 %) in round OD0911, i.e. every length gate the cubes demanded. This
+     module derives the reverse map instead of guessing it: every key of a
+     base's `concolic_seeds` is pushed through the SAME two transforms the
+     checker's loader applies (alias canonicalization, then `len(X)` ->
+     `SYM_LEN_X`) and the result is the key the model is joined on. A name the
+     base cannot seed is COUNTED, never silently dropped.
+
+ (2) MODEL COMPLETION IS NOT A DEMAND (§16d). With one query per demand set
+     the witness model assigns EVERY variable, including the ones the cube
+     leaves free — `model.eval(..., model_completion=True)` hands those Z3's
+     default (`''`, 0, False). Seeding a default the corpus never produces is
+     exactly the out-of-domain foreclosure §72.1 measured. Only variables the
+     cube's `node_constraint` actually CONSTRAINS are written; a free variable
+     keeps the base run's own value, which is what makes the base a context.
+
+ (3) OUT-OF-DOMAIN RESOLUTION, VERIFIED, FOR NEGATIVES AND FOR PREDICATES.
+     §72.1 resolved a negated variable to its most-observed value. That left
+     `SYM_PARAM_id`'s `Length(...) < 16` unfixed (the model's invented
+     16-character string survived). Here a substitute is accepted only if it
+     SATISFIES every literal the cube puts on that variable (`==`, `!=`,
+     `Length(v) < n`), so a predicate-constrained variable is resolved too and
+     an unverifiable substitution is never made.
+
+ (4) NEGATIVES BEFORE POSITIVES (§72.2), kept.
+
+`__prior` keys are UNSEEDED (absence is the signal). posts_show mints none —
+the rule is carried anyway so a future target that does is handled.
+
+Bases are chosen BY GATE MATCH, not by token overlap: a base must already walk
+the enabling gates the leaf group needs, then walk as much of the demand set as
+possible. That is the "enabling gates fixed from the summary's foreclosure
+structure, not solved again" half of the RUNBOOK rule; the cube already carries
+an outcome for every foreclosing gate on its path, so no Z3 call is made here.
+"""
+import json, os, pickle, re, sys, time
+from collections import Counter, defaultdict
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE); sys.path.insert(0, "/home/dev/project/src")
+from concolic_engine.assumptions import alias_map_for, renamer      # noqa: E402
+from coverage_assumptions import ALIASES                             # noqa: E402
+
+GAPS  = os.environ.get("P15_GAPS",  os.path.join(HERE, "_p15_gaps.json"))
+INDEX = os.environ.get("P15_INDEX", os.path.join(HERE, "_p15_index.pkl"))
+PARTS = os.environ.get("PARTS_IN",  os.path.join(HERE, "_parts_OD0911.json"))
+K     = int(os.environ.get("BASES_PER_GAP", "2"))
+PREFIX = os.environ.get("P15_PREFIX", "_p15_seeds_")
+VARIANTS = ("auth_html", "anon_html", "auth_json", "anon_json")
+
+_LEN = re.compile(r"len\(([^()]+)\)")
+fixlen = lambda s: _LEN.sub(r"SYM_LEN_\1", s) if s else s
+_PRIOR = re.compile(r"__prior\b")
+
+def cube_literals(nc):
+    """`A AND Not(B) AND C` -> [(expr, polarity)], top level only. The printer
+    never puts a top-level ` AND ` inside a conjunct's own parentheses, so a
+    depth-aware split is exact."""
+    out, depth, cur, i, n = [], 0, [], 0, len(nc or "")
+    while i < n:
+        c = nc[i]
+        if c == "(":
+            depth += 1
+        elif c == ")":
+            depth -= 1
+        if depth == 0 and nc.startswith(" AND ", i):
+            out.append("".join(cur)); cur = []; i += 5; continue
+        cur.append(c); i += 1
+    if cur:
+        out.append("".join(cur))
+    res = []
+    for t in out:
+        t = t.strip()
+        if not t:
+            continue
+        pol = True
+        while t.startswith("Not(") and t.endswith(")"):
+            t = t[4:-1].strip(); pol = not pol
+        res.append((t, pol))
+    return res
+
+
+_ID = r"[A-Za-z_][A-Za-z0-9_]*"
+_EQ  = re.compile(rf"^\(\s*({_ID})\s*==\s*(.+?)\s*\)$")
+_NE  = re.compile(rf"^\(\s*({_ID})\s*!=\s*(.+?)\s*\)$")
+_LN  = re.compile(rf"^\(\s*Length\(({_ID})\)\s*<\s*(\d+)\s*\)$")
+
+
+def lit(tok):
+    """Parse a Z3-printed literal into the python value a seed carries."""
+    tok = tok.strip()
+    m = re.match(r"^StringVal\((.*)\)$", tok)
+    if m:
+        tok = m.group(1).strip()
+    if tok in ("True", "False"):
+        return tok == "True"
+    if re.match(r"^-?\d+$", tok):
+        return int(tok)
+    if len(tok) >= 2 and tok[0] == tok[-1] and tok[0] in "'\"":
+        return tok[1:-1]
+    return tok
+
+
+def literals(nc):
+    """node_constraint -> {var: [(kind, value, want), ...]}. A self-compare
+    (`(X != X)`) constrains nothing and is dropped: it is the render family's
+    always-false companion, and treating it as a constraint is what makes the
+    model's completion default look demanded."""
+    out = defaultdict(list)
+    for part in (nc or "").split(" AND "):
+        part = part.strip(); want = True
+        m = re.match(r"^Not\((.*)\)$", part, re.S)
+        if m:
+            part, want = m.group(1).strip(), False
+        for rx, kind in ((_EQ, "eq"), (_NE, "ne"), (_LN, "lenlt")):
+            m = rx.match(part)
+            if not m:
+                continue
+            v, rhs = m.group(1), m.group(2)
+            if kind in ("eq", "ne") and rhs.strip() == v:
+                break                      # self-compare: no constraint
+            out[v].append((kind, lit(rhs) if kind != "lenlt" else int(rhs), want))
+            break
+    return dict(out)
+
+
+def satisfies(val, cons):
+    for kind, rhs, want in cons:
+        if kind == "eq":
+            ok = (val == rhs)
+        elif kind == "ne":
+            ok = (val != rhs)
+        else:
+            try:
+                ok = (len(val) < rhs)
+            except TypeError:
+                return False
+        if ok != want:
+            return False
+    return True
+
+
+def to_seed(v):
+    if isinstance(v, bool) or v is None or isinstance(v, int):
+        return v
+    s = str(v)
+    if s in ("True", "False"):
+        return s == "True"
+    try:
+        return int(s)
+    except ValueError:
+        return s.strip('"')
+
+
+def main():
+    t0 = time.time()
+    idx = pickle.load(open(INDEX, "rb"))
+    exprs = idx["exprs"]; eidx = {e: i for i, e in enumerate(exprs)}
+    dumps = idx["dumps"]; domain = idx["domain"]
+    raw = {tuple(k.split("\x00", 1)): v for k, v in idx["raw"].items()}
+    gaps = json.load(open(GAPS))
+    parts = {p["i"]: p for p in json.load(open(PARTS))["parts"]}
+    print(f"gaps {len(gaps)}   bases indexed {len(dumps)}   K={K}", flush=True)
+    NOSEED_GLOBAL = {v for g in gaps for v in g.get("not_seedable", ())}
+    print(f"variables the corpus can NEVER seed (derived, stated not dropped): "
+          f"{sorted(NOSEED_GLOBAL)}", flush=True)
+
+    # ---------------------------------------------------------- base choice
+    # UNSTEERABLE LITERALS (2026-09-12, §78.7 — measured, not assumed). A cube
+    # literal over a variable the corpus can never seed cannot be honoured by
+    # any seed: it is whatever the BASE's own run renders. On posts_show those
+    # are the two derived render outputs, and round 2 measured that they alone
+    # block 198 of the 643 gaps that did not walk — while 192 of those 198
+    # cubes pin ZERO `*_text_empty` literals, so §77.3's "the cube already pins
+    # the members that produce it" is false for 97 % of them and the producer
+    # is a FREE variable the seed leaves at the base's value. BOTH SIDES ARE
+    # OBSERVED IN THE CORPUS (`_3 == ''` was taken 70 times where False was
+    # demanded and False 26 times where True was demanded, and symmetrically
+    # for `_2`), so this is not impossibility — it is BASE CHOICE. Therefore:
+    # the demanded outcome of every unsteerable literal joins the GROUP KEY,
+    # and satisfying it is scored ABOVE the gate match.
+    def unsteerable(e):
+        return any(v in e for v in NOSEED_GLOBAL)
+
+    unst = {}
+    for g in gaps:
+        unst[g["id"]] = tuple(sorted((e, o) for e, o in
+                                     cube_literals(g["node_constraint"])
+                                     if unsteerable(e)))
+    nun = sum(1 for v in unst.values() if v)
+    print(f"gaps with >=1 UNSTEERABLE literal (no seed key exists): {nun}", flush=True)
+
+    groups = defaultdict(list)
+    for g in gaps:
+        groups[(g["set"], tuple(sorted(g["gates"].items())), unst[g["id"]])].append(g)
+    print(f"(set, gate-combination, unsteerable-demand) groups: {len(groups)}", flush=True)
+
+    setmask = {}
+    for i, p in parts.items():
+        m = 0
+        for e in p["members"]:
+            j = eidx.get(e)
+            if j is not None:
+                m |= 1 << j
+        setmask[i] = m
+    UNIV = (1 << len(exprs)) - 1
+
+    canon = idx.get("canon") or []
+    cbit = {c: i for i, c in enumerate(canon)}
+    _need_cache = {}
+
+    def canon_need(v):
+        """Which alias canonicals a checker name is spelled with. A base whose
+        run never minted that canonical cannot be given an ORDINAL seed key for
+        it, so the seed would be written under the canonical name and the
+        runtime would ignore it — an inert key. Measured on the first P15 build:
+        46 % of seeds carried at least one. This makes it part of base choice."""
+        m = _need_cache.get(v)
+        if m is None:
+            m = 0
+            dn = f"len({v[8:]})" if v.startswith("SYM_LEN_") else v
+            for c, j in cbit.items():
+                if re.search(re.escape(c) + r"(?![0-9])", dn):
+                    m |= 1 << j
+            _need_cache[v] = m
+        return m
+
+    chosen = {}
+    n = 0
+    for key, grp in groups.items():
+        n += 1
+        if n % 500 == 0:
+            print(f"  base choice {n}/{len(groups)}  {time.time()-t0:.0f}s", flush=True)
+        sid, gates, unsteer = key
+        need = 0
+        cube = 0
+        for g in grp:
+            for v in g.get("constrained", ()):
+                need |= canon_need(v)
+            # the cube's OWN literals: a base that already EVALUATES them is a
+            # base from which the seeded decision can be reached at all. The
+            # old score counted members of the SET, which is a superset and is
+            # not what "never evaluated" is about.
+            for e, _o in cube_literals(g["node_constraint"]):
+                j = eidx.get(e)
+                if j is not None:
+                    cube |= 1 << j
+        nt = nf = 0
+        for e, o in unsteer:
+            j = eidx.get(e)
+            if j is None:
+                continue
+            if o:
+                nt |= 1 << j
+            else:
+                nf |= 1 << j
+        nneed = need.bit_count()
+        sm = setmask.get(sid, 0)
+        gt = gf = 0
+        for e, o in gates:
+            j = eidx.get(e)
+            if j is None:
+                continue
+            if o:
+                gt |= 1 << j
+            else:
+                gf |= 1 << j
+        scored = []
+        for di, (path, var, em, tm, ns, cm) in enumerate(dumps):
+            if sm and not (em & sm):
+                continue
+            fm = em & ~tm & UNIV
+            match = ((em & gt & tm).bit_count() + (em & gf & fm).bit_count())
+            conflict = ((em & gt & fm).bit_count() + (em & gf & tm).bit_count())
+            # UNSTEERABLE first (after alias coverage): no seed can fix it.
+            nsat = ((em & nt & tm).bit_count() + (em & nf & fm).bit_count())
+            ncon = ((em & nt & fm).bit_count() + (em & nf & tm).bit_count())
+            # RANK ORDER (2026-09-12, round 4, §78.8 — each place is a measured
+            # cost, not a preference):
+            #  1 UNSTEERABLE satisfaction. FATAL and unfixable by any seed, and
+            #    measured to carry: on P15D, where the chosen base took the
+            #    demanded render side the driven run honoured it 224/227 =
+            #    98.7 %, and where it did not the run contradicted it 201/201.
+            #    Round 3 ranked this SECOND, behind alias coverage, so it never
+            #    bound (render honoured 52.3 % -> 51.4 %, i.e. unchanged) — and
+            #    for all 201 misses a run taking the demanded side EXISTS in
+            #    the corpus. An inert key costs ONE seeded dimension; an
+            #    unsteerable conflict costs the whole leaf. Hence first.
+            #  2 alias coverage (inert keys).
+            #  3 cube literals the base already EVALUATES — "never evaluated"
+            #    is 16.3 % of keys and the largest first-failure class, and it
+            #    is a REACH property of the base, not of the seed.
+            #  4 gate match, which the SEED pins anyway.
+            # REVERTED to the round-3 order (2026-09-12, after round 4 MEASURED
+            # the promotion): putting UNSTEERABLE first bought nothing on the
+            # class it was for — the render family honoured 51.4 % (round 3)
+            # vs 51.6 % (round 4) — because for 142 of the 227 gaps that carry
+            # one, the cube demands that the TWO render ordinals DISAGREE, and
+            # no base can satisfy that (§78.9: 0 of 35 563 profiles ever has).
+            # Meanwhile it cost alias coverage: seeds carrying an inert key went
+            # from 525/1496 (35 %) to 869/1078 (81 %), gaps walked from 7.9 % to
+            # 4.1 %, and the round's closure rate from 0.273 to 0.020 per run.
+            # Alias coverage first is the measured optimum; the unsteerable term
+            # is kept SECOND, where it breaks ties among equally-spellable bases.
+            scored.append(((need & cm).bit_count(), nsat - ncon,
+                           match - conflict, (em & cube).bit_count(),
+                           (em & sm).bit_count(), ns, di))
+        scored.sort(reverse=True)
+        picks, seen_var = [], set()
+        for s in scored:
+            v = dumps[s[-1]][1]
+            if len(picks) >= K:
+                break
+            if v in seen_var and len(seen_var) < min(K, 4) and len(picks) < K:
+                continue
+            picks.append(s); seen_var.add(v)
+        if len(picks) < K:
+            for s in scored:
+                if len(picks) >= K:
+                    break
+                if s not in picks:
+                    picks.append(s)
+        chosen[key] = [(p, nneed) for p in picks]
+    print(f"base choice done {time.time()-t0:.0f}s", flush=True)
+
+    # ------------------------------------------------------- build the seeds
+    work = defaultdict(list)                     # base dump index -> [(gap, rank, score)]
+    for key, grp in groups.items():
+        for g in grp:
+            for r, (s, nneed) in enumerate(chosen[key]):
+                work[s[-1]].append((g, r, s, nneed))
+    print(f"distinct base runs used: {len(work)}", flush=True)
+
+    per_variant = defaultdict(list)
+    manifest = []
+    stat = Counter()
+    # Names the CORPUS has never carried as a seed key: the render outputs.
+    # They are DERIVED (a rendered string), not a seedable dimension — the cube
+    # reaches them through the `*_text_empty` members it already pins, so the
+    # constructor states them instead of writing a key nothing consumes.
+    seedable = set(idx.get("seedable") or ())
+    NOSEED = NOSEED_GLOBAL
+    unresolved_names = Counter()
+    subbed_names = Counter()
+    kept_ood = Counter()
+    for bi, jobs in work.items():
+        path, variant, em, tm, ns, cm = dumps[bi]
+        d = json.load(open(path))
+        amap = alias_map_for([(e.get("result_name"), e.get("note"))
+                              for e in d.get("events") or ()
+                              if e.get("type") == "symbolic_call"], ALIASES)
+        rn = renamer(amap)
+        base_seeds = dict(d.get("concolic_seeds") or {})
+        # REVERSE the loader's rename instead of looking the checker name up in
+        # the base's OWN seed dict. `_construct_by_gate.py` did the latter
+        # (`inv.get(k) or ([k] if k in seeds else [])`) and therefore resolved a
+        # name only when (a) it was EXACTLY an alias-map canonical — never true
+        # for a suffixed name like `<canonical>_row_text_empty` — or (b) the
+        # base happened to carry a seed for it already. A dimension the base has
+        # never been seeded on could not be written at all, which is a large
+        # part of round OD0911's 68 % UNEVALUATED. The reverse map is exact:
+        # `SYM_LEN_X -> len(X)`, then every canonical occurring in the name is
+        # replaced by EVERY ordinal backing it (the many-ordinal rule).
+        rev = defaultdict(list)
+        for o, c in (amap or {}).items():
+            rev[c].append(o)
+        rev_sorted = sorted(rev, key=len, reverse=True)
+        del d
+
+        _cache = {}
+
+        def seedkeys(k):
+            if k in _cache:
+                return _cache[k]
+            dn = f"len({k[8:]})" if k.startswith("SYM_LEN_") else k
+            outs = [dn]
+            for c in rev_sorted:
+                if re.search(re.escape(c) + r"(?![0-9])", dn):
+                    outs = [re.sub(re.escape(c) + r"(?![0-9])", o.replace("\\", "\\\\"), dn)
+                            for o in rev[c]]
+                    break
+            outs = [o for o in outs if fixlen(rn(o)) == k] or outs
+            _cache[k] = outs
+            return outs
+        for g, rank, score, nneed in jobs:
+            cons = literals(g["node_constraint"])
+            seeds = dict(base_seeds)
+            nsub = nunres = nwrit = nkept = 0
+            # (4) negatives (no `eq` literal) FIRST, positives LAST
+            items = [(v, g["concrete_values"][v]) for v in cons
+                     if v in g["concrete_values"]]
+            items.sort(key=lambda kv: 0 if not any(k == "eq" and w
+                                                   for k, _r, w in cons[kv[0]]) else 1)
+            for v, val in items:
+                sks = [] if v in NOSEED else seedkeys(v)
+                if _PRIOR.search(v):
+                    for sk in sks:
+                        seeds.pop(sk, None)
+                    continue
+                use = val
+                dom = domain.get(v)
+                if dom is not None and repr(val) not in dom:
+                    cand = [r for r, _c in sorted(dom.items(), key=lambda x: -x[1])
+                            if satisfies(raw[(v, r)], cons[v])]
+                    if cand:
+                        use = raw[(v, cand[0])]; nsub += 1; subbed_names[v] += 1
+                    else:
+                        nkept += 1; kept_ood[v] += 1
+                if not sks:
+                    nunres += 1; unresolved_names[v] += 1
+                    continue
+                for sk in sks:
+                    seeds[sk] = to_seed(use)
+                nwrit += 1
+            per_variant[(rank, variant)].append(seeds)
+            manifest.append({
+                "gap": g["id"], "set": g["set"], "width": g["width"],
+                "gates": len(g["gates"]), "variant": variant,
+                "seed_file": ("_p15_seeds_" if rank == 0 else "_p15_seedsB_") + variant + ".json",
+                "seed_set": "A" if rank == 0 else "B",
+                "seed_index": len(per_variant[(rank, variant)]) - 1,
+                "base": os.path.basename(path), "base_rank": rank,
+                "why": {"alias_canonicals_covered": f"{score[0]}/{nneed}",
+                        "unsteerable_sat_minus_conflict": score[1],
+                        "gate_match_minus_conflict": score[2],
+                        "cube_literals_evaluated": score[3],
+                        "members_walked": score[4], "base_seeds": score[5]},
+                "values_written": nwrit, "substituted": nsub,
+                "kept_out_of_domain": nkept, "not_seedable": nunres,
+            })
+            stat["seeds"] += 1
+            stat["subst"] += nsub
+            stat["kept_ood"] += nkept
+            stat["unresolved"] += nunres
+            if nunres:
+                stat["seeds_with_unseedable_member"] += 1
+            if score[1] < len(g["gates"]):
+                stat["seeds_on_imperfect_gate_base"] += 1
+            if score[0] < nneed:
+                stat["seeds_with_an_inert_key"] += 1
+
+    # SET A is the PRIMARY batch: the rank-0 base of every gap, i.e. the base
+    # that covers every alias canonical the cube is spelled with (verified
+    # 5 776/5 776). SET B is the K=2 backup on a second base — useful because
+    # 68 % of OD0911's seeded keys were never REACHED, but it is optional and
+    # 4 862 of its seeds carry a key the backup base cannot resolve to an
+    # ordinal. Drive A first; B only if A leaves gaps.
+    for rank, pref in ((0, "_p15_seeds_"), (1, "_p15_seedsB_")):
+        for v in VARIANTS:
+            out = os.path.join(HERE, f"{pref}{v}.json")
+            lst = per_variant.get((rank, v), [])
+            json.dump(lst, open(out, "w"))
+            print(f"  set {'A' if rank == 0 else 'B'} {v}: {len(lst)} seeds "
+                  f"-> {os.path.basename(out)}")
+    json.dump(manifest, open(os.path.join(HERE, "_p15_manifest.json"), "w"))
+
+    print(f"\nseeds built            : {stat['seeds']}  "
+          f"({len(gaps)} gaps x K={K})")
+    print(f"values substituted     : {stat['subst']} (out-of-domain model value "
+          f"replaced by the most-observed value that SATISFIES the cube)")
+    print(f"values kept out-of-dom : {stat['kept_ood']} (no observed value satisfies "
+          f"the cube's literals on that variable)")
+    print(f"values not seedable    : {stat['unresolved']} over "
+          f"{len(unresolved_names)} variables, in {stat['seeds_with_unseedable_member']} seeds")
+    for k, c in unresolved_names.most_common(10):
+        print(f"     x{c:<6} {k[:84]}")
+    print(f"seeds whose base does NOT walk every enabling gate: "
+          f"{stat['seeds_on_imperfect_gate_base']} (expected: the gate combination is"
+          f" what no run has walked — the SEED pins it, the base only supplies context)")
+    print(f"seeds carrying an INERT key (base lacks an alias the name is spelled with): "
+          f"{stat['seeds_with_an_inert_key']}")
+    print("\ntop substituted variables")
+    for k, c in subbed_names.most_common(8):
+        print(f"     x{c:<6} {k[:84]}")
+    print("top kept-out-of-domain variables")
+    for k, c in kept_ood.most_common(8):
+        print(f"     x{c:<6} {k[:84]}")
+    print(f"P15-CONSTRUCT-DONE {time.time()-t0:.0f}s")
+
+
+main()

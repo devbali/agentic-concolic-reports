@@ -1,0 +1,31 @@
+--- reports/diaspora/results3/queries_from_runs/_c30_extract_par.py	2026-09-15 08:09:25.233326831 +0000
++++ /tmp/claude-1000/-home-dev-project/94ab9891-b436-4797-97e1-81b88a854f05/scratchpad/_c30_extract_par.py.staged	2026-09-15 08:30:25.378640867 +0000
+@@ -187,8 +187,26 @@
+     # only four are ever read downstream (sql, flags, placeholders,
+     # n_tables): emission uses sql/flags/placeholders, the sort uses
+     # n_tables, and eligible/can_subsume use flags/placeholders.
+-    workers = int(os.environ.get("EXTRACT_WORKERS", "6"))
+-    chunk = int(os.environ.get("EXTRACT_CHUNK", "500"))
++    # STAGED 2026-09-15 (resource-knob CLI task): the same two numbers, now
++    # reachable as --num-workers / --chunk-size as well, under the project
++    # precedence rule (explicit flag > environment > default).  $EXTRACT_WORKERS
++    # and $EXTRACT_CHUNK keep working EXACTLY as they do now -- this driver is
++    # mid-run for notifications_index with 7 workers as I write, which is why
++    # the change is staged rather than applied.
++    import resource_knobs as _rk
++    KNOBS = _rk.KnobSet(
++        _rk.num_workers(env="EXTRACT_WORKERS", default=6,
++                        help="parallel dump-scanning worker processes"),
++        _rk.chunk_size(env="EXTRACT_CHUNK", default=500,
++                       help="dump files handed to a worker per task"),
++    )
++    import argparse
++    ap = argparse.ArgumentParser(prog="_c30_extract_par.py", **KNOBS.parser_kwargs())
++    KNOBS.add_to_parser(ap)
++    cli = KNOBS.resolve(ap.parse_args())
++    KNOBS.maybe_show(ap.parse_args(), cli)
++    workers = cli["num_workers"]
++    chunk = cli["chunk_size"]
+     chunks = [json_paths[i:i + chunk] for i in range(0, len(json_paths), chunk)]
+     print(f"[parallel] {workers} workers over {len(chunks)} chunks of {chunk} "
+           f"(EXTRACT_WORKERS / EXTRACT_CHUNK)", flush=True)

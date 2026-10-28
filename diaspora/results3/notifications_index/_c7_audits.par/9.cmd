@@ -1,0 +1,1 @@
+python3 /home/dev/project/reports/diaspora/tools/rig_crash_census.py /home/dev/project/reports/diaspora/results3/notifications_index 

@@ -1,0 +1,761 @@
+-- status_messages_new — SQL SELECT views rendered from the policy IR
+--
+-- 30 atoms in; 10 views out.
+--   0 atoms do not terminate in a SELECT and are
+--   excluded — every one is named below, never merely counted
+--   (DESIGN_DOMAIN_LAYER §3A.3).
+--   30 statements extracted, 11 distinct after the prune,
+--   1 syntactically subsumed, 10 views.
+--   PC predicates: 0 folded, 0 kept — a predicate the
+--   policy shows this shape running BOTH WITH AND WITHOUT does not
+--   constrain it and is dropped.
+--   266 condition predicates did not resolve to a column; listed below.
+--   Subsumption: SYNTACTIC ONLY (conjunct containment). The solver-backed
+--   checker is not run from a render, so a statement it would have dropped
+--   is still here: this over-reports the policy, never under-reports it.
+--   no app config supplied: no schema, so a condition on a result field
+--   cannot be confirmed to be a column and is reported rather than folded;
+--   framework-default symbol conventions only
+--
+-- ==========================================================================
+-- VIEWS
+-- ==========================================================================
+
+SELECT `aspects`.* FROM `aspects` INNER JOIN `aspect_memberships` ON `aspects`.`id` = `aspect_memberships`.`aspect_id` WHERE `aspect_memberships`.`contact_id` = ?;
+
+-- NOTE: flag unresolved-bind
+-- NOTE: unresolved symbolic binds kept as placeholders: _c3.id
+SELECT `aspects`.* FROM `aspects` INNER JOIN `aspect_memberships` ON `aspects`.`id` = `aspect_memberships`.`aspect_id` WHERE `aspect_memberships`.`contact_id` = `_c3.id`;
+
+-- NOTE: flag unresolved-bind
+-- NOTE: unresolved symbolic binds kept as placeholders: _c5.id
+SELECT `aspects`.* FROM `aspects` INNER JOIN `aspect_memberships` ON `aspects`.`id` = `aspect_memberships`.`aspect_id` WHERE `aspect_memberships`.`contact_id` = `_c5.id`;
+
+-- NOTE: flag unresolved-bind
+-- NOTE: unresolved symbolic binds kept as placeholders: _c1.id
+SELECT `aspects`.* FROM `aspects` WHERE `aspects`.`user_id` = `_c1.id`;
+
+-- NOTE: flag aggregate-as-rows
+-- NOTE: flag unresolved-bind
+-- NOTE: unresolved symbolic binds kept as placeholders: _c1.id
+SELECT `aspects`.`id` FROM `aspects` WHERE `aspects`.`user_id` = `_c1.id`;
+
+-- NOTE: flag unresolved-bind
+-- NOTE: unresolved symbolic binds kept as placeholders: _c1.id, _c2.id
+SELECT `contacts`.* FROM `contacts` WHERE `contacts`.`user_id` = `_c1.id` AND `contacts`.`person_id` = `_c2.id`;
+
+-- NOTE: flag unresolved-bind
+-- NOTE: unresolved symbolic binds kept as placeholders: _c1.id, _c4.id
+SELECT `contacts`.* FROM `contacts` WHERE `contacts`.`user_id` = `_c1.id` AND `contacts`.`person_id` = `_c4.id`;
+
+SELECT `people`.* FROM `people`;
+
+-- NOTE: flag unresolved-bind
+-- NOTE: unresolved symbolic binds kept as placeholders: _c2.id
+SELECT `profiles`.* FROM `profiles` WHERE `profiles`.`person_id` = `_c2.id`;
+
+SELECT `users`.* FROM `users` WHERE `users`.`id` = _MY_UID;
+
+-- ==========================================================================
+-- EXCLUDED ATOMS — 0 of 30 do not terminate in a SELECT
+-- `supports()` returned False for each. Named, never silently skipped.
+-- ==========================================================================
+-- (none: every atom terminates in a SELECT)
+
+-- ==========================================================================
+-- CONDITIONS NOT RENDERED — 266 predicates
+-- The IR keeps a path condition the renderer cannot resolve to a column;
+-- this is where that loss is REPORTED rather than taken silently (DESIGN_IR §2).
+-- ==========================================================================
+-- atom 2: c1.language == "pl"
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 3: c1.language == "pl"
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 4: c1.language == "pl"
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 5: c1.language == "pl"
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 5: c4.not_found != true
+--     c4 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 6: c1.language == "pl"
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 6: c4.not_found != true
+--     c4 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 6: c5.not_found != true
+--     c5 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 7: c1.language == "pl"
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 7: c4.not_found != true
+--     c4 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 7: c5.not_found != true
+--     c5 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 8: c1.getting_started != true
+--     not implied by every branch of a 2-branch condition
+-- atom 8: c1.getting_started == true
+--     not implied by every branch of a 2-branch condition
+-- atom 8: c7.not_found != true
+--     not implied by every branch of a 2-branch condition
+-- atom 8: c1.language == "pl"
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 8: c4.not_found != true
+--     c4 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 8: c5.not_found != true
+--     c5 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 9: $SYM_RESULT_ActiveRecord__FinderMethods_exists__1_exists == true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 9: c1.getting_started != true
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 9: c1.language == "pl"
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 9: c4.not_found != true
+--     c4 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 9: c5.not_found != true
+--     c5 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 9: c7.not_found != true
+--     c7 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 10: c1.getting_started != true
+--     not implied by every branch of a 2-branch condition
+-- atom 10: c1.getting_started == true
+--     not implied by every branch of a 2-branch condition
+-- atom 10: c7.not_found != true
+--     not implied by every branch of a 2-branch condition
+-- atom 10: $SYM_RESULT_ActiveRecord__FinderMethods_exists__1_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 10: c1.language == "pl"
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 10: c4.not_found != true
+--     c4 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 10: c5.not_found != true
+--     c5 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 10: len(c6.rows) != 0
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 11: c1.getting_started != true
+--     not implied by every branch of a 3-branch condition
+-- atom 11: c7.not_found != true
+--     not implied by every branch of a 3-branch condition
+-- atom 11: c1.getting_started != true
+--     not implied by every branch of a 3-branch condition
+-- atom 11: c7.not_found == true
+--     not implied by every branch of a 3-branch condition
+-- atom 11: c9.not_found != true
+--     not implied by every branch of a 3-branch condition
+-- atom 11: c1.getting_started == true
+--     not implied by every branch of a 3-branch condition
+-- atom 11: c7.not_found != true
+--     not implied by every branch of a 3-branch condition
+-- atom 11: c9.not_found != true
+--     not implied by every branch of a 3-branch condition
+-- atom 11: $SYM_RESULT_ActiveRecord__FinderMethods_exists__1_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 11: c1.language == "pl"
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 11: c4.not_found != true
+--     c4 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 11: c5.not_found != true
+--     c5 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 11: len(c6.rows) != 0
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 12: $SYM_RESULT_ActiveRecord__FinderMethods_exists__1_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 12: $SYM_RESULT_ActiveRecord__FinderMethods_exists__2_exists == true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 12: c1.getting_started != true
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 12: c1.language == "pl"
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 12: c4.not_found != true
+--     c4 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 12: c5.not_found != true
+--     c5 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 12: c7.not_found != true
+--     c7 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 12: c9.not_found != true
+--     c9 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 12: len(c6.rows) != 0
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 13: c1.getting_started != true
+--     not implied by every branch of a 3-branch condition
+-- atom 13: c7.not_found != true
+--     not implied by every branch of a 3-branch condition
+-- atom 13: c1.getting_started != true
+--     not implied by every branch of a 3-branch condition
+-- atom 13: c7.not_found == true
+--     not implied by every branch of a 3-branch condition
+-- atom 13: c9.not_found != true
+--     not implied by every branch of a 3-branch condition
+-- atom 13: c1.getting_started == true
+--     not implied by every branch of a 3-branch condition
+-- atom 13: c7.not_found != true
+--     not implied by every branch of a 3-branch condition
+-- atom 13: c9.not_found != true
+--     not implied by every branch of a 3-branch condition
+-- atom 13: $SYM_RESULT_ActiveRecord__FinderMethods_exists__1_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 13: $SYM_RESULT_ActiveRecord__FinderMethods_exists__2_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 13: c1.language == "pl"
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 13: c4.not_found != true
+--     c4 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 13: c5.not_found != true
+--     c5 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 13: len(c6.rows) == 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 14: c1.getting_started != true
+--     not implied by every branch of a 3-branch condition
+-- atom 14: c7.not_found != true
+--     not implied by every branch of a 3-branch condition
+-- atom 14: c1.getting_started != true
+--     not implied by every branch of a 3-branch condition
+-- atom 14: c7.not_found == true
+--     not implied by every branch of a 3-branch condition
+-- atom 14: c9.not_found != true
+--     not implied by every branch of a 3-branch condition
+-- atom 14: c1.getting_started == true
+--     not implied by every branch of a 3-branch condition
+-- atom 14: c7.not_found != true
+--     not implied by every branch of a 3-branch condition
+-- atom 14: c9.not_found != true
+--     not implied by every branch of a 3-branch condition
+-- atom 14: $SYM_RESULT_ActiveRecord__FinderMethods_exists__1_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 14: $SYM_RESULT_ActiveRecord__FinderMethods_exists__2_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 14: c1.language == "pl"
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 14: c11.not_found != true
+--     c11 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 14: c4.not_found != true
+--     c4 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 14: c5.not_found != true
+--     c5 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 14: len(c6.rows) == 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 15: c1.getting_started != true
+--     not implied by every branch of a 3-branch condition
+-- atom 15: c7.not_found != true
+--     not implied by every branch of a 3-branch condition
+-- atom 15: c1.getting_started != true
+--     not implied by every branch of a 3-branch condition
+-- atom 15: c7.not_found == true
+--     not implied by every branch of a 3-branch condition
+-- atom 15: c9.not_found != true
+--     not implied by every branch of a 3-branch condition
+-- atom 15: c1.getting_started == true
+--     not implied by every branch of a 3-branch condition
+-- atom 15: c7.not_found != true
+--     not implied by every branch of a 3-branch condition
+-- atom 15: c9.not_found != true
+--     not implied by every branch of a 3-branch condition
+-- atom 15: $SYM_RESULT_ActiveRecord__FinderMethods_exists__1_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 15: $SYM_RESULT_ActiveRecord__FinderMethods_exists__2_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 15: c1.language == "pl"
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 15: c11.not_found != true
+--     c11 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 15: c12.not_found != true
+--     c12 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 15: c4.not_found != true
+--     c4 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 15: c5.not_found != true
+--     c5 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 15: len(c6.rows) == 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 16: c1.getting_started != true
+--     not implied by every branch of a 3-branch condition
+-- atom 16: c7.not_found != true
+--     not implied by every branch of a 3-branch condition
+-- atom 16: c1.getting_started != true
+--     not implied by every branch of a 3-branch condition
+-- atom 16: c7.not_found == true
+--     not implied by every branch of a 3-branch condition
+-- atom 16: c9.not_found != true
+--     not implied by every branch of a 3-branch condition
+-- atom 16: c1.getting_started == true
+--     not implied by every branch of a 3-branch condition
+-- atom 16: c7.not_found != true
+--     not implied by every branch of a 3-branch condition
+-- atom 16: c9.not_found != true
+--     not implied by every branch of a 3-branch condition
+-- atom 16: $SYM_RESULT_ActiveRecord__FinderMethods_exists__1_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 16: $SYM_RESULT_ActiveRecord__FinderMethods_exists__2_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 16: $SYM_RESULT_ActiveRecord__FinderMethods_exists__3_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 16: c1.language == "pl"
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 16: c11.not_found != true
+--     c11 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 16: c12.not_found != true
+--     c12 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 16: c4.not_found != true
+--     c4 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 16: c5.not_found != true
+--     c5 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 16: len(c6.rows) == 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 17: c1.language != "pl"
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 17: c1.language != "xx"
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 18: c1.language != "pl"
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 18: c1.language != "xx"
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 18: c2.not_found != true
+--     c2 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 19: c1.language != "pl"
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 19: c1.language != "xx"
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 19: c2.not_found != true
+--     c2 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 19: c3.not_found != true
+--     c3 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 20: c1.language != "pl"
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 20: c1.language != "xx"
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 20: c2.not_found != true
+--     c2 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 20: c3.not_found != true
+--     c3 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 21: c1.getting_started != true
+--     not implied by every branch of a 2-branch condition
+-- atom 21: c1.getting_started == true
+--     not implied by every branch of a 2-branch condition
+-- atom 21: c5.not_found != true
+--     not implied by every branch of a 2-branch condition
+-- atom 21: c1.language != "pl"
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 21: c1.language != "xx"
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 21: c2.not_found != true
+--     c2 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 21: c3.not_found != true
+--     c3 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 22: $SYM_RESULT_ActiveRecord__FinderMethods_exists__1_exists == true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 22: c1.getting_started != true
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 22: c1.language != "pl"
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 22: c1.language != "xx"
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 22: c2.not_found != true
+--     c2 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 22: c3.not_found != true
+--     c3 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 22: c5.not_found != true
+--     c5 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 23: c1.getting_started != true
+--     not implied by every branch of a 2-branch condition
+-- atom 23: c1.getting_started == true
+--     not implied by every branch of a 2-branch condition
+-- atom 23: c5.not_found != true
+--     not implied by every branch of a 2-branch condition
+-- atom 23: $SYM_RESULT_ActiveRecord__FinderMethods_exists__1_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 23: c1.language != "pl"
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 23: c1.language != "xx"
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 23: c2.not_found != true
+--     c2 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 23: c3.not_found != true
+--     c3 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 23: len(c4.rows) != 0
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 24: c1.getting_started != true
+--     not implied by every branch of a 3-branch condition
+-- atom 24: c5.not_found != true
+--     not implied by every branch of a 3-branch condition
+-- atom 24: c1.getting_started != true
+--     not implied by every branch of a 3-branch condition
+-- atom 24: c5.not_found == true
+--     not implied by every branch of a 3-branch condition
+-- atom 24: c7.not_found != true
+--     not implied by every branch of a 3-branch condition
+-- atom 24: c1.getting_started == true
+--     not implied by every branch of a 3-branch condition
+-- atom 24: c5.not_found != true
+--     not implied by every branch of a 3-branch condition
+-- atom 24: c7.not_found != true
+--     not implied by every branch of a 3-branch condition
+-- atom 24: $SYM_RESULT_ActiveRecord__FinderMethods_exists__1_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 24: c1.language != "pl"
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 24: c1.language != "xx"
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 24: c2.not_found != true
+--     c2 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 24: c3.not_found != true
+--     c3 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 24: len(c4.rows) != 0
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 25: $SYM_RESULT_ActiveRecord__FinderMethods_exists__1_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 25: $SYM_RESULT_ActiveRecord__FinderMethods_exists__2_exists == true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 25: c1.getting_started != true
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 25: c1.language != "pl"
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 25: c1.language != "xx"
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 25: c2.not_found != true
+--     c2 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 25: c3.not_found != true
+--     c3 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 25: c5.not_found != true
+--     c5 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 25: c7.not_found != true
+--     c7 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 25: len(c4.rows) != 0
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 26: c1.getting_started != true
+--     not implied by every branch of a 3-branch condition
+-- atom 26: c5.not_found != true
+--     not implied by every branch of a 3-branch condition
+-- atom 26: c1.getting_started != true
+--     not implied by every branch of a 3-branch condition
+-- atom 26: c5.not_found == true
+--     not implied by every branch of a 3-branch condition
+-- atom 26: c7.not_found != true
+--     not implied by every branch of a 3-branch condition
+-- atom 26: c1.getting_started == true
+--     not implied by every branch of a 3-branch condition
+-- atom 26: c5.not_found != true
+--     not implied by every branch of a 3-branch condition
+-- atom 26: c7.not_found != true
+--     not implied by every branch of a 3-branch condition
+-- atom 26: $SYM_RESULT_ActiveRecord__FinderMethods_exists__1_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 26: $SYM_RESULT_ActiveRecord__FinderMethods_exists__2_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 26: c1.language != "pl"
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 26: c1.language != "xx"
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 26: c2.not_found != true
+--     c2 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 26: c3.not_found != true
+--     c3 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 26: len(c4.rows) == 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 27: c1.getting_started != true
+--     not implied by every branch of a 3-branch condition
+-- atom 27: c5.not_found != true
+--     not implied by every branch of a 3-branch condition
+-- atom 27: c1.getting_started != true
+--     not implied by every branch of a 3-branch condition
+-- atom 27: c5.not_found == true
+--     not implied by every branch of a 3-branch condition
+-- atom 27: c7.not_found != true
+--     not implied by every branch of a 3-branch condition
+-- atom 27: c1.getting_started == true
+--     not implied by every branch of a 3-branch condition
+-- atom 27: c5.not_found != true
+--     not implied by every branch of a 3-branch condition
+-- atom 27: c7.not_found != true
+--     not implied by every branch of a 3-branch condition
+-- atom 27: $SYM_RESULT_ActiveRecord__FinderMethods_exists__1_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 27: $SYM_RESULT_ActiveRecord__FinderMethods_exists__2_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 27: c1.language != "pl"
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 27: c1.language != "xx"
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 27: c2.not_found != true
+--     c2 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 27: c3.not_found != true
+--     c3 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 27: c9.not_found != true
+--     c9 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 27: len(c4.rows) == 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 28: c1.getting_started != true
+--     not implied by every branch of a 4-branch condition
+-- atom 28: c10.not_found != true
+--     not implied by every branch of a 4-branch condition
+-- atom 28: c5.not_found != true
+--     not implied by every branch of a 4-branch condition
+-- atom 28: c1.getting_started != true
+--     not implied by every branch of a 4-branch condition
+-- atom 28: c10.not_found != true
+--     not implied by every branch of a 4-branch condition
+-- atom 28: c5.not_found == true
+--     not implied by every branch of a 4-branch condition
+-- atom 28: c7.not_found != true
+--     not implied by every branch of a 4-branch condition
+-- atom 28: c1.getting_started != true
+--     not implied by every branch of a 4-branch condition
+-- atom 28: c10.not_found == true
+--     not implied by every branch of a 4-branch condition
+-- atom 28: c5.not_found != true
+--     not implied by every branch of a 4-branch condition
+-- atom 28: c7.not_found != true
+--     not implied by every branch of a 4-branch condition
+-- atom 28: c1.getting_started == true
+--     not implied by every branch of a 4-branch condition
+-- atom 28: c10.not_found != true
+--     not implied by every branch of a 4-branch condition
+-- atom 28: c5.not_found != true
+--     not implied by every branch of a 4-branch condition
+-- atom 28: c7.not_found != true
+--     not implied by every branch of a 4-branch condition
+-- atom 28: $SYM_RESULT_ActiveRecord__FinderMethods_exists__1_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 28: $SYM_RESULT_ActiveRecord__FinderMethods_exists__2_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 28: c1.language != "pl"
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 28: c1.language != "xx"
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 28: c2.not_found != true
+--     c2 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 28: c3.not_found != true
+--     c3 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 28: c9.not_found != true
+--     c9 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 28: len(c4.rows) == 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 29: $SYM_RESULT_ActiveRecord__FinderMethods_exists__1_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 29: $SYM_RESULT_ActiveRecord__FinderMethods_exists__2_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 29: $SYM_RESULT_ActiveRecord__FinderMethods_exists__3_exists == true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 29: c1.getting_started != true
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 29: c1.language != "pl"
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 29: c1.language != "xx"
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 29: c10.not_found != true
+--     c10 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 29: c2.not_found != true
+--     c2 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 29: c3.not_found != true
+--     c3 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 29: c5.not_found != true
+--     c5 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 29: c7.not_found != true
+--     c7 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 29: c9.not_found != true
+--     c9 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 29: len(c4.rows) == 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 30: c1.getting_started != true
+--     not implied by every branch of a 4-branch condition
+-- atom 30: c10.not_found != true
+--     not implied by every branch of a 4-branch condition
+-- atom 30: c5.not_found != true
+--     not implied by every branch of a 4-branch condition
+-- atom 30: c1.getting_started != true
+--     not implied by every branch of a 4-branch condition
+-- atom 30: c10.not_found != true
+--     not implied by every branch of a 4-branch condition
+-- atom 30: c5.not_found == true
+--     not implied by every branch of a 4-branch condition
+-- atom 30: c7.not_found != true
+--     not implied by every branch of a 4-branch condition
+-- atom 30: c1.getting_started != true
+--     not implied by every branch of a 4-branch condition
+-- atom 30: c10.not_found == true
+--     not implied by every branch of a 4-branch condition
+-- atom 30: c5.not_found != true
+--     not implied by every branch of a 4-branch condition
+-- atom 30: c7.not_found != true
+--     not implied by every branch of a 4-branch condition
+-- atom 30: c1.getting_started == true
+--     not implied by every branch of a 4-branch condition
+-- atom 30: c10.not_found != true
+--     not implied by every branch of a 4-branch condition
+-- atom 30: c5.not_found != true
+--     not implied by every branch of a 4-branch condition
+-- atom 30: c7.not_found != true
+--     not implied by every branch of a 4-branch condition
+-- atom 30: $SYM_RESULT_ActiveRecord__FinderMethods_exists__1_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 30: $SYM_RESULT_ActiveRecord__FinderMethods_exists__2_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 30: $SYM_RESULT_ActiveRecord__FinderMethods_exists__3_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 30: c1.language != "pl"
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 30: c1.language != "xx"
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 30: c2.not_found != true
+--     c2 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 30: c3.not_found != true
+--     c3 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 30: c9.not_found != true
+--     c9 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 30: len(c4.rows) == 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)

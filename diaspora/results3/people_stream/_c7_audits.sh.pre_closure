@@ -1,0 +1,42 @@
+#!/bin/bash
+# people_stream closing checks (2026-09-10) — the `_c7_audits.sh` of this
+# endpoint. Ported from notifications_index/_c7_audits.sh, minus the four
+# entries that need artefacts people_stream does not have (concrete_run.json /
+# concrete_aliases.json -> note_fidelity + hardening_lint's --runs +
+# count_matrix; format_coverage_audit.py and _c7_variant_tuple_check.py are
+# notifications' own scripts). Every omission is named in the log rather than
+# silently skipped. No outer flock: these are bounded scans.
+set +e; unset JAVA_TOOL_OPTIONS; cd /home/dev/project
+B=/home/dev/project/reports/diaspora/results3/people_stream
+A=/home/dev/project/src/queries_from_runs/audits
+T=/home/dev/project/reports/diaspora/tools
+V=/home/dev/project/venvs/queries_from_runs/bin/python
+LOG="$B/_c7_audits.log"; echo "=== people_stream c7 audits $(date -Is) ===" > "$LOG"
+# find, not ls: past ARG_MAX ls returns 0
+echo "corpus POPULATION: $(find $B -maxdepth 1 -name 'dump_*.json' | wc -l) dumps" >> "$LOG"
+run() { echo "" >> "$LOG"; echo "##### $1 #####" >> "$LOG"; shift; "$@" >> "$LOG" 2>&1; echo "EXIT=$?" >> "$LOG"; }
+
+run identity_symbolicity    env PYTHONPATH=/home/dev/project/src python3 $A/identity_symbolicity_audit.py "$B"
+run statement_note_lint     env PYTHONPATH=/home/dev/project/src python3 $A/statement_note_lint.py "$B"
+run bind_resolution         env PYTHONPATH=/home/dev/project/src $V $A/bind_resolution_audit.py "$B"
+# MANDATORY BOTH WAYS before any extraction (RUNBOOK 2026-09-01): if they
+# differ the extractor MUST install variant_d's assoc_fold.
+run skipped_pcs_VANILLA     env PYTHONPATH=/home/dev/project/src $V $A/skipped_pcs_audit.py "$B"
+run skipped_pcs_PATCHED     env PYTHONPATH=/home/dev/project/src $V $A/skipped_pcs_audit.py "$B" --patched /home/dev/project/reports/diaspora/results3/_experiment/variant_d
+run pc_visibility           env PYTHONPATH=/home/dev/project/src python3 $A/pc_visibility_audit.py "$B" --gate guid,text,comments_count,nsfw,closed_account,diaspora_handle
+run empty_relation          env PYTHONPATH=/home/dev/project/src python3 $A/empty_relation_emission_audit.py "$B"
+run noteless_call           env PYTHONPATH=/home/dev/project/src python3 $A/noteless_call_audit.py "$B"
+run cardinality_consistency env PYTHONPATH=/home/dev/project/src python3 $A/cardinality_consistency_audit.py "$B"
+run rig_crash_census        python3 $T/rig_crash_census.py "$B"
+run boundary_declaration    env PYTHONPATH=/home/dev/project/src python3 $T/boundary_declaration_audit.py "$B" /home/dev/project/reports/diaspora/results3/comments_index /home/dev/project/reports/diaspora/results3/conversations_index
+# H6 without --runs: this batch has no concrete_run.json (no Phase 5 concrete
+# checker has been run on people_stream), so the real-run half of the lint is
+# NOT EXERCISED. Stated, not hidden.
+run hardening_lint          env PYTHONPATH=/home/dev/project/src python3 $T/hardening_lint.py "$B" --sample 400
+echo "" >> "$LOG"
+echo "NOT RUN (artefact absent on this endpoint, not a pass):" >> "$LOG"
+echo "  note_fidelity   — needs concrete_run.json + concrete_aliases.json" >> "$LOG"
+echo "  count_matrix    — needs concrete_run.json" >> "$LOG"
+echo "  format_coverage — notifications' own script; people_stream's format arms are W1 in _WALLS.md" >> "$LOG"
+echo "=== c7 audits DONE $(date -Is) ===" >> "$LOG"
+grep -n "EXIT=" "$LOG"

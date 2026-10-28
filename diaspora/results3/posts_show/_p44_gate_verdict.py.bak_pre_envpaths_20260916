@@ -1,0 +1,100 @@
+#!/usr/bin/env python3
+"""P44 — THE FORECLOSURE GATE VERDICT, on the driver's constructor.
+
+  control run realises C and EVALUATES d_ctl        -> control GREEN
+  claim run realises C and EVALUATES d              -> FAIL   (witness: drive it)
+  claim realises C, d unevaluated, control GREEN    -> FORECLOSED (prunable)
+  anything else                                     -> NOT-TESTABLE (never PASS)
+
+The positive control is MANDATORY (X11): a construction attempt fails silently,
+so a builder that can build nothing would hand every class a free PASS.
+NOT-TESTABLE is never promoted.
+"""
+import json, os, re, sys
+from collections import Counter, defaultdict
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE); sys.path.insert(0, "/home/dev/project/src")
+from concolic_engine.assumptions import alias_map_for, renamer
+from coverage_assumptions import ALIASES
+_LEN = re.compile(r"len\(([^()]+)\)")
+fixlen = lambda s: _LEN.sub(r"SYM_LEN_\1", s) if s else s
+
+def lits(nc):
+    out, depth, cur, i, n = [], 0, [], 0, len(nc or "")
+    while i < n:
+        c = nc[i]
+        if c == "(": depth += 1
+        elif c == ")": depth -= 1
+        if depth == 0 and nc.startswith(" AND ", i):
+            out.append("".join(cur)); cur = []; i += 5; continue
+        cur.append(c); i += 1
+    if cur: out.append("".join(cur))
+    r = []
+    for t in out:
+        t = t.strip(); pol = True
+        while t.startswith("Not(") and t.endswith(")"):
+            t = t[4:-1].strip(); pol = not pol
+        if t: r.append((t, pol))
+    return r
+
+def outcomes(path):
+    d = json.load(open(os.path.join(HERE, path)))
+    ev = d.get("events") or ()
+    rn = renamer(alias_map_for([(e.get("result_name"), e.get("note"))
+                                for e in ev if e.get("type") == "symbolic_call"], ALIASES))
+    t = defaultdict(set)
+    for e in ev:
+        if e.get("type") == "path_condition":
+            t[fixlen(rn(str(e.get("expr", ""))))].add(bool(e.get("taken")))
+    return t
+
+join = json.load(open(os.path.join(HERE, "_p44_gate_join.json")))
+gaps = {g["id"]: g for g in json.load(open(os.path.join(HERE, "_p44_gaps_MISS.json")))}
+cg = {g["id"]: g for g in json.load(open(os.path.join(HERE, "_p44_gaps_GCTRL.json")))}
+cex = json.load(open(os.path.join(HERE, "_p44_explain_GCTRL.json")))["per_gap"]
+
+V = Counter(); rows = []
+green = 0; tested = 0
+for j in join:
+    if not j.get("ctrl"):
+        V["NOT-TESTABLE (" + j.get("verdict_pre", "?") + ")"] += 1
+        continue
+    tested += 1
+    g = gaps[j["gap"]]
+    C = [(e, p) for e, p in lits(g["node_constraint"]) if e != j["d"]]
+    # --- control arm
+    cr = cex.get(j["ctrl"])
+    ctrl_green = False
+    if cr and cr.get("dump"):
+        t = outcomes(cr["dump"])
+        ctrl_green = (all(p in t.get(e, ()) for e, p in C)
+                      and bool(t.get(j["d_ctl"])))
+    if ctrl_green:
+        green += 1
+    # --- claim arm (the targeted attempt already driven)
+    t2 = outcomes(j["claim_dump"])
+    claim_C = all(p in t2.get(e, ()) for e, p in C)
+    d_eval = bool(t2.get(j["d"]))
+    if claim_C and d_eval:
+        v = "FAIL (witness: C realised and d evaluated -- NOT foreclosed)"
+    elif claim_C and ctrl_green:
+        v = "FORECLOSED (C realised, d unevaluated, control GREEN)"
+    elif not ctrl_green:
+        v = "NOT-TESTABLE (control not green)"
+    else:
+        v = "NOT-TESTABLE (claim run did not realise C)"
+    V[v] += 1
+    rows.append({"gap": j["gap"], "verdict": v, "ctrl_green": ctrl_green,
+                 "d": j["d"], "d_ctl": j["d_ctl"],
+                 "bases_realising_C": j["bases_realising_C"]})
+print("=" * 72)
+print("P44 FORECLOSURE GATE — ON THE DRIVER'S CONSTRUCTOR")
+print("=" * 72)
+print(f"  classes with a control built and driven : {tested}")
+print(f"  POSITIVE CONTROL GREEN                  : {green} / {tested} = "
+      f"{100.0*green/max(tested,1):.1f} %      (the gate's own path: 17.9 %)")
+print()
+for k, n in V.most_common():
+    print(f"   {n:6d}  {k}")
+json.dump(rows, open(os.path.join(HERE, "_p44_gate_verdicts.json"), "w"), indent=1)
+print("P44-GATE-VERDICT-DONE")

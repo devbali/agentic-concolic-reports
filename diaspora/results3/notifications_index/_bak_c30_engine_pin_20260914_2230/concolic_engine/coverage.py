@@ -1,0 +1,3609 @@
+"""
+Coverage completeness checker for concolic execution.
+
+Completeness semantics (decision 2026-09-10 — CO-EVALUATION combination
+coverage; supersedes the complete-graph rule of 2026-08-18):
+
+    ``complete`` means every satisfiable COMBINATION of branch outcomes over
+    a set of decisions THAT SOME RUN EVALUATED TOGETHER has been observed in
+    some single run's executed path — unless an explicit assumption relaxes
+    the demand. A combination is demanded only where execution has shown the
+    decisions can be made in one run.
+
+Formally:
+
+- The universe is every distinct PC expression observed across the runs.
+- A run's **evaluation set** is the set of universe expressions its path
+  evaluated (step 1's ``run_outcomes`` keys). The demand universe is the
+  **maximal observed evaluation sets**: dedup the runs' evaluation sets and
+  drop any that is a subset of another.
+- For every such set, every outcome assignment over its expressions that is
+  satisfiable under Z3 (given declared variable bounds and
+  ``SymbolicConstraintAssumption``s) must be observed: some run's path must
+  evaluate all of the set's expressions with exactly those outcomes. With
+  no assumptions the demand is exactly "every combination any run walked".
+- An ``IndependenceAssumption`` **projects** a set: inside one evaluation
+  set the declared-independent pair's edge is cut and the set is replaced by
+  the maximal cliques of the resulting graph. Independence is therefore
+  still strictly pairwise, and it only ever speaks about pairs some run
+  really evaluated together — a declaration over a pair no run co-evaluated
+  is inert (nothing to cut), which is exactly right: there was never a
+  demand to relax.
+- A (fully) ``UntrackedPathAssumption`` removes the expression from the
+  universe before the sets are formed.
+  ``OneSideUntrackedPathAssumption`` restricts an expression's demanded
+  assignments to its tracked side (a Z3 constraint inside every set that
+  contains it).
+- Combinations that execution can never manifest *inside a set some run did
+  walk* are judged by FORECLOSURE (2026-09-10, §16b — see below): the demand
+  is per ASSIGNMENT, not per SET.
+
+Foreclosure — co-evaluation judged per assignment (2026-09-10, §16b)
+-------------------------------------------------------------------
+Co-evaluation is a fact about the SET; it is not a promise that every
+assignment over the set is reachable. The fetch-then-404 corner is the
+example: a gate `g` whose `taken` arm ends the run is co-evaluated with the
+inner checks by the runs that take `not_taken`, so the set holds both, and the
+flat cross-product then demands `g=taken AND inner=...` — a product the program
+cannot produce. That demand is an artefact of flattening the tree into a set,
+in exactly the way the complete graph was an artefact of flattening paths into
+pairs. It is measured on notifications_index: `row_target_not_found == true`
+in 5 687 runs, mean gated decisions per run **0.00**; false in 67 045 runs,
+mean **8.18**.
+
+So the demand is refined ONE MORE STEP, at the granularity where the tree
+actually lives — the assignment:
+
+    Decision ``g`` with outcome ``o`` FORECLOSES decision ``d`` iff
+    (a) some run evaluated ``g`` and ``d`` together, and
+    (b) every run in which ``g`` took ``o`` left ``d`` unevaluated.
+
+(a) is the same existential the demand universe is built from; (b) is a
+universal over the corpus. Both are INFERRED from the corpus — foreclosure is
+NOT a new assumption kind, nothing is declared, and no ``AssumptionSet`` entry
+is involved. Note that (a) + (b) force ``g`` to have been observed BOTH ways
+(the co-evaluating run of (a) necessarily took the other arm), so a foreclosure
+is never read off a decision the corpus has driven only one way.
+
+**Demand, foreclosure-aware.** For a demand set ``S`` the demanded objects are
+the LEAVES of the pruned decision tree over ``S``: walk the members in an order
+that respects foreclosure (a gate before what it forecloses); at each member,
+if the assignment built so far foreclosed it, it is NOT part of this cube and
+the cube ranges over the rest; otherwise assign it both ways and recurse.
+A leaf is demanded iff it is Z3-satisfiable. Equivalently: a cube is demanded
+iff no member is assigned while foreclosed by another assigned member, and
+every non-assigned member is foreclosed by an assigned one. With no foreclosure
+inferred, every leaf assigns all of ``S`` and the rule is exactly the set-level
+rule — the demand is nested:
+
+    foreclosure-aware  ⊆  set-level (co-evaluation)  ⊆  complete-graph.
+
+**Invariants** (each pinned by a test in ``src/test_coevaluation.py``):
+
+1. *Coverage is still an observation.* A leaf ``(T, α)`` is covered by a run
+   iff the run evaluated every member of ``T`` with those outcomes. It need
+   NOT have evaluated the rest of ``S``: by (b) it provably did not.
+2. *A blocking clause is emitted only by a run that walked a leaf exactly.*
+   A run whose evaluated members ``C = S ∩ eval(run)`` is a proper subset of
+   ``S`` blocks only if every member of ``S`` minus ``C`` is foreclosed by ``C``'s own
+   outcomes (a "closed" prefix). Otherwise it contributes nothing — the
+   conservative direction, an unproven cover is never counted.
+   ``C == S`` is always closed: (b) means an assigned member can never
+   foreclose another member the same run evaluated.
+3. *The "observed both ways" omission still works.* A recurrent expression a
+   run took both ways is omitted from its clause, blocking the whole family;
+   for a GATE observed both ways the intersection of its two foreclosure sets
+   is used, so the omission is only taken where the family is closed either way.
+4. *Foreclosure never excuses a branch.* ``tree_missing`` is computed over the
+   expressions, untouched: a satisfiable, never-observed outcome is still a
+   refusal, whatever forecloses what.
+5. *Backward edges are not applied.* If the corpus makes ``g=o`` foreclose a
+   ``d`` that PRECEDES ``g`` in the set's order and no acyclic order exists (a
+   correlation rather than a gating), the edge is dropped and the product
+   stays demanded. Counted in ``foreclosures_ignored``, never silent.
+
+**Soundness, and its precondition — the same one, not a new one.** If ``d``
+were evaluable under ``g=o``, some path would show it; that is the identical
+argument set-level co-evaluation already rests on, one level down. It holds at
+the fixed point and is therefore reported CONDITIONAL on ``tree_complete``
+exactly as the combination claim is: with ``tree_missing`` non-empty the
+combination claim is refused and the inferred foreclosures are PROVISIONAL
+(``foreclosures_provisional``). The minimum-evidence question — how many runs
+with ``g=o`` make "never evaluated" evidence rather than absence — has the
+answer ONE, and only because of that precondition: tree completeness says every
+branch outcome has been explored, so the reason no ``g=o`` run reaches ``d`` is
+not that ``g=o`` is undriven. Off the fixed point a single run is not evidence
+at all, and the report says so instead of hiding it.
+
+**Mutability — and the one non-monotonicity, stated.** A new run that evaluates
+``d`` under ``g=o`` REMOVES the foreclosure and ADDS demand: foreclosure is a
+universal over the corpus, so it can only ever be refuted, never established,
+by a run that walks what it forbids. That is the opposite direction from set
+growth (which adds demand by widening the sets) and both push the same way, so
+demand is still monotone in the corpus — with ONE exception, which needs saying
+because it is real: if ``g`` had been observed only as ``not o``, a new run
+taking ``g=o`` can CREATE a foreclosure (condition (a) already held) and so
+RETRACT demand. That can only happen while ``g :: o`` was in ``tree_missing``,
+i.e. while the combination claim is already refused; at the fixed point the
+demand only grows. Provisional foreclosures are provisional in this precise
+sense.
+
+Subset dedup (``maximal_sets``) stays sound under the same reading: a leaf of a
+dropped subset ``S'`` is covered by a leaf of its superset ``S``, because a
+member foreclosed inside ``S`` by a gate outside ``S'`` is assigned on the
+gate's other arm, which exists by (a). The corner where an outcome is
+SATISFIABLE only jointly with the arm that forecloses it is caught by the tree
+layer: that outcome is then never observed and ``tree_missing`` names it.
+
+Conjunction foreclosure — the gate CONJUNCTIONS (2026-09-13, §16e, OPT-IN)
+--------------------------------------------------------------------------
+``infer_foreclosures`` above is strictly PAIRWISE: a decision that only two
+gates ACTING TOGETHER remove from the path is never inferred and its cubes
+stay demanded forever. §16e infers the same relation over the gate
+CONJUNCTIONS the demand already contains — nothing new is drawn from outside
+the demand, ``P`` is a prefix the pruned tree already builds:
+
+    For a demand set ``S`` with leaf-group gate prefix ``P`` (the gate-first
+    ordered assignment over ``S``'s foreclosure gates, exactly as the §16b
+    pruned walk defines a leaf), a surviving member ``d`` is FORECLOSED
+    under ``P`` iff (a) at least one run's profile MATCHES ``P`` and (b) no
+    run matching ``P`` evaluates ``d``.
+
+"Matches" is read with the same profile/outcome semantics as §16b: a run
+matches ``P`` iff, for every literal ``(g, o)`` of ``P``, it evaluated ``g``
+with outcome ``o`` at least once. A foreclosed member is not part of the
+leaf, exactly as a §16b-foreclosed member is not: the leaf is the assignment
+over the survivors MINUS ``F(P)``, the leaves stay pairwise incompatible
+(two leaves differ at the first gate they diverge on, and that gate is in
+both cubes), and there is still one blocking clause per observed leaf.
+
+Falsifier, self-re-deriving: ANY run that matches ``P`` and evaluates ``d``
+removes the foreclosure on the next pass — it is the same universal over the
+corpus that §16b's clause (b) is, one conjunction wide instead of one
+literal, so it is monotone in the corpus in the same way and provisional in
+the same way (``conjunction_foreclosures_provisional`` follows
+``tree_complete``).
+
+The ``A = 0`` class is NOT an inference and is never silently dropped. A
+gate conjunction no run of the corpus matches at all is a different question
+— nothing has been observed under it, so "never evaluates ``d``" is absence,
+not evidence. Those prefixes are REPORTED
+(``unmatched_gate_conjunctions`` / ``unmatched_gate_conjunction_prefixes``)
+so the driver can construct them; the demand stands.
+
+Nesting: conjunction foreclosure only ever removes members a §16b leaf still
+held, so
+
+    conjunction-foreclosed (§16e) ⊆ foreclosure-aware (§16b) ⊆ set-level (§16)
+
+with each §16e leaf a sub-cube of the §16b leaf it came from. Pinned by
+``src/test_conjunction_foreclosure.py::test_demand_is_nested_16e_16b_16``.
+
+OPT-IN and OFF by default (``CoverageChecker(foreclosure_conjunctions=True)``)
+so every summary written before 2026-09-13 reproduces byte-identically. The
+flag is folded into the step-6 checkpoint key, so a checkpoint written under
+one setting is never replayed under the other.
+
+Confinement — disjoint footprints (2026-09-11, §16c)
+-----------------------------------------------------
+The owner's sentence: *"this downstream thing only happens on one side, so
+no need to run combinatorially all the other things with both."* Foreclosure
+removes assignments the program cannot make. Confinement removes the CROSS
+PRODUCT over decisions whose downstream effects — the target-call statement
+shapes their outcome controls — are DISJOINT, so that no shape can need both
+outcomes at once. Like foreclosure it is INFERRED from the corpus, nothing is
+declared, no ``AssumptionSet`` entry exists. In one line: it is
+non-interference of two decisions' effects on the access trace.
+
+    The FOOTPRINT of a tracked decision ``D`` is the set of target-call
+    shapes (``assumptions.call_shape``: target, note with binds and string
+    literals wildcarded, argument shape) whose PRESENCE differs between two
+    runs that MATCH on every other evaluated decision — same evaluated
+    expressions, same outcomes, same set of both-sided expressions — and
+    differ only in ``D``'s outcome (the matched-context differential). A run
+    that recorded BOTH sides of ``D`` is in none of ``D``'s contexts.
+    ``D`` is DECIDED iff at least one matched context exists; otherwise its
+    footprint is UNDECIDABLE — and undecidable is never read as empty.
+
+    A decision is CONFINED (owner's refinement, 2026-09-11, STRICT) iff it
+    is decided and EVERY shape in its footprint is strictly ONE-SIDED across
+    the ENTIRE corpus: the shape is present ⇒ ``D`` took its enabling side —
+    it never appears in any run where ``D`` took the other side, nor in a
+    run where ``D`` was recorded both ways. Runs where ``D`` is UNEVALUATED
+    count neither way: on such a path ``D`` has no outcome, the shape is
+    enabled by whatever gated ``D`` away, and that leaf is foreclosure's
+    business (it is demanded on its own). Strictness is per shape and
+    all-or-nothing per decision: ONE shape reachable on the other side (via
+    anything else) makes the decision NOT confined — the two-sided shape is
+    never dropped to keep the rest, which would be the weak definition
+    sneaking back in.
+
+    Two decisions are a CONFINED PAIR iff both are confined and their
+    footprints are disjoint.
+
+**The claim, and its falsifier.** A confined pair needs no cross product:
+inside a demand set, members that are pairwise confined need each outcome
+observed once, under any compatible prefix — not every combination. The
+argument: suppose a shape ``Z`` required both outcomes, ``A=x ∧ B=y ⇒ Z``.
+Then in any matched context with ``B=y``, flipping ``A`` toggles ``Z``, so
+``Z ∈ footprint(A)``; symmetrically ``Z ∈ footprint(B)``; disjointness
+refutes the existence of such a ``Z``. The falsifier is therefore concrete,
+and it is a COUNTEREXAMPLE SEARCH run at load on every pass: for every
+confined decision and every shape in its footprint, one run anywhere in the
+corpus with the decision on its non-enabling side and the shape present
+DISQUALIFIES the decision (``confinement_disqualified``, run and shape
+named). One matched context in which a shape outside ``footprint(A)`` varies
+with ``A`` enlarges the footprint; one shared shape withdraws the pair. The
+weak reading ("toggles in SOME matched context") is kept only as
+``confinement_strict=False`` so the nesting strict ⊆ weak ⊆ §16b can be
+tested; it is not for batches. What strict EXCLUDES, deliberately: a shape
+reachable on ``A``'s other arm through some other decision is exactly a
+shape whose presence is not ``A``'s to control, and demanding the product
+there is the conservative answer. The assumption gate's ``ConfinementAssumption`` test replays exactly
+that: flip A alone, flip B alone, flip both, and PASSes only if each single
+flip changes only shapes in its own footprint, the partner decision stays
+evaluated under each single flip, and the trace of the double flip is the
+base with both deltas applied.
+
+**Preconditions, CHECKED, never assumed.** (1) Tree completeness, as for
+foreclosure: a footprint is measured over arms the corpus walked, so with
+``tree_missing`` non-empty the footprints are PROVISIONAL
+(``confinement_provisional``) and the combination claim is refused as before.
+(2) Matched contexts exist for BOTH members — an undecidable decision is
+never part of a confined pair and stays fully demanded. (3) A trace layer
+exists: the corpus records target calls (``symbolic_call`` events with a
+result name — the gate's access trace). A corpus with none has nothing to
+measure a footprint on; every decision is undecidable there and the
+projection is the identity, which is what keeps the property inert on the
+engine's own trace-less fixtures.
+
+**Order: foreclosure first, then confinement within the pruned set.** A
+matched context is by definition a pair of runs with the SAME tree shape, so
+a footprint says nothing about a decision whose flip changes WHICH decisions
+are evaluated — that is foreclosure's business, and such a decision is
+typically undecidable. Inside a demand set the members that foreclose
+something (the set's GATES, ``restrict_foreclosures``) are therefore kept in
+every part; only the non-gate members are split: their confinement graph
+(edge kept unless the pair is confined) is decomposed into maximal cliques
+``K_i`` and the set ``S`` is replaced by the sub-sets ``G ∪ K_i``. Each keeps
+the whole gate structure, so the pruned tree of ``G ∪ K_i`` is the pruned
+tree of ``S`` restricted to ``K_i``'s survivors — confinement applied WITHIN
+the leaf, which is exactly where the matched-context measure is valid. The
+projection cap (``max_cliques``) applies per set; on a cap hit the set is
+kept WHOLE (the conservative direction; nothing is truncated).
+
+**Nesting — the Rule T argument.** Every sub-set is a subset of its set with
+the same gates and the same gate order, so each of its pruned-tree leaves is
+a leaf of ``S``'s tree restricted to it, every satisfiable leaf of the sub-set
+extends to a satisfiable leaf of ``S`` (a Z3 model determines every
+expression), and a run covering the extension covers the restriction. Hence
+
+    weak-confined ⊆ STRICT-confined ⊆ foreclosure-aware (§16b) ⊆ set-level (§16) ⊆ complete-graph
+
+— old-complete still implies new-complete, and a corpus on which no pair is
+confined gets a byte-identical verdict (the projection is the identity).
+Strict is a SUBSET relation on pairs and therefore a SUPERSET on demand: it
+cuts fewer edges than the weak reading, never more than §16b. Pinned by
+``src/test_confinement.py::test_demand_is_nested_in_16b_on_random_corpora``
+and ``::test_strict_is_nested_in_weak_on_random_corpora``.
+
+**The gate, end to end.** ``CoverageResult.assumptions_to_dict()`` appends
+the confined pairs (``confinement_to_dict``: type ``ConfinementAssumption``,
+footprints, enabling sides, other producers, foreclosing gates), so the
+completion section every endpoint already runs hands them to the assumption
+gate, whose ``_test_confinement`` replays them — composition (i)-(v), an
+exhaustive flip over every profile carrying a footprint shape (vi) and a
+constructed adversarial route per shape (vii). A PASS rests on the gate's
+own replays; anything else on an INFERRED pair (FAIL, or a probe the gate
+could not run) withdraws it, blocks ``complete`` and is fed back as
+``withdrawn_pairs`` so the next pass never licenses it again.
+
+**Mutability.** A footprint is a union over matched contexts, so it only
+GROWS with the corpus, and a confined pair can only be WITHDRAWN by a new run
+— the same universal-over-the-corpus direction as foreclosure. A decision can
+also become decided (a first matched context appears), which can CREATE a
+confined pair and retract demand; that is the counterpart of foreclosure's
+one non-monotonicity and it is likewise confined to a corpus on which the
+tree layer or a context was still missing. The CORPUS TRIPWIRE
+(``prior_footprints``): given the footprints an earlier pass licensed pairs
+on, every pair that was confined under them and is no longer confined under
+this corpus is counted in ``confinement_withdrawn`` and printed — the corpus
+scan of RUNBOOK Phase 4, for an inferred relation.
+
+**Honest blind spots.** The footprint sees target-call SHAPES (binds and
+literals wildcarded), so a dependence that changes a bind but no shape is
+invisible to it — the same reading the gate's access trace has always used
+(DISCIPLINE §14 and ``_TRACE_PROJECTION_20260909.md`` §5 say where that
+matters). An empty DECIDED footprint means the decision changes no shape in
+any matched context; it is disjoint from every other decided footprint and
+is confined with all of them — a decision the trace cannot see is not one
+the cross product would inform.
+
+Why this is sound, and its precondition
+---------------------------------------
+The tree semantics this checker started from never demanded a combination of
+two decisions on different branches — no tree node evaluates both. The
+2026-08-18 move to a graph defaulted to a COMPLETE graph, which connects
+decisions that never share a path; the demand it produced over such a pair is
+an artefact of the representation, not a fact about the program. Restricting
+the demand to observed evaluation sets restores the tree semantics on a DAG.
+
+It is sound — it drops no demand a reachable path could satisfy — under one
+precondition, which this checker computes and reports separately:
+
+    **TREE COMPLETENESS.** Every tracked expression has been observed with
+    every satisfiable outcome. ``tree_complete`` is False whenever some
+    active expression has a satisfiable, never-observed side, and then the
+    combination claim is REFUSED: ``complete`` is False and
+    ``tree_missing`` says which expression and side.
+
+The argument: whether two decisions A and B can share a path is itself
+decided by branch decisions, and those gating decisions live in evaluation
+sets of their own. If every satisfiable assignment over every observed set is
+observed (the combination claim) and every decision has been taken both ways
+(the tree claim), then any gate that would put A and B on one path has been
+taken in the direction that does so, and A and B have been seen together.
+Completeness under this rule is therefore a fixed point, not a snapshot.
+
+The hypotheses matter, and they are the honest blind spots:
+
+- an ``UntrackedPathAssumption`` removes a decision from the universe, so a
+  co-evaluation that only an untracked decision gates will never be demanded.
+  Untracking has always been a declared relaxation; under this rule it can
+  also hide a *combination* demand, not only a branch. Untrack a gate only
+  when its arms are genuinely interchangeable.
+- a ``OneSideUntrackedPathAssumption`` pins a side; a co-evaluation gated
+  only by the untracked side is likewise never demanded.
+- an expression the solver cannot parse leaves the universe (see
+  ``unevaluable_exprs``) with the same consequence.
+
+Mutability
+----------
+The graph is a function of the corpus and is rebuilt on every pass (it always
+was). Under this rule a new run can ADD demand, by showing that two decisions
+can be evaluated together. The demand is MONOTONE in the corpus: co-evaluation
+is an existential over runs, so once two decisions have been seen together
+they stay together, and no run can retract a demand. (Subset dedup can make a
+demand set DISAPPEAR from the reported list when a later run evaluates a strict
+superset — that never weakens the demand: covering every satisfiable assignment
+of a superset implies covering every satisfiable assignment of each subset,
+because every satisfiable partial assignment extends to a satisfiable total one
+over a boolean.) A previously declared independence over a pair that only later
+co-evaluates starts CUTTING at that point — the declaration is inert until the
+corpus produces the pair, and the assumption gate then has a snapshot to probe
+it on, so an unsound declaration becomes falsifiable exactly when it starts to
+matter.
+
+Missing combinations are found with a Z3 blocking-clause loop and each
+carries concrete seed values for the DSE to try. The checker's job on the
+failing side is a VERDICT plus an actionable witness, not an enumeration:
+the per-set cap (``max_missing_per_clique``, **default 1** since 2026-09-12)
+stops the search after that many examples. The cap never weakens the passing
+side — a fully covered set proves itself with a single UNSAT regardless of
+the cap. Hitting the cap or a solver unknown sets ``truncated`` /
+``solver_lost`` and makes the result NOT complete — the checker never claims
+completeness it did not prove.
+
+**One Z3 query per demand set** (owner ruling, 2026-09-12): a query is the
+whole set's remaining space, and the assignment that answers it is read off
+the model with model completion rather than fixed decision by decision. So a
+covered set costs exactly ONE UNSAT and an uncovered set exactly ONE SAT per
+witness — never one per decision. Raising the cap above 1 still works and
+still costs one query per extra witness. See DISCIPLINE §16d.
+
+The model is exactly: expressions, the runs' observed evaluation sets and
+outcomes, and the declared independences that project those sets.
+``total_nodes`` reports the number of distinct PC expressions;
+``demand_sets`` the number of demand sets; ``independent_folds`` the number
+of edges removed by independence declarations.
+
+Expressions the solver cannot parse (e.g. ``len(...)`` pseudo-variables)
+are excluded from the universe and listed in ``unevaluable_exprs`` — a
+visible blind spot, not a silent one.
+"""
+
+from __future__ import annotations
+
+import dataclasses
+import hashlib
+import os
+import sys as _sys
+import typing as t
+
+from . import checkpoint as _checkpoint
+from .run import Run, SymbolicVar, PathCondition
+from . import run as _run_mod
+from . import solver as _solver_mod
+from . import assumptions as _assumptions_mod
+from .solver import check_satisfiability, solve_and_evaluate
+from .assumptions import AssumptionSet, PathSource, call_shape, shape_str
+
+
+# ---------------------------------------------------------------------------
+# Coverage data model
+# ---------------------------------------------------------------------------
+
+
+@dataclasses.dataclass(frozen=True)
+class MissingCoverage:
+    node_constraint: str
+    source_location: str = ""
+    missing_branch: str = ""
+    missing_constraint: str = ""
+    prefix: t.Tuple[PathCondition, ...] = ()
+    concrete_values: t.Dict[str, t.Any] = dataclasses.field(default_factory=dict)
+    # True when this missing branch is excluded (via assumption) from the
+    # completeness check: it is reported for transparency but does not
+    # block `complete`.
+    untracked: bool = False
+
+
+@dataclasses.dataclass(frozen=True)
+class CoverageResult:
+    total_runs: int
+    total_nodes: int
+    missing: t.List[MissingCoverage]
+    complete: bool
+    solver_lost: int = 0
+    elapsed_ms: float = 0.0
+    assumptions_used: int = 0
+    independent_folds: int = 0
+    # True when a combination-enumeration cap was hit: the missing list is a
+    # sample, not the full set, and `complete` is forced False.
+    truncated: bool = False
+    # PC expressions the solver could not parse — excluded from the demand
+    # universe. A visible blind spot, never a silent one.
+    unevaluable_exprs: t.Tuple[str, ...] = ()
+    # Number of demand sets (maximal observed evaluation sets, projected by
+    # declared independence).
+    demand_sets: int = 0
+    # The combination claim's PRECONDITION: every tracked expression observed
+    # with every satisfiable outcome. False forces `complete` False.
+    tree_complete: bool = True
+    # ``"<expr> :: <side>"`` for each satisfiable branch outcome never
+    # observed — the reason `tree_complete` is False.
+    tree_missing: t.Tuple[str, ...] = ()
+    # Foreclosure (§16b): number of INFERRED (gate, outcome) -> decision pairs
+    # inside the demand sets. Inferred from the corpus, never declared.
+    foreclosures: int = 0
+    # ``("<expr> :: <side>", n)`` for the gates that foreclose the most
+    # decisions, most first — the report's "top gates".
+    foreclosure_gates: t.Tuple[t.Tuple[str, int], ...] = ()
+    # (gate, outcome) -> decision pairs dropped because the gate does not
+    # precede the decision in the demand set's order (a corpus correlation
+    # rather than a gating): NOT applied, so the demand stays conservative.
+    foreclosures_ignored: int = 0
+    # True whenever `tree_complete` is False: the foreclosures are then
+    # conditional evidence, exactly as the combination claim is.
+    foreclosures_provisional: bool = False
+    # Conjunction foreclosure (§16e, 2026-09-13) — OPT-IN
+    # (`foreclosure_conjunctions=True`), INFERRED, never declared. Zero and
+    # empty on every pass with the flag off.
+    # (leaf-group gate prefix, member) pairs the corpus forecloses: the
+    # member is not part of that leaf.
+    conjunction_foreclosures: int = 0
+    # Distinct leaf groups (set x gate prefix) that carry at least one.
+    conjunction_foreclosure_groups: int = 0
+    # ``(((gate, outcome), ...), member)`` — capped sample of the pairs
+    # actually applied, STRUCTURED (an expression can contain any text, so a
+    # rendered prefix string is for the eye only): the gate's derived test
+    # and the driver both read the literals.
+    conjunction_foreclosure_list: t.Tuple[
+        t.Tuple[t.Tuple[t.Tuple[str, bool], ...], str], ...] = ()
+    # True whenever `tree_complete` is False: a conjunction foreclosure read
+    # off an incompletely driven tree is conditional evidence, exactly as a
+    # §16b foreclosure is.
+    conjunction_foreclosures_provisional: bool = False
+    # The A = 0 CLASS — leaf groups whose gate CONJUNCTION no run of the
+    # corpus matches at all. NOT an inference and NOT dropped from the
+    # demand: reported so the driver can construct the prefix (§16 still
+    # demands them).
+    unmatched_gate_conjunctions: int = 0
+    unmatched_gate_conjunction_prefixes: t.Tuple[
+        t.Tuple[t.Tuple[str, bool], ...], ...] = ()
+    # SUB-conjunction foreclosure (§16f, 2026-09-13) — OPT-IN
+    # (`foreclosure_subconjunctions=True`, which implies §16e), INFERRED,
+    # never declared. Zero and empty on every pass with the flag off.
+    # A member is foreclosed under a conjunction `C` of literals already
+    # FIXED EARLIER in the leaf's walk — a proper subset of the leaf group's
+    # gate prefix and/or literals of NON-gate members — of width <=
+    # `foreclosure_conjunction_width`. GATES are eligible members here (§16e
+    # excludes them because they define its prefix).
+    subconjunction_foreclosures: int = 0
+    # Distinct conditioning sets `C` that carry at least one.
+    subconjunction_foreclosure_conditions: int = 0
+    # ``(((expr, outcome), ...), member, A)`` — capped sample of the (C, d)
+    # classes actually applied, STRUCTURED, with the number of matching
+    # profiles: the gate's derived test and the driver read the literals.
+    subconjunction_foreclosure_list: t.Tuple[
+        t.Tuple[t.Tuple[t.Tuple[str, bool], ...], str, int], ...] = ()
+    # True whenever `tree_complete` is False, exactly as §16b/§16e.
+    subconjunction_foreclosures_provisional: bool = False
+    # The width cap the search ran under (0 = the rule was off).
+    subconjunction_foreclosure_width: int = 0
+    # WELL-FOUNDED drops (§16g, 2026-09-14) — OPT-IN
+    # (`foreclosure_wellfounded_drops=True`, which implies §16f and §16e),
+    # INFERRED, never declared. Zero and empty on every pass with the flag
+    # off. The EXTRA drops §16f's walk-prefix restriction forbids: `C` is
+    # drawn from anywhere in the leaf's own cube and the leaf's drop set is
+    # the LEAST FIXED POINT of the founded-drop operator, so every
+    # conditioning literal belongs to a member that is itself KEPT.
+    wellfounded_drops: int = 0
+    # Distinct conditioning sets `C` that carry at least one.
+    wellfounded_drop_conditions: int = 0
+    # ``(((expr, outcome), ...), member, A)`` — capped sample of the §16g
+    # (C, d) classes actually applied, STRUCTURED, with the number of
+    # matching profiles.
+    wellfounded_drop_list: t.Tuple[
+        t.Tuple[t.Tuple[t.Tuple[str, bool], ...], str, int], ...] = ()
+    # True whenever `tree_complete` is False, exactly as §16b/§16e/§16f.
+    wellfounded_drops_provisional: bool = False
+    # Confinement (§16c, 2026-09-11) — INFERRED, never declared.
+    # ``(expr, (shape, ...))`` for every DECIDED active decision: the
+    # target-call shapes its outcome controls (``assumptions.shape_str``).
+    footprints: t.Tuple[t.Tuple[str, t.Tuple[str, ...]], ...] = ()
+    # Active decisions with NO matched context: their footprint is not
+    # measured (never "empty") and they are part of no confined pair.
+    footprints_undecidable: t.Tuple[str, ...] = ()
+    # Decided decisions whose every footprint shape is strictly one-sided
+    # across the corpus (STRICT, owner's refinement 2026-09-11).
+    confined_decisions: t.Tuple[str, ...] = ()
+    # Decisions decided ONLY under the co-evaluated keying (no exact matched
+    # context — typically gates; owner's case, 2026-09-11).
+    footprints_coevaluated: t.Tuple[str, ...] = ()
+    # The counterexample search's hits: ``(expr, shape, run with the shape
+    # on one side, run with it on the other side)`` — each disqualifies the
+    # decision. Empty means no decided decision failed strictness.
+    confinement_disqualified: t.Tuple[t.Tuple[str, str, str, str], ...] = ()
+    # The co-evaluated, non-gate pairs of CONFINED decisions whose
+    # footprints are disjoint — the pairs whose cross product the demand no
+    # longer contains.
+    confined_pairs: t.Tuple[t.Tuple[str, str], ...] = ()
+    # Per decided decision, each footprint shape's ENABLING side
+    # ("taken" / "not_taken", or "both" for a disqualified shape) — what the
+    # gate flips AWAY from.
+    footprint_sides: t.Tuple[t.Tuple[str, t.Tuple[t.Tuple[str, str], ...]], ...] = ()
+    # Per active decision, the (gate, side) pairs that foreclose it — so a
+    # constructed probe can keep a producer evaluable.
+    foreclosing_gates: t.Tuple[t.Tuple[str, t.Tuple[t.Tuple[str, str], ...]], ...] = ()
+    # Co-evaluated non-gate pairs both decided and SHARING a shape: real
+    # dependence, kept in the demand (named in the report).
+    confinement_overlapping: t.Tuple[t.Tuple[str, str, int], ...] = ()
+    # Co-evaluated non-gate pairs with an undecidable member: kept.
+    confinement_undecidable_pairs: int = 0
+    # Demand sets the confinement projection split.
+    confinement_splits: int = 0
+    # True whenever `tree_complete` is False (a footprint measured over an
+    # incompletely driven tree is conditional evidence, like a foreclosure).
+    confinement_provisional: bool = False
+    # Corpus tripwire: pairs confined under the caller's PRIOR footprints
+    # that this corpus no longer licenses (see `prior_footprints`).
+    confinement_withdrawn: t.Tuple[t.Tuple[str, str], ...] = ()
+    # OR-sharing (round 5): pairs licensed by the pairwise 2x2 alone —
+    # strictness refused them, every shared shape is OR-monotone.
+    confinement_or_pairs: t.Tuple[t.Tuple[str, str], ...] = ()
+    # ... and the pairs the 2x2 refuses: ``(a, b, shape, class, cell, run)``
+    # — an AND shape, a non-monotone cell, or an unobserved cell leaving AND
+    # open. The falsifier of an OR licence is a run in such a cell.
+    confinement_and_pairs: t.Tuple[t.Tuple[str, str, str, str, str, str], ...] = ()
+    # The full AssumptionSet used by this check. Frozen dataclass: store a
+    # shared reference (not a per-result copy). Exposed so reports can render
+    # every assumption with its source file/line, not just the count.
+    assumptions: t.Any = dataclasses.field(default_factory=lambda: None)
+
+    def summary(self) -> str:
+        lines = [
+            f"CoverageResult: {self.total_runs} runs, {self.total_nodes} tree nodes",
+            f"  Complete: {self.complete}",
+        ]
+        if not self.tree_complete:
+            lines.append(
+                f"  COMBINATION CLAIM REFUSED: the tree layer is not complete "
+                f"({len(self.tree_missing)} satisfiable branch outcome(s) never "
+                f"observed) — co-evaluation demand is only sound over a complete "
+                f"tree. First: {self.tree_missing[0] if self.tree_missing else ''}"
+            )
+        if self.missing:
+            lines.append(f"  Missing branches: {len(self.missing)}")
+            for m in self.missing:
+                loc = f" @ {m.source_location}" if m.source_location else ""
+                lines.append(
+                    f"    - At '{m.node_constraint}'{loc}, "
+                    f"missing '{m.missing_branch}' branch: "
+                    f"{m.concrete_values}"
+                )
+        if self.solver_lost:
+            lines.append(f"  Solver unknowns/timeouts: {self.solver_lost}")
+        if self.truncated:
+            lines.append("  TRUNCATED: missing list is a sample (cap hit)")
+        if self.unevaluable_exprs:
+            lines.append(
+                f"  Unevaluable exprs (excluded): {len(self.unevaluable_exprs)}"
+            )
+        if self.assumptions_used:
+            lines.append(f"  Assumptions applied: {self.assumptions_used}")
+        if self.demand_sets:
+            lines.append(f"  Demand sets (co-evaluated): {self.demand_sets}")
+        if self.independent_folds:
+            lines.append(f"  Independence folds: {self.independent_folds}")
+        if self.foreclosures:
+            lines.append(
+                f"  Foreclosures inferred: {self.foreclosures}"
+                + (" (PROVISIONAL — tree layer incomplete)"
+                   if self.foreclosures_provisional else "")
+            )
+            for g, n in self.foreclosure_gates[:5]:
+                lines.append(f"    - {g} forecloses {n}")
+        if self.foreclosures_ignored:
+            lines.append(
+                f"  Foreclosures not applied (gate not upstream): "
+                f"{self.foreclosures_ignored}"
+            )
+        if self.conjunction_foreclosures:
+            lines.append(
+                f"  Conjunction foreclosures inferred (§16e): "
+                f"{self.conjunction_foreclosures} (member, gate-conjunction) "
+                f"pair(s) over {self.conjunction_foreclosure_groups} leaf group(s)"
+                + (" (PROVISIONAL — tree layer incomplete)"
+                   if self.conjunction_foreclosures_provisional else "")
+            )
+            for pfx, d in self.conjunction_foreclosure_list[:5]:
+                lines.append(
+                    f"    - under [{render_prefix(pfx)[:110]}] never "
+                    f"evaluates {d[:80]}")
+        if self.subconjunction_foreclosures:
+            lines.append(
+                f"  Sub-conjunction foreclosures inferred (§16f, width "
+                f"<= {self.subconjunction_foreclosure_width}): "
+                f"{self.subconjunction_foreclosures} (member, conjunction) "
+                f"pair(s) over {self.subconjunction_foreclosure_conditions} "
+                f"conditioning set(s)"
+                + (" (PROVISIONAL — tree layer incomplete)"
+                   if self.subconjunction_foreclosures_provisional else "")
+            )
+            for cond, d, a in self.subconjunction_foreclosure_list[:5]:
+                lines.append(
+                    f"    - under [{render_prefix(cond)[:110]}] (A={a}) never "
+                    f"evaluates {d[:80]}")
+        if self.wellfounded_drops:
+            lines.append(
+                f"  Well-founded drops inferred (§16g, width "
+                f"<= {self.subconjunction_foreclosure_width}): "
+                f"{self.wellfounded_drops} (member, conjunction) "
+                f"pair(s) over {self.wellfounded_drop_conditions} "
+                f"conditioning set(s)"
+                + (" [PROVISIONAL: tree incomplete]"
+                   if self.wellfounded_drops_provisional else ""))
+            for cond, d, a in self.wellfounded_drop_list[:5]:
+                lines.append(f"    [{render_prefix(cond)}] -> {d} (A={a})")
+        if self.unmatched_gate_conjunctions:
+            lines.append(
+                f"  UNMATCHED gate conjunctions (A=0, NOT inferred, demand "
+                f"STANDS): {self.unmatched_gate_conjunctions} leaf group(s) whose "
+                f"gate prefix no run of this corpus matches — construct them"
+            )
+            for pfx in self.unmatched_gate_conjunction_prefixes[:5]:
+                lines.append(f"    - no run matches [{render_prefix(pfx)[:130]}]")
+        if self.footprints or self.footprints_undecidable:
+            disq = len({e for e, _s, _a, _b in self.confinement_disqualified})
+            lines.append(
+                f"  Confinement (strict): decisions decided {len(self.footprints)} "
+                f"({len(self.footprints_coevaluated)} by the co-evaluated keying) / "
+                f"confined {len(self.confined_decisions)} / disqualified {disq} / "
+                f"undecidable {len(self.footprints_undecidable)}; pairs confined "
+                f"{len(self.confined_pairs)} (cut inside {self.confinement_splits} "
+                f"set(s)), overlapping {len(self.confinement_overlapping)}, "
+                f"undecidable {self.confinement_undecidable_pairs}"
+                + (" (PROVISIONAL — tree layer incomplete)"
+                   if self.confinement_provisional else "")
+            )
+            for e, sh, r1, r2 in self.confinement_disqualified[:5]:
+                lines.append(f"    - DISQUALIFIED {e}: shape {sh[:60]} present on both "
+                             f"sides (runs {r1}, {r2})")
+            if self.confinement_or_pairs or self.confinement_and_pairs:
+                lines.append(
+                    f"  OR-sharing: {len(self.confinement_or_pairs)} pair(s) licensed by the "
+                    f"2x2 alone; {len(self.confinement_and_pairs)} refused (AND / non-monotone / "
+                    f"undetermined cell)")
+                for a, b, sh, cls, cell, r in self.confinement_and_pairs[:5]:
+                    lines.append(f"    - {cls} {a[:40]} x {b[:40]}: {sh[:50]} (cell {cell}, run {r})")
+            for a, b, n in self.confinement_overlapping[:5]:
+                lines.append(f"    - overlapping ({n} shared shape(s)): {a} x {b}")
+            if self.confinement_withdrawn:
+                lines.append(
+                    f"  Confinement WITHDRAWN by the corpus tripwire: "
+                    f"{len(self.confinement_withdrawn)} prior pair(s)")
+                for a, b in self.confinement_withdrawn[:5]:
+                    lines.append(f"    - withdrawn: {a} x {b}")
+        lines.append(f"  Solver time: {self.elapsed_ms:.1f} ms")
+        return "\n".join(lines)
+
+    def assumptions_to_dict(self) -> t.List[t.Dict[str, t.Any]]:
+        """Serialize the full assumption set, each with its source file/line.
+
+        The standing assumption types carry their own PathSource(s):
+
+        - ``IndependenceAssumption``      -> source_a, source_b
+        - ``UntrackedPathAssumption``     -> source
+        - ``OneSideUntrackedPathAssumption`` -> source (+ tracked_side)
+        - ``SymbolicConstraintAssumption``  -> z3_expr (no source)
+
+        Identifiers are rendered as their string form (``file:line in func``);
+        a compact structured form is used so reports can both display and
+        locate each assumption in source.
+
+        Since 2026-09-11 the list ALSO carries the INFERRED confined pairs
+        (``confinement_to_dict``, type ``ConfinementAssumption``) after the
+        declared entries: this list is what every endpoint's completion
+        section hands to the assumption gate (``completion.attach_to_summary``
+        reads ``summary["assumptions"]``), so the pairs the demand was reduced
+        on are gated end to end with no per-endpoint change. They are marked
+        ``"inferred": True`` so a report can tell them from declarations.
+        """
+        assumptions = getattr(self, "assumptions", None)
+        out: t.List[t.Dict[str, t.Any]] = []
+        if assumptions is None or not assumptions:
+            return (out + self.confinement_to_dict()
+                    + self.conjunction_foreclosures_to_dict()
+                    + self.subconjunction_foreclosures_to_dict()
+                    + self.wellfounded_drops_to_dict())
+        for a in assumptions.assumptions:
+            item = {
+                "type": type(a).__name__,
+                "description": getattr(a, "description", ""),
+                "agent_notes": getattr(a, "agent_notes", ""),
+            }
+            srcs = getattr(a, "source", None)
+            src_a = getattr(a, "source_a", None)
+            src_b = getattr(a, "source_b", None)
+            if isinstance(src_a, PathSource) or isinstance(src_b, PathSource):
+                item["source_a"] = _source_to_dict(src_a) if src_a else None
+                item["source_b"] = _source_to_dict(src_b) if src_b else None
+            elif isinstance(srcs, PathSource):
+                item["source"] = _source_to_dict(srcs)
+            if hasattr(a, "z3_expr") and getattr(a, "z3_expr", ""):
+                item["z3_expr"] = a.z3_expr
+            if hasattr(a, "tracked_side"):
+                item["tracked_side"] = a.tracked_side
+            # Branch-expression keys. Mock-boundary PCs share a source by
+            # design, so for many assumptions this — not the file/line — is
+            # what names the decision. Serialise it so a report is auditable.
+            for attr in ("expr", "expr_a", "expr_b", "result_pattern", "key"):
+                if getattr(a, attr, ""):
+                    item[attr] = getattr(a, attr)
+            # `k` is the iteration at which a loop alias's identity kicks in.
+            # Carried only for a loop alias, so a statement/shape declaration
+            # serialises exactly as it did before the field existed.
+            if getattr(a, "key", "") == "loop":
+                item["k"] = getattr(a, "k", 1)
+            out.append(item)
+        return (out + self.confinement_to_dict()
+                + self.conjunction_foreclosures_to_dict()
+                + self.subconjunction_foreclosures_to_dict()
+                + self.wellfounded_drops_to_dict())
+
+    def conjunction_foreclosures_to_dict(self) -> t.List[t.Dict[str, t.Any]]:
+        """The INFERRED §16e conjunction foreclosures, as gate-test input.
+
+        One ``ConjunctionForeclosureAssumption`` entry per (leaf-group gate
+        prefix, member) pair actually applied — capped at
+        ``_CONJ_REPORT_CAP``, like the summary list. Nothing here was
+        declared: the type name says what the gate is asked to TEST
+        (``_test_conjunction_foreclosure``: build a run that matches the
+        prefix with the member's own inputs seeded to force its evaluation;
+        the member being evaluated REFUTES the foreclosure), not where the
+        relation came from. Empty on every pass with
+        ``foreclosure_conjunctions`` off, so a summary written before
+        2026-09-13 is unchanged.
+        """
+        out = []
+        for pfx, d in self.conjunction_foreclosure_list:
+            out.append({
+                "type": "ConjunctionForeclosureAssumption",
+                "expr": d, "prefix": render_prefix(pfx),
+                "gates": [[g, "taken" if o else "not_taken"] for g, o in pfx],
+                "inferred": True,
+                "provisional": self.conjunction_foreclosures_provisional,
+                "description": (
+                    f"Conjunction foreclosure (inferred, §16e): no run "
+                    f"matching [{render_prefix(pfx)}] evaluates {d}"),
+            })
+        return out
+
+    def subconjunction_foreclosures_to_dict(self) -> t.List[t.Dict[str, t.Any]]:
+        """The INFERRED §16f sub-conjunction foreclosures, as gate-test input.
+
+        One ``SubconjunctionForeclosureAssumption`` entry per (conditioning
+        set ``C``, member ``d``) class actually applied — capped at
+        ``_CONJ_REPORT_CAP``, like the §16e list. Nothing here was declared.
+        The payload is deliberately the SAME shape as
+        ``ConjunctionForeclosureAssumption``'s (``expr`` + ``gates``), so the
+        gate's derived test is the same probe: build a run that realises
+        every literal of ``C`` from a base that RECORDS ``d``; the member
+        being evaluated REFUTES the inference. The key ``gates`` is kept for
+        that reason even though a literal of ``C`` need not be a gate —
+        ``conditioning`` is the honest name and carries the same list.
+        Empty on every pass with ``foreclosure_subconjunctions`` off, so a
+        summary written before 2026-09-13 is unchanged.
+        """
+        out = []
+        for cond, d, a in self.subconjunction_foreclosure_list:
+            out.append({
+                "type": "SubconjunctionForeclosureAssumption",
+                "expr": d, "prefix": render_prefix(cond),
+                "gates": [[g, "taken" if o else "not_taken"] for g, o in cond],
+                "conditioning": [[g, "taken" if o else "not_taken"]
+                                 for g, o in cond],
+                "matching_profiles": a,
+                "inferred": True,
+                "provisional": self.subconjunction_foreclosures_provisional,
+                "description": (
+                    f"Sub-conjunction foreclosure (inferred, §16f, width "
+                    f"{len(cond)}): no run matching [{render_prefix(cond)}] "
+                    f"evaluates {d} (A={a}, B=0)"),
+            })
+        return out
+
+    def wellfounded_drops_to_dict(self) -> t.List[t.Dict[str, t.Any]]:
+        """The INFERRED §16g well-founded drops, as gate-test input.
+
+        The payload is deliberately the SAME shape and the SAME
+        ``SubconjunctionForeclosureAssumption`` type §16f emits, because the
+        PROBE IS THE SAME: ``C`` is still at most
+        ``foreclosure_conjunction_width`` literals to flip from a base that
+        records ``d``, and a member that gets RECORDED refutes the
+        inference. Only the provenance differs — ``C`` was drawn from the
+        whole leaf rather than from the member's walk prefix — so the entry
+        carries ``wellfounded: True`` and ``section: "16g"`` for a report
+        that wants to separate the two claims. Empty on every pass with
+        ``foreclosure_wellfounded_drops`` off.
+        """
+        out = []
+        for cond, d, a in self.wellfounded_drop_list:
+            out.append({
+                "type": "SubconjunctionForeclosureAssumption",
+                "expr": d, "prefix": render_prefix(cond),
+                "gates": [[g, "taken" if o else "not_taken"] for g, o in cond],
+                "conditioning": [[g, "taken" if o else "not_taken"]
+                                 for g, o in cond],
+                "matching_profiles": a,
+                "inferred": True,
+                "wellfounded": True,
+                "section": "16g",
+                "provisional": self.wellfounded_drops_provisional,
+                "description": (
+                    f"Well-founded drop (inferred, §16g, width "
+                    f"{len(cond)}): no run matching [{render_prefix(cond)}] "
+                    f"evaluates {d} (A={a}, B=0); every literal of C belongs "
+                    f"to a member of the same leaf that is KEPT"),
+            })
+        return out
+
+    def confinement_to_dict(self) -> t.List[t.Dict[str, t.Any]]:
+        """The confined pairs as the assumption gate's declared-test input:
+        one ``ConfinementAssumption`` entry per pair, carrying the two
+        footprints (shape strings, ``assumptions.shape_str``) the pair was
+        licensed on, each shape's ENABLING side, the OTHER producers of each
+        shape (decided decisions whose footprint also holds it, with the side
+        they were seen to produce it on) and the foreclosing gates of every
+        decision named — what the gate's active probes (exhaustive flip over
+        profiles, adversarial constructed route) are built from. Nothing here
+        was declared — the type name says what the gate is being asked to
+        TEST (`_test_confinement`), not where the relation came from."""
+        fp = dict(self.footprints)
+        sides = {e: dict(v) for e, v in self.footprint_sides}
+        gates = {e: [list(g) for g in v] for e, v in self.foreclosing_gates}
+        out = []
+        for a, b in self.confined_pairs:
+            producers: t.Dict[str, t.List[t.List[str]]] = {}
+            named = {a, b}
+            for e in (a, b):
+                for sh in fp.get(e, ()):
+                    prod = [[d, sd[sh]] for d, sd in sides.items()
+                            if d != e and sh in sd]
+                    if prod:
+                        producers[sh] = prod
+                        named.update(d for d, _s in prod)
+            out.append({
+                "type": "ConfinementAssumption", "expr_a": a, "expr_b": b,
+                "footprint_a": list(fp.get(a, ())), "footprint_b": list(fp.get(b, ())),
+                "enabling_a": {sh: sides.get(a, {}).get(sh, "?") for sh in fp.get(a, ())},
+                "enabling_b": {sh: sides.get(b, {}).get(sh, "?") for sh in fp.get(b, ())},
+                "producers": producers,
+                "gates": {e: gates.get(e, []) for e in sorted(named)},
+                "inferred": True,
+                "description": f"Confined pair (inferred, §16c): {a} x {b}"})
+        return out
+
+
+def _source_to_dict(src: t.Any) -> t.Dict[str, t.Any]:
+    """Render a PathSource (file:line:col in func) as a structured dict."""
+    if src is None:
+        return {}
+    return {
+        "file": getattr(src, "file", ""),
+        "lineno": getattr(src, "lineno", 0),
+        "col_offset": getattr(src, "col_offset", 0),
+        "function": getattr(src, "function", ""),
+        "snippet": getattr(src, "snippet", ""),
+        "str": str(src),
+    }
+
+
+# ---------------------------------------------------------------------------
+# Combination helpers
+# ---------------------------------------------------------------------------
+
+
+def render_prefix(prefix: t.Sequence[t.Tuple[str, bool]]) -> str:
+    """A §16e gate conjunction, for the eye: ``a :: taken AND b :: not_taken``."""
+    return " AND ".join(
+        f"{g} :: {'taken' if o else 'not_taken'}" for g, o in prefix
+    ) or "(no gate)"
+
+
+def _outcome_constraint(expr: str, outcome: bool) -> str:
+    return expr if outcome else f"Not({expr})"
+
+
+def _combo_constraint(combo: t.Sequence[t.Tuple[str, bool]]) -> str:
+    parts = [_outcome_constraint(e, o) for e, o in combo]
+    if len(parts) == 1:
+        return parts[0]
+    return f"And({', '.join(parts)})"
+
+
+def _block_constraint(combo: t.Sequence[t.Tuple[str, bool]]) -> str:
+    return f"Not({_combo_constraint(combo)})"
+
+
+#: A demand set a single run covered outright (`space_covered`): no Z3 was
+#: run and nothing is missing. Recorded so a resumed pass also skips its
+#: cube census, which is the only work such a set costs.
+_EMPTY_SET_RECORD: t.Dict[str, t.Any] = {
+    "elapsed_ms": 0.0, "solver_lost": 0, "truncated": False,
+    "combos": [], "models": [],
+}
+
+#: How many §16e (prefix, member) pairs — and how many A=0 prefixes — a
+#: result carries. The COUNTS are exact; the lists are a capped sample, so a
+#: 10 000-cube residue cannot turn one summary into a hundred megabytes. Sized
+#: (2026-09-13) so notifications_index's whole class fits: the falsifier
+#: cross-check reads these lists, and a cross-check over a sample is not one.
+_CONJ_REPORT_CAP = 2000
+
+#: memo sentinel for the §16f search (None is a real answer: 'no such C')
+_MISS = object()
+
+
+def profile_key(outcomes: t.Mapping[str, t.Set[bool]]) -> bytes:
+    """A 16-byte identifier for an outcome profile: same equivalence class as
+    ``frozenset((e, frozenset(o)) for e, o in outcomes.items())``.
+
+    Memory fix, 2026-09-10. The key only has to IDENTIFY a profile — nothing
+    ever reads it back — but the frozenset-of-pairs form built one tuple and
+    one 1-2 element frozenset PER EXPRESSION for EVERY run (~43 exprs x 96 148
+    runs on notifications_index). That churn, not the retained table (which
+    grew 3 %), is the cost: >10.6 GB on top of the loaded runs, OOM-killed at
+    ``MemoryMax=13G``, against **0.91 GB** for the digest. Two profiles share
+    a key iff they have the same (expr, outcome-set) pairs; the only new
+    failure mode is a 128-bit collision, ~1e-29 at 10^5 profiles.
+    """
+    return hashlib.blake2b(
+        ";".join(f"{e}:{'1' if True in outcomes[e] else ''}"
+                 f"{'0' if False in outcomes[e] else ''}"
+                 for e in sorted(outcomes)).encode(),
+        digest_size=16).digest()
+
+
+def maximal_sets(sets: t.Iterable[t.FrozenSet[str]]) -> t.List[t.FrozenSet[str]]:
+    """Drop every set that is a subset of another (dedup included).
+
+    Used twice: on the runs' evaluation sets (the demand universe) and on the
+    projected sets (a clique of one evaluation set can be contained in a
+    clique of another). Sound because demanding a superset's satisfiable
+    assignments implies demanding the subset's — see the module docstring.
+
+    Ordered by size descending, then by sorted contents, so the demand list
+    is deterministic across passes.
+    """
+    uniq = sorted({frozenset(s) for s in sets if s},
+                  key=lambda s: (-len(s), sorted(s)))
+    kept: t.List[t.FrozenSet[str]] = []
+    # postings: expr -> indices into `kept` of the sets containing it. A kept
+    # set contains ALL of a candidate's members iff its index is in EVERY
+    # member's posting list, so the intersection decides subsumption without a
+    # single explicit subset test. Intersect rarest-first and stop at empty:
+    # on a corpus with tens of thousands of distinct evaluation sets the naive
+    # "test the rarest member's postings one by one" is quadratic, and this is
+    # not.
+    postings: t.Dict[str, t.Set[int]] = {}
+    for s in uniq:
+        cand: t.Optional[t.Set[int]] = None
+        for e in sorted(s, key=lambda e: len(postings.get(e, ()))):
+            p = postings.get(e)
+            if not p:
+                cand = None
+                break
+            cand = set(p) if cand is None else (cand & p)
+            if not cand:
+                break
+        if cand:
+            continue  # a kept set contains every member of s
+        idx = len(kept)
+        kept.append(s)
+        for e in s:
+            postings.setdefault(e, set()).add(idx)
+    return kept
+
+
+def infer_foreclosures(
+    active: t.Sequence[str],
+    run_outcomes: t.Sequence[t.Dict[str, t.Set[bool]]],
+) -> t.Tuple[t.Dict[t.Tuple[str, bool], int], t.Dict[str, int], t.List[int]]:
+    """Infer, from the corpus alone, which (decision, outcome) forecloses what.
+
+    ``g`` with outcome ``o`` forecloses ``d`` iff some run evaluated both and
+    every run in which ``g`` took ``o`` left ``d`` unevaluated (module
+    docstring, §16b). Nothing is declared: this is a fact of the corpus.
+
+    Bitmask formulation, one pass over the runs' outcome profiles:
+
+        coeval[g]      = OR of the evaluation masks of the runs evaluating g
+        union[g, o]    = OR of the evaluation masks of the runs with g = o
+        forecl[g, o]   = coeval[g] & ~union[g, o]
+
+    ``coeval`` is exactly (a) — d shares a run with g — and subtracting the
+    g=o runs' evaluations is exactly (b). Returns ``(forecl, bit, masks)``:
+    the foreclosure masks keyed by (expr, outcome), the expression -> bit
+    index map, and each profile's evaluation mask (in ``run_outcomes`` order).
+    """
+    bit = {e: i for i, e in enumerate(active)}
+    masks: t.List[int] = []
+    for outcomes in run_outcomes:
+        m = 0
+        for e in outcomes:
+            j = bit.get(e)
+            if j is not None:
+                m |= 1 << j
+        masks.append(m)
+
+    n = len(active)
+    coeval = [0] * n
+    union: t.List[t.List[int]] = [[0, 0] for _ in range(n)]
+    seen: t.List[t.List[bool]] = [[False, False] for _ in range(n)]
+    for outcomes, m in zip(run_outcomes, masks):
+        for e, os_ in outcomes.items():
+            j = bit.get(e)
+            if j is None:
+                continue
+            coeval[j] |= m
+            for o in os_:
+                k = 1 if o else 0
+                union[j][k] |= m
+                seen[j][k] = True
+
+    forecl: t.Dict[t.Tuple[str, bool], int] = {}
+    for j, e in enumerate(active):
+        for k in (0, 1):
+            if not seen[j][k]:
+                continue  # no run took this arm: absence, not evidence
+            fm = coeval[j] & ~union[j][k] & ~(1 << j)
+            if fm:
+                forecl[(e, bool(k))] = fm
+    return forecl, bit, masks
+
+
+def _foreclosure_order(
+    members: t.Sequence[str],
+    local: t.Dict[t.Tuple[str, bool], int],
+    bit: t.Dict[str, int],
+) -> t.Tuple[t.List[str], int]:
+    """Order a demand set so every gate precedes what it forecloses.
+
+    Kahn's algorithm over the edges ``g -> d`` of the set's own foreclosures,
+    ties broken by the caller's order (``members`` is already in it) so a
+    demand list never shuffles between passes. Any edge left by a cycle — or
+    pointing backwards, i.e. a corpus CORRELATION rather than a gating — is
+    reported and NOT applied: the affected products stay demanded, which is
+    the conservative direction. Returns ``(order, ignored_edge_count)``.
+    """
+    idx = {e: i for i, e in enumerate(members)}
+    succ: t.Dict[str, t.Set[str]] = {e: set() for e in members}
+    indeg = {e: 0 for e in members}
+    for (g, _o), fm in local.items():
+        for d in members:
+            if fm >> bit[d] & 1 and d != g and d not in succ[g]:
+                succ[g].add(d)
+                indeg[d] += 1
+    import heapq
+    ready = [idx[e] for e in members if not indeg[e]]
+    heapq.heapify(ready)
+    out: t.List[str] = []
+    while ready:
+        e = members[heapq.heappop(ready)]
+        out.append(e)
+        for d in succ[e]:
+            indeg[d] -= 1
+            if not indeg[d]:
+                heapq.heappush(ready, idx[d])
+    if len(out) < len(members):  # cycle: append the rest in the caller's order
+        placed = set(out)
+        out.extend(e for e in members if e not in placed)
+    pos = {e: i for i, e in enumerate(out)}
+    ignored = 0
+    for g, ds in succ.items():
+        ignored += sum(1 for d in ds if pos[d] < pos[g])
+    return out, ignored
+
+
+def restrict_foreclosures(
+    group: t.Sequence[str],
+    forecl_by_gate: t.Dict[str, t.List[t.Tuple[bool, int]]],
+    bit: t.Dict[str, int],
+) -> t.Tuple[t.List[str], t.Dict[t.Tuple[str, bool], int], int]:
+    """This demand set's own foreclosures, ordered gates-first.
+
+    Restricts the global relation to the set's members, orders the set so a
+    gate precedes what it forecloses, then drops any edge still pointing
+    backwards (a corpus correlation, not a gating — the conservative
+    direction). Returns ``(ordered_group, local, ignored)``. Shared by the
+    checker and by the batches' exact census so the two enumerate the same
+    demand.
+    """
+    group = list(group)
+    dmask = 0
+    for e in group:
+        dmask |= 1 << bit[e]
+    local: t.Dict[t.Tuple[str, bool], int] = {}
+    for e in group:
+        for o, fm in forecl_by_gate.get(e, ()):
+            m = fm & dmask
+            if m:
+                local[(e, o)] = m
+    if not local:
+        return group, {}, 0
+    group, ignored = _foreclosure_order(group, local, bit)
+    pos = {e: i for i, e in enumerate(group)}
+    for (g, o), m in list(local.items()):
+        fwd = 0
+        for d in group[pos[g] + 1:]:
+            if m >> bit[d] & 1:
+                fwd |= 1 << bit[d]
+        if fwd:
+            local[(g, o)] = fwd
+        else:
+            del local[(g, o)]
+    return group, local, ignored
+
+
+def profile_literal_masks(
+    active: t.Sequence[str],
+    run_outcomes: t.Sequence[t.Dict[str, t.Set[bool]]],
+) -> t.Tuple[t.Dict[t.Tuple[str, bool], int], t.Dict[str, int], int]:
+    """Inverted bitsets over PROFILES, for the §16e conjunction test.
+
+    ``takes[(e, o)]`` — the profiles that evaluated ``e`` with outcome ``o``
+    at least once; ``evals[e]`` — the profiles that evaluated ``e`` at all
+    (``takes[(e, True)] | takes[(e, False)]``). ``universe`` is the all-ones
+    mask. The semantics are §16b's, per literal: a profile that recorded a
+    recurrent decision BOTH ways is in both of its ``takes`` masks, so
+    "matches P" can only ever be OVERSTATED — which makes a ``B = 0``
+    verdict conservative in the direction that matters.
+
+    Profiles, not runs: a profile exists iff at least one run has it, so the
+    A > 0 / B = 0 partition is identical either way and the masks are the
+    size of the profile table rather than of the corpus.
+    """
+    n = len(run_outcomes)
+    takes: t.Dict[t.Tuple[str, bool], int] = {}
+    keep = set(active)
+    for i, outcomes in enumerate(run_outcomes):
+        b = 1 << i
+        for e, os_ in outcomes.items():
+            if e not in keep:
+                continue
+            for o in os_:
+                k = (e, bool(o))
+                takes[k] = takes.get(k, 0) | b
+    evals = {e: takes.get((e, True), 0) | takes.get((e, False), 0)
+             for e in active}
+    return takes, evals, (1 << n) - 1
+
+
+def prefix_match_mask(
+    prefix: t.Sequence[t.Tuple[str, bool]],
+    takes: t.Mapping[t.Tuple[str, bool], int],
+    universe: int,
+) -> int:
+    """The profiles matching every literal of a gate prefix (§16e's ``A``)."""
+    m = universe
+    for lit in prefix:
+        m &= takes.get((lit[0], bool(lit[1])), 0)
+        if not m:
+            break
+    return m
+
+
+def conjunction_foreclosed(
+    prefix: t.Sequence[t.Tuple[str, bool]],
+    members: t.Iterable[str],
+    takes: t.Mapping[t.Tuple[str, bool], int],
+    evals: t.Mapping[str, int],
+    universe: int,
+    match_mask: t.Optional[int] = None,
+) -> t.Tuple[t.Tuple[str, ...], int]:
+    """§16e: which of ``members`` no run matching ``prefix`` ever evaluates.
+
+    Returns ``(foreclosed, A)`` where ``A`` is the number of matching
+    profiles. **``A == 0`` returns no foreclosure**: a conjunction the corpus
+    has never walked is absence, not evidence — the caller reports it as an
+    ``unmatched_gate_conjunction`` instead. One bitset intersection per
+    member, as §19.2 costed it.
+    """
+    am = prefix_match_mask(prefix, takes, universe) if match_mask is None else match_mask
+    if not am:
+        return (), 0
+    out = tuple(d for d in members if not (am & evals.get(d, 0)))
+    return out, am.bit_count()
+
+
+class _SubconjBudget(Exception):
+    """The §16f search gave up on this (literal set, member): no inference."""
+
+
+def minimal_subconjunction(
+    lits: t.Sequence[t.Tuple[str, bool]],
+    member: str,
+    takes: t.Mapping[t.Tuple[str, bool], int],
+    evals: t.Mapping[str, int],
+    universe: int,
+    width: int = 3,
+    budget: int = 20000,
+) -> t.Optional[t.Tuple[t.Tuple[t.Tuple[str, bool], ...], int]]:
+    """§16f: a MINIMUM-cardinality ``C`` from ``lits`` that forecloses ``member``.
+
+    ``C`` is a conjunction of literals already fixed earlier in the leaf's
+    walk (a SUB-conjunction of the leaf's own cube — a proper subset of the
+    gate prefix §16e uses, and/or literals of NON-gate members). It
+    forecloses ``member`` iff ``A(C) > 0`` — some profile matches every
+    literal of ``C`` — and ``B(C, member) = 0`` — no matching profile ever
+    evaluates ``member``. Returns ``(C, A)``, ``C`` in ``lits`` order, or
+    ``None`` when no such conjunction of width ``<= width`` exists.
+
+    **Why it is a bounded SET COVER, not ``C(n, k)``.** Let ``R`` be the
+    profiles that evaluate ``member``. ``A(C) = ⋂ takes[l]`` and the demand
+    is ``A(C) ∩ R = ∅`` with ``A(C) ≠ ∅``, i.e. the complements of the
+    chosen literals must COVER ``R``. Iterative deepening over that cover —
+    take one profile ``p`` still evaluating ``member`` and branch only on
+    the literals ``p`` does NOT match — is exact and minimum-cardinality,
+    and its branching factor is the number of literals that exclude ``p``
+    rather than the whole literal list. A branch whose running mask hits
+    zero is pruned: ``A = 0`` is absence, never evidence (§16e), so it can
+    never license anything. ``budget`` caps the nodes explored; exhausting
+    it returns ``None``, which is the conservative direction (the member
+    stays in the leaf).
+
+    Deterministic: candidates are taken in ``lits`` order, deduplicated by
+    profile mask (two literals matched by exactly the same profiles are one
+    candidate — the first), and literals that constrain nothing
+    (``mask == universe``) or everything (``mask == 0``) are dropped, since
+    neither can appear in a minimal ``C``.
+    """
+    if width <= 0 or not universe:
+        return None
+    R = evals.get(member, 0) & universe
+    if not R:
+        # Defensive: a member of a demand set is evaluated by some run, so
+        # this cannot arise from the checker. If it ever did, the empty
+        # conjunction forecloses it and A is the whole table.
+        return (), universe.bit_count()
+    cands: t.List[t.Tuple[t.Tuple[str, bool], int]] = []
+    seen_masks: t.Set[int] = set()
+    for lit in lits:
+        if lit[0] == member:
+            continue
+        m = takes.get((lit[0], bool(lit[1])), 0) & universe
+        if not m or m == universe or m in seen_masks:
+            continue
+        seen_masks.add(m)
+        cands.append(((lit[0], bool(lit[1])), m))
+    if not cands:
+        return None
+    order = {lit: i for i, (lit, _m) in enumerate(cands)}
+    nodes = 0
+    chosen: t.List[t.Tuple[str, bool]] = []
+    chosen_set: t.Set[t.Tuple[str, bool]] = set()
+
+    def dfs(depth_left: int, m: int) -> int:
+        nonlocal nodes
+        rem = m & R
+        if not rem:
+            return m
+        if depth_left == 0:
+            return 0
+        p = rem & -rem                      # one profile still evaluating d
+        for lit, lm in cands:
+            if lm & p or lit in chosen_set:
+                continue                    # does not exclude p / already in C
+            m2 = m & lm
+            if not m2:
+                continue                    # A = 0 is not evidence
+            nodes += 1
+            if nodes > budget:
+                raise _SubconjBudget()
+            chosen.append(lit)
+            chosen_set.add(lit)
+            got = dfs(depth_left - 1, m2)
+            if got:
+                return got
+            chosen.pop()
+            chosen_set.discard(lit)
+        return 0
+
+    for k in range(1, width + 1):
+        del chosen[:]
+        chosen_set.clear()
+        try:
+            got = dfs(k, universe)
+        except _SubconjBudget:
+            return None
+        if got:
+            return tuple(sorted(chosen, key=order.__getitem__)), got.bit_count()
+    return None
+
+
+def wellfounded_drop_set(
+    lits: t.Sequence[t.Tuple[str, bool]],
+    probe: t.Callable[[t.Tuple[t.Tuple[str, bool], ...], str],
+                      t.Optional[t.Tuple[t.Tuple[t.Tuple[str, bool], ...], int]]],
+    pinned: t.AbstractSet[str] = frozenset(),
+    matched: t.Optional[t.Callable[
+        [t.Tuple[t.Tuple[str, bool], ...]], bool]] = None,
+) -> t.Dict[str, t.Tuple[t.Tuple[t.Tuple[str, bool], ...], int]]:
+    r"""§16g: the WELL-FOUNDED drop set of one leaf, as a LEAST FIXED POINT.
+
+    §16f draws the conditioning set ``C`` from the walk PREFIX (``C <= acc``)
+    and says so is the definition: a prefix makes the drop decision a
+    function of the prefix alone, which is what stops two members
+    foreclosing each other in a cycle. §16g lifts that to the whole cube and
+    pays for it with a foundedness condition instead:
+
+        a member ``d`` may be dropped under ``C`` (literals of the SAME
+        leaf, ``|C| <= W``, ``A(C) > 0``, ``B(C, d) = 0``) only if EVERY
+        literal of ``C`` belongs to a member that is itself KEPT.
+
+    ``lits`` is the leaf's surviving cube (``(expr, outcome)`` in walk
+    order); ``probe(pool, member)`` is ``minimal_subconjunction`` over the
+    engine's own profile bitsets (memoized by the caller); ``pinned`` names
+    members that may never be dropped — the ones whose literals already
+    justify an applied §16e / §16f drop on this leaf, which is what keeps
+    the COMBINED drop set founded and the nesting `§16g ⊆ §16f` true by
+    construction. Returns ``{member: (C, A)}``.
+
+    **The fixed point, and why it is unique.** Write ``M`` for the leaf's
+    members and, for ``D ⊆ M``,
+
+        cond(d, K)  ==  some C ⊆ lits(K \ {d}) has |C| <= W, A > 0, B = 0
+        K(D)        ==  M \ {d' : cond(d', M \ D)}      (the DEFINITELY kept)
+        Φ(D)        ==  {d : d ∉ pinned, cond(d, K(D))}
+
+    ``cond`` is monotone in ``K`` (a bigger pool can only offer more
+    conditioning sets), so ``K`` is monotone in ``D`` and ``Φ`` is monotone
+    in ``D``. On the finite lattice ``2^M`` Knaster–Tarski gives a UNIQUE
+    least fixed point, reached by Kleene iteration from ``∅``; because the
+    iteration computes a SET at each round and never chooses between
+    candidates, and because a monotone operator's chaotic (asynchronous)
+    iteration converges to the same least fixed point whatever order its
+    elements are applied in, the answer does not depend on the order the
+    members are visited in. That is the whole reason the rule is stated as a
+    least fixed point rather than as "iterate dropping until stable": the
+    naive version is NOT well defined. Two members that foreclose each other
+    (``C(a) = {lit(b)}``, ``C(b) = {lit(a)}``) give two different stable
+    answers, ``{a}`` and ``{b}``, depending on which is visited first; the
+    least fixed point drops NEITHER, which is the conservative direction
+    (keeping a member keeps its demand).
+
+    **Validity — every drop is justified by a kept member.** By induction on
+    the Kleene chain: ``K(D_k) ∩ D_k = ∅`` (a member of ``K(D_k)`` is one
+    with ``¬cond(d, M \ D_k)``, and the hypothesis says every member of
+    ``D_k`` has ``cond(d, M \ D_k)``), hence ``K(D_k) ⊆ M \ D_{k+1}`` and
+    every ``d ∈ D_{k+1}`` has ``cond(d, M \ D_{k+1})``. At the fixed point
+    each drop's own ``C`` is drawn from ``K(D*)``, a set of members none of
+    which is dropped — which is the rule, verbatim.
+
+    **The A > 0 GUARD on the reduced leaf, and why it is not optional.**
+    ``matched(reduced)`` — when given — must say that at least one profile
+    matches every literal of the cube that is LEFT. §16e's own doctrine (a
+    conjunction no run of the corpus walks is absence, not evidence) applied
+    to the LEAF rather than to the conditioning set, and without it §16g is
+    not a coarsening at all: measured on random corpora 2026-09-14, a drop
+    whose conditioning literal sits LATER in the walk can produce a leaf
+    that CROSSES a prefix the corpus already closed — the run that covered
+    the §16f leaf blocks it through a literal §16g has just removed, so a
+    covered region comes back as a gap and the reported missing list stops
+    being nested. ``A`` is monotone NON-DECREASING as literals leave the
+    cube, so if the fully reduced leaf has ``A = 0`` every partial reduction
+    has ``A = 0`` too and the §16f leaf it came from was already unmatched:
+    refusing the whole drop set is therefore the only choice that loses
+    nothing, and it is a function of the leaf, so it is order-independent.
+    On the BLOCKING side the guard is VACUOUS — the reduced cube there is
+    the blocking profile's own assignment, which that profile matches by
+    construction — which is what keeps the two sides' leaf structures
+    consistent.
+    """
+    dropped: t.Dict[str, t.Tuple[t.Tuple[t.Tuple[str, bool], ...], int]] = {}
+    if not lits:
+        return dropped
+    while True:
+        # M \ D, in the leaf's own order
+        pool = tuple(l for l in lits if l[0] not in dropped)
+        # M \ K(D): the members droppable when everything outside D is kept
+        # — an OVER-approximation of the drops, so its complement `K(D)` is
+        # an UNDER-approximation of the kept.  A pinned member is kept
+        # unconditionally, so it is never loose.
+        loose = [l for l in pool
+                 if l[0] not in pinned and probe(pool, l[0]) is not None]
+        if not loose:
+            break
+        loose_set = {l[0] for l in loose}
+        kept = tuple(l for l in pool if l[0] not in loose_set)
+        grew = False
+        for e, _o in loose:                    # only a loose member can drop
+            hit = probe(kept, e)
+            if hit is not None:
+                dropped[e] = hit
+                grew = True
+        if not grew:
+            break
+    if dropped and matched is not None and not matched(
+            tuple(l for l in lits if l[0] not in dropped)):
+        return {}
+    return dropped
+
+
+def infer_footprints(
+    exprs: t.Sequence[str],
+    universe: t.Sequence[str],
+    run_outcomes: t.Sequence[t.Dict[str, t.Set[bool]]],
+    prof_union: t.Sequence[int],
+    prof_inter: t.Sequence[int],
+    unobserved: str = "withhold",
+    reach_out: t.Optional[t.Dict[str, int]] = None,
+    span_out: t.Optional[t.Dict[str, int]] = None,
+) -> t.Tuple[t.Dict[str, int], t.Dict[str, int]]:
+    """Infer, from the corpus alone, each decision's FOOTPRINT (§16c).
+
+    ``footprint(D)`` = the shapes whose presence differs between two runs
+    that match on every other evaluated decision and differ only in ``D``'s
+    outcome. ``universe`` is every expression the profiles mention (the
+    context is matched on ALL of them, tracked or not); ``exprs`` are the
+    decisions to measure. ``prof_union[i]`` / ``prof_inter[i]`` are the union
+    and intersection of the trace masks of the runs collapsed into profile
+    ``i`` — two runs of one profile may differ in trace, and the pairwise
+    definition needs both.
+
+    Per decision, one pass over the profiles: a profile single-sided on ``D``
+    is bucketed by its context ``(evaluated \\ D, taken \\ D, both-sided)``;
+    a bucket with both a ``D=T`` and a ``D=F`` side is a matched context, and
+    a shape is in the footprint iff it is present in some run of one side and
+    absent from some run of the other:
+    ``(uT & ~iF) | (uF & ~iT)``. Per-decision buckets keep the memory to one
+    dict of profiles, not decisions x profiles.
+
+    ``unobserved`` (§16c C2, 2026-09-13 — SPAN-CONSERVATIVE FOOTPRINTS,
+    `docs/CONFINEMENT_PRECISION_20260913.md` §5) decides what to do with a
+    shape ``D`` REACHES but that no matched context SPANS. Let
+
+        reach(D) = union of the trace masks of every profile single-sided on D
+        span(D)  = union of the trace masks of the profiles that sit in one of
+                   D's matched contexts
+        blind(D) = reach(D) & ~span(D)
+
+    The differential is structurally unable to see a shape in ``blind(D)``:
+    no matched context contains it, so it can be neither put into nor kept
+    out of the footprint. ``"withhold"`` (the DEFAULT) reads "never observed
+    to toggle" as "not D's" and returns ``m`` — today's behaviour, byte for
+    byte. ``"attribute"`` reads it as UNKNOWN and returns ``m | blind(D)``:
+    since disjointness is what a licence is refused on, unknown must go IN.
+    Monotone in the licensing direction — ``fp`` only grows, so
+    ``restrict_confinement`` only loses edges (``attribute`` licences ⊆
+    ``withhold`` licences ⊆ §16b), and Rule T is not triggered.
+    ``reach_out`` / ``span_out``, when given, are filled with those two masks
+    per measured decision (for the census tools); computing them costs one
+    extra ``|=`` per profile per decision, so they are computed ONLY when
+    asked for and the default path is unchanged in cost as well as result.
+
+    Returns ``(footprint mask by expr, matched-context count by expr)``; a
+    decision with count 0 is UNDECIDABLE and has no entry in the first map.
+    Nothing is declared: this is a fact of the corpus.
+    """
+    if unobserved not in ("withhold", "attribute"):
+        raise ValueError(f"unobserved must be 'withhold' or 'attribute', got {unobserved!r}")
+    ubit = {e: i for i, e in enumerate(universe)}
+    pev: t.List[int] = []
+    ptk: t.List[int] = []
+    pbo: t.List[int] = []
+    for outcomes in run_outcomes:
+        ev = tk = bo = 0
+        for e, os_ in outcomes.items():
+            j = ubit.get(e)
+            if j is None:
+                continue
+            b = 1 << j
+            ev |= b
+            if len(os_) > 1:
+                bo |= b
+            elif True in os_:
+                tk |= b
+        pev.append(ev)
+        ptk.append(tk)
+        pbo.append(bo)
+    fp: t.Dict[str, int] = {}
+    ctxn: t.Dict[str, int] = {}
+    want_span = unobserved == "attribute" or reach_out is not None or span_out is not None
+    for d in exprs:
+        j = ubit.get(d)
+        if j is None:
+            ctxn[d] = 0
+            continue
+        b = 1 << j
+        buckets: t.Dict[t.Tuple[int, int, int], t.List[int]] = {}
+        reach = 0
+        for i, ev in enumerate(pev):
+            if not (ev & b) or (pbo[i] & b):
+                continue                      # not evaluated, or both-sided
+            if want_span:
+                reach |= prof_union[i]
+            key = (ev & ~b, ptk[i] & ~b, pbo[i])
+            sl = buckets.get(key)
+            if sl is None:
+                sl = buckets[key] = [-1, -1]  # profile index of the T / F side
+            sl[1 if ptk[i] & b else 0] = i
+        n = 0
+        m = 0
+        span = 0
+        for it, if_ in buckets.values():
+            if it < 0 or if_ < 0:
+                continue
+            n += 1
+            if want_span:
+                span |= prof_union[it] | prof_union[if_]
+            m |= (prof_union[it] & ~prof_inter[if_]) | (prof_union[if_] & ~prof_inter[it])
+        ctxn[d] = n
+        if reach_out is not None:
+            reach_out[d] = reach
+        if span_out is not None:
+            span_out[d] = span
+        if n:
+            fp[d] = (m | (reach & ~span)) if unobserved == "attribute" else m
+    return fp, ctxn
+
+
+def infer_footprints_coevaluated(
+    exprs: t.Sequence[str],
+    universe: t.Sequence[str],
+    run_outcomes: t.Sequence[t.Dict[str, t.Set[bool]]],
+    prof_union: t.Sequence[int],
+    prof_inter: t.Sequence[int],
+    unobserved: str = "withhold",
+    reach_out: t.Optional[t.Dict[str, int]] = None,
+    span_out: t.Optional[t.Dict[str, int]] = None,
+) -> t.Tuple[t.Dict[str, int], t.Dict[str, int]]:
+    """Footprints under the CO-EVALUATED keying (owner's case, 2026-09-11):
+    a matched context for ``D`` is two runs that AGREE ON EVERY DECISION
+    EVALUATED IN BOTH (other than ``D``) and differ only in ``D``'s outcome.
+    Decisions evaluated in only one of the two — ``D``'s downstream,
+    foreclosed on the other side — are not matched on: they ARE the
+    footprint. This is what makes a GATE measurable: its ``taken`` run ends
+    before its downstream, its ``not_taken`` run walks it, the two agree on
+    the prefix, and the footprint is the downstream's shapes. Under the exact
+    keying (``infer_footprints``) a gate can never have a context, because
+    its flip changes which decisions are evaluated.
+
+    Computed without enumerating pairs: bitsets over PROFILES. For each
+    expression ``e`` and outcome set ``k``, ``S[e][k]`` is the profiles with
+    that outcome set on ``e`` and ``U[e]`` the profiles evaluating ``e``. A
+    profile ``r`` is compatible with ``r'`` iff for every ``e`` evaluated by
+    ``r`` (other than ``D``) ``r'`` either does not evaluate ``e`` or agrees:
+    ``M(r, D) = AND_{e in ev(r), e != D} (~U[e] | S[e][k_r(e)]) & S[D][~side_r(D)]``
+    — the leave-one-out products come from one prefix/suffix pass per
+    profile. A shape ``j`` is in the footprint iff some matched pair has it
+    present in one run and absent from the other; with ``NOTI[j]`` the
+    profiles whose runs do not all issue ``j``, that is
+    ``j in union(r) and (M & NOTI[j]) != 0`` — the symmetric case is the
+    same test from the partner's side, and every profile is visited.
+    ``unobserved`` / ``reach_out`` / ``span_out`` are §16c C2, exactly as in
+    ``infer_footprints``, with the matched set ``M`` in place of the bucket
+    pair: ``reach(D)`` unions the traces of every profile single-sided on
+    ``D``, ``span(D)`` unions the traces of the profiles that sit in one of
+    ``D``'s co-evaluated matched contexts (the base profile and every profile
+    of its ``M``), and ``"attribute"`` returns ``fp | (reach & ~span)``.
+    Computed only when asked for, so the default path is unchanged.
+
+    Returns ``(footprint mask by expr, matched-profile count by expr)``.
+    """
+    if unobserved not in ("withhold", "attribute"):
+        raise ValueError(f"unobserved must be 'withhold' or 'attribute', got {unobserved!r}")
+    n = len(run_outcomes)
+    if n == 0:
+        if reach_out is not None:
+            reach_out.update({e: 0 for e in exprs})
+        if span_out is not None:
+            span_out.update({e: 0 for e in exprs})
+        return {}, {e: 0 for e in exprs}
+    ALL = (1 << n) - 1
+    U: t.Dict[str, int] = {}
+    S: t.Dict[str, t.List[int]] = {}
+    for i, outcomes in enumerate(run_outcomes):
+        b = 1 << i
+        for e, os_ in outcomes.items():
+            k = 2 if len(os_) > 1 else (1 if True in os_ else 0)
+            U[e] = U.get(e, 0) | b
+            sl = S.get(e)
+            if sl is None:
+                sl = S[e] = [0, 0, 0]
+            sl[k] |= b
+    nshapes = max((m.bit_length() for m in prof_union), default=0)
+    NOTI: t.List[int] = [0] * nshapes
+    for i, im in enumerate(prof_inter):
+        b = 1 << i
+        for j in range(nshapes):
+            if not (im >> j & 1):
+                NOTI[j] |= b
+    want = set(exprs)
+    fp: t.Dict[str, int] = {}
+    ctxn: t.Dict[str, int] = {e: 0 for e in exprs}
+    want_span = unobserved == "attribute" or reach_out is not None or span_out is not None
+    reach: t.Dict[str, int] = {e: 0 for e in exprs}
+    part: t.Dict[str, int] = {e: 0 for e in exprs}   # PROFILES in a matched context
+    for i, outcomes in enumerate(run_outcomes):
+        evs = list(outcomes)
+        ks = [2 if len(outcomes[e]) > 1 else (1 if True in outcomes[e] else 0) for e in evs]
+        factors = [(ALL & ~U[e]) | S[e][k] for e, k in zip(evs, ks)]
+        m = len(evs)
+        pre = [ALL] * (m + 1)
+        for a in range(m):
+            pre[a + 1] = pre[a] & factors[a]
+        suf = [ALL] * (m + 1)
+        for a in range(m - 1, -1, -1):
+            suf[a] = suf[a + 1] & factors[a]
+        u = prof_union[i]
+        for a, (e, k) in enumerate(zip(evs, ks)):
+            if e not in want or k == 2:
+                continue                      # both-sided: no context for e
+            if want_span:
+                reach[e] |= u
+            M = pre[a] & suf[a + 1] & S[e][1 - k]
+            if not M:
+                continue
+            if want_span:
+                part[e] |= M | (1 << i)
+            ctxn[e] += 1
+            x = u
+            acc = fp.get(e, 0)
+            while x:
+                b = x & -x
+                j = b.bit_length() - 1
+                x ^= b
+                if M & NOTI[j]:
+                    acc |= b
+            fp[e] = acc
+    if want_span:
+        # resolve the participating-PROFILE bitsets into trace masks once,
+        # not once per (profile, decision) visit
+        span: t.Dict[str, int] = {}
+        for e, pm in part.items():
+            s = 0
+            while pm:
+                bb = pm & -pm
+                pm ^= bb
+                s |= prof_union[bb.bit_length() - 1]
+            span[e] = s
+        if reach_out is not None:
+            reach_out.update(reach)
+        if span_out is not None:
+            span_out.update(span)
+        if unobserved == "attribute":
+            for e in list(fp):
+                fp[e] |= reach[e] & ~span[e]
+    return fp, ctxn
+
+
+def restrict_confinement(
+    group: t.Sequence[str],
+    local: t.Dict[t.Tuple[str, bool], int],
+    footprint: t.Mapping[str, int],
+    cap: int,
+    disqualified: t.Collection[str] = (),
+    withdrawn: t.Collection[t.Tuple[str, str]] = (),
+    protect_gates: bool = False,
+    bit: t.Optional[t.Mapping[str, int]] = None,
+    force_confined: t.Collection[t.Tuple[str, str]] = (),
+) -> t.Tuple[t.List[t.FrozenSet[str]], t.Set[t.Tuple[str, str]],
+             t.Dict[t.Tuple[str, str], int], t.Set[t.Tuple[str, str]],
+             t.Set[t.Tuple[str, str]]]:
+    """Split one demand set by CONFINEMENT, composed with foreclosure (§16c).
+
+    ``local`` is the set's own foreclosure relation (``restrict_foreclosures``).
+    THE DEMAND RULE (owner's case, gates measurable, 2026-09-11): over ALL
+    members of the set the confinement graph keeps an edge unless the pair
+    is a confined pair (both in ``footprint`` — decided — neither in
+    ``disqualified`` — both strictly confined — not in ``withdrawn`` — the
+    pairs a gate FAIL withdrew — with disjoint masks). The parts are the
+    maximal cliques of that graph, each CLOSED under "a part holding a member
+    ``d`` holds every gate of the set that forecloses ``d``" (transitively),
+    and each part is then judged by §16b on its own (pruned tree, its gates
+    first). So: a confined gate's own downstream stays with it (the closure
+    keeps the gate in the downstream's part, and the pruned tree demands the
+    downstream only under the gate's enabling side — foreclosure); two
+    confined gates land in different parts, so the product of their arms is
+    not demanded, and neither is the product of their downstreams where those
+    are confined pairs too (confinement); a member confined with nothing
+    keeps every edge and holds its part together (the conservative default).
+    ``protect_gates=True`` is the earlier rule (gates in every part, only
+    non-gates split), kept for the nesting test; ``bit`` (the global
+    expression -> bit map ``local``'s masks are over) is needed for the
+    closure — without it the earlier rule applies. ``force_confined`` —
+    pairs (sorted tuples) to treat as confined whatever the footprints say:
+    a WHAT-IF hook for the census tools (measurement before a rule change);
+    empty by default and inert. On a projection-cap hit
+    the set is kept whole. Returns
+    ``(parts, confined pairs, overlapping pairs -> shared-shape count,
+    pairs with an undecidable member, pairs with a disqualified member)``. With nothing confined the single part is the
+    set itself — the identity, so a corpus with no confined pair is judged
+    exactly as before. On a projection-cap hit the set is likewise kept
+    whole: conservative, never truncated.
+    """
+    group = list(group)
+    gates = {g for g, _o in local}
+    rest = [e for e in group if e not in gates] if protect_gates else list(group)
+    confined: t.Set[t.Tuple[str, str]] = set()
+    overlapping: t.Dict[t.Tuple[str, str], int] = {}
+    undecidable: t.Set[t.Tuple[str, str]] = set()
+    disq_pairs: t.Set[t.Tuple[str, str]] = set()
+    disq = set(disqualified)
+    forced = set(force_confined)
+    adj: t.Dict[str, t.Set[str]] = {e: set() for e in rest}
+    for i, a in enumerate(rest):
+        fa = footprint.get(a)
+        for b in rest[i + 1:]:
+            fb = footprint.get(b)
+            pair = (a, b) if a < b else (b, a)          # canonical, sorted
+            if pair in forced:
+                confined.add(pair)
+                continue
+            if fa is None or fb is None:
+                undecidable.add(pair)
+            elif a in disq or b in disq or pair in withdrawn:
+                disq_pairs.add(pair)
+            elif fa & fb:
+                overlapping[pair] = bin(fa & fb).count("1")
+            else:
+                confined.add(pair)
+                continue
+            adj[a].add(b)
+            adj[b].add(a)
+    if not confined:
+        return [frozenset(group)], confined, overlapping, undecidable, disq_pairs
+    parts = _maximal_cliques(rest, adj, cap)
+    if parts is None:
+        return [frozenset(group)], set(), overlapping, undecidable, disq_pairs
+    if protect_gates or bit is None:
+        return ([frozenset(gates) | frozenset(k) for k in parts],
+                confined, overlapping, undecidable, disq_pairs)
+    # CLOSURE: every gate of the set foreclosing a member of the part joins
+    # the part (transitively), so the part's pruned tree demands a foreclosed
+    # member only under its gate's enabling side, exactly as the set's does.
+    gates_of: t.Dict[str, t.Set[str]] = {e: set() for e in group}
+    for (g, _o), fm in local.items():
+        for d in group:
+            if fm >> bit[d] & 1 and d != g:
+                gates_of[d].add(g)
+    closed: t.List[t.FrozenSet[str]] = []
+    for k in parts:
+        part = set(k)
+        todo = list(part)
+        while todo:
+            d = todo.pop()
+            for g in gates_of[d]:
+                if g not in part:
+                    part.add(g)
+                    todo.append(g)
+        closed.append(frozenset(part))
+    return closed, confined, overlapping, undecidable, disq_pairs
+
+
+_CELL_NAMES = {(0, 1, 1, 1): "OR", (0, 0, 0, 1): "AND", (0, 0, 1, 1): "A-only",
+               (0, 1, 0, 1): "B-only", (1, 1, 1, 1): "ALWAYS", (0, 0, 0, 0): "NEVER"}
+_BENIGN = {"OR", "A-only", "B-only", "ALWAYS", "NEVER"}
+
+
+def classify_cells(cells: t.Mapping[t.Tuple[bool, bool], int]) -> str:
+    """Classify one shape's 2x2 over a pair (owner/coordinator, 2026-09-11 —
+    OR-sharing is not interaction). ``cells`` maps the RECORDED sides
+    ``(side_a, side_b)`` to 1 (present in some run of the cell) / 0 (absent
+    from every run); a missing key is an UNOBSERVED cell. The four
+    orientations of "on" are tried; for each, every completion of the
+    unobserved cells is checked for monotonicity (presence non-decreasing in
+    (A on, B on)). An orientation is SOUND if every completion is monotone,
+    POSSIBLE if some is. Returns ``OR`` / ``A-only`` / ``B-only`` / ``ALWAYS``
+    / ``NEVER`` (benign: no combination yields a presence the singles do not
+    explain), ``OR-family`` (sound, several benign patterns), ``AND``
+    (present only with both on: INTERACTION), ``UNDETERMINED`` /
+    ``UNDETERMINED(AND?)`` (an unobserved cell leaves it open), or
+    ``NON-MONOTONE`` (no orientation is even possible: INTERACTION)."""
+    import itertools
+    sound: t.List[t.Set[str]] = []
+    possible: t.List[t.Set[str]] = []
+    for fa in (False, True):
+        for fb in (False, True):
+            c = {"00": cells.get((not fa, not fb)), "01": cells.get((not fa, fb)),
+                 "10": cells.get((fa, not fb)), "11": cells.get((fa, fb))}
+            unknown = [k for k, v in c.items() if v is None]
+            mono: t.Set[str] = set()
+            non = False
+            for fill in itertools.product((0, 1), repeat=len(unknown)):
+                v = dict(c)
+                v.update(zip(unknown, fill))
+                if (v["00"] <= v["01"] and v["00"] <= v["10"]
+                        and v["01"] <= v["11"] and v["10"] <= v["11"]):
+                    mono.add(_CELL_NAMES.get((v["00"], v["01"], v["10"], v["11"]), "OTHER"))
+                else:
+                    non = True
+            if mono and not non:
+                sound.append(mono)
+            elif mono:
+                possible.append(mono)
+    if sound:
+        kinds = set().union(*sound) - {"NEVER"}
+        if not kinds:
+            return "NEVER"
+        if len(kinds) == 1:
+            return next(iter(kinds))
+        return "OR-family" if kinds <= _BENIGN else "UNDETERMINED(AND?)"
+    if possible:
+        kinds = set().union(*possible)
+        return "UNDETERMINED(AND?)" if "AND" in kinds else "UNDETERMINED"
+    return "NON-MONOTONE"
+
+
+def infer_pair_tables(
+    decided: t.Collection[str],
+    run_outcomes: t.Sequence[t.Dict[str, t.Set[bool]]],
+    prof_union: t.Sequence[int],
+) -> t.Dict[t.Tuple[str, str], t.Dict[t.Tuple[bool, bool], t.Tuple[int, int]]]:
+    """For every co-evaluated pair of decided decisions, per cell
+    ``(side_a, side_b)``: ``(union of the traces of the profiles in the
+    cell, index of the first such profile)`` — one pass over the profiles,
+    pairs taken inside each profile's single-sided decided decisions."""
+    idx = {e: i for i, e in enumerate(sorted(decided))}
+    names = sorted(decided)
+    tables: t.Dict[t.Tuple[str, str], t.Dict[t.Tuple[bool, bool], t.Tuple[int, int]]] = {}
+    for pi, outcomes in enumerate(run_outcomes):
+        ev: t.List[t.Tuple[int, bool]] = []
+        for e, os_ in outcomes.items():
+            j = idx.get(e)
+            if j is not None and len(os_) == 1:
+                ev.append((j, True in os_))
+        ev.sort()
+        u = prof_union[pi]
+        for a in range(len(ev)):
+            ja, sa = ev[a]
+            for b in range(a + 1, len(ev)):
+                jb, sb = ev[b]
+                d = tables.setdefault((names[ja], names[jb]), {})
+                cur = d.get((sa, sb))
+                d[(sa, sb)] = (u, pi) if cur is None else (cur[0] | u, cur[1])
+    return tables
+
+
+def project_confinement(
+    active: t.Sequence[str],
+    expr_order: t.Sequence[str],
+    run_outcomes: t.Sequence[t.Dict[str, t.Set[bool]]],
+    prof_union: t.Sequence[int],
+    prof_inter: t.Sequence[int],
+    side_seen: t.Mapping[str, t.Sequence[int]],
+    demands: t.Sequence[t.FrozenSet[str]],
+    forecl_by_gate: t.Dict[str, t.List[t.Tuple[bool, int]]],
+    bit: t.Mapping[str, int],
+    cap: int,
+    strict: bool = True,
+    keying: str = "coevaluated",
+    protect_gates: bool = False,
+    withdrawn: t.Collection[t.Tuple[str, str]] = (),
+    force_confined: t.Collection[t.Tuple[str, str]] = (),
+    or_sharing: bool = True,
+    footprint_unobserved: str = "withhold",
+    confine_coevaluated_only: bool = True,
+) -> t.Dict[str, t.Any]:
+    """Steps 5d of the checker as ONE function, shared with the batches'
+    census tools so the two project the same demand: footprints (exact
+    keying, then the co-evaluated keying as the FALLBACK for decisions with
+    no exact context — a decision that has one keeps the less confounded
+    measurement, and the fallback only ever ADDS decided decisions, which is
+    what makes the demand nest in the earlier rule), the strict
+    counterexample search over ``side_seen``, and the per-set projection.
+    ``or_sharing`` (2026-09-11, round 5 — measured first on posts_show, where
+    61 % of the blocked pairs were OR-shared): a pair the strict rule does not
+    license is licensed anyway iff EVERY shape in fp(A) ∪ fp(B) has a benign
+    2x2 over the co-evaluated profiles (``classify_cells``: OR / A-only /
+    B-only / ALWAYS / NEVER — presence monotone in each decision, so no
+    combination yields a shape the singles do not explain). A shape present
+    only with BOTH on (AND), a non-monotone cell, or an unobserved cell that
+    leaves AND open refuses the pair, shape and witness runs named. The
+    licence is a UNION with the strict one (a strictly confined pair stays
+    confined), which is what makes the demand nest in the strict rule.
+    ``footprint_unobserved`` (§16c C2, 2026-09-13) is handed to both
+    ``infer_footprints`` and ``infer_footprints_coevaluated``:
+    ``"withhold"`` (default) is today's behaviour byte for byte,
+    ``"attribute"`` puts every shape the decision REACHES but no matched
+    context SPANS into the footprint (unknown is not absence).
+    ``confine_coevaluated_only`` (§16c C3, 2026-09-13, a POLICY knob, default
+    ``True`` = today): with ``False``, a decision decided ONLY by
+    ``infer_footprints_coevaluated`` gets ``fp = reach`` — every shape it
+    co-occurs with — so it is confined with nothing it can reach and the
+    fallback stops being a licence. ``fp_coevaluated ⊆ reach`` always, so the
+    licences nest: ``False ⊆ True``, i.e. this is the "earlier strict (exact
+    keying, gates protected)" reading of §16c's own nesting chain and Rule T
+    is not triggered. It is a per-endpoint policy because its price is
+    endpoint-dependent (`docs/CONFINEMENT_PRECISION_20260913.md` §5.2:
+    zero on comments_index, five orders of magnitude on posts_show).
+
+    Returns a dict: footprint, ctxn, coevaluated (decisions decided only by
+    the fallback), disqualified, demands (projected), confined, overlapping,
+    undecidable, disq_pairs, splits, or_pairs (pairs licensed by the table
+    alone), and_pairs (refused pairs: (a, b, shape, class, cell, profile))."""
+    order = {e: i for i, e in enumerate(expr_order)}
+    footprint, ctxn = infer_footprints(active, expr_order, run_outcomes, prof_union,
+                                       prof_inter, unobserved=footprint_unobserved)
+    coeval: t.Set[str] = set()
+    if keying == "coevaluated":
+        rest = [e for e in active if not ctxn.get(e)]
+        if rest:
+            reach2: t.Optional[t.Dict[str, int]] = (
+                None if confine_coevaluated_only else {})
+            fp2, ctx2 = infer_footprints_coevaluated(
+                rest, expr_order, run_outcomes, prof_union, prof_inter,
+                unobserved=footprint_unobserved, reach_out=reach2)
+            for e, m in fp2.items():
+                # C3: the fallback measures a footprint but does not LICENSE
+                # one — fp = reach keeps the decision decided and confined
+                # with nothing it can reach.
+                footprint[e] = m if reach2 is None else (m | reach2[e])
+                ctxn[e] = ctx2[e]
+                coeval.add(e)
+    disqualified: t.Dict[str, t.List[t.Tuple[int, str, str]]] = {}
+    if strict:
+        for e, m in footprint.items():
+            sl = side_seen.get(e, [0, 0, 0])
+            bad = m & ((sl[0] & sl[1]) | sl[2])
+            while bad:
+                b = bad & -bad
+                bad ^= b
+                disqualified.setdefault(e, []).append((b.bit_length() - 1, "", ""))
+    wd = {tuple(sorted(p)) for p in withdrawn}
+    # OR-SHARING: the pairwise 2x2 licence, computed once over the profiles
+    or_pairs: t.Set[t.Tuple[str, str]] = set()
+    and_pairs: t.List[t.Tuple[str, str, int, str, t.Tuple[bool, bool], int]] = []
+    if or_sharing and footprint:
+        strict_ok = {e for e in footprint if e not in disqualified}
+        tables = infer_pair_tables(list(footprint), run_outcomes, prof_union)
+        for (a, b), cells in tables.items():
+            if (a, b) in wd:
+                continue
+            fa, fb = footprint[a], footprint[b]
+            if a in strict_ok and b in strict_ok and not (fa & fb):
+                continue                           # strictly confined already
+            shapes = fa | fb
+            bad = None
+            x = shapes
+            while x:
+                bb = x & -x
+                j = bb.bit_length() - 1
+                x ^= bb
+                cls = classify_cells({k: (1 if v[0] >> j & 1 else 0) for k, v in cells.items()})
+                if cls not in _BENIGN and cls != "OR-family":
+                    # the offending cell: for AND the single cells that lack it;
+                    # otherwise the first cell holding the shape
+                    cell = next((k for k, v in cells.items() if v[0] >> j & 1), None)
+                    bad = (a, b, j, cls, cell, cells[cell][1] if cell else -1)
+                    break
+            if bad is None:
+                or_pairs.add((a, b))
+            else:
+                and_pairs.append(bad)
+    force_all = set(tuple(sorted(p)) for p in force_confined) | or_pairs
+    confined_all: t.Set[t.Tuple[str, str]] = set()
+    overlapping_all: t.Dict[t.Tuple[str, str], int] = {}
+    undecidable_all: t.Set[t.Tuple[str, str]] = set()
+    disq_all: t.Set[t.Tuple[str, str]] = set()
+    splits = 0
+    projected: t.List[t.FrozenSet[str]] = []
+    for demand in demands:
+        group = sorted(demand, key=order.__getitem__)
+        group, local, _ign = restrict_foreclosures(group, forecl_by_gate, bit)
+        parts, conf, ovl, und, dq = restrict_confinement(
+            group, local, footprint, cap, disqualified, wd, protect_gates, bit, force_all)
+        confined_all |= conf
+        overlapping_all.update(ovl)
+        undecidable_all |= und
+        disq_all |= dq
+        if len(parts) > 1:
+            splits += 1
+        projected.extend(parts)
+    return dict(footprint=footprint, ctxn=ctxn, coevaluated=coeval,
+                disqualified=disqualified, demands=maximal_sets(projected),
+                confined=confined_all, overlapping=overlapping_all,
+                undecidable=undecidable_all, disq_pairs=disq_all, splits=splits,
+                or_pairs=or_pairs & confined_all, and_pairs=and_pairs)
+
+
+def _maximal_cliques(
+    nodes: t.Sequence[str],
+    adj: t.Dict[str, t.Set[str]],
+    cap: int,
+) -> t.Optional[t.List[t.List[str]]]:
+    """Bron–Kerbosch (with pivot). Returns None if `cap` cliques exceeded.
+
+    Since 2026-09-10 this runs over ONE observed evaluation set at a time —
+    it is the projection of declared independences inside a set some run
+    walked, never the generator of the demand universe.
+    """
+    cliques: t.List[t.List[str]] = []
+
+    def bk(r: t.Set[str], p: t.Set[str], x: t.Set[str]) -> bool:
+        if not p and not x:
+            cliques.append(sorted(r))
+            return len(cliques) <= cap
+        pivot = max(p | x, key=lambda v: len(adj[v] & p))
+        for v in list(p - adj[pivot]):
+            if not bk(r | {v}, p & adj[v], x & adj[v]):
+                return False
+            p = p - {v}
+            x = x | {v}
+        return True
+
+    if not nodes:
+        return []
+    ok = bk(set(), set(nodes), set())
+    return cliques if ok else None
+
+
+# ---------------------------------------------------------------------------
+# Coverage Checker
+# ---------------------------------------------------------------------------
+
+
+class CoverageChecker:
+    """Check combination-coverage completeness (see module docstring).
+
+    The model: distinct PC expressions, the runs' observed evaluation sets
+    and outcomes, and the declared independences that project those sets.
+    """
+
+    def __init__(
+        self,
+        runs: t.List[Run],
+        timeout_ms: int = 5000,
+        assumptions: t.Optional[AssumptionSet] = None,
+        max_missing_per_clique: int = 1,
+        max_cliques: int = 1024,
+        confinement: bool = True,
+        prior_footprints: t.Optional[t.Mapping[str, t.Iterable[str]]] = None,
+        confinement_strict: bool = True,
+        withdrawn_pairs: t.Optional[t.Iterable[t.Sequence[str]]] = None,
+        confinement_keying: str = "coevaluated",
+        confinement_gates: bool = True,
+        confinement_or_sharing: bool = True,
+        confinement_span_union: bool = False,
+        confinement_fallback_licence: bool = True,
+        foreclosure_conjunctions: bool = False,
+        foreclosure_subconjunctions: bool = False,
+        foreclosure_conjunction_width: int = 3,
+        foreclosure_conjunction_budget: int = 20000,
+        foreclosure_wellfounded_drops: bool = False,
+        checkpoint: t.Optional[str] = None,
+        checkpoint_keys: t.Optional[t.Mapping[str, t.Any]] = None,
+    ) -> None:
+        """``max_missing_per_clique`` — witnesses reported per demand set,
+        default 1 since 2026-09-12 (owner ruling, DISCIPLINE §16d): a set's
+        verdict is decided by its FIRST missing leaf, and one witness is what
+        the driver needs to construct the next run. Every extra witness costs
+        one more full Z3 query on a larger formula, so >1 is opt-in.
+        ``max_cliques`` — safety cap on the independence projection of ONE
+        evaluation set (it can no longer be exceeded by the size of the
+        universe; a single run's decisions bound it), and on the confinement
+        projection of one demand set.
+        ``confinement`` — infer footprints and apply §16c (default on; the
+        projection is the identity on a corpus with no confined pair, so the
+        verdict is unchanged wherever the property does not apply).
+        ``prior_footprints`` — ``{expr: [shape strings]}`` an earlier pass
+        licensed pairs on: the corpus tripwire counts every pair confined
+        under them that this corpus no longer confines.
+        ``confinement_strict`` — the STRICT definition (default; a decision
+        is confined only if every footprint shape is one-sided across the
+        corpus). False is the weak, matched-context-only reading, kept for
+        the nesting test strict ⊆ weak ⊆ §16b and NOT for batches.
+        ``withdrawn_pairs`` — ``[(expr_a, expr_b), ...]`` the assumption gate
+        FAILed on a previous pass (``summary["completion"]["assumptions"]
+        ["confinement_withdrawn"]``): never licensed again, whatever the
+        corpus says, and counted in ``confinement_withdrawn``. Replay evidence
+        outranks corpus inference, and a FAIL is replay evidence.
+        ``confinement_keying`` — ``"coevaluated"`` (default): a decision with
+        no exact matched context is measured under the co-evaluated keying
+        (``infer_footprints_coevaluated``), which is what makes GATES
+        measurable; ``"exact"`` is the earlier keying alone.
+        ``confinement_gates`` — gates may be confined and leave a part
+        (default); False keeps every gate in every part (the earlier rule).
+        ``confinement_or_sharing`` — the OR-sharing licence (default): a pair
+        whose every footprint shape has a benign 2x2 over the co-evaluated
+        profiles is confined even where strictness refuses it; False is the
+        strict-only rule. All three knobs exist for the nesting tests;
+        batches use the defaults.
+        ``confinement_span_union`` (§16c C2, 2026-09-13,
+        `docs/CONFINEMENT_PRECISION_20260913.md` §5) — put every shape a
+        decision REACHES but that NO matched context SPANS into its
+        footprint: "never observed at all" is UNKNOWN, and since a licence is
+        refused on disjointness, unknown belongs IN. **Default False**, so a
+        pass reproduces every summary written before this date byte for byte;
+        the flag is folded into the step-6 checkpoint key when set. The
+        footprint only grows, so the licensed pairs are a SUBSET of today's
+        and Rule T is not triggered.
+        ``confinement_fallback_licence`` (§16c C3, 2026-09-13, a per-ENDPOINT
+        POLICY knob) — **default True = today**: a decision with no exact
+        matched context is licensed on the footprint the co-evaluated
+        fallback measures. False makes that footprint ``reach`` instead, so
+        the fallback is measured but never licences ("earlier strict"). Its
+        price is endpoint-dependent — zero on comments_index, five orders of
+        magnitude on posts_show, whose gates are all fallback-decided — which
+        is why it is a knob and not a rule.
+        ``foreclosure_conjunctions`` (§16e, 2026-09-13) — infer foreclosure
+        over the gate CONJUNCTIONS the demand already contains, not only
+        pairwise. **Default False**, so a pass reproduces every summary
+        written before this date byte-for-byte; the flag is folded into the
+        step-6 checkpoint key so the two settings never share a checkpoint.
+        With it on, a member no run matching a leaf's gate prefix ever
+        evaluates is not part of that leaf (emission AND the closed-prefix
+        blocking test, symmetrically), and a gate prefix NO run matches is
+        reported as ``unmatched_gate_conjunctions`` with the demand intact.
+        ``foreclosure_subconjunctions`` (§16f, 2026-09-13) — the same
+        relation over a SUB-conjunction of the leaf's own cube: a member is
+        foreclosed under any conjunction ``C`` of literals already fixed
+        earlier in the leaf's walk (a proper subset of §16e's gate prefix,
+        and/or literals of NON-gate members) with ``A(C) > 0`` and
+        ``B(C, d) = 0``. GATES are eligible members here. **Default False**,
+        and turning it on IMPLIES ``foreclosure_conjunctions`` — the §16f
+        drop set is the union of §16e's with the walk's, which is what makes
+        ``§16f ⊆ §16e`` hold by construction. Both flags and the width are
+        folded into the step-6 checkpoint key.
+        ``foreclosure_wellfounded_drops`` (§16g, 2026-09-14) — the same
+        relation with §16f's ``C ⊆ acc`` (walk-prefix) restriction replaced
+        by a WELL-FOUNDEDNESS condition: ``C`` may be drawn from anywhere in
+        the leaf's own cube, provided every literal of ``C`` belongs to a
+        member that is itself KEPT. Resolved as the LEAST fixed point of a
+        monotone operator (``wellfounded_drop_set``), so the answer is
+        unique and independent of the order the members are visited in.
+        **Default False**, and turning it on IMPLIES
+        ``foreclosure_subconjunctions`` (hence ``foreclosure_conjunctions``)
+        — the §16g drop set is §16f's union the fixed point's.
+
+        ``foreclosure_conjunction_width`` — ``W``, the cap on ``|C|``
+        (default 3). ``foreclosure_conjunction_budget`` — nodes the minimal-C
+        search may explore per (literal set, member) before giving up, which
+        leaves the member in the leaf (the conservative direction).
+        ``checkpoint`` (owner rule, 2026-09-12) — path to a JSON-Lines
+        checkpoint for step 6, the per-demand-set Z3 enumeration, which is
+        the hours-long phase. Each demand set's result is appended as soon as
+        it is finished, and a rerun with the same path SKIPS every set already
+        recorded. None (the default) falls back to ``$COVERAGE_CHECKPOINT``;
+        unset = the behaviour this checker has always had, unchanged. The
+        checkpoint is keyed on everything step 6 reads (engine source hash,
+        every knob above, the corpus's outcome profiles, the assumptions, the
+        declarations, the demand list); a file whose keys do not match is
+        never reused — it is rotated to ``<path>.stale`` with a notice.
+        ``checkpoint_keys`` — extra key/value pairs to fold into that header,
+        for a driver that knows something the checker does not (a dump-list
+        digest, say)."""
+        self.timeout_ms = timeout_ms
+        self.max_missing_per_clique = max_missing_per_clique
+        self.max_cliques = max_cliques
+        self.confinement = confinement
+        self.confinement_strict = confinement_strict
+        self.withdrawn_pairs = {tuple(sorted(p)) for p in (withdrawn_pairs or ())}
+        if confinement_keying not in ("exact", "coevaluated"):
+            raise ValueError(f"confinement_keying must be 'exact' or 'coevaluated', got {confinement_keying!r}")
+        self.confinement_keying = confinement_keying
+        self.confinement_gates = confinement_gates
+        self.confinement_or_sharing = confinement_or_sharing
+        self.confinement_span_union = confinement_span_union
+        self.confinement_fallback_licence = confinement_fallback_licence
+        # §16g (2026-09-14, OPT-IN): the same inferred relation with the
+        # walk-prefix restriction lifted and a WELL-FOUNDEDNESS condition in
+        # its place. Implies §16f (and so §16e): the §16g drop set is §16f's
+        # UNION the fixed point's, which is what makes the nesting hold by
+        # construction.
+        self.foreclosure_wellfounded_drops = foreclosure_wellfounded_drops
+        self.foreclosure_subconjunctions = (
+            foreclosure_subconjunctions or foreclosure_wellfounded_drops)
+        # §16f is a REFINEMENT of §16e, not an alternative: its drop set is
+        # §16e's union the walk's, so `§16f ⊆ §16e ⊆ §16b ⊆ §16` holds by
+        # construction rather than by argument. Asking for it therefore asks
+        # for §16e too.
+        self.foreclosure_conjunctions = (
+            foreclosure_conjunctions or self.foreclosure_subconjunctions)
+        if foreclosure_conjunction_width < 0:
+            raise ValueError("foreclosure_conjunction_width must be >= 0")
+        self.foreclosure_conjunction_width = foreclosure_conjunction_width
+        self.foreclosure_conjunction_budget = foreclosure_conjunction_budget
+        self.prior_footprints = (
+            {e: frozenset(v) for e, v in prior_footprints.items()}
+            if prior_footprints else None)
+        self.checkpoint_path = (
+            checkpoint if checkpoint is not None
+            else os.environ.get(_checkpoint.ENV_VAR) or None)
+        self.checkpoint_keys = dict(checkpoint_keys or {})
+        self.assumptions = assumptions or AssumptionSet()
+        # AliasAssumption: re-key ordinal-named results by WHAT produced them
+        # (for a loop alias, by the loop) BEFORE the universe is built (step 1 reads
+        # pc.expr; the declarations and bounds read symbolic_vars). With no
+        # alias declared this is the identical list object — inert.
+        self.runs = self.assumptions.apply_aliases(runs)
+        self._folds = 0
+        self._assumptions_used = 0
+
+    # -- coverage check (combination semantics) --------------------------
+
+    def check_coverage(self) -> CoverageResult:
+        """Check combination-coverage completeness (see module docstring).
+
+        ``complete`` iff the tree layer is complete (every tracked expression
+        observed with every satisfiable outcome) AND, for every demand set,
+        every Z3-satisfiable outcome assignment has been observed in some
+        single run's executed path — and no enumeration cap or solver unknown
+        was hit. Assumptions:
+
+        | Assumption           | Effect on the demand space                        |
+        |----------------------|---------------------------------------------------|
+        | None                 | every combination some run walked is demanded      |
+        | ``Independence``     | cuts the pair's edge INSIDE each evaluation set    |
+        |                      | that holds both; inert on a pair no run co-evaluated|
+        | ``Untracked``        | expression removed; its unobserved sides are      |
+        |                      | reported ``untracked=True`` (transparency only)   |
+        | ``OneSide(tracked)`` | only assignments with the tracked outcome demanded |
+        | ``SymbolicConstraint``| extra Z3 constraint — infeasible combos exempt   |
+        """
+        total_elapsed = 0.0
+        solver_lost = 0
+        truncated = False
+        missing: t.List[MissingCoverage] = []
+
+        # -- 1. universe: distinct exprs (first-seen order) + per-run outcomes.
+        # Runs are collapsed to DISTINCT outcome profiles: a profile is all the
+        # later steps read (which expressions a path evaluated, and with which
+        # outcomes), and a large corpus repeats a handful of profiles tens of
+        # thousands of times.
+        expr_order: t.List[str] = []
+        expr_source: t.Dict[str, t.Optional[PathSource]] = {}
+        expr_location: t.Dict[str, str] = {}
+        profiles: t.Dict[t.Any, int] = {}          # profile key -> index
+        run_outcomes: t.List[t.Dict[str, t.Set[bool]]] = []
+        # Confinement (§16c): per profile, the UNION and INTERSECTION of the
+        # trace masks of the runs collapsed into it (two runs of one profile
+        # may differ in trace). Shapes are interned once; `call_shape` on the
+        # ALIAS-APPLIED run, so a footprint is keyed and measured in the
+        # engine's canonical namespace, never a raw dump's.
+        shape_id: t.Dict[t.Any, int] = {}
+        prof_union: t.List[int] = []
+        prof_inter: t.List[int] = []
+        prof_label: t.List[str] = []
+        # STRICT one-sidedness (the counterexample search's index): per
+        # expression, the union of shapes seen with it taken False / True /
+        # both ways, over EVERY run (not profiles), and the first run that
+        # showed each (expr, side, shape) — the witness the report names.
+        side_seen: t.Dict[str, t.List[int]] = {}
+        witness: t.Dict[t.Tuple[str, int, int], str] = {}
+        for run in self.runs:
+            outcomes: t.Dict[str, t.Set[bool]] = {}
+            for pc in run.path_conditions:
+                if pc.expr not in expr_source:
+                    expr_order.append(pc.expr)
+                    expr_source[pc.expr] = (
+                        pc.source if isinstance(pc.source, PathSource) else None
+                    )
+                    expr_location[pc.expr] = pc.source_location
+                outcomes.setdefault(pc.expr, set()).add(bool(pc.taken))
+            if outcomes:
+                tr = 0
+                if self.confinement:
+                    for ev in run.symbolic_call_events:
+                        if not ev.result_name:
+                            continue
+                        sh = call_shape(ev.target_name, ev.note, ev.args)
+                        j = shape_id.get(sh)
+                        if j is None:
+                            j = shape_id[sh] = len(shape_id)
+                        tr |= 1 << j
+                    if tr:
+                        label = run.label or f"run#{len(profiles)}"
+                        for e, os_ in outcomes.items():
+                            k = 2 if len(os_) > 1 else (1 if True in os_ else 0)
+                            sl = side_seen.get(e)
+                            if sl is None:
+                                sl = side_seen[e] = [0, 0, 0]
+                            new = tr & ~sl[k]
+                            if new:
+                                sl[k] |= new
+                                while new:
+                                    b = new & -new
+                                    witness[(e, k, b.bit_length() - 1)] = label
+                                    new ^= b
+                # KEY only — the dict VALUE is the profile itself, and that is
+                # what every later step reads (`run_outcomes` below). First
+                # profile wins, as before.
+                key = profile_key(outcomes)
+                i = profiles.get(key)
+                if i is None:
+                    profiles[key] = len(run_outcomes)
+                    run_outcomes.append(outcomes)
+                    prof_union.append(tr)
+                    prof_inter.append(tr)
+                    prof_label.append(run.label or f"run#{len(run_outcomes) - 1}")
+                else:
+                    prof_union[i] |= tr
+                    prof_inter[i] &= tr
+
+        # -- 2. shared solver inputs
+        extra_constraints = self.assumptions.symbolic_constraints()
+        decls = self._merged_declarations()
+        bounds = self._merged_bounds()
+        fixed_base = list(extra_constraints) + bounds
+
+        # -- 3. drop exprs the solver cannot parse (visible blind spot)
+        unevaluable: t.List[str] = []
+        parseable: t.List[str] = []
+        for expr in expr_order:
+            probe = check_satisfiability([f"Or({expr}, Not({expr}))"], decls, self.timeout_ms)
+            total_elapsed += probe.solver_elapsed_ms
+            if probe.satisfiable:
+                parseable.append(expr)
+            else:
+                # a tautology can only fail by parse error / missing decl
+                unevaluable.append(expr)
+
+        # -- 4. assumption filtering
+        untracked_exprs: t.List[str] = []
+        pinned: t.Dict[str, bool] = {}  # expr -> demanded outcome (one-side)
+        active: t.List[str] = []
+        for expr in parseable:
+            src = expr_source[expr]
+            if self.assumptions.is_untracked(src, expr):
+                untracked_exprs.append(expr)
+                self._assumptions_used += 1
+                continue
+            for side, outcome in (("taken", True), ("not_taken", False)):
+                # the *untracked* side is exempt -> demand only the other one
+                if self.assumptions.is_one_side_untracked(src, side, expr):
+                    pinned[expr] = not outcome
+                    self._assumptions_used += 1
+            active.append(expr)
+
+        # -- 5. demand sets: the MAXIMAL OBSERVED EVALUATION SETS, each
+        # projected by declared independence. A combination demand exists
+        # only over decisions some run evaluated together (2026-09-10).
+        active_set = set(active)
+        evaluation_sets = maximal_sets(
+            frozenset(e for e in o if e in active_set) for o in run_outcomes
+        )
+
+        # Independence is pairwise and removes an edge; inside one evaluation
+        # set the surviving demands are that set's maximal cliques. Computed
+        # over the whole active universe once (the same pair is asked once,
+        # not once per set) and then induced on each set.
+        adj: t.Dict[str, t.Set[str]] = {e: set() for e in active}
+        for i, ea in enumerate(active):
+            for eb in active[i + 1:]:
+                if self.assumptions.are_independent(
+                    expr_source[ea], expr_source[eb], ea, eb
+                ):
+                    self._assumptions_used += 1
+                    self._folds += 1  # one removed edge
+                    continue
+                adj[ea].add(eb)
+                adj[eb].add(ea)
+
+        projected: t.List[t.FrozenSet[str]] = []
+        for s in evaluation_sets:
+            # fast path: no declared independence inside this set
+            if all(len(adj[v] & s) == len(s) - 1 for v in s):
+                projected.append(s)
+                continue
+            sub = {v: adj[v] & s for v in s}
+            parts = _maximal_cliques(sorted(s), sub, cap=self.max_cliques)
+            if parts is None:  # cap hit inside one set
+                truncated = True
+                parts = [[v] for v in sorted(s)]
+            projected.extend(frozenset(p) for p in parts)
+        demands = maximal_sets(projected)
+
+        # -- 5b. TREE COMPLETENESS — the precondition of the combination
+        # claim (module docstring). Demanding a combination only where some
+        # run co-evaluated the decisions is sound only if every decision has
+        # been taken both ways; otherwise a gate that would have put two
+        # decisions on one path may simply never have been driven.
+        gaps, elapsed = self._unobserved_sides(
+            active, run_outcomes, fixed_base, decls, pinned)
+        total_elapsed += elapsed
+        tree_missing = [
+            f"{e} :: {'taken' if o else 'not_taken'}" for e, o, _ in gaps]
+
+        # -- 5c. FORECLOSURE (§16b): judge the demand per ASSIGNMENT, not per
+        # set. Inferred from the corpus (nothing declared), over the ACTIVE
+        # universe — an untracked expression is not in any set, so it can
+        # neither foreclose nor be foreclosed.
+        forecl_all, bit, prof_masks = infer_foreclosures(active, run_outcomes)
+        forecl_by_gate: t.Dict[str, t.List[t.Tuple[bool, int]]] = {}
+        for (g, o), fm in forecl_all.items():
+            forecl_by_gate.setdefault(g, []).append((o, fm))
+        # cheap necessary filter for step 6's closed-prefix test: a bit that no
+        # foreclosure anywhere can drop can never be missing from a leaf.
+        droppable_any = 0
+        for fm in forecl_all.values():
+            droppable_any |= fm
+        # per profile: which bits ANY of its own outcomes could foreclose
+        # (over-approximates the per-set test; used only to skip work fast)
+        prof_drop: t.List[int] = []
+        for outcomes in run_outcomes:
+            d = 0
+            for e, os_ in outcomes.items():
+                arms = forecl_by_gate.get(e)
+                if not arms:
+                    continue
+                if len(os_) == 1:
+                    o = next(iter(os_))
+                    for ao, fm in arms:
+                        if ao == o:
+                            d |= fm
+                else:
+                    both = None
+                    for _ao, fm in arms:
+                        both = fm if both is None else (both & fm)
+                    d |= both or 0
+            prof_drop.append(d)
+        foreclosures_applied = 0
+        foreclosures_ignored = 0
+        gate_counts: t.Dict[str, int] = {}
+
+        # -- 5c'. CONJUNCTION FORECLOSURE (§16e, opt-in): the same relation
+        # over the gate CONJUNCTIONS the demand already contains. Inverted
+        # bitsets over the profile table, built once; the per-leaf test is
+        # one AND-chain over the prefix plus one AND per member.
+        conj_on = self.foreclosure_conjunctions
+        conj_takes: t.Dict[t.Tuple[str, bool], int] = {}
+        conj_evals: t.Dict[str, int] = {}
+        conj_universe = 0
+        conj_pmask: t.Dict[t.Tuple[t.Tuple[str, bool], ...], int] = {}
+        if conj_on:
+            conj_takes, conj_evals, conj_universe = profile_literal_masks(
+                active, run_outcomes)
+            conj_pmask[()] = conj_universe
+
+        def _pmask(prefix: t.Tuple[t.Tuple[str, bool], ...]) -> int:
+            """Profiles matching a gate prefix, memoized incrementally.
+
+            Prefixes share their heads across leaves and across demand sets,
+            so each new literal costs ONE bigint AND, never a re-scan."""
+            m = conj_pmask.get(prefix)
+            if m is None:
+                m = _pmask(prefix[:-1]) & conj_takes.get(prefix[-1], 0)
+                conj_pmask[prefix] = m
+            return m
+
+        # -- 5c''. SUB-CONJUNCTION FORECLOSURE (§16f, opt-in): the same
+        # relation over a SUB-conjunction of the leaf's own cube — a proper
+        # subset of §16e's gate prefix, and/or literals of NON-gate members.
+        # Same bitsets; the search is a bounded set cover per (literals fixed
+        # so far, member), memoized because leaves share their prefixes.
+        subconj_on = self.foreclosure_subconjunctions
+        subconj_w = self.foreclosure_conjunction_width
+        subconj_budget = self.foreclosure_conjunction_budget
+        subconj_memo: t.Dict[
+            t.Tuple[t.Tuple[t.Tuple[str, bool], ...], str],
+            t.Optional[t.Tuple[t.Tuple[t.Tuple[str, bool], ...], int]]] = {}
+
+        def _subconj(acc: t.Tuple[t.Tuple[str, bool], ...], member: str):
+            """Minimal §16f conditioning set for ``member``, or None.
+
+            ``acc`` is the leaf walk's ALREADY-FIXED literals, in walk order
+            — which is what makes the skip decision depend only on the
+            prefix and the leaf structure therefore well defined."""
+            key = (acc, member)
+            got = subconj_memo.get(key, _MISS)
+            if got is not _MISS:
+                return got
+            got = minimal_subconjunction(
+                acc, member, conj_takes, conj_evals, conj_universe,
+                width=subconj_w, budget=subconj_budget)
+            if len(subconj_memo) < 400000:
+                subconj_memo[key] = got
+            return got
+
+        subconj_applied = 0
+        subconj_conds = 0
+        subconj_triples: t.List[
+            t.Tuple[t.Tuple[t.Tuple[str, bool], ...], str, int]] = []
+        subconj_seen: t.Set[
+            t.Tuple[t.Tuple[t.Tuple[str, bool], ...], str]] = set()
+        subconj_seen_conds: t.Set[t.Tuple[t.Tuple[str, bool], ...]] = set()
+
+        def _record_subconj(cond: t.Tuple[t.Tuple[str, bool], ...],
+                            member: str, a_count: int) -> None:
+            """Fold one (C, d) class into the report counters, ONCE however
+            many leaves or sets reach it — the pair identifies the claim,
+            exactly as §16e's prefix identifies a leaf group."""
+            nonlocal subconj_applied, subconj_conds
+            key = (cond, member)
+            if key in subconj_seen:
+                return
+            subconj_seen.add(key)
+            subconj_applied += 1
+            if cond not in subconj_seen_conds:
+                subconj_seen_conds.add(cond)
+                subconj_conds += 1
+            if len(subconj_triples) < _CONJ_REPORT_CAP:
+                subconj_triples.append((cond, member, a_count))
+
+        # -- 5c'''. WELL-FOUNDED DROPS (§16g, opt-in): §16f's own search,
+        # with the conditioning set drawn from the WHOLE leaf instead of the
+        # walk prefix and a least-fixed-point foundedness condition in place
+        # of the prefix restriction. Same bitsets, same `_subconj` memo.
+        wf_on = self.foreclosure_wellfounded_drops
+        wf_applied = 0
+        wf_conds = 0
+        wf_triples: t.List[
+            t.Tuple[t.Tuple[t.Tuple[str, bool], ...], str, int]] = []
+        wf_seen: t.Set[
+            t.Tuple[t.Tuple[t.Tuple[str, bool], ...], str]] = set()
+        wf_seen_conds: t.Set[t.Tuple[t.Tuple[str, bool], ...]] = set()
+
+        def _record_wf(cond: t.Tuple[t.Tuple[str, bool], ...],
+                       member: str, a_count: int) -> None:
+            """Fold one §16g (C, d) class into the report counters, ONCE
+            however many leaves or sets reach it — the pair identifies the
+            claim, exactly as §16f's does."""
+            nonlocal wf_applied, wf_conds
+            key = (cond, member)
+            if key in wf_seen:
+                return
+            wf_seen.add(key)
+            wf_applied += 1
+            if cond not in wf_seen_conds:
+                wf_seen_conds.add(cond)
+                wf_conds += 1
+            if len(wf_triples) < _CONJ_REPORT_CAP:
+                wf_triples.append((cond, member, a_count))
+
+        conj_applied = 0
+        conj_groups = 0
+        conj_pairs: t.List[
+            t.Tuple[t.Tuple[t.Tuple[str, bool], ...], str]] = []
+        conj_seen_groups: t.Set[t.Tuple[t.Tuple[str, bool], ...]] = set()
+        unmatched_prefixes: t.List[t.Tuple[t.Tuple[str, bool], ...]] = []
+        unmatched_seen: t.Set[t.Tuple[t.Tuple[str, bool], ...]] = set()
+
+        def _record_conj(prefix: t.Tuple[t.Tuple[str, bool], ...],
+                         members: t.Sequence[str], a_count: int) -> None:
+            """Fold one leaf group's §16e verdict into the report counters.
+
+            A leaf group is counted ONCE however many sets or witnesses reach
+            it — the prefix identifies it, exactly as §16b's (gate, outcome)
+            identifies a foreclosure."""
+            nonlocal conj_applied, conj_groups
+            if a_count == 0:
+                if prefix and prefix not in unmatched_seen:
+                    unmatched_seen.add(prefix)
+                    if len(unmatched_prefixes) < _CONJ_REPORT_CAP:
+                        unmatched_prefixes.append(prefix)
+                return
+            if not members or prefix in conj_seen_groups:
+                return
+            conj_seen_groups.add(prefix)
+            conj_groups += 1
+            conj_applied += len(members)
+            for d in members:
+                if len(conj_pairs) < _CONJ_REPORT_CAP:
+                    conj_pairs.append((prefix, d))
+
+        # -- 5d. CONFINEMENT (§16c): footprints inferred over the ACTIVE
+        # decisions (contexts matched on EVERY expression the profiles
+        # mention), then each demand set split — foreclosure first: the set's
+        # gates stay in every part, only its non-gate members are projected.
+        # Identity on a corpus with no confined pair.
+        order = {e: i for i, e in enumerate(expr_order)}
+        footprint: t.Dict[str, int] = {}
+        ctxn: t.Dict[str, int] = {}
+        confined_all: t.Set[t.Tuple[str, str]] = set()
+        overlapping_all: t.Dict[t.Tuple[str, str], int] = {}
+        undecidable_all: t.Set[t.Tuple[str, str]] = set()
+        disq_all: t.Set[t.Tuple[str, str]] = set()
+        disqualified: t.Dict[str, t.List[t.Tuple[int, str, str]]] = {}
+        splits = 0
+        shape_names: t.List[str] = [""] * len(shape_id)
+        for sh, j in shape_id.items():
+            shape_names[j] = shape_str(sh)
+        coeval_decided: t.Set[str] = set()
+        or_pairs_all: t.Set[t.Tuple[str, str]] = set()
+        and_pairs_all: t.List[t.Tuple[str, str, str, str, str, str]] = []
+        if self.confinement and shape_id:
+            # PRECONDITION (3): a trace layer exists. A corpus that records no
+            # target call at all has nothing to measure a footprint on —
+            # every decision is then UNDECIDABLE, never "empty", and the
+            # projection is the identity.
+            pj = project_confinement(
+                active, expr_order, run_outcomes, prof_union, prof_inter, side_seen,
+                demands, forecl_by_gate, bit, self.max_cliques,
+                strict=self.confinement_strict, keying=self.confinement_keying,
+                protect_gates=not self.confinement_gates,
+                withdrawn=self.withdrawn_pairs,
+                or_sharing=self.confinement_or_sharing,
+                footprint_unobserved=("attribute" if self.confinement_span_union
+                                      else "withhold"),
+                confine_coevaluated_only=self.confinement_fallback_licence)
+            footprint, ctxn, coeval_decided = pj["footprint"], pj["ctxn"], pj["coevaluated"]
+            # the counterexample search's witnesses, by name (the shared
+            # helper only knows the masks; the checker knows the runs)
+            for e, hits in pj["disqualified"].items():
+                sl = side_seen.get(e, [0, 0, 0])
+                for j_, _r1, _r2 in hits:
+                    if sl[2] >> j_ & 1:
+                        r1 = witness.get((e, 2, j_), "?")
+                        r2 = r1
+                    else:
+                        r1 = witness.get((e, 1, j_), "?")
+                        r2 = witness.get((e, 0, j_), "?")
+                    disqualified.setdefault(e, []).append((j_, r1, r2))
+            confined_all, overlapping_all = pj["confined"], pj["overlapping"]
+            or_pairs_all = pj["or_pairs"]
+            and_pairs_all = [(a, b, shape_names[j], cls,
+                              ("" if cell is None else
+                               f"{'taken' if cell[0] else 'not_taken'}/{'taken' if cell[1] else 'not_taken'}"),
+                              prof_label[pi] if 0 <= pi < len(prof_label) else "?")
+                             for a, b, j, cls, cell, pi in pj["and_pairs"]]
+            undecidable_all, disq_all, splits = pj["undecidable"], pj["disq_pairs"], pj["splits"]
+            demands = pj["demands"]
+        # The CORPUS TRIPWIRE: a pair the PRIOR footprints confined (both
+        # decided then, disjoint then) that this corpus does not confine —
+        # because a run enlarged a footprint into the other's, or because a
+        # member is undecidable here — is WITHDRAWN, counted and printed.
+        # Licensing itself always uses THIS corpus's footprints.
+        withdrawn: t.List[t.Tuple[str, str]] = [
+            p for p in sorted(self.withdrawn_pairs) if p in disq_all]
+        if self.prior_footprints is not None:
+            for a, b in sorted(set(overlapping_all) | undecidable_all | disq_all):
+                if (a, b) in withdrawn:
+                    continue
+                pa = self.prior_footprints.get(a)
+                pb = self.prior_footprints.get(b)
+                if pa is None or pb is None or (pa & pb):
+                    continue                    # the prior licensed nothing here
+                withdrawn.append((a, b))
+
+        # -- 6. per-demand-set enumeration (blocking-clause loop)
+        # Profiles are grouped by their EVALUATION SET first: a demand set is
+        # covered by exactly the profiles whose evaluated expressions contain
+        # it, and a corpus has far fewer distinct evaluation sets than
+        # profiles. Without this the loop is (demand sets x profiles) and it
+        # dominated a 96 000-run pass.
+        by_eval: t.Dict[t.FrozenSet[str], t.List[int]] = {}
+        for i, outcomes in enumerate(run_outcomes):
+            by_eval.setdefault(frozenset(outcomes), []).append(i)
+        reported: t.Set[t.Tuple[t.Tuple[str, bool], ...]] = set()
+        # CHECKPOINT (owner rule, 2026-09-12): step 6 is the hours-long phase.
+        # Opt-in, keyed on everything below reads; None unless enabled, and
+        # every `ckpt is None` path below is byte-for-byte the old code.
+        ckpt = _checkpoint.open_checkpoint(
+            self.checkpoint_path,
+            self._checkpoint_header_keys(
+                decls, fixed_base, pinned, active, demands, run_outcomes,
+                forecl_all))
+        for demand in demands:
+            group = sorted(demand, key=order.__getitem__)
+            dmask = 0
+            for e in group:
+                dmask |= 1 << bit[e]
+
+            # This set's own foreclosures: the global relation restricted to
+            # its members, then ordered so every gate precedes what it
+            # forecloses (backward/cyclic edges are dropped, see the helper).
+            group, local, ign = restrict_foreclosures(group, forecl_by_gate, bit)
+            foreclosures_ignored += ign
+            for (g, o), m in local.items():
+                n = bin(m).count("1")
+                foreclosures_applied += n
+                key = f"{g} :: {'taken' if o else 'not_taken'}"
+                gate_counts[key] = gate_counts.get(key, 0) + n
+
+            # A recorded set is REPLAYED, not recomputed: the cube census and
+            # every Z3 call below are skipped and the set's contribution to
+            # the globals is re-applied in the same order, so the result is
+            # the one the uninterrupted pass would have produced. The
+            # cross-set `reported` dedup is re-evaluated here (not stored),
+            # because it depends on the sets processed BEFORE this one and
+            # those are replayed in the same deterministic order.
+            dkey = _checkpoint.digest(group) if ckpt is not None else ""
+            rec = ckpt.get(dkey) if ckpt is not None else None
+            if rec is not None:
+                total_elapsed += rec.get("elapsed_ms", 0.0)
+                solver_lost += rec.get("solver_lost", 0)
+                for _pfx, _mem, _a in rec.get("conj", ()):
+                    _record_conj(tuple((e, bool(o)) for e, o in _pfx),
+                                 tuple(_mem), _a)
+                for _cnd, _mem, _a in rec.get("subconj", ()):
+                    _record_subconj(tuple((e, bool(o)) for e, o in _cnd),
+                                    _mem, _a)
+                for _cnd, _mem, _a in rec.get("wf", ()):
+                    _record_wf(tuple((e, bool(o)) for e, o in _cnd),
+                               _mem, _a)
+                if rec.get("truncated"):
+                    truncated = True
+                for combo_l, model in zip(rec.get("combos", ()),
+                                          rec.get("models", ())):
+                    combo = [(e, bool(o)) for e, o in combo_l]
+                    ckey = tuple(combo)
+                    if ckey in reported:
+                        continue
+                    reported.add(ckey)
+                    missing.append(
+                        MissingCoverage(
+                            node_constraint=" AND ".join(
+                                _outcome_constraint(e, o) for e, o in combo
+                            ),
+                            source_location=(
+                                expr_location[group[0]] if len(group) == 1 else ""
+                            ),
+                            missing_branch="combination",
+                            missing_constraint=_combo_constraint(combo),
+                            prefix=tuple(
+                                PathCondition(expr=e, taken=o) for e, o in combo
+                            ),
+                            concrete_values=model or {},
+                        )
+                    )
+                continue
+            # per-set accumulators: what the checkpoint record holds
+            set_elapsed = 0.0
+            set_lost = 0
+            set_trunc = False
+            set_combos: t.List[t.List[t.Tuple[str, bool]]] = []
+            set_models: t.List[t.Optional[t.Dict[str, t.Any]]] = []
+            # §16e per-witness record: [prefix literals, foreclosed members,
+            # A]. Stored so a RESUMED pass re-folds the same counters — the
+            # foreclosed members cannot be read back off the pruned combo.
+            conj_cuts: t.List[t.List[t.Any]] = []
+            # §16f per-set record: [conditioning literals, member, A]. Same
+            # reason: the walk's drops cannot be read back off a pruned cube.
+            # DEDUPLICATED per set: the blocking side re-derives the same
+            # (C, d) once per profile OUTCOME PATTERN, and a wide set has
+            # thousands of them — the record is what the checkpoint carries
+            # and what a resume re-folds, and a repeat re-folds to the same
+            # counters (`_record_subconj` is idempotent), so storing it twice
+            # costs megabytes and buys nothing.
+            sub_cuts: t.List[t.List[t.Any]] = []
+            sub_cut_seen: t.Set[
+                t.Tuple[t.Tuple[t.Tuple[str, bool], ...], str]] = set()
+            # the same dedup for §16e's list, applied ONLY with §16f on: the
+            # §16f ckey is over every evaluated member, so one leaf group is
+            # re-derived under many more outcome patterns than §16e alone
+            # sees, and an §16e-only checkpoint must stay what it always was.
+            conj_cut_seen: t.Set[t.Tuple[t.Any, t.Any]] = set()
+
+            def _cut(cond: t.Tuple[t.Tuple[str, bool], ...], member: str,
+                     a_count: int) -> None:
+                k = (cond, member)
+                if k in sub_cut_seen:
+                    return
+                sub_cut_seen.add(k)
+                sub_cuts.append([list(cond), member, a_count])
+
+            # §16g per-set record, for exactly the same reason: a drop the
+            # well-founded fixed point applied cannot be read back off the
+            # pruned cube, so a RESUMED pass must re-fold it from here.
+            wf_cuts: t.List[t.List[t.Any]] = []
+            wf_cut_seen: t.Set[
+                t.Tuple[t.Tuple[t.Tuple[str, bool], ...], str]] = set()
+
+            def _cut_wf(cond: t.Tuple[t.Tuple[str, bool], ...], member: str,
+                        a_count: int) -> None:
+                k = (cond, member)
+                if k in wf_cut_seen:
+                    return
+                wf_cut_seen.add(k)
+                wf_cuts.append([list(cond), member, a_count])
+
+            pos = {e: i for i, e in enumerate(group)}
+            local_gates = sorted({g for g, _ in local}, key=pos.__getitem__)
+            gate_set = set(local_gates)
+
+            fixed = list(fixed_base)
+            for expr in group:
+                if expr in pinned:
+                    fixed.append(_outcome_constraint(expr, pinned[expr]))
+
+            # One blocking clause per run that walked a LEAF of this set: the
+            # whole set, or (§16b) a CLOSED prefix of it — a subset whose
+            # unevaluated members are all foreclosed by the outcomes the run
+            # did evaluate. The clause conjoins the outcomes of single-outcome
+            # exprs and simply OMITS a recurrent expr observed with BOTH
+            # outcomes — omitting it blocks the whole assignment family it
+            # covers. A run that evaluated the WHOLE set with every expr both
+            # ways covers the entire space; the same emptiness on a partial
+            # run does not, so it is skipped instead (conservative).
+            # At least one run qualifies, by construction: the set is a subset
+            # of an evaluation set some run walked.
+            # Deduplicated: a set is narrow and a corpus repeats the same
+            # restriction thousands of times; the clause list is what every
+            # solver query below carries, so duplicates cost real time and buy
+            # nothing (blocking the same cube twice blocks the same cube).
+            cubes: t.Set[t.Tuple[t.Tuple[str, bool], ...]] = set()
+            space_covered = False
+            # §16e, blocking side. The closed-prefix test must know the same
+            # leaf structure the emission side does, or a leaf the inference
+            # coarsened could never acquire its blocking clause and would be
+            # reported missing for ever. `gap` is a property of the by_eval
+            # GROUP (`prof_masks` is a function of the group's key), and the
+            # only per-profile input left is its outcomes on this set's GATES
+            # — so the drop mask is memoized on that pattern, which keeps the
+            # cheap filter's job without the cheap filter (which conjunctions
+            # may not use: a bit no single gate can drop may still be dropped
+            # by a conjunction). The memo lives INSIDE the by_eval loop: its
+            # key is positional over `rel`, and `rel` is the group's own gate
+            # list, so one memo shared across groups would read another
+            # group's pattern (measured 2026-09-13 on people_stream: 12
+            # phantom missing cubes on a corpus that is complete).
+            for evaluated, idxs in by_eval.items():
+                conj_memo: t.Dict[t.Tuple[int, ...], int] = {}
+                # scratch for the §16f walk of ONE shape's assignment
+                subq: t.List[t.Tuple[
+                    t.Tuple[t.Tuple[str, bool], ...], str, int]] = []
+                whole = demand <= evaluated
+                if not whole and not local and not subconj_on:
+                    # no run of this shape evaluated the whole set, and with
+                    # no §16b foreclosure nothing can close its prefix. §16f
+                    # CAN: its conditioning set need not contain a gate, so
+                    # a set with no gate at all still has coarsened leaves.
+                    continue
+                # no gate observed in this shape: the prefix is empty, its
+                # match mask is the whole profile table, and every active
+                # decision is evaluated by SOME profile — §16e can foreclose
+                # nothing, so the old cheap test is already the answer.
+                rel: t.List[str] = (
+                    [g for g in local_gates if g in evaluated]
+                    if conj_on and not whole else [])
+                # §16f keys the memo on EVERY member this shape evaluated,
+                # not only the gates: a sub-conjunction may condition on a
+                # non-gate member, so two profiles of one shape that agree
+                # on the gates can still close different prefixes.
+                relall: t.List[str] = (
+                    [e for e in group if e in evaluated]
+                    if subconj_on and not whole else [])
+                for i in idxs:
+                    outcomes = run_outcomes[i]
+                    if not whole:
+                        # INVARIANT 2: a partial run blocks only a CLOSED
+                        # prefix — every unevaluated member of the set must be
+                        # foreclosed by the outcomes this run did evaluate.
+                        gap = dmask & ~prof_masks[i]
+                        if conj_on:
+                            if not rel and not subconj_on:
+                                if gap & ~(prof_drop[i] & droppable_any):
+                                    continue
+                            ckey = tuple(
+                                (1 if True in outcomes[e_] else 0)
+                                + (2 if False in outcomes[e_] else 0)
+                                for e_ in (relall if subconj_on else rel))
+                            drop = conj_memo.get(ckey, -1)
+                            if drop < 0:
+                                drop = 0
+                                prefix: t.List[t.Tuple[str, bool]] = []
+                                both = False
+                                for g in rel:
+                                    code = ((1 if True in outcomes[g] else 0)
+                                            + (2 if False in outcomes[g] else 0))
+                                    if code == 3:   # INVARIANT 3: either arm
+                                        drop |= (local.get((g, True), 0)
+                                                 & local.get((g, False), 0))
+                                        both = True
+                                    else:
+                                        o1 = code == 1
+                                        drop |= local.get((g, o1), 0)
+                                        prefix.append((g, o1))
+                                # P is the leaf's SURVIVING gate assignment:
+                                # a gate the prefix itself forecloses is not
+                                # part of the leaf, so it is not part of P
+                                # either (the emission side skips it for the
+                                # same reason). A gate this shape recorded
+                                # BOTH ways cannot join P — the prefix is
+                                # then weaker than the emission side's, which
+                                # foreclose fewer members, which is the
+                                # conservative direction (a foreclosure under
+                                # P also holds under every extension of P).
+                                pt = tuple((g, o) for g, o in prefix
+                                           if not (drop >> bit[g] & 1))
+                                surv = [e for e in group
+                                        if not (drop >> bit[e] & 1)
+                                        and e not in gate_set]
+                                fm, a_cnt = conjunction_foreclosed(
+                                    pt, surv, conj_takes, conj_evals,
+                                    conj_universe, match_mask=_pmask(pt))
+                                for d in fm:
+                                    drop |= 1 << bit[d]
+                                if fm and not both and len(pt) == len(rel):
+                                    # the same leaf group the emission side
+                                    # would name: count it once, there or here
+                                    if not subconj_on or (pt, fm) not in conj_cut_seen:
+                                        if subconj_on:
+                                            conj_cut_seen.add((pt, fm))
+                                        conj_cuts.append(
+                                            [list(pt), list(fm), a_cnt])
+                                    _record_conj(pt, fm, a_cnt)
+                                if subconj_on and (gap & ~drop):
+                                    # §16f, blocking side — SKIPPED when §16b
+                                    # and §16e have already closed the prefix.
+                                    # That is a pure short-circuit, not a
+                                    # weakening: `gap` is a property of the
+                                    # by_eval GROUP (so it is the same for
+                                    # every profile sharing this memo entry),
+                                    # §16f only ever ADDS drops, and the only
+                                    # consumer of `drop` is `gap & ~drop`.
+                                    # It also keeps the reported (C, d) list
+                                    # to the classes the demand actually
+                                    # needed. The SAME walk the emission side
+                                    # runs, over this shape's
+                                    # own assignment: members in group order,
+                                    # `acc2` the literals fixed so far, a
+                                    # member skipped iff a conjunction of
+                                    # width <= W over them forecloses it.
+                                    # Only UNEVALUATED members are tested,
+                                    # and that is not a shortcut: every
+                                    # literal of `acc2` is one THIS profile
+                                    # matches, so the profile is in A(C) for
+                                    # any C drawn from it — a member it
+                                    # evaluates therefore has B >= 1 and can
+                                    # never be foreclosed here. A member
+                                    # recorded BOTH ways contributes no
+                                    # literal (as a both-sided gate does not
+                                    # join P), which can only SHRINK `acc2`
+                                    # and so foreclose less — the
+                                    # conservative direction.
+                                    acc2: t.Tuple[t.Tuple[str, bool], ...] = ()
+                                    for e_ in group:
+                                        if drop >> bit[e_] & 1:
+                                            continue
+                                        os2 = outcomes.get(e_)
+                                        if not os2:
+                                            hit = _subconj(acc2, e_)
+                                            if hit is not None:
+                                                cond_, a_c2 = hit
+                                                drop |= 1 << bit[e_]
+                                                subq.append((cond_, e_, a_c2))
+                                            continue
+                                        if len(os2) == 2:
+                                            continue
+                                        acc2 = acc2 + ((e_, next(iter(os2))),)
+                                    # Recorded UNCONDITIONALLY, unlike §16e's
+                                    # `not both and len(pt) == len(rel)` guard.
+                                    # §16e's prefix can be WEAKENED by a
+                                    # both-sided gate, so a weakened P is not
+                                    # the leaf group the emission side would
+                                    # name and counting it would inflate the
+                                    # group census. A §16f `C` cannot be
+                                    # weakened: it is a MINIMAL set of literals
+                                    # carrying its own A > 0 / B = 0
+                                    # certificate over the same profile table,
+                                    # whatever shape found it, and the drop it
+                                    # licensed was APPLIED here. It also HAS to
+                                    # be recorded here: a set §16f CLOSES never
+                                    # reaches the emission side at all, so the
+                                    # blocking side is the only place its
+                                    # classes are ever named — and those are
+                                    # exactly the ones the gate must test.
+                                    for cond_, e_, a_c2 in subq:
+                                        _cut(cond_, e_, a_c2)
+                                        _record_subconj(cond_, e_, a_c2)
+                                    del subq[:]
+                                if wf_on and (gap & ~drop):
+                                    # §16g, BLOCKING side — the counterpart
+                                    # §16e and §16f each needed: if only the
+                                    # emission side coarsened a leaf it could
+                                    # never acquire a blocking clause and
+                                    # would be missing for ever
+                                    # (`test_the_blocking_side_reads_its_own_
+                                    # shapes_gate_list`, and §16f's own
+                                    # `test_both_sides_move_the_blocking_
+                                    # test_too`).
+                                    #
+                                    # Here the FOUNDEDNESS is free and needs
+                                    # no fixed point, which is a theorem and
+                                    # not a shortcut: the pool is this
+                                    # profile's own single-outcome literals,
+                                    # i.e. members it EVALUATED, and an
+                                    # evaluated member can never be dropped
+                                    # (the profile is in A(C) for any C drawn
+                                    # from literals it matches, so B >= 1).
+                                    # Every conditioning literal therefore
+                                    # belongs to a KEPT member by
+                                    # construction, and nothing a drop
+                                    # licenses can remove a literal another
+                                    # drop rests on. The pool is a SUPERSET
+                                    # of every `acc2` the §16f walk above
+                                    # reached (that walk's acc2 is the
+                                    # profile's own prefix of this pool), so
+                                    # the blocking side coarsens at least as
+                                    # much as §16f did — and at least as much
+                                    # as the emission side's fixed point,
+                                    # whose K(D*) is a subset of the leaf's
+                                    # surviving members, all of which a
+                                    # profile realising that leaf evaluates.
+                                    pool2 = tuple(
+                                        (e_, next(iter(outcomes[e_])))
+                                        for e_ in group
+                                        if not (drop >> bit[e_] & 1)
+                                        and e_ in outcomes
+                                        and len(outcomes[e_]) == 1)
+                                    for e_ in group:
+                                        if drop >> bit[e_] & 1:
+                                            continue
+                                        if outcomes.get(e_):
+                                            continue
+                                        hit = _subconj(pool2, e_)
+                                        if hit is None:
+                                            continue
+                                        cond_, a_c2 = hit
+                                        drop |= 1 << bit[e_]
+                                        _cut_wf(cond_, e_, a_c2)
+                                        _record_wf(cond_, e_, a_c2)
+                                conj_memo[ckey] = drop
+                            if gap & ~drop:
+                                continue                # not a closed prefix
+                        else:
+                            if gap & ~(prof_drop[i] & droppable_any):
+                                continue                # cheap necessary test
+                            drop = 0
+                            for g in local_gates:
+                                os_ = outcomes.get(g)
+                                if not os_:
+                                    continue
+                                if len(os_) == 1:
+                                    drop |= local.get((g, next(iter(os_))), 0)
+                                else:  # INVARIANT 3: closed under either arm
+                                    drop |= (local.get((g, True), 0)
+                                             & local.get((g, False), 0))
+                            if gap & ~drop:
+                                continue                # not a closed prefix
+                    fixed_outcomes = tuple(
+                        (e, next(iter(outcomes[e])))
+                        for e in group
+                        if e in outcomes and len(outcomes[e]) == 1
+                    )
+                    if not fixed_outcomes:
+                        if not whole:
+                            # an EMPTY clause blocks everything; a partial run
+                            # covers only leaves under its own surviving set,
+                            # so it may not claim the space. Contribute
+                            # nothing rather than over-block.
+                            continue
+                        space_covered = True
+                        break
+                    cubes.add(fixed_outcomes)
+                if space_covered:
+                    break
+            if space_covered:
+                if ckpt is not None:
+                    if conj_cuts or sub_cuts or wf_cuts:
+                        rec_e = dict(_EMPTY_SET_RECORD,
+                                     conj=conj_cuts, subconj=sub_cuts)
+                        if wf_cuts:
+                            rec_e["wf"] = wf_cuts
+                        ckpt.put(dkey, rec_e)
+                    else:
+                        ckpt.put(dkey, _EMPTY_SET_RECORD)
+                continue
+            blocks: t.List[str] = [_block_constraint(c) for c in sorted(cubes)]
+
+            found = 0
+            seen_here: t.Set[t.Tuple[t.Tuple[str, bool], ...]] = set()
+            while found < self.max_missing_per_clique:
+                combo, model, elapsed, status = self._next_untried_combo(
+                    group, fixed, blocks, decls, local, bit
+                )
+                set_elapsed += elapsed
+                if status == "unknown":
+                    set_lost += 1
+                    set_trunc = True
+                    break
+                if combo is None:  # UNSAT: set fully covered
+                    break
+                # §16g: members whose literals already JUSTIFY an applied
+                # §16e / §16f drop on this leaf. They are kept
+                # unconditionally, so the combined drop set stays founded and
+                # §16g ⊆ §16f holds by construction (§16g only ever ADDS).
+                wf_pin: t.Set[str] = set()
+                if conj_on and local_gates:
+                    # §16e: the leaf's gate prefix P is the model's assignment
+                    # over the set's surviving gates (`_next_untried_combo`
+                    # already skipped every gate the prefix forecloses), and a
+                    # member no profile matching P ever evaluates is not part
+                    # of the leaf. Gates themselves are never conjunction-
+                    # foreclosed: they DEFINE P, and the falsifier's own
+                    # member list is `surv - P`.
+                    pfx = tuple((e, o) for e, o in combo if e in gate_set)
+                    forecl_m, a_count = conjunction_foreclosed(
+                        pfx, [e for e, _o in combo if e not in gate_set],
+                        conj_takes, conj_evals, conj_universe,
+                        match_mask=_pmask(pfx))
+                    _record_conj(pfx, forecl_m, a_count)
+                    if forecl_m:
+                        conj_cuts.append([list(pfx), list(forecl_m), a_count])
+                        drop_m = set(forecl_m)
+                        combo = [(e, o) for e, o in combo if e not in drop_m]
+                        # §16g PIN: this leaf's §16e drop rests on every gate
+                        # of P being IN the cube, so §16g may not take one
+                        # out from under it.
+                        wf_pin |= {e for e, _o in pfx}
+                    else:
+                        conj_cuts.append([list(pfx), [], a_count])
+                if subconj_on:
+                    # §16f: the walk. Members are visited in the set's own
+                    # (gate-first, §16b-topological) order; `acc` is the
+                    # literals FIXED SO FAR, so a member is skipped iff some
+                    # conjunction of width <= W over them forecloses it. A
+                    # skipped member — GATE or not — contributes no literal
+                    # downstream, which is what makes the leaf structure a
+                    # decision tree and the result independent of anything
+                    # later in the cube. §16e's own drops (above) already
+                    # left the cube, so `acc` never carries their literals
+                    # either, and the drop set is §16e's UNION the walk's:
+                    # §16f ⊆ §16e holds by construction, not by argument.
+                    acc: t.Tuple[t.Tuple[str, bool], ...] = ()
+                    kept: t.List[t.Tuple[str, bool]] = []
+                    for e, o in combo:
+                        hit = _subconj(acc, e)
+                        if hit is not None:
+                            cond, a_c = hit
+                            _record_subconj(cond, e, a_c)
+                            _cut(cond, e, a_c)
+                            wf_pin |= {x for x, _y in cond}
+                            continue
+                        kept.append((e, o))
+                        acc = acc + ((e, o),)
+                    combo = kept
+                    if not combo:
+                        # Every member of the leaf is foreclosed: there is no
+                        # cube left to demand and none to block, so the
+                        # witness cannot be emitted. Stop this set rather
+                        # than loop on an empty clause (which would block
+                        # everything).
+                        set_trunc = True
+                        break
+                if wf_on and combo:
+                    # §16g: the same search, with the conditioning set drawn
+                    # from the WHOLE surviving cube instead of the walk
+                    # prefix, resolved as the LEAST FIXED POINT of the
+                    # founded-drop operator (`wellfounded_drop_set`). §16f's
+                    # own drops have already left the cube and contribute no
+                    # literal, and every member whose literal justified one of
+                    # them (or an §16e drop) is PINNED kept — so the drop set
+                    # is §16f's UNION this one's, `§16g ⊆ §16f ⊆ §16e ⊆ §16b
+                    # ⊆ §16` holds by construction, and no drop rests on a
+                    # literal another drop removed.
+                    wf_hits = wellfounded_drop_set(
+                        tuple(combo), _subconj, wf_pin,
+                        matched=lambda red: bool(prefix_match_mask(
+                            red, conj_takes, conj_universe)))
+                    if wf_hits:
+                        for e, _o in combo:
+                            got = wf_hits.get(e)
+                            if got is None:
+                                continue
+                            _record_wf(got[0], e, got[1])
+                            _cut_wf(got[0], e, got[1])
+                        combo = [(e, o) for e, o in combo if e not in wf_hits]
+                        if not combo:
+                            set_trunc = True
+                            break
+                key = tuple(combo)
+                if key in seen_here:
+                    # the same cube twice INSIDE one set means a blocking
+                    # clause was ignored — a solver anomaly, never normal.
+                    set_lost += 1
+                    set_trunc = True
+                    break
+                seen_here.add(key)
+                blocks.append(_block_constraint(combo))
+                found += 1
+                set_combos.append(list(combo))
+                set_models.append(model)
+                if key in reported:
+                    # ACROSS sets a repeat is legitimate under §16b: a
+                    # foreclosure-truncated leaf (e.g. the gate arm alone) is a
+                    # cube of several sets at once. Block it and count it, but
+                    # do not print the same witness twice. NOTE: `len(missing)`
+                    # is therefore no longer exactly "sets with a gap" — the
+                    # per-set census is the number to quote.
+                    continue
+                reported.add(key)
+                missing.append(
+                    MissingCoverage(
+                        node_constraint=" AND ".join(
+                            _outcome_constraint(e, o) for e, o in combo
+                        ),
+                        source_location=(
+                            expr_location[group[0]] if len(group) == 1 else ""
+                        ),
+                        missing_branch="combination",
+                        missing_constraint=_combo_constraint(combo),
+                        prefix=tuple(
+                            PathCondition(expr=e, taken=o) for e, o in combo
+                        ),
+                        concrete_values=model or {},
+                    )
+                )
+            else:
+                set_trunc = True  # cap reached with combos still being found
+            # fold this set's contribution into the globals (nothing in the
+            # loop above reads them) and record it, so a rerun skips the set
+            total_elapsed += set_elapsed
+            solver_lost += set_lost
+            truncated = truncated or set_trunc
+            if ckpt is not None:
+                rec_out: t.Dict[str, t.Any] = {
+                    "elapsed_ms": set_elapsed,
+                    "solver_lost": set_lost,
+                    "truncated": set_trunc,
+                    "combos": set_combos,
+                    "models": set_models}
+                if conj_cuts:
+                    rec_out["conj"] = conj_cuts
+                if sub_cuts:
+                    rec_out["subconj"] = sub_cuts
+                if wf_cuts:
+                    rec_out["wf"] = wf_cuts
+                ckpt.put(dkey, rec_out)
+        if ckpt is not None:
+            ckpt.close()
+
+        # -- 7. untracked transparency: unobserved sides, non-blocking
+        seen_gaps, elapsed = self._unobserved_sides(
+            untracked_exprs, run_outcomes, fixed_base, decls, {})
+        total_elapsed += elapsed
+        for expr, outcome, model in seen_gaps:
+            missing.append(
+                MissingCoverage(
+                    node_constraint=expr,
+                    source_location=expr_location[expr],
+                    missing_branch="taken" if outcome else "not_taken",
+                    missing_constraint=_outcome_constraint(expr, outcome),
+                    concrete_values=model or {},
+                    untracked=True,
+                )
+            )
+
+        blocking = [m for m in missing if not m.untracked]
+        complete = (not blocking and not truncated and solver_lost == 0
+                    and not tree_missing)
+        return CoverageResult(
+            total_runs=len(self.runs),
+            total_nodes=len(expr_order),
+            missing=missing,
+            complete=complete,
+            solver_lost=solver_lost,
+            elapsed_ms=total_elapsed,
+            assumptions_used=self._assumptions_used,
+            independent_folds=self._folds,
+            truncated=truncated,
+            unevaluable_exprs=tuple(unevaluable),
+            demand_sets=len(demands),
+            tree_complete=not tree_missing,
+            tree_missing=tuple(tree_missing),
+            foreclosures=foreclosures_applied,
+            foreclosure_gates=tuple(sorted(
+                gate_counts.items(), key=lambda kv: (-kv[1], kv[0]))[:20]),
+            foreclosures_ignored=foreclosures_ignored,
+            foreclosures_provisional=bool(tree_missing),
+            conjunction_foreclosures=conj_applied,
+            conjunction_foreclosure_groups=conj_groups,
+            conjunction_foreclosure_list=tuple(conj_pairs),
+            conjunction_foreclosures_provisional=(
+                bool(tree_missing) and conj_applied > 0),
+            unmatched_gate_conjunctions=len(unmatched_seen),
+            unmatched_gate_conjunction_prefixes=tuple(unmatched_prefixes),
+            subconjunction_foreclosures=subconj_applied,
+            subconjunction_foreclosure_conditions=subconj_conds,
+            subconjunction_foreclosure_list=tuple(subconj_triples),
+            subconjunction_foreclosures_provisional=(
+                bool(tree_missing) and subconj_applied > 0),
+            subconjunction_foreclosure_width=(
+                self.foreclosure_conjunction_width if subconj_on else 0),
+            wellfounded_drops=wf_applied,
+            wellfounded_drop_conditions=wf_conds,
+            wellfounded_drop_list=tuple(wf_triples),
+            wellfounded_drops_provisional=(
+                bool(tree_missing) and wf_applied > 0),
+            footprints=tuple(
+                (e, tuple(sorted(shape_names[j] for j in range(len(shape_names))
+                                 if footprint[e] >> j & 1)))
+                for e in active if e in footprint),
+            footprints_undecidable=tuple(
+                e for e in active if self.confinement and not ctxn.get(e, 0)),
+            confined_decisions=tuple(
+                e for e in active if e in footprint and e not in disqualified),
+            footprints_coevaluated=tuple(e for e in active if e in coeval_decided),
+            confinement_disqualified=tuple(
+                (e, shape_names[j], r1, r2)
+                for e in active if e in disqualified
+                for j, r1, r2 in disqualified[e]),
+            confined_pairs=tuple(sorted(confined_all)),
+            footprint_sides=tuple(
+                (e, tuple((shape_names[j],
+                           "both" if side_seen.get(e, [0, 0, 0])[2] >> j & 1
+                           or (side_seen.get(e, [0, 0, 0])[0] >> j & 1
+                               and side_seen.get(e, [0, 0, 0])[1] >> j & 1)
+                           else ("taken" if side_seen.get(e, [0, 0, 0])[1] >> j & 1
+                                 else "not_taken"))
+                          for j in range(len(shape_names)) if footprint[e] >> j & 1))
+                for e in active if e in footprint),
+            foreclosing_gates=tuple(
+                (d, tuple((g, "taken" if o else "not_taken")
+                          for (g, o), fm in sorted(forecl_all.items())
+                          if fm >> bit[d] & 1))
+                for d in active
+                if any(fm >> bit[d] & 1 for fm in forecl_all.values())),
+            confinement_overlapping=tuple(sorted(
+                ((a, b, n) for (a, b), n in overlapping_all.items()),
+                key=lambda x: (-x[2], x[0], x[1]))),
+            confinement_undecidable_pairs=len(undecidable_all),
+            confinement_splits=splits,
+            confinement_provisional=bool(tree_missing) and bool(footprint),
+            confinement_withdrawn=tuple(withdrawn),
+            confinement_or_pairs=tuple(sorted(or_pairs_all)),
+            confinement_and_pairs=tuple(and_pairs_all),
+            assumptions=self.assumptions,
+        )
+
+    # -- checkpointing ----------------------------------------------------
+
+    def _checkpoint_header_keys(
+        self,
+        decls: t.Sequence[str],
+        fixed_base: t.Sequence[str],
+        pinned: t.Mapping[str, bool],
+        active: t.Sequence[str],
+        demands: t.Sequence[t.FrozenSet[str]],
+        run_outcomes: t.Sequence[t.Mapping[str, t.Set[bool]]],
+        forecl_all: t.Mapping[t.Tuple[str, bool], int],
+    ) -> t.Dict[str, str]:
+        """Everything step 6's answer depends on, as a dict of digests.
+
+        A checkpoint written under different keys is never reused (it is
+        rotated to ``<path>.stale``), so a stale one cannot silently survive
+        a change of corpus, assumptions, knobs or engine source. The keys
+        cover, in order: the ENGINE (source hash of the four modules step 6
+        executes — any edit to the checker invalidates its checkpoints), the
+        CHECKER PARAMETERS, the CORPUS (the outcome profiles, which is all
+        steps 5-6 read of the runs, hashed via ``profile_key``), the
+        ASSUMPTIONS (each frozen dataclass's repr), and the derived inputs
+        the loop consumes directly. Overlapping on purpose: a digest that
+        cannot change without another changing costs one hash and removes a
+        way to be wrong.
+        """
+        corpus = hashlib.blake2b(digest_size=16)
+        for outcomes in run_outcomes:
+            corpus.update(profile_key(outcomes))
+        keys = {
+            "engine": _checkpoint.source_hash(
+                _sys.modules[__name__], _solver_mod, _assumptions_mod, _run_mod),
+            "phase": "coverage.check_coverage:step6-demand-enumeration",
+            "params": _checkpoint.digest({
+                "timeout_ms": self.timeout_ms,
+                "max_missing_per_clique": self.max_missing_per_clique,
+                "max_cliques": self.max_cliques,
+                "confinement": self.confinement,
+                "confinement_strict": self.confinement_strict,
+                "confinement_keying": self.confinement_keying,
+                "confinement_gates": self.confinement_gates,
+                "confinement_or_sharing": self.confinement_or_sharing,
+                **({"confinement_span_union": True}
+                   if self.confinement_span_union else {}),
+                **({"confinement_fallback_licence": False}
+                   if not self.confinement_fallback_licence else {}),
+                "foreclosure_conjunctions": self.foreclosure_conjunctions,
+                **({"foreclosure_subconjunctions":
+                    self.foreclosure_subconjunctions,
+                    "foreclosure_conjunction_width":
+                    self.foreclosure_conjunction_width,
+                    "foreclosure_conjunction_budget":
+                    self.foreclosure_conjunction_budget}
+                   if self.foreclosure_subconjunctions else {}),
+                # §16g: added ONLY when the rule is on, so every checkpoint
+                # written before 2026-09-14 still replays byte for byte.
+                **({"foreclosure_wellfounded_drops": True}
+                   if self.foreclosure_wellfounded_drops else {}),
+                "withdrawn_pairs": sorted(self.withdrawn_pairs),
+                "prior_footprints": (
+                    None if self.prior_footprints is None
+                    else {e: sorted(v) for e, v in
+                          sorted(self.prior_footprints.items())}),
+            }),
+            "corpus": corpus.hexdigest(),
+            "assumptions": _checkpoint.digest(
+                [repr(a) for a in self.assumptions.assumptions]),
+            "decls": _checkpoint.digest(list(decls)),
+            "fixed_base": _checkpoint.digest(list(fixed_base)),
+            "pinned": _checkpoint.digest(sorted(pinned.items())),
+            "active": _checkpoint.digest(list(active)),
+            "demands": _checkpoint.digest([sorted(d) for d in demands]),
+            "foreclosures": _checkpoint.digest(
+                sorted((e, o, m) for (e, o), m in forecl_all.items())),
+        }
+        keys.update({k: str(v) for k, v in self.checkpoint_keys.items()})
+        return keys
+
+    def _unobserved_sides(
+        self,
+        exprs: t.Sequence[str],
+        run_outcomes: t.Sequence[t.Dict[str, t.Set[bool]]],
+        fixed_base: t.List[str],
+        decls: t.List[str],
+        pinned: t.Dict[str, bool],
+    ) -> t.Tuple[t.List[t.Tuple[str, bool, t.Optional[t.Dict[str, t.Any]]]], float]:
+        """Per expression, the SATISFIABLE branch outcomes no run observed.
+
+        One computation, two readers: over the ACTIVE expressions it is the
+        tree-completeness check (the combination claim's precondition), over
+        the UNTRACKED ones it is the transparency list. A pinned expression's
+        untracked side is not demanded and so is not a gap.
+        """
+        seen: t.Dict[str, t.Set[bool]] = {}
+        want = set(exprs)
+        for outcomes in run_outcomes:
+            for e, o in outcomes.items():
+                if e in want:
+                    seen.setdefault(e, set()).update(o)
+        gaps = []
+        elapsed = 0.0
+        for expr in exprs:
+            for outcome in (True, False):
+                if outcome in seen.get(expr, ()) or pinned.get(expr, outcome) != outcome:
+                    continue
+                res = check_satisfiability(
+                    fixed_base + [_outcome_constraint(expr, outcome)],
+                    decls,
+                    self.timeout_ms,
+                )
+                elapsed += res.solver_elapsed_ms
+                if res.satisfiable:
+                    gaps.append((expr, outcome, res.model))
+        return gaps, elapsed
+
+    def _next_untried_combo(
+        self,
+        group: t.List[str],
+        fixed: t.List[str],
+        blocks: t.List[str],
+        decls: t.List[str],
+        local: t.Optional[t.Dict[t.Tuple[str, bool], int]] = None,
+        bit: t.Optional[t.Dict[str, int]] = None,
+    ) -> t.Tuple[
+        t.Optional[t.List[t.Tuple[str, bool]]],
+        t.Optional[t.Dict[str, t.Any]],
+        float,
+        str,
+    ]:
+        """Determinize one satisfiable, not-yet-blocked outcome assignment.
+
+        ONE Z3 query per call (owner ruling, 2026-09-12 — §16d). The query is
+        the demand set's whole remaining space: the fixed base, this set's
+        pins, and one blocking clause per leaf already accounted for. UNSAT
+        means the set is covered; SAT means at least one leaf is missing and
+        the model names one.
+
+        The assignment is then read OFF that model with model completion
+        (``solve_and_evaluate``): every member of the set has a truth value
+        under the model, including the members the constraints left free, so
+        no further solver call is needed to make the cube total. That is the
+        whole change — the previous implementation fixed each member with its
+        own check (up to 2 per member, on a formula that grew as the walk
+        descended), which is where a wide set's hours went.
+
+        Returns (combo, model, elapsed_ms, status) where combo is None when
+        the space is exhausted (status 'unsat') or the solver gave up
+        ('unknown'). NOTE the sharpening that one query forces: z3's
+        ``unknown`` is now reported as such. The greedy walk saw a timeout as
+        "both outcomes unsatisfiable" and, at the first member, could not tell
+        that from a genuine UNSAT — i.e. from "covered". With a single query
+        there is no second chance to notice, so ``solve_and_evaluate`` keeps
+        the three statuses apart and a lost query becomes ``solver_lost``,
+        never silence.
+
+        With ``local`` (this set's foreclosures, §16b) the cube descends the
+        PRUNED tree: an expression the prefix has already foreclosed is not
+        part of this cube and is skipped, so the returned combo ranges over
+        ``S`` minus what the assignment forecloses. ``group`` is ordered so a
+        gate always precedes what it forecloses, which makes the skip decision
+        depend only on the prefix — the leaves are therefore well defined and
+        pairwise incompatible, and one blocking clause per leaf terminates.
+        The skip rule is applied to the MODEL'S assignment here exactly as it
+        was applied to the greedy walk's, so the leaf structure is unchanged;
+        only WHICH leaf comes back can differ, and a leaf is returned only if
+        it is satisfiable and unblocked, as before.
+        """
+        res = solve_and_evaluate(fixed + blocks, decls, group, self.timeout_ms)
+        elapsed = res.solver_elapsed_ms
+        if res.status == "unsat":
+            return None, None, elapsed, "unsat"
+        if res.status != "sat" or res.outcomes is None:
+            return None, None, elapsed, "unknown"
+
+        combo: t.List[t.Tuple[str, bool]] = []
+        dropped = 0
+        for expr in group:
+            if local and dropped >> bit[expr] & 1:
+                continue  # foreclosed by this cube's own prefix
+            outcome = res.outcomes.get(expr)
+            if outcome is None:
+                # the model did not give this member a boolean value: the
+                # cube would not be well defined, so lose the query rather
+                # than emit a witness that is not one. (Unparseable exprs are
+                # already out of the universe via the tautology probe.)
+                return None, None, elapsed, "unknown"
+            combo.append((expr, outcome))
+            if local:
+                dropped |= local.get((expr, outcome), 0)
+        if not combo:  # an empty demand set cannot happen; defensive
+            return None, None, elapsed, "unknown"
+        return combo, res.model, elapsed, "sat"
+
+    # -- solver input helpers --------------------------------------------
+
+    def _merged_declarations(self) -> t.List[str]:
+        """Union of all runs' Z3 declarations, first-seen per variable."""
+        decls: t.List[str] = []
+        seen: t.Set[str] = set()
+        for run in self.runs:
+            for d in run.z3_declarations():
+                name = d.split("=", 1)[0].strip()
+                if name in seen:
+                    continue
+                seen.add(name)
+                decls.append(d)
+        return decls
+
+    def _merged_bounds(self) -> t.List[str]:
+        seen: t.Set[str] = set()
+        svs: t.List[SymbolicVar] = []
+        for run in self.runs:
+            for sv in run.symbolic_vars:
+                if sv.name in seen:
+                    continue
+                seen.add(sv.name)
+                svs.append(sv)
+        return self._build_bounds_constraints(svs)
+
+    # -- helpers ---------------------------------------------------------
+
+    @staticmethod
+    def _build_bounds_constraints(symbolic_vars: t.List[SymbolicVar]) -> t.List[str]:
+        constraints: t.List[str] = []
+        for sv in symbolic_vars:
+            if sv.low is not None and sv.high is not None:
+                if sv.sort.startswith("BitVec"):
+                    constraints.append(f"UGE({sv.name}, {sv.low})")
+                    constraints.append(f"ULE({sv.name}, {sv.high})")
+                elif sv.sort == "Int":
+                    constraints.append(f"{sv.name} >= {sv.low}")
+                    constraints.append(f"{sv.name} <= {sv.high}")
+                elif sv.sort == "Real":
+                    constraints.append(f"{sv.name} >= {sv.low}")
+                    constraints.append(f"{sv.name} <= {sv.high}")
+        return constraints

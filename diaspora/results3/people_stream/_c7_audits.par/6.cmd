@@ -1,0 +1,1 @@
+env PYTHONPATH=/home/dev/project/src python3 /home/dev/project/src/queries_from_runs/audits/empty_relation_emission_audit.py /home/dev/project/reports/diaspora/results3/people_stream 

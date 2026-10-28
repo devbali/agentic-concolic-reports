@@ -1,0 +1,688 @@
+-- people_stream — PeopleController#stream  (GET /people/:person_id/stream)
+--
+-- CANONICAL HEADER. This text is maintained at
+-- reports/diaspora/results3/people_stream/POLICY_HEADER.txt and MUST be
+-- re-applied to the top of this file by every extraction. Under the M-17
+-- resolution (comments C12), the declaration IS the safeguard: a policy file
+-- that simply stops at a wall is indistinguishable from one that covers
+-- everything, so every exclusion is stated HERE, not only in a report.
+--
+-- SCOPE (DISCIPLINE §15): the entrypoint is the POST-AUTH action with a
+-- SYMBOLIC principal. The authentication stages run ABOVE the entrypoint and
+-- are not part of this file; the endpoint's complete policy is THIS FILE
+-- UNION §2 of results3/_auth_boundary/BOUNDARY_POLICY.md. On this controller
+-- `authenticate_user!` is `except: %i(show stream hovercard)`, so `stream` is
+-- reachable ANONYMOUSLY and the principal is fetched lazily rather than by
+-- the Devise filter — the same statements and hooks, so the boundary artifact
+-- applies unchanged. `before_action :find_person` and
+-- `:authenticate_if_remote_profile!` both run for this action and their reads
+-- ARE in this file. The corpus carries both arms (`anon_*` and `auth_json`).
+--
+-- ============================================================================
+-- STANDING OF THIS FILE  (READ THIS BEFORE USING IT)
+-- ============================================================================
+-- THE ENGINE VERDICT this file was extracted from (2026-09-10, the completion
+-- drive; the corpus is 1 109 dumps, grown from the preflight's 755 by the two
+-- rooted rounds below):
+--
+--     COMPLETE=True;NODES=29;MISSING=0;BLOCKING=0;PCS=8382
+--     GENUINE=True;TRUNCATED=False;SOLVER_LOST=0;UNEVALUABLE=[]
+--     DEMAND_SETS=27;TREE_COMPLETE=True;TREE_MISSING=0;FORECLOSURES=135;
+--       FORECL_IGNORED=0;FORECL_PROVISIONAL=False
+--     [assumptions] declared=48 INERT(never-co-evaluated)=30 OVERNIGHT_PINS=1
+--
+--   `MISSING=0` is a CLAIM here, not the PROVISIONAL reading the preflight
+--   carried: under DISCIPLINE §16b the foreclosure-aware demand is conditional
+--   while `tree_missing` is non-empty, and it is now empty.
+--
+-- THE ONE BRANCH WAS DECLARED, NOT DRIVEN — and the drive came first.
+--   `tree_missing` named
+--       (SYM_RESULT_ActsAsApi__Collection_as_api_response_1_row_guid
+--        != StringVal('')) :: taken
+--   the FOURTH instance of a framework short-circuit this endpoint already
+--   declares three times (`coverage_assumptions.py` Argument 5, expressions
+--   E/I/L) at the SAME two source sites. Before declaring it, 198 ROOTED runs
+--   were driven at it in two rounds — the 5 seeds the preflight built, then
+--   EVERY distinct rooted seed dict in the corpus that reaches the site (61 of
+--   them), each a real run's own seeds with that one dimension flipped:
+--       HIT=0, and other=0 — the expression was not evaluated at all, which is
+--       the `journey/formatter.rb:40` break the argument predicts.
+--   Ground truth over all 1 109 dumps: guid non-blank -> the `!=` is NEVER
+--   evaluated (340 runs); guid blank -> it is evaluated and forced False
+--   (272 runs); taken 0 of 612. Site identity with E/I/L confirmed through the
+--   engine's own load path.
+--   The declaration is `coverage_assumptions.py` Argument 5b, a SEPARATE,
+--   COUNTED tier (`OVERNIGHT_PINS=` in the `[assumptions]` line) reversible by
+--   `NO_PINS=1`; the counterfactual pass is
+--   `people_stream/_bak_coverage_summary_NO_PINS_20260910.json` and differs
+--   ONLY in TREE_MISSING (1 vs 0) — NODES, DEMAND_SETS, MISSING, BLOCKING and
+--   FORECLOSURES are identical, because an untracked expression is in no
+--   demand set (§16b).
+--   ITS FALSIFIER, so a consumer can retire it: any run recording that
+--   expression `taken`, or a non-nil default on the `person_path` `:id`
+--   segment (`config/routes.rb:179` is `resources :people, only: %i(show
+--   index)` — no default, no constraint). Full argument and evidence:
+--   `people_stream/_COMPLETION_20260910.md` §2-§3.
+--
+-- THE ASSUMPTION GATE (RUNBOOK Phase 4, mandatory) — RUN, and it passes:
+--     RESULT: 48 distinct tested — PASS 48, FAIL 0, NOT-TESTABLE 0,
+--             NOT-COMPARABLE 0
+--   The new pin earns the same verdict its three siblings do, from the gate's
+--   own probe: "flipping the variable leaves the PC unevaluated — the other
+--   side is unreachable by construction". Log `people_stream/_gate_20260910.log`.
+--
+-- THE ENGINE'S COMPLETION SECTION — RUN FOR THE FIRST TIME ON THIS ENDPOINT
+-- (2026-09-10 closure drive). `completion_config.json`, `shim_tests.rb`,
+-- `concrete_run.json` and `concrete_aliases.json` now exist here, so
+-- `coverage_report.py` produces the RUNBOOK's full line. Verbatim:
+--
+--     OVERALL_COMPLETE=False;COMPLETION=False
+--        AUDIT RED      note_fidelity
+--        AUDIT green    empty_relation_emission
+--        SHIM  19 PASS / 9 PROTOCOL / 0 blocking   (28 shims enumerated)
+--        NOTE-CHECK   RED
+--        ASSUMPTIONS  green (declared 48, distinct tested 48, {'PASS': 48})
+--        BLOCKING  audit note_fidelity: RED
+--        BLOCKING  note_check: RED
+--
+--   **`OVERALL_COMPLETE` is False and this file is therefore NOT a closed
+--   policy.** The coverage layer and the assumption gate are green; the MOCK
+--   layer is not. Both blocking entries have ONE root cause family: target
+--   mocks that stand over bodies which really do issue SQL, so statements the
+--   application provably issues are absent from this file. They are itemised
+--   as X2, X3, X7 and X8 below, each with the ground truth that establishes it.
+--
+--   Phase 5 standing: **the FIRST concrete round ever run on this endpoint
+--   (4 scenarios: anon-all, anon-json-guid, anon-json-handle, auth-json; 0
+--   errors; 378 target calls; 97 real statements) — adversary sub-agent rounds
+--   run: 0.** The concrete round's own findings are X7. people_show and
+--   posts_show still have no completion wiring at all; comments_index and
+--   conversations_index are closed.
+--
+-- ============================================================================
+-- EXTRACTION STANDING  (2026-09-10)
+-- ============================================================================
+-- This policy is extracted from the FULL 1 109-dump corpus, not a sample.
+--   views                 65
+--   raw -> distinct       13 094 -> 107 -> 65 after subsumption
+--   unparseable notes     0        (E11 RED silent; `errors` is [])
+--   rotation residue      0 views carry `bind-rotation-UNRESOLVED` (R1 silent);
+--                         63 of 65 carry `bind-rotation-repaired`, meaning a
+--                         UNIQUELY DETERMINED un-rotation was applied
+--   fold                  _experiment/variant_d AssocFoldingTransformer,
+--                         MANDATORY here and measured, not assumed:
+--                         `skipped_pcs_audit` vanilla drops 309 `(VAR != VAR(_))`
+--                         PC records (RED), patched drops 0.
+--   subsumption           RAN (state=True), blockaid/Java, own 6 GB scope, no
+--                         coverage pass alongside it.
+--                           stage 1 SYNTACTIC containment (free, no solver, not
+--                             gated by eligibility): 42 of 107 views dropped
+--                           stage 2 SOLVER saw 22 views
+--                           tri-state tally: subsumed(true)=0
+--                                            not-subsumed(false)=22
+--                                            UNDECIDED(null)=0
+--                         **Every one of the 42 drops is free syntactic
+--                         containment; the solver subsumed nothing.** null is
+--                         never folded into false: an undecided view would be
+--                         KEPT and counted on its own line, and there are none.
+--                         (The first run of this extractor printed
+--                         "subsumed(true)=42, not-subsumed(false)=0 over 36
+--                         eligible" — 42 of 36, clamped — because it folded the
+--                         two stages together. Fixed in
+--                         `_extract_people_stream_streaming.py`; backup
+--                         `.pre_tally_split`.)
+--
+-- THE BIND-ROTATION REPAIR — what a consumer must know.
+-- The runner renders ~22 % of this endpoint's notes with their bind values
+-- ROTATED one position relative to their columns (the LIMIT value lands in the
+-- first WHERE slot and every other value shifts right). This is a RENDER bug
+-- in the runtime note, not application behaviour. `_repair_rotation`
+-- (src/queries_from_runs/transform.py) un-rotates it, and since 2026-09-10 it
+-- does so ONLY when exactly one rotation is admissible under a slot/value type
+-- check that counts SYMBOLIC BINDS as slots; when the rotation is not uniquely
+-- determined the note is left as rendered and flagged
+-- `bind-rotation-UNRESOLVED` so the R1 RED check refuses the view. On this
+-- corpus every rotated note is uniquely determined (8 distinct rotated shapes,
+-- one admissible rotation each). See
+-- results3/queries_from_runs/_ROTATION_FIX_20260910.md.
+--
+-- ============================================================================
+-- DECLARED WALLS — arms a real request CAN take that this corpus does not
+-- ============================================================================
+-- W1  `format.all { redirect_to person_path(@person) }`
+--       `redirect_to` is a DECLARED TARGET at the shared boundary, so the arm
+--       returns a marker instead of a 302 and Rails then raises
+--       `ActionController::UnknownFormat` (142 of 1 109 dumps; it was 24 of
+--       755 before the completion drive's rooted rounds, which are anon-heavy
+--       — the wall's POLICY IMPACT is unchanged either way).
+--     POLICY IMPACT: NONE. A redirect issues no query, and every statement the
+--       arm does issue (the `find_person` lookup in the before_action) is
+--       recorded before the terminal and is below.
+--     WHAT A CONSUMER MUST NOT CONCLUDE: the absence of a redirect-arm
+--       terminal is a DECLARED WALL, not evidence that the arm reads nothing.
+--     Full text: reports/diaspora/results3/people_stream/_WALLS.md W1.
+--
+-- ============================================================================
+-- DECLARED OPEN — known gaps in THIS file
+-- ============================================================================
+-- X1  UNRESOLVED BINDS SHIPPED AS PLACEHOLDERS. Three bind families do not
+--     resolve to a join and are emitted as bare `_SYM_...` placeholder
+--     columns, so the predicates carrying them are NOT enforceable as written
+--     (counted as DISTINCT SELECT statements of the 65 in this file, on the
+--     1 109-dump corpus, AFTER subsumption):
+--         _SYM_PERSON_via_user_id                                     21 views
+--         _SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_id   21 views
+--         _SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_author_id  1 view
+--         ------------------------------------------------------------------
+--         at least one of the three                                   43 views
+--     All three are DECLARED OPEN, not resolved. 43 of 65 views — two thirds
+--     of this policy — carry an unbound placeholder and are NOT enforceable as
+--     written. (Pre-subsumption, on the same corpus, the counts are 35/35/1 of
+--     107. The 2026-09-10 entry's "70 / 70 / 2" was grep LINE counts, which
+--     double-count each statement's `-- NOTE:` line.)
+--
+--     CORRECTED 2026-09-10 (_X1_PERSON_ID_FIX_20260910.md). The earlier
+--     entry here claimed `SYM_PERSON_via_user_id` is the CURRENT USER'S
+--     PERSON and should have become the `people.owner_id = _MY_UID` join.
+--     THAT WAS WRONG. It is the person of an ARBITRARY User row — on this
+--     endpoint always the row `User.find_by_username(params[:username])`
+--     returned (measured: in 211 of 211 dumps that mint it, the immediately
+--     preceding symbolic_call is `Core::ClassMethods.find_by` from
+--     `find_by_username`), i.e. THE VIEWED PERSON. It is also minted in 64
+--     ANONYMOUS dumps, where there is no principal at all, and its
+--     `owner_id` is a free symbol. Two mint sites exist: `symbolic_user(tag)`
+--     -> `SYM_PERSON_<tag>` attached with a SINGLETON method (the principal),
+--     and `UserSymPersonAssociation#person` -> the fixed name
+--     `SYM_PERSON_via_user` prepended on the User CLASS (not the principal;
+--     a singleton beats a prepended module, so it never fires for the
+--     signed-in user).
+--
+--     Binding it to `people.owner_id = _MY_UID` would therefore ship a
+--     STRICTLY NARROWER predicate than the app enforces — "only my own
+--     posts" where the app reveals any named person's — a false safety
+--     claim. transform.py now REFUSES it by rule
+--     (`RunTransformer.is_principal_person`, mint site not name shape) and
+--     flags the view `non-principal-person-bind`; the extractor prints a
+--     DECLARE block naming the views (21 of the 65 shipped here). Shipped SQL is unchanged: the
+--     six-corpus differential over all 320 746 dumps found ZERO views
+--     changed anywhere, this endpoint included.
+--
+--     STILL OPEN, and it is a RUNTIME issue, not an extractor one: the mint
+--     uses ONE FIXED NAME for every User row it is called on, with nothing
+--     in the dump linking it to the producing query, so the bind cannot be
+--     resolved to a join from the dump alone. Fixing that means renaming the
+--     mint in targets.rb — Rule T, the shared boundary, which restarts every
+--     endpoint. **DECLARED OPEN by the completion drive, 2026-09-10: these
+--     21 views, and the 22 more carrying the other two families, are OPEN.**
+--     A view reading `posts.author_id = _SYM_PERSON_via_user_id` must not be
+--     shipped as access control while the placeholder is unbound — and must
+--     NOT be "fixed" by binding it to the principal.
+--
+-- X2  STATEMENTS THE CORPUS NEVER RECORDED (`noteless_call_audit`: RED).
+--     Seven declared targets return without publishing a SQL note, so every
+--     statement they issue is ABSENT from this file — 7 405 events over 4 344
+--     dumps. TRIAGED 2026-09-10 against the real bodies and the concrete run;
+--     the seven are NOT one defect:
+--
+--     (a) ONE WALL — declared, with evidence:
+--         PeopleController.diaspora_id?            1 109 events / 1 109 dumps
+--         `people_controller.rb:166-168` is
+--         `!(query.nil? || query.lstrip.empty?) && Validation::Rule::DiasporaId
+--          .new.valid_value?(query.downcase).present?`, and `valid_value?`
+--         (diaspora_federation-0.2.6 rules/diaspora_id.rb) is a length check
+--         plus a regex match. No SQL, no target call beneath it, in any arm.
+--         FALSIFIER: any run in which this target's frame issues a statement.
+--
+--     (b) THREE B-8 DEFECTS — the finder family. FIX APPLIED batch-locally:
+--         ActiveRecord::FinderMethods.find_by        685 /  487
+--         ActiveRecord::FinderMethods.first           12 /   12
+--         ActiveRecord::Core::ClassMethods.find_by    12 /   12
+--         Cause, located exactly: `concolic_targets.rb` `finder_mock`, the
+--         `not_found == true` arm returns `nil`, and the interceptor takes the
+--         note from the RETURNED value — so the statement the finder issued is
+--         lost. `concolic_targets.rb` now publishes it on
+--         `Thread.current[:concolic_pending_note]` before returning nil, the
+--         identical repair notifications_index (concolic_targets.rb:754) and
+--         comments_index (targets.rb:521) already carry.
+--         GROUND-TRUTH DIFFERENTIAL (same scenario, same seed, only the file
+--         differs — `_B8_DIFFERENTIAL_20260910.txt`):
+--             pre-fix   EVENT ActiveRecord::FinderMethods.find_by note=""
+--             post-fix  EVENT ActiveRecord::FinderMethods.find_by
+--                             note="SELECT \"people\".* FROM \"people\""
+--         MEASURED POLICY IMPACT OF THE FIX ON THIS CORPUS: **0 new DISTINCT
+--         statement shapes** (both candidate shapes already appear as noted
+--         events elsewhere: `likes …` 304 times, `people.diaspora_handle …`
+--         479 times), but **354 of 1 109 dumps would gain a statement they
+--         issued and currently lack**, and **12 dumps that today extract to
+--         "no SELECT queries recorded" would gain the endpoint's own person
+--         lookup** — the comments_index M-9 signature.
+--         WHY THE AUDIT STILL READS RED: the 1 109-dump corpus was generated
+--         BEFORE the fix, and re-generating it does not clear the audit
+--         either, because (c) below would remain. The cost of the clean-corpus
+--         run is stated so it can be scheduled: base exploration drains in
+--         ~2.5 min / 201 dumps, and the demand + tree rounds that closed
+--         `MISSING=0` must then be re-driven. Under §16b the shipped corpus
+--         was NOT truncated to force a green: removing runs can create a
+--         foreclosure and retract demand, which is the dishonest direction.
+--
+--     (c) THREE Rule S §9.8 BOUNDARY DEFECTS — RAISED, not fixed here:
+--         Person.name                              3 159 /  908
+--         Anonymous.process                        1 520 /  908
+--           (= Diaspora::MessageRenderer::Processor.singleton_class#process)
+--         PostPresenter.build_mentioned_people_json  908 /  908
+--         Each is declared a SQL-free wall while the body it stands over
+--         reaches a query:
+--           `person.rb:247` `name` runs `self.profile` (a has_one) and
+--             `fix_profile` (which reaches `reload`);
+--           `message_renderer.rb:100-105` `diaspora_links` runs
+--             `Post.exists?(guid:)` whenever the text matches
+--             DIASPORA_URL_REGEX;
+--           `post_presenter.rb:94` `@post.mentioned_people` runs
+--             `mentions.includes(person: :profile).map(&:person)`.
+--         The concrete round CONFIRMS all three: it issues `SELECT profiles.*
+--         … person_id = ?`, `SELECT mentions.* …`, `SELECT people.* … id = ?`
+--         and `SELECT 1 AS one FROM posts … guid = ?` — and **`profiles`
+--         appears in ZERO notes in the entire 1 109-dump corpus.**
+--         Under Rule S §9.8 a stub over a body that ISSUES A QUERY is not a
+--         shim at all — it is a target, and it belongs in the SHARED boundary
+--         (Rule T). DISCIPLINE §T3 forbids an agent editing that boundary, and
+--         §T2 says a boundary change voids every endpoint, so this is RAISED
+--         for the coordinator, not patched here.
+--         FALSIFIER for each: descend the target and the corpus gains the
+--         statement above (and, for `build_mentioned_people_json`, X3's blind
+--         column stops being blind).
+--
+-- X3  A GATE COLUMN IS BLIND (`pc_visibility_audit`: RED, Class B).
+--     Of the columns this endpoint's code provably compares
+--     (guid, text, comments_count, nsfw, closed_account, diaspora_handle),
+--     five are PC-visible and **`diaspora_handle` is BLIND — 0 references in
+--     1 109 dumps.** Cause: `PostPresenter.build_mentioned_people_json` is a
+--     DECLARED TARGET that swallows the whole mention chain (it is also X2's
+--     fourth entry and `hardening_lint` H3's third CHECK), so
+--     `lib/diaspora/mentionable.rb`'s handle compare has no site in this
+--     corpus. Consequence for this file: the mention-resolution reads are
+--     represented only by whatever the swallowing target's own note carries.
+--     CORROBORATED 2026-09-10 by the first concrete round: with the mock out
+--     of the way the real request issues `SELECT "mentions".* … =`,
+--     `SELECT "people".* … id = ?` and `SELECT "profiles".* … person_id = ?`
+--     under that frame, and none of those three shapes has a note anywhere in
+--     the corpus (`mock_note_check`: NOTE-MISMATCH; `note_fidelity`: MISSING).
+--     VERDICT: a DEFECT, not a wall — and the SAME Rule S §9.8 boundary defect
+--     as X2(c)'s third entry, so it is RAISED under Rule T rather than fixed
+--     in this batch. FALSIFIER: descend `build_mentioned_people_json` and
+--     `diaspora_handle` gains PC references in the very next corpus.
+--
+-- X4  HARDENING LINT: 4 checks unanswered (`hardening_lint`, 400-dump sample).
+--     RE-RUN 2026-09-10 with the artefacts that now exist. H5 is ANSWERED and
+--     H6 is EXERCISED for the first time; four checks remain open and each is
+--     stated with what would close it.
+--       H1  no `mobile` variant among the corpus scenarios — and the tool
+--           reads `dump["concolic_scenario"]["name"]`, which THIS runner never
+--           records, so it prints `scenarios: []` for a corpus that in fact has
+--           three (anon_all / anon_json / auth_json, encoded in the dump
+--           LABEL). ANSWER: `PeopleController#stream` declares only
+--           `format.all` and `format.json`; a mobile request is matched by
+--           `format.all`, i.e. the `redirect_to person_path(@person)` arm,
+--           which is W1 and issues no statement. Mobile is therefore not a
+--           distinct blind format on THIS action. The lint has no declaration
+--           hook for H1, so it still prints CHECK; the runner-side fix
+--           (recording `concolic_scenario`) is a batch-local change that only
+--           helps dumps generated AFTER it, and was not made under an unchanged
+--           corpus. NOT a green.
+--       H3  three targets with no SQL note and no documented wall:
+--             `PeopleController.diaspora_id?`  — ANSWERED: proven wall,
+--                 X2(a), with its falsifier.
+--             `ActiveRecord::Core::ClassMethods.find_by` — note is
+--                 `"Person query (class-level finder), args=args=nil"`, a
+--                 NON-SQL string, because `sql_for` cannot see a class-level
+--                 finder's conditions (the args are already gone at that
+--                 frame). This is X8's second boundary harvest, and the
+--                 concrete round scores it PRED-OP-DIFF: the real statement is
+--                 `SELECT "people".* … "people"."guid" = ? LIMIT ?`. A DEFECT.
+--             `Anonymous.escape_segment` — note is `''`. comments_index and
+--                 notifications_index both applied boundary harvest B-2, which
+--                 turns this target into a SHIM over the real percent-encoder;
+--                 this batch's copy of the boundary never got it. Route
+--                 generation issues no SQL, so the POLICY impact is nil, but
+--                 the target is mis-declared. X8.
+--       H4  ZERO `len(...)` decisions recorded as PCs in 1 109 dumps. The
+--           corpus DOES mint `len(...)` variables (pc_visibility lists five),
+--           but no length is ever BRANCHED on, so every collection cardinality
+--           is frozen and the empty-state / interior-index / "count > 0 with
+--           zero rows" branches are blind (the Gate-1b class; notifications
+--           N/A-1). NOT declarable via `h4_by_construction` — that hook only
+--           answers a length that IS decided one-sidedly, and here none is
+--           decided at all. OPEN, and it is the largest single blind spot in
+--           this corpus after X2(c).
+--       H5  `target_type` pinned to `['Post']` — ANSWERED and now green:
+--           declared in `completion_config.json` `pc_pin_ledger`, disjoint
+--           from the Rule G gate list (guid, text, comments_count, nsfw,
+--           closed_account, diaspora_handle) as Rule G requires. The pin is
+--           determined by the CALL SITE, not chosen: `like_posts_for_stream!`
+--           reads likes for POSTS.
+--       H6  over-emission — RAN for the first time (it was "SKIPPED, not a
+--           pass"): **114 note shapes in the corpus were issued by none of the
+--           5 concrete runs.** READ THIS WITH THE INSTRUMENT CAVEAT BELOW: H6
+--           compares RAW notes, and ~22 % of this endpoint's notes are
+--           bind-ROTATED as rendered (see THE BIND-ROTATION REPAIR above); the
+--           extractor un-rotates them, H6 does not, so an unknown part of the
+--           114 is rotation artefact rather than over-emission. The four
+--           `o_embed_caches` / `open_graph_caches` entries the first run
+--           reported were a FIXTURE gap and were closed by adding the rows
+--           (118 -> 114), which is the direction this check must be answered
+--           in — widen the ground truth, never narrow the check.
+-- X5  THE CONCRETE ROUND HAS NOW RUN — AND IT IS RED. (Superseding the
+--     2026-09-10 morning entry, which said no concrete round had ever run.)
+--     `completion_config.json`, `shim_tests.rb`, `concrete_run.json` and
+--     `concrete_aliases.json` exist; `note_fidelity`, `mock_note_check` and
+--     `hardening_lint` H6 all ran against real statements for the first time.
+--     THE SHIM LAYER IS CLEAN: 28 shims enumerated by the engine, 19 PASS
+--     (real body, zero targets or declared `reaches:` EQUALITY, 100 % of
+--     executable lines) and 9 PROTOCOL (decided by the runner against the real
+--     class, not by prose). No waivers, no NO-TEST.
+--     THE NOTE LAYER IS NOT: see X7.
+--     STILL NOT RUN, and that is not a pass:
+--       * an ADVERSARY SUB-AGENT round (RUNBOOK Phase 5) — 0 rounds, 0 wins;
+--       * `count_matrix` — notifications' own `_c7_count_matrix.py`; no
+--         people_stream equivalent exists;
+--       * `format_coverage` — notifications' own script; this action's format
+--         arms are W1.
+--     `cardinality_consistency` exits 0 but is VACUOUS (this corpus contains
+--     no bulk loader reading a list's own rows) and its own output says so.
+--     What DID run and pass: identity_symbolicity, statement_note_lint,
+--     bind_resolution, skipped_pcs (PATCHED arm — see the paired verdict
+--     below), empty_relation_emission, rig_crash_census (every terminal is an
+--     application terminal), boundary_declaration (every boundary family
+--     declared in every batch), and the assumption gate (48/48 PASS).
+--     Full log: `people_stream/_c7_audits.log`; engine log
+--     `people_stream/_engine_20260910_final.log`.
+--
+--     THE `skipped_pcs` PAIR — DECLARED, not RED. The RUNBOOK (2026-09-01)
+--     requires this audit BOTH ways before any extraction. VANILLA drops 309
+--     `(VAR != VAR(_))` PC records and exits 1; PATCHED (with
+--     `_experiment/variant_d`'s `AssocFoldingTransformer`) drops 0 and exits 0.
+--     The VANILLA arm is the CONTROL and its RED is the SIGNAL that tells the
+--     extractor which fold to install; the PATCHED arm is the pipeline this
+--     file was actually extracted with, confirmed in the extractor source, not
+--     assumed. Neither exit is suppressed and both are printed in the log.
+--     FALSIFIER: extract without variant_d and those 309 records — every
+--     `(VAR != VAR(_))` shape, including the `as_api_response` guid family
+--     that Argument 5b turns on — vanish from the fold.
+-- X6  WHAT THE COMPLETION DRIVE ITSELF DECLARED. Exactly one thing: Argument
+--     5b, the `OneSideUntracked` pin on the json-arm guid `!=` branch, after
+--     198 rooted runs failed to drive it (see STANDING above). It adds no wall
+--     and removes none: W1 above is unchanged, and the drive retired nothing.
+--     Every other entry in this section pre-dates the drive.
+--
+-- X7  STATEMENTS THE APPLICATION PROVABLY ISSUES THAT ARE NOT IN THIS FILE
+--     (the first concrete round, 2026-09-10; `mock_note_check`: RED,
+--     `note_fidelity_audit`: RED — 14 unfaithful of 21 distinct real SELECTs).
+--     GROUND TRUTH: 4 real requests against a real sqlite DB with real rows,
+--     real dispatch, NO concolic mocks anywhere — `concrete_run.json`,
+--     manifests `concrete_manifest_{anon_all,anon_json,anon_handle,auth_json}.rb`,
+--     0 errors. Each statement below was issued by the app and has NO matching
+--     note shape anywhere in the 1 109-dump corpus:
+--
+--       under SingularAssociation#find_target
+--         SELECT "profiles".* FROM "profiles" WHERE "profiles"."person_id" = ? LIMIT ?
+--         SELECT "polls".*    FROM "polls"    WHERE "polls"."status_message_id" = ? LIMIT ?
+--         SELECT "locations".* FROM "locations" WHERE "locations"."status_message_id" = ? LIMIT ?
+--       under Relation#records
+--         SELECT "profiles".* FROM "profiles" WHERE "profiles"."person_id" = ?
+--         SELECT DISTINCT posts.* FROM "posts"
+--           LEFT OUTER JOIN share_visibilities ON share_visibilities.shareable_id = posts.id …
+--       under NO TARGET FRAME AT ALL
+--         SELECT "photos".* FROM "photos" WHERE "photos"."status_message_guid" = ?
+--
+--     THREE DISTINCT CAUSES, each named:
+--     (i)  `profiles` — X2(c): `Person.name` and `build_mentioned_people_json`
+--          swallow the profile chain. `profiles` has ZERO notes corpus-wide.
+--     (ii) `polls`, `locations`, `photos` — the corpus's post records are
+--          symbolic representatives of the BASE class `Post`, and the
+--          StatusMessage-only associations do not exist on it
+--          (`post.rb:79` is literally `def photos; []; end`). So the entire
+--          StatusMessage read set is invisible to this corpus by construction.
+--          `photos` is worse than missing a note: `CollectionAssociation
+--          #find_target` executes through AR's StatementCache, bypassing
+--          `Relation#records`, so NO declared target frames it — no mock can
+--          mint evidence for it as the boundary stands (the E11 class).
+--     (iii) `SELECT DISTINCT posts.* … LEFT OUTER JOIN share_visibilities …`
+--          is `Post.from_person_visible_by_user`, the REAL body of
+--          `User#posts_from` — the signed-in arm of `Stream::Person#posts`.
+--          `targets.rb` §4 replaces it with `Post.where(author_id: p.id)`
+--          (documented there as an association-state workaround). The concrete
+--          round shows the substitution is NOT statement-preserving: the real
+--          request joins `share_visibilities` and `aspect_visibilities` and
+--          this file contains no such view. **A consumer must not read this
+--          policy as describing the signed-in visibility check.** The mock is
+--          BATCH-LOCAL (targets.rb, not the shared boundary), so unlike X2(c)
+--          it is repairable in this batch — it was not repaired here because
+--          the repair changes what the corpus records and therefore requires a
+--          full corpus regeneration plus a re-closed demand campaign.
+--          FALSIFIER: restore the real `posts_from` and the very next corpus
+--          contains the DISTINCT visibility join.
+--
+--     ALSO REPORTED BY THE SAME ROUND, lower severity, listed so they are not
+--     silently dropped: 1 STAR-OVER (`exists?`'s `SELECT 1 AS one FROM posts
+--     … guid = ?` is represented by a `SELECT posts.*` note), 6 PRED-OP-DIFF,
+--     2 LIMIT-DIFF, 2 PROJ/other-DIFF, 6 EXACT. The PRED-OP-DIFF and
+--     LIMIT-DIFF rows are computed on RAW notes and this endpoint's notes are
+--     bind-rotated as rendered, so some of them are instrument artefact rather
+--     than fidelity loss; the MISSING rows above are not — a missing note
+--     cannot be a rotation artefact.
+--
+-- X8  BOUNDARY HARVESTS THIS BATCH'S COPY OF THE SHARED FILE NEVER RECEIVED.
+--     `concolic_targets.rb` is nominally the shared boundary (Rule T), but the
+--     four batches' copies have diverged and people_stream's is the furthest
+--     behind. Measured 2026-09-10:
+--       B-8 pending note      people_stream 0 occurrences, notifications 1,
+--                             comments 1.  **APPLIED HERE** — see X2(b).
+--       kwargs finder conds   people_stream 0, notifications 10, comments 19.
+--                             (`ConcolicKwargsToPositional` /
+--                             `Thread.current[:concolic_finder_conds]`.)
+--                             NOT APPLIED: it changes the CONTENT of notes the
+--                             corpus already carries, so applying it under an
+--                             unchanged corpus would make the boundary and the
+--                             evidence disagree. It is the direct cause of H3's
+--                             `"Person query (class-level finder), args=args=nil"`
+--                             note and of X7's `people.guid` PRED-OP-DIFF.
+--                             RAISED.
+--       B-2 escape_segment    people_stream declares it a TARGET (note `''`);
+--                             comments and notifications converted it to a
+--                             SHIM over the real percent-encoder. RAISED.
+--     The SHARED file `reports/diaspora/concolic_targets.rb` carries NONE of
+--     the three. Under DISCIPLINE §T2/§T3 an agent may not edit it and a
+--     boundary change voids every endpoint, so all three are raised for the
+--     coordinator. B-8 was applied to THIS batch's copy only, because it is
+--     purely ADDITIVE (it adds a note where there was none and changes no
+--     decision, no PC and no access shape), which the differential in X2(b)
+--     demonstrates.
+--
+-- ============================================================================
+-- METHOD (applies to every extracted policy)
+-- ============================================================================
+-- Extracted policies are STATEMENT-level; the reference is REVEAL-level. A
+-- consumer treating this file as access control is OVER-PERMISSIVE wherever
+-- the app over-fetches and filters in Ruby.
+-- ============================================================================
+--
+-- EXTRACTION PROVENANCE
+--   corpus  : results3/people_stream, 1109 dumps, 1109 runs loaded
+--   queries : 13094 raw -> 107 distinct -> 42 subsumed -> 65 views
+--   fold    : _experiment/variant_d AssocFoldingTransformer (mandatory —
+--             the vanilla src/ fold drops 73 461 `(VAR == VAR(_))` PCs
+--             on this corpus; measured by skipped_pcs_audit both ways)
+--
+
+SELECT `people`.* FROM `people`, `mentions`, `comments`, `posts`, `people` AS `people0` WHERE `people`.`id` = `mentions`.`person_id` AND `mentions`.`mentions_container_id` = `comments`.`id` AND `mentions`.`mentions_container_type` = 'Comment' AND `comments`.`commentable_id` = `posts`.`id` AND `comments`.`commentable_type` = 'Post' AND `posts`.`author_id` = `people0`.`id` AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare') AND `people0`.`closed_account` = FALSE AND `posts`.`comments_count` <> 0 AND `posts`.`text` <> '';
+
+SELECT `people`.* FROM `people`, `mentions`, `comments`, `posts`, `people` AS `people0` WHERE `people`.`id` = `mentions`.`person_id` AND `mentions`.`mentions_container_id` = `comments`.`id` AND `mentions`.`mentions_container_type` = 'Comment' AND `comments`.`commentable_id` = `posts`.`id` AND `comments`.`commentable_type` = 'Post' AND `posts`.`author_id` = `people0`.`id` AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare') AND `people0`.`closed_account` = FALSE AND `posts`.`comments_count` <> 0 AND `posts`.`text` = '';
+
+SELECT 1 AS one FROM `participations`, `people`, `posts`, `people` AS `people0` WHERE `participations`.`author_id` = `people`.`id` AND `participations`.`target_id` = `posts`.`id` AND `people`.`owner_id` = _MY_UID AND `posts`.`author_id` = `people0`.`id` AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare') AND `people0`.`closed_account` = FALSE AND `posts`.`text` <> '';
+
+SELECT 1 AS one FROM `participations`, `people`, `posts`, `people` AS `people0` WHERE `participations`.`author_id` = `people`.`id` AND `participations`.`target_id` = `posts`.`id` AND `people`.`owner_id` = _MY_UID AND `posts`.`author_id` = `people0`.`id` AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare') AND `people0`.`closed_account` = FALSE AND `posts`.`text` = '';
+
+SELECT `likes`.* FROM `likes`, `people`, `posts`, `people` AS `people0` WHERE `likes`.`author_id` = `people`.`id` AND `likes`.`target_id` = `posts`.`id` AND `likes`.`target_type` = 'Post' AND `people`.`owner_id` = _MY_UID AND `posts`.`author_id` = `people0`.`id` AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare') AND `people0`.`closed_account` = FALSE;
+
+SELECT `mentions`.* FROM `mentions`, `comments`, `posts`, `people` WHERE `mentions`.`mentions_container_id` = `comments`.`id` AND `mentions`.`mentions_container_type` = 'Comment' AND `comments`.`commentable_id` = `posts`.`id` AND `comments`.`commentable_type` = 'Post' AND `posts`.`author_id` = `people`.`id` AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare') AND `people`.`closed_account` = FALSE AND `posts`.`comments_count` <> 0 AND `posts`.`text` <> '';
+
+SELECT `mentions`.* FROM `mentions`, `comments`, `posts`, `people` WHERE `mentions`.`mentions_container_id` = `comments`.`id` AND `mentions`.`mentions_container_type` = 'Comment' AND `comments`.`commentable_id` = `posts`.`id` AND `comments`.`commentable_type` = 'Post' AND `posts`.`author_id` = `people`.`id` AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare') AND `people`.`closed_account` = FALSE AND `posts`.`comments_count` <> 0 AND `posts`.`text` = '';
+
+SELECT `people`.* FROM `people`, `comments`, `posts`, `people` AS `people0` WHERE `people`.`id` = `comments`.`author_id` AND `comments`.`commentable_id` = `posts`.`id` AND `comments`.`commentable_type` = 'Post' AND `posts`.`author_id` = `people0`.`id` AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare') AND `people0`.`closed_account` = FALSE AND `posts`.`comments_count` <> 0 AND `posts`.`text` <> '';
+
+SELECT `people`.* FROM `people`, `comments`, `posts`, `people` AS `people0` WHERE `people`.`id` = `comments`.`author_id` AND `comments`.`commentable_id` = `posts`.`id` AND `comments`.`commentable_type` = 'Post' AND `posts`.`author_id` = `people0`.`id` AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare') AND `people0`.`closed_account` = FALSE AND `posts`.`comments_count` <> 0 AND `posts`.`text` = '';
+
+SELECT `people`.* FROM `people`, `likes`, `posts`, `people` AS `people0` WHERE `people`.`id` = `likes`.`author_id` AND `likes`.`target_id` = `posts`.`id` AND `likes`.`target_type` = 'Post' AND `likes`.`positive` = TRUE AND `posts`.`author_id` = `people0`.`id` AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare') AND `people0`.`closed_account` = FALSE AND `posts`.`text` <> '';
+
+SELECT `people`.* FROM `people`, `likes`, `posts`, `people` AS `people0` WHERE `people`.`id` = `likes`.`author_id` AND `likes`.`target_id` = `posts`.`id` AND `likes`.`target_type` = 'Post' AND `likes`.`positive` = TRUE AND `posts`.`author_id` = `people0`.`id` AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare') AND `people0`.`closed_account` = FALSE AND `posts`.`text` = '';
+
+-- NOTE: unresolved symbolic binds kept as placeholders: _SYM_PERSON_via_user_id
+SELECT `people`.* FROM `people`, `mentions`, `comments`, `posts` WHERE `people`.`id` = `mentions`.`person_id` AND `mentions`.`mentions_container_id` = `comments`.`id` AND `mentions`.`mentions_container_type` = 'Comment' AND `comments`.`commentable_id` = `posts`.`id` AND `comments`.`commentable_type` = 'Post' AND `posts`.`author_id` = _SYM_PERSON_via_user_id AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare') AND `posts`.`comments_count` <> 0 AND `posts`.`text` <> '';
+
+-- NOTE: unresolved symbolic binds kept as placeholders: _SYM_PERSON_via_user_id
+SELECT `people`.* FROM `people`, `mentions`, `comments`, `posts` WHERE `people`.`id` = `mentions`.`person_id` AND `mentions`.`mentions_container_id` = `comments`.`id` AND `mentions`.`mentions_container_type` = 'Comment' AND `comments`.`commentable_id` = `posts`.`id` AND `comments`.`commentable_type` = 'Post' AND `posts`.`author_id` = _SYM_PERSON_via_user_id AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare') AND `posts`.`comments_count` <> 0 AND `posts`.`text` = '';
+
+-- NOTE: unresolved symbolic binds kept as placeholders: _SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_id
+SELECT `people`.* FROM `people`, `mentions`, `comments`, `posts` WHERE `people`.`id` = `mentions`.`person_id` AND `mentions`.`mentions_container_id` = `comments`.`id` AND `mentions`.`mentions_container_type` = 'Comment' AND `comments`.`commentable_id` = `posts`.`id` AND `comments`.`commentable_type` = 'Post' AND `posts`.`author_id` = _SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_id AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare') AND `posts`.`comments_count` <> 0 AND `posts`.`text` <> '';
+
+-- NOTE: unresolved symbolic binds kept as placeholders: _SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_id
+SELECT `people`.* FROM `people`, `mentions`, `comments`, `posts` WHERE `people`.`id` = `mentions`.`person_id` AND `mentions`.`mentions_container_id` = `comments`.`id` AND `mentions`.`mentions_container_type` = 'Comment' AND `comments`.`commentable_id` = `posts`.`id` AND `comments`.`commentable_type` = 'Post' AND `posts`.`author_id` = _SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_id AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare') AND `posts`.`comments_count` <> 0 AND `posts`.`text` = '';
+
+SELECT `people`.* FROM `people`, `mentions`, `posts`, `people` AS `people0` WHERE `people`.`id` = `mentions`.`person_id` AND `mentions`.`mentions_container_id` = `posts`.`id` AND `mentions`.`mentions_container_type` = 'Post' AND `posts`.`author_id` = `people0`.`id` AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare') AND `people0`.`closed_account` = FALSE;
+
+-- NOTE: unresolved symbolic binds kept as placeholders: _SYM_PERSON_via_user_id
+SELECT 1 AS one FROM `participations`, `people`, `posts` WHERE `participations`.`author_id` = `people`.`id` AND `participations`.`target_id` = `posts`.`id` AND `people`.`owner_id` = _MY_UID AND `posts`.`author_id` = _SYM_PERSON_via_user_id AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare') AND `posts`.`text` <> '';
+
+-- NOTE: unresolved symbolic binds kept as placeholders: _SYM_PERSON_via_user_id
+SELECT 1 AS one FROM `participations`, `people`, `posts` WHERE `participations`.`author_id` = `people`.`id` AND `participations`.`target_id` = `posts`.`id` AND `people`.`owner_id` = _MY_UID AND `posts`.`author_id` = _SYM_PERSON_via_user_id AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare') AND `posts`.`text` = '';
+
+-- NOTE: unresolved symbolic binds kept as placeholders: _SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_id
+SELECT 1 AS one FROM `participations`, `people`, `posts` WHERE `participations`.`author_id` = `people`.`id` AND `participations`.`target_id` = `posts`.`id` AND `people`.`owner_id` = _MY_UID AND `posts`.`author_id` = _SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_id AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare') AND `posts`.`text` <> '';
+
+-- NOTE: unresolved symbolic binds kept as placeholders: _SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_id
+SELECT 1 AS one FROM `participations`, `people`, `posts` WHERE `participations`.`author_id` = `people`.`id` AND `participations`.`target_id` = `posts`.`id` AND `people`.`owner_id` = _MY_UID AND `posts`.`author_id` = _SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_id AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare') AND `posts`.`text` = '';
+
+SELECT `comments`.* FROM `comments`, `posts`, `people` WHERE `comments`.`commentable_id` = `posts`.`id` AND `comments`.`commentable_type` = 'Post' AND `posts`.`author_id` = `people`.`id` AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare') AND `people`.`closed_account` = FALSE AND `posts`.`comments_count` <> 0 AND `posts`.`text` <> '';
+
+SELECT `comments`.* FROM `comments`, `posts`, `people` WHERE `comments`.`commentable_id` = `posts`.`id` AND `comments`.`commentable_type` = 'Post' AND `posts`.`author_id` = `people`.`id` AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare') AND `people`.`closed_account` = FALSE AND `posts`.`comments_count` <> 0 AND `posts`.`text` = '';
+
+-- NOTE: unresolved symbolic binds kept as placeholders: _SYM_PERSON_via_user_id
+SELECT `likes`.* FROM `likes`, `people`, `posts` WHERE `likes`.`author_id` = `people`.`id` AND `likes`.`target_id` = `posts`.`id` AND `likes`.`target_type` = 'Post' AND `people`.`owner_id` = _MY_UID AND `posts`.`author_id` = _SYM_PERSON_via_user_id AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare');
+
+-- NOTE: unresolved symbolic binds kept as placeholders: _SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_id
+SELECT `likes`.* FROM `likes`, `people`, `posts` WHERE `likes`.`author_id` = `people`.`id` AND `likes`.`target_id` = `posts`.`id` AND `likes`.`target_type` = 'Post' AND `people`.`owner_id` = _MY_UID AND `posts`.`author_id` = _SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_id AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare');
+
+SELECT `likes`.* FROM `likes`, `posts`, `people` WHERE `likes`.`target_id` = `posts`.`id` AND `likes`.`target_type` = 'Post' AND `likes`.`positive` = TRUE AND `posts`.`author_id` = `people`.`id` AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare') AND `people`.`closed_account` = FALSE AND `posts`.`text` <> '';
+
+SELECT `likes`.* FROM `likes`, `posts`, `people` WHERE `likes`.`target_id` = `posts`.`id` AND `likes`.`target_type` = 'Post' AND `likes`.`positive` = TRUE AND `posts`.`author_id` = `people`.`id` AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare') AND `people`.`closed_account` = FALSE AND `posts`.`text` = '';
+
+-- NOTE: unresolved symbolic binds kept as placeholders: _SYM_PERSON_via_user_id
+SELECT `mentions`.* FROM `mentions`, `comments`, `posts` WHERE `mentions`.`mentions_container_id` = `comments`.`id` AND `mentions`.`mentions_container_type` = 'Comment' AND `comments`.`commentable_id` = `posts`.`id` AND `comments`.`commentable_type` = 'Post' AND `posts`.`author_id` = _SYM_PERSON_via_user_id AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare') AND `posts`.`comments_count` <> 0 AND `posts`.`text` <> '';
+
+-- NOTE: unresolved symbolic binds kept as placeholders: _SYM_PERSON_via_user_id
+SELECT `mentions`.* FROM `mentions`, `comments`, `posts` WHERE `mentions`.`mentions_container_id` = `comments`.`id` AND `mentions`.`mentions_container_type` = 'Comment' AND `comments`.`commentable_id` = `posts`.`id` AND `comments`.`commentable_type` = 'Post' AND `posts`.`author_id` = _SYM_PERSON_via_user_id AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare') AND `posts`.`comments_count` <> 0 AND `posts`.`text` = '';
+
+-- NOTE: unresolved symbolic binds kept as placeholders: _SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_id
+SELECT `mentions`.* FROM `mentions`, `comments`, `posts` WHERE `mentions`.`mentions_container_id` = `comments`.`id` AND `mentions`.`mentions_container_type` = 'Comment' AND `comments`.`commentable_id` = `posts`.`id` AND `comments`.`commentable_type` = 'Post' AND `posts`.`author_id` = _SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_id AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare') AND `posts`.`comments_count` <> 0 AND `posts`.`text` <> '';
+
+-- NOTE: unresolved symbolic binds kept as placeholders: _SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_id
+SELECT `mentions`.* FROM `mentions`, `comments`, `posts` WHERE `mentions`.`mentions_container_id` = `comments`.`id` AND `mentions`.`mentions_container_type` = 'Comment' AND `comments`.`commentable_id` = `posts`.`id` AND `comments`.`commentable_type` = 'Post' AND `posts`.`author_id` = _SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_id AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare') AND `posts`.`comments_count` <> 0 AND `posts`.`text` = '';
+
+SELECT `mentions`.* FROM `mentions`, `posts`, `people` WHERE `mentions`.`mentions_container_id` = `posts`.`id` AND `mentions`.`mentions_container_type` = 'Post' AND `posts`.`author_id` = `people`.`id` AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare') AND `people`.`closed_account` = FALSE;
+
+SELECT `o_embed_caches`.* FROM `o_embed_caches`, `posts`, `people` WHERE `o_embed_caches`.`id` = `posts`.`o_embed_cache_id` AND `posts`.`author_id` = `people`.`id` AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare') AND `people`.`closed_account` = FALSE;
+
+SELECT `open_graph_caches`.* FROM `open_graph_caches`, `posts`, `people` WHERE `open_graph_caches`.`id` = `posts`.`open_graph_cache_id` AND `posts`.`author_id` = `people`.`id` AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare') AND `people`.`closed_account` = FALSE;
+
+-- NOTE: unresolved symbolic binds kept as placeholders: _SYM_PERSON_via_user_id
+SELECT `people`.* FROM `people`, `comments`, `posts` WHERE `people`.`id` = `comments`.`author_id` AND `comments`.`commentable_id` = `posts`.`id` AND `comments`.`commentable_type` = 'Post' AND `posts`.`author_id` = _SYM_PERSON_via_user_id AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare') AND `posts`.`comments_count` <> 0 AND `posts`.`text` <> '';
+
+-- NOTE: unresolved symbolic binds kept as placeholders: _SYM_PERSON_via_user_id
+SELECT `people`.* FROM `people`, `comments`, `posts` WHERE `people`.`id` = `comments`.`author_id` AND `comments`.`commentable_id` = `posts`.`id` AND `comments`.`commentable_type` = 'Post' AND `posts`.`author_id` = _SYM_PERSON_via_user_id AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare') AND `posts`.`comments_count` <> 0 AND `posts`.`text` = '';
+
+-- NOTE: unresolved symbolic binds kept as placeholders: _SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_id
+SELECT `people`.* FROM `people`, `comments`, `posts` WHERE `people`.`id` = `comments`.`author_id` AND `comments`.`commentable_id` = `posts`.`id` AND `comments`.`commentable_type` = 'Post' AND `posts`.`author_id` = _SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_id AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare') AND `posts`.`comments_count` <> 0 AND `posts`.`text` <> '';
+
+-- NOTE: unresolved symbolic binds kept as placeholders: _SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_id
+SELECT `people`.* FROM `people`, `comments`, `posts` WHERE `people`.`id` = `comments`.`author_id` AND `comments`.`commentable_id` = `posts`.`id` AND `comments`.`commentable_type` = 'Post' AND `posts`.`author_id` = _SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_id AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare') AND `posts`.`comments_count` <> 0 AND `posts`.`text` = '';
+
+-- NOTE: unresolved symbolic binds kept as placeholders: _SYM_PERSON_via_user_id
+SELECT `people`.* FROM `people`, `likes`, `posts` WHERE `people`.`id` = `likes`.`author_id` AND `likes`.`target_id` = `posts`.`id` AND `likes`.`target_type` = 'Post' AND `likes`.`positive` = TRUE AND `posts`.`author_id` = _SYM_PERSON_via_user_id AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare') AND `posts`.`text` <> '';
+
+-- NOTE: unresolved symbolic binds kept as placeholders: _SYM_PERSON_via_user_id
+SELECT `people`.* FROM `people`, `likes`, `posts` WHERE `people`.`id` = `likes`.`author_id` AND `likes`.`target_id` = `posts`.`id` AND `likes`.`target_type` = 'Post' AND `likes`.`positive` = TRUE AND `posts`.`author_id` = _SYM_PERSON_via_user_id AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare') AND `posts`.`text` = '';
+
+-- NOTE: unresolved symbolic binds kept as placeholders: _SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_id
+SELECT `people`.* FROM `people`, `likes`, `posts` WHERE `people`.`id` = `likes`.`author_id` AND `likes`.`target_id` = `posts`.`id` AND `likes`.`target_type` = 'Post' AND `likes`.`positive` = TRUE AND `posts`.`author_id` = _SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_id AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare') AND `posts`.`text` <> '';
+
+-- NOTE: unresolved symbolic binds kept as placeholders: _SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_id
+SELECT `people`.* FROM `people`, `likes`, `posts` WHERE `people`.`id` = `likes`.`author_id` AND `likes`.`target_id` = `posts`.`id` AND `likes`.`target_type` = 'Post' AND `likes`.`positive` = TRUE AND `posts`.`author_id` = _SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_id AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare') AND `posts`.`text` = '';
+
+-- NOTE: unresolved symbolic binds kept as placeholders: _SYM_PERSON_via_user_id
+SELECT `people`.* FROM `people`, `mentions`, `posts` WHERE `people`.`id` = `mentions`.`person_id` AND `mentions`.`mentions_container_id` = `posts`.`id` AND `mentions`.`mentions_container_type` = 'Post' AND `posts`.`author_id` = _SYM_PERSON_via_user_id AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare');
+
+-- NOTE: unresolved symbolic binds kept as placeholders: _SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_id
+SELECT `people`.* FROM `people`, `mentions`, `posts` WHERE `people`.`id` = `mentions`.`person_id` AND `mentions`.`mentions_container_id` = `posts`.`id` AND `mentions`.`mentions_container_type` = 'Post' AND `posts`.`author_id` = _SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_id AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare');
+
+SELECT `people`.* FROM `people`, `posts`, `people` AS `people0` WHERE `people`.`id` = `posts`.`author_id` AND `posts`.`author_id` = `people0`.`id` AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare') AND `people0`.`closed_account` = FALSE;
+
+-- NOTE: unresolved symbolic binds kept as placeholders: _SYM_PERSON_via_user_id
+SELECT `comments`.* FROM `comments`, `posts` WHERE `comments`.`commentable_id` = `posts`.`id` AND `comments`.`commentable_type` = 'Post' AND `posts`.`author_id` = _SYM_PERSON_via_user_id AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare') AND `posts`.`comments_count` <> 0 AND `posts`.`text` <> '';
+
+-- NOTE: unresolved symbolic binds kept as placeholders: _SYM_PERSON_via_user_id
+SELECT `comments`.* FROM `comments`, `posts` WHERE `comments`.`commentable_id` = `posts`.`id` AND `comments`.`commentable_type` = 'Post' AND `posts`.`author_id` = _SYM_PERSON_via_user_id AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare') AND `posts`.`comments_count` <> 0 AND `posts`.`text` = '';
+
+-- NOTE: unresolved symbolic binds kept as placeholders: _SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_id
+SELECT `comments`.* FROM `comments`, `posts` WHERE `comments`.`commentable_id` = `posts`.`id` AND `comments`.`commentable_type` = 'Post' AND `posts`.`author_id` = _SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_id AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare') AND `posts`.`comments_count` <> 0 AND `posts`.`text` <> '';
+
+-- NOTE: unresolved symbolic binds kept as placeholders: _SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_id
+SELECT `comments`.* FROM `comments`, `posts` WHERE `comments`.`commentable_id` = `posts`.`id` AND `comments`.`commentable_type` = 'Post' AND `posts`.`author_id` = _SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_id AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare') AND `posts`.`comments_count` <> 0 AND `posts`.`text` = '';
+
+-- NOTE: unresolved symbolic binds kept as placeholders: _SYM_PERSON_via_user_id
+SELECT `likes`.* FROM `likes`, `posts` WHERE `likes`.`target_id` = `posts`.`id` AND `likes`.`target_type` = 'Post' AND `likes`.`positive` = TRUE AND `posts`.`author_id` = _SYM_PERSON_via_user_id AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare') AND `posts`.`text` <> '';
+
+-- NOTE: unresolved symbolic binds kept as placeholders: _SYM_PERSON_via_user_id
+SELECT `likes`.* FROM `likes`, `posts` WHERE `likes`.`target_id` = `posts`.`id` AND `likes`.`target_type` = 'Post' AND `likes`.`positive` = TRUE AND `posts`.`author_id` = _SYM_PERSON_via_user_id AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare') AND `posts`.`text` = '';
+
+-- NOTE: unresolved symbolic binds kept as placeholders: _SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_id
+SELECT `likes`.* FROM `likes`, `posts` WHERE `likes`.`target_id` = `posts`.`id` AND `likes`.`target_type` = 'Post' AND `likes`.`positive` = TRUE AND `posts`.`author_id` = _SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_id AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare') AND `posts`.`text` <> '';
+
+-- NOTE: unresolved symbolic binds kept as placeholders: _SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_id
+SELECT `likes`.* FROM `likes`, `posts` WHERE `likes`.`target_id` = `posts`.`id` AND `likes`.`target_type` = 'Post' AND `likes`.`positive` = TRUE AND `posts`.`author_id` = _SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_id AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare') AND `posts`.`text` = '';
+
+-- NOTE: unresolved symbolic binds kept as placeholders: _SYM_PERSON_via_user_id
+SELECT `mentions`.* FROM `mentions`, `posts` WHERE `mentions`.`mentions_container_id` = `posts`.`id` AND `mentions`.`mentions_container_type` = 'Post' AND `posts`.`author_id` = _SYM_PERSON_via_user_id AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare');
+
+-- NOTE: unresolved symbolic binds kept as placeholders: _SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_id
+SELECT `mentions`.* FROM `mentions`, `posts` WHERE `mentions`.`mentions_container_id` = `posts`.`id` AND `mentions`.`mentions_container_type` = 'Post' AND `posts`.`author_id` = _SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_id AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare');
+
+-- NOTE: unresolved symbolic binds kept as placeholders: _SYM_PERSON_via_user_id
+SELECT `o_embed_caches`.* FROM `o_embed_caches`, `posts` WHERE `o_embed_caches`.`id` = `posts`.`o_embed_cache_id` AND `posts`.`author_id` = _SYM_PERSON_via_user_id AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare');
+
+-- NOTE: unresolved symbolic binds kept as placeholders: _SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_id
+SELECT `o_embed_caches`.* FROM `o_embed_caches`, `posts` WHERE `o_embed_caches`.`id` = `posts`.`o_embed_cache_id` AND `posts`.`author_id` = _SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_id AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare');
+
+-- NOTE: unresolved symbolic binds kept as placeholders: _SYM_PERSON_via_user_id
+SELECT `open_graph_caches`.* FROM `open_graph_caches`, `posts` WHERE `open_graph_caches`.`id` = `posts`.`open_graph_cache_id` AND `posts`.`author_id` = _SYM_PERSON_via_user_id AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare');
+
+-- NOTE: unresolved symbolic binds kept as placeholders: _SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_id
+SELECT `open_graph_caches`.* FROM `open_graph_caches`, `posts` WHERE `open_graph_caches`.`id` = `posts`.`open_graph_cache_id` AND `posts`.`author_id` = _SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_id AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare');
+
+-- NOTE: unresolved symbolic binds kept as placeholders: _SYM_PERSON_via_user_id
+SELECT `people`.* FROM `people`, `posts` WHERE `people`.`id` = `posts`.`author_id` AND `posts`.`author_id` = _SYM_PERSON_via_user_id AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare');
+
+-- NOTE: unresolved symbolic binds kept as placeholders: _SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_id
+SELECT `people`.* FROM `people`, `posts` WHERE `people`.`id` = `posts`.`author_id` AND `posts`.`author_id` = _SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_id AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare');
+
+SELECT `posts`.* FROM `posts`, `people` WHERE `posts`.`author_id` = `people`.`id` AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare') AND `people`.`closed_account` = FALSE;
+
+SELECT `people`.* FROM `people`;
+
+-- NOTE: unresolved symbolic binds kept as placeholders: _SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_author_id
+SELECT `people`.* FROM `people` WHERE `people`.`id` = _SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_author_id;
+
+-- NOTE: unresolved symbolic binds kept as placeholders: _SYM_PERSON_via_user_id
+SELECT `posts`.* FROM `posts` WHERE `posts`.`author_id` = _SYM_PERSON_via_user_id AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare');
+
+-- NOTE: unresolved symbolic binds kept as placeholders: _SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_id
+SELECT `posts`.* FROM `posts` WHERE `posts`.`author_id` = _SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_id AND `posts`.`created_at` < _NOW AND `posts`.`type` IN ('StatusMessage', 'Reshare');

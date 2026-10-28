@@ -1,0 +1,18 @@
+
+##### noteless_call #####
+== noteless_call_audit: 313977 dumps, 8105032 target-call events ==
+
+-- documented walls with no SQL note (1 targets) --
+    521107  ActionController::Rendering._set_rendered_content_type
+
+-- note-less calls whose statement IS EVIDENCED in the same run (1 targets, 6191 dumps, 14662 events) --
+   CHECKED per event: the same target published a note on another falsy-returning
+   call in that dump, so the statement is in the run. Not a finding.
+     14662 events /   6191 dumps   ActiveRecord::FinderMethods.find_by
+           of these, 4348 have >1 candidate statement (present either way)
+           e.g. dump_html_typed_dse4948_DR4htmtr0.json
+   ambiguous (candidate set > 1): 4348 of 14662 events
+
+RESULT: pass — every non-wall target call carries a note, or has its statement
+        verified present in the same run.
+EXIT=0

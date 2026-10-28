@@ -159,7 +159,29 @@ module ConcolicTargets
     if receiver.is_a?(Class)
       return "#{receiver.name} query (class-level finder), args=#{render_args(args)}"
     end
-    render_relation_sql(receiver)
+    base = render_relation_sql(receiver)
+    # B-6 BACK-PORT, posts_show batch-local, 2026-09-25.
+    # Statement-shape fidelity (2026-08-21, the severed contacts chain, ported
+    # from people_stream/comments_index/notifications_index/conversations_index
+    # which have carried this since then):
+    # `relation.find_by(conditions)` -- here `post.likes.find_by(author_id:)`,
+    # `post.reshares.find_by(author_id:)` and
+    # `poll.poll_participations.find_by(author_id:)`
+    # (app/models/post.rb:136-144, app/models/poll.rb:36) -- carries its WHERE
+    # in ARGS, which this Relation branch never rendered: the note collapsed to
+    # the bare relation SQL and DROPPED the `author_id = <signed-in user>`
+    # conjunct. That is a PRINCIPAL predicate, so the extracted policy claimed
+    # the endpoint discloses every like on a post rather than only the viewer's
+    # own. Measured on v2: the sole remaining mock_note_check RED (3 shapes).
+    # Only a non-empty Hash arg qualifies, so records/to_a/pluck calls -- which
+    # carry none -- keep their notes byte-identical. No pk fallback: a bare
+    # scalar arg on a relation call is not evidence of a WHERE.
+    extra = relation_args_where(receiver, args)
+    if extra
+      base.include?(" WHERE ") ? "#{base} AND #{extra}" : "#{base} WHERE #{extra}"
+    else
+      base
+    end
   rescue Exception => e # rubocop:disable Lint/RescueException
     # Never let note-rendering crash a mock. NotImplementedError < ScriptError
     # < Exception, so a bare `rescue StandardError` would let the wall escape.
@@ -169,6 +191,33 @@ module ConcolicTargets
               receiver.class.name
             end
     "#{klass} query (render_relation_sql failed: #{e.class}#{e.message[0,40]}), args=#{render_args(args)}"
+  end
+
+  # Relation-receiver companion to a class finder's WHERE extraction: render
+  # the first non-empty Hash in args as table-qualified conditions, nil
+  # otherwise. Deliberately NO primary-key fallback -- a bare scalar arg on a
+  # relation call is not evidence of a WHERE.
+  # PORTED VERBATIM from people_stream/concolic_targets.rb (B-6, 2026-09-25).
+  def relation_args_where(receiver, args)
+    return nil unless args.is_a?(Hash)
+    table = receiver.respond_to?(:klass) && receiver.klass.respond_to?(:table_name) &&
+            receiver.klass.table_name
+    return nil unless table
+    args.each_value do |v|
+      if v.is_a?(Hash) && !v.empty?
+        return v.map { |k, vv| %("#{table}"."#{k}" = #{render_arg_value(vv)}) }.join(" AND ")
+      end
+    end
+    # Fallback: the ConcolicKwargsToPositional thread-local used by the sibling
+    # batches (the interceptor's param binding drops the re-packed hash for
+    # *rest-signature finders called with keyword syntax). posts_show does not
+    # install that shim, so this is inert here -- kept so the port stays
+    # verbatim and so installing the shim later needs no edit at this site.
+    tc = Thread.current[:concolic_finder_conds]
+    if tc.is_a?(Hash) && !tc.empty?
+      return tc.map { |k, vv| %("#{table}"."#{k}" = #{render_arg_value(vv)}) }.join(" AND ")
+    end
+    nil
   end
 
   # Render args for class-level finders / fallbacks (readable, no inspect noise).
@@ -204,6 +253,55 @@ module ConcolicTargets
   end
 
 
+  # posts_show-local, 2026-09-25: relation-level DML must render AS DML.
+  #
+  # `sql_for` renders the RELATION -- `SELECT "t".* FROM "t" WHERE ...` -- so
+  # every `update_all` / `delete_all` note in the corpus came out a SELECT and
+  # mock_note_check could never match it against the real
+  # `UPDATE "notifications" SET "unread" = 'f' WHERE ...` (its normaliser finds
+  # no FROM in an UPDATE, so tables == set(), which never equals {notifications}).
+  # The judge's `_is_dml` filter drops a SELECT note too, so the write was not
+  # witnessable either.
+  #
+  # Same shape as `dml_update_note` above (instance-level update_column(s)),
+  # but the predicate comes from the relation: render the relation with
+  # `render_relation_sql` (so symbolic binds still show as $$(SYMNAME)), keep
+  # everything from WHERE onwards, and swap the SELECT head for the DML head.
+  def relation_dml_note(op, receiver, args)
+    table = if receiver.respond_to?(:klass) && receiver.klass.respond_to?(:table_name)
+              receiver.klass.table_name
+            elsif receiver.class.respond_to?(:table_name)
+              receiver.class.table_name
+            else
+              receiver.class.name
+            end
+    tail = render_relation_sql(receiver)[/\s(WHERE\s.*)\z/m, 1]
+    where = tail ? " #{tail}" : ""
+    return %(DELETE FROM "#{table}"#{where}) if op == :delete_all
+
+    # AR 5.2 Relation#update_all(updates) -- the interceptor keys call_args by
+    # the ORIGINAL method's parameter name, so the hash arrives under
+    # "updates". Accept the symbol and a lone positional as well, since a
+    # silent miss here would put "(unknown columns)" in the note and the
+    # mismatch would look like an app change rather than a plumbing miss.
+    updates = nil
+    if args.is_a?(Hash)
+      updates = args["updates"] || args[:updates]
+      updates ||= args.values.first if args.size == 1
+    end
+    sets = if updates.is_a?(Hash) && !updates.empty?
+             updates.map { |k, v| %("#{table}"."#{k}" = #{render_arg_value(v)}) }.join(", ")
+           else
+             "(unknown columns)"
+           end
+    %(UPDATE "#{table}" SET #{sets}#{where})
+  rescue Exception => e # rubocop:disable Lint/RescueException
+    # Never wall the mock (same contract as sql_for:163-171). The marker text
+    # is deliberately distinctive so a B-4-style silent degradation is
+    # greppable in the corpus rather than looking like a legitimate note.
+    "#{op} note render FAILED: #{e.class}#{e.message[0, 60]}"
+  end
+
   def render_arg_value(v)
     if v.respond_to?(:sym_name) && v.sym_name
       "$$(#{v.sym_name})"
@@ -221,7 +319,7 @@ module ConcolicTargets
   def render_relation_sql(rel)
     return "#{rel.class.name} (no arel)" unless rel.respond_to?(:arel) && rel.arel
 
-    visitor = Arel::Visitors::ToSql.new(rel.connection)
+    visitor = ConcolicSymbolicToSql.new(rel.connection) # B-4 back-port 2026-09-25
     collector = Arel::Collectors::SQLString.new
     sql = visitor.accept(rel.arel.ast, collector).value
 
@@ -245,7 +343,16 @@ module ConcolicTargets
       return
     end
     if defined?(Arel::Nodes::Casted) && node.is_a?(Arel::Nodes::Casted)
-      out << node.value
+      # B-4 back-port 2026-09-25 (bug-2b; landed 2026-08-19 in the five other
+      # endpoint copies and 2026-09-15 in reports/diaspora/concolic_targets.rb,
+      # :247-262 -- this copy was the only one still carrying the defect).
+      # arel-9 Casted exposes #val, NOT #value, so `out << node.value` raised
+      # NoMethodError and sql_for's rescue (:163-171) stored the EXCEPTION TEXT
+      # as the note ("Reshare query (render_relation_sql failed: ...)"). Every
+      # STI relation hits it: type_condition builds `type IN ('Reshare')` via
+      # Attribute#in -> build_quoted -> Casted. Casted also renders INLINE via
+      # #quoted (never as a `?` placeholder), so it must not join the
+      # `?`-substitution list at all -- appending misaligns every later bind.
       return
     end
     # Recurse into any object ivar that itself looks like an Arel node tree.
@@ -471,7 +578,16 @@ module ConcolicTargets
     # forecloses nothing. It exists only because SymbolicInt#to_s is
     # unsupported by design. It therefore belongs in this batch's targets.rb,
     # NOT in the shared boundary — see targets.rb "W3b to_param".
-    _descend = %i[default_render pluck blocked_people
+    # 2026-09-25: `pluck` REMOVED from this list. It was killing this batch's
+    # own Calculations#pluck mock (targets.rb:704-709), so
+    # `mentions_in_comments_for_post(post_id).pluck(:id)` inside the
+    # (deliberately descended) mark_user_notifications ran for real and issued
+    # `SELECT "mentions"."id" FROM "mentions" INNER JOIN comments ON ...` with
+    # no frame and no note -- mock_note_check's unwaivable "statements OUTSIDE
+    # any target frame" RED. Safe because its only call site immediately
+    # discards the result: `mention_ids.concat(...)` and
+    # IterableSymbolicList#concat returns self unchanged (targets.rb:142-144).
+    _descend = %i[default_render blocked_people
                   render render_to_string render_to_body
                   people_from_string build_mentioned_people_json
                   mark_user_notifications]
@@ -639,6 +755,20 @@ module ConcolicTargets
           else
             note = note.sub(/\ASELECT\s+(DISTINCT\s+)?.*?\s+FROM /m, "SELECT COUNT(*) FROM ")
           end
+          # 2026-09-25, note_fidelity ORDER-DIFF: AR strips the ordering
+          # before issuing a simple (no GROUP BY) aggregate --
+          # activerecord-5.2.4.3 relation/calculations.rb:269-270,
+          #   # PostgreSQL doesn't like ORDER BY when there are no GROUP BY
+          #   relation = unscope(:order).distinct!(false)
+          # -- but `sql_for` renders the relation as the app scoped it, and
+          # `Poll has_many :poll_answers, -> { order "id ASC" }`
+          # (app/models/poll.rb:8) genuinely carries one. The note therefore
+          # described an ordering the real statement provably never has.
+          # Mirror AR: drop it, but ONLY on the no-LIMIT/OFFSET path, because
+          # AR keeps the ordering on the limit/offset branch (:267, which
+          # builds a count subquery instead). Note-only: the value is
+          # untouched, so no path condition can move.
+          note = note.sub(/\s+ORDER\s+BY\s+.*\z/mi, "") unless note =~ /\b(LIMIT|OFFSET)\b/i
         rescue StandardError
           nil # projection rewrite must never crash the mock
         end
@@ -713,7 +843,7 @@ module ConcolicTargets
     # --- [ DESIGN #7 ] E. Relation-level DML --------------------------------
     %i[update_all delete_all].each do |m|
       interceptor.declare_target(rel, m, returns: lambda do |receiver, args, name|
-        symint("#{name}_#{m}_count", 1, note: sql_for(receiver, args))
+        symint("#{name}_#{m}_count", 1, note: relation_dml_note(m, receiver, args))
       end)
     end
     interceptor.declare_target(rel, :destroy_all, returns: lambda do |receiver, args, name|
@@ -1081,7 +1211,14 @@ module ConcolicTargets
                   col = refl.foreign_key
                   fk_raw = owner[refl.active_record_primary_key]
                 end
-                %(SELECT "#{table}".* FROM "#{table}" WHERE "#{table}"."#{col}" = #{render_arg_value(fk_raw)})
+                # LIMIT 1: AR 5.2 SingularAssociation#find_target is
+                # `scope.take` == `limit(1).records.first`, so the real
+                # statement always ends `LIMIT ?`. Without it every
+                # find_target shape scored LIMIT-DIFF (RED) in
+                # note_fidelity_audit -- a single-row read described as a
+                # bulk one. The mock returns exactly one symbolic_instance,
+                # so this makes the note say what the mock models.
+                %(SELECT "#{table}".* FROM "#{table}" WHERE "#{table}"."#{col}" = #{render_arg_value(fk_raw)} LIMIT 1)
               rescue StandardError
                 "SingularAssociation##{refl.name}"
               end
@@ -1674,6 +1811,21 @@ module ConcolicTargets
           s.respond_to?(:value) ? s.value : s
         end
       )
+    end
+  end
+end
+
+# B-4 back-port 2026-09-25, verbatim from reports/diaspora/concolic_targets.rb.
+# Renders a symbolic value that Arel wants to quote INLINE (the Casted path)
+# as $$(SYMNAME) instead of calling quote -> value_for_database -> #to_i on it.
+class ConcolicSymbolicToSql < Arel::Visitors::ToSql
+  private
+
+  def quoted(val, attribute)
+    if val.respond_to?(:sym_name) && val.sym_name
+      "$$(#{val.sym_name})"
+    else
+      super
     end
   end
 end

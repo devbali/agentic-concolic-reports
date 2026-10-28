@@ -1,0 +1,77 @@
+
+##### pc_visibility #####
+== pc_visibility_audit: 313977 dumps, 904 distinct vars minted ==
+
+-- 1. BLIND-VARS CENSUS (minted, never referenced by any PC; informational) --
+  _year                                    9762088 mints across  110 names
+  _id                                      9116358 mints across  131 names
+  _at                                      8472557 mints across   98 names
+  _count                                   2659803 mints across   34 names
+  _persisted                               2378673 mints across   30 names
+  _handle                                  1299089 mints across   17 names
+  _type                                    1144569 mints across   15 names
+  _name                                    1140298 mints across   30 names
+  _key                                     1106018 mints across   12 names
+  _guid                                    862217 mints across   15 names
+  _token                                   793878 mints across   12 names
+  _account                                 763967 mints across   10 names
+  _status                                  763967 mints across   10 names
+  _ip                                      684102 mints across    4 names
+  _url                                     631817 mints across    9 names
+  _small                                   631817 mints across    9 names
+  _medium                                  631817 mints across    9 names
+  _birthday                                631817 mints across    9 names
+  _gender                                  631817 mints across    9 names
+  _bio                                     631817 mints across    9 names
+  _searchable                              631817 mints across    9 names
+  _location                                631817 mints across    9 names
+  _nsfw                                    631817 mints across    9 names
+  _public                                  629333 mints across    7 names
+  _details                                 605429 mints across    8 names
+  _unread                                  531047 mints across    2 names
+  _secret                                  451827 mints across   10 names
+  _started                                 342051 mints across    2 names
+  _mail                                    342051 mints across    2 names
+  _language                                342051 mints across    2 names
+  _email                                   342051 mints across    2 names
+  _password                                342051 mints across    2 names
+  _shareables                              342051 mints across    2 names
+  _seen                                    342051 mints across    2 names
+  _after                                   342051 mints across    2 names
+  _export                                  342051 mints across    2 names
+  _exporting                               342051 mints across    2 names
+  _exif                                    342051 mints across    2 names
+  _file                                    342051 mints across    2 names
+  _photos                                  342051 mints across    2 names
+   (Cannot alone distinguish 'never compared by the app' from 'branch
+    invisible' — cross-check with C2 real-mode coverage or code reading,
+    then gate the columns the app provably compares with --gate.)
+
+-- 2. PC-SHAPE CENSUS (top 25; compare against the extraction's PC grammar) --
+   4595450  (VAR == N)
+   4498811  (VAR == True)
+   3245515  (VAR == VAR(_))
+   1779213  (len(VAR) > N)
+   1459284  (len(VAR) == N)
+    869795  (VAR == '_')
+    764289  (VAR == VAR)
+    378595  (VAR > N)
+    198126  (len(VAR) != N)
+     39886  (VAR != VAR(_))
+     27080  (VAR <= N)
+      3604  (VAR != VAR)
+
+-- 3. GATED COLUMNS (asserted app-compared; must be PC-visible) --
+  type                           VISIBLE (343265 references)
+  unread                         VISIBLE (1845363 references)
+  persisted                      VISIBLE (840551 references)
+  guid                           VISIBLE (874470 references)
+  first_name                     VISIBLE (519710 references)
+  last_name                      VISIBLE (519710 references)
+  person_id                      VISIBLE (890092 references)
+  diaspora_handle                VISIBLE (17467 references)
+  rows                           VISIBLE (3436623 references)
+  language                       VISIBLE (313977 references)
+
+RESULT: pass.
+EXIT=0

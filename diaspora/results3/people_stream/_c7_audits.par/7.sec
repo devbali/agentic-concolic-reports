@@ -1,0 +1,23 @@
+
+##### noteless_call #####
+== noteless_call_audit: 13677 dumps, 546386 target-call events ==
+
+-- documented walls with no SQL note (7 targets) --
+     34853  Gon::ControllerHelpers.gon
+     24443  ActionController::Rendering._set_rendered_content_type
+     19512  Anonymous.escape_segment
+      5696  Diaspora::MessageRenderer.title
+      2899  ActionController::Instrumentation.redirect_to
+         6  ActionController::Metal.status=
+
+-- NOTE-LESS target calls, UNVERIFIED (2 targets, 24443 dumps, 70244 events) --
+   each is a statement the corpus never recorded, so the extracted policy loses it
+   (the same-run evidence invariant does NOT hold for these: the target published
+    no note on any falsy-returning call in that dump)
+     56567 events /  10766 dumps   Person.name
+           e.g. dump_auth_json4624_X709110544r1.json
+     13677 events /  13677 dumps   PeopleController.diaspora_id?
+           e.g. dump_auth_json4627_X709110544r1.json
+
+RESULT: RED — publish the note via Thread.current[:concolic_pending_note] before returning a falsy value (B-8).
+EXIT=1

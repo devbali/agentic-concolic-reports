@@ -1,0 +1,1 @@
+/home/dev/project/src_new/domains/ruby_rails_sql/briefs/concrete_agent.md

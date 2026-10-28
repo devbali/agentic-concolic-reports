@@ -1,0 +1,11 @@
+SELECT 1 AS one FROM `posts`;
+SELECT `comments`.* FROM `comments` WHERE `comments`.`commentable_id` = _C1_ID AND `comments`.`commentable_type` = 'Post';
+SELECT `mentions`.* FROM `mentions` WHERE `mentions`.`mentions_container_id` = _C2_ROW2_ID AND `mentions`.`mentions_container_type` = 'Comment';
+SELECT `mentions`.* FROM `mentions` WHERE `mentions`.`mentions_container_id` = _C2_ANY_ID AND `mentions`.`mentions_container_type` = 'Comment';
+SELECT `people`.* FROM `people` WHERE `people`.`id` = _C2_ANY_AUTHOR_ID;
+SELECT `people`.* FROM `people` WHERE `people`.`id` = _C5_ANY_PERSON_ID;
+SELECT `people`.* FROM `people` WHERE `people`.`id` IN (_C5_ANY_PERSON_ID, _C5_ROW2_PERSON_ID);
+SELECT `posts`.* FROM `posts`;
+SELECT `profiles`.* FROM `profiles` WHERE `profiles`.`person_id` = _C2_ANY_AUTHOR_ID;
+SELECT `profiles`.* FROM `profiles` WHERE `profiles`.`person_id` = _C5_ANY_PERSON_ID;
+SELECT `profiles`.* FROM `profiles` WHERE `profiles`.`person_id` IN (_C5_ANY_PERSON_ID, _C5_ROW2_PERSON_ID);

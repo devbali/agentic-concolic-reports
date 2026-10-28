@@ -1,0 +1,2873 @@
+# frozen_string_literal: true
+#
+# concolic_targets.rb — target-function configuration for the diaspora
+# concolic experiment (Ruby has no decorators; this file is the equivalent
+# of the Python `@target` annotations, collected in one place).
+#
+# Companion to RAILS_CONCOLIC_MOCKING.md. Load AFTER the Rails environment
+# and the concolic runtime:
+#
+#   require "config/environment"
+#   require ".../ruby_runtime/call_interceptor"
+#   require ".../ruby_runtime/bool"        # SymbolicBool (planned)
+#   require ".../ruby_runtime/list"        # SymbolicList (length-only)
+#   require_relative "concolic_targets"
+#
+# Every declare_target below SKIPS the real body and returns a symbolic
+# value. Mock lambdas receive (receiver, args, result_name) — receiver is
+# needed for to_sql (query string -> note) and klass.columns_hash (attrs).
+#
+# All runtime features this file relies on are LANDED (commits 2af4c17,
+# fb0559c, 7c39ac0, 598a0cd, 5707edb, 7ba55d2 in ~/project/src):
+#   - symbool factory + SymbolicBool; note: kwarg on all factories
+#   - length-only SymbolicList; 3-arity (receiver, args, name) mocks
+#   - Z3-safe SYM_RESULT names; run error capture
+# Verified end-to-end by scripts/test_framework_targets.rb (3 PCs from the
+# real PostService#find! path).
+#
+# ===========================================================================
+# MOCK CLASSIFICATION (two populations — see the numbered sections below)
+# ---------------------------------------------------------------------------
+# **Design mocks (ours — the SQL-query interceptions), numbered #1..#11:**
+#   These intercept ActiveRecord query entry points and return *symbolic*
+#   values (a symbolic model instance / SymbolicInt / SymbolicBool /
+#   SymbolicList) so real app code branches on them and records path
+#   conditions. They ARE the concolic query layer. Sections A..G, I, H.
+#
+#     #1  Single-record finders   (FinderMethods find/take/first/last/find_by)
+#     #2  Class-level finders     (Core::ClassMethods Model.find / find_by)
+#     #3  Existence / emptiness   (exists? any? none? one? many? empty?)
+#     #4  Collection materialize  (Relation#to_a / to_ary / records; size)
+#     #5  Calculations            (count / sum)
+#     #6  (unsupported contents ops: pluck/ids/average/... and Batches)
+#     #7  Relation DML            (update_all / delete_all / destroy_all)
+#     #8  Instance persistence    (save / update / destroy / touch)
+#     #9  Raw SQL entry points    (find_by_sql / count_by_sql)
+#     #10 Gate 1b call-site mocks (decorated_stream_posts, tag_ids, ...)
+#     #11 Redis / Sidekiq enqueue (Sidekiq::Client push / push_bulk)
+#
+# **Agent crash-stopper mocks (added to stop runs crashing — NOT query
+#    design):** sections Y, Z, W, and X/X6. These return nil / render markers /
+#    concrete stubs to clear nil-plumbing, render, and framework walls. They
+#    are intentionally NOT numbered with #1..#11 (they are workarounds, not
+#    the query layer). Their section comments keep their categories
+#    (Y=framework walls, Z=render boundary, W=crash-free walls round 2,
+#    X/X6=wall-fixing discipline mocks).
+#
+# Rule of thumb: a mock is a *design* (SQL-query) mock iff it returns a
+# symbolic value whose `note` carries the real SQL (`sql_for`) that app code
+# would have run; a mock is a *crash-stopper* iff it returns nil/concrete/
+# render-marker to get past a wall that would otherwise raise.
+# ===========================================================================
+
+# BOUNDARY HARVEST B-2 (2026-08-28): the escape_segment SHIM (was a target).
+# Pure URL escaping — concretize the segment, then run the REAL escaper.
+module ConcolicEscapeSegmentShim
+  def escape_segment(segment)
+    super(segment.respond_to?(:value) ? segment.value.to_s : segment.to_s)
+  end
+end
+
+require "digest" # D8: deterministic name-derived default ids (see default_int)
+
+module ConcolicTargets
+  UNSUPPORTED = ->(op) {
+    raise NotImplementedError, "unimplemented concolic operation: #{op} (contents out of scope)"
+  }
+
+  # -----------------------------------------------------------------
+  # Seed overrides — the multi-run coverage loop.
+  #
+  # Mocks seed their symbolic vars with defaults (found, public=false, …).
+  # CoverageChecker reports missing branches WITH suggested concrete values
+  # keyed by var name (e.g. "SYM_RESULT_ActiveRecord__FinderMethods_first_1
+  # _not_found" => true). Set them here before the next run to drive the
+  # other branch. Var names are stable across runs because the interceptor
+  # call counter resets per run.
+  # -----------------------------------------------------------------
+  class << self
+    attr_accessor :seed_overrides
+  end
+  self.seed_overrides = {}
+
+  module_function
+
+  # Sentinel distinguishing "seeded with nil/false" from "not seeded at all".
+  SEED_MISS = Object.new.freeze
+
+  # ------------------------------------------------------------------
+  # NAME BOUNDARY (2026-09-14) — seed keys accept BOTH length spellings
+  # ------------------------------------------------------------------
+  #
+  # The runtimes used to mint a container's cardinality variable literally as
+  # `len(X)`, and every batch renamed it to `SYM_LEN_X` at load because
+  # `len(X)` is not a legal PYTHON identifier and `concolic_engine/solver.py`
+  # transports Z3 terms as Python source it `exec`/`eval`s. The runtimes now
+  # mint the solver-legal spelling directly (`SymbolicVar.len_var_name`), so
+  # the second dialect is gone going forward.
+  #
+  # But `seed_for` matches EXACTLY and falls back to `default` SILENTLY. Every
+  # seed file and every dump snapshot written before that change keys its
+  # length seeds `len(X)`, so without this shim a pre-change seed replayed
+  # under the new runtime would be quietly IGNORED — no error, no log, just an
+  # inert knob and a flip that "did not take". That is the same silent-miss
+  # failure the rename was made to end, so both spellings are accepted here.
+  # The asked-for spelling always wins; the sibling is only consulted on a
+  # miss. See reports/diaspora/docs/NAME_BOUNDARY_PLAN_20260914.md.
+  LEGACY_LEN_RE  = /\Alen\((.+)\)\z/.freeze
+  SYM_LEN_PREFIX = "SYM_LEN_"
+
+  # True when `var_name` names a container's cardinality, in either spelling.
+  def length_var?(var_name)
+    s = var_name.to_s
+    s.start_with?(SYM_LEN_PREFIX) || !LEGACY_LEN_RE.match(s).nil?
+  end
+
+  # Every spelling a seed dict might key `var_name` by, asked-for form FIRST.
+  def seed_aliases(var_name)
+    s = var_name.to_s
+    m = LEGACY_LEN_RE.match(s)
+    if m
+      [var_name, "#{SYM_LEN_PREFIX}#{m[1]}"]
+    elsif s.start_with?(SYM_LEN_PREFIX)
+      [var_name, "len(#{s[SYM_LEN_PREFIX.length..-1]})"]
+    else
+      [var_name]
+    end
+  end
+
+  # The seed override for `var_name` under any accepted spelling, or the
+  # sentinel `miss` when none is present.
+  def seed_lookup(var_name, miss)
+    ov = ConcolicTargets.seed_overrides
+    seed_aliases(var_name).each { |k| return ov[k] if ov.key?(k) }
+    miss
+  end
+
+  def seed_for(var_name, default)
+    v = seed_lookup(var_name, SEED_MISS)
+    v.equal?(SEED_MISS) ? default : v
+  end
+
+  # ---------------------------------------------------------------------
+  # Helpers
+  # ---------------------------------------------------------------------
+
+  # Render the query this call stands in for (goes into var notes + the
+  # symbolic_call note). Handles both a Relation receiver (FinderMethods
+  # targets — receiver.klass) and a Class receiver (Core::ClassMethods
+  # targets — receiver IS the model).
+  #
+  # Wall-fixing discipline: a symbolic int/string column fed into a REAL
+  # where clause (e.g. `Notification.where(recipient_id: user.id)` with
+  # user.id symbolic) crashes `receiver.to_sql` at Arel quote ->
+  # value_for_database -> SymbolicInt#to_i. We MUST NOT crash while rendering
+  # the note (that turns the note into a wall inside our own mock). Instead
+  # render SQL with symbolic binds shown as $$(SYMNAME) — readable, and each
+  # $$(...) resolves back to the producing query via the var's note.
+  def sql_for(receiver, args)
+    return class_finder_sql(receiver, args) if receiver.is_a?(Class)
+    base = render_relation_sql(receiver)
+    # Statement-shape fidelity (2026-08-21, the severed contacts chain):
+    # `relation.find_by(conditions)` — e.g. contact_for_person_id's
+    # `Contact.includes(person: :profile).find_by(user_id:, person_id:)`
+    # (user/querying.rb:43) — carries its WHERE in ARGS, which the Relation
+    # branch never rendered: the note collapsed to the bare relation SQL
+    # (`SELECT "contacts".* FROM "contacts"`), severing the producer chain
+    # from the notification target and mis-chaining every downstream
+    # person/profile/tags read. Append hash-shaped conditions from args
+    # (only a non-empty Hash arg qualifies — records/to_a/pluck calls carry
+    # none, so their notes are untouched; no pk fallback here, unlike
+    # class_finder_sql, to avoid fabricating a WHERE for non-finder calls).
+    extra = relation_args_where(receiver, args)
+    if extra
+      base.include?(" WHERE ") ? "#{base} AND #{extra}" : "#{base} WHERE #{extra}"
+    else
+      base
+    end
+  rescue Exception => e # rubocop:disable Lint/RescueException
+    # Never let note-rendering crash a mock. NotImplementedError < ScriptError
+    # < Exception, so a bare `rescue StandardError` would let the wall escape.
+    klass = if receiver.respond_to?(:klass) && receiver.klass.is_a?(Class)
+              receiver.klass.name
+            else
+              receiver.class.name
+            end
+    "#{klass} query (render_relation_sql failed: #{e.class}#{e.message[0,40]}), args=#{render_args(args)}"
+  end
+
+  # Render args for class-level finders / fallbacks (readable, no inspect noise).
+  def render_args(args)
+    args.is_a?(Hash) ? args.map { |k, v| "#{k}=#{render_arg_value(v)}" }.join(", ") : args.inspect
+  end
+
+  def render_arg_value(v)
+    if v.respond_to?(:sym_name) && v.sym_name
+      SymbolicFunc.bind_ref(v.sym_name)
+    else
+      raw = v.respond_to?(:value) ? v.value : v
+      # SQL literal quoting: Ruby String#inspect double-quotes, which SQL
+      # parses as an IDENTIFIER (the extraction rendered
+      # `people`.`concolic_mention@example.org` as a column — caught by the
+      # comments_index first extraction, 2026-08-25). Single-quote strings.
+      raw.is_a?(String) ? "'#{raw.gsub("'", "''")}'" : raw.inspect
+    end
+  end
+
+  # Read an owner's column PRESERVING symbolic identity where possible.
+  # `owner[col]` on a REAL (non-symbolic_instance) AR record — e.g. the
+  # `Contact.new(person_id: person.id)` `find_or_initialize_by` builds on its
+  # not-found arm — runs the normal read_attribute/type-cast pipeline; for a
+  # CastableSymbolicInt (targets.rb §4a) that pipeline calls `#to_i` and
+  # hands back a plain, concrete Integer, so the symbolic identity is gone
+  # before `render_arg_value` ever sees the value and a bind that DOES exist
+  # renders as a bare literal (measured: `find_target`'s own note rendered
+  # `"people"."id" = 1` instead of `$$(...)` on the write_path dumps).
+  # `attributes_before_type_cast` holds the value AS ASSIGNED — still the
+  # CastableSymbolicInt object — so prefer it when present. A `symbolic_instance`
+  # object (`klass.allocate`) doesn't support it (`@attributes` is nil, so the
+  # real implementation raises); fall back to its own symbolic-preserving `[]`
+  # override in that case, or for any column it genuinely has no before-cast
+  # value for.
+  def raw_owner_attr(owner, col)
+    if owner.respond_to?(:attributes_before_type_cast)
+      raw = begin
+        owner.attributes_before_type_cast[col.to_s]
+      rescue StandardError
+        nil
+      end
+      return raw unless raw.nil?
+    end
+    owner[col]
+  rescue StandardError
+    nil
+  end
+
+  # ======================================================================
+  # DML STATEMENT RENDERING  —  D1..D7  (app-general; 2026-09-25)
+  # ======================================================================
+  # Everything below is about ONE question: when a mock replaces a write,
+  # what statement does the note have to carry for the corpus to contain
+  # the write the application actually performed?
+  #
+  # Before this section the shared core answered instance persistence with
+  # `"Contact#save args={}"` — no DML keyword, so the extraction's `_is_dml`
+  # filter dropped it and 68 of the 69 write endpoints recorded NO evidence
+  # of writing at all (D6) — and answered `update_all`/`delete_all`/
+  # `destroy_all` with the relation's SELECT, recording a write as a
+  # full-row read (D5).
+  #
+  # WHAT IS GROUND TRUTH HERE. Every rule below was measured against
+  # `sql.active_record` on a private copy of `db/concolic.sqlite3` under
+  # `RAILS_ENV=concolic_mod`; the harness is
+  # `_staged_fixes/_verification/differential.rb` and the evidence is in
+  # `_staged_fixes/_verification/out/`. Nothing here is inferred from
+  # reading ActiveRecord.
+  #
+  # WHAT IS DELIBERATELY *NOT* DONE HERE, because it would change the
+  # execution tree:
+  #   * the INSERT-vs-UPDATE choice reads `persisted?`/`new_record?`, which
+  #     `symbolic_instance` answers with CONCRETE singletons — so this
+  #     section records NO new path condition and adds NO decision. Making
+  #     that gate symbolic is a separate, larger change.
+  #   * a mocked write's CASCADE (dependent: destroy) and its pending
+  #     AUTOSAVE association INSERTs are additional ACCESSES, not additional
+  #     text in one note (`concolic/model/note.py`: "a different note is a
+  #     different access"). They are staged separately.
+
+  # AR writes these itself, AFTER the mock has replaced `save` — so every
+  # rendered INSERT was short two columns and every save-UPDATE short one
+  # (D2). `_create_record` writes the create set only for columns that are
+  # not already present; `_update_record` writes the update set only when
+  # the record has changes at all (which is also why D4's no-change save
+  # renders nothing).
+  DML_TS_CREATE = %w[created_at created_on updated_at updated_on].freeze
+  DML_TS_UPDATE = %w[updated_at updated_on].freeze
+
+  # The value ActiveRecord supplies for a timestamp column at write time. It
+  # is genuinely concrete (`Time.now`), never a symbolic input, so a bind ref
+  # would be a lie about provenance; a literal keeps the COLUMN in the
+  # statement, which is the whole point of D2/D3.
+  # UNQUOTED: `render_arg_value` single-quotes a String, so pre-quoting it
+  # here rendered '''<concolic_now>''' (measured).
+  DML_NOW = "<concolic_now>"
+
+  # true / false / nil(unknown). Same source and same order as everywhere
+  # else in this library: `persisted?` first (on a `klass.allocate` symbolic
+  # instance `@new_record` is nil, so `new_record?` returns nil while
+  # `persisted?` correctly returns true), then `new_record?`, then the pk.
+  def dml_record_is_new?(receiver)
+    if receiver.respond_to?(:persisted?)
+      begin
+        p = receiver.persisted?
+        return !p unless p.nil?
+      rescue StandardError
+        nil
+      end
+    end
+    begin
+      n = receiver.new_record?
+      return n unless n.nil?
+    rescue StandardError
+      nil
+    end
+    begin
+      receiver[receiver.class.primary_key].nil?
+    rescue StandardError
+      nil
+    end
+  end
+
+  # The value of ONE column, PRESERVING symbolic identity.
+  #   1. `concolic_attrs` — a `symbolic_instance` keeps its symbolic columns
+  #      here (`klass.allocate` leaves @attributes nil, so
+  #      `attributes_before_type_cast` would raise on it).
+  #   2. `attributes_before_type_cast` — a REAL record keeps the value AS
+  #      ASSIGNED here. Reading `changes` instead hands back the TYPE CAST
+  #      value, which for a `CastableSymbolicInt` is the plain Integer its
+  #      `#to_i` produced — the note would render `1` where a bind belongs.
+  def dml_raw_value(receiver, col)
+    c = col.to_s
+    if receiver.respond_to?(:concolic_attrs)
+      v = begin
+        receiver.concolic_attrs[c]
+      rescue StandardError
+        nil
+      end
+      return v unless v.nil?
+    end
+    if receiver.respond_to?(:attributes_before_type_cast)
+      v = begin
+        receiver.attributes_before_type_cast[c]
+      rescue StandardError
+        nil
+      end
+      return v unless v.nil?
+    end
+    begin
+      receiver[c]
+    rescue StandardError
+      nil
+    end
+  end
+
+  # D1 — WHICH COLUMNS A WRITE NAMES.
+  #
+  # ActiveRecord writes `attributes_with_values(attribute_names_for_partial_
+  # writes)`, and with partial writes on (the default) that list IS
+  # `changed_attribute_names_to_save`. The core used to take every non-nil
+  # entry of `attributes_before_type_cast`, i.e. every attribute INCLUDING
+  # the ones that only carry a database default: measured on
+  # `contacts.find_or_initialize_by`, the changed set was
+  # ["user_id","person_id","receiving"] while the note added a spurious
+  # "sharing" valued 'f' — the sqlite raw default text, in a note about a
+  # deployment modelled as MySQL.
+  #
+  # `concolic_dirty` FIRST: on a `symbolic_instance` ActiveModel::Dirty
+  # cannot run at all, and the attribute writers are overridden to poke the
+  # attrs hash, so the dirty set is the only record of what the application
+  # assigned.
+  def dml_changed_names(receiver)
+    names = begin
+      if receiver.respond_to?(:concolic_dirty)
+        receiver.concolic_dirty
+      elsif receiver.respond_to?(:changed_attribute_names_to_save)
+        receiver.changed_attribute_names_to_save
+      elsif receiver.respond_to?(:changed)
+        receiver.changed
+      end
+    rescue StandardError
+      nil
+    end
+    return nil unless names.is_a?(::Array)
+    names.map(&:to_s)
+  end
+
+  # AR emits an INSERT's / UPDATE's columns in ATTRIBUTE-SET order, which is
+  # table column order — measured: the real INSERT on `contacts` is
+  # ("user_id","person_id","created_at","updated_at","receiving") for a
+  # changed set of ["user_id","person_id","receiving"], i.e. the changed set
+  # plus the timestamps, sorted by column position. Sorting here is what
+  # makes a rendered statement comparable to the real one column for column.
+  # ActiveRecord never writes an attribute declared `attr_readonly`: it
+  # filters them out of the UPDATE set. MEASURED —
+  # `ActsAsTaggableOn::Tag#taggings_count` is readonly, so a real `tag.save`
+  # after assigning it issues NOTHING, while the note rendered a full
+  # `UPDATE "tags" SET "taggings_count" = ...`. That is a FABRICATION, the
+  # same class of defect as D4.
+  def dml_readonly(klass)
+    r = klass.respond_to?(:readonly_attributes) ? klass.readonly_attributes : nil
+    r.respond_to?(:to_a) ? r.to_a.map(&:to_s) : []
+  rescue StandardError
+    []
+  end
+
+  def dml_order_columns(klass, names)
+    order = begin
+      klass.column_names
+    rescue StandardError
+      nil
+    end
+    return names unless order.is_a?(::Array)
+    idx = {}
+    order.each_with_index { |c, i| idx[c] = i }
+    names.sort_by { |c| [idx.key?(c) ? 0 : 1, idx[c] || 0, c] }
+  end
+
+  def dml_record_timestamps?(klass)
+    klass.respond_to?(:record_timestamps) ? !!klass.record_timestamps : false
+  rescue StandardError
+    false
+  end
+
+  def dml_timestamp_columns(klass, kind)
+    return [] unless dml_record_timestamps?(klass)
+    wanted = (kind == :create ? DML_TS_CREATE : DML_TS_UPDATE)
+    cols = begin
+      klass.column_names
+    rescue StandardError
+      []
+    end
+    wanted & cols
+  end
+
+  def dml_table(klass)
+    klass.respond_to?(:table_name) ? klass.table_name.to_s : klass.name.to_s
+  rescue StandardError
+    klass.name.to_s
+  end
+
+  def dml_pk(klass)
+    klass.primary_key || "id"
+  rescue StandardError
+    "id"
+  end
+
+  # The columns an `update` / `update_attribute` / `touch` mock must write.
+  # These three are intercepted BEFORE their body runs, so the assignment
+  # never happened and the receiver's dirty set is empty — the columns are
+  # in ARGS, not on the record. (`save`/`save!` are the opposite: the app
+  # already assigned, so the record is the source.)
+  # The POSITIONAL arguments of an intercepted call, whatever the wrapper did
+  # to their names.
+  #
+  # `declare_target` names args from `klass.instance_method(m).parameters`. On
+  # a SECOND declaration for the same (class, method) — which every endpoint
+  # layer that redeclares a core target makes — "the method" is already the
+  # first mock's wrapper, whose signature is `|*splat_args, **kwargs, &block|`
+  # (the D5 defect in ../../README.md). So the same call arrives as
+  # `{"attributes" => {...}}` under one declaration and
+  # `{"splat_args" => [{...}], "kwargs" => {}}` under two, and reading by name
+  # alone silently loses every column on the overridden endpoints. Read
+  # POSITIONALLY, from whichever shape arrived.
+  def dml_positional_args(args)
+    return [] unless args.is_a?(::Hash)
+    # MEASURED (args_probe.rb): the interceptor zips the actual arguments onto
+    # the declared parameter NAMES one by one, so on a redeclared target
+    # `update_attribute(:sharing, true)` arrives as
+    # `{"splat_args"=>:sharing, "kwargs"=>true, "block"=>nil}` — "splat_args"
+    # and "kwargs" are ordinary positional slots there, not a rest array and
+    # not a keyword hash. Take the values in order; flatten a slot that really
+    # does hold a rest array (`touch(*names)` on a singly-declared target
+    # arrives as `{"names"=>[:a, :b]}`); never flatten a Hash, which is
+    # `update`'s attributes.
+    vals = args.reject { |k, _| %w[block blk].include?(k.to_s) }.values
+    vals.flat_map { |v| v.is_a?(::Array) ? v : [v] }.compact
+  rescue StandardError
+    []
+  end
+
+  # N5's other half. The prepend at the bottom of this file records the
+  # arguments as the APPLICATION passed them, under the method it called;
+  # this is scoped to one call and restored on the way out, so a note can
+  # never pick up the previous call's arguments.
+  def with_stashed_write_args(op, args, kwargs)
+    prev = Thread.current[:concolic_write_args]
+    Thread.current[:concolic_write_args] = [op.to_s, args, kwargs]
+    yield
+  ensure
+    Thread.current[:concolic_write_args] = prev
+  end
+
+  def dml_stashed_positionals(op)
+    s = Thread.current[:concolic_write_args]
+    return nil unless s.is_a?(::Array) && s[0] == op.to_s
+    pos = Array(s[1]).dup
+    pos << s[2] if s[2].is_a?(::Hash) && !s[2].empty?
+    pos
+  rescue StandardError
+    nil
+  end
+
+  def dml_columns_from_args(op, args)
+    pos = dml_stashed_positionals(op)
+    if pos.nil?
+      return nil unless args.is_a?(::Hash)
+      pos = dml_positional_args(args)
+    end
+    case op.to_s
+    when "update", "update!", "update_attributes", "update_attributes!"
+      h = pos.find { |v| v.is_a?(::Hash) && !v.empty? }
+      h.is_a?(::Hash) ? h.map { |k, v| [k.to_s, v] }.to_h : nil
+    when "update_attribute", "update_column"
+      n = pos[0]
+      v = pos[1]
+      (n.nil? || n.is_a?(::Hash)) ? nil : { n.to_s => v }
+    when "touch"
+      # `touch(*names, time: nil)`: the names are the positionals, and the
+      # timestamp columns are added by the caller (dml_note) on top.
+      names = pos.flatten.reject { |v| v.is_a?(::Hash) }.compact
+      names.map { |c| [c.to_s, DML_NOW] }.to_h
+    end
+  rescue StandardError
+    nil
+  end
+
+  # ------------------------------------------------------------------
+  # THE RENDERER. Returns the statement, or nil when ActiveRecord itself
+  # would issue NOTHING (D4 — a `save` on a record with no changes).
+  # ------------------------------------------------------------------
+  def dml_note(receiver, op, args = nil)
+    klass = receiver.class
+    table = dml_table(klass)
+    pk    = dml_pk(klass)
+    o     = op.to_s
+
+    return dml_delete_note(receiver, klass, table, pk) if %w[destroy destroy! delete].include?(o)
+
+    from_args = dml_columns_from_args(o, args)
+    new_rec   = dml_record_is_new?(receiver)
+
+    if new_rec == false || (new_rec.nil? && !from_args.nil?)
+      # ---------------------------------------------------------- UPDATE
+      if from_args
+        ro = dml_readonly(klass)
+        setcols = from_args.reject { |k, _| ro.include?(k.to_s) || k.to_s == pk }
+      else
+        names = dml_changed_names(receiver)
+        # D4 — a `save` with nothing to write. Real ActiveRecord skips the
+        # statement entirely (`_update_record` returns 0 affected rows
+        # without touching the connection), so a note here would FABRICATE
+        # a statement, and `UPDATE … SET (no changed columns)` is not even
+        # valid SQL. Return a PROSE note: it carries the provenance, and
+        # `_is_dml` correctly drops it.
+        return nil if names.nil? || names.empty?
+        setcols = dml_order_columns(klass, names - [pk] - dml_readonly(klass))
+                  .map { |c| [c, dml_raw_value(receiver, c)] }.to_h
+      end
+      # D3 — `touch` with no explicit column names has an EMPTY column set
+      # here and its whole statement is the timestamp added below, so it must
+      # NOT short-circuit. `UPDATE … SET (no changed columns)` was not valid
+      # SQL and missed the one column `touch` exists to write; the real
+      # statement is `UPDATE "contacts" SET "updated_at" = ? WHERE …`.
+      return nil if setcols.empty? && o != "touch"
+      # D2/D3 — the timestamp AR writes in `_update_record`, which happens
+      # after the mock replaced `save`. `touch` is the same statement with
+      # the timestamp as its ONLY column, which is why D3's
+      # `SET (no changed columns)` was both invalid SQL and a lost write.
+      dml_timestamp_columns(klass, :update).each do |c|
+        setcols[c] = DML_NOW unless setcols.key?(c)
+      end
+      return nil if setcols.empty?
+      sets = dml_order_columns(klass, setcols.keys)
+             .map { |c| %("#{c}" = #{render_arg_value(setcols[c])}) }.join(", ")
+      pkv = dml_raw_value(receiver, pk)
+      %(UPDATE "#{table}" SET #{sets} WHERE "#{table}"."#{pk}" = #{render_arg_value(pkv)})
+    else
+      # ---------------------------------------------------------- INSERT
+      names = dml_changed_names(receiver)
+      if names.nil? || names.empty?
+        # No dirty information at all (a half-built record). Degrade to the
+        # non-nil assigned attributes and SAY SO in the note rather than
+        # rendering a column set that was never measured.
+        raw = begin
+          receiver.attributes_before_type_cast
+        rescue StandardError
+          nil
+        end
+        raw = begin
+          receiver.attributes
+        rescue StandardError
+          nil
+        end unless raw.is_a?(::Hash)
+        return %(#{klass.name}##{o} (attributes unavailable)) unless raw.is_a?(::Hash)
+        names = raw.reject { |_k, v| v.nil? }.keys.map(&:to_s)
+      end
+      # readonly is an UPDATE-side filter in ActiveRecord (an `attr_readonly`
+      # column IS written on create), so it is NOT applied here.
+      cols = dml_order_columns(klass, names - [pk])
+      vals = cols.map { |c| dml_raw_value(receiver, c) }
+      pairs = cols.zip(vals).to_h
+      dml_timestamp_columns(klass, :create).each do |c|
+        present = begin
+          receiver.attribute_present?(c)
+        rescue StandardError
+          pairs.key?(c)
+        end
+        pairs[c] = DML_NOW unless present || pairs.key?(c)
+      end
+      ordered = dml_order_columns(klass, pairs.keys)
+      prefix = new_rec.nil? ? "/* new_record? unavailable, rendered as INSERT */ " : ""
+      %(#{prefix}INSERT INTO "#{table}" (#{ordered.map { |c| %("#{c}") }.join(", ")}) ) +
+        %(VALUES (#{ordered.map { |c| render_arg_value(pairs[c]) }.join(", ")}))
+    end
+  rescue StandardError => e
+    %(#{receiver.class.name}##{op} (note render failed: #{e.class}))
+  end
+
+  # Render an INSERT for a record whose `persisted?` is pinned true by
+  # `symbolic_instance` but which the CALL is creating (D7a's
+  # `CollectionProxy#create`). Same column rules as `dml_note`'s INSERT arm;
+  # the difference is only that the new/persisted question is answered by the
+  # caller, which knows, rather than by a pin that does not.
+  def dml_insert_note_for(receiver, klass)
+    table = dml_table(klass)
+    names = dml_changed_names(receiver) || []
+    return %(#{klass.name}#create (no assigned columns)) if names.empty?
+    pairs = dml_order_columns(klass, names - [dml_pk(klass)])
+            .map { |c| [c, dml_raw_value(receiver, c)] }.to_h
+    dml_timestamp_columns(klass, :create).each { |c| pairs[c] = DML_NOW unless pairs.key?(c) }
+    ordered = dml_order_columns(klass, pairs.keys)
+    %(INSERT INTO "#{table}" (#{ordered.map { |c| %("#{c}") }.join(", ")}) ) +
+      %(VALUES (#{ordered.map { |c| render_arg_value(pairs[c]) }.join(", ")}))
+  rescue StandardError => e
+    %(#{klass.name}#create (note render failed: #{e.class}))
+  end
+
+  # D8 — PENDING AUTOSAVE ASSOCIATIONS.
+  #
+  # `contact.aspects << aspect` on an UNSAVED contact does not insert the join
+  # row: ActiveRecord builds it, parks it in the association target, and
+  # defers the INSERT to the owner's `save` (has_many_through_association.rb
+  # `build_through_record`, run by the `save_collection_association` autosave
+  # callback). MEASURED against `sql.active_record`: the real pair is
+  #   INSERT INTO "contacts"           ("user_id","person_id","created_at","updated_at")
+  #   INSERT INTO "aspect_memberships" ("aspect_id","contact_id","created_at","updated_at")
+  # and the second one VANISHES under the mock, because mocking `save`
+  # replaces the callback chain that would have run it. The MISS-arm dumps
+  # therefore carry the contacts INSERT and no join row at all.
+  #
+  # THE MECHANISM IS GENERAL, so the fix is: a mocked `save` runs the saves
+  # ActiveRecord would have run. It does this by CALLING `save` on each
+  # pending record, which reaches the SAME declared `ActiveRecord::Base#save`
+  # target — so each deferred write becomes its OWN symbolic_call with its
+  # OWN note, which is what it is: a different statement is a different
+  # access (`concolic/model/note.py`), never extra text in one note. No
+  # record is fabricated: only records the application itself put in a LOADED
+  # association are saved, and the mocked `save` issues no SQL, so this
+  # touches the database no more than the mock it runs inside.
+  #
+  # BOUNDED, because an association graph is not: a depth limit, a per-call
+  # visited set keyed on object identity, and a hard cap on how many pending
+  # records one save may account for. Exceeding any of them is reported in
+  # the note rather than silently truncated.
+  DML_AUTOSAVE_MAX_DEPTH = 3
+  DML_AUTOSAVE_MAX_RECORDS = 32
+
+  # --- [ D9 ] DESTROY CALLBACKS -------------------------------------------
+  #
+  # (2026-10-07, owner-authorised; escalation
+  # `ctl/ask/destroy-mock-skips-after-destroy-callbacks.json`, class SHARED.)
+  #
+  # THE GAP. `destroy` is declared with a `returns:` lambda, so the
+  # interceptor takes BODY-SKIP mode (`call_interceptor.rb` -- `value_fn` is
+  # truthy, `original` is never bound). In Rails the `after_destroy` chain
+  # runs INSIDE `ActiveRecord::Callbacks#destroy`, i.e. inside the very method
+  # the mock replaces, so skipping the body skipped every destroy callback and
+  # every `dependent: :destroy` cascade. `dml_run_pending_autosaves!` above
+  # repairs the same class of loss for `save`, and is gated to
+  # save/save!/update/update! -- destroy was excluded, which is this gap.
+  #
+  # MEASURED on `conversation_visibilities_destroy`.
+  # `ConversationVisibility after_destroy :check_orphan_conversation` counts
+  # the remaining participants and destroys the Conversation when none are
+  # left; `Conversation has_many :conversation_visibilities, dependent:
+  # :destroy` then cascades. Against real ActiveRecord on a private DB copy,
+  # destroying the LAST participant's row issues three further statements and
+  # takes `conversations` from 1 row to 0. None of the three appeared in any
+  # dump, and the endpoint's policy therefore nowhere says the endpoint can
+  # delete a conversation. One of the three is worse than a missing write: the
+  # cascade's load is `SELECT "conversation_visibilities".* ... WHERE
+  # "conversation_visibilities"."conversation_id" = ?`, which DROPS the
+  # `person_id` conjunct the policy's only such read carries -- every
+  # participant's row, not the principal's own.
+  #
+  # ORDER MATTERS, and `run_callbacks(:destroy) { ... }` is what gives it:
+  # before-callbacks, then the block (where the owner's own DELETE note is
+  # minted), then after-callbacks. That is the order the real statements
+  # appear in, so the dump reads as the run did.
+  #
+  # NO RECORD IS FABRICATED. Every statement a callback reaches goes through
+  # an already-declared target (the finder mocks, `Calculations.count`, this
+  # same `destroy`), so each one mints its OWN note and becomes its own
+  # access. That is what makes this the D8 pattern rather than one of the two
+  # remedies `_staged_fixes/KNOWN_GAPS.md` G2 rejected: nothing folds several
+  # statements into one note, and no `symbolic_instance` is invented.
+  #
+  # BOUNDED exactly as D8 is -- depth limit, per-top-level-destroy visited set
+  # keyed on object identity, hard record cap -- because a cascade graph is
+  # not bounded and `conversation.destroy` re-enters this very method.
+  #
+  # A RAISING CHAIN IS REPORTED, NOT PROPAGATED. `user.rb` carries
+  # `before_destroy { raise "Never destroy users!" }`, and `photo.rb`'s
+  # `ensure_user_picture` does real work on what is here a symbolic record. A
+  # chain that raises or halts means real ActiveRecord ISSUES NO DELETE, so
+  # not minting the note is faithful -- but the raise must not take the run
+  # down with it, because a crashed run records nothing at all. The reason
+  # lands in a PROSE note, which `_is_dml` drops from extraction while the
+  # dump still carries the provenance (the same device D4 uses for a `save`
+  # with no changed attributes).
+  DML_DESTROY_MAX_DEPTH = 3
+  DML_DESTROY_MAX_RECORDS = 32
+
+  def dml_destroy_chain?(receiver)
+    klass = receiver.class
+    return false unless klass.respond_to?(:_destroy_callbacks)
+    !Array(klass._destroy_callbacks).empty?
+  rescue StandardError
+    false
+  end
+
+  #: A unique stem for the prose notes below. `symbool` needs a name, and two
+  #: notes minted under one name would collide in the dump's result table.
+  def dml_destroy_mark!(receiver, text)
+    n = (Thread.current[:concolic_destroy_marks] =
+         (Thread.current[:concolic_destroy_marks] || 0) + 1)
+    symbool("destroy_cb_#{n}", true,
+            note: "#{receiver.class.name}#destroy #{text}")
+  rescue StandardError
+    nil
+  end
+
+  # Runs the receiver's destroy callback chain around `yield`, which is where
+  # the caller mints the owner's DELETE note. Returns nil when the block ran
+  # (so the DELETE was recorded) and a reason String when it did not.
+  def dml_run_destroy_callbacks!(receiver)
+    unless dml_destroy_chain?(receiver)
+      yield
+      return nil
+    end
+    depth = (Thread.current[:concolic_destroy_depth] ||= 0)
+    # PER TOP-LEVEL DESTROY, for D8's reason: a run-wide set would stop
+    # accounting after the 32nd record of the RUN rather than of this destroy,
+    # turning a reported cap into a creeping loss.
+    Thread.current[:concolic_destroy_seen] = {} if depth.zero?
+    seen = (Thread.current[:concolic_destroy_seen] ||= {})
+    if depth >= DML_DESTROY_MAX_DEPTH || seen.size >= DML_DESTROY_MAX_RECORDS
+      yield
+      dml_destroy_mark!(receiver, "(callback chain NOT run: depth #{depth}, " \
+                        "#{seen.size} records seen; D9 cap reached -- any " \
+                        "statements its callbacks would issue are MISSING)")
+      return nil
+    end
+    if seen[receiver.object_id]
+      # Already destroyed in this chain. Real ActiveRecord would not run the
+      # callbacks twice either (`destroyed?` short-circuits), so this is not a
+      # cap being hit.
+      yield
+      return nil
+    end
+    seen[receiver.object_id] = true
+    Thread.current[:concolic_destroy_depth] = depth + 1
+    ran = false
+    err = nil
+    begin
+      receiver.send(:run_callbacks, :destroy) { ran = true; yield; true }
+    rescue StandardError, ScriptError => e
+      err = e
+    ensure
+      Thread.current[:concolic_destroy_depth] = depth
+    end
+    return nil if ran
+    # The block never ran: a before-callback raised or threw `:abort`. Real
+    # ActiveRecord issues NO DELETE in that case, so the absent note is right
+    # and what is owed is the reason.
+    why = err ? "raised #{err.class}: #{err.message.to_s[0, 120]}"
+               : "halted (before_destroy threw :abort)"
+    dml_destroy_mark!(receiver, "(no DELETE: before_destroy #{why})")
+    why
+  end
+
+  def dml_pending_autosave_records(receiver)
+    out = []
+    klass = receiver.class
+    return out unless klass.respond_to?(:reflect_on_all_associations)
+    klass.reflect_on_all_associations.each do |refl|
+      name = refl.name
+      # LOADED ONLY. `receiver.association(name)` would BUILD the association
+      # object and could trigger a load; `association_cached?` asks whether
+      # the application already put something there, which is the only case
+      # where a pending record can exist.
+      cached = begin
+        receiver.association_cached?(name)
+      rescue StandardError
+        false
+      end
+      next unless cached
+      assoc = begin
+        receiver.association(name)
+      rescue StandardError
+        nil
+      end
+      next if assoc.nil?
+      targets = begin
+        refl.collection? ? Array(assoc.target) : [assoc.target].compact
+      rescue StandardError
+        []
+      end
+      targets.each do |rec|
+        next unless rec.is_a?(ActiveRecord::Base)
+        next unless dml_record_is_new?(rec) == true
+        out << [refl, rec]
+      end
+    end
+    out
+  rescue StandardError
+    []
+  end
+
+  # What `save_collection_association` does immediately before saving a
+  # deferred child: stamp the owner's key onto it. Without this the child's
+  # INSERT names only the columns the application set directly — MEASURED on
+  # the probe matrix, the join row came out as
+  # `INSERT INTO "aspect_memberships" ("created_at", "updated_at")`, missing
+  # both foreign keys, because under the mock stack the through-association
+  # writer never ran. Setting them here is not an invention: it is the
+  # assignment ActiveRecord itself makes at this exact point.
+  def dml_stamp_owner_key!(owner, refl, rec)
+    fk = refl.foreign_key.to_s
+    return unless rec.class.column_names.include?(fk)
+    cur = begin
+      rec[fk]
+    rescue StandardError
+      nil
+    end
+    rec[fk] = raw_owner_attr(owner, owner.class.primary_key) if cur.nil?
+    t = refl.respond_to?(:type) ? refl.type : nil
+    rec[t.to_s] = owner.class.base_class.name if t && rec.class.column_names.include?(t.to_s)
+  rescue StandardError
+    nil
+  end
+
+  def dml_run_pending_autosaves!(receiver)
+    depth = (Thread.current[:concolic_autosave_depth] ||= 0)
+    # The visited set is PER TOP-LEVEL SAVE. Kept across the whole run it
+    # would silently stop accounting for autosaves after the 32nd record of
+    # the run rather than the 32nd of one save — a cap that turns into a
+    # creeping loss instead of a reported one.
+    Thread.current[:concolic_autosave_seen] = {} if depth.zero?
+    seen = (Thread.current[:concolic_autosave_seen] ||= {})
+    return if depth >= DML_AUTOSAVE_MAX_DEPTH
+    return if seen.size >= DML_AUTOSAVE_MAX_RECORDS
+    seen[receiver.object_id] = true
+    pending = dml_pending_autosave_records(receiver)
+    return if pending.empty?
+    Thread.current[:concolic_autosave_depth] = depth + 1
+    begin
+      pending.each do |refl, rec|
+        break if seen.size >= DML_AUTOSAVE_MAX_RECORDS
+        next if seen[rec.object_id]
+        seen[rec.object_id] = true
+        dml_stamp_owner_key!(receiver, refl, rec) if refl.collection?
+        begin
+          rec.save   # -> the declared ActiveRecord::Base#save target -> its own note
+        rescue StandardError
+          nil
+        end
+      end
+    ensure
+      Thread.current[:concolic_autosave_depth] = depth
+    end
+  rescue StandardError
+    nil
+  end
+
+  def dml_delete_note(receiver, klass, table, pk)
+    %(DELETE FROM "#{table}" WHERE "#{table}"."#{pk}" = #{render_arg_value(dml_raw_value(receiver, pk))})
+  rescue StandardError => e
+    %(#{klass.name}#destroy (note render failed: #{e.class}))
+  end
+
+  # D5 — RELATION-LEVEL DML.
+  #
+  # `update_all` / `delete_all` / `destroy_all` were given `sql_for`, i.e.
+  # the relation's SELECT. A write was therefore recorded as a full-row
+  # READ of every row it touched — wrong verb, and wrong in the direction
+  # that over-discloses. The WHERE is the relation's; only the head changes.
+  def dml_relation_where(sel)
+    sel.to_s[/\sWHERE\s.*\z/m].to_s
+  end
+
+  # N4 (found BY THE DIFFERENTIAL, 2026-09-25, not in D1-D8) — the WHERE of a
+  # relation write must come from the RELATION ALONE.
+  # `sql_for(receiver, args)` appends `relation_args_where(receiver, args)`,
+  # which turns any Hash in `args` into extra WHERE conditions. For a finder
+  # that is right (`find_by(user_id:)` carries its conditions in args); for
+  # `update_all(user_id: 4242)` the hash is the SET list, and the note came
+  # out as `... WHERE "contacts"."id" IN (…) AND "contacts"."user_id" = 4242`
+  # — a predicate the real statement does not contain, on 37 of 37 measured
+  # models. Passing `{}` takes the relation's own WHERE and nothing else.
+  def dml_update_all_note(receiver, args)
+    sel = sql_for(receiver, {})
+    klass = model_class(receiver)
+    table = dml_table(klass)
+    updates = nil
+    if args.is_a?(::Hash)
+      updates = args["updates"] || args[:updates]
+      updates = args.values.find { |v| v.is_a?(::Hash) && !v.empty? } unless updates.is_a?(::Hash)
+    end
+    # `update_all(unread: false)` reaches a `def update_all(updates)` — a
+    # REQUIRED POSITIONAL, not a `*rest` — so Ruby 2.6 packs the trailing
+    # hash into the wrapper's `**kwargs` and the interceptor's repair (which
+    # fills a named `*rest` slot) does not apply; `args` comes back empty.
+    # The prepend below stashes the real hash for exactly this case.
+    tc = Thread.current[:concolic_update_all_values]
+    updates = tc if (updates.nil? || updates.empty?) && tc.is_a?(::Hash) && !tc.empty?
+    return sel if table.nil? || table.empty?
+    sets = if updates.is_a?(::Hash) && !updates.empty?
+             updates.map { |k, v| %("#{table}"."#{k}" = #{render_arg_value(v)}) }.join(", ")
+           else
+             "(updates unavailable)"
+           end
+    # `update_all` also writes `updated_at` ONLY when the caller asked for
+    # it — ActiveRecord does NOT touch timestamps on a relation update
+    # (measured: UPDATE "contacts" SET "user_id" = ? WHERE …, no
+    # updated_at). So no timestamp is added here, unlike the instance path.
+    %(UPDATE "#{table}" SET #{sets}#{dml_relation_where(sel)})
+  rescue StandardError
+    sql_for(receiver, args)
+  end
+
+  def dml_delete_all_note(receiver, args)
+    sel = sql_for(receiver, {})   # N4: the relation's WHERE, never args
+    table = dml_table(model_class(receiver))
+    return sel if table.nil? || table.empty?
+    %(DELETE FROM "#{table}"#{dml_relation_where(sel)})
+  rescue StandardError
+    sql_for(receiver, args)
+  end
+
+  # results3 Phase A Patch 2: render REAL SQL for class-level finders
+  # (Model.find(id), Model.find_by(...), dynamic finders). See
+  # ../PHASE_A_PATCH.md Patch 2 for the full derivation and the documented,
+  # unfixable-here declare_target kwargs-binding gap (call_interceptor.rb,
+  # out of scope for a results3 batch — raise to Bali, do not patch src/).
+  def class_finder_sql(klass, args)
+    table = klass.respond_to?(:table_name) ? klass.table_name : klass.name
+    where_hash = extract_finder_where(klass, args)
+    if where_hash && !where_hash.empty?
+      conditions = where_hash.map { |k, v| %("#{table}"."#{k}" = #{render_arg_value(v)}) }.join(" AND ")
+      %(SELECT "#{table}".* FROM "#{table}" WHERE #{conditions})
+    else
+      "#{klass.name} query (class-level finder; WHERE unavailable -- interceptor " \
+      "drops kwargs for *rest-signature finder methods called with keyword " \
+      "syntax, see call_interceptor.rb param binding), args=#{render_args(args)}"
+    end
+  end
+
+  # Relation-receiver companion to extract_finder_where: render the first
+  # non-empty Hash in args as table-qualified conditions, nil otherwise.
+  # Deliberately NO primary-key fallback — a bare scalar arg on a relation
+  # call is not evidence of a WHERE.
+  def relation_args_where(receiver, args)
+    return nil unless args.is_a?(Hash)
+    table = receiver.respond_to?(:klass) && receiver.klass.respond_to?(:table_name) &&
+            receiver.klass.table_name
+    return nil unless table
+    args.each_value do |v|
+      if v.is_a?(Hash) && !v.empty?
+        return v.map { |k, vv| %("#{table}"."#{k}" = #{render_arg_value(vv)}) }.join(" AND ")
+      end
+    end
+    # Fallback: the ConcolicKwargsToPositional thread-local (see its header —
+    # the interceptor's param binding drops the re-packed hash on this Ruby).
+    tc = Thread.current[:concolic_finder_conds]
+    if tc.is_a?(Hash) && !tc.empty?
+      return tc.map { |k, vv| %("#{table}"."#{k}" = #{render_arg_value(vv)}) }.join(" AND ")
+    end
+    nil
+  end
+
+  # Best-effort recovery of a {column => value} condition hash from whatever
+  # declare_target's param-binding actually captured. Returns nil (never {})
+  # when nothing usable was found, so the caller can render the honest
+  # fallback rather than claiming an (empty) WHERE.
+  def extract_finder_where(klass, args)
+    return nil unless args.is_a?(Hash)
+    args.each_value do |v|
+      return v.map { |k, vv| [k.to_s, vv] }.to_h if v.is_a?(Hash) && !v.empty?
+    end
+    # Fallback: the ConcolicKwargsToPositional thread-local (see its header).
+    tc = Thread.current[:concolic_finder_conds]
+    return tc.map { |k, vv| [k.to_s, vv] }.to_h if tc.is_a?(Hash) && !tc.empty?
+    pk = klass.respond_to?(:primary_key) ? klass.primary_key : "id"
+    args.each_value do |v|
+      next if v.nil?
+      return { pk => v }
+    end
+    nil
+  end
+
+  # Render a Relation's SQL with symbolic bind values substituted as
+  # $$(SYMNAME). Uses Arel's SQLString collector to get `?` placeholders
+  # (never calling quote on a symbolic value), then substitutes each `?` in
+  # order from the corresponding BindParam's raw value.
+  def render_relation_sql(rel)
+    return "#{rel.class.name} (no arel)" unless rel.respond_to?(:arel) && rel.arel
+
+    visitor = ConcolicSymbolicToSql.new(rel.connection) # results3 bug-2b fix (file footer)
+    collector = Arel::Collectors::SQLString.new
+    sql = visitor.accept(rel.arel.ast, collector).value
+
+    binds = []
+    collect_binds(rel.arel.ast, binds)
+    i = 0
+    sql.gsub("?") do
+      v = binds[i]
+      i += 1
+      render_bind_value(v)
+    end
+  end
+
+  # Recursively collect BindParam values in AST order (matching the `?`
+  # placeholder order from the SQLString collector). Walks instance variables
+  # because this Arel version's `each_child` does not recurse into e.g.
+  # Arel::Nodes::And#@children.
+  def collect_binds(node, out)
+    if defined?(Arel::Nodes::BindParam) && node.is_a?(Arel::Nodes::BindParam)
+      out << node.value
+      return
+    end
+    if defined?(Arel::Nodes::Casted) && node.is_a?(Arel::Nodes::Casted)
+      # results3 bug-2b fix (2026-08-19, ../BUGFIXES_20260819.md): arel-9
+      # Casted has #val, not #value -- the old `out << node.value` raised
+      # NoMethodError HERE, losing the whole note to sql_for's rescue
+      # fallback for any relation carrying a Casted (association scopes with
+      # symbolic owner keys). And Casted renders INLINE via #quoted (never as
+      # a `?` placeholder), so it must not join the `?`-substitution list at
+      # all -- appending would misalign every later bind. Inline rendering of
+      # symbolic values is handled by ConcolicSymbolicToSql (file footer).
+      return
+    end
+    # Recurse into any object ivar that itself looks like an Arel node tree.
+    node.instance_variables.each do |iv|
+      v = node.instance_variable_get(iv)
+      if v.is_a?(Array)
+        v.each { |el| collect_binds(el, out) if node_like?(el) }
+      elsif node_like?(v)
+        collect_binds(v, out)
+      end
+    end
+  end
+
+  def node_like?(obj)
+    obj.is_a?(Arel::Nodes::Node) || obj.is_a?(Arel::Attributes::Attribute)
+  end
+
+  # Owner-qualified association var base name (2026-08-21, the taggings.id
+  # chain-attribution residue). "assoc_#{refl.name}" alone COLLIDES across
+  # owners — one gen7 run held THREE distinct `assoc_profile` producers
+  # (contact person's, current_user person's, actors-chain person's), so the
+  # extraction fold had to guess which chain owns a downstream bind like
+  # `$$(assoc_profile_id)` and attributed the StartedSharing target's
+  # profile-tags read to the CONTACTS chain, while the reference chains it
+  # via notifications.target_id — provably un-coverable from the mis-chained
+  # view (both sides project only (name, taggings.id), no ownership column).
+  # Qualify with the owner rep's own var prefix (its id var minus `_id`) so
+  # every association var names its owner chain: `assoc_target_profile`,
+  # `SYM_RESULT_..._row_person_profile`, etc. Falls back to the old bare
+  # name when the owner carries no symbolic id (concrete fixtures).
+  # D8 SECOND HALF (2026-09-25) — THE QUALIFICATION ITSELF ALIASES.
+  # `<pre>_<refl>` plus `symbolic_instance`'s `<base>_<col>` makes an
+  # association rep's `id` variable spell EXACTLY the owner's own
+  # `<refl>_id` column variable: `contacts.user_id` and `contact.user`'s
+  # `id` are both `SYM_RESULT_..._find_by_1_user_id`. Measured on this
+  # endpoint, 8 of the 8 aliased pairs are belongs_to associations
+  # (`contacts.user_id`/`person_id`, `people.owner_id`/`pod_id`,
+  # `aspects.user_id`, `aspect_memberships.aspect_id`/`contact_id`,
+  # `profiles.person_id`, `users.invited_by_id`/
+  # `auto_follow_back_aspect_id`), where `owner.<fk>_id == owner.<refl>.id`
+  # is a TRUE ActiveRecord invariant — so the aliasing is correct, and
+  # with name-derived defaults (see `default_int`) it is now also
+  # CONSISTENT, instead of resolving to whichever `symint` registered
+  # first.
+  #
+  # IT IS NOT CORRECT IN GENERAL. The shape that breaks it is a has_one /
+  # has_many named `X` on a table that ALSO has a column `X_id`: then
+  # `owner.X.id` and `owner.X_id` are different rows' ids and this would
+  # weld them into one symbol. It does not occur on this endpoint —
+  # `users` has no `person_id` column, so `user.person`'s id aliases
+  # nothing — but it is not excluded by construction, and a rename would
+  # have to keep the belongs_to identification while breaking this one.
+  # Reported, not changed: renaming churns every variable name in the
+  # corpus and would DROP a true invariant to fix a case that does not
+  # arise here.
+  def assoc_base_name(owner, refl_name)
+    pre = nil
+    begin
+      if owner.respond_to?(:concolic_attrs)
+        idv = owner.concolic_attrs["id"]
+        pre = idv.sym_name.sub(/_id\z/, "") if idv.respond_to?(:sym_name) && idv.sym_name
+      end
+    rescue StandardError
+      pre = nil
+    end
+    pre ? "#{pre}_#{refl_name}" : "assoc_#{refl_name}"
+  end
+
+  # Render one bind value: symbolic -> $$(SYMNAME); else inspect. The raw
+  # value may be wrapped in a QueryAttribute (value_before_type_cast) or be
+  # the bare value.
+  def render_bind_value(v)
+    raw = if v.respond_to?(:value_before_type_cast)
+            v.value_before_type_cast
+          elsif v.respond_to?(:value)
+            v.value
+          else
+            v
+          end
+    if raw.respond_to?(:sym_name) && raw.sym_name
+      SymbolicFunc.bind_ref(raw.sym_name)
+    elsif raw.is_a?(String)
+      "'#{raw}'"
+    else
+      raw.inspect
+    end
+  end
+
+  # The model class behind a finder receiver: a Relation exposes #klass; a
+  # Core::ClassMethods receiver IS the model class itself.
+  def model_class(receiver)
+    receiver.is_a?(Class) ? receiver : receiver.klass
+  end
+
+  # Build a symbolic instance of the REAL model class (plan §4):
+  # allocate (no initialize / callbacks / DB), then singleton readers per
+  # column returning symbolic values chosen by column type. All attr vars
+  # carry note: sql. Also overrides []/read_attribute/_read_attribute so
+  # every access path bypasses AR type-casting.
+  def symbolic_instance(klass, base_name, sql)
+    obj = klass.allocate
+    attrs = {}
+    klass.columns_hash.each do |col, meta|
+      var_name = "#{base_name}_#{col}"
+      attrs[col] = case meta.type
+                   when :integer, :bigint
+                     symint(var_name, seed_for(var_name, default_int(col, var_name)), note: sql)
+                   when :boolean
+                     symbool(var_name, seed_for(var_name, false), note: sql)
+                   else
+                     symstr(var_name, seed_for(var_name, "#{var_name}_v"), note: sql)
+                   end
+      obj.define_singleton_method(col) { attrs[col] }
+      # Boolean predicate readers (post.public?) are used in bare-truthiness
+      # position throughout Rails (`unless post.public?`) — unhookable on a
+      # wrapper (src/TODO.txt). The predicate itself records the PC and
+      # returns the CONCRETE bool: branch recorded at the reader boundary,
+      # app branches concretely + consistently.
+      next unless meta.type == :boolean
+      sym = attrs[col]
+      obj.define_singleton_method("#{col}?") do
+        val = sym.value
+        sym.send(:record!, "(#{sym.sym_name} == True)", "#{col}?", taken: val)
+        val
+      end
+    end
+    # D4 (adversary round 2, 2026-08-28) — PINNED CONCRETE, was symbolic.
+    # `Diaspora::Fields::Guid` sets `after_initialize :set_guid`
+    # (guid.rb:6-17), so no record loaded from the database can carry a blank
+    # guid: the adversary inserted a row with `guid = ''` and both renders
+    # returned 200 with a freshly generated guid (A06). A symbolic guid made
+    # Rails' journey formatter record a `<rep>_guid == ''` compare that was
+    # taken TRUE in 3 547 dumps — a decision over a state the application
+    # forbids, inflating the universe with fiction. No query on this endpoint
+    # binds a rep's guid column (the post finder binds $$(SYM_PARAM_post_id),
+    # the link probe binds $$(SYM_PARAM_dlink_guid_*)), so concretizing loses
+    # no evidence. PIN LEDGER `<rep>_guid`: concrete, non-blank.
+    klass.columns_hash.each_key do |col|
+      next unless col == "guid" || col.end_with?("_guid")
+      v = "concolicguid#{col}0000001"
+      attrs[col] = v
+      obj.define_singleton_method(col) { v }
+    end
+
+    obj.define_singleton_method(:[])              { |k| attrs.fetch(k.to_s) }
+    obj.define_singleton_method(:read_attribute)  { |k| attrs.fetch(k.to_s) }
+    obj.define_singleton_method(:_read_attribute) { |k| attrs.fetch(k.to_s) }
+    obj.define_singleton_method(:concolic_attrs)  { attrs }
+    # SQL/context note for the target_call: CallInterceptor.extract_note reads
+    # #concolic_note on non-SymbolicVar returns, so the finder mocks' SQL lands
+    # on the symbolic_call event (not only on each column var's note).
+    obj.define_singleton_method(:concolic_note)   { sql }
+
+    # --- nil-@attributes family (wall-fixing discipline) ---
+    # klass.allocate leaves @attributes nil, so AR's `attributes` (to_hash),
+    # `write_attribute`/generated writers (`=`), and `inspect` all crash with
+    # NoMethodError for nil. Override the accessors to read/write the attrs
+    # Hash directly (the symbolic values are already there). This clears the
+    # to_hash / write_from_user / []-writer walls on symbolic records.
+    obj.define_singleton_method(:attributes)      { attrs }
+    # D1 (2026-09-25) — DIRTY TRACKING, and it has to live here.
+    # A write note must name the columns the application ASSIGNED, not every
+    # column the record carries. On a `klass.allocate` symbolic instance
+    # ActiveModel::Dirty cannot run at all (@attributes is nil), and the
+    # writers below poke the attrs hash directly, so without this the dirty
+    # set is simply unknowable and the note falls back to "every non-nil
+    # attribute" — which is exactly the defect: the INSERT gained a spurious
+    # `"sharing" = 'f'`, the raw sqlite default text, on a deployment
+    # modelled as MySQL.
+    #
+    # DELIBERATELY INERT. `concolic_dirty` is read by `dml_note` and by
+    # nothing else; no AR control-flow predicate is answered from it here
+    # (`has_changes_to_save?` / `changed?` stay unanswered, as before, so
+    # this adds no decision and changes no path).
+    dirty = []
+    obj.define_singleton_method(:concolic_dirty) { dirty }
+    obj.define_singleton_method(:write_attribute) { |k, v| dirty << k.to_s unless dirty.include?(k.to_s); attrs[k.to_s] = v }
+    obj.define_singleton_method(:_write_attribute) { |k, v| dirty << k.to_s unless dirty.include?(k.to_s); attrs[k.to_s] = v }
+    obj.define_singleton_method(:[]=)             { |k, v| dirty << k.to_s unless dirty.include?(k.to_s); attrs[k.to_s] = v }
+    # Profile#image_url is BOTH a DB column AND a real method (takes a size
+    # arg, builds a URL). The column reader above returns a symbolic var with
+    # arity 0, breaking `profile.image_url(:thumb_small)` in the avatar
+    # template. Override to a fixed URL (pure, no SQL — matches X6j intent).
+    if klass == Profile
+      obj.define_singleton_method(:image_url) { |_size = :thumb_large| "/concolic/image.jpg" }
+    end
+
+    # User#hidden_shareables is a REAL method (serialized Hash column, returned
+    # via `self[:hidden_shareables] ||= {}`), but the generic column reader
+    # above shadows it with a SymbolicString var — so `toggle_hidden_shareable`
+    # hits `SymbolicString#has_key?` (the share_visibilities wall). Restore a
+    # working mutable Hash (pure data — used only in the hidden-shareable
+    # bookkeeping, never a query / not branch-relevant to a query).
+    if klass == User
+      obj.define_singleton_method(:hidden_shareables) { @hs ||= {} }
+    end
+
+    # PostPresenter#non_directly_retrieved_attributes calls @post.post_location
+    # UNCONDITIONALLY, but only Reshare defines it (base Post doesn't) — the
+    # presenter is used for posts that have a location. Give symbolic instances
+    # a safe default (Reshare's shape: address/lat/lng) so a bare Post from the
+    # finder mock doesn't NoMethodError. Pure, no SQL.
+    if klass.name.split('::').last == "Post"
+      obj.define_singleton_method(:post_location) do
+        { address: nil, lat: nil, lng: nil }
+      end
+    end
+    # inspect -> AR serializes @attributes; give it the attrs so logging/
+    # debugging doesn't crash (devise authenticatable#inspect reaches here).
+    obj.define_singleton_method(:inspect) { "<Sym#{klass.name.split('::').last} #{base_name} attrs=#{attrs.keys.inspect}>" }
+
+    # AR association readers (user.person, user.blocks, post.status_message,
+    # profile, ...) go through ActiveRecord::Associations and index
+    # @association_cache — which is nil on an allocated (non-initialized)
+    # record, crashing with `undefined method [] for nil:NilClass` before any
+    # symbolic op is reached. Initialize the cache to {} so the AR machinery
+    # proceeds: reader -> find_target -> the declared FinderMethods/reference
+    # mocks -> symbolic instance, instead of crashing. (Runner-local prepends
+    # in some batches already shadow specific readers; this makes the generic
+    # path safe for ALL batches.)
+    obj.instance_variable_set(:@association_cache, {})
+    obj.instance_variable_set(:@association_cache_builder_enabled, false)
+
+    # AR instance-persistence/transaction state that real .save/.destroy/.update
+    # read during the transaction wrapper (remember_transaction_record_state does
+    # @_start_transaction_state.reverse_merge! — nil on an allocated record ->
+    # NoMethodError). Pre-seed empty hashes/flags so destroy/update paths proceed
+    # and the mocked persistence targets (section F) fire instead of crashing.
+    obj.instance_variable_set(:@_start_transaction_state, {})
+    obj.instance_variable_set(:@start_transaction_state, {})
+    obj.instance_variable_set(:@_trigger_transaction_callback, false)
+    # D3 (adversary round 2, 2026-08-28) — PINNED, was a decision.
+    # `persisted?` is TRUE for every rep this endpoint can hold: each one is
+    # produced by a finder / materialize / association-load target, i.e. by a
+    # row the database returned. `Diaspora::MentionsContainer#mentioned_people`
+    # (mentions_container.rb:17-23) therefore always takes the `mentions
+    # .includes(person: :profile)` arm; the `people_from_string` arm needs an
+    # UNPERSISTED container, which only the create path builds. The adversary
+    # confirmed it over 14 real runs: `people_from_string`, `Person#fix_profile`
+    # and every `find_by(diaspora_handle:)` fired ZERO times, while the corpus
+    # carried 9 219 `people.diaspora_handle` note events for that arm — a
+    # predicate column no real statement of this endpoint contains.
+    # PIN LEDGER `<rep>_persisted` = true. Neutrality: the unpinned side is not
+    # a state of this action (no query returns an unpersisted row), and pinning
+    # it removes the whole unreachable handle-lookup chain rather than adding
+    # any statement. The `1=0` NullRelation scopes it used to guard are
+    # likewise unreachable here for the same reason.
+    obj.define_singleton_method(:persisted?)  { true }
+    obj.define_singleton_method(:new_record?) { false }
+    obj.instance_variable_set(:@new_record, false)
+    obj.instance_variable_set(:@destroyed, false)
+    obj.instance_variable_set(:@readonly, false)
+    obj
+  end
+
+  # ------------------------------------------------------------------
+  # D8 (2026-09-25) — DISTINCT DEFAULT IDENTITIES FOR DISTINCT ENTITIES
+  # ------------------------------------------------------------------
+  # Before: every symbolic row's `id` defaulted to 1 and every foreign key
+  # to 0, so ANY two independently-loaded records compared EQUAL by default
+  # (`ActiveRecord::Core#==` is `other.instance_of?(self.class) && other.id
+  # == id`). On aspect_memberships#create that made `Contact
+  # #not_contact_for_self` (`person.owner == user`) fire on the DEFAULT run:
+  # the contact was always invalid, `share_with` always returned false, and
+  # the 409 "cannot add yourself" arm — a rare real state — was presented as
+  # the endpoint's default outcome, with the INSERT one flip away and out of
+  # budget.
+  #
+  # MEASURED, `dump_auth_json_dse0001.json`: 21 id variables took FOUR
+  # distinct values (14 of them 0, 5 of them 1). After this change, 26 id
+  # variables take 26 distinct values.
+  #
+  # THE SEED IS DERIVED FROM THE VARIABLE'S OWN NAME, not from a counter.
+  # A per-symbol counter would be ORDER-DEPENDENT: the same symbol would get
+  # a different id depending on which decisions a run took before minting it,
+  # so two runs over the same seeds could disagree and the corpus would stop
+  # being reproducible. `Digest::MD5` of the name is a pure function of the
+  # name, so:
+  #   * the same name always gets the same id, in every run, in every
+  #     process, in any order, with no shared state;
+  #   * two different names get different ids (with the span below, the
+  #     birthday probability over the ~300 names this corpus mints is ~5e-5,
+  #     and a collision is DETECTED and warned about rather than silent);
+  #   * `String#hash` is deliberately NOT used — Ruby/JRuby seed it per
+  #     process, which is exactly the non-determinism being avoided.
+  #
+  # WHAT STAYS EQUAL. The seed is keyed on the FULL variable name, so the
+  # name aliasing between a belongs_to FK column and its target's id
+  # (`<rep>_user_id` is both `contacts.user_id` and the var for
+  # `contact.user`'s `id` — see `assoc_base_name`) keeps both spellings on
+  # ONE value. That identification is the true AR invariant
+  # (`contact.user_id == contact.user.id`), and it is now consistent by
+  # construction instead of depending on which of the two `symint` calls
+  # happened to register first (it was the FK's, which is why every id in
+  # the pre-fix dumps read 0, not 1).
+  #
+  # SCOPE: only `id` and `*_id` columns. Every other integer column keeps
+  # its 0 default — a count, a counter cache or a numeric flag has no
+  # identity semantics, and moving those would change app behaviour
+  # (`if x.n > 0`) for no gain.
+  ID_SEED_MIN  = 10_000_000
+  ID_SEED_SPAN = 990_000_000
+  ID_SEED_SEEN = {}
+
+  def id_column?(col)
+    c = col.to_s
+    c == "id" || c.end_with?("_id")
+  end
+
+  # Deterministic, order-independent, name-derived identity. Pure function
+  # of `var_name`; no process state, no counter, no clock.
+  def name_derived_id(var_name)
+    n = var_name.to_s
+    v = ID_SEED_MIN + (Digest::MD5.hexdigest(n)[0, 15].to_i(16) % ID_SEED_SPAN)
+    prev = ID_SEED_SEEN[v]
+    if prev.nil?
+      ID_SEED_SEEN[v] = n
+    elsif prev != n
+      warn "[concolic][D8] default-id COLLISION: #{prev} and #{n} both seed #{v}"
+    end
+    v
+  end
+
+  # `var_name` is optional so an older caller still gets the old behaviour
+  # (1 for an id, 0 otherwise) rather than a silently different one.
+  def default_int(col, var_name = nil)
+    return 0 unless id_column?(col)
+    var_name.nil? ? 1 : name_derived_id(var_name)
+  end
+
+  # Shared single-record finder mock. raise_on_missing: true  -> find/!-style
+  #                                   raise_on_missing: false -> find_by/take/first
+  def finder_mock(raise_on_missing:)
+    lambda do |receiver, args, name|
+      sql = sql_for(receiver, args)
+      nf_name = "#{name}_not_found"
+      not_found = symbool(nf_name, seed_for(nf_name, false), note: sql)
+      if not_found == true # explicit compare — bare truthiness records no PC (TODO.txt)
+        # M-9 / B-8 (adversary round 5, 2026-08-29): A FINDER THAT FINDS
+        # NOTHING STILL ISSUED ITS QUERY. The interceptor takes a target's
+        # note from the RETURNED value, and `nil` can carry none, so this arm
+        # used to drop the statement out of the corpus entirely: the anon 404
+        # dump extracted to "no SELECT queries recorded for this endpoint",
+        # and every signed-in read that landed on the public arm lost the two
+        # visibility reads that ARE this endpoint's access control. Publish
+        # the statement on the engine's one-shot channel first; it is read
+        # once and cleared, and a note on the value would still win.
+        Thread.current[:concolic_pending_note] = sql
+        raise ActiveRecord::RecordNotFound, "concolic: empty result for: #{sql}" if raise_on_missing
+        nil # PC already recorded at this boundary; app branches concretely+consistently
+      else
+        symbolic_instance(model_class(receiver), name, sql)
+      end
+    end
+  end
+
+  # ---------------------------------------------------------------------
+  # Target declarations
+  # Selection rule: any framework method that could downstream issue SQL.
+  # See STEP0_query_targets.md for the full annotated table.
+  # ---------------------------------------------------------------------
+
+  def install!(interceptor = CallInterceptor.instance)
+    # Some mocked targets live in controllers / lib classes that load lazily
+    # (e.g. StreamsController#decorated_stream_posts). Eager-load JUST those
+    # files (not the whole app — full Rails.application.eager_load! crashes on
+    # the asset pipeline during load). Each require is rescued so one missing/
+    # failing file cannot abort the batch; non-loadable targets simply don't
+    # register (honest — reported as a non-firing mock).
+    eager_files = [
+      "streams_controller", "likes_controller", "tags_controller",
+      "people_controller", "notifications_controller",
+      "stream/base", "stream/multi", "stream/aspect", "stream/followed_tag",
+      "status_message", "photo", "poll", "poll_answer",
+      # Wall-fix targets (§X) live on services / taggable / federation — load
+      # them so `defined?(…)` is true when install! registers the targets.
+      "post_service", "reshare_service", "status_message_creation_service",
+      "taggable", "reshare", "person", "profile", "mentionable",
+      "mentions_container", "message_renderer", "post_presenter",
+      "aspect_membership", "aspect", "block",
+    ]
+    if defined?(Rails) && Rails.respond_to?(:application) && Rails.application
+      %w[app/controllers app/models app/presenters app/services lib].each do |dir|
+        next unless File.directory?(File.join(Rails.root, dir))
+        eager_files.each do |f|
+          path = File.join(Rails.root, dir, "#{f}.rb")
+          next unless File.exist?(path)
+          begin
+            require_relative path
+          rescue LoadError, StandardError => e
+            warn "[GATE1B] could not load #{path}: #{e.class} #{e.message[0,80]}"
+          end
+        end
+      end
+    end
+
+    fm  = ActiveRecord::FinderMethods
+
+    # Devise controllers are engine controllers (app/controllers in the
+    # devise gem) — not under Rails.root, so the eager_files loop above never
+    # loads them, and the Y4 assert_is_devise_resource! target silently stays
+    # dormant (session/registration actions then hit ActionNotFound). Load them
+    # explicitly so the Devise boundary can fire. Each require is rescued so a
+    # missing file cannot abort the batch.
+    %w[devise_controller sessions_controller registrations_controller].each do |dev_f|
+      dev_path = "/home/dev/.gem/jruby/2.6.0/gems/devise-4.7.1/app/controllers/#{dev_f}.rb"
+      next unless File.exist?(dev_path)
+      begin
+        require_relative dev_path
+      rescue LoadError, StandardError => e
+        warn "[CRASHFREE] could not load #{dev_path}: #{e.class} #{e.message[0,80]}"
+      end
+    end
+
+    rel = ActiveRecord::Relation
+    calc = ActiveRecord::Calculations
+    batches = ActiveRecord::Batches
+
+    # --- [ DESIGN #1 ] A. Single-record finders -> symbolic model instance --
+    %i[find take! first! last! find_by!].each do |m|
+      interceptor.declare_target(fm, m, kind: CallInterceptor::TARGET_FUNCTION, type: "obj<?>", returns: finder_mock(raise_on_missing: true))
+    end
+    %i[find_by take first last].each do |m|
+      # type: obj<?>? -- the not-found arm returns nil.
+      interceptor.declare_target(fm, m, kind: CallInterceptor::TARGET_FUNCTION, type: "obj<?>?", returns: finder_mock(raise_on_missing: false))
+    end
+    # Ordinal finders (second..forty_two) — declare only if diaspora uses them.
+
+    # --- [ DESIGN #2 ] A2. Single-id class-level finders (Core::ClassMethods) ---
+    # Model.find(id) / Model.find_by(...) / Model.find_by!(...) are REAL
+    # cached-statement methods on Core::ClassMethods (NOT Querying delegates),
+    # so they bypass the FinderMethods relation mocks above and would route
+    # through find_by_sql -> SymbolicList#first (NotImplementedError). Declare
+    # them with the same finder_mock so class-level single-record lookups
+    # return a symbolic instance (or the proper not-found result).
+    # Multi-id form (Post.find([1,2]) / find(a,b,c)) is not exercised by the
+    # app today (verified: 0 multi-id/IN queries in current dumps) — if it ever
+    # fires, route it to the collection mock (a length-only SymbolicList).
+    core = ActiveRecord::Core::ClassMethods
+    interceptor.declare_target(core, :find,     kind: CallInterceptor::TARGET_FUNCTION, type: "obj<?>", returns: finder_mock(raise_on_missing: true))
+    interceptor.declare_target(core, :find_by,  kind: CallInterceptor::TARGET_FUNCTION, type: "obj<?>?", returns: finder_mock(raise_on_missing: false))
+    interceptor.declare_target(core, :find_by!, kind: CallInterceptor::TARGET_FUNCTION, type: "obj<?>", returns: finder_mock(raise_on_missing: true))
+
+    # --- [ DESIGN #3 ] B. Existence / emptiness -> SymbolicBool -------------
+    # NOTE: `if Post.exists?(...)` hits the Ruby truthiness gap (TODO.txt) —
+    # only explicit compares record PCs. Returned anyway per decision 2026-08-05.
+    {
+      exists?: [fm, false], # concrete seed: does not exist
+      any?:    [rel, true],
+      none?:   [rel, false],
+      one?:    [rel, true],
+      many?:   [rel, false],
+      empty?:  [rel, false],
+    }.each do |m, (mod, seed)|
+      interceptor.declare_target(mod, m, kind: CallInterceptor::TARGET_FUNCTION, type: "bool", returns: lambda do |receiver, args, name|
+        vn = "#{name}_#{m.to_s.delete('?')}"
+        symbool(vn, seed_for(vn, seed), note: sql_for(receiver, args))
+      end)
+    end
+
+    # --- [ DESIGN #4 ] C. Collection materialization -> SymbolicList (length + rep, Gate 1b)
+    # `records` is REQUIRED: each/map route through it via Delegation, not to_a.
+    # Gate 1b (Bali directive): attach a single representative model row so
+    # SQL-free display/serialisation iteration completes (sampled-content);
+    # the representative is a symbolic instance of the relation's klass.
+    %i[to_a to_ary records].each do |m|
+      interceptor.declare_target(rel, m, kind: CallInterceptor::TARGET_FUNCTION, type: "[?]", returns: lambda do |receiver, args, name|
+        vn = "#{name}_rows"
+        rep = symbolic_instance(model_class(receiver), "#{name}_row", sql_for(receiver, args))
+        SymbolicList.new(seed_for(SymbolicVar.len_var_name(vn), 1), name: vn,
+                       note: sql_for(receiver, args), representative: rep)
+      end)
+    end
+    interceptor.declare_target(rel, :size, kind: CallInterceptor::TARGET_FUNCTION, type: "int", returns: lambda do |receiver, args, name|
+      vn = "#{name}_size"
+      note = sql_for(receiver, args)
+      begin
+        note = note.sub(/\ASELECT\s+(DISTINCT\s+)?.*?\s+FROM /m, "SELECT COUNT(*) FROM ")
+      rescue StandardError
+        nil
+      end
+      symint(vn, seed_for(vn, 1), note: note)
+    end)
+
+    # --- [ DESIGN #5 ] D. Calculations -> SymbolicInt -----------------------
+    %i[count sum].each do |m|
+      interceptor.declare_target(calc, m, kind: CallInterceptor::TARGET_FUNCTION, type: "int", returns: lambda do |receiver, args, name|
+        vn = "#{name}_#{m}"
+        note = sql_for(receiver, args)
+        begin
+          if m == :sum
+            vals = args.is_a?(::Hash) ? args.values : Array(args)
+            col = vals.flatten.compact.find { |a| a.is_a?(::Symbol) || a.is_a?(::String) }
+            if col
+              tbl = (receiver.respond_to?(:table_name) && receiver.table_name) ||
+                    (receiver.respond_to?(:klass) && receiver.klass.table_name)
+              proj = tbl ? %(SUM("#{tbl}"."#{col}")) : %(SUM("#{col}"))
+              note = note.sub(/\ASELECT\s+(DISTINCT\s+)?.*?\s+FROM /m, "SELECT #{proj} FROM ")
+            else
+              note = note.sub(/\ASELECT\s+(DISTINCT\s+)?.*?\s+FROM /m, "SELECT SUM(*) FROM ")
+            end
+          else
+            note = note.sub(/\ASELECT\s+(DISTINCT\s+)?.*?\s+FROM /m, "SELECT COUNT(*) FROM ")
+          end
+        rescue StandardError
+          nil # projection rewrite must never crash the mock
+        end
+        symint(vn, seed_for(vn, m == :count ? 1 : 0), note: note)
+      end)
+    end
+    # --- [ DESIGN #5c ] D3. Calculations#ids -> symbolic id list ------------
+    # Boundary gap B-5 (docs/BOUNDARY_NOTE_GAPS_20260915.md), repaired
+    # 2026-09-15. `ids` was UNSUPPORTED in the shared boundary, so it recorded
+    # NOTHING and any batch needing it had to redeclare it locally.
+    #
+    # WHAT B-5 ACTUALLY IS (measured on results3/posts_show, whose targets.rb
+    # carries such a local declaration): the statement IS recorded -- on the
+    # `Calculations.ids` call event and on the representative
+    # `<result>_id`/`len(<result>_ids)` vars. What is missing is a RESOLVABLE
+    # NAME. That local mock names the LIST `<result>_ids`, and `ids` is not a
+    # column of the relation, so when the list is handed to a later
+    # `where(...)` as a bind, render_bind_value emits `$$(<result>_ids)` --
+    # and transform.py's bind recursion resolves `<producer>_<column>` only,
+    # so it stays an unresolved placeholder
+    # (`"notifications"."target_id" = $$(SYM_RESULT_ActiveRecord__
+    # Calculations_ids_1_ids)`, 72 notes / 150 dumps).
+    #
+    # So the shared declaration names the list after the relation's REAL
+    # primary key (`<result>_<pk>`), which is exactly the column the list
+    # holds; a bind naming it then resolves as that column of THIS query by
+    # the ordinary recursion, with no new config regex. The representative
+    # carries the same name -- list and representative ARE the same column --
+    # and the length var (`len(...)` / `SYM_LEN_...`) stays distinct by
+    # construction. The note carries the real projection
+    # (`SELECT "t"."id" FROM ...`) rather than `SELECT "t".*`: `ids` reads one
+    # column, and `SELECT *` would overstate it. Same descent §5b took for
+    # `pluck`.
+    if calc.method_defined?(:ids)
+      interceptor.declare_target(calc, :ids, kind: CallInterceptor::TARGET_FUNCTION, type: "[?]", returns: lambda do |receiver, args, name|
+        note = sql_for(receiver, args)
+        pk = begin
+          k = model_class(receiver)
+          (k.respond_to?(:primary_key) && k.primary_key) || "id"
+        rescue StandardError
+          "id"
+        end
+        begin
+          tbl = (receiver.respond_to?(:table_name) && receiver.table_name) ||
+                (receiver.respond_to?(:klass) && receiver.klass.table_name)
+          proj = tbl ? %("#{tbl}"."#{pk}") : %("#{pk}")
+          note = note.sub(/\ASELECT\s+(DISTINCT\s+)?.*?\s+FROM /m, "SELECT #{proj} FROM ")
+        rescue StandardError
+          nil # projection rewrite must never crash the mock
+        end
+        vn  = "#{name}_#{pk}"
+        rep = symint(vn, seed_for(vn, 1), note: note)
+        list_class = defined?(IterableSymbolicList) ? IterableSymbolicList : SymbolicList
+        list_class.new(seed_for(SymbolicVar.len_var_name(vn), 1), name: vn,
+                       note: note, representative: rep)
+      end)
+    end
+    %i[pluck average minimum maximum calculate].each do |m|
+      # type: void -- the mock raises, so no return value is ever recorded.
+      interceptor.declare_target(calc, m, kind: CallInterceptor::TARGET_FUNCTION, type: "void", returns: ->(_r, _a, _n) { UNSUPPORTED.call("Calculations##{m}") })
+    end
+
+    # --- [ DESIGN #6 ] Batches + contents ops -> unsupported ----------------
+    %i[find_each find_in_batches in_batches].each do |m|
+      # type: void -- the mock raises, so no return value is ever recorded.
+      interceptor.declare_target(batches, m, kind: CallInterceptor::TARGET_FUNCTION, type: "void", returns: ->(_r, _a, _n) { UNSUPPORTED.call("Batches##{m}") })
+    end
+
+    # --- [ DESIGN #7 ] E. Relation-level DML --------------------------------
+    # D5 (2026-09-25) — the note was `sql_for(receiver, args)`, i.e. the
+    # relation's SELECT, so a WRITE was recorded as a full-row READ of every
+    # row it touched: wrong verb, and wrong in the over-disclosing direction.
+    # MEASURED, differential.rb: real `Contact.where(id: [..]).update_all(
+    # user_id: 4242)` is `UPDATE "contacts" SET "user_id" = ? WHERE
+    # "contacts"."id" IN (?, ?)`; the note was `SELECT "contacts".* FROM
+    # "contacts" WHERE …`. The WHERE is the relation's either way — only the
+    # head and the SET list change.
+    interceptor.declare_target(rel, :update_all, kind: CallInterceptor::TARGET_FUNCTION, type: "int", returns: lambda do |receiver, args, name|
+      symint("#{name}_update_all_count", 1, note: dml_update_all_note(receiver, args))
+    end)
+    interceptor.declare_target(rel, :delete_all, kind: CallInterceptor::TARGET_FUNCTION, type: "int", returns: lambda do |receiver, args, name|
+      symint("#{name}_delete_all_count", 1, note: dml_delete_all_note(receiver, args))
+    end)
+    # `destroy_all` KEEPS the SELECT, and that is not an oversight: real
+    # ActiveRecord DOES issue exactly this SELECT to load the rows before
+    # destroying them (measured), so the note is a true statement of the
+    # call. What it does NOT carry is the per-row DELETE that follows, which
+    # is a SEPARATE access and is staged separately — see
+    # `_staged_fixes/CASCADE_AND_AUTOSAVE.md`.
+    interceptor.declare_target(rel, :destroy_all, kind: CallInterceptor::TARGET_FUNCTION, type: "[?]", returns: lambda do |receiver, args, name|
+      SymbolicList.new(1, name: "#{name}_destroyed", note: sql_for(receiver, args))
+    end)
+
+    # --- [ DESIGN #8 ] F. Instance persistence -> SymbolicBool --------------
+    # note = operation description (no relation to render for instance DML).
+    #
+    # Targeting ActiveRecord::Base (NOT ActiveRecord::Persistence): the mocks
+    # must win the method-resolution race against the modules that shadow the
+    # Persistence definitions higher in every model's ancestor chain —
+    #   * save/save!        are redefined by ActiveRecord::Suppressor (then
+    #                        Validations runs the validate callbacks, which
+    #                        hit the app's before_validation `name.strip!` and
+    #                        before_create SQL walls on symbolic records)
+    #   * destroy           is redefined by ActiveRecord::Transactions
+    #   * update!/save!     were never in the Persistence list at all
+    # define_method on Base puts the mock directly in Base's method table, which
+    # precedes every included module in the MRO, so the body-skip always fires.
+    # save! / update! too (the !-variants are what update!/toggle actions call).
+    base = ActiveRecord::Base
+    %i[save save! update update! update_attribute touch destroy destroy!].each do |m|
+      next unless base.instance_methods.include?(m) ||
+                  base.private_instance_methods.include?(m) ||
+                  base.protected_instance_methods.include?(m)
+      interceptor.declare_target(base, m, kind: CallInterceptor::TARGET_FUNCTION, type: "bool", returns: lambda do |receiver, args, name|
+        # D6 (2026-09-25) — the note used to be `"<Class>#<m> args=<args>"`,
+        # which carries no DML keyword, so the extraction's `_is_dml` filter
+        # dropped it and 68 of the 69 write endpoints recorded no evidence of
+        # writing at all. MEASURED in the wild: the one core-only endpoint
+        # whose shakedown dumps reach a write,
+        # `api_openid_connect_authorizations_destroy`, carries exactly
+        # `Api::OpenidConnect::Authorization#destroy args={}`.
+        #
+        # `dml_note` returns nil for the one case where real ActiveRecord
+        # issues NOTHING — a `save` on a record with no changes (D4). A note
+        # is then a PROSE description, which `_is_dml` correctly drops, so
+        # the corpus records no statement where the application made none.
+        note = dml_note(receiver, m, args)
+        note = "#{receiver.class.name}##{m} (no changed attributes; ActiveRecord issues no statement)" if note.nil?
+        if %i[destroy destroy!].include?(m)
+          # D9 — the destroy callback chain runs AROUND the owner's note, not
+          # after it, because `before_destroy` statements precede the DELETE
+          # and `after_destroy` statements follow it. A chain that halts means
+          # no DELETE, so `r` can come back nil; the fallback below is then a
+          # SymbolicBool whose note is prose, carrying the reason and no
+          # statement.
+          r = nil
+          why = dml_run_destroy_callbacks!(receiver) do
+            r = symbool("#{name}_#{m}_ok", true, note: note)
+          end
+          r || symbool("#{name}_#{m}_ok", false,
+                       note: "#{receiver.class.name}##{m} (ActiveRecord issues no statement: #{why})")
+        else
+          r = symbool("#{name}_#{m}_ok", true, note: note)
+          # D8 — the writes ActiveRecord would have run from this save's own
+          # autosave callbacks. AFTER the owner's note is minted, so the two
+          # appear in the order the real statements do.
+          dml_run_pending_autosaves!(receiver) if %i[save save! update update!].include?(m)
+          r
+        end
+      end)
+    end
+
+    # --- [ DESIGN #9 ] G. Raw SQL entry points ------------------------------
+    querying = ActiveRecord::Querying
+    interceptor.declare_target(querying, :find_by_sql, kind: CallInterceptor::TARGET_FUNCTION, type: "[?]", returns: lambda do |receiver, args, name|
+      SymbolicList.new(1, name: "#{name}_rows", note: args["sql"].to_s)
+    end)
+    interceptor.declare_target(querying, :count_by_sql, kind: CallInterceptor::TARGET_FUNCTION, type: "int", returns: lambda do |receiver, args, name|
+      symint("#{name}_count", 1, note: args["sql"].to_s)
+    end)
+
+    # --- [ DESIGN #10 ] I. Gate 1b — sampled-content call-site mocks (SCSM) ---
+    # Per DESIGN_sampled_content_list.md §8.3/§8.4 (Bali-approved). Each target
+    # is declared on the smallest SQL-free enclosure whose RESULT is the
+    # iterated collection, so the enclosing `.map`/`.each` in real app code
+    # never runs against a SymbolicList (which would raise — iteration is
+    # caller-wrapped by design, D4/D5/D7/D8). Repeats declared with the
+    # standard interceptor.declare_target mechanism (NOT ad-hoc monkey-patching).
+    #
+    # Honest limit (DESIGN §5): these model/helper iteration walls in the
+    # ACTION path are the achievable Gate 1b wins. Rows 9/10/14 (the
+    # controller/gem `.map` inside the respond_with *format block*) fire before
+    # `render` and are NOT clearable without implementing `.map` on a
+    # SymbolicList — that stays unimplemented by design, so they remain a
+    # documented wall (reported honestly in STATUS, not silently dropped).
+
+    # Rows 1-3: Post.excluding_blocks -> user.blocks.map{|b| b.person_id}.
+    # DESIGN table targets user.blocks (the association), NOT excluding_blocks:
+    # excluding_blocks' real body has BOTH `.map` AND `.where` (SQL) — mocking
+    # it returns a SymbolicList that `for_a_stream` then chains
+    # `.excluding_hidden_shareables` onto, cascading into a NEW NoMethodError
+    # (strictly worse than the original). Per D7 we do NOT mock a method whose
+    # body queries; the protected form is to keep the association mock only
+    # and let the each/where cascade surface honestly as a documented limit.
+    # user.blocks -> SymbolicList of Block reps (design rows 1-3 association).
+    # Declared so any direct `user.blocks` read yields rep-carrying rows too.
+    interceptor.declare_target(User, :blocks, kind: CallInterceptor::TARGET_FUNCTION, type: "[?]", returns: lambda do |receiver, args, name|
+      # results3 Phase A Patch 3: render the real SQL this stands in for
+      # (Block belongs_to :user, default FK "user_id") instead of the junk
+      # "User#blocks" note. See ../PHASE_A_PATCH.md Patch 3.
+      sql = begin
+        owner_id = receiver.respond_to?(:[]) ? receiver[:id] : receiver.id
+        %(SELECT "blocks".* FROM "blocks" WHERE "blocks"."user_id" = #{render_arg_value(owner_id)})
+      rescue StandardError
+        "User#blocks"
+      end
+      rep = symbolic_instance(Block, "#{name}_block", sql)
+      symlist(name, 1, representative: rep, note: sql)
+    end)
+
+    # results3 (b) descent, per ../PHASE_A_PATCH.md Patch 3's "Note for
+    # results3" and ../../results2/MOCK_AUDIT.md's `Post.blocked_people` row:
+    # REMOVED. Its real body (app/models/post.rb:105, `user.blocks.map{...}`)
+    # calls `user.blocks` directly, so keeping this outer mock would prevent
+    # the now-correctly-noted `User#blocks` mock immediately above from ever
+    # firing along that call path — a VIOLATION of (b) (mocking a method
+    # whose real body calls another declared target). Removed entirely; if
+    # `Post.excluding_blocks` is ever reached, it will call the real
+    # `.blocked_people` (a Gate-1b split, itself SQL-free) which calls the
+    # kept `User#blocks` mock and a pure `.map`. DEAD on comments_index's
+    # own :index action (verified: CommentsController#index's only Post
+    # touch is PostService#find_public!, which never reaches
+    # Post.excluding_blocks/.blocked_people) — left removed anyway per the
+    # discipline (correctness over "kept dormant" where a real fix is this
+    # cheap), and to keep this private copy diff-auditable against the
+    # Phase A patch note.
+
+    # Rows 4-5: Stream::Aspect#aspect_ids -> aspects.map(&:id). Pure transform.
+    # Returns a CONCRETE array [1] so that when the result feeds a `where(...
+    # IN (?), aspect_ids)` bind-var sanitisation, Arel does NOT try to quote a
+    # SymbolicList (which would crash on SymbolicList#map). Aspect#posts calls
+    # user.visible_shareables(..., :by_members_of => aspect_ids) — the concrete
+    # [1] lets that SQL path stay real without a list-quote cascade.
+    if defined?(Stream::Aspect)
+      # type: [int] -- a concrete Array of aspect ids.
+      interceptor.declare_target(Stream::Aspect, :aspect_ids, kind: CallInterceptor::SHIM, type: "[int]", returns: lambda do |_r, _a, _name|
+        [1]
+      end)
+    end
+
+    # Row 6: Stream::FollowedTag#tag_ids -> tags.map{|x| x.id}. Pure transform.
+    # Its real result would be a SymbolicList (tags.map on a symbolic relation)
+    # and its value flows into StatusMessage.tag_stream
+    # `where("taggings.tag_id IN (?)", tag_ids)` — a STRING where, which Arel
+    # sanitises via replace_bind_variable -> quote_bound_value -> value.map
+    # (crash on SymbolicList#map). Returning a numeric Array won't help: the
+    # interceptor re-symbolises any Array return into a SymbolicList. Returning
+    # `nil` is the one value the interceptor passes through UNCHANGED (see
+    # to_symbolic: nil passthrough), and `where("IN (?)", nil)` quotes to a
+    # benign NULL. user_tag_stream/tag_stream then run for REAL (SQL stays
+    # real), returning a real relation that for_a_stream can chain — exactly
+    # like the Aspect stream's real visible_shareables path.
+    if defined?(Stream::FollowedTag)
+      # type: [int]? -- the real tag_ids is tags.map(&:id); this mock records null.
+      interceptor.declare_target(Stream::FollowedTag, :tag_ids, kind: CallInterceptor::SHIM, type: "[int]?", returns: lambda do |_r, _a, _name|
+        nil
+      end)
+    end
+
+    # Stream::Base#post_ids (Gate 1b split) = `posts.map(&:id)` (SQL-free).
+    # Called at the top of like_posts_for_stream! to feed
+    # `Like.where(:target_id => post_ids(posts))`. Return a CONCRETE [1] so
+    # the Like.where IN bind-var is plain and no SymbolicList#map cascade fires.
+    if defined?(Stream::Base)
+      # type: [int] -- a concrete Array of post ids.
+      interceptor.declare_target(Stream::Base, :post_ids, kind: CallInterceptor::SHIM, type: "[int]", returns: lambda do |_r, _a, _name|
+        [1]
+      end)
+    end
+
+    # Stream::Base#attach_user_likes (Gate 1b split) = the SQL-free
+    # inject+each that attaches like rows to posts. Wrapped to bypass the
+    # iteration; returns the posts unchanged (behaviour-preserving: the method
+    # is a no-op for coverage purposes — side effects mutate the post rows).
+    if defined?(Stream::Base)
+      # type: [?] -- hands back the posts collection it was given.
+      interceptor.declare_target(Stream::Base, :attach_user_likes, kind: CallInterceptor::SHIM, type: "[?]", returns: lambda do |receiver, args, _name|
+        args["posts"]
+      end)
+    end
+
+    # Rows 9-10 terminal display (Bali directive): the streams controller's
+    # JSON decoration is now a separate SQL-free method, StreamsController
+    # #decorated_stream_posts (pure `posts.map { presenter }` — no SQL). This
+    # is the function-boundary split: we wrap ONLY the SQL-free display step.
+    # The producer (Stream::Base#stream_posts / Stream::Person#stream_posts
+    # etc.) is intentionally NOT mocked here — it contains SQL
+    # (like_posts_for_stream! behind `posts`), so per the D7/no-SQL-in-mock
+    # rule it must run for real.
+    if defined?(StreamsController)
+      warn "[GATE1B] StreamsController defined; decorating target #{StreamsController.name}"
+      interceptor.declare_target(StreamsController, :decorated_stream_posts, kind: CallInterceptor::SHIM, type: "[?]", returns: lambda do |receiver, args, name|
+        rep = symbolic_instance(Post, "#{name}_decorated", "StreamsController#decorated_stream_posts")
+        symlist(name, 1, representative: rep, note: "StreamsController#decorated_stream_posts")
+      end)
+    end
+
+    # Row 6 consumption: StatusMessage.tag_stream / .user_tag_stream are CLASS
+    # methods (def self.xxx). They are intentionally NOT mocked here: their body
+    # is SQL (where IN), and the followed-tags posts must come back as a REAL
+    # relation so Stream::Base#stream_posts can chain `.for_a_stream(...)` on it
+    # (mocking the consumer to a SymbolicList breaks that chain — NoMethodError
+    # for_a_stream). Instead Stream::FollowedTag#tag_ids is stubbed to nil (see
+    # above) so the real string-where sanitises to NULL and full real-path runs.
+    # (StatusMessage is loaded eagerly above so the constant resolves.)
+
+    # Rows 7-8: Stream::Multi#publisher_prefill -> followed_tags.map{...} +
+    # invited_by.try(:person). Pure string-building (no SQL); the string result
+    # is supplied symbolically.
+    if defined?(Stream::Multi)
+      interceptor.declare_target(Stream::Multi, :publisher_prefill, kind: CallInterceptor::SHIM, type: "str", returns: lambda do |_r, _a, name|
+        symstr("#{name}_prefill", seed_for("#{name}_prefill", ""), note: "Stream::Multi#publisher_prefill")
+      end)
+    end
+
+    # Rows 12-13: TagsController#prep_tags_for_javascript -> @tags.map{...};
+    # uniq!. Pure transform (no SQL). Mock the transform so @tags is supplied
+    # symbolically as a SymbolicList of tag-hash reps.
+    if defined?(TagsController)
+      interceptor.declare_target(TagsController, :prep_tags_for_javascript, kind: CallInterceptor::SHIM, type: "[?]", returns: lambda do |receiver, args, name|
+        rep = symbolic_instance(ActsAsTaggableOn::Tag, "#{name}_tag", "TagsController#prep_tags_for_javascript")
+        symlist(name, 1, representative: rep, note: "TagsController#prep_tags_for_javascript")
+      end)
+    end
+
+    # --- [ DESIGN #11 ] H. Redis / Sidekiq enqueue (fire-and-forget) ---
+    # intercepted as a symbolic no-op instead of hitting the real Redis
+    # connection (which is not running in the rig -> Redis::CannotConnectError
+    # in background_search / export_photos / ReportWorker / etc).
+    #
+    # perform_async -> Sidekiq::Worker#client_push -> Sidekiq::Client.new(pool)
+    # .push(item). Intercepting Sidekiq::Client#push (and #push_bulk) covers
+    # every worker enqueue with ONE framework-level target; the mock returns
+    # nil (a real push returns a job-id String, but the app never consumes it —
+    # it is fire-and-forget — and nil passes through interceptor unchanged,
+    # so no downstream SymbolicString coercion can fire on it). No method here
+    # contains the app SQL (enqueue is strictly a queue write), so this is not
+    # a D7 violation — nothing SQL-bearing is mocked.
+    if defined?(Sidekiq::Client)
+      # type: str? -- a real push returns a job-id String; this mock records null.
+      interceptor.declare_target(Sidekiq::Client, :push, kind: CallInterceptor::SHIM, type: "str?", returns: ->(_r, _a, _n) { nil })
+      # type: [str]? -- a real push_bulk returns the job ids; this mock records null.
+      interceptor.declare_target(Sidekiq::Client, :push_bulk, kind: CallInterceptor::SHIM, type: "[str]?", returns: ->(_r, _a, _n) { nil })
+    end
+
+    # --- [ CRASH-STOP (agent) ] Y. Generic framework-level walls ---
+    # These kill the largest crash families at the framework boundary, before
+    # any downstream symbolic op can fire. All are ignored-result (fire-and-
+    # forget) or terminal markers; none carries app SQL, so no D7 violation.
+
+    # Y1. ActionController::Metal#status= — controllers set response status
+    # (self.status = :not_found etc.) BEFORE any render, and with no @_response
+    # built (controller-test rig) this delegates to nil.status= and raises
+    # Module::DelegationError (13+ crashes). status= only writes a header; the
+    # value is not branched on. No-op it.
+    if defined?(ActionController::Metal)
+      # type: int? -- a setter returns its argument (the status code); this mock records null.
+      interceptor.declare_target(ActionController::Metal, :status=, kind: CallInterceptor::SHIM, type: "int?", returns: ->(_r, _a, _n) { nil })
+    end
+
+    # Y2. Implicit render (UnknownFormat, 14 crashes). An action that runs its
+    # logic and falls through with NO explicit `render`/`redirect_to` calls
+    # hits default_render -> template lookup -> UnknownFormat. Render is
+    # terminal (decision A); these actions have completed their concolic
+    # logic, so the missing-template raise is an artifact. Make implicit render
+    # a terminal marker, mirroring the explicit-render boundary.
+    # (default_render lives on ActionController::ImplicitRender, included into
+    # Metal; explicit `render` is already handled in section Z.)
+    if defined?(ActionController::ImplicitRender)
+      # type: str -- a Symbol sentinel; the type language has no symbol kind.
+      interceptor.declare_target(ActionController::ImplicitRender, :default_render, kind: CallInterceptor::SHIM, type: "str", returns: ->(_r, _a, _n) { :render_reached })
+    end
+
+    # Y3. redirect_to / url_for — engine/Devise routes are not loaded in the
+    # ActionController::TestCase rig, so url generation raises
+    # UrlGenerationError (9 crashes) after the action's real logic has run.
+    # redirect_to is terminal (a 302 render); url_for is a pure URL builder
+    # (not branched). Treat redirect_to as terminal render, and url_for as a
+    # benign no-op returning a concrete URL string (Symbol passes through
+    # unchanged).
+    if defined?(ActionController::Redirecting)
+      # type: str -- a Symbol sentinel; the type language has no symbol kind.
+      interceptor.declare_target(ActionController::Redirecting, :redirect_to, kind: CallInterceptor::SHIM, type: "str", returns: ->(_r, _a, _n) { :redirect_reached })
+    end
+    if defined?(ActionDispatch::Routing::UrlFor)
+      interceptor.declare_target(ActionDispatch::Routing::UrlFor, :url_for, kind: CallInterceptor::SHIM, type: "str", returns: ->(_r, _a, _n) { "/concolic_url" })
+    end
+
+    # Y4. Devise controllers call assert_is_devise_resource! up-front, which
+    # looks up the path in Devise.mappings — not configured in the rig ->
+    # ActionNotFound (4 crashes). Skip the check (the rig already supplies
+    # current_user plumbing; the check is routing config, not concolic logic).
+    if defined?(DeviseController)
+      interceptor.declare_target(DeviseController, :assert_is_devise_resource!, kind: CallInterceptor::SHIM, type: "bool", returns: ->(_r, _a, _n) { true })
+    end
+
+    # --- [ CRASH-STOP (agent) ] Z. Render boundary — render is TERMINAL ---
+    # Treat reaching a render call as the completion signal and short-circuit
+    # the real view/serialization machinery, which crashes on symbolic data
+    # (template lookup, presenter each/map over SymbolicLists, status= on nil
+    # @_response -> devise inspect -> serializable_hash -> to_hash/[] for nil).
+    # Concolic value lives in controller/service/model logic, not templates =>
+    # sound, and honest (the render call event is the completion marker;
+    # reports say "reached render", not "rendered a page").
+    # See DESIGN_render_boundary.md. All runners call install! => applies to all.
+    # Note: respond_with is deliberately NOT declared — it's not present in this
+    # Action Pack and render covers the terminal render path.
+    # cycle 3 (2026-08-27, ADVERSARY_REPORT W2): render is NOT a target on
+    # this batch any more — `render layout: false, locals: {comments:}` (the
+    # mobile format) and `render json: …` run the REAL ActionView/JSON
+    # pipeline (index.mobile.haml / _comment.mobile.haml / PeopleHelper /
+    # MessageRenderer#markdownified), exactly as conversations_index does.
+    # The marker mock swallowed the whole mobile render tree (zero corpus
+    # events for it). Kept as an inert, never-iterated table for the diff.
+    render_mod = ActionController::Rendering
+    {}.each do |m, marker|
+      # type: str -- a Symbol sentinel; the type language has no symbol kind.
+      interceptor.declare_target(render_mod, m, kind: CallInterceptor::SHIM, type: "str", returns: lambda do |receiver, args, name|
+        # Guard against nil @_response for controllers that set status/headers
+        # before/after render. (render's own _process_options is never reached
+        # because we skip the body.)
+        unless receiver.instance_variable_get(:@_response)
+          reply = receiver.respond_to?(:reply) ? receiver.reply : nil
+          receiver.instance_variable_set(:@_response, reply) if reply
+        end
+        marker # Symbol passes through the interceptor unchanged (not wrapped)
+      end)
+    end
+
+    # --- [ CRASH-STOP (agent) ] W. Crash-free walls round 2 ---
+    # These close the biggest remaining families. See STATUS.md inventory.
+
+    # W1. SymbolicInt#to_i via belongs_to association writers (~8 crashes).
+    # When app code does `comment.author = person` (or assign_attributes with
+    # an association key), AR routes through SingularAssociation#writer ->
+    # BelongsToAssociation#replace -> replace_keys -> `owner[fk] = record.id`,
+    # and record.id is a SymbolicInt that gets type-cast via cast_value -> to_i
+    # (NotImplementedError). The task directive: cannot mock the Integer cast;
+    # mock the caller. The association writer is a single framework chokepoint
+    # that all these create paths flow through, so we no-op it (return the
+    # record unchanged; the in-memory foreign-key write is not needed for
+    # concolic coverage and the eventual save is already symbolic). This is a
+    # framework wall equivalent to section Y/Z (no app SQL is mocked).
+    if defined?(ActiveRecord::Associations::SingularAssociation)
+      # type: obj<?>? -- hands back the assigned record, which may be nil.
+      interceptor.declare_target(
+        ActiveRecord::Associations::SingularAssociation, :writer,
+        kind: CallInterceptor::SHIM, type: "obj<?>?", returns: ->(_r, args, _n) { args["record"] }
+      )
+    end
+
+    # W2. ActionController::Metal#head -> terminal marker. `head` sets
+    # self.status = ... (status= delegates to @_response.status=, @_response
+    # nil in the controller-test rig -> Module::DelegationError). head is the
+    # terminal response for many destroy/member actions (rescue_from
+    # RecordNotFound -> head :not_found), so treat it as a completion marker.
+    if defined?(ActionController::Metal) &&
+       ActionController::Metal.instance_methods.include?(:head)
+      # type: str -- a Symbol sentinel; the type language has no symbol kind.
+      interceptor.declare_target(ActionController::Metal, :head,
+                                 kind: CallInterceptor::SHIM, type: "str", returns: ->(_r, _a, _n) { :head_reached })
+    end
+
+    # W3. SingularAssociation#find_target -> symbolic instance.
+    # When a symbolic record's belongs_to/has_one reader is first touched
+    # (post.author, poll_participation.poll, status_message.author, ...) and
+    # @association_cache is empty, AR calls find_target, which does
+    # `scope.take` -> SymbolicList#first w/o representative (NotImplementedError).
+    # Mock find_target to return a symbolic instance of the association's klass
+    # (family 4 generic reader wall). Covers photos_destroy/poll/parts_create
+    # `author` reader crashes and similar. (The real SQL never runs.)
+    if defined?(ActiveRecord::Associations::SingularAssociation)
+      # type: obj<?>? -- a symbolic instance, or nil when the reflection has no class.
+      interceptor.declare_target(
+        ActiveRecord::Associations::SingularAssociation, :find_target,
+        kind: CallInterceptor::TARGET_FUNCTION, type: "obj<?>?", returns: lambda do |receiver, _args, _name|
+          begin
+            refl = receiver.reflection
+            klass = refl.klass
+            if klass && klass.respond_to?(:allocate)
+              # results3 Phase A Patch 1: render the real SQL find_target
+              # stands in for (see ../PHASE_A_PATCH.md Patch 1) instead of
+              # the junk "SingularAssociation#name" note. Never let
+              # note-building itself crash the mock.
+              sql = begin
+                owner = receiver.owner
+                table = klass.table_name
+                if refl.belongs_to?
+                  col = refl.association_primary_key(klass)
+                  fk_raw = raw_owner_attr(owner, refl.foreign_key)
+                else
+                  col = refl.foreign_key
+                  fk_raw = raw_owner_attr(owner, refl.active_record_primary_key)
+                end
+                %(SELECT "#{table}".* FROM "#{table}" WHERE "#{table}"."#{col}" = #{render_arg_value(fk_raw)})
+              rescue StandardError
+                "SingularAssociation##{refl.name}"
+              end
+              symbolic_instance(klass, assoc_base_name(receiver.owner, refl.name), sql)
+            else
+              nil
+            end
+          rescue StandardError
+            nil
+          end
+        end
+      )
+
+      # W3-memo. SingularAssociation#find_target loaded-target memo (by
+      # PREPEND, never a second declare_target — that would capture the first
+      # wrapper as its "original" and nest the wrappers). A second read of the
+      # same has_one/belongs_to in one request re-issues the statement; the
+      # real app loads once (TARGET_FUNCTIONS.md #4: conversations 696
+      # repetitions, ONE shape; comments 0). Keyed on [owner.object_id,
+      # reflection.name]; the per-run scope comes from the interceptor's run
+      # label (unique per run in every batch runner — %s_dse%04d%s with a
+      # per-run counter), and the whole cache resets when the label changes:
+      # the same "clear per run" contract as the CollectionProxy
+      # loaded-target memo (notifications targets.rb §5b-CP). super reaches
+      # the W3 interceptor wrapper above.
+      unless defined?(@singular_loaded_target_memo) && @singular_loaded_target_memo
+        singular_loaded_target_memo = Module.new do
+          def find_target(*args)
+            state = (Thread.current[:concolic_loaded_target_memo] ||= { label: nil, entries: {} })
+            label = CallInterceptor.instance.instance_variable_get(:@current_run_label)
+            if state[:label] != label
+              state[:label] = label
+              state[:entries] = {}
+            end
+            entries = state[:entries]
+            key = [owner.object_id, reflection.name]
+            return entries[key] if entries.key?(key)
+            entries[key] = super
+          end
+        end
+        ActiveRecord::Associations::SingularAssociation.prepend(singular_loaded_target_memo)
+        @singular_loaded_target_memo = true
+      end
+    end
+
+    # W4. ActionController::Rendering#_set_rendered_content_type -> no-op.
+    # photos_index respond_to hits `response.content_type = ...` where the
+    # rig's @_response is nil (NoMethodError content_type for nil), before the
+    # Z render marker is reached. No-op it (it only sets a header on the not-yet
+    # existing response object).
+    if defined?(ActionController::Rendering) &&
+       ActionController::Rendering.private_instance_methods.include?(:_set_rendered_content_type)
+      # type: [?] -- returns the args Hash, which is never nil.
+      interceptor.declare_target(ActionController::Rendering, :_set_rendered_content_type,
+                                 kind: CallInterceptor::SHIM, type: "[?]", returns: ->(_r, _a, _n) { _a || nil })
+    end
+
+    # W5. Photo#url -> SymbolicString. PhotosController#make_profile_photo and
+    # #show call photo.url(...) which string-concatenates (SymbolicString#+,
+    # NotImplementedError). URL assembly is display-only; return a symstr.
+    if defined?(Photo) &&
+       (Photo.instance_methods.include?(:url) || Photo.private_instance_methods.include?(:url))
+      interceptor.declare_target(Photo, :url, kind: CallInterceptor::SHIM, type: "str", returns: lambda do |receiver, _args, name|
+        symstr("#{name}_url", "/uploads/#{name}_thumb.jpg", note: "Photo#url")
+      end)
+    end
+
+    # W6. Photo.diaspora_initialize -> symbolic Photo. PhotosController#create's
+    # legacy_create calls Photo.diaspora_initialize (via user.build_post), whose
+    # real body does `photo.author.owner.strip_exif` — author is a symbolic
+    # person whose .owner is nil -> `owner for nil`. Mock the builder to return
+    # a symbolic Photo (the eventual .save is mocked in section F).
+    if defined?(Photo) && Photo.respond_to?(:diaspora_initialize)
+      interceptor.declare_target(
+        Photo.singleton_class, :diaspora_initialize,
+        kind: CallInterceptor::SHIM, type: "obj<?>", returns: lambda do |_r, args, name|
+          symbolic_instance(Photo, name, "Photo.diaspora_initialize params=#{args.inspect}")
+        end
+      )
+    end
+
+    # W7. DeviseController#devise_mapping -> stub. In the controller-test rig the
+    # Devise mapping is never registered, so devise_mapping returns nil and
+    # require_no_authentication / set_minimum_password_length crash with
+    # `no_input_strategies/validatable? for nil`. Return a stub mapping whose
+    # methods return benign concrete values (no-input strategies = none,
+    # not a validatable scope). The stub is a plain Object (not re-symbolized).
+    if defined?(DeviseController)
+      dev_stub = Object.new
+      def dev_stub.no_input_strategies; []; end
+      def dev_stub.validatable?; false; end
+      def dev_stub.strategies; []; end
+      def dev_stub.modules; []; end
+      def dev_stub.name; :user; end
+      def dev_stub.singular; :user; end
+      def dev_stub.plural; :users; end
+      def dev_stub.path; "/users"; end
+      def dev_stub.fullpath; "/users"; end
+      def dev_stub.singular?; true; end
+      def dev_stub.to(*_); self; end
+      # type: opaque -- a plain Object stub; examined, and it has no §5 structure.
+      interceptor.declare_target(DeviseController, :devise_mapping,
+                                 kind: CallInterceptor::SHIM, type: "opaque", returns: ->(_r, _a, _n) { dev_stub })
+    end
+
+    # --- [ CRASH-STOP (agent) ] X. Wall-fixing discipline mocks (posts batch) ---
+    # Systematic discipline (README "Wall-fixing discipline"): each target is
+    # the SMALLEST method whose real body contains NO SQL and calls NO other
+    # declared target. Mocking a unit that internally fires another target
+    # would hide the symbolic query chain beneath it — the invariant. Real
+    # SQL on the enclosing path (find! -> EvilQuery, aspects_from_ids,
+    # target.subscribers, persistence) still runs.
+
+    # X1. PostService#mark_user_notifications -> nil. Clears the posts_show
+    # to_i wall: its body (Notification.where(recipient_id: user.id).update_all)
+    # feeds a symbolic int into a real where -> to_sql -> Arel quote -> to_i.
+    # Result is discarded by posts_controller; nil passes through unchanged.
+    if defined?(PostService)
+      # D7b (2026-09-25) — KIND CHANGED: SHIM -> TARGET_FUNCTION.  APP-SPECIFIC
+      # (this is diaspora's PostService, not ActiveRecord), unlike D7a below.
+      #
+      # The SHIM contract asserts the real body issues no SQL. It does. The
+      # body (post_service.rb:24-28 -> :69-72 and :74-84) issues, in order:
+      #   1. UPDATE "notifications" SET "unread" = ? WHERE recipient_id = ?
+      #      AND target_type = 'Post' AND target_id = ? AND unread = ?
+      #   2. SELECT "mentions"."id" FROM "mentions" WHERE ...          (ids)
+      #   3. SELECT ... mentions in comments for the post              (pluck)
+      #   4. UPDATE "notifications" ... target_type = 'Mention' ...
+      #      -- CONDITIONAL, `if mention_ids.any?`
+      # A target whose body issues SQL cannot be a SHIM; a SHIM is not an
+      # access, so declaring it one hid four statements AND mis-declared the
+      # call. It is a TARGET_FUNCTION and it carries a note.
+      #
+      # THE NOTE IS STATEMENT 1 ONLY, AND THAT IS DELIBERATE. Statement 4 is
+      # gated on `mention_ids.any?`; folding it into one unconditional note
+      # would collapse a conditional access into an unconditional one — the
+      # one rule in ../../README.md:234 that this library will not break, and
+      # the over-disclosing direction. Statements 2-4 are therefore a NAMED,
+      # RESIDUAL GAP of this declaration.
+      #
+      # THE COMPLETE FIX IS TO DELETE THIS DECLARATION, not to widen the note:
+      # with the shim gone the real body runs and each inner call reaches its
+      # OWN declared target (`Relation#update_all` twice, the two finders),
+      # which is four correctly-attributed accesses with the conditional
+      # intact. What blocks that today is the wall this shim was written for
+      # (a symbolic int fed into a real `where` -> `to_sql` -> Arel quote ->
+      # `SymbolicInt#to_i`), which `CastableSymbolicInt` in the
+      # aspect_memberships endpoint layer already solves and which is
+      # app-general. Promoting it changes which targets fire on posts_show,
+      # so it is NOT done here — see the report.
+      # type: int? -- the real body ends in an update_all row count; this mock records null.
+      interceptor.declare_target(PostService, :mark_user_notifications,
+                                 kind: CallInterceptor::TARGET_FUNCTION, type: "int?",
+                                 returns: lambda do |receiver, args, _name|
+        pid = args.is_a?(::Hash) ? (args["post_id"] || args[:post_id]) : nil
+        # `PostService#user` is PRIVATE (post_service.rb:47-49), so
+        # `receiver.user` raises and the note rendered `recipient_id = nil`
+        # (measured). Read the ivar, which is what the private reader reads.
+        uid = begin
+          u = receiver.instance_variable_get(:@user)
+          u && raw_owner_attr(u, u.class.primary_key)
+        rescue StandardError
+          nil
+        end
+        Thread.current[:concolic_pending_note] =
+          %(UPDATE "notifications" SET "notifications"."unread" = false WHERE ) +
+          %("notifications"."recipient_id" = #{render_arg_value(uid)} AND ) +
+          %("notifications"."target_type" = 'Post' AND ) +
+          %("notifications"."target_id" = #{render_arg_value(pid)} AND ) +
+          %("notifications"."unread" = true)
+        nil
+      end)
+    end
+
+    # X6g. ActionController::Instrumentation#redirect_to -> terminal. Y3 mocks
+    # ActionController::Redirecting#redirect_to, but a controller's #redirect_to
+    # resolves to the Instrumentation WRAPPER (instrumentation.rb:64), whose
+    # body accesses @_response.status (nil in the rig) -> NoMethodError.
+    # redirect_to is terminal (a 302); mock the wrapper that's actually
+    # called. (Y3 kept for receivers that resolve through Redirecting.)
+    if defined?(ActionController::Instrumentation) &&
+       ActionController::Instrumentation.instance_methods.include?(:redirect_to)
+      # type: str -- a Symbol sentinel; the type language has no symbol kind.
+      interceptor.declare_target(ActionController::Instrumentation, :redirect_to,
+                                 kind: CallInterceptor::SHIM, type: "str", returns: ->(_r, _a, _n) { :redirect_reached })
+    end
+
+    # X2. Post.diaspora_initialize -> symbolic instance. Clears the
+    # reshares_create local?/to_i wall (reshare.rb:10 validates author.local?
+    # before the writer mock sets author_id). Pure object construction — no
+    # query. Reshare/StatusMessage inherit Post's, so one declaration covers
+    # all builds (analogue of W6 Photo.diaspora_initialize).
+    if defined?(Post) && Post.respond_to?(:diaspora_initialize)
+      interceptor.declare_target(
+        Post.singleton_class, :diaspora_initialize,
+        kind: CallInterceptor::SHIM, type: "obj<?>", returns: lambda do |_r, args, name|
+          symbolic_instance(_r || Post, name,
+                            "Post.diaspora_initialize params=#{args.inspect}")
+        end
+      )
+    end
+
+    # --- X3 REMOVED for results3/comments_index (see this file's header +
+    # ../README.md (b)): `ActsAsApi::Collection#as_api_response` real body
+    # (acts_as_api-1.0.1 collection.rb, `collect { |item|
+    # item.respond_to?(:as_api_response) ? item.as_api_response(...) :
+    # item }`) is a plain no-SQL, no-other-target Enumerable#collect — it is
+    # SQL-FREE ITSELF, but mocking it here was covering up the fact that
+    # every ITEM's own `as_api_response` (ActsAsApi::Base::InstanceMethods,
+    # mixed into ActiveRecord::Base — a genuinely different method, never
+    # mocked) walks that item's `api_accessible` field template, several of
+    # which fetch associations (declared targets whose notes never fired
+    # while this mock stood in front of them for Array/Relation/
+    # CollectionProxy/AssociationRelation receivers). This endpoint's central
+    # descent is exactly this: `@comment.mentioned_people.as_api_response
+    # (:backbone)` (mentioned_people is an Array once Diaspora::Mentionable
+    # .people_from_string runs for real, see X6f below) must walk each
+    # mentioned Person's REAL :backbone template (id/guid/name/diaspora_id/
+    # avatar -> profile fetch), not synthesize one representative row from a
+    # fake SQL-shaped note. Removed so Array#as_api_response (native, via
+    # `Array.include(ActsAsApi::Collection)`, acts_as_api.rb:27) runs for
+    # real; per-item field walks hit the already-kept/note-fixed
+    # SingularAssociation#find_target (profile) and Person#name (still
+    # mocked, see X6i below — an audited, carried-over violation, not fixed
+    # this pass).
+
+    # X4a. Diaspora::Taggable#build_tags -> nil. Clears the status_messages_
+    # create each wall: tag_list= -> tag_list_on -> tags_on(context).map(&:name)
+    # over a SymbolicList. One assignment, no SQL.
+    if defined?(Diaspora::Taggable)
+      # type: [str]? -- `self.tag_list = tag_strings` yields the tag-name Array; mock records null.
+      interceptor.declare_target(Diaspora::Taggable, :build_tags,
+                                 kind: CallInterceptor::SHIM, type: "[str]?", returns: ->(_r, _a, _n) { nil })
+    end
+
+    # X4b. StatusMessage#tag_name_max_length -> nil. Same wall: the
+    # before_validation callback is mocked in X4a, but the @tag_list memo
+    # stays unset and the tag_name_max_length validator re-enters
+    # tag_list_cache_on -> the identical each. One comparison, no SQL.
+    if defined?(StatusMessage)
+      # type: [str]? -- the real body returns tag_list from `.each`; this mock records null.
+      interceptor.declare_target(StatusMessage, :tag_name_max_length,
+                                 kind: CallInterceptor::SHIM, type: "[str]?", returns: ->(_r, _a, _n) { nil })
+    end
+
+    # X5. DiasporaFederation::Entity#validate -> nil. Clears the posts_destroy
+    # =~ wall: Retraction's diaspora_id rule does `value =~ DIASPORA_ID` on a
+    # symbolic string. Gem-boundary (section-Y style), no app SQL involved, so
+    # no D7 conflict; keeps retraction_data_for running for real so `data`
+    # stays a genuine Hash (no stub object needed). Clears every federation-
+    # validator wall in all batches.
+    if defined?(DiasporaFederation::Entity)
+      # type: opaque? -- the real validate returns nil or raises; there is no shape to declare.
+      interceptor.declare_target(DiasporaFederation::Entity, :validate,
+                                 kind: CallInterceptor::SHIM, type: "opaque?", returns: ->(_r, _a, _n) { nil })
+    end
+
+    # --- [ CRASH-STOP (agent) ] X6. posts batch round 2 walls (nil-@attributes family, render
+    # plumbing, pure-iteration each). Same discipline: smallest SQL-free unit,
+    # no other target called within the mocked body. ---
+
+    # X6a. ActionController::Head#head -> terminal marker. `head` is NOT on
+    # Metal in this Rails 5.2 (it lives in the Head module mixed into Base),
+    # so W2's Metal guard never fired and the real `head` -> response_body=
+    # -> nil @_response crashed (posts_mentionable reset_body!). head is a
+    # terminal response (W2's intent); no app SQL.
+    if defined?(ActionController::Head) &&
+       ActionController::Head.instance_methods.include?(:head)
+      # type: str -- a Symbol sentinel; the type language has no symbol kind.
+      interceptor.declare_target(ActionController::Head, :head,
+                                 kind: CallInterceptor::SHIM, type: "str", returns: ->(_r, _a, _n) { :head_reached })
+    end
+
+    # X6b. Gon::ControllerHelpers#gon -> run the REAL body, no stub. The real
+    # body (gon-6.3.2 helpers.rb:29-37, read at apply time) is:
+    #   def gon
+    #     if wrong_gon_request?
+    #       gon_request = Request.new(request.env)
+    #       gon_request.id = gon_request_uuid
+    #       RequestStore.store[:gon] = gon_request
+    #     end
+    #     Gon
+    #   end
+    # with wrong_gon_request? == (current_gon.blank? || current_gon.id !=
+    # gon_request_uuid), current_gon == RequestStore.store[:gon], and
+    # gon_request_uuid == request.uuid. Four lines, no SQL. The old stub's
+    # justification ("needs a RequestStore dump missing in the rig") is stale:
+    # the missing piece is a request.uuid that ActionController::TestCase
+    # supplies, and RequestStore IS present in the rig (the notifications batch
+    # verified this exact shape as RealGonShim, results3/notifications_index/
+    # targets.rb). Keep the declare_target (the interceptor still must see the
+    # call), inline the real body (calling receiver.gon from inside the mock
+    # would re-enter the declared method — infinite recursion), no no-op stub.
+    # gon is pure JS-var accumulation; nothing branchable, no SQL.
+    if defined?(Gon::ControllerHelpers)
+      # type: opaque -- returns the ::Gon module itself; examined, no §5 structure.
+      interceptor.declare_target(Gon::ControllerHelpers, :gon,
+                                 kind: CallInterceptor::SHIM, type: "opaque", returns: lambda do |receiver, _args, _name|
+        # Real body, gon-6.3.2 helpers.rb:29-37 (with the rig's RequestStore
+        # guard the notifications batch verified).
+        req = receiver.respond_to?(:request) ? receiver.request : nil
+        store = defined?(::RequestStore) ? ::RequestStore.store : nil
+        if store && req && req.respond_to?(:env) && req.respond_to?(:uuid)
+          cur = store[:gon]
+          if cur.nil? || cur.id != req.uuid
+            gr = ::Gon::Request.new(req.env)
+            gr.id = req.uuid
+            store[:gon] = gr
+          end
+        end
+        ::Gon
+      end)
+
+      # X6b-preloads. `Gon.preloads` is NOT a real method in gon-6.3.2 (grep
+      # the vendored gem: zero `preloads` in lib/) — it routes through
+      # Gon.method_missing -> get_variable -> current_gon.gon['preloads'],
+      # which is nil unless something pre-seeds that key, and the real gon
+      # body REBUILDS the stored request (fresh empty gon hash) on every id
+      # mismatch. Same remedy as notifications §gen2 (GonPreloadsShim):
+      # prepend a `preloads` accessor on the Gon singleton so
+      # `gon.preloads[...]` is a real mutable Hash channel, independent of
+      # RequestStore.
+      unless defined?(@gon_preloads_shim) && @gon_preloads_shim
+        gon_preloads_shim = Module.new do
+          def preloads
+            @concolic_preloads ||= {}
+          end
+        end
+        ::Gon.singleton_class.prepend(gon_preloads_shim)
+        @gon_preloads_shim = true
+      end
+    end
+
+    # X6c. User#add_to_streams -> nil. status_messages_create does
+    # `aspects_to_insert.each { |aspect| aspect << post }` over a SymbolicList
+    # (the each wall). Body is pure iteration over already-materialized
+    # aspects (aspects_from_ids ran for real earlier) — no SQL inside. The
+    # aspect collection `<<` is a persistence write (mocked at F); returning
+    # nil skips the loop only.
+    if defined?(User)
+      # type: [?]? -- the real body returns the collection it iterates; this mock records null.
+      interceptor.declare_target(User, :add_to_streams,
+                                 kind: CallInterceptor::SHIM, type: "[?]?", returns: ->(_r, _a, _n) { nil })
+    end
+
+    # X6e. StatusMessageCreationService#add_to_streams -> nil. The service's OWN
+    # add_to_streams (status_message_creation_service.rb:70) iterates
+    # `status_message.photos.each` over a SymbolicList (the remaining each
+    # wall on status_messages_create). Body is pure iteration orchestration
+    # (the user.add_to_streams call inside is already X6c-mocked; photos
+    # iteration has no SQL). Return nil skips the loop.
+    if defined?(StatusMessageCreationService)
+      # type: [?]? -- the real body returns the photos collection it iterates; mock records null.
+      interceptor.declare_target(StatusMessageCreationService, :add_to_streams,
+                                 kind: CallInterceptor::SHIM, type: "[?]?", returns: ->(_r, _a, _n) { nil })
+    end
+
+    # X6e. User#retract -> nil. posts_destroy's remaining crash is the
+    # federation OUTGOING-message plumbing: Retraction.for ->
+    # retraction_data_for -> entity construction/validation/serialization
+    # (gsub / RelatedEntity). This serialization drives no path conditions;
+    # the concolic-relevant branches (find! -> RecordNotFound/NonPublic,
+    # post.author == user.person) run BEFORE retract and stay real. The
+    # result (retraction.perform -> target.destroy!) is already a persistence
+    # mock (F). User#retract is the smallest SQL-free orchestration unit that
+    # encloses the whole wall; its one real query (target.subscribers) feeds
+    # the already-mocked Sidekiq dispatch, not branch logic.
+    if defined?(User)
+      # type: bool? -- the real retract ends in logger.info (true); this mock records null.
+      interceptor.declare_target(User, :retract, kind: CallInterceptor::SHIM, type: "bool?", returns: ->(_r, _a, _n) { nil })
+    end
+
+    # --- X6f REMOVED for results3/comments_index (see this file's header +
+    # ../README.md (b) + ../../results2/MOCK_AUDIT.md's `Diaspora::
+    # Mentionable.people_from_string` row): its real body
+    # (lib/diaspora/mentionable.rb:46-49) is `msg_text.to_s.scan(REGEX)...
+    # .map { find_or_fetch_person_by_identifier }` — `find_or_fetch_person_
+    # by_identifier` -> `Person.find_or_fetch_by_identifier` -> a REAL local
+    # `find_by(diaspora_handle: ...)` lookup (a declared, note-fixed target)
+    # that on a miss reaches federation discovery I/O. Mocking the whole
+    # method to `[]`/`Person.none` was covering up that entire local-lookup
+    # SQL family, which for comments_index (whose Comment#mentioned_people
+    # ALWAYS takes this branch — `symbolic_instance` marks every symbolic
+    # record `@new_record = true`, so `persisted?` is always false, see
+    # ./targets.rb's §4 comment) is this endpoint's OTHER central-descent
+    # family besides the author/avatar one. REMOVED so the real body runs;
+    # ./targets.rb §4 supplies the two things it needs that aren't already
+    # covered: (a) a CONCRETE `text` column (SymbolicString#scan is
+    # unsupported by design) with a seeded boolean so DSE can explore both
+    # "no mention" and "has mention" shapes, and (b) a network-I/O wall on
+    # `DiasporaFederation::Discovery::Discovery#fetch_and_save` (the ONE
+    # sub-call in this chain that would otherwise attempt a real webfinger
+    # HTTP fetch on a not-found local lookup) — same pattern
+    # results3/notifications_index's targets.rb §5h already validated.
+
+    # X6i. Person#name -> concrete string. posts_show's remaining author-render
+    # wall: acts_as_api `t.add :name` -> Person#name -> #name_from_attrs ->
+    # first_name/last_name .strip on SymbolicString (strip wall). Person#name
+    # is the SQL-free instance boundary the API template actually calls (the
+    # singleton class-method variant didn't reliably intercept — dispatch
+    # subtlety on def-self methods). Return a concrete "First Last" string so
+    # the whole name-building chain is skipped; the name feeds presenter JSON.
+    # results3: Person#name stays an audited, carried-over VIOLATION (per
+    # ../../results2/MOCK_AUDIT.md: real body calls `self.profile`, itself a
+    # declared, note-fixed target) — NOT fixed this pass, same scope
+    # decision results3/notifications_index made ("Person#name's profile
+    # reads still mocked (audited violation, out of this pass's scope)").
+    # This pass's two central descents are the mentioned_people/author
+    # as_api_response walk (X3 removal above) and the local Person lookup in
+    # people_from_string (X6f removal above) — narrowing Person#name itself
+    # is a separate, disjoint piece of work left for a future pass.
+    #
+    # results3: wrapped in ConcreteSymbolicString (see its definition below,
+    # near X6h) — a bare String return from ANY declare_target mock is NOT
+    # exempt from the interceptor's to_symbolic re-wrap (only nil/already-
+    # SymbolicVar values are), and while this endpoint renders JSON (where a
+    # re-wrapped SymbolicString would likely encode fine, being a real
+    # String subclass), wrapping defensively costs nothing and matches the
+    # established, validated fix.
+    # X6i REMOVED for comments_index cycle 1 (2026-08-25, AGENT_RUN.md;
+    # D1 — "a mock may replace execution, never evidence"): Person#name's
+    # real body (person.rb:247-252) reads `self.profile` — a declared
+    # association target (SingularAssociation#find_target) — before calling
+    # the pure `Person.name_from_attrs`. Mocking #name itself skipped that
+    # target read and emitted the junk note "Person#name". The wall it
+    # cleared (SymbolicString#strip inside name_from_attrs) is now cleared
+    # at the VALUE-free leaf instead: ./targets.rb §7 installs a SHIM over
+    # `Person.name_from_attrs` (pure string computation, zero targets —
+    # the exact probe mock_manifest.rb already lists), so the real #name
+    # runs and its profile read mints evidence like every other reader.
+    # (Kept: ConcreteSymbolicString below — still used defensively.)
+
+    # (Profile#image_url handled as a per-instance override in symbolic_instance
+    # — it is both a DB column and a URL method, and the per-instance column
+    # reader would otherwise shadow the class method with arity 0.)
+
+    # results3 NEW: ConcreteSymbolicString. Ported from
+    # results3/notifications_index/concolic_targets.rb (see that file's own
+    # header comment for the full discovery story — first found live on that
+    # endpoint's HTML render path). A bare Ruby `String` returned from a
+    # declare_target mock is NOT exempt from the interceptor's `to_symbolic`
+    # return-value wrapping (only `nil` and already-`SymbolicVar`-tagged
+    # values are) — so a "concrete" mock return gets silently RE-WRAPPED
+    # into a `SymbolicString`, whose UNSUPPORTED-op stub list (scan/gsub/
+    # strip/...) can then fire on it downstream. A real `::String` subclass
+    # that also `include`s `SymbolicVar` behaves like a native string for
+    # every string op while still being recognized by the interceptor as
+    # already-symbolic (skip re-wrap). comments_index renders JSON only, so
+    # this endpoint may not strictly need it (a plain SymbolicString should
+    # `to_json` fine, being a real String), but it costs nothing and avoids
+    # relying on that distinction holding.
+    unless defined?(ConcreteSymbolicString)
+      ::Object.const_set(:ConcreteSymbolicString, Class.new(::String) do
+        include SymbolicVar
+        attr_reader :note
+
+        def self.build(str, name:, note:)
+          s = new(str)
+          s.instance_variable_set(:@sym_name, name)
+          s.instance_variable_set(:@note, note)
+          s
+        end
+      end)
+    end
+
+    # X6k. PostPresenter#build_mentioned_people_json -> []. posts_show's
+    # mentioned-people render: @post.mentioned_people.as_api_response(:backbone)
+    # — mentioned_people is a SymbolicList (people_from_string mock returns [],
+    # re-wrapped), and a SymbolicList has no as_api_response. The presenter
+    # method is the smallest SQL-free terminal that wraps the serialization;
+    # returning [] yields an empty mentioned_people key for the JSON.
+    if defined?(PostPresenter) &&
+       (PostPresenter.instance_methods.include?(:build_mentioned_people_json) ||
+        PostPresenter.private_instance_methods.include?(:build_mentioned_people_json))
+      # type: [?] -- a concrete empty Array.
+      interceptor.declare_target(PostPresenter, :build_mentioned_people_json,
+                                 kind: CallInterceptor::SHIM, type: "[?]", returns: ->(_r, _a, _n) { [] })
+    end
+
+    # X6l. MessageRenderer#title -> concrete string. posts_show title render:
+    # PostPresenter#title -> MessageRenderer#title -> @text.lstrip (lstrip
+    # wall). Pure string heading extraction, no SQL. Return a concrete title.
+    if defined?(Diaspora::MessageRenderer) &&
+       Diaspora::MessageRenderer.instance_methods.include?(:title)
+      interceptor.declare_target(Diaspora::MessageRenderer, :title,
+                                 kind: CallInterceptor::SHIM, type: "str", returns: ->(_r, _a, _n) { "Concolic title" })
+    end
+
+    # X6h. MessageRenderer::Processor.process -> concrete text. posts_show text
+    # rendering: PostPresenter#build_text -> MessageRenderer#process ->
+    # Processor.process(@text, opts, &block) which runs the renderer pipe
+    # (normalize -> gsub on a SymbolicString; diaspora_links; camo). Processor
+    # .process is the single SQL-free pipe entry; mocking it to return the
+    # concrete text skips the whole formatting chain (pure string transforms,
+    # no SQL). The rendered text feeds presenter JSON — not branch logic.
+    # X6h REMOVED for comments_index cycle 1 (2026-08-25, AGENT_RUN.md):
+    # `Diaspora::MessageRenderer::Processor.process` is APP code (the
+    # renderer pipe: normalize -> diaspora_links -> camo_urls), and
+    # `diaspora_links` can reach a declared target (`Post.exists?(guid:)`,
+    # message_renderer.rb) when the text carries a diaspora:// URL — a
+    # mock over it is a mock over target-reaching app logic (D1). On this
+    # batch `text` is already a CONCRETE String (targets.rb §4a's seeded
+    # has_mention pin), so the real pipe runs without any SymbolicString
+    # wall; the mock's only effect was to skip it. Let it run for real.
+
+    # X6d. DiasporaFederation::Entity#normalize_property -> JSON-safe. With X5
+    # clearing validate, posts_destroy now reaches `to_h` ->
+    # normalized_properties -> normalize_property. The real body does
+    # `value.to_s.gsub(...)` on a :string prop — hitting the SymbolicString
+    # gsub wall — and passes OTHER prop types (e.g. RelatedEntity) through
+    # unchanged. But a returned RelatedEntity lands in symbolic_results and
+    # breaks JSON.pretty_generate (its to_json takes 0 args; JSON passes one).
+    # Mirror the real branches AND keep dumps serializable: concrete string
+    # for a SymbolicString, plain String unchanged, else nil (federation's own
+    # to_xml/to_json return nil for RelatedEntity — "never add to json").
+    if defined?(DiasporaFederation::Entity)
+      # type: str? -- a concrete String, or nil for a non-string property.
+      interceptor.declare_target(
+        DiasporaFederation::Entity, :normalize_property,
+        kind: CallInterceptor::SHIM, type: "str?", returns: lambda do |_receiver, args, _name|
+          v = args["value"]
+          if v.is_a?(SymbolicString)
+            v.value
+          elsif v.is_a?(String) || v.nil?
+            v
+          end
+        end
+      )
+    end
+
+    # X7a. ActiveRecord::Associations::CollectionProxy#create -> symbolic
+    # membership. aspects#create with person_id: connect_person_to_aspect ->
+    # `@contact.aspect_memberships.create(aspect: @aspect)` where @aspect is a
+    # NEW record whose save is now mocked (section F body-skip, so the parent
+    # is never persisted) — the real association create raises
+    # "You cannot call create unless the parent is saved". The membership
+    # result feeds only AspectMembershipPresenter (JSON), never a query. Return
+    # a symbolic AspectMembership (SQL-free; the join bookkeeping is data).
+    if defined?(ActiveRecord::Associations::CollectionProxy) &&
+       defined?(AspectMembership)
+      # D7a (2026-09-25) — KIND CHANGED: SHIM -> TARGET_FUNCTION. APP-GENERAL
+      # (this is ActiveRecord's own CollectionProxy, on every endpoint).
+      #
+      # The SHIM contract asserts the real body issues no SQL. `collection
+      # .create(attrs)` BUILDS AND SAVES a record: its body is an INSERT into
+      # the association's table, and on aspects#create it is the actual write
+      # of the controller action. Declared SHIM with NO note, that INSERT was
+      # invisible twice over — a shim is not an access, and there was nothing
+      # to record even if it had been.
+      #
+      # The note is the INSERT, rendered by the same `dml_note` every other
+      # write goes through, on a symbolic instance of the association's OWN
+      # class (it was hard-coded to `AspectMembership`, which is one
+      # endpoint's join model, not a property of CollectionProxy) whose
+      # foreign key to the owner is set, exactly as the real `create` sets it.
+      interceptor.declare_target(
+        ActiveRecord::Associations::CollectionProxy, :create,
+        kind: CallInterceptor::TARGET_FUNCTION, type: "obj<?>", returns: lambda do |receiver, args, name|
+          child = begin
+            receiver.klass
+          rescue StandardError
+            defined?(AspectMembership) ? AspectMembership : nil
+          end
+          child ||= defined?(AspectMembership) ? AspectMembership : ActiveRecord::Base
+          obj = symbolic_instance(child, "#{name}_created",
+                                  "#{child.table_name}.create #{args.inspect}")
+          # Replay the assignments the real `create` makes, so the INSERT
+          # note names the columns the application actually wrote: the
+          # attributes it was handed, plus the owner foreign key.
+          begin
+            pos = dml_stashed_positionals(:proxy_create) ||
+                  (args.is_a?(::Hash) ? dml_positional_args(args) : [])
+            attrs = pos.find { |v| v.is_a?(::Hash) && !v.empty? }
+            attrs.each { |k, v| obj[k.to_s] = v } if attrs.is_a?(::Hash)
+          rescue StandardError
+            nil
+          end
+          begin
+            refl = receiver.proxy_association.reflection
+            fk   = refl.foreign_key.to_s
+            owner = receiver.proxy_association.owner
+            obj[fk] = raw_owner_attr(owner, owner.class.primary_key)
+            if refl.type
+              obj[refl.type.to_s] = owner.class.base_class.name
+            end
+          rescue StandardError
+            nil
+          end
+          # `create` on a NEW record is an INSERT; `symbolic_instance` pins
+          # `persisted?` true, so render the INSERT explicitly rather than
+          # letting `dml_note` read that pin and emit an UPDATE.
+          Thread.current[:concolic_pending_note] = dml_insert_note_for(obj, child)
+          obj
+        end
+      )
+    end
+
+    # X7b. User#mine? -> true. aspect_memberships#destroy:
+    # `raise Diaspora::NotMine unless current_user.mine?(aspect) && ...`.
+    # mine? is a SQL-free accessor compare (self.id == target.user_id) whose
+    # not-mine side is a DELIBERATE hard raise (NotMine) — reaching it gives
+    # no further coverage, so the ruby-side default (symbolic 1 == symint
+    # seeding to false) turns the run into a crashed NotMine dump. Force the
+    # success side so the real destroy path + json render are explored. No SQL.
+    if defined?(User)
+      interceptor.declare_target(User, :mine?,
+                                 kind: CallInterceptor::SHIM, type: "bool", returns: ->(_r, _a, _n) { true })
+    end
+
+    # --- X8: users_sessions batch (Devise / URL-builder / profile walls) -----
+    # X8a. ApplicationController#after_sign_in_path_for -> "/". The devise
+    # sign-in redirect (current_user_redirect_path) calls
+    # `current_user.getting_started? && !current_user.basic_profile_present?`
+    # — with signed_in:false the current_user is nil and `getting_started? for
+    # nil` crashes (4 sessions/registrations runs). after_sign_in_path_for is
+    # the SQL-free orchestration unit enclosing the whole redirect decision
+    # (only nil-guard + route helpers). Return a concrete path.
+    if defined?(ApplicationController)
+      interceptor.declare_target(ApplicationController, :after_sign_in_path_for,
+                                 kind: CallInterceptor::SHIM, type: "str", returns: ->(_r, _a, _n) { "/" })
+    end
+
+    # X8b. ApplicationController#configure_permitted_parameters -> nil. It
+    # builds Devise::ParameterSanitizer, whose initialize reads
+    # resource_class.authentication_keys — the rig's resource is a bare Object
+    # with no authentication_keys -> NoMethodError (sessions#destroy).
+    # configure_permitted_parameters is a SQL-free no-op permit hook; mock it
+    # to skip the Devise sanitizer construction.
+    if defined?(ApplicationController)
+      # type: opaque? -- devise's own permit(...) returns nil too; no shape to declare.
+      interceptor.declare_target(ApplicationController, :configure_permitted_parameters,
+                                 kind: CallInterceptor::SHIM, type: "opaque?", returns: ->(_r, _a, _n) { nil })
+    end
+
+    # X8c. User#confirm_email -> true. users#confirm_email:
+    # `if current_user.confirm_email(params[:token])` -> user.rb:233 reads
+    # `confirm_email_token`, a DSL method not defined on User (NameError) even
+    # before any SQL. confirm_email is SQL-free (blank-check + assign + save,
+    # and save is already a persistence mock). Return true.
+    if defined?(User)
+      interceptor.declare_target(User, :confirm_email,
+                                 kind: CallInterceptor::SHIM, type: "bool", returns: ->(_r, _a, _n) { true })
+    end
+
+    # X8d. BOUNDARY HARVEST B-2 (coordinator, 2026-08-28): escape_segment is NO
+    # LONGER A TARGET. Its real body (actionpack journey/router/utils.rb:84-86,
+    # `ENCODER.escape_segment(segment.to_s)`) is pure URL escaping — no data
+    # access, no branch the policy cares about — so declaring it minted a junk
+    # note and a symbolic result on EVERY route generation (over-emission that
+    # inflated the corpus). It is now a plain SHIM: the argument is concretized
+    # (SymbolicString#gsub is unsupported by design) and the REAL escaper runs
+    # via `super`. The shim test measures the REAL body directly (the shim rig
+    # does not install this overlay, so `Utils.escape_segment` is the original
+    # there — the same arrangement the h.image_path shims rely on).
+    if defined?(ActionDispatch::Journey::Router::Utils) &&
+       ActionDispatch::Journey::Router::Utils.respond_to?(:escape_segment)
+      ActionDispatch::Journey::Router::Utils.singleton_class.prepend(ConcolicEscapeSegmentShim)
+    end
+  end
+end
+
+# ===========================================================================
+# results3 shared bug fixes (2026-08-19) -- rationale + blast radius in
+# ../BUGFIXES_20260819.md. Identical footer in all six endpoint copies.
+#
+# (bug 2a) Ruby-3/JRuby keyword semantics land `find_by(guid: x)` in the
+# interceptor wrapper's **kwargs, and its param-binding loop drops them for
+# Rails' *rest-signature finders (notes said "WHERE unavailable ...
+# args=nil"; extraction kept unresolved placeholders instead of producer
+# joins). These prepends convert keyword calls back to Ruby-2-style trailing
+# positional hashes BEFORE method lookup reaches the interceptor's
+# define_method, so its binding captures the conditions and
+# class_finder_sql/sql_for render the real WHERE into the note. `super`
+# continues into the interceptor unchanged; methods without keyword args are
+# untouched.
+module ConcolicKwargsToPositional
+  # 2026-08-21 (the severed contacts chain): the positional re-pack below is
+  # UNDONE at the next boundary on this Ruby — 2.6 auto-splits a trailing
+  # symbol-keyed hash back into the interceptor wrapper's **kwargs, whose
+  # param-binding then drops it (the documented call_interceptor.rb gap), so
+  # Relation-receiver finder notes rendered bare (`SELECT "contacts".* FROM
+  # "contacts"`, no user_id/person_id — 806/806 events in gen8). Stash the
+  # conditions in a thread-local at THIS boundary (same pattern as the pluck
+  # column capture in targets.rb), where values still carry their symbolic
+  # identity; sql_for/class_finder_sql read it as a fallback.
+  %i[find_by find_by! exists?].each do |m|
+    define_method(m) do |*args, **kwargs, &blk|
+      cond = if !kwargs.empty?
+               kwargs
+             elsif args.first.is_a?(Hash) && !args.first.empty?
+               args.first
+             end
+      prev = Thread.current[:concolic_finder_conds]
+      Thread.current[:concolic_finder_conds] = cond
+      begin
+        args += [kwargs] unless kwargs.empty?
+        super(*args, &blk)
+      ensure
+        Thread.current[:concolic_finder_conds] = prev
+      end
+    end
+  end
+end
+ActiveRecord::Base.singleton_class.prepend(ConcolicKwargsToPositional) # Model.find_by / exists?
+ActiveRecord::Relation.prepend(ConcolicKwargsToPositional)            # relation / association find_by
+
+# ---------------------------------------------------------------------------
+# D5's other half — the SET list of a `Relation#update_all`.
+# ---------------------------------------------------------------------------
+# `update_all(unread: false)` reaches a `def update_all(updates)` — a REQUIRED
+# POSITIONAL, not a `*rest` — so on Ruby 2.6 (JRuby 9.3) the trailing hash is
+# packed into the interceptor wrapper's `**kwargs`, and the interceptor's
+# repair (which fills a NAMED `*rest` slot) does not apply: the mock's `args`
+# comes back EMPTY and the note could only say `SET (updates unavailable)`.
+# MEASURED on probe runs dse0001..4 of the aspect_memberships batch, where
+# this module was first written; it is app-general — every `update_all` in
+# every endpoint reaches the same signature — so it belongs here.
+#
+# NOT A TARGET: a plain `prepend`, which runs BEFORE the declared mock and
+# only stashes what it was handed. It changes no return value and issues no
+# SQL, so it is not an access and books no declaration.
+module ConcolicUpdateAllValueNaming
+  def update_all(*args, **kwargs, &block)
+    prev = Thread.current[:concolic_update_all_values]
+    begin
+      v = if !kwargs.empty?
+            kwargs
+          elsif args.length == 1 && args[0].is_a?(::Hash)
+            args[0]
+          end
+      Thread.current[:concolic_update_all_values] = v if v
+      if kwargs.empty?
+        super(*args, &block)
+      else
+        super(*args, **kwargs, &block)
+      end
+    ensure
+      Thread.current[:concolic_update_all_values] = prev
+    end
+  end
+end
+ActiveRecord::Relation.prepend(ConcolicUpdateAllValueNaming) unless
+  ActiveRecord::Relation < ConcolicUpdateAllValueNaming
+
+# ---------------------------------------------------------------------------
+# N5 (found BY EXECUTION, 2026-09-25) — the arguments of `update`,
+# `update_attribute` and `touch` do not survive the interceptor.
+# ---------------------------------------------------------------------------
+# These three are replaced BEFORE their body runs, so the columns they write
+# are in the ARGUMENTS, not on the receiver. MEASURED, `_verification/
+# args_probe.rb`, both stacks:
+#
+#   core stack (ONE declaration)
+#     update(receiving: true)        -> args={"attributes"=>nil}
+#     update_attribute(:sharing,true)-> args={"name"=>:sharing,"value"=>true}
+#   override stack (TWO declarations — the wrapper's own signature is read)
+#     update(receiving: true)        -> args={"splat_args"=>nil,"kwargs"=>nil,"block"=>nil}
+#     update_attribute(:sharing,true)-> args={"splat_args"=>:sharing,"kwargs"=>true,"block"=>nil}
+#     touch(:receiving)              -> args={"splat_args"=>:receiving,"kwargs"=>nil,"block"=>nil}
+#
+# So `update`'s attributes hash is LOST on BOTH stacks (a trailing hash is
+# packed into the wrapper's `**kwargs` and never reaches a named slot), and on
+# a redeclared target the remaining positionals are zipped onto the wrapper's
+# OWN parameter names. Reading `args` alone therefore renders
+# `SET "sharing" = nil`, or no statement at all.
+#
+# Same repair as `update_all` above, for the same reason and by the same
+# means: a plain `prepend` that stashes what it was handed. It changes no
+# return value, issues no SQL, and is not an access.
+module ConcolicWriteArgsNaming
+  def update(*args, **kwargs, &blk)
+    ConcolicTargets.with_stashed_write_args(:update, args, kwargs) do
+      kwargs.empty? ? super(*args, &blk) : super(*args, **kwargs, &blk)
+    end
+  end
+
+  def update!(*args, **kwargs, &blk)
+    ConcolicTargets.with_stashed_write_args(:update!, args, kwargs) do
+      kwargs.empty? ? super(*args, &blk) : super(*args, **kwargs, &blk)
+    end
+  end
+
+  def update_attribute(*args, **kwargs, &blk)
+    ConcolicTargets.with_stashed_write_args(:update_attribute, args, kwargs) do
+      kwargs.empty? ? super(*args, &blk) : super(*args, **kwargs, &blk)
+    end
+  end
+
+  def touch(*args, **kwargs, &blk)
+    ConcolicTargets.with_stashed_write_args(:touch, args, kwargs) do
+      kwargs.empty? ? super(*args, &blk) : super(*args, **kwargs, &blk)
+    end
+  end
+end
+ActiveRecord::Base.prepend(ConcolicWriteArgsNaming) unless
+  ActiveRecord::Base < ConcolicWriteArgsNaming
+
+# The same loss on the association side: `collection.create(aspect_id: 7)`
+# reached the D7a mock as `{"attributes"=>nil, "block"=>nil}` (MEASURED,
+# _verification/d7_probe.rb), so the rendered INSERT named the owner foreign
+# key and the timestamps and NOT the column the caller actually passed.
+module ConcolicProxyCreateArgsNaming
+  def create(*args, **kwargs, &blk)
+    ConcolicTargets.with_stashed_write_args(:proxy_create, args, kwargs) do
+      kwargs.empty? ? super(*args, &blk) : super(*args, **kwargs, &blk)
+    end
+  end
+
+  def create!(*args, **kwargs, &blk)
+    ConcolicTargets.with_stashed_write_args(:proxy_create, args, kwargs) do
+      kwargs.empty? ? super(*args, &blk) : super(*args, **kwargs, &blk)
+    end
+  end
+end
+if defined?(ActiveRecord::Associations::CollectionProxy) &&
+   !(ActiveRecord::Associations::CollectionProxy < ConcolicProxyCreateArgsNaming)
+  ActiveRecord::Associations::CollectionProxy.prepend(ConcolicProxyCreateArgsNaming)
+end
+
+# (bug 2b) arel-9 renders Casted/Quoted nodes inline via ToSql#quoted, which
+# calls connection.quote on the raw value -- a wall for symbolic values (and
+# the reason association-scope notes died even after the Casted #val fix
+# above whenever the owner key itself was symbolic). Render symbolic values
+# as $$(name) inline, matching the note convention used for `?` binds.
+class ConcolicSymbolicToSql < Arel::Visitors::ToSql
+  private
+
+  def quoted(val, attribute)
+    if val.respond_to?(:sym_name) && val.sym_name
+      SymbolicFunc.bind_ref(val.sym_name)
+    else
+      super
+    end
+  end
+end

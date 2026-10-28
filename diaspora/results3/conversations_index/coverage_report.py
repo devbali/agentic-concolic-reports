@@ -113,9 +113,28 @@ def fix_len_names(dump: dict) -> dict:
         e = ev.get("expr")
         if e and "len(" in e:
             ev["expr"] = _LEN_RE.sub(r"SYM_LEN_\1", e)
-        # fields the coverage tree does not read
-        ev.pop("note", None)
-        ev.pop("args", None)
+        # C1 — TRACE CURRENCY (applied here 2026-09-26; the fix landed in
+        # comments_index 2026-09-13, see docs/CONFINEMENT_PRECISION_20260913.md
+        # §2 and tools/_c1_currency_patch.md for the two-line diff. That
+        # document's Status section claimed this endpoint was already patched;
+        # it was not — both pops were still live when the 2026-09-19 -> 09-26
+        # full gate ran, and its own §8.1 says the patch "Landed in
+        # comments_index only".)
+        #
+        # `note` and `args` are the OTHER TWO THIRDS of
+        # `concolic_engine.assumptions.call_shape`, which is the only thing the
+        # engine reads them for (coverage.py, one call site). Popping them made
+        # the §16c footprint currency the bare TARGET NAME while the assumption
+        # gate's `access_trace` stayed on the full shape: 22 distinct shapes
+        # here against the gate's 48 (1 500-dump sample), so e.g. every
+        # `ActiveRecord::Relation.records` was ONE shape whatever it selected,
+        # and clause (i)/(ii)'s `delta - footprint` string difference could
+        # never cancel a noted shape. 71 of 113 pairs FAILed the gate on that.
+        # Measured cost of keeping them on this batch's 18 633 dumps, with
+        # `share_run_objects` already deduplicating: peak RSS 522 -> 610 MB
+        # (+17 %), load unchanged at ~40 s. The 2026-08-27 OOM this
+        # optimisation answered was the json.dumps/loads round trip, which is
+        # still gone; only the two pops are.
         ev.pop("traceback", None)
     cv = dump.get("concrete_values")
     if isinstance(cv, dict):
@@ -223,11 +242,45 @@ def main() -> int:
     _PROGRESS["phase"] = "assumptions"
     assumptions = build_assumptions(runs)
 
+    # -----------------------------------------------------------------------
+    # §16c CROSS-PASS LOOP (added 2026-09-26; the wiring comments_index and
+    # people_stream already carry).  `coverage.py`'s §16c contract: "anything
+    # else on an INFERRED pair (FAIL, or a probe the gate could not run)
+    # withdraws it, blocks `complete` and is fed back as `withdrawn_pairs` so
+    # the next pass never licenses it again."  Until this edit the endpoint
+    # had no way to feed anything back, so the 2026-09-19 -> 09-26 full gate's
+    # 71 FAILs could only set `coverage_numbers_stale` and stop there.
+    #
+    #   _confinement_withdrawn.json  — [{"pair": [a, b], "withdrawn_by": ...,
+    #     "refutation": ...}, ...]  (people_stream's richer shape; a bare
+    #     [[a, b], ...] list, comments_index's shape, is also accepted).
+    #     Withdrawing REMOVES a licence, so it can only ADD demand.
+    #   WITHDRAWN_PAIRS_FILE  — override the path.
+    #   NO_WITHDRAWN_PAIRS=1  — ignore the ledger (reproduces the pre-2026-09-26
+    #     pass byte for byte).
+    #   CONFINEMENT=0         — drop §16c entirely (strictly more conservative
+    #     than withdrawing any subset; this is the check `_c1_covonly.py`
+    #     automates).
+    # -----------------------------------------------------------------------
+    _wd_path = os.environ.get("WITHDRAWN_PAIRS_FILE") or os.path.join(
+        HERE, "_confinement_withdrawn.json")
+    _wd = None
+    if os.path.exists(_wd_path) and not os.environ.get("NO_WITHDRAWN_PAIRS"):
+        with open(_wd_path) as fh:
+            _rows = json.load(fh)
+        _rows = _rows["withdrawn"] if isinstance(_rows, dict) else _rows
+        _wd = [tuple(r["pair"] if isinstance(r, dict) else r) for r in _rows]
+    _conf_on = os.environ.get("CONFINEMENT", "1") != "0"
+    print(f"[confinement] confinement={_conf_on}; withdrawn_pairs fed back: "
+          f"{len(_wd or ())} (ledger {os.path.basename(_wd_path)})", flush=True)
+
     _PROGRESS["phase"] = "check_coverage"
     t0 = time.time()
     result = CoverageChecker(
         runs, assumptions=assumptions,
-        max_missing_per_clique=int(os.environ.get("MAX_MISSING_PER_CLIQUE", "4"))
+        max_missing_per_clique=int(os.environ.get("MAX_MISSING_PER_CLIQUE", "4")),
+        confinement=_conf_on,
+        withdrawn_pairs=_wd,
     ).check_coverage()
     wall = time.time() - t0
     _PROGRESS["phase"] = "post"

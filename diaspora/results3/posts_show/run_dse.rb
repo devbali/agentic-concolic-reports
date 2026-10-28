@@ -106,7 +106,48 @@ def symbolic_user(tag)
   # user.id: results2 item 2 — PIN REMOVED. Feeds evil_query.rb's
   # `querent_has_visibility` -> `where(share_visibilities: {user_id: @querent.id})`.
   user = ConcolicTargets.symbolic_instance(User, "SYM_USER_#{tag}", "User (current)")
-  user.define_singleton_method(:person) { person }
+  # B-2 (docs/BOUNDARY_NOTE_GAPS_20260915.md; people_show/targets.rb:939-952),
+  # applied 2026-09-25. `User has_one :person, foreign_key: :owner_id` -- the
+  # concrete round issues `SELECT "people".* FROM "people" WHERE
+  # "people"."owner_id" = ? LIMIT ?`, and a bare singleton issues nothing, so
+  # that statement had NO corpus note (Rule D1: a mock may replace execution,
+  # never evidence; and mock_note_check has no waiver hook, DISCIPLINE.md §9).
+  # Fire the REAL reader so the declared W3 SingularAssociation#find_target
+  # target (concolic_targets.rb:1066) mints the note under the frame the
+  # concrete run tags it with, then return the PINNED person so every
+  # SYM_PERSON_PO_* bind keeps its identity.
+  #
+  # Deliberately NO boot-lifetime memo: $posts_user is built once (line 137),
+  # unlike people_stream's per-run user, so people_stream's
+  # `@__ps_person_noted ||=` (its targets.rb:445) would mint in exactly ONE
+  # run per process. The W3-memo (concolic_targets.rb:1107) already makes this
+  # fire once per run and resets on the run label.
+  #
+  # `association(:person).reader` is safe on a symbolic User because
+  # symbolic_instance sets @association_cache = {} and disables the cache
+  # builder (concolic_targets.rb:393-394) for exactly this path.
+  user.define_singleton_method(:person) do
+    begin
+      # `reset` BEFORE `reader`, 2026-09-25. Firing the reader alone minted the
+      # note in the FIRST run of the process and no other: `association(:person)`
+      # is cached in @association_cache, and once loaded, `.reader` returns the
+      # target without re-entering `find_target`. $posts_user is built once at
+      # boot (line 137), so that cache never clears between runs -- the same
+      # first-run-only failure a `||=` memo would have caused, via AR's cache
+      # instead of ours. Measured before the fix: the owner_id note appeared in
+      # run 1 of auth_html and auth_json only, 2 dumps in 87 000.
+      #
+      # Intra-run duplication is already prevented by the W3-memo
+      # (concolic_targets.rb:1200-1211), which keys on
+      # [owner.object_id, reflection.name] and clears on the run label -- so a
+      # second read in the same run is free and mints no second statement.
+      association(:person).reset
+      association(:person).reader
+    rescue StandardError
+      nil
+    end
+    person
+  end
 
   # NOTE what's intentionally NOT pinned (results2 item 4, "attempt symbolic,
   # document forced pins"): `guid` is delegated to person on the real User

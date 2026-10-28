@@ -2,7 +2,8 @@
 
 Copies of the generated dumps in `..`, kept under their original names, one
 per distinct explored path. Regenerated 2026-09-25 with the §5.0 type declarations and §4.1.1c's note
-envelope in place (see `../../../../src_new/DESIGN_IR.md` §5.0.1); originally
+envelope in place (see DESIGN_IR §5.0.1, which since 2026-09-29 lives in
+`../../../../src_new/dumps_to_policy/README.md`); originally
 generated 2026-09-24 by
 `MAX_RUNS=6 TIME_BUDGET=600 scripts/diaspora-concolic ../run_dse.rb`, with
 `src_new/runtimes/ruby_runtime/call_interceptor.rb`'s identity-based

@@ -1,0 +1,1 @@
+env PYTHONPATH=/home/dev/project/src python3 /home/dev/project/reports/diaspora/tools/boundary_declaration_audit.py /home/dev/project/reports/diaspora/results3/notifications_index /home/dev/project/reports/diaspora/results3/comments_index /home/dev/project/reports/diaspora/results3/conversations_index 

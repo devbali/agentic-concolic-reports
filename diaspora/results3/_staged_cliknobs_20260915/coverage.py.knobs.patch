@@ -1,0 +1,67 @@
+--- src/concolic_engine/coverage.py	2026-09-14 07:50:57.104120495 +0000
++++ /tmp/claude-1000/-home-dev-project/94ab9891-b436-4797-97e1-81b88a854f05/scratchpad/coverage.py.staged	2026-09-15 08:30:14.274592493 +0000
+@@ -2076,6 +2076,26 @@
+ # ---------------------------------------------------------------------------
+ 
+ 
++#: STAGED 2026-09-15: the search-budget caps as declared resource knobs, so
++#: `--help` can list them and a driver need not re-implement the ladder.
++#: Defaults are EXACTLY the current hard-coded ones (1 and 1024), so with
++#: nothing exported the behaviour is byte-identical to today's.
++import resource_knobs as _rk                                    # STAGED
++
++KNOBS = _rk.KnobSet(                                            # STAGED
++    _rk.chunk_size(env="MAX_MISSING_PER_CLIQUE", default=1,
++                   name="max_missing_per_clique",
++                   help="witnesses reported per demand set"),
++    _rk.chunk_size(env="MAX_CLIQUES", default=1024,
++                   name="max_cliques",
++                   help="safety cap on the independence projection of one set"),
++)
++
++
++def _knobs_resolve(name, explicit):                             # STAGED
++    return KNOBS.resolve_value(name, explicit)
++
++
+ class CoverageChecker:
+     """Check combination-coverage completeness (see module docstring).
+ 
+@@ -2088,8 +2108,8 @@
+         runs: t.List[Run],
+         timeout_ms: int = 5000,
+         assumptions: t.Optional[AssumptionSet] = None,
+-        max_missing_per_clique: int = 1,
+-        max_cliques: int = 1024,
++        max_missing_per_clique: Optional[int] = None,
++        max_cliques: Optional[int] = None,
+         confinement: bool = True,
+         prior_footprints: t.Optional[t.Mapping[str, t.Iterable[str]]] = None,
+         confinement_strict: bool = True,
+@@ -2207,8 +2227,24 @@
+         for a driver that knows something the checker does not (a dump-list
+         digest, say)."""
+         self.timeout_ms = timeout_ms
+-        self.max_missing_per_clique = max_missing_per_clique
+-        self.max_cliques = max_cliques
++        # STAGED 2026-09-15 (resource-knob CLI task).  Both caps become
++        # None-defaulted so "not given" is distinguishable from "given the
++        # old default", which is what lets the documented precedence rule
++        # (explicit argument > environment > default) be expressed at all.
++        #
++        # ---- HAZARD, why this is STAGED and not applied ------------------
++        # $MAX_CLIQUES and $MAX_MISSING_PER_CLIQUE are read TODAY only by the
++        # batch drivers (e.g. posts_show/coverage_report.py), which pass them
++        # in explicitly.  Making this constructor consult them means a
++        # process that merely has them exported -- and every live campaign
++        # shell does -- silently changes the caps of any CoverageChecker built
++        # WITHOUT them.  posts_show's own driver exports MAX_CLIQUES=16384
++        # against a src/ default of 1024: a 16x change to a search budget, in
++        # the middle of a run, from a patch that looks like plumbing.
++        # It must be reviewed by the posts_show owner before it lands.
++        self.max_missing_per_clique = _knobs_resolve(
++            "max_missing_per_clique", max_missing_per_clique)
++        self.max_cliques = _knobs_resolve("max_cliques", max_cliques)
+         self.confinement = confinement
+         self.confinement_strict = confinement_strict
+         self.withdrawn_pairs = {tuple(sorted(p)) for p in (withdrawn_pairs or ())}

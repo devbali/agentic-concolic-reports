@@ -1,0 +1,126 @@
+--- coverage_report.py
++++ coverage_report.py
+@@ -112,8 +112,23 @@
+         e = ev.get("expr")
+         if e and "len(" in e:
+             ev["expr"] = _LEN_RE.sub(r"SYM_LEN_\1", e)
+-        ev.pop("note", None)
+-        ev.pop("args", None)
++        # C1 -- TRACE CURRENCY (docs/CONFINEMENT_PRECISION_20260913.md §2,
++        # tools/_c1_currency_patch.md). `note` and `args` are the OTHER TWO
++        # THIRDS of `concolic_engine.assumptions.call_shape`, which is the
++        # only thing the engine reads them for (coverage.py, ONE call site).
++        # Popping them degenerates the §16c footprint currency to the bare
++        # TARGET NAME while the assumption gate's `access_trace` stays on the
++        # full shape. MEASURED on this endpoint's own 132 524-dump snapshot,
++        # 2026-09-14 (_c23_summary.json): distinct shapes used in footprints
++        # 20 -> 90 (the gate measures 91 in total); load peak RSS
++        # 3 633 -> 4 343 MB (+19.5 %), pass peak 5 355 -> 6 023 MB; licensed
++        # confined pairs 578 -> 551; and DEMAND DOES NOT MOVE -- MISSING 11,
++        # BLOCKING 7, the SAME 7 witness leaves, demand sets 1 646 -> 1 641.
++        # Default is still the pop, so an unset environment reproduces every
++        # pass written before 2026-09-14 byte for byte.
++        if os.environ.get("CONF_KEEP_NOTES", "0") != "1":
++            ev.pop("note", None)
++            ev.pop("args", None)
+         ev.pop("traceback", None)
+     cv = dump.get("concrete_values")
+     if isinstance(cv, dict):
+@@ -549,10 +564,53 @@
+               f"{('ON, W=%d' % _cwidth) if (_subconj or _wf) else 'OFF'}; "
+               f"well-founded drops (§16g): "
+               f"{('ON, W=%d' % _cwidth) if _wf else 'OFF'}", flush=True)
++        # ------------------------------------------------------------------
++        # CONFINEMENT knobs (DISCIPLINE §16c) -- PORTED from
++        # comments_index/coverage_report.py (itself ported from posts_show's).
++        # EVERY default below is the ENGINE's own default
++        # (`CoverageChecker.__init__`: confinement=True, strict=True,
++        # keying="coevaluated", gates=True, or_sharing=True,
++        # span_union=False, fallback_licence=True), so an unset environment
++        # passes exactly the values this call already got implicitly and the
++        # step-6 checkpoint `params` digest is UNCHANGED (coverage.py folds
++        # the first five in unconditionally and the last two only when
++        # non-default). VERIFIED end to end 2026-09-14: a pass with all knobs
++        # unset on the frozen C21R1 snapshot reproduced C21R1 exactly --
++        # COMPLETE=False;NODES=441;MISSING=11;BLOCKING=7, demand sets 1 646,
++        # 7 gap-sets, the same 7 witness leaves, peak RSS 5 355 vs 5 354 MB.
++        #   CONFINEMENT=0            §16c off entirely
++        #   CONF_KEYING=exact        refuse fallback-only members -- this IS
++        #                            the precision note's C3 (§8.3)
++        #   CONF_SPAN_UNION=1        C2: a shape the decision REACHES but that
++        #                            no matched context SPANS goes IN the
++        #                            footprint
++        #   CONF_FALLBACK_LICENCE=0  C3 as §5 writes it (fp = reach); §8.3
++        #                            measured it inert -- use CONF_KEYING.
++        # ------------------------------------------------------------------
++        _conf_on = os.environ.get("CONFINEMENT", "1") != "0"
++        _conf_strict = os.environ.get("CONF_STRICT", "1") != "0"
++        _conf_keying = os.environ.get("CONF_KEYING", "coevaluated")
++        _conf_gates = os.environ.get("CONF_GATES", "1") != "0"
++        _conf_or = os.environ.get("CONF_OR_SHARING", "1") != "0"
++        _conf_span = os.environ.get("CONF_SPAN_UNION", "0") == "1"
++        _conf_fbk = os.environ.get("CONF_FALLBACK_LICENCE", "1") != "0"
++        print(f"[confinement] settings: confinement={_conf_on} "
++              f"strict={_conf_strict} keying={_conf_keying} "
++              f"gates={_conf_gates} or_sharing={_conf_or} "
++              f"span_union={_conf_span} fallback_licence={_conf_fbk} "
++              f"keep_notes={os.environ.get('CONF_KEEP_NOTES', '0') == '1'}",
++              flush=True)
+         result = CoverageChecker(
+             runs, assumptions=assumptions,
+             max_missing_per_clique=int(os.environ.get("MAX_MISSING_PER_CLIQUE", "4")),
+             max_cliques=int(os.environ.get("MAX_CLIQUES", "16384")),
++            confinement=_conf_on,
++            confinement_strict=_conf_strict,
++            confinement_keying=_conf_keying,
++            confinement_gates=_conf_gates,
++            confinement_or_sharing=_conf_or,
++            confinement_span_union=_conf_span,
++            confinement_fallback_licence=_conf_fbk,
+             withdrawn_pairs=_wd, prior_footprints=_pf,
+             foreclosure_conjunctions=_conj,
+             foreclosure_subconjunctions=_subconj,
+@@ -569,6 +627,43 @@
+     # gate) is not memory-heavy, so release heavy before it.
+     heavy.__exit__()
+ 
++    # C23 (2026-09-14): one stdout line for the §16c layer, and the confined
++    # pairs on disk when CONF_PAIRS_OUT is set. ADDITIVE ONLY -- the fixed
++    # summary schema below is untouched.
++    print(f"CONF confined_pairs={len(getattr(result, 'confined_pairs', ()))};"
++          f"or_pairs={len(getattr(result, 'confinement_or_pairs', ()))};"
++          f"and_pairs={len(getattr(result, 'confinement_and_pairs', ()))};"
++          f"overlapping={len(getattr(result, 'confinement_overlapping', ()))};"
++          f"undecidable_pairs={getattr(result, 'confinement_undecidable_pairs', 0)};"
++          f"splits={getattr(result, 'confinement_splits', 0)};"
++          f"withdrawn={len(getattr(result, 'confinement_withdrawn', ()))};"
++          f"decided={len(getattr(result, 'footprints', ()))};"
++          f"undecidable={len(getattr(result, 'footprints_undecidable', ()))};"
++          f"provisional={bool(getattr(result, 'confinement_provisional', False))}",
++          flush=True)
++    _cp_out = os.environ.get("CONF_PAIRS_OUT")
++    if _cp_out:
++        try:
++            with open(_cp_out, "w") as _fh:
++                json.dump({
++                    "confined_pairs": [list(p) for p in
++                                       getattr(result, "confined_pairs", ())],
++                    "or_pairs": [list(p) for p in
++                                 getattr(result, "confinement_or_pairs", ())],
++                    "and_pairs": [list(p) for p in
++                                  getattr(result, "confinement_and_pairs", ())],
++                    "footprint_shapes": sorted(
++                        {sh for _e, v in getattr(result, "footprints", ())
++                         for sh in v}),
++                    "decided": len(getattr(result, "footprints", ())),
++                    "undecidable": len(
++                        getattr(result, "footprints_undecidable", ())),
++                    "splits": getattr(result, "confinement_splits", 0),
++                }, _fh)
++            print(f"[confinement] wrote {_cp_out}", flush=True)
++        except Exception as _e:  # noqa: BLE001
++            print(f"[confinement] CONF_PAIRS_OUT failed: {_e}", flush=True)
++
+     blocking = [m for m in result.missing if not getattr(m, "untracked", False)]
+ 
+     total_pcs = sum(len(r.path_conditions) for r in runs) if runs else 0

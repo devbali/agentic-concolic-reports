@@ -1,0 +1,30 @@
+#!/usr/bin/env python3
+"""posts_show extraction with INCREMENTAL dedup (results3-local driver).
+
+ARCHIVED 2026-09-10: this is the 2026-08-19 version, superseded by the
+upgraded _extract_posts_show_streaming.py (E1 AssocFoldingTransformer, E11
+RED check, broadened-bind notes, tri-state subsumption tally). Kept verbatim
+so the upgrade is diffable. DO NOT RUN — it is the version with the E11 blind
+spot.
+
+Why this exists: `queries_from_runs.dump.build_endpoint_file` accumulates
+every TransformedQuery from every run before deduping (689,601 objects for
+posts_show's 18,688 dumps) — that list blew the 4.5G MemoryMax cgroup cap on
+the 2026-08-19 re-run (and is the same load pattern behind the 2026-08-18
+kernel OOM kills). This driver replicates build_endpoint_file exactly, but
+dedups by SQL string as it streams, so memory stays at the per-dump scale.
+Output (.sql file + summary JSON) is byte-identical in content to dump.py's:
+dedup keeps the FIRST TransformedQuery per SQL string in both versions, and
+flag/placeholder/skipped-PC counters are accumulated pre-dedup in both.
+src/ is untouched (source-code discipline).
+
+KEY DIFFERENCES from the upgrade, i.e. WHY it was superseded:
+  * `RunTransformer`, not `AssocFoldingTransformer` — every `assoc_*` bind
+    stays an unresolved placeholder (E1).
+  * `errors` is collected and never checked: an unparseable note silently
+    deletes a statement the app really issues (E11).
+  * `can_subsume` does not exclude `broadened-*` flags.
+  * no POLICY_HEADER, no provenance block.
+  * `subsume_ran` is a bool, so "never attempted" reads as "attempted and
+    failed".
+"""

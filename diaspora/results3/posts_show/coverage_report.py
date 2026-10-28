@@ -153,6 +153,101 @@ def _conf_mode(on: bool, strict: bool, or_sharing: bool) -> str:
     return "OR-refined" if or_sharing else "STRICT"
 
 
+def _extend_withdrawn_file(summary: dict, path: str) -> int:
+    """Close the confinement-withdrawal feedback loop AUTOMATICALLY.
+
+    THE BUG THIS FIXES (measured 2026-09-25). A confined pair is INFERRED by
+    the checker, never declared (coverage.py:541). The engine's protocol is
+    that a pair the assumption gate REFUTES must be fed back via
+    ``CoverageChecker(withdrawn_pairs=...)`` so the next pass never licenses it
+    again (coverage.py:2207-2210). This driver read such a file
+    (``_confinement_withdrawn.json``) and passed it — the leg people_stream was
+    missing entirely — but NOTHING EVER WROTE IT BACK. The file was produced
+    once, by hand, by ``_p34_withdraw_v2.py`` on 2026-09-15 from a 2026-09-13
+    summary, and that script is a manual step no pass re-runs. Measured on the
+    REAL10 summary: 564 pairs fed in, 924 refused by that pass, INTERSECTION
+    ZERO. Every pair the gate refused was re-licensed by the next pass,
+    re-tested, and re-refuted — 460 FAIL + 464 NOT-TESTABLE standing in
+    ``completion.blocking`` that no amount of re-running could clear.
+
+    So: after a REAL pass (not SKIP_COMPLETION, not a counterfactual — those
+    must not write into the batch's evidence), union this pass's
+    ``confinement_withdrawn_by_gate`` into the file, in the RECORD form
+    ``{"pair": [a, b], "verdict": ..., "refutation": ..., "withdrawn_by": ...}``
+    that the loader above now accepts, carrying the gate's verbatim text so a
+    later reader can see WHY a pair is withdrawn rather than having to trust a
+    bare tuple. The previous file is rotated to a timestamped ``.bak_*``, never
+    overwritten in place — withdrawal history is evidence.
+
+    Returns the number of pairs newly added.
+
+    NOTE for the corpus re-drive: a withdrawal records a gate refutation
+    AGAINST A PARTICULAR CORPUS. When the corpus is regenerated, move this
+    file aside and start empty — stale pairs would suppress confinement
+    licences the new corpus may well support.
+    """
+    import datetime
+
+    pairs = summary.get("confinement_withdrawn_by_gate") or []
+    if not pairs:
+        return 0
+
+    # the gate's verbatim text, keyed by canonical pair
+    reasons: dict = {}
+    _ca = ((summary.get("completion") or {}).get("assumptions") or {})
+    for row in (_ca.get("failures") or []):
+        if row.get("expr_b"):
+            reasons[tuple(sorted((row["expr"], row["expr_b"])))] = (
+                "FAIL", row.get("detail") or "")
+    for row in (_ca.get("confinement_unverified") or []):
+        if row.get("expr_b"):
+            reasons[tuple(sorted((row["expr"], row["expr_b"])))] = (
+                row.get("verdict") or "NOT-VERIFIED", row.get("detail") or "")
+
+    existing: dict = {}
+    if os.path.exists(path):
+        with open(path) as fh:
+            for x in json.load(fh):
+                p = tuple(x["pair"] if isinstance(x, dict) else x)
+                if len(p) == 2:
+                    # dict records keep their provenance verbatim; a legacy
+                    # BARE pair is normalised to the canonical sorted order the
+                    # engine keys on (coverage.py:2292), so the file diffs
+                    # readably once it is machine-written.
+                    existing[tuple(sorted(p))] = (
+                        x if isinstance(x, dict)
+                        else {"pair": list(tuple(sorted(p)))})
+
+    stamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+    added = 0
+    for p in pairs:
+        k = tuple(sorted(tuple(p)))
+        if len(k) != 2 or k in existing:
+            continue
+        verdict, detail = reasons.get(k, ("NOT-VERIFIED", ""))
+        existing[k] = {"pair": list(k), "verdict": verdict,
+                       "refutation": detail,
+                       "withdrawn_by": f"assumption gate, automatic feedback {stamp}"}
+        added += 1
+
+    if not added:
+        print(f"[confinement] withdrawal feedback: all {len(pairs)} gate-refused "
+              f"pair(s) already recorded in {os.path.basename(path)}", flush=True)
+        return 0
+
+    if os.path.exists(path):
+        bak = f"{path}.bak_{stamp}"
+        os.replace(path, bak)
+        print(f"[confinement] rotated previous withdrawal file -> "
+              f"{os.path.basename(bak)}", flush=True)
+    with open(path, "w") as fh:
+        json.dump([existing[k] for k in sorted(existing)], fh, indent=1)
+    print(f"[confinement] withdrawal feedback: +{added} pair(s) "
+          f"({len(existing)} total) -> {os.path.basename(path)}; the NEXT pass "
+          f"will not license them", flush=True)
+    return added
+
+
 def main() -> int:
     # DUMP_LIST / DUMP_SAMPLE / SUMMARY_OUT (ported VERBATIM from
     # notifications_index/coverage_report.py, 2026-09-10, preflight): a drive
@@ -275,7 +370,22 @@ def main() -> int:
     _wd = _pf = None
     if os.path.exists(_wd_path) and not os.environ.get("NO_WITHDRAWN_PAIRS"):
         with open(_wd_path) as fh:
-            _wd = [tuple(x) for x in json.load(fh)]
+            # Accept BOTH shapes (people_stream's coverage_report.py:151-163
+            # already did; this copy accepted only the bare one). A record
+            # carries the gate's verbatim refutation alongside the pair, which
+            # is what `_extend_withdrawn_file` below now writes.
+            _wd_raw = json.load(fh)
+        _wd = []
+        for _x in _wd_raw:
+            _p = tuple(_x["pair"] if isinstance(_x, dict) else _x)
+            if len(_p) != 2:
+                # coverage.py:2292 does `tuple(sorted(p))` with no arity check,
+                # so a malformed entry would SILENTLY never match anything.
+                print(f"[confinement] IGNORING malformed withdrawn entry "
+                      f"(arity {len(_p)}, want 2): {str(_p)[:120]}",
+                      file=sys.stderr)
+                continue
+            _wd.append(_p)
     if os.path.exists(_pf_path) and not os.environ.get("NO_PRIOR_FOOTPRINTS"):
         with open(_pf_path) as fh:
             _pf = json.load(fh)
@@ -513,6 +623,15 @@ def main() -> int:
         from concolic_engine.completion import attach_to_summary
         with open(cc_path) as fh:
             attach_to_summary(summary, json.load(fh))
+        # Close the withdrawal feedback loop (see _extend_withdrawn_file).
+        # Only here: SKIP_COMPLETION and counterfactual passes ran no gate, so
+        # they have nothing to feed back, and the counterfactual branch above
+        # exists precisely to keep scratch passes out of the batch's evidence.
+        # NO_WITHDRAWN_PAIRS is a deliberate control (_p31_emit_P35_NOWITHDRAW_
+        # CONTROL.log) — a control must not mutate the file it is controlling
+        # against.
+        if not os.environ.get("NO_WITHDRAWN_PAIRS"):
+            _extend_withdrawn_file(summary, _wd_path)
     else:
         summary["completion"] = {"complete": False,
                                  "blocking": ["completion gate did not run "

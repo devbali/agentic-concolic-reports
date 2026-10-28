@@ -1,0 +1,183 @@
+#!/usr/bin/env python3
+"""ROOTED seeds for people_stream's tree_missing branch outcomes.
+
+PORT of notifications_index/_tree_root.py, 2026-09-10. This is the tool that
+closed 7 of that endpoint's 10 tree_missing branches in 157 runs with 0 JVM
+aborts, after bulk v3 driving had moved 13 -> 10. Bulk variation reaches a
+branch only if a random seed happens to land in the context that evaluates it;
+this builds, per target, a REAL DUMP'S OWN SEEDS (from a run that provably
+evaluated the expression, on the other side) with EXACTLY the target dimension
+flipped. Run `_tree_scan.py` first to build `_tw/vscan_*.json`.
+
+Bulk variation reaches a branch only if a random seed happens to land in the
+context that evaluates it. These ten sites are reached by 3 to 18 321 runs of
+109 401, so bulk is the wrong instrument for the rare ones. This builds, for
+each target, seeds that are a REAL DUMP'S OWN SEEDS (a run that provably
+evaluated the expression, on the other side) with EXACTLY the target
+dimension flipped — the context is reproduced, one decision moves.
+
+Canonical -> ordinal is taken from the BASE DUMP'S OWN alias map, and EVERY
+ordinal backing the canonical is seeded (the map is many-to-one by design;
+picking one contradicts the demand whenever the path takes another —
+`_demand_root.py`'s 2026-09-09 fix, same defect).
+
+writes _treeR_<variant>.json ; usage: _tree_root.py [--bases N]
+"""
+import json, os, re, sys
+from collections import defaultdict
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, "/home/dev/project/src")
+sys.path.insert(0, HERE)
+from coverage_report import canonicalize_ordinals  # noqa: E402
+
+# run_dse.rb SCENARIOS.
+VARIANTS = ("anon_all", "anon_json", "auth_json")
+NB = int(sys.argv[sys.argv.index("--bases") + 1]) if "--bases" in sys.argv else 8
+
+targets = json.load(open(os.path.join(HERE, "_tw", "targets.json")))
+best = defaultdict(list)
+import glob
+for f in sorted(glob.glob(os.path.join(HERE, "_tw", "vscan_*.json"))):
+    d = json.load(open(f))
+    for k, v in d["best"].items():
+        best[k].extend(tuple(x) for x in v)
+
+_VAR = re.compile(r"SYM_[A-Za-z0-9_]+")
+
+# The SAME deny-list `_diverse_seeds3.py` applies to its inherited templates,
+# and for the same measured reason: a base dump's own `concolic_seeds` carry
+# `SYM_PARAM_show` (the REQUEST VARIANT, which `VARIANTS` owns), `*_type`
+# (DERIVED from SYM_NOTE_TYPE_PROFILE) and identity keys. Replaying them
+# verbatim reproduces v3.0's failure — the first rooted drive (TR1) aborted
+# the JVM on EVERY seed, 0 paths in 6 variants x 4+ tries.
+PARAMS = ("SYM_PARAM_person_id", "SYM_PARAM_username")
+DENY_SUF = ("_type", "_guid", "_diaspora_handle", "_id", "_person_id",
+            "_birthday_year")
+DENY_SUB = ("set_rendered_content_type", "_plucked")
+
+
+def denied(n):
+    # A genuine symbolic REQUEST PARAMETER is a dimension and must be REPLAYED
+    # verbatim, not stripped (notifications, _COMPLETION_CAMPAIGN §7.5:
+    # stripping `SYM_PARAM_show` moved 19 rooted runs onto the wrong statement
+    # alias — the right branch on the wrong statement). This endpoint's params
+    # are listed in PARAMS and are therefore NOT denied. Everything else under
+    # SYM_PARAM_, plus derived / identity keys, is.
+    if n in PARAMS:
+        return False
+    return (n.startswith("SYM_PARAM_") or n.endswith(DENY_SUF)
+            or any(x in n for x in DENY_SUB))
+
+
+def wanted_value(expr, side):
+    """The seed value that makes `expr` take `side`.
+
+    Generalised 2026-09-10: notifications' targets were only `X == True` and
+    `X == ''`; these endpoints also carry `SYM_LEN_... != 0` (both sides) and
+    `... != StringVal('')`. An unhandled shape still EXITS rather than
+    guessing — a wrong seed value produces a run that looks driven and is not.
+    """
+    body = expr.strip()
+    if body.startswith("(") and body.endswith(")"):
+        body = body[1:-1]
+    want = (side == "taken")
+    for op in (" == ", " != ", " > ", " < ", " >= ", " <= "):
+        if op in body:
+            lhs, rhs = body.split(op, 1)
+            lhs, rhs, op = lhs.strip(), rhs.strip(), op.strip()
+            break
+    else:
+        raise SystemExit(f"unhandled target shape: {expr}")
+    if rhs in ("True", "False"):
+        truth = (rhs == "True")
+        # `X == True` taken  -> X True ;  `X != True` taken -> X False
+        return lhs, (truth if (op == "==") == want else not truth)
+    if rhs in ("''", '""', "StringVal('')", 'StringVal("")'):
+        empty = (op == "==") == want          # do we want X to BE empty?
+        return lhs, ("" if empty else "x")
+    if re.fullmatch(r"-?\d+", rhs):
+        n = int(rhs)
+        if op == "==":
+            return lhs, (n if want else n + 1)
+        if op == "!=":
+            return lhs, (n + 1 if want else n)
+        if op in (">", ">="):
+            return lhs, (n + 1 if want else max(0, n - 1))
+        if op in ("<", "<="):
+            return lhs, (max(0, n - 1) if want else n + 1)
+    raise SystemExit(f"unhandled target shape: {expr}")
+
+
+# FORCED-OFF SEEDS. On notifications, taking either discovery entry condition
+# sends `Person.find_or_fetch_by_identifier` into `Discovery#fetch_and_save`,
+# which ABORTS THE JVM in libcurl before the dump is written (37 of 37 toxic
+# seeds carried one; 0 of the 25.6 % control quarter did), so every rooted seed
+# for a DIFFERENT target pins both off or the run dies before reaching its own
+# branch. EMPTY here: no such witness has been established on this endpoint.
+# Add one only with a measured control-vs-flip differential.
+DISCOVERY = ()
+
+per_variant = {}
+seen = {}
+report = []
+for ti, t in enumerate(targets, 1):
+    expr, side = t["expr"], t["side"]
+    tk = f"t{ti:02d}"
+    per_variant[tk] = {v: [] for v in VARIANTS}
+    seen[tk] = {v: set() for v in VARIANTS}
+    var, val = wanted_value(expr, side)
+    other = "taken" if side == "not_taken" else "not_taken"
+    made = 0
+    for v in VARIANTS:
+        bl = sorted(set(best.get(f"{expr}\t{other}\t{v}", [])), reverse=True)[:NB]
+        for _npc, p in bl:
+            try:
+                raw = json.load(open(p))
+            except Exception:
+                continue
+            # VERBATIM (2026-09-10, the drive agent). notifications
+            # `_COMPLETION_CAMPAIGN_20260910.md` §9.7: applying the BULK
+            # seeder's deny-list to a ROOTED seed is a defect. A bulk seeder
+            # INVENTS values and needs the list; a rooted seed REPRODUCES a
+            # real run and flips exactly one dimension, so stripping any base
+            # key changes the context the branch is supposed to be reached
+            # in. On notifications it dropped a Rule G gate column
+            # (`diaspora_handle`) and the first attempt hit the branch 0 times
+            # and never even EVALUATED the expression. `denied()` is kept below
+            # only to document what USED to be stripped; it is not applied.
+            # (This endpoint's deny suffixes include `_guid` — i.e. exactly the
+            # family the one remaining target lives in.)
+            seeds = dict(raw.get("concolic_seeds") or {})
+            d = json.loads(json.dumps(raw))
+            amap = canonicalize_ordinals(d)
+            inv = defaultdict(list)
+            for o, c in amap.items():
+                inv[c].append(o)
+            keys = [var]
+            for c, ords in inv.items():
+                if c in var:
+                    keys = [var.replace(c, o) for o in ords]
+                    break
+            for k in keys:
+                seeds[k] = val
+            for dk in DISCOVERY:
+                if dk not in keys:
+                    seeds[dk] = False
+            key = json.dumps(seeds, sort_keys=True, default=str)
+            if key in seen[tk][v]:
+                continue
+            seen[tk][v].add(key)
+            per_variant[tk][v].append(seeds)
+            made += 1
+    report.append((tk, made, side, var))
+
+import glob as _g
+for old in _g.glob(os.path.join(HERE, "_treeR_*.json")):
+    os.remove(old)
+for tk, pv in per_variant.items():
+    for v, lst in pv.items():
+        if lst:
+            json.dump(lst, open(os.path.join(HERE, f"_treeR_{tk}_{v}.json"), "w"))
+for tk, made, side, var in report:
+    print(f"  {tk}: {made:3d} seeds  {side:9s} {var}")

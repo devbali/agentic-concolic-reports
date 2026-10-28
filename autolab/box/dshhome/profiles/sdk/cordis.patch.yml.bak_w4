@@ -1,0 +1,18 @@
+# OpenRouter route for dsh's pi-ai LLM adapter.
+- id: llm-pi-ai
+  config:
+    providers:
+      openrouter:
+        displayName: OpenRouter
+        apiKeyEnv: OPENROUTER_API_KEY
+        api: openai-completions
+        baseURL: https://openrouter.ai/api/v1
+        models:
+          - id: deepseek/deepseek-v4-flash
+            name: DeepSeek V4 Flash (OpenRouter)
+            contextWindow: 1048576
+            maxTokens: 8192
+          - id: deepseek/deepseek-chat
+            name: DeepSeek Chat (OpenRouter)
+            contextWindow: 163840
+            maxTokens: 8192

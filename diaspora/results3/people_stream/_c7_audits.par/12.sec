@@ -1,0 +1,44 @@
+
+##### hardening_lint #####
+== hardening_lint: 400 dumps sampled from people_stream; 18 targets, 1 scenarios ==
+
+-- H1 formats (corpus scenarios) --
+   scenarios: []
+   CHECK: mobile variant ABSENT — if the controller has a *.mobile.haml view or mobile-fu applies, this is a blind format (M-2)
+
+-- H2 link-bearing text (the Post.exists? family) --
+   seeded text values carrying 'diaspora://': yes
+   an exists?-family target in the corpus: yes
+   any existence-probe note (`1 AS one`): yes
+
+-- H3 opaque notes (a target mock that can swallow nested SQL) --
+   CHECK PeopleController.diaspora_id?                                  note='diaspora_id?(username) boundary decision (people_controller.'
+   CHECK Photo.url                                                      note='Photo#url'
+   2 target(s) with no SQL note and not a documented wall — each must be proven unable to reach a target (N-1: MessageRenderer#title swallowed Post.exists?)
+
+-- H4 collection lengths (0 / 1 / many) --
+   0 len(...) decisions recorded as PCs; 0 appear with ONE polarity only, 0 declared by construction
+   a frozen length hides empty-state branches, interior indexes and `count > 0 with zero rows` (notifications N/A-1, conversations near-misses)
+
+-- H5 pinned type columns --
+   (pin declared in pc_pin_ledger)    ok    commentable_type: ['Post']
+   ok    mentions_container_type: ['Comment', 'Post']
+   (pin declared in pc_pin_ledger)    ok    shareable_type: ['Post']
+   (pin declared in pc_pin_ledger)    ok    target_type: ['Post']
+   ok    type: ['Reshare', 'StatusMessage']
+
+-- H6 over-emission (note families no concrete run issued) --
+   CHECK ActiveRecord::Associations::CollectionProxy.records: SELECT "poll_answers".* FROM "poll_answers" WHERE "poll_answ
+   CHECK ActiveRecord::Associations::CollectionProxy.records: SELECT "poll_answers".* FROM "poll_answers" WHERE "poll_answ
+   CHECK ActiveRecord::Associations::SingularAssociation.find_target: SELECT "o_embed_caches".* FROM "o_embed_caches" WHERE "o_emb
+   CHECK ActiveRecord::Associations::SingularAssociation.find_target: SELECT "posts".* FROM "posts" WHERE "posts"."id" = $$(SYM_RE
+   CHECK ActiveRecord::Associations::SingularAssociation.find_target: SELECT "posts".* FROM "posts" WHERE "posts"."id" = $$(SYM_RE
+   CHECK ActiveRecord::Associations::SingularAssociation.find_target: SELECT "o_embed_caches".* FROM "o_embed_caches" WHERE "o_emb
+   CHECK ActiveRecord::Associations::SingularAssociation.find_target: SELECT "posts".* FROM "posts" WHERE "posts"."guid" = $$(SYM_
+   CHECK ActiveRecord::Associations::SingularAssociation.find_target: SELECT "open_graph_caches".* FROM "open_graph_caches" WHERE 
+   CHECK ActiveRecord::Associations::SingularAssociation.find_target: SELECT "open_graph_caches".* FROM "open_graph_caches" WHERE 
+   CHECK ActiveRecord::Associations::SingularAssociation.find_target: SELECT "posts".* FROM "posts" WHERE "posts"."guid" = $$(SYM_
+   318 note shape(s) never issued by the 5 concrete run(s) — over-emission inflates the policy
+
+RESULT: 4 hardening check(s) need an answer (each is a class a real run already caught on some endpoint).
+EXIT=1

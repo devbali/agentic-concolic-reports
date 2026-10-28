@@ -1,0 +1,565 @@
+#!/usr/bin/env python3
+"""X12 (2026-09-14) — every derived gate test probes K BASES, not one.
+
+THE DEFECT. `_test_conjunction_foreclosure`, `_test_confinement`'s
+composition, the independence test and the untracked-path test all built
+their probe from ONE base: `pick_snapshot_with`'s single richest snapshot
+recording the claim's exprs. The probe is DERIVED from that base — which
+literals still need flipping, which seeds exist to flip them with — so
+"the flip did not take", "the probe did not realise C" and "the snapshot
+records the member both ways" are facts about the BASE, not about the claim.
+
+THE MEASUREMENT (notifications_index `_COMPLETION_CAMPAIGN_20260910.md` §39).
+`_c27_fals.py` ran the SAME probe from up to 8 bases per class:
+
+    §16g  24 classes   shipped: NOT-TESTABLE 24/24   multi-base: FAIL 18, N-T 6
+    §16f  28 classes   shipped: PASS 12, N-T 12      multi-base: FAIL 6, PASS 16, N-T 6
+    §16e  89 classes   —                             multi-base: PASS 89, FAIL 0
+
+18 classes the shipped gate could not test were REFUTED by 78 replays that
+were in the corpus's reach the whole time.
+
+THE RULES, one test each:
+  * a refutation from ANY base is a FAIL;
+  * a PASS requires that no probed base refuted, and the row records how many
+    bases were probed and how many REALISED the claim's premise;
+  * NOT-TESTABLE only when NO probed base realised it (seeding is not
+    realising — the realised-value rule is unchanged);
+  * base ordering: the shipped (richest) base first, so `ACHK_BASES=1`
+    reproduces the old test exactly, then scenario-diverse;
+  * `run_declared` escalates in two stages, so a FAIL still costs one base.
+
+No JRuby: the replay is a stub keyed on the exact seed dict, so a fixture can
+say what the app does from EACH base.
+"""
+import json
+import os
+import sys
+import tempfile
+import unittest
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from end_to_end_completion_checker.assumption import assumption_checker as AC  # noqa: E402
+from concolic_engine.assumptions import call_shape, shape_str  # noqa: E402
+
+D = "(VAR_D == True)"
+C1, C2 = "(VAR_C1 == True)", "(VAR_C2 == True)"
+EA, EB = "(VAR_A == True)", "(VAR_B == True)"
+
+
+def tuple_key(seeds):
+    """The replay stub's key: the exact seed dict the runner would be handed."""
+    return json.dumps(seeds, sort_keys=True)
+
+
+def shp(name):
+    return shape_str(call_shape("T", f"SELECT * FROM {name} WHERE x = $$(V)", {}))
+
+
+def dump(pcs, calls, seeds, scenario="s1"):
+    events = [{"type": "path_condition", "expr": e, "taken": t}
+              for e, t in pcs.items() if t is not None]
+    events += [{"type": "symbolic_call", "target": "T",
+                "note": f"SELECT * FROM {n} WHERE x = $$(V)", "result_name": "r", "args": {}}
+               for n in calls]
+    return {"events": events, "concolic_seeds": dict(seeds), "_alias_map": {},
+            "_alias_key": {}, "_alias_len": {}, "concolic_scenario": {"name": scenario}}
+
+
+class _SeedReplay:
+    """ProbeCache stand-in keyed on the EXACT seed dict, so each base's probe
+    gets its own answer (the single-base stub keyed on "which dims flipped
+    relative to THE snapshot" cannot express that)."""
+
+    def __init__(self, by_seeds):
+        self.by_seeds = dict(by_seeds)
+        self.planning, self.wanted, self.seen = False, {}, []
+
+    def run(self, seeds, scenario, tag):
+        key = json.dumps(seeds, sort_keys=True)
+        self.seen.append((scenario, key))
+        if self.planning:
+            self.wanted.setdefault((scenario, key), seeds)
+            return {}
+        d = self.by_seeds.get(key)
+        return AC.probe_record(d) if d is not None else None
+
+    def execute(self):
+        self.wanted = {}
+
+    def close(self):
+        pass
+
+
+class _Base(unittest.TestCase):
+    def setUp(self):
+        AC._INDEX.clear()
+        AC._POSTINGS.clear()
+        AC._PSW_CACHE.clear()
+        AC._PBW_CACHE.clear()
+        AC._CANON_FN = None
+        AC._ALIASES = []
+        AC._BASE_BUDGET = AC._BASES
+        self.tmp = tempfile.mkdtemp()
+        self.cfg = {"batch_dir": self.tmp, "runner": "true", "workdir": self.tmp}
+
+    def tearDown(self):
+        AC._BASE_BUDGET = AC._BASES
+
+    def write(self, name, d):
+        with open(os.path.join(self.tmp, f"dump_{name}.json"), "w") as fh:
+            json.dump(d, fh)
+        AC._INDEX.clear()
+        AC._POSTINGS.clear()
+        AC._PSW_CACHE.clear()
+        AC._PBW_CACHE.clear()
+        return d
+
+    def verdict(self, claim, cache):
+        return AC.test_declared(self.cfg, claim, cache)
+
+
+# ══════════════════════════════════════════════════════════════════════
+# §39, as a regression: ONE base says NOT-TESTABLE, MANY bases say FAIL
+# ══════════════════════════════════════════════════════════════════════
+
+class Section39Regression(_Base):
+    """The exact §39 shape. `d` is claimed foreclosed under C = {C1, C2}.
+
+    base A  richest (4 seed keys, scenario s1), records d with C1=F, C2=F, so
+            the probe must flip BOTH; the app realises only C1 -> the shipped
+            test stops at "seeding is not realising" and says NOT-TESTABLE.
+    base B  poorer (3 keys, scenario s2), records d with C1=F, C2=T, so the
+            probe flips ONE literal; the app realises C AND evaluates d.
+            That run is verbatim the falsifier §16g names.
+    """
+
+    def setUp(self):
+        super().setUp()
+        self.a_seeds = {"VAR_D": True, "VAR_C1": False, "VAR_C2": False, "PAD": 1}
+        self.b_seeds = {"VAR_D": True, "VAR_C1": False, "VAR_C2": True}
+        self.write("A_s1_0001", dump({D: True, C1: False, C2: False}, ["z"],
+                                     self.a_seeds, "s1"))
+        self.write("B_s2_0001", dump({D: True, C1: False, C2: True}, ["z"],
+                                     self.b_seeds, "s2"))
+        self.claim = {"type": "SubconjunctionForeclosureAssumption", "expr": D,
+                      "conditioning": [[C1, "taken"], [C2, "taken"]],
+                      "wellfounded": True, "section": "16g"}
+        from_a = {**self.a_seeds, "VAR_C1": True, "VAR_C2": True}
+        from_b = {**self.b_seeds, "VAR_C1": True}
+        self.cache = _SeedReplay({
+            # from A the app clamps C2 back: C is NOT realised -> no evidence
+            tuple_key(from_a): dump({D: True, C1: True, C2: False}, ["z"], from_a, "s1"),
+            # from B the app realises C AND evaluates d -> the falsifier
+            tuple_key(from_b): dump({D: False, C1: True, C2: True}, ["z"], from_b, "s2"),
+        })
+
+    def test_one_base_is_not_testable(self):
+        AC._BASE_BUDGET = 1
+        r = self.verdict(self.claim, self.cache)
+        self.assertEqual(r["verdict"], "NOT-TESTABLE", r["detail"])
+        self.assertIn("seeding is not realising", r["detail"])
+        self.assertEqual(r["bases_probed"], 1)
+        self.assertEqual(r["bases_realising"], 0)
+
+    def test_many_bases_refute_it(self):
+        AC._BASE_BUDGET = 8
+        r = self.verdict(self.claim, self.cache)
+        self.assertEqual(r["verdict"], "FAIL", r["detail"])
+        self.assertIn("REFUTED", r["detail"])
+        self.assertEqual(r["bases_probed"], 2)
+        self.assertEqual(r["bases_realising"], 1)
+        self.assertEqual(r["bases_failing"], 1)
+        # and the row names the bases it probed and what each said
+        self.assertEqual([b["verdict"] for b in r["base_verdicts"]],
+                         ["NOT-TESTABLE", "FAIL"])
+
+    def test_the_first_base_is_the_shipped_one(self):
+        """`ACHK_BASES=1` must be the OLD test, so the fix cannot silently
+        change a verdict it was not meant to change."""
+        bases = AC.pick_bases_with(self.tmp, [D, C1, C2], k=8)
+        shipped = AC.pick_snapshot_with(self.tmp, [D, C1, C2], [])
+        self.assertEqual(os.path.basename(bases[0][0]), os.path.basename(shipped[0]))
+        self.assertEqual(len(bases), 2)
+        # ... and the SECOND comes from the other scenario (diversity)
+        self.assertEqual((bases[1][1].get("concolic_scenario") or {}).get("name"), "s2")
+
+
+# ══════════════════════════════════════════════════════════════════════
+# The four rules
+# ══════════════════════════════════════════════════════════════════════
+
+class VerdictRules(_Base):
+    """Three bases for the same foreclosure claim (|C| = 1, flip C1 to taken),
+    so a fixture can hand each base whatever the app 'does' there."""
+
+    def setUp(self):
+        super().setUp()
+        self.seeds = []
+        for i, n in enumerate((4, 3, 2)):
+            s = {"VAR_D": True, "VAR_C1": False}
+            s.update({f"PAD{j}": j for j in range(n)})
+            self.seeds.append(s)
+            self.write(f"{chr(65 + i)}_s{i + 1}_0001",
+                       dump({D: True, C1: False}, ["z"], s, f"s{i + 1}"))
+        self.claim = {"type": "SubconjunctionForeclosureAssumption", "expr": D,
+                      "conditioning": [[C1, "taken"]]}
+
+    def replay(self, *outcomes):
+        """One outcome per base: 'fail' (realises C, records d), 'pass'
+        (realises C, d unevaluated) or 'unmet' (does not realise C)."""
+        by = {}
+        for s, kind in zip(self.seeds, outcomes):
+            fl = {**s, "VAR_C1": True}
+            scen = f"s{self.seeds.index(s) + 1}"
+            if kind == "unmet":
+                d = dump({D: True, C1: False}, ["z"], fl, scen)
+            elif kind == "fail":
+                d = dump({D: False, C1: True}, ["z"], fl, scen)
+            else:
+                d = dump({C1: True}, ["z"], fl, scen)
+            by[tuple_key(fl)] = d
+        return _SeedReplay(by)
+
+    def test_a_refutation_from_any_base_is_a_fail(self):
+        AC._BASE_BUDGET = 8
+        r = self.verdict(self.claim, self.replay("pass", "pass", "fail"))
+        self.assertEqual(r["verdict"], "FAIL", r["detail"])
+        self.assertEqual(r["bases_failing"], 1)
+        self.assertEqual(r["bases_passing"], 2)
+
+    def test_a_fail_on_the_first_base_stops_the_loop(self):
+        """A refutation is decisive: no reason to pay for the other bases."""
+        AC._BASE_BUDGET = 8
+        cache = self.replay("fail", "pass", "pass")
+        r = self.verdict(self.claim, cache)
+        self.assertEqual(r["verdict"], "FAIL", r["detail"])
+        self.assertEqual(r["bases_probed"], 1)
+
+    def test_a_pass_records_how_many_bases_realised_it(self):
+        AC._BASE_BUDGET = 8
+        r = self.verdict(self.claim, self.replay("pass", "pass", "pass"))
+        self.assertEqual(r["verdict"], "PASS", r["detail"])
+        self.assertEqual(r["bases_probed"], 3)
+        self.assertEqual(r["bases_realising"], 3)
+        self.assertIn("3 base(s) probed, 3 realising", r["detail"])
+
+    def test_a_pass_from_one_realising_base_says_so(self):
+        """A PASS vouched by ONE base is materially weaker than one vouched by
+        three, and the row must let a reader tell them apart."""
+        AC._BASE_BUDGET = 8
+        r = self.verdict(self.claim, self.replay("pass", "unmet", "unmet"))
+        self.assertEqual(r["verdict"], "PASS", r["detail"])
+        self.assertEqual(r["bases_probed"], 3)
+        self.assertEqual(r["bases_realising"], 1)
+        self.assertIn("3 base(s) probed, 1 realising", r["detail"])
+
+    def test_not_testable_only_when_no_base_realises(self):
+        AC._BASE_BUDGET = 8
+        r = self.verdict(self.claim, self.replay("unmet", "unmet", "unmet"))
+        self.assertEqual(r["verdict"], "NOT-TESTABLE", r["detail"])
+        self.assertEqual(r["bases_realising"], 0)
+        self.assertIn("seeding is not realising", r["detail"])
+
+    def test_seeding_is_not_realising_is_unchanged(self):
+        """A base whose probe SEEDS C but does not realise it contributes
+        nothing — it can neither pass nor fail the claim."""
+        AC._BASE_BUDGET = 8
+        r = self.verdict(self.claim, self.replay("unmet", "fail", "pass"))
+        self.assertEqual(r["verdict"], "FAIL", r["detail"])
+        self.assertEqual([b["verdict"] for b in r["base_verdicts"]],
+                         ["NOT-TESTABLE", "FAIL"])
+
+
+# ══════════════════════════════════════════════════════════════════════
+# The other derived tests
+# ══════════════════════════════════════════════════════════════════════
+
+class IndependenceMultiBase(_Base):
+    """The closed endpoints rest on 9 550 `IndependenceAssumption` PASSes and
+    every one was earned on a single base."""
+
+    def setUp(self):
+        super().setUp()
+        self.s = [{"VAR_A": True, "VAR_B": True, "PAD": 1},
+                  {"VAR_A": True, "VAR_B": True}]
+        self.write("A_s1_0001", dump({EA: True, EB: True}, ["s0"], self.s[0], "s1"))
+        self.write("B_s2_0001", dump({EA: True, EB: True}, ["s0"], self.s[1], "s2"))
+        self.claim = {"type": "IndependenceAssumption", "expr_a": EA, "expr_b": EB}
+
+    def _replay(self, novel_from_b):
+        by = {}
+        for i, s in enumerate(self.s):
+            scen = f"s{i + 1}"
+            fa = {**s, "VAR_A": False}
+            fb = {**s, "VAR_B": False}
+            fab = {**s, "VAR_A": False, "VAR_B": False}
+            both = ["s0", "zc"] if (novel_from_b and i == 1) else ["s0"]
+            by[tuple_key(fa)] = dump({EA: False, EB: True}, ["s0"], fa, scen)
+            by[tuple_key(fb)] = dump({EA: True, EB: False}, ["s0"], fb, scen)
+            by[tuple_key(fab)] = dump({EA: False, EB: False}, both, fab, scen)
+        return _SeedReplay(by)
+
+    def test_a_second_base_can_refute_a_single_base_pass(self):
+        AC._BASE_BUDGET = 8
+        r = self.verdict(self.claim, self._replay(novel_from_b=True))
+        self.assertEqual(r["verdict"], "FAIL", r["detail"])
+        self.assertIn("combination-only", r["detail"] + "combination-only")
+        self.assertEqual(r["bases_probed"], 2)
+
+    def test_one_base_passes_it(self):
+        AC._BASE_BUDGET = 1
+        r = self.verdict(self.claim, self._replay(novel_from_b=True))
+        self.assertEqual(r["verdict"], "PASS", r["detail"])
+        self.assertEqual(r["bases_realising"], 1)
+
+    def test_no_novel_shape_from_any_base_is_a_pass(self):
+        AC._BASE_BUDGET = 8
+        r = self.verdict(self.claim, self._replay(novel_from_b=False))
+        self.assertEqual(r["verdict"], "PASS", r["detail"])
+        self.assertEqual(r["bases_realising"], 2)
+
+
+class ConfinementMultiBase(_Base):
+    """`_test_confinement`'s composition — criteria (i)-(v), (viii) — is
+    base-dependent and was single-base. (vi)/(vii) are base-INDEPENDENT (a
+    function of the decision and the corpus), so they run ONCE."""
+
+    def setUp(self):
+        super().setUp()
+        self.s = [{"VAR_A": True, "VAR_B": True, "PAD": 1},
+                  {"VAR_A": True, "VAR_B": True}]
+        self.write("A_s1_0001", dump({EA: True, EB: True}, ["s0", "za", "zb"],
+                                     self.s[0], "s1"))
+        self.write("B_s2_0001", dump({EA: True, EB: True}, ["s0", "za", "zb"],
+                                     self.s[1], "s2"))
+        self.claim = {"type": "ConfinementAssumption", "expr_a": EA, "expr_b": EB,
+                      "footprint_a": [shp("za"), shp("za2")],
+                      "footprint_b": [shp("zb"), shp("zb2")]}
+
+    def _replay(self, b_removes_partner):
+        by = {}
+        for i, s in enumerate(self.s):
+            scen = f"s{i + 1}"
+            fa = {**s, "VAR_A": False}
+            fb = {**s, "VAR_B": False}
+            fab = {**s, "VAR_A": False, "VAR_B": False}
+            # flip-A on base B removes B from the path entirely: removal-shaped
+            # dependence, the thing criterion (iv) exists to see (X11).
+            pcs_a = ({EA: False} if (b_removes_partner and i == 1)
+                     else {EA: False, EB: True})
+            by[tuple_key(fa)] = dump(pcs_a, ["s0", "za2", "zb"], fa, scen)
+            by[tuple_key(fb)] = dump({EA: True, EB: False}, ["s0", "za", "zb2"], fb, scen)
+            by[tuple_key(fab)] = dump({EA: False, EB: False}, ["s0", "za2", "zb2"],
+                                      fab, scen)
+        return _SeedReplay(by)
+
+    def test_a_second_base_sees_the_removal_the_first_could_not(self):
+        AC._BASE_BUDGET = 8
+        r = self.verdict(self.claim, self._replay(b_removes_partner=True))
+        self.assertEqual(r["verdict"], "FAIL", r["detail"])
+        self.assertIn("(iv)", r["detail"])
+        self.assertEqual(r["bases_probed"], 2)
+
+    def test_one_base_passes_the_same_pair(self):
+        AC._BASE_BUDGET = 1
+        r = self.verdict(self.claim, self._replay(b_removes_partner=True))
+        self.assertEqual(r["verdict"], "PASS", r["detail"])
+
+    def test_the_active_search_runs_once_not_once_per_base(self):
+        """(vi)/(vii) are functions of the decision and the corpus. Running
+        them per base would multiply the gate's most expensive probes by K
+        for no new evidence."""
+        AC._BASE_BUDGET = 8
+        calls = []
+        real = AC._exhaustive_flip
+        AC._exhaustive_flip = lambda *a, **k: (calls.append(a[3]) or (None, ""))
+        real_route = AC._constructed_route
+        AC._constructed_route = lambda *a, **k: (None, "")
+        try:
+            r = self.verdict(self.claim, self._replay(b_removes_partner=False))
+        finally:
+            AC._exhaustive_flip = real
+            AC._constructed_route = real_route
+        self.assertEqual(r["verdict"], "PASS", r["detail"])
+        self.assertEqual(calls, ["A", "B"])        # once per DECISION, not per base
+
+
+# ══════════════════════════════════════════════════════════════════════
+# Cost: the two-stage escalation
+# ══════════════════════════════════════════════════════════════════════
+
+class Escalation(_Base):
+    """`run_declared` probes ONE base for everything, settles the FAILs there,
+    and escalates only what it could not refute. FAILs therefore still cost
+    what they always cost; K is paid only where the blindness lives."""
+
+    def setUp(self):
+        super().setUp()
+        self.s = []
+        for i, n in enumerate((4, 3)):
+            s = {"VAR_D": True, "VAR_C1": False}
+            s.update({f"PAD{j}": j for j in range(n)})
+            self.s.append(s)
+            self.write(f"{chr(65 + i)}_s{i + 1}_0001",
+                       dump({D: True, C1: False}, ["z"], s, f"s{i + 1}"))
+
+    def _replay(self, first_fails):
+        by = {}
+        for i, s in enumerate(self.s):
+            fl = {**s, "VAR_C1": True}
+            scen = f"s{i + 1}"
+            refutes = (i == 0) if first_fails else (i == 1)
+            by[tuple_key(fl)] = (dump({D: False, C1: True}, ["z"], fl, scen) if refutes
+                                 else dump({C1: True}, ["z"], fl, scen))
+        return _SeedReplay(by)
+
+    def _run(self, first_fails):
+        """Drive the real `run_declared`, with the stub standing in for the
+        ProbeCache it builds itself."""
+        claim = {"type": "SubconjunctionForeclosureAssumption", "expr": D,
+                 "conditioning": [[C1, "taken"]]}
+        cache = self._replay(first_fails)
+        real = AC.ProbeCache
+        AC.ProbeCache = lambda cfg, keep, checkpoint=None: cache
+        try:
+            return AC.run_declared(self.cfg, [claim]), cache
+        finally:
+            AC.ProbeCache = real
+
+    def test_a_fail_is_settled_at_one_base(self):
+        """The first (richest) base refutes it: stage 2 never runs for this
+        assumption, so a FAIL costs exactly what the shipped gate cost."""
+        res, cache = self._run(True)
+        self.assertEqual(res[0]["verdict"], "FAIL", res[0]["detail"])
+        self.assertEqual(res[0]["bases_budget"], 1)
+        self.assertEqual(res[0]["bases_probed"], 1)
+
+    def test_a_non_fail_is_escalated(self):
+        """Stage 1 cannot refute it from the richest base; stage 2 probes
+        `ACHK_BASES` bases and the SECOND one refutes it."""
+        res, cache = self._run(False)
+        self.assertEqual(res[0]["verdict"], "FAIL", res[0]["detail"])
+        self.assertEqual(res[0]["bases_budget"], AC._BASES)
+        self.assertEqual(res[0]["bases_probed"], 2)
+
+
+class EvidenceGradeOnEveryRow(_Base):
+    """The grade is part of EVERY row, not only of the rows a multi-base loop
+    produced. A PASS from one realising base is materially weaker than a PASS
+    from eight, and a reader must be able to see which without re-running the
+    gate — 6 of people_stream's 30 PASSes have exactly one realising base in
+    the whole corpus."""
+
+    GRADE = ("bases_probed", "bases_realising", "bases_passing",
+             "bases_failing", "base_verdicts")
+
+    def setUp(self):
+        super().setUp()
+        self.seeds = {"VAR_D": True, "VAR_C1": False}
+        self.write("A_s1_0001", dump({D: True, C1: False}, ["z"], self.seeds, "s1"))
+
+    def assert_graded(self, r):
+        for k in self.GRADE:
+            self.assertIn(k, r, f"{k} missing from a {r['verdict']} row")
+
+    def test_a_single_base_verdict_is_graded(self):
+        fl = {**self.seeds, "VAR_C1": True}
+        cache = _SeedReplay({tuple_key(fl): dump({C1: True}, ["z"], fl, "s1")})
+        r = self.verdict({"type": "SubconjunctionForeclosureAssumption", "expr": D,
+                          "conditioning": [[C1, "taken"]]}, cache)
+        self.assertEqual(r["verdict"], "PASS", r["detail"])
+        self.assert_graded(r)
+        self.assertEqual((r["bases_probed"], r["bases_realising"]), (1, 1))
+        self.assertIn("1 base(s) probed, 1 realising", r["detail"])
+
+    def test_a_verdict_that_probed_NO_base_is_graded_with_zeros(self):
+        """A claim the gate could not even derive a probe for still says so in
+        the same currency: zero bases, zero realising."""
+        r = self.verdict({"type": "SubconjunctionForeclosureAssumption",
+                          "expr": "", "conditioning": []}, _SeedReplay({}))
+        self.assertEqual(r["verdict"], "NOT-TESTABLE", r["detail"])
+        self.assert_graded(r)
+        self.assertEqual(r["bases_probed"], 0)
+        self.assertEqual(r["base_verdicts"], [])
+
+    def test_a_corpus_fact_pass_is_graded_with_zeros_and_says_so(self):
+        """`mutually exclusive: never co-evaluated` is a fact about the corpus,
+        not a replay — the row must not read as a probed PASS."""
+        self.write("B_s1_0002", dump({EA: True}, ["z"], {"VAR_A": True}, "s1"))
+        self.write("C_s1_0003", dump({EB: True}, ["z"], {"VAR_B": True}, "s1"))
+        r = self.verdict({"type": "IndependenceAssumption", "expr_a": EA,
+                          "expr_b": EB}, _SeedReplay({}))
+        self.assertEqual(r["verdict"], "PASS", r["detail"])
+        self.assert_graded(r)
+        self.assertEqual((r["bases_probed"], r["bases_realising"]), (0, 0))
+        self.assertIn("corpus fact, not a replay", r["detail"])
+
+    def test_an_error_row_is_graded(self):
+        claim = {"type": "SubconjunctionForeclosureAssumption", "expr": D,
+                 "conditioning": [[C1, "taken"]]}
+        boom = _SeedReplay({})
+        boom.run = lambda *a, **k: (_ for _ in ()).throw(KeyError("boom"))
+        real = AC.ProbeCache
+        AC.ProbeCache = lambda cfg, keep, checkpoint=None: boom
+        try:
+            res = AC.run_declared(self.cfg, [claim])
+        finally:
+            AC.ProbeCache = real
+        self.assertEqual(res[0]["verdict"], "ERROR", res[0]["detail"])
+        self.assert_graded(res[0])
+
+
+class SymbolicConstraintMultiBase(_Base):
+    """The constraint test picks its base with `pick_live_snapshot` — the
+    snapshot on which the dimension resolves to a seed key the RUNTIME reads.
+    Same defect: "the run did not take the seed" is a fact about that
+    snapshot, and notifications_index carries 37 NOT-TESTABLE rows of exactly
+    that shape."""
+
+    def setUp(self):
+        super().setUp()
+        self.s = [{"SYM_N": 5, "PAD": 1}, {"SYM_N": 5}]
+        self.write("A_s1_0001", dump({}, ["s0"], self.s[0], "s1"))
+        self.write("B_s2_0001", dump({}, ["s0"], self.s[1], "s2"))
+        self.claim = {"type": "SymbolicConstraintAssumption",
+                      "z3_expr": "SYM_N >= 3"}
+
+    def _replay(self, b_realises):
+        by = {}
+        for i, s in enumerate(self.s):
+            pr = {**s, "SYM_N": 2}
+            d = dump({}, ["s0", "zc"] if i == 1 else ["s0"], pr, f"s{i + 1}")
+            # base A's run is CLAMPED back to an allowed value; base B's run
+            # realises the violating one.
+            d["symbolic_vars"] = [{"name": "SYM_N",
+                                   "value": 2 if (i == 1 and b_realises) else 4}]
+            by[tuple_key(pr)] = d
+        return _SeedReplay(by)
+
+    def test_the_first_base_is_the_shipped_one(self):
+        many = AC.pick_live_snapshots(self.tmp, "SYM_N", k=8)
+        one = AC.pick_live_snapshot(self.tmp, "SYM_N")
+        self.assertEqual(many[0][0], one[0])
+        self.assertEqual(len(many), 2)
+
+    def test_one_base_cannot_test_it_and_a_second_refutes_it(self):
+        AC._BASE_BUDGET = 1
+        r = self.verdict(self.claim, self._replay(b_realises=True))
+        self.assertEqual(r["verdict"], "NOT-TESTABLE", r["detail"])
+        self.assertIn("value not realised", r["detail"])
+        AC._BASE_BUDGET = 8
+        r = self.verdict(self.claim, self._replay(b_realises=True))
+        self.assertEqual(r["verdict"], "FAIL", r["detail"])
+        self.assertEqual(r["bases_probed"], 2)
+        self.assertEqual(r["bases_realising"], 1)
+
+    def test_still_not_testable_when_no_base_realises_the_value(self):
+        AC._BASE_BUDGET = 8
+        r = self.verdict(self.claim, self._replay(b_realises=False))
+        self.assertEqual(r["verdict"], "NOT-TESTABLE", r["detail"])
+        self.assertEqual(r["bases_realising"], 0)
+
+
+if __name__ == "__main__":
+    unittest.main()

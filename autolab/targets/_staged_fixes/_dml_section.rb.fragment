@@ -1,0 +1,348 @@
+  # ======================================================================
+  # DML STATEMENT RENDERING  —  D1..D7  (app-general; 2026-09-25)
+  # ======================================================================
+  # Everything below is about ONE question: when a mock replaces a write,
+  # what statement does the note have to carry for the corpus to contain
+  # the write the application actually performed?
+  #
+  # Before this section the shared core answered instance persistence with
+  # `"Contact#save args={}"` — no DML keyword, so the extraction's `_is_dml`
+  # filter dropped it and 68 of the 69 write endpoints recorded NO evidence
+  # of writing at all (D6) — and answered `update_all`/`delete_all`/
+  # `destroy_all` with the relation's SELECT, recording a write as a
+  # full-row read (D5).
+  #
+  # WHAT IS GROUND TRUTH HERE. Every rule below was measured against
+  # `sql.active_record` on a private copy of `db/concolic.sqlite3` under
+  # `RAILS_ENV=concolic_mod`; the harness is
+  # `_staged_fixes/_verification/differential.rb` and the evidence is in
+  # `_staged_fixes/_verification/out/`. Nothing here is inferred from
+  # reading ActiveRecord.
+  #
+  # WHAT IS DELIBERATELY *NOT* DONE HERE, because it would change the
+  # execution tree:
+  #   * the INSERT-vs-UPDATE choice reads `persisted?`/`new_record?`, which
+  #     `symbolic_instance` answers with CONCRETE singletons — so this
+  #     section records NO new path condition and adds NO decision. Making
+  #     that gate symbolic is a separate, larger change.
+  #   * a mocked write's CASCADE (dependent: destroy) and its pending
+  #     AUTOSAVE association INSERTs are additional ACCESSES, not additional
+  #     text in one note (`concolic/model/note.py`: "a different note is a
+  #     different access"). They are staged separately.
+
+  # AR writes these itself, AFTER the mock has replaced `save` — so every
+  # rendered INSERT was short two columns and every save-UPDATE short one
+  # (D2). `_create_record` writes the create set only for columns that are
+  # not already present; `_update_record` writes the update set only when
+  # the record has changes at all (which is also why D4's no-change save
+  # renders nothing).
+  DML_TS_CREATE = %w[created_at created_on updated_at updated_on].freeze
+  DML_TS_UPDATE = %w[updated_at updated_on].freeze
+
+  # The value ActiveRecord supplies for a timestamp column at write time. It
+  # is genuinely concrete (`Time.now`), never a symbolic input, so a bind ref
+  # would be a lie about provenance; a literal keeps the COLUMN in the
+  # statement, which is the whole point of D2/D3.
+  DML_NOW = "'<concolic_now>'"
+
+  # true / false / nil(unknown). Same source and same order as everywhere
+  # else in this library: `persisted?` first (on a `klass.allocate` symbolic
+  # instance `@new_record` is nil, so `new_record?` returns nil while
+  # `persisted?` correctly returns true), then `new_record?`, then the pk.
+  def dml_record_is_new?(receiver)
+    if receiver.respond_to?(:persisted?)
+      begin
+        p = receiver.persisted?
+        return !p unless p.nil?
+      rescue StandardError
+        nil
+      end
+    end
+    begin
+      n = receiver.new_record?
+      return n unless n.nil?
+    rescue StandardError
+      nil
+    end
+    begin
+      receiver[receiver.class.primary_key].nil?
+    rescue StandardError
+      nil
+    end
+  end
+
+  # The value of ONE column, PRESERVING symbolic identity.
+  #   1. `concolic_attrs` — a `symbolic_instance` keeps its symbolic columns
+  #      here (`klass.allocate` leaves @attributes nil, so
+  #      `attributes_before_type_cast` would raise on it).
+  #   2. `attributes_before_type_cast` — a REAL record keeps the value AS
+  #      ASSIGNED here. Reading `changes` instead hands back the TYPE CAST
+  #      value, which for a `CastableSymbolicInt` is the plain Integer its
+  #      `#to_i` produced — the note would render `1` where a bind belongs.
+  def dml_raw_value(receiver, col)
+    c = col.to_s
+    if receiver.respond_to?(:concolic_attrs)
+      v = begin
+        receiver.concolic_attrs[c]
+      rescue StandardError
+        nil
+      end
+      return v unless v.nil?
+    end
+    if receiver.respond_to?(:attributes_before_type_cast)
+      v = begin
+        receiver.attributes_before_type_cast[c]
+      rescue StandardError
+        nil
+      end
+      return v unless v.nil?
+    end
+    begin
+      receiver[c]
+    rescue StandardError
+      nil
+    end
+  end
+
+  # D1 — WHICH COLUMNS A WRITE NAMES.
+  #
+  # ActiveRecord writes `attributes_with_values(attribute_names_for_partial_
+  # writes)`, and with partial writes on (the default) that list IS
+  # `changed_attribute_names_to_save`. The core used to take every non-nil
+  # entry of `attributes_before_type_cast`, i.e. every attribute INCLUDING
+  # the ones that only carry a database default: measured on
+  # `contacts.find_or_initialize_by`, the changed set was
+  # ["user_id","person_id","receiving"] while the note added a spurious
+  # "sharing" valued 'f' — the sqlite raw default text, in a note about a
+  # deployment modelled as MySQL.
+  #
+  # `concolic_dirty` FIRST: on a `symbolic_instance` ActiveModel::Dirty
+  # cannot run at all, and the attribute writers are overridden to poke the
+  # attrs hash, so the dirty set is the only record of what the application
+  # assigned.
+  def dml_changed_names(receiver)
+    names = begin
+      if receiver.respond_to?(:concolic_dirty)
+        receiver.concolic_dirty
+      elsif receiver.respond_to?(:changed_attribute_names_to_save)
+        receiver.changed_attribute_names_to_save
+      elsif receiver.respond_to?(:changed)
+        receiver.changed
+      end
+    rescue StandardError
+      nil
+    end
+    return nil unless names.is_a?(::Array)
+    names.map(&:to_s)
+  end
+
+  # AR emits an INSERT's / UPDATE's columns in ATTRIBUTE-SET order, which is
+  # table column order — measured: the real INSERT on `contacts` is
+  # ("user_id","person_id","created_at","updated_at","receiving") for a
+  # changed set of ["user_id","person_id","receiving"], i.e. the changed set
+  # plus the timestamps, sorted by column position. Sorting here is what
+  # makes a rendered statement comparable to the real one column for column.
+  def dml_order_columns(klass, names)
+    order = begin
+      klass.column_names
+    rescue StandardError
+      nil
+    end
+    return names unless order.is_a?(::Array)
+    idx = {}
+    order.each_with_index { |c, i| idx[c] = i }
+    names.sort_by { |c| [idx.key?(c) ? 0 : 1, idx[c] || 0, c] }
+  end
+
+  def dml_record_timestamps?(klass)
+    klass.respond_to?(:record_timestamps) ? !!klass.record_timestamps : false
+  rescue StandardError
+    false
+  end
+
+  def dml_timestamp_columns(klass, kind)
+    return [] unless dml_record_timestamps?(klass)
+    wanted = (kind == :create ? DML_TS_CREATE : DML_TS_UPDATE)
+    cols = begin
+      klass.column_names
+    rescue StandardError
+      []
+    end
+    wanted & cols
+  end
+
+  def dml_table(klass)
+    klass.respond_to?(:table_name) ? klass.table_name.to_s : klass.name.to_s
+  rescue StandardError
+    klass.name.to_s
+  end
+
+  def dml_pk(klass)
+    klass.primary_key || "id"
+  rescue StandardError
+    "id"
+  end
+
+  # The columns an `update` / `update_attribute` / `touch` mock must write.
+  # These three are intercepted BEFORE their body runs, so the assignment
+  # never happened and the receiver's dirty set is empty — the columns are
+  # in ARGS, not on the record. (`save`/`save!` are the opposite: the app
+  # already assigned, so the record is the source.)
+  def dml_columns_from_args(op, args)
+    return nil unless args.is_a?(::Hash)
+    case op.to_s
+    when "update", "update!", "update_attributes", "update_attributes!"
+      h = args["attributes"] || args[:attributes]
+      h = args.values.find { |v| v.is_a?(::Hash) } unless h.is_a?(::Hash)
+      h.is_a?(::Hash) ? h.map { |k, v| [k.to_s, v] }.to_h : nil
+    when "update_attribute", "update_column"
+      n = args.key?("name") ? args["name"] : args[:name]
+      v = args.key?("value") ? args["value"] : args[:value]
+      n.nil? ? nil : { n.to_s => v }
+    when "touch"
+      n = args["names"] || args[:names] || []
+      n = [n] unless n.is_a?(::Array)
+      n.compact.map { |c| [c.to_s, DML_NOW] }.to_h
+    end
+  rescue StandardError
+    nil
+  end
+
+  # ------------------------------------------------------------------
+  # THE RENDERER. Returns the statement, or nil when ActiveRecord itself
+  # would issue NOTHING (D4 — a `save` on a record with no changes).
+  # ------------------------------------------------------------------
+  def dml_note(receiver, op, args = nil)
+    klass = receiver.class
+    table = dml_table(klass)
+    pk    = dml_pk(klass)
+    o     = op.to_s
+
+    return dml_delete_note(receiver, klass, table, pk) if %w[destroy destroy! delete].include?(o)
+
+    from_args = dml_columns_from_args(o, args)
+    new_rec   = dml_record_is_new?(receiver)
+
+    if new_rec == false || (new_rec.nil? && !from_args.nil?)
+      # ---------------------------------------------------------- UPDATE
+      if from_args
+        setcols = from_args
+      else
+        names = dml_changed_names(receiver)
+        # D4 — a `save` with nothing to write. Real ActiveRecord skips the
+        # statement entirely (`_update_record` returns 0 affected rows
+        # without touching the connection), so a note here would FABRICATE
+        # a statement, and `UPDATE … SET (no changed columns)` is not even
+        # valid SQL. Return a PROSE note: it carries the provenance, and
+        # `_is_dml` correctly drops it.
+        return nil if names.nil? || names.empty?
+        setcols = dml_order_columns(klass, names - [pk])
+                  .map { |c| [c, dml_raw_value(receiver, c)] }.to_h
+      end
+      return nil if setcols.empty?
+      # D2/D3 — the timestamp AR writes in `_update_record`, which happens
+      # after the mock replaced `save`. `touch` is the same statement with
+      # the timestamp as its ONLY column, which is why D3's
+      # `SET (no changed columns)` was both invalid SQL and a lost write.
+      dml_timestamp_columns(klass, :update).each do |c|
+        setcols[c] = DML_NOW unless setcols.key?(c)
+      end
+      sets = dml_order_columns(klass, setcols.keys)
+             .map { |c| %("#{c}" = #{render_arg_value(setcols[c])}) }.join(", ")
+      pkv = dml_raw_value(receiver, pk)
+      %(UPDATE "#{table}" SET #{sets} WHERE "#{table}"."#{pk}" = #{render_arg_value(pkv)})
+    else
+      # ---------------------------------------------------------- INSERT
+      names = dml_changed_names(receiver)
+      if names.nil? || names.empty?
+        # No dirty information at all (a half-built record). Degrade to the
+        # non-nil assigned attributes and SAY SO in the note rather than
+        # rendering a column set that was never measured.
+        raw = begin
+          receiver.attributes_before_type_cast
+        rescue StandardError
+          nil
+        end
+        raw = begin
+          receiver.attributes
+        rescue StandardError
+          nil
+        end unless raw.is_a?(::Hash)
+        return %(#{klass.name}##{o} (attributes unavailable)) unless raw.is_a?(::Hash)
+        names = raw.reject { |_k, v| v.nil? }.keys.map(&:to_s)
+      end
+      cols = dml_order_columns(klass, names - [pk])
+      vals = cols.map { |c| dml_raw_value(receiver, c) }
+      pairs = cols.zip(vals).to_h
+      dml_timestamp_columns(klass, :create).each do |c|
+        present = begin
+          receiver.attribute_present?(c)
+        rescue StandardError
+          pairs.key?(c)
+        end
+        pairs[c] = DML_NOW unless present || pairs.key?(c)
+      end
+      ordered = dml_order_columns(klass, pairs.keys)
+      prefix = new_rec.nil? ? "/* new_record? unavailable, rendered as INSERT */ " : ""
+      %(#{prefix}INSERT INTO "#{table}" (#{ordered.map { |c| %("#{c}") }.join(", ")}) ) +
+        %(VALUES (#{ordered.map { |c| render_arg_value(pairs[c]) }.join(", ")}))
+    end
+  rescue StandardError => e
+    %(#{receiver.class.name}##{op} (note render failed: #{e.class}))
+  end
+
+  def dml_delete_note(receiver, klass, table, pk)
+    %(DELETE FROM "#{table}" WHERE "#{table}"."#{pk}" = #{render_arg_value(dml_raw_value(receiver, pk))})
+  rescue StandardError => e
+    %(#{klass.name}#destroy (note render failed: #{e.class}))
+  end
+
+  # D5 — RELATION-LEVEL DML.
+  #
+  # `update_all` / `delete_all` / `destroy_all` were given `sql_for`, i.e.
+  # the relation's SELECT. A write was therefore recorded as a full-row
+  # READ of every row it touched — wrong verb, and wrong in the direction
+  # that over-discloses. The WHERE is the relation's; only the head changes.
+  def dml_relation_where(sel)
+    sel.to_s[/\sWHERE\s.*\z/m].to_s
+  end
+
+  def dml_update_all_note(receiver, args)
+    sel = sql_for(receiver, args)
+    klass = model_class(receiver)
+    table = dml_table(klass)
+    updates = nil
+    if args.is_a?(::Hash)
+      updates = args["updates"] || args[:updates]
+      updates = args.values.find { |v| v.is_a?(::Hash) && !v.empty? } unless updates.is_a?(::Hash)
+    end
+    # `update_all(unread: false)` reaches a `def update_all(updates)` — a
+    # REQUIRED POSITIONAL, not a `*rest` — so Ruby 2.6 packs the trailing
+    # hash into the wrapper's `**kwargs` and the interceptor's repair (which
+    # fills a named `*rest` slot) does not apply; `args` comes back empty.
+    # The prepend below stashes the real hash for exactly this case.
+    tc = Thread.current[:concolic_update_all_values]
+    updates = tc if (updates.nil? || updates.empty?) && tc.is_a?(::Hash) && !tc.empty?
+    return sel if table.nil? || table.empty?
+    sets = if updates.is_a?(::Hash) && !updates.empty?
+             updates.map { |k, v| %("#{table}"."#{k}" = #{render_arg_value(v)}) }.join(", ")
+           else
+             "(updates unavailable)"
+           end
+    # `update_all` also writes `updated_at` ONLY when the caller asked for
+    # it — ActiveRecord does NOT touch timestamps on a relation update
+    # (measured: UPDATE "contacts" SET "user_id" = ? WHERE …, no
+    # updated_at). So no timestamp is added here, unlike the instance path.
+    %(UPDATE "#{table}" SET #{sets}#{dml_relation_where(sel)})
+  rescue StandardError
+    sql_for(receiver, args)
+  end
+
+  def dml_delete_all_note(receiver, args)
+    sel = sql_for(receiver, args)
+    table = dml_table(model_class(receiver))
+    return sel if table.nil? || table.empty?
+    %(DELETE FROM "#{table}"#{dml_relation_where(sel)})
+  rescue StandardError
+    sql_for(receiver, args)
+  end

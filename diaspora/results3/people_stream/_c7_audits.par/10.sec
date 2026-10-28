@@ -1,0 +1,81 @@
+
+##### boundary_declaration #####
+== people_stream: 99 distinct target methods declared ==
+   finders          complete
+   existence        complete
+   materialization  complete
+   calculations     complete
+   batches          complete
+   writes           complete
+   raw              complete
+   -- exercise census over 13677 dumps (symbolic_call events only) --
+          88583  records
+          36722  take
+          26553  find_by
+           7505  exists?
+           6812  first
+           5481  sum
+      REVIEW: declared but invoked 0 times: any? average calculate count count_by_sql delete_all destroy destroy! destroy_all empty? find find_by! find_by_sql find_each find_in_batches first! ids in_batches last last! load_target many? maximum minimum none? one? pluck save save! size take! to_a to_ary touch update update! update_all update_attribute
+              not a verdict — is the family unreachable here, or is a
+              pin removing its call site? only the code answers that.
+
+== comments_index: 117 distinct target methods declared ==
+   finders          complete
+   existence        complete
+   materialization  complete
+   calculations     complete
+   batches          complete
+   writes           complete
+   raw              complete
+   -- exercise census over 26528 dumps (symbolic_call events only) --
+          85999  exists?
+          81309  records
+          13257  to_a
+          12424  first
+      REVIEW: declared but invoked 0 times: any? average calculate count count_by_sql delete_all destroy destroy! destroy_all empty? find find_by find_by! find_by_sql find_each find_in_batches first! ids in_batches last last! load_target many? maximum minimum none? one? pluck save save! size sum take take! to_ary touch update update! update_all update_attribute
+              not a verdict — is the family unreachable here, or is a
+              pin removing its call site? only the code answers that.
+
+== conversations_index: 122 distinct target methods declared ==
+   finders          complete
+   existence        complete
+   materialization  complete
+   calculations     complete
+   batches          complete
+   writes           complete
+   raw              complete
+   -- exercise census over 18623 dumps (symbolic_call events only) --
+          78668  count
+          45865  records
+          37309  exists?
+          25798  to_a
+          22930  find_by
+          22883  pluck
+          21181  first
+          18306  sum
+      REVIEW: declared but invoked 0 times: any? average calculate count_by_sql delete_all destroy destroy! destroy_all find find_by! find_by_sql find_each find_in_batches first! ids in_batches last last! load_target many? maximum minimum none? one? save! size take! touch update update! update_all update_attribute
+              not a verdict — is the family unreachable here, or is a
+              pin removing its call site? only the code answers that.
+
+== cross-batch contrast: invoked elsewhere, never here ==
+   people_stream:
+      count            0 here | conversations_index 78668
+      empty?           0 here | conversations_index 6120
+      pluck            0 here | conversations_index 22883
+      save             0 here | conversations_index 9211
+      to_a             0 here | conversations_index 25798, comments_index 13257
+      to_ary           0 here | conversations_index 8948
+   comments_index:
+      count            0 here | conversations_index 78668
+      empty?           0 here | conversations_index 6120
+      find_by          0 here | people_stream 26553, conversations_index 22930
+      pluck            0 here | conversations_index 22883
+      save             0 here | conversations_index 9211
+      sum              0 here | conversations_index 18306, people_stream 5481
+      take             0 here | people_stream 36722, conversations_index 115
+      to_ary           0 here | conversations_index 8948
+   conversations_index: nothing invoked elsewhere is missing here
+   REVIEW ONLY — endpoints differ legitimately; ask the code, not this table.
+
+RESULT: pass — every boundary family is declared in every batch.
+EXIT=0 [checkpoint: replayed, not re-run]

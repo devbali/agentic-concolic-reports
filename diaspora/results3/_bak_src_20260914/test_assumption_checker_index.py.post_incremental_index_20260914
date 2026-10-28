@@ -1,0 +1,700 @@
+#!/usr/bin/env python3
+"""PRE-PROBE phase of the assumption gate: progress, checkpoint, and the
+memoised derivations (owner rule, 2026-09-12).
+
+posts_show's gate ran 5 h 59 m at 2.5-3.7 GB and never launched a probe: it
+was still in the phase BEFORE the probes — one full parse of the corpus
+(`corpus_index`) and then one derivation per declaration — which printed
+nothing, checkpointed nothing, and re-derived per PAIR what is a property of
+a DECISION. Measured on a 2 000-dump slice of that corpus with 6 of its 2 315
+confined pairs: index 54 s, derivation 414 s (69 s per pair), of which 396 s
+is `_exhaustive_flip` and 421 s is `_load_dump_uncached` — 1 571 dump parses
+per pair on a 2 000-dump corpus.
+
+These tests pin the three fixes:
+
+* `_Progress` — a heartbeat naming the phase, items done/total, elapsed and
+  RSS, silent when a phase finishes inside one interval (so a small corpus
+  and this suite print exactly what they always did);
+* `$ACHK_INDEX_CHECKPOINT` — the corpus index resumes instead of re-parsing,
+  and rebuilds an index INDISTINGUISHABLE from a fresh one. Since 2026-09-14
+  the resume is INCREMENTAL: the key holds the IDENTITY of the computation
+  (engine source, batch, canonicalization + aliases) and each row carries its
+  own dump's stamp, so a corpus that gained dumps costs the dumps it gained
+  and one that lost them drops their rows. The declared set is NOT in that
+  key — it reaches a row only through the aliases — and there is a test in
+  both directions for that, because it is the claim the split rests on;
+* the memos (`_PSW_CACHE`, `_PROFILE_REPS`, `_ROUTE_CACHE`) — same answers,
+  and invalidated when the index is rebuilt.
+"""
+
+import json
+import os
+import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from end_to_end_completion_checker.assumption import assumption_checker as AC  # noqa: E402
+
+
+# --------------------------------------------------------------------------
+# fixtures
+# --------------------------------------------------------------------------
+
+def _dump(seeds, pcs, calls, scenario="s1", alias=None):
+    """The smallest dump `corpus_index` reads every field of."""
+    events = [{"type": "path_condition", "expr": e, "taken": t} for e, t in pcs]
+    events += [{"type": "symbolic_call", "target": tg, "note": n, "args": {},
+                "result_name": f"r{i}"} for i, (tg, n) in enumerate(calls)]
+    d = {"events": events, "concolic_seeds": dict(seeds),
+         "concolic_scenario": {"name": scenario}}
+    if alias:
+        d["_alias_map"] = dict(alias)
+        d["_alias_key"] = {o: f"stmt::{c}" for o, c in alias.items()}
+        d["_alias_len"] = {o: 3 for o in alias}
+    return d
+
+
+def _corpus(tmp_path, n=6):
+    """`n` dumps, each with its own outcome profile and seed richness."""
+    for i in range(n):
+        d = _dump({"a": i, f"k{i}": 1},
+                  [("(a > 0)", i % 2 == 0), (f"(b{i % 3} == 1)", True)],
+                  [("Post.find", f"SELECT {i % 2}")],
+                  scenario="s1" if i % 2 == 0 else "s2",
+                  alias={f"o_{i}": f"c_{i % 2}"})
+        with open(os.path.join(str(tmp_path), f"dump_{i:03d}.json"), "w") as fh:
+            json.dump(d, fh)
+    return str(tmp_path)
+
+
+def _reset():
+    AC._INDEX.clear()
+    AC._ALIAS_INDEX.clear()
+    AC._TRACE_INDEX.clear()
+    AC._POSTINGS.clear()
+    AC._PSW_CACHE.clear()
+    AC._PROFILE_REPS.clear()
+    AC._ROUTE_CACHE.clear()
+    AC._ROUTE_BASES.clear()
+    AC._Z3_DECLS.clear()
+    AC._CORPUS_DIGEST.clear()
+    AC._SEEDS_BY_PATH.clear()
+    AC._DERIVE_CK = None
+    AC._DECLARED_DIGEST = ""
+    AC._CANON_FN = None
+    AC._ALIASES = None
+    if hasattr(AC._load_dump_cached, "cache_clear"):
+        AC._load_dump_cached.cache_clear()
+
+
+def _snapshot_of_indices(batch):
+    """Everything `corpus_index` builds, in a comparable form."""
+    return (AC._INDEX[batch],
+            {p: (d, sorted(sh), sorted(pcs))
+             for p, (d, sh, pcs) in (AC._TRACE_INDEX.get(batch) or {}).items()},
+            AC._ALIAS_INDEX.get(batch) or {})
+
+
+# --------------------------------------------------------------------------
+# heartbeat
+# --------------------------------------------------------------------------
+
+def test_heartbeat_is_silent_when_a_phase_finishes_inside_one_interval():
+    """The suite, and every small corpus, must print what it always did."""
+    lines = []
+    p = AC._Progress("phase-x", 3, every=60.0, out=lines.append)
+    for _ in range(3):
+        p.tick()
+    p.done()
+    assert lines == [], lines
+    print("  PASS: a short phase adds no output")
+
+
+def test_heartbeat_names_the_phase_items_elapsed_and_rss():
+    lines = []
+    p = AC._Progress("corpus-index", 4, every=0.0, out=lines.append)
+    p.every = 1e-9                     # beat on every tick
+    for _ in range(4):
+        p.tick()
+    p.done("note")
+    assert len(lines) == 5, lines      # 4 beats + the closing line
+    assert lines[0].startswith("  [corpus-index] ... 1/4 "), lines[0]
+    for tag in ("elapsed", "rate", "rss"):
+        assert tag in lines[0], lines[0]
+    assert lines[-1].startswith("  [corpus-index] done 4/4 "), lines[-1]
+    assert lines[-1].endswith("note"), lines[-1]
+    print("  PASS: the heartbeat names the phase, the count, elapsed and RSS")
+
+
+def test_heartbeat_is_disabled_by_zero_and_by_the_env_var(monkeypatch):
+    lines = []
+    p = AC._Progress("phase-x", 2, every=0, out=lines.append)
+    p.tick(); p.tick(); p.done()
+    assert lines == []
+    monkeypatch.setenv(AC.HEARTBEAT_ENV, "0")
+    q = AC._Progress("phase-y", 2, out=lines.append)
+    assert q.every == 0
+    monkeypatch.setenv(AC.HEARTBEAT_ENV, "not-a-number")
+    assert AC._Progress("phase-z", 2, out=lines.append).every == AC.HEARTBEAT_DEFAULT_S
+    print("  PASS: ACHK_HEARTBEAT_S=0 disables it; garbage falls back to the default")
+
+
+def test_corpus_index_heartbeats_and_names_itself(tmp_path, monkeypatch):
+    _reset()
+    batch = _corpus(tmp_path, 5)
+    monkeypatch.setenv(AC.HEARTBEAT_ENV, "0.000001")
+    out = []
+    monkeypatch.setattr("builtins.print", lambda *a, **k: out.append(" ".join(map(str, a))))
+    AC.corpus_index(batch)
+    assert any(line.strip().startswith("[corpus-index]") for line in out), out
+    print("  PASS: the index phase reports progress under its own name")
+
+
+# --------------------------------------------------------------------------
+# index checkpoint
+# --------------------------------------------------------------------------
+
+def test_index_checkpoint_off_by_default(tmp_path, monkeypatch):
+    monkeypatch.delenv(AC.INDEX_CKPT_ENV, raising=False)
+    _reset()
+    batch = _corpus(tmp_path, 4)
+    AC.corpus_index(batch)
+    assert not [f for f in os.listdir(batch) if not f.startswith("dump_")]
+    print("  PASS: no variable -> nothing written, the index behaves as before")
+
+
+def test_a_recorded_index_is_replayed_without_reparsing_one_dump(tmp_path, monkeypatch):
+    _reset()
+    batch = _corpus(tmp_path, 6)
+    ck = str(tmp_path / "index.jsonl")
+    monkeypatch.setenv(AC.INDEX_CKPT_ENV, ck)
+
+    AC.corpus_index(batch)
+    first = _snapshot_of_indices(batch)
+    assert os.path.exists(ck)
+
+    n = {"loads": 0}
+    real = AC._load_dump_uncached
+    monkeypatch.setattr(AC, "_load_dump_uncached",
+                        lambda p: (n.__setitem__("loads", n["loads"] + 1), real(p))[1])
+    AC._INDEX.clear(); AC._TRACE_INDEX.clear(); AC._ALIAS_INDEX.clear()
+    AC.corpus_index(batch)
+    assert n["loads"] == 0, "a recorded index must not re-parse a single dump"
+    assert _snapshot_of_indices(batch) == first, "the replayed index must be identical"
+    print("  PASS: the second run replays the index instead of re-parsing the corpus")
+
+
+def test_a_kill_mid_index_resumes_at_the_dump_it_died_on(tmp_path, monkeypatch):
+    _reset()
+    batch = _corpus(tmp_path, 6)
+    ck = str(tmp_path / "index.jsonl")
+    monkeypatch.setenv(AC.INDEX_CKPT_ENV, ck)
+
+    real = AC._load_dump_uncached
+    n = {"loads": 0}
+
+    def dying(p):
+        n["loads"] += 1
+        if n["loads"] > 3:
+            raise KeyboardInterrupt("killed mid-index")
+        return real(p)
+
+    monkeypatch.setattr(AC, "_load_dump_uncached", dying)
+    try:
+        AC.corpus_index(batch)
+    except KeyboardInterrupt:
+        pass
+    AC._INDEX.clear(); AC._TRACE_INDEX.clear(); AC._ALIAS_INDEX.clear()
+
+    n["loads"] = 0
+    monkeypatch.setattr(AC, "_load_dump_uncached",
+                        lambda p: (n.__setitem__("loads", n["loads"] + 1), real(p))[1])
+    AC.corpus_index(batch)
+    assert n["loads"] == 3, f"only the un-recorded dumps must be parsed, got {n['loads']}"
+    assert len(AC._INDEX[batch]) == 6
+    print("  PASS: a killed index resumes at the dump it died on")
+
+
+# --------------------------------------------------------------------------
+# the index checkpoint is INCREMENTAL (2026-09-14)
+#
+# It used to be keyed WHOLE on a digest of the corpus, so any drive round --
+# which is to say every round -- moved the key and rebuilt 130k-232k rows from
+# zero: notifications' C22 declined to run its engine section rather than
+# spend 2 h 20 m re-indexing for 422 new dumps. A row is computed from ONE
+# dump and recorded per dump, so membership is now settled per row and only
+# the IDENTITY of the computation invalidates the lot.
+# --------------------------------------------------------------------------
+
+def _counted_loads(monkeypatch):
+    """[loads] — the number of dumps actually parsed from here on."""
+    n = {"loads": 0}
+    real = AC._load_dump_uncached
+    monkeypatch.setattr(AC, "_load_dump_uncached",
+                        lambda p: (n.__setitem__("loads", n["loads"] + 1), real(p))[1])
+    return n
+
+
+def _fingerprint(batch):
+    """A BYTE fingerprint of everything `corpus_index` builds. Two indices
+    with the same fingerprint are the same index, not an equivalent one."""
+    idx, trace, alias = _snapshot_of_indices(batch)
+    return json.dumps([[[p, sorted(s.items()), sc, sorted(e)] for p, s, sc, e in idx],
+                       sorted(trace.items()), sorted(alias.items())],
+                      sort_keys=True, default=str)
+
+
+def _rebuild_from_scratch(batch, monkeypatch, tmp_path, tag):
+    """The fingerprint of an index built with no checkpoint at all."""
+    _reset()
+    monkeypatch.setenv(AC.INDEX_CKPT_ENV, str(tmp_path / f"scratch-{tag}.jsonl"))
+    AC.corpus_index(batch)
+    return _fingerprint(batch)
+
+
+def _add_dump(batch, i):
+    with open(os.path.join(batch, f"dump_{i:03d}.json"), "w") as fh:
+        json.dump(_dump({"a": i, f"k{i}": 1}, [("(a > 0)", i % 2 == 0),
+                                               (f"(b{i % 3} == 1)", True)],
+                        [("Post.find", f"SELECT {i % 2}")],
+                        scenario="s1" if i % 2 == 0 else "s2",
+                        alias={f"o_{i}": f"c_{i % 2}"}), fh)
+
+
+def test_a_grown_corpus_indexes_only_the_new_dumps(tmp_path, monkeypatch):
+    """(b) N new dumps cost N dumps, and the result is the from-scratch one."""
+    _reset()
+    batch = _corpus(tmp_path, 4)
+    ck = str(tmp_path / "index.jsonl")
+    monkeypatch.setenv(AC.INDEX_CKPT_ENV, ck)
+    AC.corpus_index(batch)
+
+    for i in (9, 10, 11):                              # the corpus grew by 3
+        _add_dump(batch, i)
+    _reset()
+    monkeypatch.setenv(AC.INDEX_CKPT_ENV, ck)
+    n = _counted_loads(monkeypatch)
+    AC.corpus_index(batch)
+    assert n["loads"] == 3, f"only the new dumps may be parsed, got {n['loads']}"
+    assert not os.path.exists(ck + ".stale"), "a grown corpus must not be discarded"
+    grown = _fingerprint(batch)
+    assert grown == _rebuild_from_scratch(batch, monkeypatch, tmp_path, "grown")
+    print("  PASS: a corpus that grew by N costs N dumps and the same index")
+
+
+def test_a_shrunk_corpus_drops_the_rows_and_compacts_the_log(tmp_path, monkeypatch):
+    """(c) rows for vanished dumps leave the index AND the log."""
+    _reset()
+    batch = _corpus(tmp_path, 6)
+    ck = str(tmp_path / "index.jsonl")
+    monkeypatch.setenv(AC.INDEX_CKPT_ENV, ck)
+    AC.corpus_index(batch)
+    assert _records_in(ck) == 6
+
+    for i in (1, 4):
+        os.unlink(os.path.join(batch, f"dump_{i:03d}.json"))
+    _reset()
+    monkeypatch.setenv(AC.INDEX_CKPT_ENV, ck)
+    n = _counted_loads(monkeypatch)
+    AC.corpus_index(batch)
+    assert n["loads"] == 0, "the survivors must still be replayed"
+    assert len(AC._INDEX[batch]) == 4
+    shrunk = _fingerprint(batch)
+    assert _records_in(ck) == 4, "the log must not carry a gone dump's row"
+    assert shrunk == _rebuild_from_scratch(batch, monkeypatch, tmp_path, "shrunk")
+
+    # and the compacted log is still readable: the string table survived it
+    _reset()
+    monkeypatch.setenv(AC.INDEX_CKPT_ENV, ck)
+    n = _counted_loads(monkeypatch)
+    AC.corpus_index(batch)
+    assert n["loads"] == 0, "a compacted log must still replay every row"
+    assert _fingerprint(batch) == shrunk
+    print("  PASS: vanished dumps lose their rows, and the compacted log replays")
+
+
+def test_a_dump_rewritten_under_the_same_name_is_reindexed(tmp_path, monkeypatch):
+    """The per-row stamp is the whole of the corpus membership check, so it
+    has to catch a same-name replacement -- including a same-SIZE one, which
+    is why the stamp carries mtime as well as size."""
+    _reset()
+    batch = _corpus(tmp_path, 4)
+    ck = str(tmp_path / "index.jsonl")
+    monkeypatch.setenv(AC.INDEX_CKPT_ENV, ck)
+    AC.corpus_index(batch)
+
+    victim = os.path.join(batch, "dump_002.json")
+    before = os.path.getsize(victim)
+    d = json.load(open(victim))
+    d["events"][0]["expr"] = "(a < 0)"          # SAME LENGTH, different decision
+    with open(victim, "w") as fh:
+        json.dump(d, fh)
+    os.utime(victim, ns=(os.stat(victim).st_mtime_ns + 10 ** 9,) * 2)
+    assert os.path.getsize(victim) == before, "the point of the test: size alone is blind"
+
+    _reset()
+    monkeypatch.setenv(AC.INDEX_CKPT_ENV, ck)
+    n = _counted_loads(monkeypatch)
+    AC.corpus_index(batch)
+    assert n["loads"] == 1, f"only the rewritten dump may be re-parsed, got {n['loads']}"
+    assert _records_in(ck) == 4, "the superseded record must not survive compaction"
+    assert _fingerprint(batch) == _rebuild_from_scratch(batch, monkeypatch,
+                                                        tmp_path, "rewritten")
+    print("  PASS: a dump rewritten under its own name is re-indexed, not replayed")
+
+
+def test_a_changed_engine_source_rebuilds_everything(tmp_path, monkeypatch):
+    """(d) the IDENTITY part is still all-or-nothing, exactly as before: it
+    says how a row is COMPUTED, so every row it wrote is wrong."""
+    _reset()
+    batch = _corpus(tmp_path, 4)
+    ck = str(tmp_path / "index.jsonl")
+    monkeypatch.setenv(AC.INDEX_CKPT_ENV, ck)
+    AC.corpus_index(batch)
+
+    _reset()
+    monkeypatch.setenv(AC.INDEX_CKPT_ENV, ck)
+    monkeypatch.setattr(AC._ckpt, "source_hash", lambda *m: "a-different-engine")
+    n = _counted_loads(monkeypatch)
+    AC.corpus_index(batch)
+    assert n["loads"] == 4, "a changed engine source must re-index the corpus"
+    assert os.path.exists(ck + ".stale"), "and rotate the old log aside"
+    print("  PASS: a changed engine source is still a full rebuild")
+
+
+def test_the_declared_set_is_not_part_of_the_index_key(tmp_path, monkeypatch):
+    """The load-bearing claim of the key split: a declaration reaches an index
+    row ONLY through `_ALIASES`, which `_canon_key` digests exactly. So a
+    materially different declared set replays every row and produces a
+    BYTE-IDENTICAL index -- which is what lets one round's index serve the
+    next, and the next round is where the saving actually lands."""
+    _reset()
+    batch = _corpus(tmp_path, 5)
+    ck = str(tmp_path / "index.jsonl")
+    monkeypatch.setenv(AC.INDEX_CKPT_ENV, ck)
+    AC._DECLARED_DIGEST = AC._ckpt.digest(
+        [{"type": "IndependenceAssumption", "expr_a": "(a > 0)", "expr_b": "(b0 == 1)"}])
+    AC.corpus_index(batch)
+    under_a = _fingerprint(batch)
+
+    AC._INDEX.clear(); AC._TRACE_INDEX.clear(); AC._ALIAS_INDEX.clear()
+    AC._DECLARED_DIGEST = AC._ckpt.digest(
+        [{"type": "ConfinementAssumption", "expr": "(b1 == 1)", "footprint": ["x"]},
+         {"type": "ConjunctionForeclosureAssumption", "expr": "(a > 0)",
+          "prefix": [["(b2 == 1)", True]], "inferred": True},
+         {"type": "UntrackedPathAssumption", "expr": "(zzz == 9)"}])
+    n = _counted_loads(monkeypatch)
+    AC.corpus_index(batch)
+    assert n["loads"] == 0, "a declared set that cannot change a row must not rebuild"
+    assert _fingerprint(batch) == under_a, "and the index must be byte-identical"
+    print("  PASS: the declared set alone neither invalidates nor changes the index")
+
+
+def test_an_alias_declaration_does_move_the_index_key(tmp_path, monkeypatch):
+    """The negative control for the test above. An ALIAS declaration changes
+    how every dump is canonicalized at load, so it must invalidate — and it
+    is `_canon_key`, not the declared digest, that says so."""
+    from concolic_engine.assumptions import AliasAssumption
+
+    def fake_canon(d, aliases=None):
+        k = (aliases or [{}])[0]
+        return {ev["result_name"]: f"c_{getattr(k, 'k', 1)}::{ev.get('note')}"
+                for ev in d.get("events") or []
+                if ev.get("type") == "symbolic_call" and ev.get("result_name")}
+
+    _reset()
+    batch = _corpus(tmp_path, 4)
+    ck = str(tmp_path / "index.jsonl")
+    monkeypatch.setenv(AC.INDEX_CKPT_ENV, ck)
+    AC._CANON_FN = fake_canon
+    AC._ALIASES = [AliasAssumption(result_pattern="r.*", key="statement", k=1)]
+    AC.corpus_index(batch)
+    under_k1 = _fingerprint(batch)
+
+    _reset()
+    monkeypatch.setenv(AC.INDEX_CKPT_ENV, ck)
+    AC._CANON_FN = fake_canon
+    AC._ALIASES = [AliasAssumption(result_pattern="r.*", key="loop", k=2)]
+    n = _counted_loads(monkeypatch)
+    AC.corpus_index(batch)
+    assert n["loads"] == 4, "a different alias must re-index the corpus"
+    assert os.path.exists(ck + ".stale")
+    assert _fingerprint(batch) != under_k1, "and it really does change the rows"
+    _reset()
+    print("  PASS: an alias declaration moves the key, and the index with it")
+
+
+def test_only_one_process_writes_an_index_log(tmp_path, monkeypatch):
+    """The log's string table numbers strings by their POSITION in the file,
+    so two writers would each number from their own view of it and every
+    later reader would decode the wrong string for half the rows — silently.
+    A second writer therefore indexes WITHOUT the checkpoint (correct, merely
+    uncached) instead of interleaving into it."""
+    import fcntl
+
+    _reset()
+    batch = _corpus(tmp_path, 4)
+    ck = str(tmp_path / "index.jsonl")
+    monkeypatch.setenv(AC.INDEX_CKPT_ENV, ck)
+    AC.corpus_index(batch)
+    first = _fingerprint(batch)
+
+    held = open(ck + ".lock", "a+")            # stand in for the other gate
+    fcntl.flock(held.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+    _reset()
+    monkeypatch.setenv(AC.INDEX_CKPT_ENV, ck)
+    n = _counted_loads(monkeypatch)
+    out = []
+    monkeypatch.setattr("builtins.print", lambda *a, **k: out.append(" ".join(map(str, a))))
+    AC.corpus_index(batch)
+    monkeypatch.undo()
+    assert n["loads"] == 4, "a second writer must index, not replay"
+    assert any("another process is writing" in line for line in out), out
+    assert _records_in(ck) == 4, "and must not append to the other's log"
+    assert _fingerprint(batch) == first, "and must still build the same index"
+    held.close()
+
+    # with the lock released the next run resumes as usual
+    _reset()
+    monkeypatch.setenv(AC.INDEX_CKPT_ENV, ck)
+    n = _counted_loads(monkeypatch)
+    AC.corpus_index(batch)
+    assert n["loads"] == 0 and _fingerprint(batch) == first
+    print("  PASS: one writer at a time; the loser indexes without the checkpoint")
+
+
+def _records_in(path):
+    """Records (not the header) in a checkpoint log."""
+    with open(path) as fh:
+        return sum(1 for i, line in enumerate(fh) if i and line.strip())
+
+
+def test_run_declared_sets_the_declared_digest(tmp_path, monkeypatch):
+    _reset()
+    batch = _corpus(tmp_path, 2)
+    monkeypatch.setattr(AC, "run_probe", lambda *a, **k: {})
+    AC.run_declared({"batch_dir": batch, "runner": "/bin/true"},
+                    [{"type": "UntrackedPathAssumption", "expr": "(a > 0)"}])
+    assert AC._DECLARED_DIGEST and AC._DECLARED_DIGEST != ""
+    print("  PASS: run_declared keys the index checkpoint on the declared set")
+
+
+def test_row_codec_round_trip_is_exact_across_records():
+    """The string table only means anything when the records are replayed in
+    file order; a row must come back byte-identical either way."""
+    enc, dec = AC._RowCodec(), AC._RowCodec()
+    rows = [{"s": {"k1": 1, "k2": "x"}, "n": "s1",
+             "p": [["(a > 0)", True], ["(b == 1)", False]],
+             "h": ["T | SELECT 1 | ", "T | SELECT 2 | "],
+             "a": [["o_1", "c_1", "stmt::c_1", 3]]},
+            {"s": {"k1": 2}, "n": None, "p": [["(a > 0)", False]],
+             "h": ["T | SELECT 1 | "]}]
+    recs = [enc.encode(r) for r in rows]
+    for rec in recs:                    # the file-order table pass
+        dec.register(rec)
+    assert [dec.decode(r) for r in recs] == rows
+    assert recs[1]["+"] == [], "a repeated string must not be emitted twice"
+    print("  PASS: the interned index row round-trips exactly")
+
+
+def test_checkpoint_items_are_in_file_order_and_pop_forgets(tmp_path):
+    from concolic_engine import checkpoint as CK
+    p = str(tmp_path / "c.jsonl")
+    c = CK.Checkpoint(p, {"k": "v"}, install_signal_handlers=False)
+    for i in range(4):
+        c.put(f"k{i}", {"i": i})
+    c.close()
+    c2 = CK.Checkpoint(p, {"k": "v"}, install_signal_handlers=False)
+    assert [k for k, _v in c2.items()] == ["k0", "k1", "k2", "k3"]
+    assert c2.pop("k1") == {"i": 1}
+    assert "k1" not in c2 and c2.pop("k1") is None
+    assert [k for k, _v in c2.items()] == ["k0", "k2", "k3"]
+    c2.close()
+    # forgetting is not un-recording: the log still carries the record
+    c3 = CK.Checkpoint(p, {"k": "v"}, install_signal_handlers=False)
+    assert "k1" in c3
+    c3.close()
+    print("  PASS: items() is file-ordered, pop() forgets in memory only")
+
+
+# --------------------------------------------------------------------------
+# the memos: same answers, invalidated on a rebuild
+# --------------------------------------------------------------------------
+
+def test_pick_snapshot_with_memo_agrees_with_a_full_scan(tmp_path):
+    _reset()
+    batch = _corpus(tmp_path, 8)
+    rows = AC.corpus_index(batch)
+
+    def full_scan(exprs):
+        best = None
+        exprs = [AC.canon(e) for e in exprs]
+        for p, seeds, _s, rec in rows:
+            if not all(e in rec for e in exprs):
+                continue
+            if best is None or len(seeds) > len(best[1]):
+                best = (p, seeds)
+        return best[0] if best else None
+
+    for exprs in ([], ["(a > 0)"], ["(b0 == 1)"], ["(a > 0)", "(b1 == 1)"],
+                  ["(nowhere == 1)"], ["(a > 0)", "(nowhere == 1)"]):
+        got = AC.pick_snapshot_with(batch, exprs, [])
+        assert (got[0] if got else None) == full_scan(exprs), exprs
+        assert (AC.pick_snapshot_with(batch, exprs, [])[0] if got else None) == \
+            (got[0] if got else None), "the memo must not change the answer"
+    print("  PASS: the posting-list selection is the full scan's answer")
+
+
+def test_the_memos_are_dropped_when_the_index_is_rebuilt(tmp_path):
+    _reset()
+    batch = _corpus(tmp_path, 4)
+    assert AC.pick_snapshot_with(batch, ["(b3 == 1)"], []) is None
+    assert AC._PSW_CACHE, "the miss must be memoized"
+    with open(os.path.join(batch, "dump_777.json"), "w") as fh:
+        json.dump(_dump({"a": 7, "z": 1, "y": 2}, [("(b3 == 1)", True)],
+                        [("Post.find", "SELECT 7")]), fh)
+    AC._INDEX.clear()                         # what the corpus growing looks like
+    got = AC.pick_snapshot_with(batch, ["(b3 == 1)"], [])
+    assert got is not None and got[0].endswith("dump_777.json"), got
+    print("  PASS: a rebuilt index invalidates every answer derived from it")
+
+
+def test_profile_representatives_are_derived_once_per_decision(tmp_path):
+    _reset()
+    batch = _corpus(tmp_path, 6)
+    fp = {"Post.find | SELECT 0 | "}
+    en = {"Post.find | SELECT 0 | ": "taken"}
+    n = {"calls": 0}
+    real = AC.load_dump
+    AC.load_dump = lambda p: (n.__setitem__("calls", n["calls"] + 1), real(p))[1]
+    try:
+        first = AC._profile_representatives(batch, "(a > 0)", fp, en)
+        after_first = n["calls"]
+        again = AC._profile_representatives(batch, "(a > 0)", fp, en)
+    finally:
+        AC.load_dump = real
+    assert again is first, "the second pair must reuse the decision's derivation"
+    assert n["calls"] == after_first, "and must not re-parse a single dump"
+    print("  PASS: a decision's profile representatives are derived once, not once per pair")
+
+
+def test_profile_representatives_agree_with_the_full_scan(tmp_path):
+    """The posting-list selection must be the scan it replaced, candidate for
+    candidate: same representatives, same order, same flips, same count."""
+    _reset()
+    batch = _corpus(tmp_path, 12)
+
+    def reference(expr, fp, enabling):
+        rows = AC.corpus_index(batch)
+        tidx = AC._TRACE_INDEX[batch]
+        dim = AC.expr_dimension(expr)
+        cands = {}
+        for p, seeds, scen, _e in rows:
+            digest, shapes, pcs = tidx[p]
+            side = AC._side_of(pcs, expr)
+            if len(side) != 1:
+                continue
+            s = "taken" if True in side else "not_taken"
+            carried = frozenset(z for z in shapes if z in fp and enabling.get(z) == s)
+            if not carried:
+                continue
+            best = cands.get(digest)
+            if best is None or len(seeds) > len(best[1]):
+                cands[digest] = (p, seeds, scen, carried, s)
+        ranked = sorted(cands.values(), key=lambda c: (-len(c[3]), -len(c[1]), c[0]))
+        return ([(p, scen, carried, s,
+                  AC.flipped_seeds(AC.load_dump(p), dict(seeds), expr, dim))
+                 for p, seeds, scen, carried, s in ranked], len(cands))
+
+    for expr in ("(a > 0)", "(b0 == 1)", "(b1 == 1)", "(never == 1)"):
+        for fp, en in (({"Post.find | SELECT 0 | "}, {"Post.find | SELECT 0 | ": "taken"}),
+                       ({"Post.find | SELECT 0 | ", "Post.find | SELECT 1 | "},
+                        {"Post.find | SELECT 0 | ": "taken",
+                         "Post.find | SELECT 1 | ": "not_taken"}),
+                       (set(), {})):
+            AC._PROFILE_REPS.clear()
+            assert AC._profile_representatives(batch, expr, fp, en) == \
+                reference(expr, fp, en), (expr, fp)
+    print("  PASS: the memoised selection is the full scan, candidate for candidate")
+
+
+# --------------------------------------------------------------------------
+# derivation checkpoint
+# --------------------------------------------------------------------------
+
+def test_derive_checkpoint_off_by_default(tmp_path, monkeypatch):
+    monkeypatch.delenv(AC.DERIVE_CKPT_ENV, raising=False)
+    _reset()
+    batch = _corpus(tmp_path, 4)
+    monkeypatch.setattr(AC, "run_probe", lambda *a, **k: {})
+    AC.run_declared({"batch_dir": batch, "runner": "/bin/true"},
+                    [{"type": "UntrackedPathAssumption", "expr": "(a > 0)"}])
+    assert AC._DERIVE_CK is None
+    assert not [f for f in os.listdir(batch) if not f.startswith("dump_")]
+    print("  PASS: no variable -> the derivation writes nothing")
+
+
+def _confinement(batch):
+    return {"type": "ConfinementAssumption", "expr_a": "(a > 0)", "expr_b": "(b0 == 1)",
+            "footprint_a": ["Post.find | SELECT 0 | "], "footprint_b": ["Post.find | SELECT 1 | "],
+            "enabling_a": {"Post.find | SELECT 0 | ": "taken"},
+            "enabling_b": {"Post.find | SELECT 1 | ": "taken"},
+            "producers": {}, "gates": {}}
+
+
+def test_a_recorded_derivation_is_replayed_without_reparsing_one_dump(tmp_path, monkeypatch):
+    """The representatives AND their flipped seed dicts must come back exactly,
+    rebuilt from the index rather than from the dumps."""
+    _reset()
+    batch = _corpus(tmp_path, 30)
+    ck = str(tmp_path / "derive.jsonl")
+    monkeypatch.setenv(AC.DERIVE_CKPT_ENV, ck)
+    monkeypatch.setattr(AC, "run_probe", lambda *a, **k: {})
+    decl = [_confinement(batch)]
+    cfg = {"batch_dir": batch, "runner": "/bin/true"}
+
+    AC.run_declared(cfg, decl)
+    first = dict(AC._PROFILE_REPS)
+    assert first, "the run must have derived at least one decision"
+    assert os.path.exists(ck)
+
+    def _rerun(with_ck):
+        _reset()
+        if with_ck:
+            monkeypatch.setenv(AC.DERIVE_CKPT_ENV, ck)
+        else:
+            monkeypatch.delenv(AC.DERIVE_CKPT_ENV, raising=False)
+        AC.corpus_index(batch)              # the index is not what is tested here
+        n = {"loads": 0}
+        real = AC.load_dump
+        monkeypatch.setattr(AC, "load_dump",
+                            lambda p: (n.__setitem__("loads", n["loads"] + 1), real(p))[1])
+        AC.run_declared(cfg, decl)
+        monkeypatch.undo()
+        monkeypatch.setattr(AC, "run_probe", lambda *a, **k: {})
+        return n["loads"], dict(AC._PROFILE_REPS)
+
+    resumed, reps = _rerun(True)
+    fresh, reps_fresh = _rerun(False)
+    assert reps == first, "the replayed representatives must be identical"
+    assert reps == reps_fresh, "and identical to deriving them again from the dumps"
+    # what is left is the PAIR's own snapshot, one per member — the
+    # per-profile parses, which are the whole cost, are gone.
+    assert resumed == 2 and fresh > resumed, (resumed, fresh)
+    print(f"  PASS: the derivation resumes ({resumed} dump opens, {fresh} without it)")
+
+
+def test_a_changed_declared_set_discards_the_derivation(tmp_path, monkeypatch):
+    _reset()
+    batch = _corpus(tmp_path, 6)
+    ck = str(tmp_path / "derive.jsonl")
+    monkeypatch.setenv(AC.DERIVE_CKPT_ENV, ck)
+    monkeypatch.setattr(AC, "run_probe", lambda *a, **k: {})
+    cfg = {"batch_dir": batch, "runner": "/bin/true"}
+    AC.run_declared(cfg, [_confinement(batch)])
+    _reset()
+    monkeypatch.setenv(AC.DERIVE_CKPT_ENV, ck)
+    other = dict(_confinement(batch), expr_b="(b1 == 1)")
+    AC.run_declared(cfg, [other])
+    assert os.path.exists(ck + ".stale"), "a different declared set must not be resumed"
+    print("  PASS: the derivation checkpoint is keyed on the declared set too")

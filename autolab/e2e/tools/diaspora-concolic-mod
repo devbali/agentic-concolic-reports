@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+# diaspora-concolic-mod — scripts/diaspora-concolic, with RAILS_ENV=concolic_mod.
+#
+# A LOCAL COPY, deliberately: the shared launcher hardcodes
+# `export RAILS_ENV=concolic` (scripts/diaspora-concolic:18), so the value
+# cannot be overridden from outside it, and other people's long-running jobs
+# use that script.  Copying it here changes the environment for the shakedown
+# and for nothing else.
+#
+# WHY concolic_mod.  `app/models/profile.rb:8` gates
+# `lazy_load :bio,:gender,:birthday,:location` on
+# `Rails.env.include?("mod") || Rails.env == "test"`.  The deployment this
+# experiment models is `production_mod` (the app ships
+# config/environments/production_mod.rb as a symlink to production.rb), so
+# the concolic equivalent is `concolic_mod`: byte-identical Rails settings to
+# concolic.rb, the name differing only to satisfy the "mod" substring check.
+# Provisioned already — config/environments/concolic_mod.rb plus
+# `concolic_mod:` sections in config/{database,defaults,diaspora}.yml.
+#
+# The name deliberately does NOT contain "checked", so the
+# `Rails.env.include? "checked"` branches stay off, exactly as under
+# "concolic".
+#
+# RESIDUAL GAP, recorded not worked around: concolic_mod.rb:33 keeps
+# `consider_all_requests_local = true` where production.rb:17 has false, so
+# the exception-rendering path still differs from production.  That matters
+# to the scaffolds' generic terminal policy.
+export PATH="/home/dev/tools/jdk-21.0.5/bin:/home/dev/tools/jruby-9.3.0.0/bin:$PATH"
+export JAVA_HOME="/home/dev/tools/jdk-21.0.5"
+export GEM_HOME="/home/dev/.gem/jruby/2.6.0"
+export RAILS_ENV=concolic_mod
+
+DIASPORA_APP="/home/dev/project/ruby_examples/dse-apps/apps/diaspora"
+
+if [ $# -eq 0 ]; then
+  echo "Usage: $0 <runner_script.rb>"
+  exit 1
+fi
+
+cd "$DIASPORA_APP" || { echo "App directory not found"; exit 1; }
+exec bundle exec jruby -I"$DIASPORA_APP" "$@"

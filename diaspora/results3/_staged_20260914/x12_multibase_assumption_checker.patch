@@ -1,0 +1,668 @@
+--- /home/dev/project/reports/diaspora/results3/_bak_src_20260914/assumption_checker.py.pre_x12_20260914	2026-09-14 11:37:57.412254397 +0000
++++ /home/dev/project/src/end_to_end_completion_checker/assumption/assumption_checker.py	2026-09-14 13:04:06.243389945 +0000
+@@ -680,7 +680,7 @@
+     # Everything derived from the index is invalidated by a rebuild (the
+     # tests clear `_INDEX` to force one; so does a corpus that grew).
+     _POSTINGS.pop(batch, None)
+-    for derived in (_PSW_CACHE, _PROFILE_REPS, _ROUTE_CACHE):
++    for derived in (_PSW_CACHE, _PBW_CACHE, _PROFILE_REPS, _ROUTE_CACHE):
+         for k in [k for k in derived if k[0] == batch]:
+             del derived[k]
+     _ROUTE_BASES.clear()
+@@ -791,6 +791,43 @@
+     return (best[1], load_dump(best[1]), best[2]) if best else None
+ 
+ 
++def pick_live_snapshots(batch, dimension, scenario=None, k=None):
++    """``[(path, dump, runtime_key), ...]`` — `pick_live_snapshot`'s answer
++    FIRST, then up to `k-1` further snapshots on which `dimension` resolves to
++    a live seed key, scenario-diverse (X12, 2026-09-14).
++
++    Same defect, same fix: the symbolic-constraint test seeded the violating
++    value on ONE snapshot, and "the run did not take the seed" / "no value
++    recorded" is a fact about that snapshot's context. `pick_live_snapshot`'s
++    own ranking (a snapshot that already seeds the runtime key beats one that
++    does not, then richest) is kept for the first pick, so `k=1` is the
++    shipped selection exactly."""
++    idx_rows = corpus_index(batch)                 # also fills _ALIAS_INDEX
++    idx = _ALIAS_INDEX.get(batch) or {}
++    hits = []
++    for p, seeds, scen, _exprs in idx_rows:
++        if scenario and scen != scenario:
++            continue
++        rk = _live_seed_key(dimension, idx.get(p) or ())
++        if rk is None:
++            continue
++        rank = (1 if NameSpace(seeds, name="index row seeds").keys_for(rk) else 0,
++                len(seeds))
++        hits.append((rank, p, rk, scen))
++    if not hits:
++        return []
++    hits.sort(key=lambda t: (-t[0][0], -t[0][1], t[1]))
++    ordered, by_scen = [hits[0]], {}
++    for h in hits[1:]:
++        by_scen.setdefault(h[3], []).append(h)
++    while any(by_scen.values()):
++        for sc in sorted(by_scen):
++            if by_scen[sc]:
++                ordered.append(by_scen[sc].pop(0))
++    k = _BASE_BUDGET if k is None else k
++    return [(p, load_dump(p), rk) for _r, p, rk, _s in ordered[:k]]
++
++
+ def flip_value(v, flip_to):
+     if flip_to is not None:
+         return flip_to
+@@ -1379,6 +1416,31 @@
+ # indices costs 218 MB in int objects alone.
+ _POSTINGS = {}      # batch -> {canon expr: (all rows, taken rows, not-taken rows)}
+ _PSW_CACHE = {}     # (batch, frozenset(canon exprs)) -> (path, seeds) | None
++_PBW_CACHE = {}     # (batch, frozenset(canon exprs)) -> [(path, seeds), ...]
++
++#: X12 (2026-09-14) -- HOW MANY BASES a derived test probes.
++#: Every derived test used to build its probe from ONE base: the single
++#: richest snapshot `pick_snapshot_with` returns. notifications_index §39
++#: measured what that costs -- `_test_conjunction_foreclosure` reported
++#: NOT-TESTABLE on 24 of 24 §16g classes while 4 to 6 OTHER bases in the same
++#: corpus refuted 18 of them (78 refuting replays), and on §16f 12 single-base
++#: PASSes became 6 FAIL + 6 PASS. So a single-base NOT-TESTABLE is not
++#: evidence of untestability and a single-base PASS is not evidence of a
++#: licence. 8 is §39's own K and is where its marginal return flattens (its
++#: refutations were found at base ranks 1..5; see DISCIPLINE §17).
++_BASES = max(1, int(os.environ.get("ACHK_BASES", "8") or 8))
++#: The per-test budget for THIS pass. `run_declared` sets it to 1 for the
++#: cheap first stage and to `_BASES` for the escalation stage, so a class the
++#: first base already FAILs never pays for the other seven.
++_BASE_BUDGET = _BASES
++#: Verdict strength, strongest (most decisive) first. A FAIL from ANY base is
++#: the class's verdict -- one run is the falsifier.
++_BASE_RANK = {"FAIL": 0, "PASS": 1, "NOT-COMPARABLE": 2, "NOT-TESTABLE": 3,
++              "ERROR": 4}
++#: Verdicts that mean "this base did not realise the claim's premise", i.e.
++#: the base contributed no evidence either way (the realised-value rule,
++#: DISCIPLINE §16e "seeding is not realising").
++_BASE_VACUOUS = ("NOT-TESTABLE", "ERROR")
+ 
+ 
+ def _postings(batch):
+@@ -1435,6 +1497,108 @@
+     return (best[0], load_dump(best[0])) if best else None
+ 
+ 
++def pick_bases_with(batch, exprs, k=None):
++    """``[(path, dump), ...]`` -- up to `k` snapshots that RECORDED every expr,
++    ORDERED: the richest-seed snapshot FIRST (byte-identically
++    `pick_snapshot_with`'s answer, so `k=1` reproduces the single-base test
++    exactly), then round-robin over the remaining SCENARIOS, richest-seed
++    first within each.
++
++    X12 (2026-09-14). Why more than one, and why THAT order.
++
++    * More than one, because one is demonstrably not enough: a derived test's
++      probe is derived FROM its base (which literals need flipping, which
++      seeds are there to flip), so "the flip did not take" / "the probe did
++      not realise `C`" / "the snapshot records the member both ways" are
++      statements about the BASE, not about the claim. §39 enumerated every
++      dump recording the claim's exprs (1 030 - 1 807 candidates per class),
++      probed 8, and refuted 18 of 24 classes the single-base test had called
++      NOT-TESTABLE.
++    * Richest FIRST, because the richest seed dict is the one with the most
++      knobs that can actually be turned -- the shipped selection, kept so that
++      a budget of 1 is the old behaviour and so the escalation stage can
++      recall the first base's probes from the ProbeCache instead of re-running
++      them.
++    * SCENARIO-DIVERSE after that (`_c27_fals.py`'s ordering), because
++      scenario is the corpus's own partition of context: two dumps from one
++      scenario differ in seeds, dumps from different scenarios differ in which
++      code the request reaches at all, and it is the second kind of difference
++      that decides whether a flip is realisable. §39's refuting bases were
++      spread across scenarios.
++
++    Memoized like `pick_snapshot_with`; a corpus rebuild purges it."""
++    rows = corpus_index(batch)          # before the memo: a rebuild purges it
++    ce = [canon(e) for e in exprs]
++    key = (batch, frozenset(ce))
++    hits = _PBW_CACHE.get(key)
++    if hits is None:
++        hits = []
++        if ce:
++            post = _postings(batch)
++            empty = array.array("i")
++            walk = min(((post.get(e) or (empty,))[0] for e in ce), key=len)
++            for i in walk:
++                p, seeds, scen, recorded = rows[i]
++                if all(e in recorded for e in ce):
++                    hits.append((len(seeds), p, scen))
++        else:
++            hits = [(len(seeds), p, scen) for p, seeds, scen, _r in rows]
++        hits.sort(key=lambda t: (-t[0], t[1]))
++        ordered = list(hits[:1])                 # the shipped base, first
++        by_scen = {}
++        for h in hits[1:]:
++            by_scen.setdefault(h[2], []).append(h)
++        while any(by_scen.values()):
++            for sc in sorted(by_scen):
++                if by_scen[sc]:
++                    ordered.append(by_scen[sc].pop(0))
++        hits = [p for _n, p, _s in ordered]
++        _PBW_CACHE[key] = hits
++    k = _BASE_BUDGET if k is None else k
++    return [(p, load_dump(p)) for p in hits[:k]]
++
++
++def _combine_bases(per_base, out, what="claim"):
++    """X12 -- ONE class verdict from the per-base verdicts, and the record of
++    how the evidence was gathered.
++
++    * **A refutation from ANY base is a FAIL.** One run that matches the
++      claim's premise and contradicts its conclusion is the falsifier; it does
++      not matter that seven other bases could not build such a run.
++    * A **PASS** requires that no probed base refuted AND that at least one
++      base REALISED the premise. `bases_realising` is written into the row:
++      a PASS from 1 realising base is materially weaker evidence than a PASS
++      from 8, and the row says which.
++    * **NOT-TESTABLE only when NO probed base realised** the conjunction /
++      the flip (the realised-value rule is unchanged: a base that did not
++      realise the premise vouches for nothing).
++    * Anything else keeps the strongest non-vouching verdict any base reached
++      (NOT-COMPARABLE before NOT-TESTABLE), so a reading that changed under an
++      alias is still reported as that and not laundered into "untestable"."""
++    per_base = [p for p in per_base if p.get("verdict")]
++    if not per_base:
++        out.update(verdict="NOT-TESTABLE",
++                   detail=f"no run in the CURRENT corpus is a base for this {what}")
++        out.update(bases_probed=0, bases_realising=0, bases_passing=0,
++                   bases_failing=0, base_verdicts=[])
++        return out
++    best = min(per_base, key=lambda p: _BASE_RANK.get(p["verdict"], 5))
++    realising = [p for p in per_base if p["verdict"] not in _BASE_VACUOUS]
++    out.update(verdict=best["verdict"], detail=best.get("detail", ""))
++    out["bases_probed"] = len(per_base)
++    out["bases_realising"] = len(realising)
++    out["bases_failing"] = sum(1 for p in per_base if p["verdict"] == "FAIL")
++    out["bases_passing"] = sum(1 for p in per_base if p["verdict"] == "PASS")
++    out["base_verdicts"] = [{"base": p.get("base"), "verdict": p["verdict"],
++                             "detail": (p.get("detail") or "")[:200]}
++                            for p in per_base]
++    tally = ", ".join(f"{v}={n}" for v, n in sorted(
++        Counter(p["verdict"] for p in per_base).items()))
++    out["detail"] = (f"[{len(per_base)} base(s) probed, {len(realising)} realising; "
++                     f"{tally}] " + (out["detail"] or ""))
++    return out
++
++
+ def flipped_seeds(sd, seeds, expr, dim):
+     """Copy of `seeds` with `dim` flipped relative to this run (always via
+     the recorded PC, so the flip is meaningful for the expr's operator)."""
+@@ -1924,12 +2088,74 @@
+     if not da or not db:
+         out.update(verdict="NOT-TESTABLE", detail="cannot derive seed dimensions from exprs")
+         return out
+-    snap = pick_snapshot_with(batch, [ea, eb], [da, db])
+-    if snap is None:
++    # X12 (2026-09-14): the COMPOSITION -- criteria (i)-(v) and (viii) -- is
++    # judged on a base, and the shipped test judged it on ONE. (vi) and (vii)
++    # are functions of the DECISION and the corpus, never of the composition
++    # base, so they stay where they are: run ONCE, after the composition has
++    # been shown to hold on at least one base. The loop stops at the first
++    # FAIL, so a FAILing pair still costs the shipped 3 replays.
++    bases = pick_bases_with(batch, [ea, eb])
++    if not bases:
+         out.update(verdict="NOT-TESTABLE",
+                    detail="no run in the CURRENT corpus records both — the pair is inert, nothing to test")
+         return out
+-    sp, sd = snap
++    per_base, held = [], None
++    for sp, sd in bases:
++        o = _confinement_composition(cfg, a, cache, {}, ea, eb, da, db, fpa, fpb, sp, sd)
++        if cache.planning:
++            continue
++        o["base"] = os.path.basename(sp)
++        per_base.append(o)
++        if o["verdict"] == "FAIL":
++            break
++        if o["verdict"] == "PASS" and held is None:
++            held = o
++    if not cache.planning:
++        if held is None:
++            return _combine_bases(per_base, out, "confined pair")
++        # (vi) / (vii): the ACTIVE search — every profile, then constructed
++        # routes. Base-INDEPENDENT, so once, not once per base.
++        notes = []
++        producers = a.get("producers") or {}
++        en_a, en_b = a.get("enabling_a") or {}, a.get("enabling_b") or {}
++        gates = a.get("gates") or {}
++        for who, e_, fp_, en_ in (("A", ea, fpa, en_a), ("B", eb, fpb, en_b)):
++            for probe in (_exhaustive_flip, _constructed_route):
++                if probe is _exhaustive_flip:
++                    verdict_, detail_ = probe(cfg, a, cache, who, e_, fp_, en_, notes, producers)
++                else:
++                    verdict_, detail_ = probe(cfg, a, cache, who, e_, fp_, en_,
++                                              producers, gates, notes)
++                if verdict_:
++                    out.update(verdict=verdict_, detail=detail_)
++                    out.update(
++                        bases_probed=len(per_base),
++                        bases_realising=sum(1 for p in per_base
++                                            if p["verdict"] not in _BASE_VACUOUS),
++                        bases_passing=sum(1 for p in per_base if p["verdict"] == "PASS"),
++                        bases_failing=sum(1 for p in per_base if p["verdict"] == "FAIL"),
++                        base_verdicts=[{"base": p.get("base"), "verdict": p["verdict"],
++                                        "detail": (p.get("detail") or "")[:200]}
++                                       for p in per_base])
++                    return out
++        held["detail"] = held.get("detail", "") + "; " + "; ".join(notes)
++        return _combine_bases(per_base, out, "confined pair")
++
++    # planning pass: enqueue the active probes' replays too
++    notes = []
++    for who, e_, fp_, en_ in (("A", ea, fpa, a.get("enabling_a") or {}),
++                              ("B", eb, fpb, a.get("enabling_b") or {})):
++        _exhaustive_flip(cfg, a, cache, who, e_, fp_, en_, notes, a.get("producers") or {})
++        _constructed_route(cfg, a, cache, who, e_, fp_, en_,
++                           a.get("producers") or {}, a.get("gates") or {}, notes)
++    return out
++
++
++def _confinement_composition(cfg, a, cache, out, ea, eb, da, db, fpa, fpb, sp, sd):
++    """ONE base's verdict for `_test_confinement` criteria (i)-(v) and (viii)
++    — the shipped COMPOSITION BY REPLAY, verbatim, with the base handed in
++    instead of picked (X12). Criteria (vi)/(vii) are base-independent and are
++    run once by the caller."""
+     scen = (sd.get("concolic_scenario") or {}).get("name")
+     # NAME BOUNDARY (2026-09-14): `sd` is a LOADED dump, so on a batch with a
+     # `fix_len_names` canonicalize hook its `concolic_seeds` keys have been
+@@ -1946,13 +2172,6 @@
+     fab = _combined_flip(sd, fa, fb, db)
+     ra, rb, rab = (cache.run(x, scen, f"conf_{i}") for i, x in enumerate((fa, fb, fab)))
+     if cache.planning:
+-        # enqueue the active probes' replays too, then leave without a verdict
+-        notes = []
+-        for who, e_, fp_, en_ in (("A", ea, fpa, a.get("enabling_a") or {}),
+-                                  ("B", eb, fpb, a.get("enabling_b") or {})):
+-            _exhaustive_flip(cfg, a, cache, who, e_, fp_, en_, notes, a.get("producers") or {})
+-            _constructed_route(cfg, a, cache, who, e_, fp_, en_,
+-                               a.get("producers") or {}, a.get("gates") or {}, notes)
+         return out
+     if None in (ra, rb, rab):
+         out.update(verdict="FAIL", detail="a flip probe produced no dump in the snapshot's scenario")
+@@ -2063,29 +2282,12 @@
+                           f"({len(tab - predicted)} unexpected, {len(predicted - tab)} missing): "
+                           + "; ".join(sorted(dev)[:3]))
+         return out
+-    # (vi) / (vii): the ACTIVE search — every profile, then constructed routes
+-    notes = []
+-    en_a, en_b = a.get("enabling_a") or {}, a.get("enabling_b") or {}
+-    gates = a.get("gates") or {}
+-    for who, e_, fp_, en_ in (("A", ea, fpa, en_a), ("B", eb, fpb, en_b)):
+-        verdict_, detail_ = _exhaustive_flip(cfg, a, cache, who, e_, fp_, en_, notes, producers)
+-        if verdict_ and not cache.planning:
+-            out.update(verdict=verdict_, detail=detail_)
+-            return out
+-        verdict_, detail_ = _constructed_route(cfg, a, cache, who, e_, fp_, en_,
+-                                               producers, gates, notes)
+-        if verdict_ and not cache.planning:
+-            out.update(verdict=verdict_, detail=detail_)
+-            return out
+-    if cache.planning:
+-        return out
+     out.update(verdict="PASS",
+                detail=f"(i) ΔA={len(d_a)} ⊆ footprint(A) (ii) ΔB={len(d_b)} ⊆ footprint(B) "
+                       f"(iii) composition exact (iv) partners stayed evaluated "
+                       f"(v) no unshared footprint shape survived its flip "
+-                      f"(viii) {len(shared)} shared shape(s) OR-monotone by replay; "
+-                      + "; ".join(notes)
+-                      + f" (snapshot {os.path.basename(sp)})")
++                      f"(viii) {len(shared)} shared shape(s) OR-monotone by replay"
++                      f" (snapshot {os.path.basename(sp)})")
+     return out
+ 
+ 
+@@ -2168,13 +2370,35 @@
+         out.update(verdict="NOT-TESTABLE",
+                    detail="no member or no gate prefix — nothing was inferred to test")
+         return out
+-    snap = pick_snapshot_with(batch, [d] + [g for g, _o in gates], [])
+-    if snap is None:
++    # X12 (2026-09-14): MANY bases, not one. §39 measured the single-base
++    # version reporting NOT-TESTABLE on 24 of 24 §16g classes while other
++    # bases in the same corpus refuted 18 of them. The loop stops at the first
++    # FAIL (a refutation is decisive and needs no second opinion), so a FAIL
++    # still costs one probe; only a PASS or a NOT-TESTABLE pays for K bases.
++    bases = pick_bases_with(batch, [d] + [g for g, _o in gates])
++    if not bases:
+         out.update(verdict="NOT-TESTABLE",
+                    detail="no run in the CURRENT corpus records the member together with "
+                           "every gate of the prefix — no base to seed the probe from")
+         return out
+-    sp, sd = snap
++    per_base = []
++    for sp, sd in bases:
++        o = _conjunction_foreclosure_once(cfg, a, cache, {}, d, gates, sp, sd, kind)
++        if cache.planning:
++            continue
++        o["base"] = os.path.basename(sp)
++        per_base.append(o)
++        if o["verdict"] == "FAIL":
++            break
++    if cache.planning:
++        return out
++    return _combine_bases(per_base, out, "foreclosure")
++
++
++def _conjunction_foreclosure_once(cfg, a, cache, out, d, gates, sp, sd, kind):
++    """ONE base's verdict for `_test_conjunction_foreclosure` — the shipped
++    probe, verbatim, with the base handed in instead of picked (X12)."""
++    batch = cfg["batch_dir"]
+     scen = (sd.get("concolic_scenario") or {}).get("name")
+     # NAME BOUNDARY (2026-09-14): `sd` is a LOADED dump, so on a batch with a
+     # `fix_len_names` canonicalize hook its `concolic_seeds` keys have been
+@@ -2241,8 +2465,17 @@
+     verdict dict."""
+     typ = a.get("type", "")
+     batch = cfg["batch_dir"]
++    # X12 (2026-09-14): the EVIDENCE GRADE is part of every row, not only of
++    # the rows a multi-base loop produced. A verdict reached without probing
++    # any base (a claim with no derivable dimension, an alias claim, an
++    # ERROR) says so with zeros; a verdict from ONE realising base says so
++    # with ones. Six of people_stream's 30 PASSes have exactly one realising
++    # base in the whole corpus, and that has to be legible in the record
++    # rather than re-measurable only by running the gate again.
+     out = {"type": typ, "expr": a.get("expr") or a.get("expr_a"),
+-           "expr_b": a.get("expr_b"), "verdict": "?", "detail": ""}
++           "expr_b": a.get("expr_b"), "verdict": "?", "detail": "",
++           "bases_probed": 0, "bases_realising": 0, "bases_passing": 0,
++           "bases_failing": 0, "base_verdicts": []}
+     # DISCIPLINE §16g (2026-09-14): a well-founded drop reaches the gate as a
+     # `SubconjunctionForeclosureAssumption` because the PROBE is the same one
+     # (<= W literals to flip from a base that records the member). Carry the
+@@ -2258,16 +2491,75 @@
+         if not da or not db:
+             out.update(verdict="NOT-TESTABLE", detail="cannot derive seed dimensions from exprs")
+             return out
+-        snap = pick_snapshot_with(batch, [ea, eb], [da, db])
+-        if snap is None:
++        # X12 (2026-09-14): MANY bases, not one. The flip-both probe is
++        # derived from its base, so "no novel shape" is a statement about that
++        # base's context; another base may put the pair in a context where the
++        # combination DOES produce one. Stops at the first FAIL.
++        bases = pick_bases_with(batch, [ea, eb])
++        if not bases:
+             missing = [e for e in (ea, eb) if pick_snapshot_with(batch, [e], []) is None]
+             if missing:
+                 out.update(verdict="NOT-TESTABLE",
+                            detail="expr never recorded in the CURRENT corpus (stale or renamed): " + missing[0][:80])
+                 return out
+-            out.update(verdict="PASS", detail="mutually exclusive: both recorded, never co-evaluated in any run")
++            out.update(verdict="PASS",
++                       detail="[0 base(s) probed, 0 realising; corpus fact, not a replay] "
++                              "mutually exclusive: both recorded, never co-evaluated in any run")
+             return out
+-        sp, sd = snap
++        per_base = []
++        for sp, sd in bases:
++            o = _independence_once(cfg, a, cache, {}, ea, eb, da, db, sp, sd)
++            if cache.planning:
++                continue
++            o["base"] = os.path.basename(sp)
++            per_base.append(o)
++            if o["verdict"] == "FAIL":
++                break
++        if cache.planning:
++            return out
++        return _combine_bases(per_base, out, "independence pair")
++
++    if typ in ("UntrackedPathAssumption", "OneSideUntrackedPathAssumption"):
++        e = a.get("expr", "")
++        d = expr_dimension(e)
++        if not d:
++            out.update(verdict="NOT-TESTABLE", detail="cannot derive seed dimension from expr")
++            return out
++        # X12 (2026-09-14): MANY bases, not one — same reasoning.
++        bases = pick_bases_with(batch, [e])
++        if not bases:
++            out.update(verdict="NOT-TESTABLE",
++                       detail="expr never recorded in the CURRENT corpus (stale assumption? it carries no coverage now)")
++            return out
++        per_base = []
++        for sp, sd in bases:
++            o = _untracked_once(cfg, a, cache, {}, typ, e, d, sp, sd)
++            if cache.planning:
++                continue
++            o["base"] = os.path.basename(sp)
++            per_base.append(o)
++            if o["verdict"] == "FAIL":
++                break
++        if cache.planning:
++            return out
++        return _combine_bases(per_base, out, "untracked-path claim")
++
++    if typ == "ConfinementAssumption":
++        return _test_confinement(cfg, a, cache, out)
++
++    if typ == "ConjunctionForeclosureAssumption":
++        return _test_conjunction_foreclosure(cfg, a, cache, out)
++    if typ == "SubconjunctionForeclosureAssumption":
++        return _test_subconjunction_foreclosure(cfg, a, cache, out)
++
++    return _test_declared_rest(cfg, a, cache, out, typ, batch)
++
++
++def _independence_once(cfg, a, cache, out, ea, eb, da, db, sp, sd):
++    """ONE base's verdict for an `IndependenceAssumption` — the shipped
++    flip-A / flip-B / flip-both probe, verbatim, with the base handed in
++    instead of picked (X12)."""
++    if True:
+         scen = (sd.get("concolic_scenario") or {}).get("name")
+         # NAME BOUNDARY (2026-09-14): `sd` is a LOADED dump, so on a batch with a
+         # `fix_len_names` canonicalize hook its `concolic_seeds` keys have been
+@@ -2314,18 +2606,12 @@
+             out.update(verdict="PASS", detail=f"no combination-only access shapes (snapshot {os.path.basename(sp)})")
+         return out
+ 
+-    if typ in ("UntrackedPathAssumption", "OneSideUntrackedPathAssumption"):
+-        e = a.get("expr", "")
+-        d = expr_dimension(e)
+-        if not d:
+-            out.update(verdict="NOT-TESTABLE", detail="cannot derive seed dimension from expr")
+-            return out
+-        snap = pick_snapshot_with(batch, [e], [d])
+-        if snap is None:
+-            out.update(verdict="NOT-TESTABLE",
+-                       detail="expr never recorded in the CURRENT corpus (stale assumption? it carries no coverage now)")
+-            return out
+-        sp, sd = snap
++
++def _untracked_once(cfg, a, cache, out, typ, e, d, sp, sd):
++    """ONE base's verdict for an `UntrackedPathAssumption` /
++    `OneSideUntrackedPathAssumption` — the shipped single-flip probe,
++    verbatim, with the base handed in instead of picked (X12)."""
++    if True:
+         scen = (sd.get("concolic_scenario") or {}).get("name")
+         # NAME BOUNDARY (2026-09-14): `sd` is a LOADED dump, so on a batch with a
+         # `fix_len_names` canonicalize hook its `concolic_seeds` keys have been
+@@ -2381,14 +2667,12 @@
+                 out.update(verdict="PASS", detail="untracked side adds no access shapes")
+         return out
+ 
+-    if typ == "ConfinementAssumption":
+-        return _test_confinement(cfg, a, cache, out)
+-
+-    if typ == "ConjunctionForeclosureAssumption":
+-        return _test_conjunction_foreclosure(cfg, a, cache, out)
+-    if typ == "SubconjunctionForeclosureAssumption":
+-        return _test_subconjunction_foreclosure(cfg, a, cache, out)
+ 
++def _test_declared_rest(cfg, a, cache, out, typ, batch):
++    """The derived tests X12 did not make multi-base: the alias test (which
++    already reads the WHOLE corpus per canonical name) and the symbolic
++    constraint test (whose base is picked by `pick_live_snapshot`, on the
++    seed key the runtime reads, not by `pick_snapshot_with`)."""
+     if typ in ("AliasAssumption", "DecisionAliasAssumption"):
+         # the pre-rename type string is still accepted so the gate can be run
+         # against a summary written before 2026-09-09.
+@@ -2436,15 +2720,37 @@
+         # READS. Picking on `dim in seeds` matched CANONICAL-named dead knobs
+         # and certified runs whose live length was never the violating value
+         # (X10 class, 2026-09-12): no live key, no test.
+-        snap = pick_live_snapshot(batch, dim)
+-        if snap is None:
++        # X12 (2026-09-14): MANY bases, not one. "the run did not take the
++        # seed" is a fact about the snapshot the probe was launched from.
++        snaps = pick_live_snapshots(batch, dim)
++        if not snaps:
+             out.update(verdict="NOT-TESTABLE",
+                        detail=("empty corpus" if not corpus_index(batch) else
+                                f"no snapshot resolves {dim} to a seed key the runtime reads "
+                                "(canonical-named dead knobs only) — seeding the violating value "
+                                "there would change nothing, so this is untested, not held"))
+             return out
+-        sp, sd, rkey = snap
++        per_base = []
++        for sp, sd, rkey in snaps:
++            o = _symbolic_constraint_once(cfg, a, cache, {}, dim, violating, sp, sd, rkey)
++            if cache.planning:
++                continue
++            o["base"] = os.path.basename(sp)
++            per_base.append(o)
++            if o["verdict"] == "FAIL":
++                break
++        if cache.planning:
++            return out
++        return _combine_bases(per_base, out, "symbolic constraint")
++
++    out.update(verdict="NOT-TESTABLE", detail=f"no derived test for type {typ}")
++    return out
++
++
++def _symbolic_constraint_once(cfg, a, cache, out, dim, violating, sp, sd, rkey):
++    """ONE base's verdict for a `SymbolicConstraintAssumption` — the shipped
++    probe, verbatim, with the base handed in instead of picked (X12)."""
++    if True:
+         scen = (sd.get("concolic_scenario") or {}).get("name")
+         # NAME BOUNDARY (2026-09-14): `sd` is a LOADED dump, so on a batch with a
+         # `fix_len_names` canonicalize hook its `concolic_seeds` keys have been
+@@ -2495,9 +2801,6 @@
+             out.update(verdict="PASS", detail=f"excluded region ({dim}={violating!r}) adds no access shapes (snapshot {os.path.basename(sp)})")
+         return out
+ 
+-    out.update(verdict="NOT-TESTABLE", detail=f"no derived test for type {typ}")
+-    return out
+-
+ 
+ def _alias_members(batch, canonical):
+     """{(ordinal, statement key): [(path, seeds, scenario, len_value), ...]}
+@@ -2722,45 +3025,74 @@
+             continue
+         seen.add(key)
+         distinct.append(a)
+-    # pass 1 (no runner launches): derive every probe the verdicts need
+-    cache.planning = True
+-    prog = _Progress("derive-probes", len(distinct))
+-    for a in distinct:
+-        # X10: planning must never be ended by one assumption. A probe that
+-        # cannot even be DERIVED simply contributes no wanted key; its verdict
+-        # row is produced (as ERROR) by the verdict pass below.
+-        try:
+-            test_declared(cfg, a, cache)
+-        except Exception:
+-            pass
+-        prog.tick(note=f"{len(cache.wanted)} probe(s) wanted")
+-    prog.done(f"{len(cache.wanted)} probe(s) wanted")
+-    cache.planning = False
+-    print(f"  [{len(cache.wanted)} distinct probes needed for {len(distinct)} assumptions]", flush=True)
+-    cache.execute()
+-    results = []
+-    prog = _Progress("verdicts", len(distinct))
+-    for a in distinct:
+-        # X10 (2026-09-11): one probe's exception is THAT probe's verdict, never
+-        # the end of the run. Before this, a single KeyError in one pair ended
+-        # all 83 of posts_show's and no results file was written at all -- the
+-        # suite reported nothing rather than reporting one bad row.
+-        try:
+-            r = test_declared(cfg, a, cache)
+-        except Exception as exc:
+-            r = {"type": a.get("type", ""), "expr": a.get("expr") or a.get("expr_a"),
+-                 "expr_b": a.get("expr_b"), "verdict": "ERROR",
+-                 "detail": f"{type(exc).__name__}: {exc}"[:300]}
+-        results.append(r)
+-        if rows_fh is not None:
+-            rows_fh.write(json.dumps(r, default=str) + "\n")
+-            rows_fh.flush()
+-        print(f"  {r['verdict']:<13} {r['type']:<32} {str(r['expr'])[:70]}"
+-              + (f" || {str(r['expr_b'])[:50]}" if r.get("expr_b") else ""))
+-        if r["detail"]:
+-            print(f"      {r['detail'][:160]}")
+-        prog.tick()
+-    prog.done()
++    # X12 (2026-09-14) — TWO STAGES, so multi-base costs what it has to and
++    # no more. Stage 1 probes ONE base per assumption (the shipped cost) and
++    # settles every FAIL: a refutation from the richest base is decisive and
++    # needs no second opinion. Stage 2 escalates only the assumptions stage 1
++    # could not refute — the PASSes, the NOT-TESTABLEs and the
++    # NOT-COMPARABLEs — to `ACHK_BASES` bases, which is exactly where the
++    # single-base blindness lives (§39: NOT-TESTABLE 24/24 -> FAIL 18).
++    # Stage 2 re-derives base 1 as well; its probes are recalled from the
++    # ProbeCache, so the repeat costs nothing.
++    global _BASE_BUDGET
++    stages = [1, _BASES] if _BASES > 1 else [1]
++    pending, final = list(distinct), {}
++    for si, budget in enumerate(stages):
++        last = (si == len(stages) - 1)
++        if not pending:
++            break
++        _BASE_BUDGET = budget
++        label = f"stage {si + 1}/{len(stages)} ({budget} base(s))"
++        # pass 1 (no runner launches): derive every probe the verdicts need
++        cache.planning = True
++        prog = _Progress(f"derive-probes {label}", len(pending))
++        for a in pending:
++            # X10: planning must never be ended by one assumption. A probe that
++            # cannot even be DERIVED simply contributes no wanted key; its verdict
++            # row is produced (as ERROR) by the verdict pass below.
++            try:
++                test_declared(cfg, a, cache)
++            except Exception:
++                pass
++            prog.tick(note=f"{len(cache.wanted)} probe(s) wanted")
++        prog.done(f"{len(cache.wanted)} probe(s) wanted")
++        cache.planning = False
++        print(f"  [{label}: {len(cache.wanted)} distinct probes needed "
++              f"for {len(pending)} assumptions]", flush=True)
++        cache.execute()
++        prog = _Progress(f"verdicts {label}", len(pending))
++        nxt = []
++        for a in pending:
++            # X10 (2026-09-11): one probe's exception is THAT probe's verdict, never
++            # the end of the run. Before this, a single KeyError in one pair ended
++            # all 83 of posts_show's and no results file was written at all -- the
++            # suite reported nothing rather than reporting one bad row.
++            try:
++                r = test_declared(cfg, a, cache)
++            except Exception as exc:
++                r = {"type": a.get("type", ""), "expr": a.get("expr") or a.get("expr_a"),
++                     "expr_b": a.get("expr_b"), "verdict": "ERROR",
++                     "detail": f"{type(exc).__name__}: {exc}"[:300],
++                     "bases_probed": 0, "bases_realising": 0, "bases_passing": 0,
++                     "bases_failing": 0, "base_verdicts": []}
++            r["bases_budget"] = budget
++            final[id(a)] = r
++            settled = last or r["verdict"] == "FAIL"
++            if not settled:
++                nxt.append(a)
++            if settled and rows_fh is not None:
++                rows_fh.write(json.dumps(r, default=str) + "\n")
++                rows_fh.flush()
++            if settled:
++                print(f"  {r['verdict']:<13} {r['type']:<32} {str(r['expr'])[:70]}"
++                      + (f" || {str(r['expr_b'])[:50]}" if r.get("expr_b") else ""))
++                if r["detail"]:
++                    print(f"      {r['detail'][:160]}")
++            prog.tick()
++        prog.done()
++        pending = nxt
++    _BASE_BUDGET = _BASES
++    results = [final[id(a)] for a in distinct]
+     cache.close()
+     if _DERIVE_CK is not None:
+         _DERIVE_CK.close()

@@ -80,6 +80,37 @@ module PostsTargets
   # iterate. `to_a` (explicit) is provided.
   # =====================================================================
   class IterableSymbolicList < SymbolicList
+    # 2026-09-25, empty_relation_emission OVER-EMISSION repair.
+    #
+    # src exposes `attr_reader :representative` only (list.rb:51), so a mock
+    # that wants to honour list.rb:106-107's contract ("absence was already
+    # decided at the mock boundary before a rep-carrying list is ever
+    # produced") needs to attach the rep AFTER the runtime has computed the
+    # concrete length. Precedent for a batch-local writer on this subclass:
+    # comments_index/targets.rb:952 (second_representative).
+    attr_writer :representative
+
+    # Real Array semantics for the empty case. src's first/last/[]
+    # (list.rb:110-143) hand back @representative with no length check, and
+    # raise NotImplementedError when there is none -- so without these a
+    # correctly repless empty list would turn an app-level `.first` into a
+    # wall where it used to return a (bogus) row. Non-empty behaviour is
+    # untouched: `super` still runs.
+    def first(*args)
+      return nil if args.empty? && concrete_length.zero?
+      super
+    end
+
+    def last(*args)
+      return nil if args.empty? && concrete_length.zero?
+      super
+    end
+
+    def [](*args)
+      return nil if args.length == 1 && args[0] == 0 && concrete_length.zero?
+      super
+    end
+
     def each(&blk)
       return to_enum(:each) unless blk
       __rows.each(&blk)
@@ -704,6 +735,32 @@ module PostsTargets
     interceptor.declare_target(calc, :pluck, returns: lambda do |receiver, args, name|
       vn  = "#{name}_plucked"
       sql = ct.sql_for(receiver, args)
+      # 2026-09-25: `.pluck` selects the NAMED COLUMNS, not the row, but
+      # `sql_for` renders the relation -- so the note said
+      # `SELECT "mentions".* FROM ...` where the real statement is
+      # `SELECT "mentions"."id" FROM ...`. mock_note_check needs the note's
+      # projection to be a superset of the real one and {"*"} is not a superset
+      # of {"mentions.id"}, so the shape was unmatchable and note_fidelity
+      # scored STAR-OVER. Exactly the B-5 defect and repair, one mock over.
+      # This became visible only once `pluck` was taken out of `_descend`
+      # (_p46_patch_pluck.py): before that the statement was issued with no
+      # frame at all, so its note was never compared.
+      begin
+        _cols = args.is_a?(::Hash) ? args.values.compact.flatten : []
+        unless _cols.empty?
+          _tbl = (receiver.respond_to?(:table_name) && receiver.table_name) ||
+                 (receiver.respond_to?(:klass) && receiver.klass.table_name)
+          _proj = _cols.map do |c|
+            s = c.to_s
+            # already qualified, or an expression -- pass through untouched
+            (s.include?(".") || s.include?("(") || s.include?("\"")) ? s
+                                                                     : (_tbl ? %("#{_tbl}"."#{s}") : %("#{s}"))
+          end.join(", ")
+          sql = sql.sub(/\ASELECT\s+(DISTINCT\s+)?.*?\s+FROM /m, "SELECT #{_proj} FROM ")
+        end
+      rescue StandardError
+        nil # projection rewrite must never crash the mock
+      end
       IterableSymbolicList.new(ct.seed_for("len(#{vn})", 1), name: vn, note: sql,
                                representative: pluck_rep.call(receiver, args, name, sql))
     end)
@@ -711,6 +768,29 @@ module PostsTargets
     interceptor.declare_target(calc, :ids, returns: lambda do |receiver, args, name|
       vn  = "#{name}_ids"
       sql = ct.sql_for(receiver, args)
+      # B-5 (projection half), 2026-09-25: `.ids` selects the PRIMARY KEY, not
+      # the row. `sql_for` renders the relation, so the note said
+      # `SELECT "mentions".* FROM ...` while the real statement is
+      # `SELECT "mentions"."id" FROM ...`; mock_note_check requires the note's
+      # projection to be a superset of the real one and {"*"} is not a superset
+      # of {"mentions.id"}, so the shape was unmatchable (RED), and
+      # note_fidelity scored it STAR-OVER. Rewrite the projection the same way
+      # the `exists?` mock rewrites its own (concolic_targets.rb:595-602).
+      # Never let the rewrite crash the mock.
+      begin
+        _pk = begin
+          _k = ct.model_class(receiver)
+          (_k.respond_to?(:primary_key) && _k.primary_key) || "id"
+        rescue StandardError
+          "id"
+        end
+        _tbl = (receiver.respond_to?(:table_name) && receiver.table_name) ||
+               (receiver.respond_to?(:klass) && receiver.klass.table_name)
+        _proj = _tbl ? %("#{_tbl}"."#{_pk}") : %("#{_pk}")
+        sql = sql.sub(/\ASELECT\s+(DISTINCT\s+)?.*?\s+FROM /m, "SELECT #{_proj} FROM ")
+      rescue StandardError
+        nil
+      end
       rv  = "#{name}_id"
       IterableSymbolicList.new(ct.seed_for("len(#{vn})", 1), name: vn, note: sql,
                                representative: symint(rv, ct.seed_for(rv, 1), note: sql))
@@ -825,9 +905,21 @@ module PostsTargets
             # bare rescue.
             (receiver.is_a?(Array) && receiver.first) ? receiver.first.class : Post
           end
-          rep = ct.symbolic_instance(klass, "#{name}_row", note)
-          IterableSymbolicList.new(ct.seed_for("len(#{name})", 1),
-                                   name: name, note: note, representative: rep)
+          # 2026-09-25: the rep used to be minted HERE, eagerly, before the
+          # seeded length below was consulted -- so for a len-0 list it still
+          # escaped into the render and the corpus asserted a `profiles` read
+          # AND a `<rep>_guid` decision for a row that does not exist
+          # (empty_relation_emission OVER-EMISSION: 4 shapes, 17001 dumps).
+          # Build the list FIRST, then attach the rep only if it is non-empty.
+          # Constructing first is deliberate: the runtime's own length
+          # coercion (list.rb:63-76) turns a String seed "0" into 1, and a
+          # local Integer(seed) guard would silently diverge from it.
+          lst = IterableSymbolicList.new(ct.seed_for("len(#{name})", 1),
+                                         name: name, note: note)
+          if lst.concrete_length.positive?
+            lst.representative = ct.symbolic_instance(klass, "#{name}_row", note)
+          end
+          lst
         end
       )
     end

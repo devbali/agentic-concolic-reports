@@ -1,0 +1,112 @@
+#!/bin/bash
+# =============================================================================
+# P44 SUSTAINED DRIVE — rounds of (sample -> gaps -> ADMISSIBILITY FILTER ->
+# construct -> concurrent-leg drive -> cubes closed), checkpointed per STAGE so
+# an interruption costs minutes, not hours.
+#
+#   usage: bash _p44_sustain.sh <FIRST_ROUND> <LAST_ROUND> [N] [WIDTH] [CHUNK]
+#
+# CHECKPOINTING. Every stage is skipped when its artefact exists, and the drive
+# itself resumes on `_chunk_drive.sh`'s per-chunk markers. Re-running this
+# script with the same round numbers resumes exactly where it stopped; a round
+# that already wrote `_p44_done_<TAG>` is skipped whole. The curve is appended
+# to `_p44_curve.txt`, one line per round, so the yield trend is visible while
+# it runs rather than at the end.
+#
+# ALREADY-CLOSED CUBES ARE EXCLUDED. `_p44_closed_cubes.txt` accumulates the
+# blake2b of every node_constraint a previous round closed; a fresh sample drops
+# them before construction, so later rounds do not re-drive won ground and the
+# yield curve measures real decay instead of resampling.
+#
+# Verdict: `P44-SUSTAIN-DONE <first>..<last>` or `P44-SUSTAIN-FAILED <tag> <stage>`.
+# =============================================================================
+set +e; unset JAVA_TOOL_OPTIONS
+B=/home/dev/project/reports/diaspora/results3/posts_show
+cd "$B" || exit 2
+LO="${1:?first round}"; HI="${2:?last round}"; N="${3:-4000}"
+W="${4:-10}"; CH="${5:-400}"
+L="$B/_p44_sustain.log"
+CURVE="$B/_p44_curve.txt"
+say(){ echo "[$(date -Is)] $*" >> "$L"; }
+: >> "$L"; : >> "$CURVE"; : >> "$B/_p44_closed_cubes.txt"
+say "=== P44 SUSTAIN rounds $LO..$HI  N=$N width=$W chunk=$CH ==="
+
+for i in $(seq "$LO" "$HI"); do
+  T="P44R$i"
+  if [ -f "$B/_p44_done_$T" ]; then say "$T already done, skipping"; continue; fi
+  SEED=$((20260900 + i))
+  say "--- $T (seed $SEED)"
+
+  if [ ! -s "$B/_p44_sample_$T.jsonl" ]; then
+    P44_SEED=$SEED python3 -u "$B/_p44_sample_jsonl.py" \
+      "$B/_p31_emit_P35.jsonl" "$B/_p44_sample_$T.jsonl" "$N" >> "$L" 2>&1 \
+      || { say "P44-SUSTAIN-FAILED $T sample"; exit 3; }
+  fi
+  if [ ! -s "$B/_p44_gaps_${T}raw.json" ]; then
+    env P23_JSONL="$B/_p44_sample_$T.jsonl" P18_INDEX="${P44_INDEX:-$B/_p31_index_P35C.pkl}" \
+        P15_GAPS="$B/_p44_gaps_${T}raw.json" P23_PARTS="$B/_p44_parts_$T.json" \
+        P23_MAX_PER_SET=0 P23_MAX_TOTAL=0 PYTHONPATH=/home/dev/project/src \
+        python3 -u "$B/_p23_gaps.py" >> "$L" 2>&1
+    [ -s "$B/_p44_gaps_${T}raw.json" ] || { say "P44-SUSTAIN-FAILED $T gaps"; exit 4; }
+  fi
+  if [ ! -s "$B/_p44_gaps_$T.json" ]; then
+    PYTHONPATH=/home/dev/project/src python3 -u "$B/_p44_admissible.py" \
+      "$B/_p44_gaps_${T}raw.json" "$B/_p44_gaps_${T}adm.json" >> "$L" 2>&1
+    [ -s "$B/_p44_gaps_${T}adm.json" ] || { say "P44-SUSTAIN-FAILED $T filter"; exit 5; }
+    # drop cubes a previous round already closed
+    PYTHONPATH=/home/dev/project/src python3 - "$B" "$T" >> "$L" 2>&1 <<'PY'
+import hashlib, json, os, sys
+B, T = sys.argv[1], sys.argv[2]
+done = set(x.strip() for x in open(os.path.join(B, "_p44_closed_cubes.txt")) if x.strip())
+g = json.load(open(os.path.join(B, f"_p44_gaps_{T}adm.json")))
+h = lambda nc: hashlib.blake2b(nc.encode(), digest_size=16).hexdigest()
+keep = [x for x in g if h(x["node_constraint"]) not in done]
+for i, x in enumerate(keep):
+    x["id"] = f"r{i:06d}"
+json.dump(keep, open(os.path.join(B, f"_p44_gaps_{T}.json"), "w"))
+print(f"  {T}: admissible {len(g)} -> {len(keep)} after dropping "
+      f"{len(g)-len(keep)} already-closed cubes")
+PY
+    [ -s "$B/_p44_gaps_$T.json" ] || { say "P44-SUSTAIN-FAILED $T dedup"; exit 6; }
+  fi
+  if [ ! -s "$B/_p15_manifest_$T.json" ]; then
+    P44_PARTS="$B/_p44_parts_$T.json" bash "$B/_p44_construct.sh" "$T" \
+      "$B/_p44_gaps_$T.json" >> "$L" 2>&1
+    grep -q '^P31-CONSTRUCT-DONE' "$B/_p44_construct_$T.log" \
+      || { say "P44-SUSTAIN-FAILED $T construct"; exit 7; }
+  fi
+
+  bash "$B/_p44_drive_par.sh" "$T" "$T" "$CH" "$W" >> "$L" 2>&1
+  # rank-1 (BASES_PER_GAP=2) fallback pass, same TAG so _p44_cubes_closed.py's
+  # cross-count picks up dumps from EITHER base under one glob. A no-op (0
+  # seeds, still prints its own DONE line) when K=1 or a gap had no 2nd base.
+  bash "$B/_p44_drive_par.sh" "${T}B" "$T" "$CH" "$W" >> "$L" 2>&1
+  n_done=$(grep -c "PAR-DRIVE-DONE $T " "$B/_p44_drive_$T.log")
+  [ "$n_done" -ge 2 ] \
+    || { say "P44-SUSTAIN-FAILED $T drive"; exit 8; }
+
+  PYTHONPATH=/home/dev/project/src python3 -u "$B/_p44_cubes_closed.py" \
+    "$B/_p44_gaps_$T.json" "$T" > "$B/_p44_closed_$T.log" 2>&1
+  grep -q 'P44-CUBES-CLOSED-DONE' "$B/_p44_closed_$T.log" \
+    || { say "P44-SUSTAIN-FAILED $T closed"; exit 9; }
+
+  # record the closed cubes so the next round does not re-drive them
+  PYTHONPATH=/home/dev/project/src python3 - "$B" "$T" >> "$L" 2>&1 <<'PY'
+import hashlib, json, os, sys
+B, T = sys.argv[1], sys.argv[2]
+g = {x["id"]: x["node_constraint"] for x in json.load(open(os.path.join(B, f"_p44_gaps_{T}.json")))}
+cl = json.load(open(os.path.join(B, f"_p44_closed_{T}.json")))
+h = lambda nc: hashlib.blake2b(nc.encode(), digest_size=16).hexdigest()
+with open(os.path.join(B, "_p44_closed_cubes.txt"), "a") as fh:
+    for gid in cl:
+        fh.write(h(g[gid]) + "\n")
+print(f"  {T}: booked {len(cl)} closed cubes")
+PY
+  NT=$(python3 -c "import json;print(len(json.load(open('$B/_p44_gaps_$T.json'))))")
+  NC=$(python3 -c "import json;print(len(json.load(open('$B/_p44_closed_$T.json'))))")
+  RATE=$(grep 'PAR-DRIVE-DONE' "$B/_p44_drive_$T.log" | tail -1 | sed 's/.*RATE=//')
+  echo "$T targets=$NT closed=$NC per1000=$(python3 -c "print(f'{1000.0*$NC/max($NT,1):.1f}')") $RATE" >> "$CURVE"
+  say "$T CURVE $(tail -1 "$CURVE")"
+  touch "$B/_p44_done_$T"
+done
+say "P44-SUSTAIN-DONE $LO..$HI"

@@ -1,0 +1,1032 @@
+# The name boundary: why a difference exists at all, and what to do about it
+
+**2026-09-14. INVESTIGATION + PLAN. Nothing implemented, nothing edited.**
+Read-only throughout; `src/` untouched (`assumption_checker.py` still md5
+`5ae1b13c`), no `results3/*` campaign file touched, no git operation beyond
+`git log`/`git show`. Both campaigns in flight (`posts-p32-regate2-20260914`
+pid 2460411, `notif-c29-pass-C29OFF1` pid 2462319) were left alone and were
+verified still running at the time of writing.
+
+---
+
+## 0. The owner's question, answered in five lines
+
+> *"The naming difference issue — how can that be possible? The same mocks
+> produce the names, right? Why is there even a difference?"*
+
+He is right, and the difference is not where the folklore says it is.
+**Z3 accepts the runtime's name verbatim.** The rename is not required by the
+solver, by the SMT language, by JSON, or by Ruby. It is required by exactly one
+thing: `concolic_engine/solver.py` transports Z3 terms as **Python source text**
+and rebuilds them with `exec`/`eval`. `len(X)` is a legal Z3 identifier and a
+legal JSON string, but it is not a legal *Python* identifier — so the one stage
+that reuses Python's parser as its SMT parser cannot hold it, and a rename is
+inserted just before that stage. Everything downstream of the rename then
+speaks a second dialect, and every table built on one side and queried from the
+other misses silently.
+
+So the answer to *"why is there even a difference"* is: **there should not be.
+The length spelling is an accident of the wire format, and it is eliminable.**
+There is a *second*, unrelated boundary in the same neighbourhood
+(ordinal vs canonical) which is **not** an accident and is **not** eliminable —
+and the single most expensive mistake available here is to treat them as one
+problem. §2 separates them.
+
+---
+
+## 1. Why `SYM_LEN_X` exists — from the source, with the probe
+
+### 1.1 What mints `len(X)`
+
+Both runtimes, one line each, and only for a list's cardinality:
+
+* `src/ruby_runtime/list.rb:68` — `len_name = name ? "len(#{name})" : nil`,
+  then `symint(len_name, @concrete_length, note: note)`.
+  The docstring at l.54 already calls it *"Z3-friendly base name; length var is
+  `len(name)`"* — which is true, and is the point.
+* `src/py_runtime/list_.py:94` — `len_name = f"len({name})" if name else None`.
+
+The path condition that carries it is assembled by string interpolation in
+`ruby_runtime/int.rb:91`:
+
+```ruby
+expr = "(#{@sym_name || @value} #{op_sym} #{rhs})"
+```
+
+so a dump's `events[].expr` reads `(len(SYM_RESULT_..._records_1_rows) == 0)`.
+
+**Measured: `len(X)` is the ONLY non-Python-identifier name the runtimes ever
+mint.** Scanning every `symbolic_vars[].name` over 600 dumps (300 from
+`comments_index`, 300 from `people_show`), the only shape that fails
+`^[A-Za-z_][A-Za-z0-9_]*$` is `*(*)` — 5,818 occurrences, zero others. The
+entire dual-spelling regime exists for one name shape produced by two lines of
+code.
+
+### 1.2 What cannot hold it — and it is not Z3
+
+`concolic_engine/run.py:366-393` builds declarations as Python assignment
+*statements*:
+
+```python
+lines.append(f"{sv.name} = Int('{sv.name}')")
+```
+
+and `concolic_engine/solver.py` (both `check_satisfiability` and
+`solve_and_evaluate`) consumes them as Python source:
+
+```python
+exec(decl, {"__builtins__": {}}, local_env)      # declarations
+parsed = eval(expr_str, {"__builtins__": {}}, local_env)   # constraints
+```
+
+Direct probe (`venvs/queries_from_runs`, z3 5.0.0), run today:
+
+```
+Z3 Int('len(X)') OK -> sat [len(X) = 4]                      # Z3 is fine with it
+pipeline with raw len(X):  False None                        # solver.py: unsat
+pipeline with SYM_LEN_X:   True {'SYM_LEN_X': 4}             # solver.py: sat
+exec  "len(X) = Int('len(X)')"  -> SyntaxError: cannot assign to function call here
+eval  "len(X) > 3"              -> NameError: name 'len' is not defined
+```
+
+Two distinct failures, one root:
+
+| stage | text | why it fails |
+|---|---|---|
+| declaration (`exec`) | `len(X) = Int('len(X)')` | **SyntaxError** — Python cannot assign to a call target |
+| constraint (`eval`) | `(len(X) == 0)` | **NameError** — syntactically *valid* Python, but `len` is stripped from `__builtins__`; had it not been, it would be worse: Python's builtin `len` applied to a z3 `ArithRef` |
+
+**The refinement to the stated hypothesis.** The hypothesis offered was that
+"the parentheses would parse as a function application" inside *the Z3
+expression strings the checker builds*. That is right about the mechanism and
+wrong about the parser: the parentheses parse as a function application in
+**Python**, and Z3 never sees the text at all — it receives an AST that Python's
+`eval` already built. Z3's own name space is unconstrained, as the probe shows.
+
+**The failure is quiet, which is what makes it expensive.** On a parse failure
+`check_satisfiability` logs a warning and returns `SolverResult(False, None, 0.0)`
+and `solve_and_evaluate` returns `ModelResult("unsat", ...)`. Unparseable reads
+as **unsat**, i.e. as *"this branch is infeasible"* — the exact direction that
+manufactures a false completeness claim. `coverage.py:2367` defends against this
+with an up-front tautology probe (`Or(expr, Not(expr))`) that diverts
+unparseable exprs into `unevaluable_exprs` and forces `truncated=True`; that
+defence is why the original symptom was a stuck `truncated` flag rather than a
+silent wrong answer. Note also that the batch reports *silence the solver
+logger* for performance (`logging.getLogger("concolic_engine.solver").setLevel(ERROR)`,
+`coverage_report.py:39`), so the warning is not even printed.
+
+### 1.3 Where the rename was introduced, and what it says
+
+`git log -S` over `src/.git` finds **nothing**: neither `SYM_LEN` nor
+`fix_len_names` has ever existed in `src/`. The rename has always lived on the
+batch side, in `reports/`, which is not a git repository — so there is no commit
+to cite. What there is, is the function's own docstring, which has been carried
+verbatim from batch to batch since `results2/people_stream` and states the
+diagnosis correctly:
+
+> ``src/ruby_runtime/list.rb`` names SymbolicList length vars literally
+> ``len(X)``, **a valid Z3 identifier but not a valid Python one** —
+> coverage.py's declaration builder generates ``len(X) = Int('len(X)')``, a
+> SyntaxError, and the checker (correctly, by design) drops the expr into
+> ``unevaluable_exprs``, forcing ``truncated=True``.
+
+So the project already knew the precise answer to the owner's question; it was
+recorded in a function that was then copied 48 times instead of being placed
+once.
+
+### 1.4 Does anything else depend on the distinction?
+
+**No. Nothing in `src/` requires the `SYM_LEN_` form for any semantic purpose.**
+Every occurrence in `src/` is either prose or a compatibility shim that accepts
+*both* spellings:
+
+| site | what it is |
+|---|---|
+| `concolic_engine/names.py` | the compatibility helper itself (`SYM_LEN_RE`, `LEN_PREFIX`) |
+| `concolic_engine/assumptions.py:514` | docstring only (`SYM_LEN_<list>_rows` named as an example) |
+| `assumption_checker.py:80,496-501` (`_SYMLEN_RE`, `canon`) | converts **back** to `len(X)` |
+| `assumption_checker.py:549` | `startswith(("len(", "SYM_LEN_"))` — accepts both |
+| `assumption_checker.py:2707` | `startswith(("len(", "SYM_LEN_"))` — accepts both |
+| `queries_from_runs/audits/cardinality_consistency_audit.py:69` (`GT1_RE`) | `(?:len\(|SYM_LEN_)` — accepts both |
+
+The only *semantic* content attached to length-ness is the implicit lower bound
+`low = 0`, and that travels in the dump's `symbolic_vars[].low/high` fields
+(read by `coverage.py::_build_bounds_constraints`), not in the name — except at
+`assumption_checker.py:2707`, which re-derives it from the name prefix and is
+precisely the asymmetry logged as staged item A.3.
+
+There is one more consumer of the *distinction* rather than the spelling: the
+`assumption_checker` deliberately works in **runtime** spelling
+(`canon()` maps `SYM_LEN_X -> len(X)`; `expr_dimension()` at l.976 *emits*
+`f"len({...})"`), because it compares against dumps and launches probes the
+Ruby runtime must read. So the conversion is implemented independently in both
+directions, by different authors, at different times — which is how the two
+sides drifted.
+
+---
+
+## 2. Accidental vs essential — the split that must not be blurred
+
+These are two different boundaries that happen to sit in the same variable
+names. They have different *kinds*, and therefore different fixes.
+
+### 2.1 LENGTH spelling — **ACCIDENTAL. Purely syntactic. Eliminable.**
+
+`len(X)` and `SYM_LEN_X` denote the identical variable **by construction**.
+`names.to_checker` / `names.to_runtime` are total, idempotent, mutually
+inverse on the shapes that occur, and depend on **nothing but the string**.
+There is no claim about the program here, so there is nothing to falsify and no
+gate tests it — because there is nothing to test. It is a transport artefact:
+the shadow cast by `solver.py`'s choice of Python source as its term format.
+
+### 2.2 ORDINAL vs CANONICAL — **ESSENTIAL. Semantic. Not eliminable.**
+
+`SYM_RESULT_..._records_2 -> SYM_RESULT_..._records_mentions_66022a8b` asserts
+an **empirical claim about the program**: that two call ordinals executed the
+same statement, so decisions made about them are the same decision. It is
+declared by an `AliasAssumption` (`concolic_engine/assumptions.py:500-530`),
+applied per run by `alias_map_for` / `renamer`, and it is exactly what the
+assumption gate exists to **falsify** (`_test_confinement`, the flip-both
+probes, `_reading_changed`). Three properties make it structurally different
+from §2.1:
+
+1. **It is many-to-one.** Several ordinals back one canonical, so the inverse is
+   a *set*, not a name — which is why `NameSpace.keys_for` exists and why
+   seeding one backing ordinal contradicts the demand whenever the path takes
+   another.
+2. **It is run-relative.** `to_canonical` is a function of `(name, run)` — each
+   dump carries its own `_alias_map`. `to_checker` is a function of the name
+   alone. **No single rewrite can serve both**, which is the precise reason the
+   §2.1 fix cannot be reused here.
+3. **It is falsifiable, and has been falsified.** The P26 gate returned 274
+   FAILs out of 1,363 classes. A wrong alias is a wrong claim about the
+   program; a wrong length spelling is a typo.
+
+### 2.3 Consequence for the plan
+
+> **Fixing the accidental boundary removes it. Fixing the essential one can
+> only make it explicit and checked.**
+>
+> `names.py` is the right permanent tool for §2.2 and is the *wrong long-term
+> tool* for §2.1 — for §2.1 it is a bandage over a wound that need not exist.
+> Any proposal that says "one mechanism for both" is wrong, in both directions:
+> it would try to delete an assumption the gate must keep testing, and it would
+> keep paying compatibility tax for a rename that should not exist.
+
+---
+
+## 3. Why `concolic_seeds` is deliberately left ordinal-named
+
+The reason is stated at `canonicalize_ordinals`' first docstring line, in every
+copy:
+
+> *"Rewrite a RAW dump in place. `concolic_seeds` is left ORDINAL-named: it is
+> what the runtime consumes; the demand seeder maps back through this."*
+
+Unpacked, with the code that copes with it:
+
+* **The seed dict is an input to the Ruby runtime, not an output of the
+  analysis.** `call_interceptor` mints result names by call *order* at replay
+  time. It has never heard of an alias. A canonical key sitting in a seed dict
+  is read by nobody — documented at `_live_seed_key` (l.735-760) as a **dead
+  knob**: *"The runtime never reads those, so a canonical key that this
+  snapshot's own alias map does not rename controls nothing here, however
+  plainly it sits in the seed dict."*
+* **There is no run-independent canonical seed key.** Because the alias map is
+  many-to-one *and per run*, the same canonical resolves to different ordinals
+  in different runs, and to none at all in a run that never made that call. A
+  canonical-keyed seed file therefore has no single correct meaning.
+* **Hence the three helpers**, each covering one direction of the asymmetry:
+  * `_runtime_key(sd, key)` (l.567) — canonical → *this snapshot's* ordinal,
+    via `renamer` on the inverted map. Used at l.1606/1635 to write a flip at
+    the key the runtime reads.
+  * `_live_seed_key(dimension, rows)` (l.735) — is this dimension a **live
+    knob** on this snapshot at all, or a dead canonical? Three cases, in order:
+    the run canonicalizes nothing; the key names a canonical this run mints; the
+    key already names one of this run's ordinals. `None` otherwise.
+  * `seeds_as_written(dump)` / `RAW_SEEDS_KEY` (l.510-528) — a probe **seed
+    file** is written in runtime spelling and echoed back verbatim in the
+    resulting dump, so a probe may only be matched to its launch in that same
+    spelling. This is the helper that ended the ~10 h 40× slowdown.
+
+**This asymmetry is correct and should be kept.** Seeds must be ordinal-named,
+because that is what the consumer reads.
+
+### 3.1 The actual defect is not the asymmetry — it is that one hook breaks it
+
+`canonicalize_ordinals` deliberately leaves `concolic_seeds` alone.
+`fix_len_names` was *supposed* to do the same: every copy's docstring claims it
+renames only *"a dump's `symbolic_vars[].name` / `events[].expr`"*. **In some
+batches the docstring is false**, and this was verified today:
+
+| batch | live `fix_len_names` body | touches `concolic_seeds`? |
+|---|---|---|
+| `results3/notifications_index` | in-place walk of `symbolic_vars`, `events`, `concrete_values` | **no** |
+| `results3/posts_show` | `json.loads(_LEN_RE.sub(..., json.dumps(dump)))` — whole-dump round trip | **yes** |
+
+`posts_show/gate_canon.py:45-58` (`canonicalize_for_gate`) calls exactly that
+round-trip variant, so on the gate path a post-hook seed dict comes out
+**half-converted**: `SYM_LEN_<ordinal>_rows` — length-renamed but *not*
+canonicalised. That is not one spelling or the other; it is a third form that
+neither consumer reads. Measured in `_staged_20260914/NAME_BOUNDARY_STAGED.md`
+§A.5: **22 of 211 seed keys (10.4 %) spelled `SYM_LEN_`, which the Ruby runtime
+ignores**, so a probe loses its snapshot's whole length context.
+
+**This is the finding that should change the plan's shape.** The recurring
+damage is not "two spellings exist". It is *one conversion silently applying to
+a field a sibling conversion deliberately exempts*, in a function that exists in
+**15 semantically distinct copies** (see §4.1) whose shared docstring describes
+only one of them.
+
+### 3.2 Incident ledger — seven, not six
+
+| # | date | incident | direction of error |
+|---|---|---|---|
+| 1 | 2026-08-26 | declared exprs over a list length never matched a dump; independences over them **PASSed as "mutually exclusive"** (`canon()` docstring, `assumption_checker.py:496-501`) | **FALSE PASS** |
+| 2 | 2026-09-13/14 | seeder dropped every `SYM_LEN_*` value as "no seed needed" — 18.5 % of one corpus, 29.8 % of another, 31 variables | lost work |
+| 3 | 2026-09-13/14 | confinement gate collapsed to a 40× slower single-replay path for ~10 h (probe never matched its own launch; fixed by `seeds_as_written`) | ~10 h |
+| 4 | 2026-09-13/14 | posts_show class A called 3,746 cubes unachievable — **opposite** answer once names went through `canonicalize_ordinals` + `fix_len_names` | wrong conclusion |
+| 5 | 2026-09-13/14 | posts_show class D: `LIDX.get(L) is None` read "unminted" for a variable the corpus mints in **68 %** of runs | wrong conclusion |
+| 6 | 2026-09-14 | `_unev_why.py` classified pairs REACHABLE on an inflated prefix | wrong conclusion |
+| 7 | 2026-09-14 | `pick_live_snapshot`'s ranking tier collapsed to 0 for every length dimension (bare `in` on a post-hook seed index row) | silent degradation |
+
+Incident 1 is the one that matters for risk framing: **this family has produced
+a false PASS before.** The standing "it only ever degrades conservatively"
+reassurance is true of the *currently known* sites, not of the family.
+
+---
+
+## 4. Options
+
+### 4.0 What each option must be judged against
+
+1. Does it remove the accidental boundary (§2.1) or only survive it?
+2. Does it leave the essential boundary (§2.2) intact and still tested?
+3. Does a future violation get **caught**, or only documented? (Documentation
+   has now failed measurably: the RUNBOOK paragraph has said "convert both
+   ways" since 2026-09-11 and four separate agents hit the trap in the single
+   night of 2026-09-13/14 *after* it was written.)
+4. What does it cost against ~1.0 M existing dump files?
+
+### 4.1 The concrete surface, measured today
+
+| quantity | value |
+|---|---|
+| files mentioning `fix_len_names` (`.py`/`.md`/`.rb`/`.sh` under `reports`,`scripts`,`src`) | **150** (110 `.py`, 39 `.md`, 1 `.sh`) |
+| independent `def fix_len_names` copies | **48** |
+| **semantically distinct** bodies among them (md5 of the de-commented function) | **15** |
+| independent `def canonicalize_ordinals` copies | **13** |
+| non-identifier symbolic-var name shapes ever minted | **1** (`len(...)`) |
+| lines of runtime that mint it | **2** (`ruby_runtime/list.rb:68`, `py_runtime/list_.py:94`) |
+
+Corpora (dump file counts, taken today):
+
+| endpoint | dump files | on disk | status |
+|---|---|---|---|
+| `notifications_index` | 700,962 | 8.6 G | **campaign live** (C29) |
+| `posts_show` | 234,257 | 6.9 G | **campaign live** (P32 gate) |
+| `comments_index` | 26,528 | 582 M | closed |
+| `conversations_index` | 18,623 | 2.3 G | closed |
+| `people_stream` | 13,677 | 395 M | closed |
+| `people_show` | 12,997 | 380 M | closed |
+| **total** | **≈ 1,007,044** | **≈ 19.2 G** | |
+
+Persisted summaries are in **checker** spelling and would also be a migration
+surface: `notifications_index/coverage_summary.json` alone carries 132,215
+`SYM_LEN_` occurrences.
+
+Cost of touching `assumption_checker.py` while a gate runs, for reference
+(`NAME_BOUNDARY_STAGED.md` §E, measured on P26 v3): probes needed 111,241;
+surviving a patched restart **0 (0.0 %)**; full redo **10.0 h** at 3.08 probes/s
+(11.6 h at 2.667/s), plus a 232,523-unit re-index at ~16 GB RSS and a ~16 min
+derive pass. Any option that edits that file is priced at ~11-13 h per campaign.
+
+---
+
+### Option A — mint the solver-legal name at the source
+
+Change `ruby_runtime/list.rb:68` and `py_runtime/list_.py:94` to mint
+`SYM_LEN_<name>` (or any identifier-legal spelling); `fix_len_names` disappears
+for all *future* corpora.
+
+**Fixes.** The accidental boundary, at its origin, permanently, for everything
+generated afterwards. It is the only option that makes the second dialect stop
+existing.
+
+**Does not fix.** Nothing about §2.2. And — decisively — **it does not remove
+the rename from the codebase**, because ~1.0 M dumps and every seed file on disk
+are in the old spelling. A read-time shim is then **mandatory and permanent**,
+not optional.
+
+**Migration cost, concretely.**
+
+* 2 source lines in `src/` (both runtimes; Rule T / source-discipline territory
+  — the Ruby side is the shared-boundary runtime, so this is a change to raise,
+  not to make).
+* **A mixed-corpus path-signature hazard, which is the real cost.** Coverage
+  matches paths by *string compare of `expr:taken` pairs*. Old dumps carry
+  `(len(X) == 0)`; new dumps would carry `(SYM_LEN_X == 0)`. Without
+  normalisation at ingest the **same path splits into two signatures** and the
+  execution tree silently doubles — a *new* silent-wrong-answer mode, worse than
+  the one being fixed. So the ingest normaliser of Option B is a **precondition**
+  for A, not an alternative to it.
+* **A second, Ruby-side shim.** Existing saturation/context seed files key on
+  `len(X)`; a changed runtime would read `SYM_LEN_X` and honour none of them.
+  (RUNBOOK Phase 2 already flags "stale seed files reference dead var names —
+  REGENERATE".) Either regenerate every seed file, or accept a Ruby-side
+  compatibility read.
+* Corpus regeneration is **not** forced *if* the shim exists — that is the
+  point of insisting on it — but every persisted `coverage_summary.json`,
+  demand file and probe bank changes spelling, so a spelling-sensitive
+  downstream artefact must be re-derived.
+
+**Risk to the campaigns.** High if done now: it changes `gate_canon` /
+`coverage_report` behaviour, which under staged fix **G** correctly discards the
+probe bank (~10-12 h per campaign), and it changes what the live JRuby runners
+mint mid-campaign.
+
+**Incremental?** Only at a natural from-scratch regeneration boundary. Mid-flight
+it is a flag day.
+
+---
+
+### Option B — normalise exactly once at ingest, and make violations detectable
+
+One function, in `src/`, is the **sole** entry point that turns a raw dump into
+a loadable one: canonicalise ordinals, rename lengths, preserve raw seeds. No
+other code performs a rewrite. `names.py` becomes mandatory rather than
+advisory, and the invariant is enforced by a check, not a paragraph.
+
+**Fixes.** Every §3.1-class defect: 48 copies with 15 distinct behaviours
+collapse to one, so a batch can no longer differ from its own docstring. It also
+makes the §2.2 boundary explicit in one place instead of re-derived per script.
+
+**Does not fix.** The accidental boundary still *exists*; B survives it well
+rather than removing it. B is what makes A safe later — it is the precondition,
+so this is sequencing, not rivalry.
+
+**Migration cost.**
+
+* **New, unimported module in `src/`** (e.g. `concolic_engine/dump_ingest.py`).
+  **Verified hash-neutral for the live campaigns**: `checkpoint.source_hash`
+  (`concolic_engine/checkpoint.py:80-99`) digests only the `__file__` of the
+  modules it is *handed* — `assumption_checker` itself and
+  `concolic_engine.assumptions` — with no transitive walk. Adding a file neither
+  imports changes neither `ProbeCache`'s header nor `_phase_keys`. **Zero
+  probe-bank risk.**
+* Call-site conversion: **48** `fix_len_names` + **13** `canonicalize_ordinals`
+  definitions, across 150 files — but the honest number for *phase 1* is far
+  smaller. 6 live `coverage_report.py` + 1 `gate_canon.py` are the ones that
+  actually run; the rest are `_bak_*` snapshots, one-shot analysis scripts and
+  prose. Only the live ones need converting, and only at each batch's natural
+  restart.
+* No corpus regeneration. No summary regeneration.
+
+**How a future violation is caught — this is the part that must be mechanical.**
+Three checks, in increasing order of value:
+
+1. **A structural post-condition inside the ingest function.** After the hook,
+   assert `concolic_seeds` contains **no** `SYM_LEN_`-spelled key. This is a
+   claim about a *field*, not about a lookup, and it catches §3.1 — the
+   posts_show half-conversion — directly and immediately. `names.py` cannot
+   catch it and never could.
+2. **`NameSpace(..., strict_ambiguity=True)`** over the merged name table at
+   ingest: a table that holds both spellings of one variable with different
+   values raises `AmbiguousSpelling` instead of being queried.
+3. **A lint test in `src/`** (alongside `test_statement_note_lint.py`, which
+   establishes that this project already lints its own reports tree) that fails
+   when `def fix_len_names` or `def canonicalize_ordinals` appears anywhere
+   outside the one module. A copied function is then a red test, not a
+   convention. This closes the loop that documentation demonstrably did not.
+
+**Risk to the campaigns.** Essentially zero for the module + lint (nothing
+imported by anything running). Converting a live `coverage_report.py` /
+`gate_canon.py` is priced at one discarded probe bank under **G** and must wait
+for each campaign's own restart point — exactly the §E landing rule.
+
+**Incremental?** Yes, fully. Module and lint land today with no campaign impact;
+batches convert one at a time, at their own restarts.
+
+---
+
+### Option C — make the two spellings the same object
+
+A `Name(str)` subclass hashing and comparing on the normalised form, so a dict
+lookup cannot miss.
+
+**This does not work, and the reason is worth recording so it is not proposed
+again.** Python resolves `d[k]` by hashing **the query object**. A dict loaded
+from JSON has **plain `str` keys**. `hash("len(X)") != hash("SYM_LEN_X")` and
+nothing can make them equal without controlling *both* sides. So:
+
+* a plain-`str` query against a `Name`-keyed table misses, as before;
+* a `Name` query against a plain-`str`-keyed table lands in the wrong bucket and
+  misses, as before;
+* therefore **every table and every query must be wrapped** — which means
+  normalising at ingest anyway. C *reduces to B*, plus a type to thread through
+  every call site.
+
+Additional damage: `json.dumps` of a `Name`-keyed dict emits the normalised
+text, silently changing on-disk bytes and breaking byte-identity of dumps and
+seed files; and `NameSpace` already provides a strictly better version of the
+same idea (a **loud** miss, with the genuine-absence distinction preserved),
+which a hash-equal type cannot — a `Name` that always resolves would also
+silently paper over genuine absences, destroying the one distinction the whole
+`names.py` design hinges on.
+
+**Verdict: reject.** Strictly more work than B, strictly less safety, plus a
+new silent failure mode.
+
+---
+
+### Option D — do nothing further; rely on `names.py` adoption plus review
+
+**What it leaves exposed, honestly:**
+
+* **Table-construction filters, not lookups.** This is the class-D variant, and
+  it is the decisive gap. `NameSpace` intercepts `get`/`in`; class D was
+  `k.endswith("_rows")` **harvesting** a table while the variable ended `_ids`.
+  No lookup ever misses, because the entry was never built. `NameSpace` cannot
+  see this, and cannot be extended to.
+* **The seed half-conversion of §3.1.** Also not a lookup. A field-level
+  invariant catches it; a lookup helper does not.
+* **Raw expression string comparison.** Path-signature matching compares `expr`
+  text directly. `canon()` protects the checker; any *new* script comparing
+  exprs raw is exposed with no helper in the path.
+* **Partial adoption, by construction.** Six sites in `assumption_checker.py`
+  plus four analysis scripts are adopted. Items **B** (4 sites), **D**
+  (`_c24_construct.py`) and **H** (`producers`) in `NAME_BOUNDARY_STAGED.md`
+  remain unapplied. The tail is open-ended because the rule is *"reviewers
+  reject the bare lookup"* — the same enforcement model that failed four times
+  in one night.
+* **The probe cache's `canonicalize` hole** (staged §G) is this family one level
+  up: editing `fix_len_names` changes every banked record's `amap`, `values`
+  spellings and `outcomes`, and the stale bank is **silently reused**.
+
+**Verdict: insufficient as a destination, mandatory as an interim.** D is
+correctly the current state; it must not be the plan.
+
+---
+
+### 4.2 Options table
+
+| | fixes accidental (§2.1) | keeps essential (§2.2) tested | violations **caught** | files touched | corpus regen | risk to live campaigns | incremental |
+|---|---|---|---|---|---|---|---|
+| **A** mint at source | **yes**, at origin, for new corpora | unchanged | no (needs B's checks) | 2 `src/` runtime lines + mandatory Py shim + Ruby seed shim | none *if* shim; all seed files stale | **high** now — changes live runners + discards banks | flag day only |
+| **B** one ingest + invariants | no (survives it cleanly) | yes, in one place | **yes** — 3 mechanical checks | 1 new `src/` module + lint; 7 live batch files over time | none | **zero** for module+lint; 1 bank per batch conversion | **yes** |
+| **C** name type | no | weakens it (silent resolution) | no | every table + every query site | on-disk bytes change | medium | no |
+| **D** status quo | no | partially | **no** — review only | 0 | none | zero | n/a |
+
+---
+
+## 5. Recommendation
+
+**B now, in three pieces, none of which touches a live campaign; A later, only
+at a from-scratch regeneration; C rejected; D not a destination.**
+
+### Phase 1 — today, zero campaign risk *(hash-neutrality verified, §4.2/B)*
+
+1. `src/concolic_engine/dump_ingest.py`: **one** `load_dump(path, aliases=...)`
+   performing, in this order, ordinal canonicalisation → length rename →
+   `RAW_SEEDS_KEY` preservation, returning `(dump, amap)`. Imported by nothing
+   that is running.
+2. The three checks of §Option B inside it — **priority order: the
+   `concolic_seeds` post-condition first.** It is the cheapest, it catches the
+   defect that is costing the gate 10.4 % of its seed keys right now, and it is
+   the one `names.py` structurally cannot catch.
+3. The `src/` lint test forbidding `def fix_len_names` / `def
+   canonicalize_ordinals` outside that module. **This, not the RUNBOOK
+   paragraph, is the thing that makes the rule hold.**
+
+### Phase 2 — at each campaign's own restart point, per the §E landing rule
+
+4. Convert the 6 live `coverage_report.py` + `gate_canon.py` to import the
+   module. Costs one probe bank per batch — already priced, and already paid
+   anyway by staged fix **G**. Land with **G**, never separately.
+5. Apply the remaining staged items (B, D) at the same restart.
+
+### Phase 3 — deferred, and only at a from-scratch regeneration
+
+6. Option A's two runtime lines, at the next Rule T boundary regeneration, with
+   the Phase 1 ingest as the permanent compatibility shim. **Raise to the owner
+   before touching `ruby_runtime/list.rb`** — it is shared-boundary code and a
+   boundary defect voids every endpoint.
+
+### Why this order
+
+* It is the only order in which **A is safe**: without Phase 1, changing the
+  minted spelling splits path signatures across a mixed corpus and creates a
+  *new* silent wrong-answer mode.
+* It puts the **enforcement** (lint + invariant) before the cleanup, so the
+  cleanup cannot silently regress. The evidence that this matters is in the
+  ledger: incidents 2-7 all post-date a correct written warning.
+* Every step that costs a probe bank is deferred to a moment when the bank is
+  being discarded anyway.
+* It keeps §2.1 and §2.2 apart at every step: the ingest module *removes* the
+  length dialect from every consumer's view, and *preserves and localises* the
+  alias mapping the gate must keep testing.
+
+---
+
+## 6. The owner's implicit question: is any of this necessary complexity?
+
+**Half of it is irreducible. Half of it is self-inflicted. They are unrelated,
+and the project has been paying for the self-inflicted half as though it were
+the irreducible one.**
+
+* **Irreducible:** the ordinal/canonical boundary. Any concolic system that
+  names results by call order and then wants to say "these two calls are the
+  same statement" has a many-to-one, run-relative mapping, and a consumer
+  (the runtime) that only understands ordinals. That boundary survives any
+  redesign. `names.py`/`NameSpace` is the right permanent answer to it, and the
+  `keys_for` many-to-one resolution is genuinely load-bearing.
+* **Self-inflicted:** the length spelling, in full. It exists because
+  `solver.py` uses **Python's parser as its SMT expression parser**. Every
+  consequence follows from that one choice: the runtime is forced to emit
+  Python-source-compatible expression text (`ruby_runtime/int.rb:76` even says
+  so out loud — *"a valid Z3/Python unary expression"*), `run.py` is forced to
+  emit Python assignment statements, names are forced to be Python identifiers,
+  and one name shape out of all the runtime mints is not. Seven incidents,
+  ~48 copies of a workaround, and a 250-line compatibility module are the
+  interest payments.
+
+### How I would design it from scratch
+
+Stop making `expr` a string of Python. Either:
+
+* **(i) SMT-LIB as the term format** — the runtime emits SMT-LIB, the solver
+  uses `z3.parse_smt2_string`. Z3 quotes arbitrary symbols as `|len(X)|`, so no
+  name is ever illegal; or
+* **(ii) structured terms** — the dump carries
+  `{"op":"==","lhs":{"var":"len(X)"},"rhs":0}` and the solver builds the AST
+  directly, with names as *data* rather than as *code*.
+
+Either one removes every constraint on the **text** of a name, and the dual
+spelling ceases to exist — not "is worked around", ceases to exist. **(ii) is
+the better fit here**, because this project already does heavy structural work
+on exprs (`_unnegate`, `expr_dimension`, `canon`, `GT1_RE`,
+`_LENVAR_RE`, path-signature matching), all of it currently implemented as
+regexes over source text — every one of those becomes a field access, and a
+whole second family of string-shape bugs goes with it.
+
+**What it would cost to get there from here.** This is a genuinely deep change
+and I do **not** recommend it now:
+
+* `solver.py`'s two `eval`/`exec` sites and `run.py:366-393`, both small;
+* but then **every consumer that does string surgery on `expr`**: `canon`,
+  `expr_dimension`, `_unnegate`, `_VAR_RE`/`_LENVAR_RE`, `GT1_RE`, the
+  coverage checker's tautology probe and universe construction, the
+  enumerators, and the path-signature comparison itself;
+* the **frozen** `assumption_checker.py`, at ~11-13 h of probe rebuild per
+  campaign;
+* **every persisted artefact format** — ~1.0 M dumps, every
+  `coverage_summary.json`, every demand file, every probe bank — all of which
+  encode exprs as text today.
+
+That is a major-version change, correctly out of scope while two campaigns are
+in flight. **The right move is to record it as the intended endpoint, and make
+Phase 1 the step that is valuable on its own and also happens to be the first
+step toward it**: a single ingest point is exactly where a term-format change
+would later be absorbed.
+
+### The one-line version for the owner
+
+> The mocks *do* produce the names consistently. The difference appears one
+> stage later, and it is not Z3's fault — Z3 accepts `len(X)` fine. It is that
+> the solver interface ships Z3 terms as Python source and runs `eval` on them,
+> and `len(X)` is not a Python identifier. One name shape, two runtime lines,
+> 48 copies of a workaround, seven incidents. It is avoidable, it is not
+> urgent, and the fix that makes it avoidable is the same fix that stops the
+> copies from disagreeing with each other — so do that one first.
+
+---
+
+## 7. Appendix — how each claim above was established
+
+| claim | evidence |
+|---|---|
+| Z3 accepts `len(X)` | probe, z3 5.0.0: `Int('len(X)')` → `sat [len(X) = 4]` |
+| Python is the constraint | `exec` → `SyntaxError: cannot assign to function call here`; `eval` → `NameError: name 'len' is not defined` |
+| solver transport is Python source | `concolic_engine/solver.py` `check_satisfiability` / `solve_and_evaluate`; `concolic_engine/run.py:366-393` |
+| unparseable reads as **unsat** | `solver.py` returns `SolverResult(False, None, 0.0)` / `ModelResult("unsat", ...)` on parse failure; defended by `coverage.py:2367` tautology probe |
+| runtime mints `len(X)` | `ruby_runtime/list.rb:68`, `py_runtime/list_.py:94`; expr assembled at `ruby_runtime/int.rb:91` |
+| it is the **only** illegal shape | scan of `symbolic_vars[].name` over 600 dumps: sole non-identifier shape `*(*)`, 5,818 occurrences |
+| no `src/` semantic dependence on `SYM_LEN_` | all `src/` occurrences are docstrings or both-spellings regexes — table in §1.4 |
+| rename never existed in `src/` | `git log --all -S"SYM_LEN"` and `-S"fix_len_names"` in `src/.git`: **no commits** |
+| 48 copies, 15 distinct bodies | `grep -l "def fix_len_names"` over `reports`,`scripts`,`src`; md5 of each de-commented function body |
+| posts_show rewrites seed keys, notifications does not | the two live `fix_len_names` bodies, read side by side; `gate_canon.py:45-58` |
+| seeds are `len(`-spelled on disk | `comments_index/dump_anon_json_dse0001.json`: 3 of 18 seed keys `len(`-spelled, 14 `len(` vars |
+| summaries are `SYM_LEN_`-spelled | `notifications_index/coverage_summary.json`: 132,215 `SYM_LEN_`, 8 `len(` |
+| adding a `src/` module is hash-neutral | `concolic_engine/checkpoint.py:80-99` — `source_hash` digests only the `__file__` of modules passed to it, no transitive walk |
+| campaign costs | `_staged_20260914/NAME_BOUNDARY_STAGED.md` §E (measured on P26 v3) |
+| incident 1 (false PASS) | `assumption_checker.py:496-501` `canon()` docstring |
+| corpus counts | `find <endpoint> -name 'dump_*.json' | wc -l`, `du -sh` |
+
+---
+
+## 8. ADDENDUM (2026-09-14, after §1-§7) — owner selects **A**. Does it restart the probes?
+
+**Short answer: no — provided two shims land WITH it. And nothing would
+*force* a restart even if you got it wrong, which is the actual hazard.**
+
+### 8.1 Nothing in any checkpoint header sees this change
+
+`source_hash` is called at exactly three places in `assumption_checker.py`:
+
+| site | hashes |
+|---|---|
+| l.226 `_phase_keys` | `assumption_checker` + `concolic_engine.assumptions` |
+| l.1204 `ProbeCache.__init__` | `assumption_checker` only (plus `cfg`, `keep`, `phase`) |
+| l.396 `_canon_key()` | the **batch canonicalize hook's** module (`gate_canon`) |
+
+**None of them hashes `src/ruby_runtime/list.rb`, `src/py_runtime/list_.py`, or
+`concolic_targets.rb`.** So landing A changes what every future probe *means*
+while leaving every header identical — the banks are **silently reused**. This
+is staged fix **G**'s hole one layer deeper, and **G does not close it**: G keys
+on the Python-side hook, not on the runtime that produced the dump. If A lands,
+that gap should be closed in the same change (add the runtime + target-boundary
+source to `_canon_key`), or the silent-reuse mode simply moves.
+
+### 8.2 Why the banks nevertheless survive — the record is spelling-invariant
+
+A probe record is `{trace, trace_b, amap, exprs, outcomes, values}`. Taken
+field by field, against the **post-ingest** dump, not the on-disk one:
+
+| field | produced from | effect of A |
+|---|---|---|
+| `values` | the **loaded (post-hook)** dump — already `SYM_LEN_`-spelled today (staged §A.5 sampled 21,613 keys, **zero** `len(`) | **none** — A mints exactly what `fix_len_names` already produces |
+| `outcomes` | exprs through `canon()`, which maps `SYM_LEN_X -> len(X)` | **none** — canon absorbs it in both worlds |
+| `exprs` | same | **none** |
+| `amap` | `canonicalize_ordinals` | **none** — orthogonal boundary (§2.2) |
+| `trace`/`trace_b` | `access_trace` / `call_shape` over notes + arg shapes | **none** — does not read var names |
+
+**So the checker-side view of a dump is bit-identical before and after A.**
+Only the on-disk bytes change. `fix_len_names` simply becomes a no-op on new
+dumps and stays necessary for the ~1.0 M old ones — which is exactly the ingest
+shim §4/Option A already required.
+
+### 8.3 The one thing that genuinely breaks — and its single choke point
+
+Seeds. Verified today, `concolic_targets.rb:85-87`:
+
+```ruby
+def seed_for(var_name, default)
+  ConcolicTargets.seed_overrides.fetch(var_name, default)
+end
+```
+
+**Exact string match, silent fallback to `default` on a miss.** A probe launched
+from an *old* snapshot carries `len(X)`-spelled seeds; a *new* runtime would ask
+for `SYM_LEN_X`; `.fetch` misses; the seed is silently ignored. Every length seed
+in every existing seed file and snapshot becomes inert, with **no error** — the
+flip "does not take", which surfaces as NOT-TESTABLE at best.
+
+The good news is that this is **one function**. The `len(`-spelled seed keys
+enter through `seed_for("len(#{vn})", ...)` at `concolic_targets.rb:554` and
+`:647` (**9 such call sites across the six batches' `concolic_targets.rb`**).
+Making `seed_for` accept **both** spellings — try the asked key, then its
+sibling, then the default — decouples the mint change from any seed-file
+migration, and old seed files keep working against a new runtime.
+
+**Caveat, and it is a Rule T caveat:** `concolic_targets.rb` is the **shared
+target boundary**. Per `concolic-shared-target-boundary`, a boundary defect
+voids every endpoint and forces from-scratch regeneration. So this 3-line change
+is *governed*, not free — it must be made once, verbatim, across the shared
+boundary, and raised before it is made. That is the real cost of A, and it is
+larger than "2 lines in `src/`".
+
+### 8.4 What A actually costs, restated
+
+| item | cost |
+|---|---|
+| `ruby_runtime/list.rb:68`, `py_runtime/list_.py:94` | 2 lines, `src/` — raise first (source discipline) |
+| `seed_for` both-spellings shim | 3 lines, **shared target boundary — Rule T, raise first** |
+| Python ingest shim | already exists (`fix_len_names`); keep forever for the ~1.0 M old dumps. Best landed as the §5 Phase-1 single ingest module rather than 48 copies |
+| `_canon_key` extended to cover runtime + boundary source | ~3 lines — **do this in the same change or the silent-reuse mode just moves** |
+| **probe banks** | **no discard required** (§8.2), provided the `seed_for` shim lands with it |
+| **corpora** | **no regeneration** — ~1.0 M dumps stay readable through the shim |
+| **summaries / demand files** | unchanged — they are already in the minted spelling |
+
+### 8.5 Campaign timing — verified today
+
+* **`notifications_index` C29 — unaffected, no restart.** `_c27_coverage_report.py`
+  contains no runner invocation (no `run_dse`, `subprocess`, `popen`, `jruby`,
+  `system(`): it is a pure read over the existing corpus, which A does not touch.
+* **`posts_show` P32 — already at its natural discard point.** The gate took
+  SIGTERM at 19:14:05 and flushed **75,226 completed units** to
+  `_p32_regate_probes.ckpt.jsonl` plus 87 to `_p32_regate_derive.ckpt.jsonl`.
+  Whatever A costs posts_show, it costs it now rather than at 10-12 h of
+  re-probing later. **This is the cheapest window posts_show will get.**
+
+### 8.6 Revised recommendation, given A is chosen
+
+Land A, but **as one atomic change with its two shims and the `_canon_key`
+extension**, and land the Phase-1 ingest module (§5) *first* so the compatibility
+path is one function rather than 48:
+
+1. **Phase 1 unchanged and first** — single ingest module + the `concolic_seeds`
+   post-condition + the lint. Zero campaign risk (hash-neutral, §4.2). It is
+   what makes A's permanent shim maintainable.
+2. **Then A, atomically:** mint change (2 lines) + `seed_for` both-spellings
+   shim (shared boundary, **raise to the owner first**) + `_canon_key` extended
+   to hash the runtime and boundary sources.
+3. **Acceptance test, both directions**, mirroring staged §G's rule: (i) an old
+   snapshot replayed under the new runtime must honour its `len(`-spelled length
+   seeds — demonstrate a seed *taking*, not merely not erroring; (ii) editing
+   the runtime must now **discard** the bank. A key that only ever keeps the
+   bank is the loose failure wearing a new hash.
+4. **Do not skip (3.i).** It is the only check that distinguishes "seeds work"
+   from "seeds are silently defaulting" — and `.fetch(k, default)` makes those
+   two look identical from the outside.
+
+---
+
+## 9. IMPLEMENTED (2026-09-14) — what actually landed
+
+Owner instruction: *"A is the right option"*, then *"ok just fix this"*. Landed
+during a window in which **nothing heavy was running** — the P32 gate had
+already taken SIGTERM at 19:14:05 (75,226 units flushed, resumable) and the
+C29 coverage pass had finished. Verified before touching anything.
+
+### 9.1 The mint — four sites, not two
+
+The plan said two mint sites. There are **four**: `dict` as well as `list`, in
+both runtimes. All four now route through **one** function per runtime:
+
+| file | change |
+|---|---|
+| `src/ruby_runtime/base.rb` | **new** `SymbolicVar.len_var_name(name)` + `LEN_PREFIX = "SYM_LEN_"`, with the full rationale |
+| `src/ruby_runtime/list.rb` | mints via `SymbolicVar.len_var_name`; doc comments updated |
+| `src/ruby_runtime/dict.rb` | same |
+| `src/py_runtime/base.py` | **new** `len_var_name()` + `LEN_PREFIX`, mirroring Ruby exactly |
+| `src/py_runtime/list_.py` | mints via `len_var_name`; doc comment updated |
+| `src/py_runtime/dict_.py` | same |
+
+`grep 'len(#{'` over `ruby_runtime/` and `f"len({'` over `py_runtime/` now
+return nothing. Both runtimes mint `SYM_LEN_X` — **exactly what
+`fix_len_names` already produced**, so every existing `coverage_summary.json`,
+demand file and probe bank stays valid (§8.2).
+
+### 9.2 The seed shim — the half that makes it safe
+
+`seed_for` matches exactly and falls back to `default` **silently**, so
+without this every pre-rename seed would go quietly inert. Added to **all 8**
+`concolic_targets.rb` copies, byte-identical (Rule T):
+
+* `SEED_MISS` sentinel — keeps "seeded with `nil`/`false`" distinct from "not
+  seeded", which `fetch(k, default)` got right and a naive rewrite loses.
+* `length_var?`, `seed_aliases`, `seed_lookup` — both spellings accepted,
+  **asked-for spelling always wins**, sibling consulted only on a miss.
+* `seed_for` rewritten in each of its **three** pre-existing variants,
+  preserving each: standard, `seeds_used` bookkeeping (conversations_index),
+  and suffix-seeding (notifications_index).
+* The 11 `seed_for("len(#{vn})", 1)` call sites now ask
+  `seed_for(SymbolicVar.len_var_name(vn), 1)` — tied to the single source of
+  truth rather than re-spelling the name by hand.
+
+**One behaviour change was found and deliberately suppressed.** Under the old
+spelling a length name ended with `)`, so a suffix seed could never match one.
+`SYM_LEN_X_rows` ends with a bare suffix and **would** start matching,
+silently widening what a suffix seed captures. The suffix loop now skips
+length vars, preserving pre-rename behaviour exactly. Suffix-seeding a
+cardinality dimension is a separate decision, not a side effect of a rename.
+
+### 9.3 The single ingest point + the lint
+
+`src/concolic_engine/dump_ingest.py` — `fix_len_names`, `canonicalize_ordinals`,
+`normalize`, `load`, `check_invariants`. Guarantees, **asserted not documented**:
+
+1. `concolic_seeds` is **never** rewritten, and is preserved verbatim under
+   `RAW_SEEDS_KEY` (same key/meaning as `assumption_checker`'s, so a dump
+   normalised here satisfies `seeds_as_written`).
+2. A dump whose seeds were rewritten, or that holds one variable under both
+   spellings, raises `MixedSpelling` — the half-converted state of §3.1.
+3. The rename is idempotent and total, so **old and new dumps normalise to the
+   same text**. This is the mixed-corpus invariant: without it one program
+   path would split into two signatures and the execution tree would silently
+   double.
+
+**Correction to §4/Option A:** the plan's proposed invariant *"no `SYM_LEN_`
+key in `concolic_seeds`"* is **wrong now** — under the new runtime seeds are
+legitimately `SYM_LEN_`-spelled. The implemented invariant is the one that
+actually holds in both worlds: *the ingest must not rewrite seeds at all.*
+
+### 9.4 Tests
+
+| suite | result |
+|---|---|
+| `src/test_name_boundary_seed.rb` (**new**, 14 tests) | 14 pass |
+| `src/test_dump_ingest.py` (**new**, 22 tests) | 22 pass |
+| `src/test_ruby_runtime.rb` | 65 pass (was 60 pass / 5 fail) |
+| `ruby_runtime/test_list_rep.rb` | pass |
+| `src/test_symbolic.py`, `py_runtime/test_list_rep.py` | 36 pass |
+
+The 5 `test_ruby_runtime.rb` failures were the old-dialect assertions, updated
+to the new spelling — plus the **property** is now pinned (`assert_match
+/\A[A-Za-z_][A-Za-z0-9_]*\z/`), so a future rename cannot regress it silently.
+
+The acceptance test of §8.6(3.i) is
+`TestLegacySeedsStillTake#test_old_spelling_seed_is_honoured_by_a_new_spelling_lookup`
+— and it asserts the **value that came back**, never merely the absence of an
+error, because `.fetch(k, default)` makes "the seed works" and "the seed is
+quietly defaulting" look identical from outside.
+
+`TestNoHandRolledCopies` is the lint. It is **proven to fire** (it caught a
+miscount of 62 vs a budget of 61 on first run, which is how the symlink
+double-count below was found). Budget **60**, the measured baseline; it may
+only go down as batches adopt `dump_ingest`.
+
+### 9.5 Findings made during implementation
+
+* **Four mint sites, not two** — `dict.rb` / `dict_.py` were missed by the
+  plan's survey.
+* **`reports/` contains symlinked directories.** The first lint counted 62
+  copies where `grep` counted 60: one file reached by two paths. The lint now
+  dedupes by real path. Any future census of `reports/` should do the same —
+  the earlier §4.1 figures (48 definitions / 150 files) are file-list counts
+  and are **one symlinked duplicate high**. True distinct: **47 files, 60
+  definitions** (13 `canonicalize_ordinals` + 47 `fix_len_names`).
+* **`concolic_engine/__init__.py` imports `run`/`solver`/`coverage`/
+  `assumptions` eagerly**, so importing *any* submodule drags Z3 in. This
+  defeats `names.py`'s docstring claim that it is "safe to import from
+  anywhere, including from scripts that must not drag Z3 in" — that claim is
+  **false today**. `dump_ingest`'s lazy import of `assumptions` is discipline,
+  not yet a saving. Slimming that `__init__` is a separate, easy win.
+* **Three pre-existing `seed_for` variants** across the eight supposedly
+  verbatim-shared boundary copies (standard, `seeds_used`, suffix-seeding),
+  each with a recorded reason. Preserved, not flattened — but worth knowing
+  that the "verbatim shared boundary" is already not verbatim.
+  `TestTargetBoundaryIsVerbatimShared` now pins the *shim* as identical across
+  all eight, which is the part that must not drift.
+
+### 9.6 NOT done — deliberately, and what it leaves open
+
+* **`_canon_key()` does not hash the runtime or the target boundary** (§8.1).
+  It remains possible to change how dumps are minted and have every probe bank
+  silently reused. **This is the one hole this change leaves open**, and it is
+  now slightly wider, because the runtime is a thing that can change. Closing
+  it means editing `assumption_checker.py`, which is frozen at md5
+  `5ae1b13c` and costs a full probe rebuild — so it belongs with the next
+  batched edit (staged §E/§G), not here.
+* **No batch converted to `dump_ingest` yet.** The 60 copies still run; the
+  module and the lint's descending budget are what retire them, at each
+  batch's own restart (§5 Phase 2).
+* **No corpus regenerated, no summary rewritten, no probe bank discarded.**
+  None is required (§8.2).
+* **`assumption_checker.py` untouched** — verified md5 `5ae1b13c` after the
+  change.
+
+### 9.7 A gap found AFTER the runtime fix looked complete
+
+Fixing the runtimes is **not sufficient**, and this is the most transferable
+finding of the whole exercise.
+
+A batch's wall mocks can mint a length variable **themselves**, bypassing
+`len_var_name` entirely. Two such sites existed in
+`results3/notifications_index/targets.rb`:
+
+```ruby
+aln   = "len(#{abase}_rows)"          # l.749 — hand-built, then symint(aln, ...)
+len_v = symint("len(#{vn})", len_n, note: sql)   # l.1010
+```
+
+A hand-built name is a legal Z3 symbol and an **illegal Python identifier**, so
+it silently reintroduces the dialect — and `solver.py` reads the resulting
+declaration as **UNSAT**, i.e. as *"infeasible"*, the direction that
+manufactures a false completeness claim. Both now mint through
+`SymbolicVar.len_var_name`; verified resolvable from the nested module context
+they sit in, and the file's syntax re-checked.
+
+`test_dump_ingest.TestNoHandRolledCopies.test_no_live_batch_mints_a_hand_built_length_name`
+now forbids the class across every live `.rb` under `reports/`, excluding the
+frozen `results2/` and `results/` trees and `_bak_*` snapshots (records, never
+executed). **It is proven to fire** — it found these two, then four more
+offenders that turned out to be backups, which is how the exclusion list was
+derived rather than guessed.
+
+The 11 remaining `ct.seed_for("len(#{vn})", 1)` **lookups** in results3
+`targets.rb` are deliberately left asking in the old spelling: existing seed
+files are `len(`-keyed, so that is a direct hit rather than an aliased one, and
+the shim covers the other direction. They are lookups, not mints — no dump
+content depends on them.
+
+### 9.8 Final state
+
+| check | result |
+|---|---|
+| `assumption_checker.py` md5 | **`5ae1b13c`** — unchanged |
+| campaigns disturbed | none — both had already finished/exited before any edit |
+| corpora regenerated | none |
+| probe banks discarded | none |
+| runtimes minting a Python-illegal name | none (`grep` clean in both) |
+| live batches minting one by hand | none (lint enforces) |
+| new tests | 37 (14 Ruby + 23 Python), all green |
+| end-to-end proof | old mint `sat=False`; new mint `sat=True`; old dump via `dump_ingest` `sat=True` with seeds preserved |
+
+### 9.9 The DSE runners — found by asking "is this only a src/ change?"
+
+**It was not.** `run_dse.rb` decides how to flip a branch by matching the path
+condition's **expression text**, and five of the six runners matched only the
+OLD spelling:
+
+```ruby
+if (m = /\A\(len\((.+)\) != 0\)\z/m.match(s))        # posts_show:286
+   /\A\(len\((.+)\) (<=|>=|==|!=|<|>) (-?\d+)\)\z/m   # people_show:496
+   /\A\((len\(.+\)) > 1\)\z/m                        # comments_index:467
+```
+
+(`notifications_index:332` already accepted both — someone hit this before.)
+
+All five now normalise on the way in via a `canon_len` helper, so the matchers
+stay written in one spelling and seed keys stay `len(...)`-spelled (which
+`seed_for` accepts either way). **Differential, every runner × every length
+operator, old vs new spelling: 11/11 MATCH.**
+
+**Measured severity, and it is LESS than I first said.** I called this
+"campaign-breaking" before measuring. Replaying the pre-fix runners against the
+new spelling:
+
+| outcome | endpoints | actually broken? |
+|---|---|---|
+| generic `(VAR op LIT)` matcher caught it, emitting a `SYM_LEN_X`-keyed seed | all five, most operators | **No** — `seed_for` asks `SYM_LEN_X` and the shim hits it directly. Semantics (incl. `want_taken`) verified identical. |
+| no matcher at all -> `nil`, decision **unflippable** | `comments_index` `(len(X) > 1)` | **Yes** — the "two or more" cardinality decision would silently stop being explored |
+| old was already `nil`, new produces a seed | `posts_show` `== 0`, `people_stream` `> 1` | No — an improvement, not a regression |
+
+So the genuine breakage was **one endpoint, one operator**. The rest was
+rescued by the `seed_for` shim, which turns out to have been load-bearing in a
+way §9.2 did not anticipate: without it, every "wrong key" row above would
+have failed silently. The runner fix is still correct and still worth having —
+it makes the runners spelling-independent rather than accidentally saved.
+
+**Two harness errors made during this check, recorded because both pointed the
+reassuring way at first:**
+
+* A mutation test reported "TEST HAS NO TEETH". False — it broke the
+  `len(->SYM_LEN_` branch while the test exercises `SYM_LEN_->len(`. Per-branch
+  retest: both caught.
+* A shell `sed` with a greedy `.*` rewrote `(len(ROWS) != 0)` into the
+  malformed `(SYM_LEN_ROWS) != 0`, which made the FIXED runners look broken.
+  Redone in Ruby.
+
+Neither changed a product conclusion, but both produced a confident wrong
+number first. Substitutions over expression text are exactly what this whole
+document is about; doing them by hand in a shell is the same mistake one level
+out.
+
+### 9.10 Experiment-side work still outstanding
+
+`src/` is done. The experiment is not:
+
+| item | state |
+|---|---|
+| 8 × `concolic_targets.rb` seed shim | **done** |
+| `notifications_index/targets.rb` hand-built mints (2) | **done** |
+| 5 × `run_dse.rb` flip matchers | **done** |
+| 60 hand-rolled `fix_len_names`/`canonicalize_ordinals` -> `dump_ingest` | **not started** — the live defect (posts_show rewrites seed keys, notifications does not) is still in place |
+| `coverage_report.py` / `gate_canon.py` per batch | not started — one probe bank each, at each batch's restart |
+| `_canon_key()` extended to hash runtime + boundary | not done — needs the frozen checker |
+| a real DSE round through JRuby confirming a live dump is `SYM_LEN_`-named and a live old seed file takes | **not run** |
+
+The last row is the one I would do before trusting any of this on a campaign.
+Everything above it is verified only by unit tests and extracted-source
+differentials.

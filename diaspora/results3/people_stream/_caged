@@ -1,0 +1,24 @@
+#!/bin/bash
+# Coordinator directive 2026-09-11 (+ its correction): EVERY job this endpoint
+# launches runs inside the shared cage (concolic-cov.slice) with its own
+# MemoryMax cap AND oom_score_adj 1000, so an overrun is cgroup-killed and can
+# never take the session with it.
+#
+# `-p OOMScoreAdjust=1000` is REJECTED on this systemd ("Unknown assignment") —
+# it is an exec property and a SCOPE has no exec context. `choom -n 1000 --`
+# inside the scope sets it on the payload, which the whole tree inherits.
+#   usage: _caged <cap e.g. 2G> <command...>
+CAP="$1"; shift
+# UNIFIED MEMORY RULE (coordinator, 2026-09-11): any job >= 1 GB waits until
+# BOTH `free -g` (available) >= 4 AND (8G - slice MemoryCurrent) >= its own cap,
+# polled every 30 s, and LOGS the two numbers at launch. Applied here so it
+# cannot be forgotten at a call site. Caps under 1 GB skip the wait.
+_capg=$(printf '%s' "$CAP" | sed 's/[Gg]$//; s/\([0-9]*\)[Mm]$/\1/')
+case "$CAP" in
+  *M|*m) _capg=$(( _capg / 1024 )) ;;
+esac
+if [ "${_capg:-0}" -ge 1 ]; then
+  "$(dirname "$0")/_memwait" "${_capg}" "${MEMWAIT_TIMEOUT:-21600}" || exit 1
+fi
+exec systemd-run --user --slice=concolic-cov.slice --scope -p MemoryMax="$CAP" \
+     choom -n 1000 -- "$@"

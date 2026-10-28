@@ -1,0 +1,203 @@
+
+##### count_matrix #####
+judging runs:
+  /home/dev/project/reports/diaspora/results3/notifications_index/concrete_run.json :: notifications-index-auth-req0  (42 statements, 27 shapes)
+  /home/dev/project/reports/diaspora/results3/notifications_index/concrete_run.json :: notifications-index-auth-req1  (23 statements, 19 shapes)
+  /home/dev/project/reports/diaspora/results3/notifications_index/concrete_run.json :: notifications-index-auth-req2  (21 statements, 15 shapes)
+  /home/dev/project/reports/diaspora/results3/notifications_index/concrete_run.json :: notifications-index-auth-req3  (11 statements, 10 shapes)
+  /home/dev/project/reports/diaspora/results3/notifications_index/concrete_run.json :: notifications-index-links-req0  (29 statements, 22 shapes)
+  /home/dev/project/reports/diaspora/results3/notifications_index/concrete_run.json :: notifications-index-links-req1  (21 statements, 16 shapes)
+  /home/dev/project/reports/diaspora/results3/notifications_index/concrete_run.json :: notifications-index-mobile-req0  (35 statements, 22 shapes)
+  /home/dev/project/reports/diaspora/results3/notifications_index/concrete_run.json :: notifications-index-mobile-req1  (29 statements, 20 shapes)
+  /home/dev/project/reports/diaspora/results3/notifications_index/concrete_run.json :: notifications-index-pages-req0  (21 statements, 19 shapes)
+  /home/dev/project/reports/diaspora/results3/notifications_index/concrete_run.json :: notifications-index-pages-req1  (21 statements, 19 shapes)
+  /home/dev/project/reports/diaspora/results3/notifications_index/concrete_run.json :: notifications-index-pages-req2  (14 statements, 13 shapes)
+  /home/dev/project/reports/diaspora/results3/notifications_index/concrete_run.json :: notifications-index-pages-req3  (13 statements, 13 shapes)
+  /home/dev/project/reports/diaspora/results3/notifications_index/concrete_run.json :: notifications-index-photo-req0  (31 statements, 22 shapes)
+  /home/dev/project/reports/diaspora/results3/notifications_index/concrete_run.json :: notifications-index-photo-req1  (23 statements, 16 shapes)
+
+corpus POPULATION: 313977 dump files (whole corpus, no sampling)
+corpus variants: {'html_plain': 73826, 'html_typed': 66833, 'json_plain': 41429, 'json_typed': 27070, 'mobile_plain': 38948, 'mobile_typed': 32405, 'xml_plain': 33466}
+corpus distinct SQL shapes: 48
+
+== PRESENCE (global: the WHOLE corpus vs the union of all ground-truth runs) ==
+   ground-truth distinct shapes: 38   MISSING FROM CORPUS: 0
+
+   corpus shapes with NO ground-truth counterpart: 10   (over-emission candidates; a shape only some scenario issues is not one)
+     EXTRA    x48239   SELECT "comments".* FROM "comments" WHERE "comments"."id" = ? LIMIT ?
+     EXTRA    x45228   SELECT "mentions".* FROM "mentions" WHERE "mentions"."id" IN (?)
+     EXTRA    x61177   SELECT "notifications".* FROM "notifications" WHERE "notifications"."recipient_id" = ? AND "notifications"."type" = ? AND "notifications"."unread" = ?
+     EXTRA    x82961   SELECT "notifications".* FROM "notifications" WHERE "notifications"."recipient_id" = ? AND "notifications"."unread" = ? ORDER BY updated_at desc LIMIT
+     EXTRA    x7229    SELECT "people".* FROM "people" WHERE "people"."diaspora_handle" = ? LIMIT ?
+     EXTRA    x8272    SELECT "photos".* FROM "photos" WHERE "photos"."id" IN (?)
+     EXTRA    x22335   SELECT "photos".* FROM "photos" WHERE "photos"."status_message_guid" = ? AND (?=?)
+     EXTRA    x44994   SELECT "tag_followings".* FROM "tag_followings" WHERE "tag_followings"."user_id" = ?
+     EXTRA    x61177   SELECT COUNT(*) FROM "notifications" WHERE "notifications"."recipient_id" = ? AND "notifications"."type" = ? AND "notifications"."unread" = ?
+     EXTRA    x9141    SELECT COUNT(*) FROM "reports" WHERE "reports"."reviewed" = ?
+
+== MULTIPLICITY (scoped; corpus MAX per dump vs the run's count) ==
+
+-- concrete_run.json::notifications-index-auth-req0 --
+   corpus variants compared: ['json_plain', 'json_typed']
+   shapes judged: 27   UNDER: 15   OVER: 1
+     UNDER corpus_max=0 real=2  SELECT "aspect_memberships".* FROM "aspect_memberships" WHERE "aspect_memberships"."contact_id" = ?
+     UNDER corpus_max=0 real=2  SELECT "aspects".* FROM "aspects" WHERE "aspects"."id" = ? LIMIT ?
+     UNDER corpus_max=0 real=1  SELECT "aspects".* FROM "aspects" WHERE "aspects"."user_id" = ? ORDER BY order_id ASC
+     UNDER corpus_max=0 real=1  SELECT "blocks".* FROM "blocks" WHERE "blocks"."user_id" = ? AND "blocks"."person_id" = ? LIMIT ?
+     UNDER corpus_max=0 real=2  SELECT "contacts".* FROM "contacts" WHERE "contacts"."user_id" = ? AND "contacts"."person_id" = ? LIMIT ?
+     UNDER corpus_max=1 real=2  SELECT "mentions".* FROM "mentions" WHERE "mentions"."mentions_container_id" = ? AND "mentions"."mentions_container_type" = ?
+     UNDER corpus_max=3 real=6  SELECT "people".* FROM "people" WHERE "people"."id" = ?
+     UNDER corpus_max=2 real=5  SELECT "profiles".* FROM "profiles" WHERE "profiles"."person_id" = ?
+     UNDER corpus_max=0 real=1  SELECT "services".* FROM "services" WHERE "services"."user_id" = ?
+     UNDER corpus_max=0 real=1  SELECT "tags"."name" FROM "tags" INNER JOIN "taggings" ON "tags"."id" = "taggings"."tag_id" WHERE "taggings"."taggable_id" = ? AND "taggings
+     UNDER corpus_max=0 real=1  SELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?
+     UNDER corpus_max=0 real=1  SELECT ? AS one FROM "roles" WHERE "roles"."name" IN (?) AND "roles"."person_id" = ? LIMIT ?
+     UNDER corpus_max=0 real=1  SELECT ? AS one FROM "roles" WHERE "roles"."person_id" = ? AND "roles"."name" = ? LIMIT ?
+     UNDER corpus_max=0 real=1  SELECT COUNT(*) FROM "contacts" WHERE "contacts"."user_id" = ? AND "contacts"."receiving" = ?
+     UNDER corpus_max=0 real=1  SELECT SUM("conversation_visibilities"."unread") FROM "conversation_visibilities" WHERE "conversation_visibilities"."person_id" = ?
+     OVER  corpus_max=2 real=1  SELECT "people".* FROM "people" WHERE "people"."id" = ? LIMIT ?
+
+-- concrete_run.json::notifications-index-auth-req1 --
+   corpus variants compared: ['json_plain', 'json_typed']
+   shapes judged: 19   UNDER: 6   OVER: 2
+     UNDER corpus_max=0 real=1  SELECT "aspects".* FROM "aspects" WHERE "aspects"."user_id" = ? ORDER BY order_id ASC
+     UNDER corpus_max=0 real=1  SELECT "services".* FROM "services" WHERE "services"."user_id" = ?
+     UNDER corpus_max=0 real=1  SELECT ? AS one FROM "roles" WHERE "roles"."name" IN (?) AND "roles"."person_id" = ? LIMIT ?
+     UNDER corpus_max=0 real=1  SELECT ? AS one FROM "roles" WHERE "roles"."person_id" = ? AND "roles"."name" = ? LIMIT ?
+     UNDER corpus_max=0 real=1  SELECT COUNT(*) FROM "contacts" WHERE "contacts"."user_id" = ? AND "contacts"."receiving" = ?
+     UNDER corpus_max=0 real=1  SELECT SUM("conversation_visibilities"."unread") FROM "conversation_visibilities" WHERE "conversation_visibilities"."person_id" = ?
+     OVER  corpus_max=3 real=2  SELECT "people".* FROM "people" WHERE "people"."id" = ?
+     OVER  corpus_max=2 real=1  SELECT "people".* FROM "people" WHERE "people"."id" = ? LIMIT ?
+
+-- concrete_run.json::notifications-index-auth-req2 --
+   corpus variants compared: ['json_plain', 'json_typed']
+   shapes judged: 15   UNDER: 3   OVER: 3
+     UNDER corpus_max=1 real=2  SELECT "mentions".* FROM "mentions" WHERE "mentions"."mentions_container_id" = ? AND "mentions"."mentions_container_type" = ?
+     UNDER corpus_max=3 real=4  SELECT "people".* FROM "people" WHERE "people"."id" = ?
+     UNDER corpus_max=2 real=3  SELECT "profiles".* FROM "profiles" WHERE "profiles"."person_id" = ?
+     OVER  corpus_max=2 real=1  SELECT "people".* FROM "people" WHERE "people"."id" = ? LIMIT ?
+     OVER  corpus_max=2 real=1  SELECT "profiles".* FROM "profiles" WHERE "profiles"."person_id" = ? LIMIT ?
+     OVER  corpus_max=2 real=1  SELECT COUNT(*) FROM "notifications" WHERE "notifications"."recipient_id" = ? AND "notifications"."unread" = ?
+
+-- concrete_run.json::notifications-index-auth-req3 --
+   corpus variants compared: ['json_plain', 'json_typed']
+   shapes judged: 10   UNDER: 0   OVER: 3
+     OVER  corpus_max=3 real=2  SELECT "people".* FROM "people" WHERE "people"."id" = ?
+     OVER  corpus_max=2 real=1  SELECT "profiles".* FROM "profiles" WHERE "profiles"."person_id" = ?
+     OVER  corpus_max=2 real=1  SELECT COUNT(*) FROM "notifications" WHERE "notifications"."recipient_id" = ? AND "notifications"."unread" = ?
+
+-- concrete_run.json::notifications-index-links-req0 --
+   corpus variants compared: ['json_plain', 'json_typed']
+   shapes judged: 22   UNDER: 7   OVER: 2
+     UNDER corpus_max=0 real=1  SELECT "aspects".* FROM "aspects" WHERE "aspects"."user_id" = ? ORDER BY order_id ASC
+     UNDER corpus_max=1 real=2  SELECT "mentions".* FROM "mentions" WHERE "mentions"."mentions_container_id" = ? AND "mentions"."mentions_container_type" = ?
+     UNDER corpus_max=0 real=1  SELECT "services".* FROM "services" WHERE "services"."user_id" = ?
+     UNDER corpus_max=0 real=1  SELECT ? AS one FROM "roles" WHERE "roles"."name" IN (?) AND "roles"."person_id" = ? LIMIT ?
+     UNDER corpus_max=0 real=1  SELECT ? AS one FROM "roles" WHERE "roles"."person_id" = ? AND "roles"."name" = ? LIMIT ?
+     UNDER corpus_max=0 real=1  SELECT COUNT(*) FROM "contacts" WHERE "contacts"."user_id" = ? AND "contacts"."receiving" = ?
+     UNDER corpus_max=0 real=1  SELECT SUM("conversation_visibilities"."unread") FROM "conversation_visibilities" WHERE "conversation_visibilities"."person_id" = ?
+     OVER  corpus_max=3 real=2  SELECT "people".* FROM "people" WHERE "people"."id" = ?
+     OVER  corpus_max=2 real=1  SELECT "people".* FROM "people" WHERE "people"."id" = ? LIMIT ?
+
+-- concrete_run.json::notifications-index-links-req1 --
+   corpus variants compared: ['json_plain', 'json_typed']
+   shapes judged: 16   UNDER: 1   OVER: 4
+     UNDER corpus_max=1 real=2  SELECT "mentions".* FROM "mentions" WHERE "mentions"."mentions_container_id" = ? AND "mentions"."mentions_container_type" = ?
+     OVER  corpus_max=3 real=2  SELECT "people".* FROM "people" WHERE "people"."id" = ?
+     OVER  corpus_max=2 real=1  SELECT "people".* FROM "people" WHERE "people"."id" = ? LIMIT ?
+     OVER  corpus_max=2 real=1  SELECT "profiles".* FROM "profiles" WHERE "profiles"."person_id" = ? LIMIT ?
+     OVER  corpus_max=2 real=1  SELECT COUNT(*) FROM "notifications" WHERE "notifications"."recipient_id" = ? AND "notifications"."unread" = ?
+
+-- concrete_run.json::notifications-index-mobile-req0 --
+   corpus variants compared: ['mobile_plain', 'mobile_typed']
+   shapes judged: 22   UNDER: 3   OVER: 4
+     UNDER corpus_max=1 real=2  SELECT "mentions".* FROM "mentions" WHERE "mentions"."mentions_container_id" = ? AND "mentions"."mentions_container_type" = ?
+     UNDER corpus_max=3 real=4  SELECT "people".* FROM "people" WHERE "people"."id" = ?
+     UNDER corpus_max=2 real=3  SELECT "profiles".* FROM "profiles" WHERE "profiles"."person_id" = ?
+     OVER  corpus_max=2 real=1  SELECT "people".* FROM "people" WHERE "people"."id" = ? LIMIT ?
+     OVER  corpus_max=3 real=2  SELECT "profiles".* FROM "profiles" WHERE "profiles"."person_id" = ? LIMIT ?
+     OVER  corpus_max=5 real=4  SELECT COUNT(*) FROM "notifications" WHERE "notifications"."recipient_id" = ? AND "notifications"."unread" = ?
+     OVER  corpus_max=3 real=2  SELECT SUM("conversation_visibilities"."unread") FROM "conversation_visibilities" WHERE "conversation_visibilities"."person_id" = ?
+
+-- concrete_run.json::notifications-index-mobile-req1 --
+   corpus variants compared: ['mobile_plain', 'mobile_typed']
+   shapes judged: 20   UNDER: 0   OVER: 5
+     OVER  corpus_max=3 real=2  SELECT "people".* FROM "people" WHERE "people"."id" = ?
+     OVER  corpus_max=2 real=1  SELECT "people".* FROM "people" WHERE "people"."id" = ? LIMIT ?
+     OVER  corpus_max=3 real=2  SELECT "profiles".* FROM "profiles" WHERE "profiles"."person_id" = ? LIMIT ?
+     OVER  corpus_max=5 real=4  SELECT COUNT(*) FROM "notifications" WHERE "notifications"."recipient_id" = ? AND "notifications"."unread" = ?
+     OVER  corpus_max=3 real=2  SELECT SUM("conversation_visibilities"."unread") FROM "conversation_visibilities" WHERE "conversation_visibilities"."person_id" = ?
+
+-- concrete_run.json::notifications-index-pages-req0 --
+   corpus variants compared: ['json_plain', 'json_typed']
+   shapes judged: 19   UNDER: 6   OVER: 3
+     UNDER corpus_max=0 real=1  SELECT "aspects".* FROM "aspects" WHERE "aspects"."user_id" = ? ORDER BY order_id ASC
+     UNDER corpus_max=0 real=1  SELECT "services".* FROM "services" WHERE "services"."user_id" = ?
+     UNDER corpus_max=0 real=1  SELECT ? AS one FROM "roles" WHERE "roles"."name" IN (?) AND "roles"."person_id" = ? LIMIT ?
+     UNDER corpus_max=0 real=1  SELECT ? AS one FROM "roles" WHERE "roles"."person_id" = ? AND "roles"."name" = ? LIMIT ?
+     UNDER corpus_max=0 real=1  SELECT COUNT(*) FROM "contacts" WHERE "contacts"."user_id" = ? AND "contacts"."receiving" = ?
+     UNDER corpus_max=0 real=1  SELECT SUM("conversation_visibilities"."unread") FROM "conversation_visibilities" WHERE "conversation_visibilities"."person_id" = ?
+     OVER  corpus_max=2 real=1  SELECT "people".* FROM "people" WHERE "people"."id" = ? LIMIT ?
+     OVER  corpus_max=5 real=1  SELECT "people".* FROM "people" WHERE "people"."id" IN (?)
+     OVER  corpus_max=2 real=1  SELECT "profiles".* FROM "profiles" WHERE "profiles"."person_id" IN (?)
+
+-- concrete_run.json::notifications-index-pages-req1 --
+   corpus variants compared: ['json_plain', 'json_typed']
+   shapes judged: 19   UNDER: 6   OVER: 3
+     UNDER corpus_max=0 real=1  SELECT "aspects".* FROM "aspects" WHERE "aspects"."user_id" = ? ORDER BY order_id ASC
+     UNDER corpus_max=0 real=1  SELECT "services".* FROM "services" WHERE "services"."user_id" = ?
+     UNDER corpus_max=0 real=1  SELECT ? AS one FROM "roles" WHERE "roles"."name" IN (?) AND "roles"."person_id" = ? LIMIT ?
+     UNDER corpus_max=0 real=1  SELECT ? AS one FROM "roles" WHERE "roles"."person_id" = ? AND "roles"."name" = ? LIMIT ?
+     UNDER corpus_max=0 real=1  SELECT COUNT(*) FROM "contacts" WHERE "contacts"."user_id" = ? AND "contacts"."receiving" = ?
+     UNDER corpus_max=0 real=1  SELECT SUM("conversation_visibilities"."unread") FROM "conversation_visibilities" WHERE "conversation_visibilities"."person_id" = ?
+     OVER  corpus_max=3 real=1  SELECT "people".* FROM "people" WHERE "people"."id" = ?
+     OVER  corpus_max=2 real=1  SELECT "people".* FROM "people" WHERE "people"."id" = ? LIMIT ?
+     OVER  corpus_max=2 real=1  SELECT "profiles".* FROM "profiles" WHERE "profiles"."person_id" = ?
+
+-- concrete_run.json::notifications-index-pages-req2 --
+   corpus variants compared: ['json_plain', 'json_typed']
+   shapes judged: 13   UNDER: 6   OVER: 1
+     UNDER corpus_max=0 real=1  SELECT "aspects".* FROM "aspects" WHERE "aspects"."user_id" = ? ORDER BY order_id ASC
+     UNDER corpus_max=0 real=1  SELECT "services".* FROM "services" WHERE "services"."user_id" = ?
+     UNDER corpus_max=0 real=1  SELECT ? AS one FROM "roles" WHERE "roles"."name" IN (?) AND "roles"."person_id" = ? LIMIT ?
+     UNDER corpus_max=0 real=1  SELECT ? AS one FROM "roles" WHERE "roles"."person_id" = ? AND "roles"."name" = ? LIMIT ?
+     UNDER corpus_max=0 real=1  SELECT COUNT(*) FROM "contacts" WHERE "contacts"."user_id" = ? AND "contacts"."receiving" = ?
+     UNDER corpus_max=0 real=1  SELECT SUM("conversation_visibilities"."unread") FROM "conversation_visibilities" WHERE "conversation_visibilities"."person_id" = ?
+     OVER  corpus_max=2 real=1  SELECT "profiles".* FROM "profiles" WHERE "profiles"."person_id" = ? LIMIT ?
+
+-- concrete_run.json::notifications-index-pages-req3 --
+   corpus variants compared: ['json_plain', 'json_typed']
+   shapes judged: 13   UNDER: 0   OVER: 5
+     OVER  corpus_max=3 real=1  SELECT "people".* FROM "people" WHERE "people"."id" = ?
+     OVER  corpus_max=2 real=1  SELECT "people".* FROM "people" WHERE "people"."id" = ? LIMIT ?
+     OVER  corpus_max=2 real=1  SELECT "profiles".* FROM "profiles" WHERE "profiles"."person_id" = ?
+     OVER  corpus_max=2 real=1  SELECT "profiles".* FROM "profiles" WHERE "profiles"."person_id" = ? LIMIT ?
+     OVER  corpus_max=2 real=1  SELECT COUNT(*) FROM "notifications" WHERE "notifications"."recipient_id" = ? AND "notifications"."unread" = ?
+
+-- concrete_run.json::notifications-index-photo-req0 --
+   corpus variants compared: ['json_plain', 'json_typed']
+   shapes judged: 22   UNDER: 9   OVER: 2
+     UNDER corpus_max=0 real=1  SELECT "aspects".* FROM "aspects" WHERE "aspects"."user_id" = ? ORDER BY order_id ASC
+     UNDER corpus_max=1 real=2  SELECT "mentions".* FROM "mentions" WHERE "mentions"."mentions_container_id" = ? AND "mentions"."mentions_container_type" = ?
+     UNDER corpus_max=2 real=4  SELECT "people".* FROM "people" WHERE "people"."id" = ? LIMIT ?
+     UNDER corpus_max=2 real=5  SELECT "profiles".* FROM "profiles" WHERE "profiles"."person_id" = ? LIMIT ?
+     UNDER corpus_max=0 real=1  SELECT "services".* FROM "services" WHERE "services"."user_id" = ?
+     UNDER corpus_max=0 real=1  SELECT ? AS one FROM "roles" WHERE "roles"."name" IN (?) AND "roles"."person_id" = ? LIMIT ?
+     UNDER corpus_max=0 real=1  SELECT ? AS one FROM "roles" WHERE "roles"."person_id" = ? AND "roles"."name" = ? LIMIT ?
+     UNDER corpus_max=0 real=1  SELECT COUNT(*) FROM "contacts" WHERE "contacts"."user_id" = ? AND "contacts"."receiving" = ?
+     UNDER corpus_max=0 real=1  SELECT SUM("conversation_visibilities"."unread") FROM "conversation_visibilities" WHERE "conversation_visibilities"."person_id" = ?
+     OVER  corpus_max=3 real=1  SELECT "people".* FROM "people" WHERE "people"."id" = ?
+     OVER  corpus_max=2 real=1  SELECT "profiles".* FROM "profiles" WHERE "profiles"."person_id" = ?
+
+-- concrete_run.json::notifications-index-photo-req1 --
+   corpus variants compared: ['json_plain', 'json_typed']
+   shapes judged: 16   UNDER: 3   OVER: 3
+     UNDER corpus_max=1 real=2  SELECT "mentions".* FROM "mentions" WHERE "mentions"."mentions_container_id" = ? AND "mentions"."mentions_container_type" = ?
+     UNDER corpus_max=2 real=4  SELECT "people".* FROM "people" WHERE "people"."id" = ? LIMIT ?
+     UNDER corpus_max=2 real=4  SELECT "profiles".* FROM "profiles" WHERE "profiles"."person_id" = ? LIMIT ?
+     OVER  corpus_max=3 real=1  SELECT "people".* FROM "people" WHERE "people"."id" = ?
+     OVER  corpus_max=2 real=1  SELECT "profiles".* FROM "profiles" WHERE "profiles"."person_id" = ?
+     OVER  corpus_max=2 real=1  SELECT COUNT(*) FROM "notifications" WHERE "notifications"."recipient_id" = ? AND "notifications"."unread" = ?
+
+NOTE (M-18 / T-ae): these ground-truth counts come from ActionController::TestCase#process, which does NOT run ActionDispatch::Executor, so AR's query cache never engages. They are an UPPER BOUND on a real Rack request, not a production count. Shape PRESENCE is unaffected.
+EXIT=0

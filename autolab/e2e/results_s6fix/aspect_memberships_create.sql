@@ -1,0 +1,1109 @@
+-- aspect_memberships_create — SQL SELECT views rendered from the policy IR
+--
+-- 56 atoms in; 21 views out.
+--   15 atoms do not terminate in a SELECT and are
+--   excluded — every one is named below, never merely counted
+--   (DESIGN_DOMAIN_LAYER §3A.3).
+--   41 statements extracted, 21 distinct after the prune,
+--   0 syntactically subsumed, 21 views.
+--   PC predicates: 0 folded, 0 kept — a predicate the
+--   policy shows this shape running BOTH WITH AND WITHOUT does not
+--   constrain it and is dropped.
+--   378 condition predicates did not resolve to a column; listed below.
+--   Subsumption: SYNTACTIC ONLY (conjunct containment). The solver-backed
+--   checker is not run from a render, so a statement it would have dropped
+--   is still here: this over-reports the policy, never under-reports it.
+--   no app config supplied: no schema, so a condition on a result field
+--   cannot be confirmed to be a column and is reported rather than folded;
+--   framework-default symbol conventions only
+--
+-- ==========================================================================
+-- VIEWS
+-- ==========================================================================
+
+SELECT `aspects`.* FROM `aspects`, `aspect_memberships`, `contacts`, `users`, `people`, `aspects` AS `aspects0` WHERE `aspects`.`id` = `aspect_memberships`.`aspect_id` AND `users`.`id` = _MY_UID AND `contacts`.`user_id` = `users`.`id` AND `contacts`.`person_id` = `people`.`id` AND `aspect_memberships`.`contact_id` = `contacts`.`id` AND `aspects0`.`user_id` = `users`.`id` AND `aspect_memberships`.`aspect_id` = `aspects0`.`id`;
+
+SELECT `aspect_memberships`.* FROM `aspect_memberships`, `contacts`, `users`, `people`, `aspects` WHERE `aspect_memberships`.`contact_id` = `contacts`.`id` AND `aspect_memberships`.`aspect_id` = `aspects`.`id` AND `users`.`id` = _MY_UID AND `contacts`.`user_id` = `users`.`id` AND `contacts`.`person_id` = `people`.`id` AND `aspects`.`user_id` = `users`.`id`;
+
+SELECT `users`.* FROM `users`, `people`, `contacts`, `users` AS `users0`, `people` AS `people0` WHERE `users`.`id` = `people`.`owner_id` AND `users0`.`id` = _MY_UID AND `contacts`.`user_id` = `users0`.`id` AND `contacts`.`person_id` = `people0`.`id` AND `people`.`id` = `contacts`.`person_id`;
+
+SELECT 1 AS one FROM `blocks`, `contacts`, `users`, `people` WHERE `blocks`.`user_id` = `contacts`.`user_id` AND `blocks`.`person_id` = `contacts`.`person_id` AND `users`.`id` = _MY_UID AND `contacts`.`user_id` = `users`.`id` AND `contacts`.`person_id` = `people`.`id`;
+
+SELECT 1 AS one FROM `contacts`, `contacts` AS `contacts0`, `users`, `people` WHERE `contacts`.`person_id` = `contacts0`.`person_id` AND `contacts`.`id` IS NOT NULL AND `contacts`.`user_id` = `contacts0`.`user_id` AND `users`.`id` = _MY_UID AND `contacts0`.`user_id` = `users`.`id` AND `contacts0`.`person_id` = `people`.`id`;
+
+SELECT `aspects`.* FROM `aspects`, `aspect_memberships`, `aspects` AS `aspects0`, `users` WHERE `aspects`.`id` = `aspect_memberships`.`aspect_id` AND `aspect_memberships`.`contact_id` IS NULL AND `users`.`id` = _MY_UID AND `aspects0`.`user_id` = `users`.`id` AND `aspect_memberships`.`aspect_id` = `aspects0`.`id`;
+
+SELECT `blocks`.* FROM `blocks`, `contacts`, `users`, `people` WHERE `blocks`.`user_id` = `contacts`.`user_id` AND `users`.`id` = _MY_UID AND `contacts`.`user_id` = `users`.`id` AND `contacts`.`person_id` = `people`.`id`;
+
+SELECT `people`.* FROM `people`, `contacts`, `users`, `people` AS `people0` WHERE `people`.`id` = `contacts`.`person_id` AND `users`.`id` = _MY_UID AND `contacts`.`user_id` = `users`.`id` AND `contacts`.`person_id` = `people0`.`id`;
+
+SELECT `users`.* FROM `users`, `contacts`, `users` AS `users0`, `people` WHERE `users`.`id` = `contacts`.`user_id` AND `users0`.`id` = _MY_UID AND `contacts`.`user_id` = `users0`.`id` AND `contacts`.`person_id` = `people`.`id`;
+
+SELECT 1 AS one FROM `blocks`, `users`, `people` WHERE `blocks`.`user_id` = `users`.`id` AND `blocks`.`person_id` = `people`.`id` AND `users`.`id` = _MY_UID;
+
+SELECT 1 AS one FROM `contacts`, `people`, `users` WHERE `contacts`.`person_id` = `people`.`id` AND `contacts`.`user_id` = `users`.`id` AND `users`.`id` = _MY_UID;
+
+SELECT `aspect_memberships`.* FROM `aspect_memberships`, `aspects`, `users` WHERE `aspect_memberships`.`contact_id` IS NULL AND `aspect_memberships`.`aspect_id` = `aspects`.`id` AND `users`.`id` = _MY_UID AND `aspects`.`user_id` = `users`.`id`;
+
+SELECT `contacts`.* FROM `contacts`, `users`, `people` WHERE `contacts`.`user_id` = `users`.`id` AND `contacts`.`person_id` = `people`.`id` AND `users`.`id` = _MY_UID;
+
+SELECT `profiles`.* FROM `profiles`, `people`, `users` WHERE `profiles`.`person_id` = `people`.`id` AND `users`.`id` = _MY_UID AND `people`.`owner_id` = `users`.`id`;
+
+SELECT `users`.* FROM `users`, `people`, `people` AS `people0` WHERE `users`.`id` = `people`.`owner_id` AND `people`.`id` = `people0`.`id`;
+
+SELECT `aspects`.* FROM `aspects`, `users` WHERE `aspects`.`user_id` = `users`.`id` AND `users`.`id` = _MY_UID;
+
+SELECT `blocks`.* FROM `blocks`, `users` WHERE `blocks`.`user_id` = `users`.`id` AND `users`.`id` = _MY_UID;
+
+SELECT `people`.* FROM `people`, `people` AS `people0` WHERE `people`.`id` = `people0`.`id`;
+
+SELECT `people`.* FROM `people`, `users` WHERE `people`.`owner_id` = `users`.`id` AND `users`.`id` = _MY_UID;
+
+SELECT `people`.* FROM `people`;
+
+SELECT `users`.* FROM `users` WHERE `users`.`id` = _MY_UID;
+
+-- ==========================================================================
+-- EXCLUDED ATOMS — 15 of 56 do not terminate in a SELECT
+-- `supports()` returned False for each. Named, never silently skipped.
+-- ==========================================================================
+-- atom 12: access ActiveRecord::Base#save
+--     terminates in INSERT, which is a write and not a select view
+-- atom 13: access ActiveRecord::Base#save
+--     terminates in INSERT, which is a write and not a select view
+-- atom 14: access ActiveRecord::Relation#update_all
+--     terminates in UPDATE, which is a write and not a select view
+-- atom 23: access ActiveRecord::Base#save!
+--     terminates in INSERT, which is a write and not a select view
+-- atom 24: access ActiveRecord::Base#save
+--     terminates in UPDATE, which is a write and not a select view
+-- atom 25: access ActiveRecord::Base#save
+--     terminates in INSERT, which is a write and not a select view
+-- atom 26: access ActiveRecord::Relation#update_all
+--     terminates in UPDATE, which is a write and not a select view
+-- atom 37: access ActiveRecord::Base#save
+--     terminates in INSERT, which is a write and not a select view
+-- atom 38: access ActiveRecord::Base#save
+--     terminates in INSERT, which is a write and not a select view
+-- atom 39: access ActiveRecord::Relation#update_all
+--     terminates in UPDATE, which is a write and not a select view
+-- atom 48: access ActiveRecord::Base#save!
+--     terminates in INSERT, which is a write and not a select view
+-- atom 49: access ActiveRecord::Base#save
+--     terminates in UPDATE, which is a write and not a select view
+-- atom 50: access ActiveRecord::Base#save
+--     terminates in INSERT, which is a write and not a select view
+-- atom 51: access ActiveRecord::Relation#update_all
+--     terminates in UPDATE, which is a write and not a select view
+-- atom 54: access ActiveRecord::Relation#update_all
+--     terminates in UPDATE, which is a write and not a select view
+
+-- ==========================================================================
+-- CONDITIONS NOT RENDERED — 378 predicates
+-- The IR keeps a path condition the renderer cannot resolve to a column;
+-- this is where that loss is REPORTED rather than taken silently (DESIGN_IR §2).
+-- ==========================================================================
+-- atom 2: c1.language == "pl"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 3: c1.language == "pl"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 4: c1.language == "pl"
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 5: c1.language == "pl"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 5: c4.not_found != true
+--     c4 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 6: c1.language == "pl"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 6: c4.not_found != true
+--     c4 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 7: c1.language == "pl"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 7: c4.not_found != true
+--     no schema: `.not_found` on c4 cannot be confirmed to be a column of
+--     `people`, so it is not folded
+-- atom 8: $SYM_RESULT_ActiveRecord__FinderMethods_exists__1_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 8: c1.language == "pl"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 8: c4.not_found != true
+--     no schema: `.not_found` on c4 cannot be confirmed to be a column of
+--     `people`, so it is not folded
+-- atom 9: $SYM_RESULT_ActiveRecord__FinderMethods_exists__1_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 9: c1.language == "pl"
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 9: c4.not_found != true
+--     no schema: `.not_found` on c4 cannot be confirmed to be a column of
+--     `people`, so it is not folded
+-- atom 9: c5.not_found != true
+--     c5 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 9: c9.not_found == true
+--     c9 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 10: $SYM_RESULT_ActiveRecord__FinderMethods_exists__1_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 10: c1.language == "pl"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 10: c4.not_found != true
+--     no schema: `.not_found` on c4 cannot be confirmed to be a column of
+--     `people`, so it is not folded
+-- atom 10: c5.not_found != true
+--     c5 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 10: c9.not_found == true
+--     c9 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 11: $SYM_RESULT_ActiveRecord__FinderMethods_exists__1_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 11: $SYM_RESULT_ActiveRecord__FinderMethods_exists__2_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 11: c1.language == "pl"
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 11: c4.not_found != true
+--     no schema: `.not_found` on c4 cannot be confirmed to be a column of
+--     `people`, so it is not folded
+-- atom 11: c5.not_found != true
+--     c5 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 11: c9.not_found == true
+--     c9 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 15: $SYM_RESULT_ActiveRecord__FinderMethods_exists__1_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 15: $SYM_RESULT_ActiveRecord__FinderMethods_exists__2_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 15: $assoc_person_owner_language != "pl"
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 15: $assoc_person_owner_language != "xx"
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 15: c1.id != c10.owner_id
+--     no schema: `.id` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 15: c1.language == "pl"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 15: c10.closed_account != true
+--     c10 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 15: c4.not_found != true
+--     c4 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 15: c5.not_found != true
+--     no schema: `.not_found` on c5 cannot be confirmed to be a column of
+--     `aspects`, so it is not folded
+-- atom 15: c9.not_found == true
+--     c9 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 16: $SYM_RESULT_ActiveRecord__FinderMethods_exists__1_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 16: $SYM_RESULT_ActiveRecord__FinderMethods_exists__2_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 16: $assoc_person_owner_language != "pl"
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 16: $assoc_person_owner_language != "xx"
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 16: c1.id != c10.owner_id
+--     no schema: `.id` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 16: c1.language == "pl"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 16: c10.closed_account != true
+--     c10 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 16: c18.not_found != true
+--     no schema: `.not_found` on c18 cannot be confirmed to be a column of
+--     `aspect_memberships`, so it is not folded
+-- atom 16: c4.not_found != true
+--     c4 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 16: c5.not_found != true
+--     no schema: `.not_found` on c5 cannot be confirmed to be a column of
+--     `aspects`, so it is not folded
+-- atom 16: c9.not_found == true
+--     c9 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 17: $SYM_RESULT_ActiveRecord__FinderMethods_exists__1_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 17: c1.language == "pl"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 17: c4.not_found != true
+--     no schema: `.not_found` on c4 cannot be confirmed to be a column of
+--     `people`, so it is not folded
+-- atom 17: c9.not_found != true
+--     no schema: `.not_found` on c9 cannot be confirmed to be a column of
+--     `contacts`, so it is not folded
+-- atom 18: c5.not_found != true
+--     not implied by every branch of a 2-branch condition
+-- atom 18: c5.not_found == true
+--     not implied by every branch of a 2-branch condition
+-- atom 18: c9.user_language != "pl"
+--     not implied by every branch of a 2-branch condition
+-- atom 18: c9.user_language != "xx"
+--     not implied by every branch of a 2-branch condition
+-- atom 18: $SYM_RESULT_ActiveRecord__FinderMethods_exists__1_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 18: c1.language == "pl"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 18: c4.not_found != true
+--     no schema: `.not_found` on c4 cannot be confirmed to be a column of
+--     `people`, so it is not folded
+-- atom 18: c9.not_found != true
+--     no schema: `.not_found` on c9 cannot be confirmed to be a column of
+--     `contacts`, so it is not folded
+-- atom 19: c5.not_found != true
+--     not implied by every branch of a 2-branch condition
+-- atom 19: c5.not_found == true
+--     not implied by every branch of a 2-branch condition
+-- atom 19: c9.user_language != "pl"
+--     not implied by every branch of a 2-branch condition
+-- atom 19: c9.user_language != "xx"
+--     not implied by every branch of a 2-branch condition
+-- atom 19: $SYM_RESULT_ActiveRecord__FinderMethods_exists__1_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 19: c1.language == "pl"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 19: c4.not_found != true
+--     no schema: `.not_found` on c4 cannot be confirmed to be a column of
+--     `people`, so it is not folded
+-- atom 19: c9.not_found != true
+--     no schema: `.not_found` on c9 cannot be confirmed to be a column of
+--     `contacts`, so it is not folded
+-- atom 20: c5.not_found != true
+--     not implied by every branch of a 2-branch condition
+-- atom 20: c5.not_found == true
+--     not implied by every branch of a 2-branch condition
+-- atom 20: c9.user_language != "pl"
+--     not implied by every branch of a 2-branch condition
+-- atom 20: c9.user_language != "xx"
+--     not implied by every branch of a 2-branch condition
+-- atom 20: $SYM_RESULT_ActiveRecord__FinderMethods_exists__1_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 20: $SYM_RESULT_ActiveRecord__FinderMethods_exists__2_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 20: c1.language == "pl"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 20: c4.not_found != true
+--     no schema: `.not_found` on c4 cannot be confirmed to be a column of
+--     `people`, so it is not folded
+-- atom 20: c9.not_found != true
+--     no schema: `.not_found` on c9 cannot be confirmed to be a column of
+--     `contacts`, so it is not folded
+-- atom 21: c5.not_found != true
+--     not implied by every branch of a 2-branch condition
+-- atom 21: c5.not_found == true
+--     not implied by every branch of a 2-branch condition
+-- atom 21: c9.user_language != "pl"
+--     not implied by every branch of a 2-branch condition
+-- atom 21: c9.user_language != "xx"
+--     not implied by every branch of a 2-branch condition
+-- atom 21: $SYM_RESULT_ActiveRecord__FinderMethods_exists__1_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 21: $SYM_RESULT_ActiveRecord__FinderMethods_exists__2_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 21: c1.language == "pl"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 21: c4.not_found != true
+--     no schema: `.not_found` on c4 cannot be confirmed to be a column of
+--     `people`, so it is not folded
+-- atom 21: c9.not_found != true
+--     no schema: `.not_found` on c9 cannot be confirmed to be a column of
+--     `contacts`, so it is not folded
+-- atom 21: c9.person_owner_language != "pl"
+--     no schema: `.person_owner_language` on c9 cannot be confirmed to be
+--     a column of `contacts`, so it is not folded
+-- atom 21: c9.person_owner_language != "xx"
+--     no schema: `.person_owner_language` on c9 cannot be confirmed to be
+--     a column of `contacts`, so it is not folded
+-- atom 21: c9.user_id != c11.owner_id
+--     no schema: `.user_id` on c9 cannot be confirmed to be a column of
+--     `contacts`, so it is not folded
+-- atom 22: c5.not_found != true
+--     not implied by every branch of a 2-branch condition
+-- atom 22: c5.not_found == true
+--     not implied by every branch of a 2-branch condition
+-- atom 22: c9.user_language != "pl"
+--     not implied by every branch of a 2-branch condition
+-- atom 22: c9.user_language != "xx"
+--     not implied by every branch of a 2-branch condition
+-- atom 22: $SYM_RESULT_ActiveRecord__FinderMethods_exists__1_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 22: $SYM_RESULT_ActiveRecord__FinderMethods_exists__2_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 22: c1.language == "pl"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 22: c4.not_found != true
+--     no schema: `.not_found` on c4 cannot be confirmed to be a column of
+--     `people`, so it is not folded
+-- atom 22: c9.not_found != true
+--     no schema: `.not_found` on c9 cannot be confirmed to be a column of
+--     `contacts`, so it is not folded
+-- atom 22: c9.person_owner_language != "pl"
+--     no schema: `.person_owner_language` on c9 cannot be confirmed to be
+--     a column of `contacts`, so it is not folded
+-- atom 22: c9.person_owner_language != "xx"
+--     no schema: `.person_owner_language` on c9 cannot be confirmed to be
+--     a column of `contacts`, so it is not folded
+-- atom 22: c9.user_id != c11.owner_id
+--     no schema: `.user_id` on c9 cannot be confirmed to be a column of
+--     `contacts`, so it is not folded
+-- atom 27: $SYM_RESULT_ActiveRecord__FinderMethods_exists__1_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 27: $SYM_RESULT_ActiveRecord__FinderMethods_exists__2_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 27: $SYM_RESULT_ActiveRecord__FinderMethods_exists__3_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 27: c1.language == "pl"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 27: c11.closed_account != true
+--     c11 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 27: c4.not_found != true
+--     no schema: `.not_found` on c4 cannot be confirmed to be a column of
+--     `people`, so it is not folded
+-- atom 27: c5.not_found != true
+--     no schema: `.not_found` on c5 cannot be confirmed to be a column of
+--     `aspects`, so it is not folded
+-- atom 27: c9.not_found != true
+--     no schema: `.not_found` on c9 cannot be confirmed to be a column of
+--     `contacts`, so it is not folded
+-- atom 27: c9.person_owner_language != "pl"
+--     no schema: `.person_owner_language` on c9 cannot be confirmed to be
+--     a column of `contacts`, so it is not folded
+-- atom 27: c9.person_owner_language != "xx"
+--     no schema: `.person_owner_language` on c9 cannot be confirmed to be
+--     a column of `contacts`, so it is not folded
+-- atom 27: c9.receiving != true
+--     no schema: `.receiving` on c9 cannot be confirmed to be a column of
+--     `contacts`, so it is not folded
+-- atom 27: c9.user_id != c11.owner_id
+--     no schema: `.user_id` on c9 cannot be confirmed to be a column of
+--     `contacts`, so it is not folded
+-- atom 28: $SYM_RESULT_ActiveRecord__FinderMethods_exists__1_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 28: $SYM_RESULT_ActiveRecord__FinderMethods_exists__2_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 28: $SYM_RESULT_ActiveRecord__FinderMethods_exists__3_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 28: c1.language == "pl"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 28: c11.closed_account != true
+--     c11 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 28: c23.not_found != true
+--     no schema: `.not_found` on c23 cannot be confirmed to be a column of
+--     `aspect_memberships`, so it is not folded
+-- atom 28: c4.not_found != true
+--     no schema: `.not_found` on c4 cannot be confirmed to be a column of
+--     `people`, so it is not folded
+-- atom 28: c5.not_found != true
+--     no schema: `.not_found` on c5 cannot be confirmed to be a column of
+--     `aspects`, so it is not folded
+-- atom 28: c9.not_found != true
+--     no schema: `.not_found` on c9 cannot be confirmed to be a column of
+--     `contacts`, so it is not folded
+-- atom 28: c9.person_owner_language != "pl"
+--     no schema: `.person_owner_language` on c9 cannot be confirmed to be
+--     a column of `contacts`, so it is not folded
+-- atom 28: c9.person_owner_language != "xx"
+--     no schema: `.person_owner_language` on c9 cannot be confirmed to be
+--     a column of `contacts`, so it is not folded
+-- atom 28: c9.receiving != true
+--     no schema: `.receiving` on c9 cannot be confirmed to be a column of
+--     `contacts`, so it is not folded
+-- atom 28: c9.user_id != c11.owner_id
+--     no schema: `.user_id` on c9 cannot be confirmed to be a column of
+--     `contacts`, so it is not folded
+-- atom 29: c1.language != "pl"
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 29: c1.language != "xx"
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 30: c1.language != "pl"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 30: c1.language != "xx"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 30: c2.not_found != true
+--     c2 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 31: c1.language != "pl"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 31: c1.language != "xx"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 31: c2.not_found != true
+--     c2 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 32: c1.language != "pl"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 32: c1.language != "xx"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 32: c2.not_found != true
+--     no schema: `.not_found` on c2 cannot be confirmed to be a column of
+--     `people`, so it is not folded
+-- atom 33: $SYM_RESULT_ActiveRecord__FinderMethods_exists__1_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 33: c1.language != "pl"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 33: c1.language != "xx"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 33: c2.not_found != true
+--     no schema: `.not_found` on c2 cannot be confirmed to be a column of
+--     `people`, so it is not folded
+-- atom 34: $SYM_RESULT_ActiveRecord__FinderMethods_exists__1_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 34: c1.language != "pl"
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 34: c1.language != "xx"
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 34: c2.not_found != true
+--     no schema: `.not_found` on c2 cannot be confirmed to be a column of
+--     `people`, so it is not folded
+-- atom 34: c3.not_found != true
+--     c3 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 34: c7.not_found == true
+--     c7 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 35: $SYM_RESULT_ActiveRecord__FinderMethods_exists__1_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 35: c1.language != "pl"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 35: c1.language != "xx"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 35: c2.not_found != true
+--     no schema: `.not_found` on c2 cannot be confirmed to be a column of
+--     `people`, so it is not folded
+-- atom 35: c3.not_found != true
+--     c3 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 35: c7.not_found == true
+--     c7 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 36: $SYM_RESULT_ActiveRecord__FinderMethods_exists__1_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 36: $SYM_RESULT_ActiveRecord__FinderMethods_exists__2_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 36: c1.language != "pl"
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 36: c1.language != "xx"
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 36: c2.not_found != true
+--     no schema: `.not_found` on c2 cannot be confirmed to be a column of
+--     `people`, so it is not folded
+-- atom 36: c3.not_found != true
+--     c3 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 36: c7.not_found == true
+--     c7 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 40: $SYM_RESULT_ActiveRecord__FinderMethods_exists__1_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 40: $SYM_RESULT_ActiveRecord__FinderMethods_exists__2_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 40: $assoc_person_owner_language != "pl"
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 40: $assoc_person_owner_language != "xx"
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 40: c1.id != c8.owner_id
+--     no schema: `.id` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 40: c1.language != "pl"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 40: c1.language != "xx"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 40: c2.not_found != true
+--     c2 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 40: c3.not_found != true
+--     no schema: `.not_found` on c3 cannot be confirmed to be a column of
+--     `aspects`, so it is not folded
+-- atom 40: c7.not_found == true
+--     c7 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 40: c8.closed_account != true
+--     c8 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 41: $SYM_RESULT_ActiveRecord__FinderMethods_exists__1_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 41: $SYM_RESULT_ActiveRecord__FinderMethods_exists__2_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 41: $assoc_person_owner_language != "pl"
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 41: $assoc_person_owner_language != "xx"
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 41: c1.id != c8.owner_id
+--     no schema: `.id` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 41: c1.language != "pl"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 41: c1.language != "xx"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 41: c16.not_found != true
+--     no schema: `.not_found` on c16 cannot be confirmed to be a column of
+--     `aspect_memberships`, so it is not folded
+-- atom 41: c2.not_found != true
+--     c2 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 41: c3.not_found != true
+--     no schema: `.not_found` on c3 cannot be confirmed to be a column of
+--     `aspects`, so it is not folded
+-- atom 41: c7.not_found == true
+--     c7 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 41: c8.closed_account != true
+--     c8 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 42: $SYM_RESULT_ActiveRecord__FinderMethods_exists__1_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 42: c1.language != "pl"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 42: c1.language != "xx"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 42: c2.not_found != true
+--     no schema: `.not_found` on c2 cannot be confirmed to be a column of
+--     `people`, so it is not folded
+-- atom 42: c7.not_found != true
+--     no schema: `.not_found` on c7 cannot be confirmed to be a column of
+--     `contacts`, so it is not folded
+-- atom 43: c3.not_found != true
+--     not implied by every branch of a 2-branch condition
+-- atom 43: c3.not_found == true
+--     not implied by every branch of a 2-branch condition
+-- atom 43: c7.user_language != "pl"
+--     not implied by every branch of a 2-branch condition
+-- atom 43: c7.user_language != "xx"
+--     not implied by every branch of a 2-branch condition
+-- atom 43: $SYM_RESULT_ActiveRecord__FinderMethods_exists__1_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 43: c1.language != "pl"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 43: c1.language != "xx"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 43: c2.not_found != true
+--     no schema: `.not_found` on c2 cannot be confirmed to be a column of
+--     `people`, so it is not folded
+-- atom 43: c7.not_found != true
+--     no schema: `.not_found` on c7 cannot be confirmed to be a column of
+--     `contacts`, so it is not folded
+-- atom 44: c3.not_found != true
+--     not implied by every branch of a 2-branch condition
+-- atom 44: c3.not_found == true
+--     not implied by every branch of a 2-branch condition
+-- atom 44: c7.user_language != "pl"
+--     not implied by every branch of a 2-branch condition
+-- atom 44: c7.user_language != "xx"
+--     not implied by every branch of a 2-branch condition
+-- atom 44: $SYM_RESULT_ActiveRecord__FinderMethods_exists__1_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 44: c1.language != "pl"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 44: c1.language != "xx"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 44: c2.not_found != true
+--     no schema: `.not_found` on c2 cannot be confirmed to be a column of
+--     `people`, so it is not folded
+-- atom 44: c7.not_found != true
+--     no schema: `.not_found` on c7 cannot be confirmed to be a column of
+--     `contacts`, so it is not folded
+-- atom 45: $SYM_RESULT_ActiveRecord__FinderMethods_exists__2_exists != true
+--     not implied by every branch of a 3-branch condition
+-- atom 45: c3.not_found != true
+--     not implied by every branch of a 3-branch condition
+-- atom 45: $SYM_RESULT_ActiveRecord__FinderMethods_exists__2_exists != true
+--     not implied by every branch of a 3-branch condition
+-- atom 45: c3.not_found == true
+--     not implied by every branch of a 3-branch condition
+-- atom 45: c7.user_language != "pl"
+--     not implied by every branch of a 3-branch condition
+-- atom 45: c7.user_language != "xx"
+--     not implied by every branch of a 3-branch condition
+-- atom 45: $SYM_RESULT_ActiveRecord__FinderMethods_exists__2_exists == true
+--     not implied by every branch of a 3-branch condition
+-- atom 45: c3.not_found != true
+--     not implied by every branch of a 3-branch condition
+-- atom 45: c7.user_language != "pl"
+--     not implied by every branch of a 3-branch condition
+-- atom 45: c7.user_language != "xx"
+--     not implied by every branch of a 3-branch condition
+-- atom 45: $SYM_RESULT_ActiveRecord__FinderMethods_exists__1_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 45: c1.language != "pl"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 45: c1.language != "xx"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 45: c2.not_found != true
+--     no schema: `.not_found` on c2 cannot be confirmed to be a column of
+--     `people`, so it is not folded
+-- atom 45: c7.not_found != true
+--     no schema: `.not_found` on c7 cannot be confirmed to be a column of
+--     `contacts`, so it is not folded
+-- atom 46: $SYM_RESULT_ActiveRecord__FinderMethods_exists__2_exists != true
+--     not implied by every branch of a 6-branch condition
+-- atom 46: c3.not_found != true
+--     not implied by every branch of a 6-branch condition
+-- atom 46: c7.person_owner_language != "pl"
+--     not implied by every branch of a 6-branch condition
+-- atom 46: c7.person_owner_language != "xx"
+--     not implied by every branch of a 6-branch condition
+-- atom 46: c7.user_id != c9.owner_id
+--     not implied by every branch of a 6-branch condition
+-- atom 46: $SYM_RESULT_ActiveRecord__FinderMethods_exists__2_exists != true
+--     not implied by every branch of a 6-branch condition
+-- atom 46: c3.not_found != true
+--     not implied by every branch of a 6-branch condition
+-- atom 46: c7.person_owner_language == "pl"
+--     not implied by every branch of a 6-branch condition
+-- atom 46: c7.user_id != c9.owner_id
+--     not implied by every branch of a 6-branch condition
+-- atom 46: c7.user_language != "pl"
+--     not implied by every branch of a 6-branch condition
+-- atom 46: c7.user_language != "xx"
+--     not implied by every branch of a 6-branch condition
+-- atom 46: $SYM_RESULT_ActiveRecord__FinderMethods_exists__2_exists != true
+--     not implied by every branch of a 6-branch condition
+-- atom 46: c3.not_found != true
+--     not implied by every branch of a 6-branch condition
+-- atom 46: c7.person_owner_language == "xx"
+--     not implied by every branch of a 6-branch condition
+-- atom 46: c7.user_id != c9.owner_id
+--     not implied by every branch of a 6-branch condition
+-- atom 46: c7.user_language != "pl"
+--     not implied by every branch of a 6-branch condition
+-- atom 46: c7.user_language != "xx"
+--     not implied by every branch of a 6-branch condition
+-- atom 46: $SYM_RESULT_ActiveRecord__FinderMethods_exists__2_exists != true
+--     not implied by every branch of a 6-branch condition
+-- atom 46: c3.not_found != true
+--     not implied by every branch of a 6-branch condition
+-- atom 46: c7.person_owner_language != "pl"
+--     not implied by every branch of a 6-branch condition
+-- atom 46: c7.person_owner_language != "xx"
+--     not implied by every branch of a 6-branch condition
+-- atom 46: c7.user_id == c9.owner_id
+--     not implied by every branch of a 6-branch condition
+-- atom 46: c7.user_language != "pl"
+--     not implied by every branch of a 6-branch condition
+-- atom 46: c7.user_language != "xx"
+--     not implied by every branch of a 6-branch condition
+-- atom 46: $SYM_RESULT_ActiveRecord__FinderMethods_exists__2_exists != true
+--     not implied by every branch of a 6-branch condition
+-- atom 46: c3.not_found == true
+--     not implied by every branch of a 6-branch condition
+-- atom 46: c7.person_owner_language != "pl"
+--     not implied by every branch of a 6-branch condition
+-- atom 46: c7.person_owner_language != "xx"
+--     not implied by every branch of a 6-branch condition
+-- atom 46: c7.user_id != c9.owner_id
+--     not implied by every branch of a 6-branch condition
+-- atom 46: c7.user_language != "pl"
+--     not implied by every branch of a 6-branch condition
+-- atom 46: c7.user_language != "xx"
+--     not implied by every branch of a 6-branch condition
+-- atom 46: $SYM_RESULT_ActiveRecord__FinderMethods_exists__2_exists == true
+--     not implied by every branch of a 6-branch condition
+-- atom 46: c3.not_found != true
+--     not implied by every branch of a 6-branch condition
+-- atom 46: c7.person_owner_language != "pl"
+--     not implied by every branch of a 6-branch condition
+-- atom 46: c7.person_owner_language != "xx"
+--     not implied by every branch of a 6-branch condition
+-- atom 46: c7.user_id != c9.owner_id
+--     not implied by every branch of a 6-branch condition
+-- atom 46: c7.user_language != "pl"
+--     not implied by every branch of a 6-branch condition
+-- atom 46: c7.user_language != "xx"
+--     not implied by every branch of a 6-branch condition
+-- atom 46: $SYM_RESULT_ActiveRecord__FinderMethods_exists__1_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 46: c1.language != "pl"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 46: c1.language != "xx"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 46: c2.not_found != true
+--     no schema: `.not_found` on c2 cannot be confirmed to be a column of
+--     `people`, so it is not folded
+-- atom 46: c7.not_found != true
+--     no schema: `.not_found` on c7 cannot be confirmed to be a column of
+--     `contacts`, so it is not folded
+-- atom 47: $SYM_RESULT_ActiveRecord__FinderMethods_exists__2_exists != true
+--     not implied by every branch of a 6-branch condition
+-- atom 47: c3.not_found != true
+--     not implied by every branch of a 6-branch condition
+-- atom 47: c7.person_owner_language != "pl"
+--     not implied by every branch of a 6-branch condition
+-- atom 47: c7.person_owner_language != "xx"
+--     not implied by every branch of a 6-branch condition
+-- atom 47: c7.user_id != c9.owner_id
+--     not implied by every branch of a 6-branch condition
+-- atom 47: $SYM_RESULT_ActiveRecord__FinderMethods_exists__2_exists != true
+--     not implied by every branch of a 6-branch condition
+-- atom 47: c3.not_found != true
+--     not implied by every branch of a 6-branch condition
+-- atom 47: c7.person_owner_language == "pl"
+--     not implied by every branch of a 6-branch condition
+-- atom 47: c7.user_id != c9.owner_id
+--     not implied by every branch of a 6-branch condition
+-- atom 47: c7.user_language != "pl"
+--     not implied by every branch of a 6-branch condition
+-- atom 47: c7.user_language != "xx"
+--     not implied by every branch of a 6-branch condition
+-- atom 47: $SYM_RESULT_ActiveRecord__FinderMethods_exists__2_exists != true
+--     not implied by every branch of a 6-branch condition
+-- atom 47: c3.not_found != true
+--     not implied by every branch of a 6-branch condition
+-- atom 47: c7.person_owner_language == "xx"
+--     not implied by every branch of a 6-branch condition
+-- atom 47: c7.user_id != c9.owner_id
+--     not implied by every branch of a 6-branch condition
+-- atom 47: c7.user_language != "pl"
+--     not implied by every branch of a 6-branch condition
+-- atom 47: c7.user_language != "xx"
+--     not implied by every branch of a 6-branch condition
+-- atom 47: $SYM_RESULT_ActiveRecord__FinderMethods_exists__2_exists != true
+--     not implied by every branch of a 6-branch condition
+-- atom 47: c3.not_found != true
+--     not implied by every branch of a 6-branch condition
+-- atom 47: c7.person_owner_language != "pl"
+--     not implied by every branch of a 6-branch condition
+-- atom 47: c7.person_owner_language != "xx"
+--     not implied by every branch of a 6-branch condition
+-- atom 47: c7.user_id == c9.owner_id
+--     not implied by every branch of a 6-branch condition
+-- atom 47: c7.user_language != "pl"
+--     not implied by every branch of a 6-branch condition
+-- atom 47: c7.user_language != "xx"
+--     not implied by every branch of a 6-branch condition
+-- atom 47: $SYM_RESULT_ActiveRecord__FinderMethods_exists__2_exists != true
+--     not implied by every branch of a 6-branch condition
+-- atom 47: c3.not_found == true
+--     not implied by every branch of a 6-branch condition
+-- atom 47: c7.person_owner_language != "pl"
+--     not implied by every branch of a 6-branch condition
+-- atom 47: c7.person_owner_language != "xx"
+--     not implied by every branch of a 6-branch condition
+-- atom 47: c7.user_id != c9.owner_id
+--     not implied by every branch of a 6-branch condition
+-- atom 47: c7.user_language != "pl"
+--     not implied by every branch of a 6-branch condition
+-- atom 47: c7.user_language != "xx"
+--     not implied by every branch of a 6-branch condition
+-- atom 47: $SYM_RESULT_ActiveRecord__FinderMethods_exists__2_exists == true
+--     not implied by every branch of a 6-branch condition
+-- atom 47: c3.not_found != true
+--     not implied by every branch of a 6-branch condition
+-- atom 47: c7.person_owner_language != "pl"
+--     not implied by every branch of a 6-branch condition
+-- atom 47: c7.person_owner_language != "xx"
+--     not implied by every branch of a 6-branch condition
+-- atom 47: c7.user_id != c9.owner_id
+--     not implied by every branch of a 6-branch condition
+-- atom 47: c7.user_language != "pl"
+--     not implied by every branch of a 6-branch condition
+-- atom 47: c7.user_language != "xx"
+--     not implied by every branch of a 6-branch condition
+-- atom 47: $SYM_RESULT_ActiveRecord__FinderMethods_exists__1_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 47: c1.language != "pl"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 47: c1.language != "xx"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 47: c2.not_found != true
+--     no schema: `.not_found` on c2 cannot be confirmed to be a column of
+--     `people`, so it is not folded
+-- atom 47: c7.not_found != true
+--     no schema: `.not_found` on c7 cannot be confirmed to be a column of
+--     `contacts`, so it is not folded
+-- atom 52: $SYM_RESULT_ActiveRecord__FinderMethods_exists__1_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 52: $SYM_RESULT_ActiveRecord__FinderMethods_exists__2_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 52: $SYM_RESULT_ActiveRecord__FinderMethods_exists__3_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 52: c1.language != "pl"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 52: c1.language != "xx"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 52: c2.not_found != true
+--     no schema: `.not_found` on c2 cannot be confirmed to be a column of
+--     `people`, so it is not folded
+-- atom 52: c3.not_found != true
+--     no schema: `.not_found` on c3 cannot be confirmed to be a column of
+--     `aspects`, so it is not folded
+-- atom 52: c7.not_found != true
+--     no schema: `.not_found` on c7 cannot be confirmed to be a column of
+--     `contacts`, so it is not folded
+-- atom 52: c7.person_owner_language != "pl"
+--     no schema: `.person_owner_language` on c7 cannot be confirmed to be
+--     a column of `contacts`, so it is not folded
+-- atom 52: c7.person_owner_language != "xx"
+--     no schema: `.person_owner_language` on c7 cannot be confirmed to be
+--     a column of `contacts`, so it is not folded
+-- atom 52: c7.receiving == true
+--     no schema: `.receiving` on c7 cannot be confirmed to be a column of
+--     `contacts`, so it is not folded
+-- atom 52: c7.user_id != c9.owner_id
+--     no schema: `.user_id` on c7 cannot be confirmed to be a column of
+--     `contacts`, so it is not folded
+-- atom 52: c7.user_language != "pl"
+--     no schema: `.user_language` on c7 cannot be confirmed to be a column
+--     of `contacts`, so it is not folded
+-- atom 52: c7.user_language != "xx"
+--     no schema: `.user_language` on c7 cannot be confirmed to be a column
+--     of `contacts`, so it is not folded
+-- atom 52: c9.closed_account != true
+--     c9 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 53: $SYM_RESULT_ActiveRecord__FinderMethods_exists__1_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 53: $SYM_RESULT_ActiveRecord__FinderMethods_exists__2_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 53: $SYM_RESULT_ActiveRecord__FinderMethods_exists__3_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 53: c1.language != "pl"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 53: c1.language != "xx"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 53: c2.not_found != true
+--     no schema: `.not_found` on c2 cannot be confirmed to be a column of
+--     `people`, so it is not folded
+-- atom 53: c20.not_found != true
+--     no schema: `.not_found` on c20 cannot be confirmed to be a column of
+--     `aspect_memberships`, so it is not folded
+-- atom 53: c3.not_found != true
+--     no schema: `.not_found` on c3 cannot be confirmed to be a column of
+--     `aspects`, so it is not folded
+-- atom 53: c7.not_found != true
+--     no schema: `.not_found` on c7 cannot be confirmed to be a column of
+--     `contacts`, so it is not folded
+-- atom 53: c7.person_owner_language != "pl"
+--     no schema: `.person_owner_language` on c7 cannot be confirmed to be
+--     a column of `contacts`, so it is not folded
+-- atom 53: c7.person_owner_language != "xx"
+--     no schema: `.person_owner_language` on c7 cannot be confirmed to be
+--     a column of `contacts`, so it is not folded
+-- atom 53: c7.receiving == true
+--     no schema: `.receiving` on c7 cannot be confirmed to be a column of
+--     `contacts`, so it is not folded
+-- atom 53: c7.user_id != c9.owner_id
+--     no schema: `.user_id` on c7 cannot be confirmed to be a column of
+--     `contacts`, so it is not folded
+-- atom 53: c7.user_language != "pl"
+--     no schema: `.user_language` on c7 cannot be confirmed to be a column
+--     of `contacts`, so it is not folded
+-- atom 53: c7.user_language != "xx"
+--     no schema: `.user_language` on c7 cannot be confirmed to be a column
+--     of `contacts`, so it is not folded
+-- atom 53: c9.closed_account != true
+--     c9 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 55: c7.person_owner_language != "pl"
+--     not implied by every branch of a 3-branch condition
+-- atom 55: c7.person_owner_language != "xx"
+--     not implied by every branch of a 3-branch condition
+-- atom 55: c7.person_owner_language == "pl"
+--     not implied by every branch of a 3-branch condition
+-- atom 55: c7.user_language != "pl"
+--     not implied by every branch of a 3-branch condition
+-- atom 55: c7.user_language != "xx"
+--     not implied by every branch of a 3-branch condition
+-- atom 55: c7.person_owner_language == "xx"
+--     not implied by every branch of a 3-branch condition
+-- atom 55: c7.user_language != "pl"
+--     not implied by every branch of a 3-branch condition
+-- atom 55: c7.user_language != "xx"
+--     not implied by every branch of a 3-branch condition
+-- atom 55: $SYM_RESULT_ActiveRecord__FinderMethods_exists__1_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 55: $SYM_RESULT_ActiveRecord__FinderMethods_exists__2_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 55: $SYM_RESULT_ActiveRecord__FinderMethods_exists__3_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 55: c1.language != "pl"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 55: c1.language != "xx"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 55: c2.not_found != true
+--     no schema: `.not_found` on c2 cannot be confirmed to be a column of
+--     `people`, so it is not folded
+-- atom 55: c3.not_found != true
+--     no schema: `.not_found` on c3 cannot be confirmed to be a column of
+--     `aspects`, so it is not folded
+-- atom 55: c7.not_found != true
+--     no schema: `.not_found` on c7 cannot be confirmed to be a column of
+--     `contacts`, so it is not folded
+-- atom 55: c7.receiving != true
+--     no schema: `.receiving` on c7 cannot be confirmed to be a column of
+--     `contacts`, so it is not folded
+-- atom 55: c7.user_id != c9.owner_id
+--     no schema: `.user_id` on c7 cannot be confirmed to be a column of
+--     `contacts`, so it is not folded
+-- atom 55: c9.closed_account != true
+--     c9 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 56: c7.person_owner_language != "pl"
+--     not implied by every branch of a 3-branch condition
+-- atom 56: c7.person_owner_language != "xx"
+--     not implied by every branch of a 3-branch condition
+-- atom 56: c7.person_owner_language == "pl"
+--     not implied by every branch of a 3-branch condition
+-- atom 56: c7.user_language != "pl"
+--     not implied by every branch of a 3-branch condition
+-- atom 56: c7.user_language != "xx"
+--     not implied by every branch of a 3-branch condition
+-- atom 56: c7.person_owner_language == "xx"
+--     not implied by every branch of a 3-branch condition
+-- atom 56: c7.user_language != "pl"
+--     not implied by every branch of a 3-branch condition
+-- atom 56: c7.user_language != "xx"
+--     not implied by every branch of a 3-branch condition
+-- atom 56: $SYM_RESULT_ActiveRecord__FinderMethods_exists__1_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 56: $SYM_RESULT_ActiveRecord__FinderMethods_exists__2_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 56: $SYM_RESULT_ActiveRecord__FinderMethods_exists__3_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 56: c1.language != "pl"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 56: c1.language != "xx"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 56: c2.not_found != true
+--     no schema: `.not_found` on c2 cannot be confirmed to be a column of
+--     `people`, so it is not folded
+-- atom 56: c21.not_found != true
+--     no schema: `.not_found` on c21 cannot be confirmed to be a column of
+--     `aspect_memberships`, so it is not folded
+-- atom 56: c3.not_found != true
+--     no schema: `.not_found` on c3 cannot be confirmed to be a column of
+--     `aspects`, so it is not folded
+-- atom 56: c7.not_found != true
+--     no schema: `.not_found` on c7 cannot be confirmed to be a column of
+--     `contacts`, so it is not folded
+-- atom 56: c7.receiving != true
+--     no schema: `.receiving` on c7 cannot be confirmed to be a column of
+--     `contacts`, so it is not folded
+-- atom 56: c7.user_id != c9.owner_id
+--     no schema: `.user_id` on c7 cannot be confirmed to be a column of
+--     `contacts`, so it is not folded
+-- atom 56: c9.closed_account != true
+--     c9 is not joined into this statement, so the condition constrains
+--     rows this view does not read

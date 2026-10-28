@@ -1,0 +1,187 @@
+# Diaspora concolic experiment
+
+Extract, for each Rails endpoint, the **set of SQL queries it can issue** —
+its access policy — by running the real app under a concolic (concrete +
+symbolic) engine, and prove the set is complete **without any reference
+policy**. The app runs for real on JRuby; ActiveRecord query methods are
+intercepted at the framework boundary and return symbolic values, so the
+app's own branches on query results record path conditions, and each
+intercepted call records a NOTE: the statement it stands for, with `$(VAR)`
+binds. The corpus of runs (`dump_*.json`) is the evidence; the policy is
+folded out of it.
+
+There is no oracle. Completeness is a property we have to establish
+ourselves — that is what everything below is for.
+
+---
+
+## Where things are
+
+```
+reports/diaspora/
+├── README.md              ← this file: what the project is, state, how to run it
+├── docs/                  ← the live process documentation
+│   ├── RUNBOOK.md         ← THE PROCESS: actors, the loop, every tool, ops
+│   ├── DISCIPLINE.md      ← the rules: Class S/B, D1–D3, Rule T (shared boundary)
+│   ├── CHECKS.md          ← each check in detail, with examples
+│   ├── TARGET_FUNCTIONS.md← what the target functions ARE (the query boundary)
+│   ├── ADVERSARY_WINS.md  ← ledger of every gap a real run found + patterns
+│   ├── TODO.md            ← DEFERRED work: what is not being done and why
+│   ├── ASSUMPTION_KIND_UNIFICATION_20260915.md ← design note: independence
+│   │                        and confinement license the same thing (not live)
+│   └── history/           ← superseded plans, audits and reports (kept, not live)
+├── tools/                 ← project-specific scripts (SQL/extraction level)
+│   ├── extract_policy.py  ← THE extractor: one script, every endpoint
+│   ├── policy_loadability.py ← written vs loadable per policy, via the
+│   │                        project's own SQL loader (subsume/check_subsumed.sh)
+│   ├── hardening_lint.py  ← past adversary wins as a mechanical pre-check
+│   ├── note_fidelity_audit.py, statement_diff.py, complement_audit.py
+│   └── extraction_differential/ ← old-vs-new view sets over all six corpora;
+│                            run it for ANY change that can move reconstruction
+├── queries_config/        ← THE APP CONFIG: src/queries_from_runs is
+│                            app-agnostic and takes this app as input
+│                            (`app.json`, `resources/`, `validate_app_json.py`)
+├── results3/              ← the live batches, one directory per endpoint
+│   ├── <endpoint>/        ← runner, targets, shims, manifests, dumps, reports
+│   │                        (+ POLICY_HEADER.txt — the extractor splices it)
+│   └── queries_from_runs/ ← extracted policies (`<endpoint>.sql`) and, since
+│                            2026-09-15, `<endpoint>_loadable.sql`: the same
+│                            corpus re-extracted so that EVERY statement loads
+│                            in the project's own SQL loader (see below)
+├── results/, results2/    ← earlier generations (historical)
+└── trash/                 ← retired scripts and artifacts
+```
+
+Engine code lives outside this tree:
+`src/concolic_engine/` (coverage + completion), `src/end_to_end_completion_checker/`
+(assumption gate, note check, the adversary brief), `src/ruby_runtime/completion_checker/`
+(Ruby probes), `src/queries_from_runs/` (the fold, plus its five dump audits).
+
+## How an endpoint is declared done
+
+Three independent checks, on the same corpus — see `docs/RUNBOOK.md` for the
+full flow:
+
+1. **the completion engine** — `coverage_summary.json` ends with
+   `"complete": true`: every branch combination covered or exempted by a
+   declared assumption, every declared assumption tested by replay, every
+   shim mock reaching zero targets at 100% line coverage, every target's real
+   statements matching a corpus note;
+2. **the five SQL-consumer audits** (`src/queries_from_runs/audits/`) — the
+   dumps survive what the fold will do with them (binds resolve, PCs parse,
+   principal binds are symbolic, notes are well-shaped, compared columns are
+   PC-visible);
+3. **the adversary** — a sub-agent that reads the real code and tries to make
+   a REAL run (sqlite fixtures, no mocks) issue a target call the corpus does
+   not have. A round with zero wins closes the endpoint; any win reopens (1).
+
+A defect in a **target declaration** (the shared boundary) voids every
+endpoint and forces a from-scratch regeneration — `docs/DISCIPLINE.md` §8,
+Rule T.
+
+## State (2026-09-15 11:00)
+
+Sequential, one endpoint at a time. Standard for "done": engine
+`complete: true` (0 FAIL / 0 NOT-TESTABLE) + the coordinator's audit sweep +
+an adversary round with zero wins + the multiset matrix green — all on ONE
+corpus. Scope is DISCIPLINE §15: post-auth entrypoint, symbolic principal;
+the auth stages are the shared `results3/_auth_boundary/BOUNDARY_POLICY.md`,
+unioned into every endpoint's policy.
+
+| endpoint | standing | next |
+|---|---|---|
+| **conversations_index** | **CLOSED 2026-09-01** — engine complete (105 nodes, 0 missing, 18,623 dumps, 5,877 assumption probes PASS, shims 15/23/0); 8 audits + lint + census + boundary green; adversary R7 **zero wins** with entrypoint-frame proof; multiset matrix 7/7. **Correction 2026-09-01:** one of those checks (`cardinality_consistency`) judged 0 events here — its rule's subject does not occur on this endpoint — so the closure rests on ten checks with evidence, not eleven; no verdict retracted (see REPORT.md). Policy extracted: `queries_from_runs/conversations_index.sql`, **58 views** | done |
+| **comments_index** | **CLOSED 2026-09-01** — engine complete (84 nodes, 0 missing, 26 528 dumps, 928 746 PCs, assumptions 3 648/3 648 PASS, shims 19/11/0, **zero waivers**); coordinator's 11 checks green (cardinality 123 974 pairs judged / 52 282 explained); adversary **R10 zero wins** over 37 real requests, all four attacks refuted with evidence; count matrix 0 under / 0 over under BOTH plain and executor-wrapped ground truth. Policy: `queries_from_runs/comments_index.sql`, **79 views** (413 594 raw → 79 distinct). Declared gap: the discovery-success arm is unreachable here and DECLARED UNMODELLED — see POLICY_HEADER | done |
+| **notifications_index** | **CLOSED + SHIPPED 2026-09-15** — `COMPLETE=True; NODES=441; MISSING=4; BLOCKING=0; PCS=8,883,622` on 138,912 runs, **confinement OFF** (so nothing rests on a derived licence); `OVERALL_COMPLETE=True`, `blocking=[]`; assumptions 27,231 declared / 2,004 tested (PASS 1,907, N-C 32, N-T 65, failures []); 16 audits, 2 known by-design reds (`skipped_pcs_VANILLA`, `hardening_lint` H3/H6); §17/X12 gate over the foreclosure classes **zero refutations** (§16e 89 PASS/0 FAIL, §16f 20 PASS, §16g 4 PASS; 113 of 141 confirmed). `MISSING=4` is the four untracked transparency entries. Policy `notifications_index.sql` **99 views** (708 distinct, 609 subsumed), POLICY_HEADER 475 lines | done |
+| **people_show** | **SET ASIDE 2026-09-07 (user decision), policy extracted.** Milestone close-out only, NOT closed by the three-check standard: the engine ran COVERAGE-ONLY (`coverage_complete: true`, 97 nodes, 0 missing, 12 997 dumps, 525 378 PCs) and `coverage_summary.json` carries **no `completion`/`complete` key** — the completion gate never ran. Adversary R1 → 10 wins, 8 repaired at the shared boundary + re-witnessed by the drain campaign; **R2 (2026-09-05) zero wins**. P-7/P-8 DECLARED OPEN (template walls, Option A). Two audit findings carried into the policy header: the fold drops 26 062 `Contains`/`IndexOf` PCs on `people.diaspora_handle` that no patch recovers (costs WHERE precision, not statements — `complement_audit` green), and **`identity_symbolicity_audit` is RED** — every `auth_*` scenario drives a CONCRETE principal, so signed-in views extract with literal ids instead of `_MY_UID`. Policy: `queries_from_runs/people_show.sql`, **58 views** (341 665 raw → 66 distinct → 8 subsumed) | set aside; to reopen: re-run the signed-in scenarios with a symbolic principal (F6), then the completion gate |
+| **people_stream** | **CLOSED 2026-09-11** — `OVERALL_COMPLETE=True`, MISSING=0 / TREE_MISSING=0, gate 30/30. Policy `people_stream.sql` **162 views** (subsumption done, 51 null KEPT), declared gaps in its POLICY_HEADER | done |
+| **posts_show** | **SHIPPED INCOMPLETE 2026-09-15 — NOT CLOSED.** Its header opens "THIS ENDPOINT IS NOT COMPLETE". `MISSING=706`, §16b census **965,224 of 1,039,416 uncovered (92.9%)**. Non-closure is CHARACTERISED, every lever measured against a pre-stated falsifier: base selection exhausted (2 genuine misses of 525 gaps), base manufacture **impossible** for 399 of 401 blocked gaps on the §16b argument (zero overlap with the refuted §16f classes), §40.5a discriminators NULL, §16g conditioning NULL (−68 cubes, falsifier fired), §16f width WITHDRAWN (0 PASS of 688 wide classes), and **§16f itself REFUTED — 484 FAIL / 0 PASS at every width**, control 65.5%, 36/36 witnesses verified from raw dumps and corroborated by the engine's own foreclosure count halving (848→424) when the witnesses landed. Driving moved MISSING by 4 for 625 constructed runs. Policy `posts_show.sql` **119 views**, POLICY_HEADER 491 lines | record §103–§113; do not redo — see `_p32_status.md` |
+
+Shared assets every later endpoint inherits: the auth-boundary policy (§8 of
+that file says what is verified and what is NOT claimed), the post-auth scope,
+`tools/slot` 2-slot parallelism, the rig-crash census, the DML-aware judges,
+the repaired hand-seeder, and the multiset matrix protocol.
+
+Extracted policies to date: `conversations_index.sql` (58 views, CLOSED),
+`comments_index.sql` (79 views, CLOSED), `people_show.sql` (58 views — from a
+milestone corpus, read its header first) and `notifications_index.sql` (83
+views, STALE: a pre-engine cycle-2 corpus, superseded by the C7 run in
+progress). Extraction is normally the last step of a closed endpoint; the
+people_show file is the documented exception (extract-and-set-aside).
+
+The reference policies that once lived in `ruby_examples/dse-apps/policies/`
+are deliberately quarantined and unreadable; no agent may look for them.
+
+## Loadability (2026-09-15)
+
+A shipped policy is read by SQL consumers through
+`src/queries_from_runs/subsume/check_subsumed.sh`, and `subsume.py`'s own
+contract is that a query the loader cannot take **"participates in no pair and
+always survives"** — it stays in the file, is counted as a view, and silently
+means nothing. Measured over the six shipped policies, **355 of 558 statements
+(63.6%) loaded**; conversations_index was 11 of 58.
+
+Two causes, both now fixed in `src/queries_from_runs` (nothing diaspora-
+specific was added there):
+
+1. **unresolved binds** — `$$(SYM_RESULT_<call>_<n>_<col>)` is "column of a row
+   that call returned", i.e. a JOIN. The resolver only knew producers recorded
+   as `symbolic_call` events; an association read chained off an earlier result
+   is recorded on the VALUE (`symbolic_vars` note) instead, so every bind
+   naming such a row shipped as a bare `_SYM_RESULT_…` token — unloadable, and
+   over-permissive (a free token constrains nothing where the run proves the
+   value is what that query returned). `RunTransformer.bind_producers` now
+   registers those too, and the bind resolves by inlining that query and
+   recursing on its binds, terminating at `_MY_UID` / `_NOW` / request params.
+2. **shapes the loader cannot represent** — FROM-list subqueries, aggregates
+   over an aliased FROM, outer joins. Rewritten by
+   `RunTransformer._emission_conventions` into the readings the consumers
+   already define (README rule 7).
+
+`<endpoint>_loadable.sql` is each corpus re-extracted with both. The canonical
+`<endpoint>.sql` files are UNCHANGED. What remains unresolvable is booked in
+`docs/BOUNDARY_NOTE_GAPS_20260915.md`: every surviving placeholder is a value
+whose producing query the RUN NEVER RECORDED (a description, a
+`render_relation_sql` crash, or nothing) — Rule T, not an extraction defect.
+
+```bash
+python3 tools/extract_policy.py <endpoint> [--out PATH] [--skip-subsume]
+python3 tools/policy_loadability.py results3/queries_from_runs/*.sql
+PYTHONPATH=src python3 src/queries_from_runs/audits/policy_loadability_audit.py \
+    results3/<endpoint> results3/queries_from_runs/<endpoint>.sql
+```
+
+## Running things
+
+```bash
+# one JRuby at a time, machine-wide; always unset JAVA_TOOL_OPTIONS
+flock /tmp/concolic-slot.lock scripts/diaspora-concolic /abs/path/runner.rb
+
+# the engine report for a batch (needs ~5.5-6.3 GB at 20k dumps; run it alone)
+systemd-run --user --pipe --wait -p MemoryMax=6300M -p MemorySwapMax=0 \
+  --working-directory=/home/dev/project bash -c \
+  'unset JAVA_TOOL_OPTIONS; PYTHONPATH=src \
+   python3 reports/diaspora/results3/<endpoint>/coverage_report.py'
+# (MAX_MISSING_PER_CLIQUE is no longer needed — one Z3 query per demand set
+#  and one witness by default since 2026-09-12; DISCIPLINE §16d)
+
+# the five SQL audits (coordinator)
+PYTHONPATH=src venvs/queries_from_runs/bin/python \
+  src/queries_from_runs/audits/<audit>.py reports/diaspora/results3/<endpoint> [...]
+
+# the hardening lint, before any adversary round
+PYTHONPATH=src python3 reports/diaspora/tools/hardening_lint.py \
+  reports/diaspora/results3/<endpoint> --sample 400
+```
+
+Cost model: a concolic run is ~30 ms, but a JRuby launch is ~60–90 s, so
+wall-clock is dominated by the number of launches (rounds, probes, concrete
+scenarios) and by the assumption gate's replays — not by the runs themselves.
+
+## Infrastructure
+
+Java 21 + JRuby 9.3 (`/home/dev/tools/`), Rails 5.2.4.3 with a minimal
+Gemfile, the app at `ruby_examples/dse-apps/apps/diaspora/`, Z3 via the
+`venvs/queries_from_runs` virtualenv, sqlite (bundled JDBC adapter) for the
+real fixture runs. Source-code discipline: `src/**` and the app are
+coordinator-only; batch directories are write-freely.

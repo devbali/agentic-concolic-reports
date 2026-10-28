@@ -1,0 +1,109 @@
+#!/usr/bin/env python3
+"""Rooted demand seeds for posts_show (2026-09-09).
+
+Ported in spirit from notifications_index/_demand_root.py. The naive approach
+— seeding ONLY the variables the checker named — does not work: every other
+dimension falls back to its default, the replay re-walks the default path, and
+the missing entry survives round after round. Measured here: 12 such seeds,
+152 new dumps, missing unchanged at 31.
+
+So each root is  BASE SEEDS OF A REAL DUMP  +  the demanded assignment: the
+base is the corpus dump recording the most of the combination's expressions
+(preferring the OTHER polarity, so the context that evaluates them is
+reproduced) and only the demanded decisions are flipped.
+
+Requires the runner port that records `concolic_seeds` into every dump.
+Usage:  python3 _demand_root.py [out.json]
+"""
+import glob, json, os, re, sys
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+OUT = sys.argv[1] if len(sys.argv) > 1 else os.path.join(HERE, "_demandR.json")
+
+summary = json.load(open(os.path.join(HERE, "coverage_summary.json")))
+missing = [m for m in summary.get("missing", []) if not m.get("untracked")]
+print(f"missing (blocking): {len(missing)}")
+
+# CANONICAL <-> ORDINAL (2026-09-09). coverage_report.py canonicalizes at
+# load, so `missing[]` names decisions CANONICALLY; but `concolic_seeds` is
+# what the RUNTIME consumes and is ORDINAL-named. A seed emitted under a
+# canonical name is silently ignored by the runner. So per base dump we build
+# its own canonical->ordinal inverse and translate the demanded assignment
+# back into that dump's ordinals before writing the root.
+sys.path.insert(0, HERE)
+sys.path.insert(0, "/home/dev/project/src")
+from coverage_report import alias_map   # noqa: E402
+
+# index the corpus: dump -> (seeds, {expr: taken}, canonical->ordinal)
+dumps = []
+for p in sorted(glob.glob(os.path.join(HERE, "dump_*.json"))):
+    try:
+        d = json.load(open(p))
+    except Exception:
+        continue
+    seeds = d.get("concolic_seeds") or {}
+    if not seeds:
+        continue                      # pre-port dump: no base to graft onto
+    amap = alias_map(d)               # ordinal -> canonical, on the RAW dump
+    inv = {}
+    for ordn, canon in (amap or {}).items():
+        inv.setdefault(canon, ordn)   # first ordinal wins, as the renamer does
+    pcs = {}
+    for e in (d.get("events") or []):
+        if e.get("type") == "path_condition":
+            pcs[e["expr"]] = bool(e.get("taken"))
+    dumps.append((seeds, pcs, inv))
+print(f"indexed {len(dumps)} dumps carrying seeds")
+
+def exprs_of(m):
+    out = []
+    for part in (m.get("node_constraint") or "").split(" AND "):
+        part = part.strip()
+        neg = False
+        mm = re.match(r"^Not\((.*)\)$", part, re.S)
+        if mm:
+            part, neg = mm.group(1).strip(), True
+        out.append((part, not neg))
+    return out
+
+_CANON_RE = re.compile(r"_[0-9a-f]{6,}$")
+roots, seen = [], set()
+n_untranslatable = 0
+best_inv = {}
+for m in missing:
+    want = exprs_of(m)
+    best, best_score = None, -1
+    for seeds, pcs, inv in dumps:
+        # score: how many of the demanded exprs this dump evaluates, with a
+        # bonus for recording the OPPOSITE polarity (the context exists and
+        # the decision is genuinely flippable from here)
+        score = sum(2 if (e in pcs and pcs[e] != t) else (1 if e in pcs else 0)
+                    for e, t in want)
+        if score > best_score:
+            best, best_score, best_inv = seeds, score, inv
+    if best is None or best_score <= 0:
+        continue
+    root = dict(best)
+    # translate canonical -> this base dump's ordinal names; drop any demanded
+    # variable the base dump does not realise (an untranslatable name would be
+    # an inert seed, which is what made the first rooted round a no-op).
+    demanded, untranslatable = {}, 0
+    for k, v in (m.get("concrete_values") or {}).items():
+        kk = best_inv.get(k, k if not _CANON_RE.search(k) else None)
+        if kk is None:
+            untranslatable += 1
+            continue
+        demanded[kk] = v
+    if untranslatable:
+        n_untranslatable += untranslatable
+    root.update(demanded)
+    key = json.dumps(root, sort_keys=True)
+    if key in seen:
+        continue
+    seen.add(key)
+    roots.append(root)
+
+json.dump(roots, open(OUT, "w"), indent=1)
+print(f"wrote {len(roots)} rooted seeds -> {OUT}")
+print(f"  (combinations with no usable base: {len(missing) - len(roots)})")
+print(f"  (demanded vars untranslatable to the base dump's ordinals: {n_untranslatable})")

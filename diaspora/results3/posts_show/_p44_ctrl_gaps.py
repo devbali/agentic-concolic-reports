@@ -1,0 +1,307 @@
+#!/usr/bin/env python3
+"""P44 — GROUND-TRUTH TARGETING CONTROL. Build gap records whose cube the
+corpus PROVABLY CONTAINS, in the exact `_p23_gaps.py` output format, so the
+whole construct -> drive -> explain pipeline can be run against them and the
+hit rate read off.
+
+THE DIFFERENTIAL. For every real gap G of a round's demand (same demand set,
+same expression slots, same gate slots, same width) find a corpus dump D that
+EVALUATES every expression G's cube and gates mention, and emit the cube D
+ITSELF WALKED over exactly those expressions. That cube is realised by a run
+on disk, named in `ctrl_dump`. A constructor asked to build a run realising it
+must succeed; anything below 100 % is a defect with a cause.
+
+Two arms, so a failure can be attributed:
+  C0  concrete_values EMPTY  -- tests BASE CHOICE alone (the base already
+      realises every literal; no value has to be written).
+  C1  concrete_values TAKEN FROM D  -- adds the seed writer, the substitution
+      and the governor/split pin layers on top.
+
+  env: P44_INDEX  P44_GAPS  P44_OUT  P44_ARM(C0|C1)  P44_MAX  P44_SEED
+       P44_EXCLUDE_WITNESS=1  drop D itself from being nameable (reporting
+                              only; the constructor is never told which D)
+"""
+import json, os, pickle, random, re, sys
+from collections import Counter, defaultdict
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE); sys.path.insert(0, "/home/dev/project/src")
+from concolic_engine.assumptions import alias_map_for, renamer      # noqa: E402
+from coverage_assumptions import ALIASES                            # noqa: E402
+
+INDEX = os.environ.get("P44_INDEX", os.path.join(HERE, "_p31_index_P35C.pkl"))
+GAPS  = os.environ.get("P44_GAPS",  os.path.join(HERE, "_p31_gaps_P35C.json"))
+OUT   = os.environ.get("P44_OUT",   os.path.join(HERE, "_p44_ctrl_gaps.json"))
+ARM   = os.environ.get("P44_ARM", "C1")
+MAX   = int(os.environ.get("P44_MAX", "0"))
+SEED  = int(os.environ.get("P44_SEED", "20260915"))
+
+_LEN = re.compile(r"len\(([^()]+)\)")
+fixlen = lambda s: _LEN.sub(r"SYM_LEN_\1", s) if s else s
+_ID = r"[A-Za-z_][A-Za-z0-9_]*"
+_EQ = re.compile(rf"^\(\s*({_ID})\s*==\s*(.+?)\s*\)$")
+_NE = re.compile(rf"^\(\s*({_ID})\s*!=\s*(.+?)\s*\)$")
+_LN = re.compile(rf"^\(\s*Length\(({_ID})\)\s*<\s*(\d+)\s*\)$")
+
+_FAM = [(r"as_api_response_\d+_row_guid", "guid"),
+        (r"^\(SYM_LEN_.*_rows != 0\)$", "length gate (rows)"),
+        (r"^\(SYM_LEN_.*_ids != 0\)$", "length gate (ids)"),
+        (r"_text_empty == True", "text (empty)"),
+        (r"_text_has_mention == True", "text (has_mention)"),
+        (r"find_by_\d+_not_found", "find_by not_found"),
+        (r"findpublic_.*_not_found", "findpublic not_found"),
+        (r"findpublic_.*_public == True", "public gate"),
+        (r"_not_found == True", "evilq not_found"),
+        (r"CollectionProxy_size_\d+_size", "size gate"),
+        (r"Anonymous_process_\d+ == ''", "text (rendered)"),
+        (r"assoc_profile_nsfw", "nsfw gate"),
+        (r"Length\(SYM_PARAM_id\)", "param id length"),
+        (r"_row_status_message_guid !=", "guid self-compare")]
+def family(e):
+    for pat, name in _FAM:
+        if re.search(pat, e):
+            return name
+    return "other"
+
+_PART_FAM = [(r"_photos_", "photos"), (r"_tags_", "tags"), (r"_comments_", "comments"),
+             (r"_likes_", "likes"), (r"_mentions_", "mentions"),
+             (r"_participations_", "participations"),
+             (r"as_api_response", "api-response"), (r"evilq_", "evilq"),
+             (r"findpublic_", "findpublic"), (r"find_by_", "find_by"),
+             (r"^\(assoc_", "assoc-root"), (r"SYM_PARAM_id", "param"),
+             (r"Anonymous_process", "render")]
+def pfam(e):
+    for pat, name in _PART_FAM:
+        if re.search(pat, e):
+            return name
+    return "other"
+
+def cube_literals(nc):
+    out, depth, cur, i, n = [], 0, [], 0, len(nc or "")
+    while i < n:
+        c = nc[i]
+        if c == "(":
+            depth += 1
+        elif c == ")":
+            depth -= 1
+        if depth == 0 and nc.startswith(" AND ", i):
+            out.append("".join(cur)); cur = []; i += 5; continue
+        cur.append(c); i += 1
+    if cur:
+        out.append("".join(cur))
+    res = []
+    for t in out:
+        t = t.strip()
+        if not t:
+            continue
+        pol = True
+        while t.startswith("Not(") and t.endswith(")"):
+            t = t[4:-1].strip(); pol = not pol
+        res.append((t, pol))
+    return res
+
+def lit_rhs(tok):
+    tok = tok.strip()
+    m = re.match(r"^StringVal\((.*)\)$", tok)
+    if m:
+        tok = m.group(1).strip()
+    if tok in ("True", "False"):
+        return tok == "True"
+    if re.match(r"^-?\d+$", tok):
+        return int(tok)
+    if len(tok) >= 2 and tok[0] == tok[-1] and tok[0] in "'\"":
+        return tok[1:-1]
+    return tok
+
+
+def cons_of(nc):
+    """{var: [(kind, rhs, want), ...]} -- the SAME parse `_p31_construct.py`
+    uses, so "does the model satisfy the cube" is asked in the constructor's
+    own terms."""
+    out = defaultdict(list)
+    for part in (nc or "").split(" AND "):
+        part = part.strip(); want = True
+        m = re.match(r"^Not\((.*)\)$", part, re.S)
+        if m:
+            part, want = m.group(1).strip(), False
+        for rx, kind in ((_EQ, "eq"), (_NE, "ne"), (_LN, "lenlt")):
+            m = rx.match(part)
+            if not m:
+                continue
+            v, rhs = m.group(1), m.group(2)
+            if kind in ("eq", "ne") and rhs.strip() == v:
+                break
+            out[v].append((kind, lit_rhs(rhs) if kind != "lenlt" else int(rhs), want))
+            break
+    return dict(out)
+
+
+def satisfies(val, cons):
+    for kind, rhs, want in cons:
+        if kind == "eq":
+            ok = (val == rhs)
+        elif kind == "ne":
+            ok = (val != rhs)
+        else:
+            try:
+                ok = (len(val) < rhs)
+            except TypeError:
+                return False
+        if ok != want:
+            return False
+    return True
+
+
+def constrained_vars(nc):
+    out = set()
+    for e, _p in cube_literals(nc):
+        for rx in (_EQ, _NE, _LN):
+            m = rx.match(e)
+            if not m:
+                continue
+            if rx is not _LN and m.group(2).strip() == m.group(1):
+                break
+            out.add(m.group(1))
+            break
+    return out
+
+
+def main():
+    rnd = random.Random(SEED)
+    idx = pickle.load(open(INDEX, "rb"))
+    exprs = idx["exprs"]; eidx = {e: i for i, e in enumerate(exprs)}
+    dumps = idx["dumps"]
+    seedable = set(idx.get("seedable") or ())
+    domain = idx["domain"]
+    RAW = {tuple(k.split("\x00", 1)): v for k, v in idx["raw"].items()}
+    gaps = json.load(open(GAPS))
+    print(f"index {len(dumps)} dumps / {len(exprs)} exprs;  gaps {len(gaps)};  arm {ARM}",
+          flush=True)
+
+    # per-dump masks
+    EM = [d[2] for d in dumps]; TM = [d[3] for d in dumps]; DFM = [d[8] for d in dumps]
+    VAR = [d[1] for d in dumps]; PATH = [d[0] for d in dumps]
+
+    stat = Counter()
+    ctrl, want_dump = [], defaultdict(list)
+    for g in gaps:
+        slots = [e for e, _p in cube_literals(g["node_constraint"])]
+        gslots = sorted((g.get("gates") or {}).keys())
+        allslots = list(dict.fromkeys(slots + gslots))
+        js = []
+        ok = True
+        for e in allslots:
+            j = eidx.get(e)
+            if j is None:
+                ok = False
+                stat["slot not in the index expression universe"] += 1
+                break
+            js.append((e, j))
+        if not ok:
+            stat["gap DROPPED: a slot is outside the index universe"] += 1
+            continue
+        mask = 0
+        for _e, j in js:
+            mask |= 1 << j
+        cands = [i for i in range(len(dumps)) if (EM[i] & mask) == mask]
+        if not cands:
+            stat["gap DROPPED: no corpus dump evaluates every slot"] += 1
+            continue
+        di = rnd.choice(cands)
+        stat["gap KEPT"] += 1
+        lits = []
+        gates = {}
+        for e, j in js:
+            pol = bool((TM[di] >> j) & 1)          # both-ways -> True (either is realised)
+            if e in gslots:
+                gates[e] = pol
+            if e in slots:
+                lits.append(e if pol else f"Not({e})")
+        nc = " AND ".join(lits)
+        ctrl.append({"id": f"c{len(ctrl):06d}", "set": g["set"], "width": g["width"],
+                     "surviving": g.get("surviving", 0), "gates": gates,
+                     "part_family": g["part_family"],
+                     "families": sorted({family(e) for e, _p in cube_literals(nc)}),
+                     "node_constraint": nc,
+                     "concrete_values": {},
+                     "assignments": None,
+                     "constrained": [], "out_of_domain": [], "out_of_domain_free": [],
+                     "unknown_vars": [], "unknown_free": [], "not_seedable": [],
+                     "ctrl_dump": os.path.basename(PATH[di]),
+                     "ctrl_variant": VAR[di], "ctrl_candidates": len(cands),
+                     "from_gap": g["id"]})
+        want_dump[di].append(len(ctrl) - 1)
+        if MAX and len(ctrl) >= MAX:
+            break
+
+    print("  " + "; ".join(f"{k}: {v}" for k, v in stat.most_common()), flush=True)
+
+    if ARM == "C1":
+        # per-witness-dump values, canonicalised the way the checker joins names
+        for n, (di, rows) in enumerate(want_dump.items()):
+            d = json.load(open(PATH[di]))
+            ev = d.get("events") or ()
+            amap = alias_map_for([(e.get("result_name"), e.get("note"))
+                                  for e in ev if e.get("type") == "symbolic_call"], ALIASES)
+            rn = renamer(amap)
+            vals = {}
+            for sv in (d.get("symbolic_vars") or ()):
+                nm = fixlen(rn(str(sv.get("name"))))
+                if sv.get("value") is not None:
+                    vals[nm] = sv["value"]
+            for r in rows:
+                c = ctrl[r]
+                con = constrained_vars(c["node_constraint"])
+                model = {v: vals[v] for v in con if v in vals}
+                # THE MODEL MUST SATISFY THE CUBE. An alias CANONICAL is backed
+                # by several RAW ordinals in one run and their lengths differ,
+                # so "the witness's value for the canonical" is not a function
+                # and can contradict the very literal the cube demands. The
+                # coverage engine's own models never do this (measured: 0 of
+                # 1 679 length literals on the round-11 demand), so a control
+                # that did would be testing the control, not the constructor.
+                # Repaired the way the constructor repairs an out-of-domain
+                # value: the most-observed OBSERVED value that satisfies.
+                cons = cons_of(c["node_constraint"])
+                nfix = 0
+                for v, cs in cons.items():
+                    if v not in model or satisfies(model[v], cs):
+                        continue
+                    dom = domain.get(v) or {}
+                    cand = [rr for rr, _n in sorted(dom.items(), key=lambda x: -x[1])
+                            if satisfies(RAW.get((v, rr)), cs)]
+                    if cand:
+                        model[v] = RAW[(v, cand[0])]; nfix += 1
+                    else:
+                        model.pop(v, None); nfix += 1
+                c["model_repaired"] = nfix
+                c["concrete_values"] = model
+                c["constrained"] = sorted(con & set(model))
+                c["not_seedable"] = sorted(v for v in con if v in model and v not in seedable)
+                c["out_of_domain"] = [k for k, val in model.items()
+                                      if k in con and k in domain and repr(val) not in domain[k]]
+                c["unknown_vars"] = [k for k in model if k in con and k not in domain]
+                c["missing_from_witness"] = sorted(con - set(model))
+            if n % 200 == 0:
+                print(f"  witness values {n}/{len(want_dump)}", flush=True)
+
+    json.dump(ctrl, open(OUT, "w"))
+    print(f"wrote {len(ctrl)} CONTROL gaps -> {os.path.basename(OUT)}")
+    print(f"  distinct witness dumps: {len(want_dump)}")
+    print("  by variant: " + str(dict(Counter(c["ctrl_variant"] for c in ctrl))))
+    print("  width dist: " + str(dict(Counter(len(cube_literals(c['node_constraint']))
+                                              for c in ctrl))))
+    if ARM == "C1":
+        print(f"  cubes with a constrained var the witness has no value for: "
+              f"{sum(1 for c in ctrl if c.get('missing_from_witness'))}")
+        print(f"  cubes with an out-of-domain constrained value: "
+              f"{sum(1 for c in ctrl if c['out_of_domain'])}")
+        print(f"  cubes with an UNSTEERABLE constrained var: "
+              f"{sum(1 for c in ctrl if c['not_seedable'])}")
+        print(f"  cubes whose witness model had to be REPAIRED to satisfy the cube: "
+              f"{sum(1 for c in ctrl if c.get('model_repaired'))} "
+              f"({sum(c.get('model_repaired', 0) for c in ctrl)} values)")
+    print("P44-CTRL-GAPS-DONE")
+
+
+main()

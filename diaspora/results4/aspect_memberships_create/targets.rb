@@ -126,81 +126,36 @@ module AspectMembershipsTargets
   #      because `klass.allocate` leaves @attributes nil).
   # Both are rescued: a half-constructed record must degrade to an honest
   # "(attributes unavailable)" note, never abort the run.
+  # ---------------------------------------------------------------------
+  # DML statement rendering — MOVED TO THE SHARED CORE (2026-09-25)
+  # ---------------------------------------------------------------------
+  # `dml_attrs` / `record_is_new?` / `dml_note` / `update_all_note` were
+  # written here because this was the first endpoint with an INSERT. The
+  # defect they repaired is app-general (D6: the core note carries no DML
+  # keyword, so the extraction drops every write on the other 68 write
+  # endpoints), so the renderer now lives in `ConcolicTargets` and was
+  # re-measured there against `sql.active_record` for 46 models x 12
+  # operations. These four stay as DELEGATORS so any caller keeps working
+  # and the two copies of the rule cannot drift apart.
   def dml_attrs(receiver)
-    # (A) SYMBOLIC instance (`klass.allocate` — ActiveModel::Dirty cannot run
-    #     on it, @attributes is nil). §4's wrapper records every written
-    #     column on `concolic_dirty` and keeps the values in
-    #     `concolic_attrs`, which are the SYMBOLIC values. Reading them from
-    #     AR instead (`changes`, `attributes_before_type_cast`) returned nil
-    #     and rendered `UPDATE "contacts" SET "contacts"."receiving" = nil`
-    #     for `contact.receiving = true` — measured, probe run dse0003.
-    if receiver.respond_to?(:concolic_dirty) && receiver.respond_to?(:concolic_attrs)
-      d = begin
-        receiver.concolic_dirty
-      rescue StandardError
-        nil
-      end
-      a = begin
-        receiver.concolic_attrs
-      rescue StandardError
-        nil
-      end
-      return d.map { |k| [k.to_s, a[k.to_s]] }.to_h if d.is_a?(::Array) && a.is_a?(::Hash)
-    end
-
-    # (B) a REAL AR record — `contacts.find_or_initialize_by` missed and built
-    #     one, or the has_many :through join row. Values come from
-    #     `attributes_before_type_cast`, NEVER from `changes`: `changes`
-    #     hands back the TYPE CAST value, which for a symbolic id is the
-    #     plain Integer that CastableSymbolicInt#to_i produced (§4a), and the
-    #     note would render `1` instead of `$$(SYM_…)` — a severed producer
-    #     chain on the one statement this batch exists to record.
-    raw = begin
-      receiver.respond_to?(:attributes_before_type_cast) ? receiver.attributes_before_type_cast : nil
-    rescue StandardError
-      nil
-    end
-
-    # A new record INSERTs every attribute it carries a value for. Taking the
-    # CHANGED set instead lost `aspect_memberships.aspect_id`: AR assigns the
-    # join row's aspect through the ASSOCIATION
-    # (has_many_through_association.rb:61 `attributes[source_reflection.name]
-    # = record`), and the fk that the belongs_to writer derives from it is
-    # not always in `changed_attribute_names_to_save` at save time — the
-    # INSERT then named only `contact_id` (measured, probe run dse0003).
-    if record_is_new?(receiver) == true && raw.is_a?(::Hash)
-      return raw.reject { |_k, v| v.nil? }
-    end
-
-    names = begin
-      if receiver.respond_to?(:changed_attribute_names_to_save)
-        receiver.changed_attribute_names_to_save
-      elsif receiver.respond_to?(:changed)
-        receiver.changed
-      end
-    rescue StandardError
-      nil
-    end
-    if names.is_a?(::Array) && !names.empty? && raw.is_a?(::Hash)
-      return names.map { |k| [k.to_s, raw[k.to_s]] }.to_h
-    end
-
-    ch = begin
-      receiver.respond_to?(:changes) ? receiver.changes : nil
-    rescue StandardError
-      nil
-    end
-    if ch.is_a?(::Hash) && !ch.empty?
-      return ch.map { |k, v| [k.to_s, v.is_a?(::Array) ? v[1] : v] }.to_h
-    end
-    return raw.reject { |_k, v| v.nil? } if raw.is_a?(::Hash)
-    at = begin
-      receiver.respond_to?(:attributes) ? receiver.attributes : nil
-    rescue StandardError
-      nil
-    end
-    at.is_a?(::Hash) ? at.reject { |_k, v| v.nil? } : nil
+    names = ConcolicTargets.dml_changed_names(receiver)
+    return nil if names.nil?
+    names.map { |c| [c.to_s, ConcolicTargets.dml_raw_value(receiver, c)] }.to_h
   end
+
+  def record_is_new?(receiver)
+    ConcolicTargets.dml_record_is_new?(receiver)
+  end
+
+  def dml_note(ct, receiver, op, args = nil)
+    ct.dml_note(receiver, op, args) ||
+      %(#{receiver.class.name}##{op} (no changed attributes; ActiveRecord issues no statement))
+  end
+
+  def update_all_note(ct, receiver, args)
+    ct.dml_update_all_note(receiver, args)
+  end
+
 
   # ---------------------------------------------------------------------
   # symbolic_attr — the symbol standing behind ONE NAMED COLUMN of a record.
@@ -250,98 +205,9 @@ module AspectMembershipsTargets
   # is `!(@new_record || @destroyed)` — correctly returns true. A symbolic
   # instance always came out of a finder, i.e. out of a row the database
   # returned, so "persisted" is the right answer and its save is an UPDATE.
-  def record_is_new?(receiver)
-    if receiver.respond_to?(:persisted?)
-      begin
-        p = receiver.persisted?
-        return !p unless p.nil?
-      rescue StandardError
-        nil
-      end
-    end
-    begin
-      n = receiver.new_record?
-      return n unless n.nil?
-    rescue StandardError
-      nil
-    end
-    begin
-      pk = receiver.class.primary_key
-      receiver[pk].nil?
-    rescue StandardError
-      nil # unknown — the note says so
-    end
-  end
-
-  def dml_note(ct, receiver, op)
-    klass = receiver.class
-    table = klass.respond_to?(:table_name) ? klass.table_name : klass.name.to_s
-    attrs = dml_attrs(receiver)
-    return %(#{klass.name}##{op} (attributes unavailable)) if attrs.nil?
-
-    new_rec = record_is_new?(receiver)
-    if new_rec == false
-      pk = begin
-        klass.primary_key
-      rescue StandardError
-        "id"
-      end
-      pkv = begin
-        receiver[pk]
-      rescue StandardError
-        nil
-      end
-      sets = attrs.reject { |k, _| k.to_s == pk.to_s }
-                  .map { |k, v| %("#{table}"."#{k}" = #{ct.render_arg_value(v)}) }.join(", ")
-      sets = "(no changed columns)" if sets.empty?
-      %(UPDATE "#{table}" SET #{sets} WHERE "#{table}"."#{pk}" = #{ct.render_arg_value(pkv)})
-    else
-      cols = attrs.keys.map { |k| %("#{k}") }.join(", ")
-      vals = attrs.values.map { |v| ct.render_arg_value(v) }.join(", ")
-      prefix = new_rec.nil? ? "/* new_record? unavailable, rendered as INSERT */ " : ""
-      %(#{prefix}INSERT INTO "#{table}" (#{cols}) VALUES (#{vals}))
-    end
-  rescue StandardError => e
-    %(#{receiver.class.name}##{op} (note render failed: #{e.class}))
-  end
 
   # UPDATE-shaped note for `Relation#update_all` (the shared config renders
   # the relation's SELECT, which is the wrong verb for a write).
-  def update_all_note(ct, receiver, args)
-    sel = ct.sql_for(receiver, args)
-    table = begin
-      ct.model_class(receiver).table_name
-    rescue StandardError
-      nil
-    end
-    updates = nil
-    if args.is_a?(::Hash)
-      args.each_value do |v|
-        if v.is_a?(::Hash) && !v.empty?
-          updates = v
-          break
-        end
-      end
-    end
-    # `update_all(unread: false)` reaches a `def update_all(updates)` — a
-    # REQUIRED POSITIONAL, not a `*rest` — so Ruby 2.6 packs the trailing
-    # hash into the wrapper's `**kwargs` and the interceptor's B-1 repair
-    # (which only fills a named `*rest` slot) does not apply: `args` comes
-    # back empty and the note read `SET (updates unavailable)` (measured,
-    # probe run dse0001..4). §6's prepend stashes the real hash.
-    tc = Thread.current[:concolic_update_all_values]
-    updates ||= tc if tc.is_a?(::Hash) && !tc.empty?
-    return sel unless table
-    sets = if updates
-             updates.map { |k, v| %("#{table}"."#{k}" = #{ct.render_arg_value(v)}) }.join(", ")
-           else
-             "(updates unavailable)"
-           end
-    where = sel[/\sWHERE\s.*\z/m]
-    %(UPDATE "#{table}" SET #{sets}#{where})
-  rescue StandardError
-    ct.sql_for(receiver, args)
-  end
 
   # ---------------------------------------------------------------------
 
@@ -469,39 +335,47 @@ module AspectMembershipsTargets
                   base.private_instance_methods.include?(m) ||
                   base.protected_instance_methods.include?(m)
       interceptor.declare_target(base, m, kind: CallInterceptor::TARGET_FUNCTION, type: "bool", returns: lambda do |receiver, args, name|
-        note = if %i[destroy destroy!].include?(m)
-                 begin
-                   t = receiver.class.table_name
-                   pk = receiver.class.primary_key
-                   %(DELETE FROM "#{t}" WHERE "#{t}"."#{pk}" = #{ct.render_arg_value(receiver[pk])})
-                 rescue StandardError
-                   "#{receiver.class.name}##{m}"
-                 end
-               else
-                 AspectMembershipsTargets.dml_note(ct, receiver, m)
-               end
+        # 2026-09-25 — THE RENDERER MOVED TO THE SHARED CORE.
+        # This batch wrote the first DML note renderer because the core's
+        # note (`"Contact#save args={}"`) carries no DML keyword and the
+        # extraction drops it. That is not a property of this endpoint: it
+        # is true of all 69 write endpoints, and the other 68 had no
+        # override to repair it (D6). The renderer is now
+        # `ConcolicTargets#dml_note`, measured against `sql.active_record`
+        # for 46 models x 12 operations, and this declaration delegates to
+        # it. What stays local is the SEED (`ct.seed_for(vn, true)`), which
+        # is a DSE knob, not a statement.
+        #
+        # `dml_note` returns nil exactly when real ActiveRecord issues
+        # nothing — a `save` on a record with no changes (D4). The note is
+        # then prose, which `_is_dml` correctly drops.
+        note = ct.dml_note(receiver, m, args)
+        note = "#{receiver.class.name}##{m} (no changed attributes; ActiveRecord issues no statement)" if note.nil?
         vn = "#{name}_#{m}_ok"
+        # D8 — the association INSERTs this save defers. `share_with` appends
+        # the aspect to an UNSAVED contact (connecting.rb:21 before :22), so
+        # the join row's INSERT belongs to THIS call and vanished with the
+        # callback chain the mock replaces. Deferred to after the symbool
+        # below so the notes appear in real-statement order.
         # Seeded true: a failing write is a validation outcome, and the two
         # validation decisions this endpoint actually branches on
         # (`contact.valid?`, `@contact.present?`) are recorded at their own
         # boundaries. Kept a DECISION (not pinned) so DSE can flip it.
-        symbool(vn, ct.seed_for(vn, true), note: note)
+        r = symbool(vn, ct.seed_for(vn, true), note: note)
+        ct.dml_run_pending_autosaves!(receiver) if %i[save save! update update!].include?(m)
+        r
       end)
     end
 
     %i[update_all delete_all].each do |m|
       interceptor.declare_target(rel, m, kind: CallInterceptor::TARGET_FUNCTION, type: "int", returns: lambda do |receiver, args, name|
-        note = if m == :update_all
-                 AspectMembershipsTargets.update_all_note(ct, receiver, args)
-               else
-                 begin
-                   sel = ct.sql_for(receiver, args)
-                   t = ct.model_class(receiver).table_name
-                   %(DELETE FROM "#{t}"#{sel[/\sWHERE\s.*\z/m]})
-                 rescue StandardError
-                   ct.sql_for(receiver, args)
-                 end
-               end
+        # 2026-09-25 — moved to the shared core (D5). The comment at :308-309
+        # already named the bug as general; it is now fixed generally, and
+        # the core renderer additionally drops the `args`-derived WHERE this
+        # one carried (N4: `update_all(unread: false)` rendered
+        # `... AND "notifications"."unread" = false` as a PREDICATE).
+        note = (m == :update_all) ? ct.dml_update_all_note(receiver, args)
+                                  : ct.dml_delete_all_note(receiver, args)
         symint("#{name}_#{m}_count", 1, note: note)
       end)
     end

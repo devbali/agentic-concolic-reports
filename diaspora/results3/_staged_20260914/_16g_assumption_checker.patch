@@ -1,0 +1,77 @@
+STAGED — NOT MERGED (2026-09-14, DISCIPLINE §16g)
+=================================================
+File:   src/end_to_end_completion_checker/assumption/assumption_checker.py
+Base:   md5 2b55066358604fe74f3a1bee6c6ca87f
+Backup: reports/diaspora/results3/_bak_src_20260914/assumption_checker.py.pre_16g_20260914
+
+WHY IT IS STAGED AND NOT APPLIED
+--------------------------------
+Every edit to this file discards the running gate's probe bank and its 497 MB
+index, and `posts-p26-gate-v3-20260914` is live (batch 231 at 08:15, ~3.3/s
+against a ~1.3/s baseline, NO RESUME IF IT DIES). The coordinator sequences
+the merge.
+
+WHY IT IS ONLY A MARKER
+-----------------------
+§16g's probe shape is IDENTICAL to §16f's: `C` is still at most
+`foreclosure_conjunction_width` (3) literals to flip from a base that RECORDS
+the member, and a member that gets recorded REFUTES the inference. So
+`coverage.wellfounded_drops_to_dict()` emits the §16g classes as the SAME
+`SubconjunctionForeclosureAssumption` type, with the SAME `conditioning` /
+`gates` / `expr` / `prefix` payload, plus two new informational keys
+(`wellfounded: True`, `section: "16g"`).
+
+CONSEQUENCE: the gate ALREADY TESTS §16g CLASSES CORRECTLY WITH NO EDIT.
+  * `test_declared` dispatches on `type` -> `_test_subconjunction_foreclosure`
+    -> `_test_conjunction_foreclosure(..., kind="subconj")`   (line 2295-2296)
+  * the verdict-row dedup key already carries `prefix` (line 2614), so a §16f
+    and a §16g claim over the SAME (C, member) collapse to one row — which is
+    right: identical claim, identical probe, one replay.
+  * the extra keys are ignored by every consumer.
+
+The staged diff below therefore changes NOTHING about which probes run or what
+verdict they get. It only carries the provenance into the verdict row so a
+report can say how many PASS/FAIL rows belong to §16f and how many to §16g.
+
+DIFF (apply with `patch -p1` from /home/dev/project, or by hand — 2 hunks)
+-------------------------------------------------------------------------
+--- a/src/end_to_end_completion_checker/assumption/assumption_checker.py
++++ b/src/end_to_end_completion_checker/assumption/assumption_checker.py
+@@ -2168,8 +2168,13 @@ def test_declared(cfg, a, cache):
+     typ = a.get("type", "")
+     batch = cfg["batch_dir"]
+     out = {"type": typ, "expr": a.get("expr") or a.get("expr_a"),
+            "expr_b": a.get("expr_b"), "verdict": "?", "detail": ""}
++    # DISCIPLINE §16g (2026-09-14): a well-founded drop reaches the gate as a
++    # `SubconjunctionForeclosureAssumption` because the PROBE is the same one
++    # (<= W literals to flip from a base that records the member). Carry the
++    # provenance into the row so a report can separate the two claims; the
++    # test itself is unchanged.
++    if a.get("wellfounded"):
++        out["section"] = a.get("section") or "16g"
++        out["wellfounded"] = True
+ 
+     if typ == "IndependenceAssumption":
+@@ -2044,10 +2044,16 @@ def _test_subconjunction_foreclosure(cfg, a, cache, out):
+       * ``C`` is a SUB-conjunction, so it is short by construction — the
+         width cap ``foreclosure_conjunction_width`` bounds the number of
+         literals that can need flipping, and with it the cost.
+ 
++    DISCIPLINE §16g (2026-09-14) rides on this test unchanged. A well-founded
++    drop is the same claim with ``C`` drawn from anywhere in the leaf rather
++    than from the member's walk prefix, so the base ("the richest snapshot
++    that records ``d`` together with every literal of ``C``") and the probe
++    (flip the literals whose recorded outcome differs) are identical. Rows
++    carry ``wellfounded: True`` / ``section: "16g"`` for the report only.
++
+     The realised-value rule is unchanged: a probe that does not REALISE every
+     literal of ``C`` is NOT-TESTABLE, never a PASS.
+     """
+     return _test_conjunction_foreclosure(cfg, a, cache, out, kind="subconj")
+
+AFTER THE MERGE
+---------------
+Nothing else changes. The §16g classes are already in
+`summary["assumptions"]` whenever a pass ran with
+`FORECLOSURE_WELLFOUNDED_DROPS=1`, so the next gate run over such a summary
+tests them whether or not this diff has landed.

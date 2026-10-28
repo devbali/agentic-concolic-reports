@@ -1,0 +1,7 @@
+
+##### cardinality_consistency #####
+== cardinality_consistency_audit: 13677 dumps, 0 list-cardinality decisions ==
+   rule population: 0 (note, list) pair(s) where a BULK loader reads a list's own rows
+
+RESULT: pass but VACUOUS — this corpus contains no bulk loader reading a list's own rows, so the rule was never applied. Absence of the subject is not evidence about it; do not count this as a check that passed.
+EXIT=0 [checkpoint: replayed, not re-run]

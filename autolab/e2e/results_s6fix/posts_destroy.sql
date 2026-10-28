@@ -1,0 +1,307 @@
+-- posts_destroy — SQL SELECT views rendered from the policy IR
+--
+-- 25 atoms in; 9 views out.
+--   0 atoms do not terminate in a SELECT and are
+--   excluded — every one is named below, never merely counted
+--   (DESIGN_DOMAIN_LAYER §3A.3).
+--   25 statements extracted, 9 distinct after the prune,
+--   0 syntactically subsumed, 9 views.
+--   PC predicates: 0 folded, 0 kept — a predicate the
+--   policy shows this shape running BOTH WITH AND WITHOUT does not
+--   constrain it and is dropped.
+--   85 condition predicates did not resolve to a column; listed below.
+--   Subsumption: SYNTACTIC ONLY (conjunct containment). The solver-backed
+--   checker is not run from a render, so a statement it would have dropped
+--   is still here: this over-reports the policy, never under-reports it.
+--   no app config supplied: no schema, so a condition on a result field
+--   cannot be confirmed to be a column and is reported rather than folded;
+--   framework-default symbol conventions only
+--
+-- ==========================================================================
+-- VIEWS
+-- ==========================================================================
+
+SELECT `people`.* FROM `people`, `posts`, `people` AS `people0`, `users` WHERE `people`.`id` = `posts`.`author_id` AND `users`.`id` = _MY_UID AND `people0`.`owner_id` = `users`.`id` AND `posts`.`author_id` = `people0`.`id`;
+
+SELECT `people`.* FROM `people`, `posts`, `share_visibilities`, `users` WHERE `people`.`id` = `posts`.`author_id` AND `users`.`id` = _MY_UID AND `share_visibilities`.`user_id` = `users`.`id`;
+
+SELECT `posts`.* FROM `posts` INNER JOIN `share_visibilities` ON `share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post', `users` WHERE `share_visibilities`.`user_id` = `users`.`id` AND `users`.`id` = _MY_UID;
+
+SELECT `posts`.* FROM `posts`, `people`, `users` WHERE `posts`.`author_id` = `people`.`id` AND `users`.`id` = _MY_UID AND `people`.`owner_id` = `users`.`id`;
+
+SELECT `profiles`.* FROM `profiles`, `people`, `users` WHERE `profiles`.`person_id` = `people`.`id` AND `users`.`id` = _MY_UID AND `people`.`owner_id` = `users`.`id`;
+
+SELECT `people`.* FROM `people`, `posts` WHERE `people`.`id` = `posts`.`author_id` AND `posts`.`public` = TRUE;
+
+SELECT `people`.* FROM `people`, `users` WHERE `people`.`owner_id` = `users`.`id` AND `users`.`id` = _MY_UID;
+
+SELECT `posts`.* FROM `posts` WHERE `posts`.`public` = TRUE;
+
+SELECT `users`.* FROM `users` WHERE `users`.`id` = _MY_UID;
+
+-- ==========================================================================
+-- EXCLUDED ATOMS — 0 of 25 do not terminate in a SELECT
+-- `supports()` returned False for each. Named, never silently skipped.
+-- ==========================================================================
+-- (none: every atom terminates in a SELECT)
+
+-- ==========================================================================
+-- CONDITIONS NOT RENDERED — 85 predicates
+-- The IR keeps a path condition the renderer cannot resolve to a column;
+-- this is where that loss is REPORTED rather than taken silently (DESIGN_IR §2).
+-- ==========================================================================
+-- atom 2: c1.language == "pl"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 3: c1.language == "pl"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 4: $"Length(SYM_PARAM_id)" >= 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 4: c1.language == "pl"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 5: $"Length(SYM_PARAM_id)" >= 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 5: c1.language == "pl"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 5: c4.not_found != true
+--     no schema: `.not_found` on c4 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 6: $"Length(SYM_PARAM_id)" >= 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 6: c1.language == "pl"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 6: c4.not_found == true
+--     c4 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 7: $"Length(SYM_PARAM_id)" >= 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 7: c1.language == "pl"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 7: c4.not_found == true
+--     c4 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 7: c5.not_found != true
+--     no schema: `.not_found` on c5 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 8: $"Length(SYM_PARAM_id)" < 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 8: c1.language == "pl"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 9: $"Length(SYM_PARAM_id)" < 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 9: c1.language == "pl"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 9: c4.not_found != true
+--     no schema: `.not_found` on c4 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 10: $"Length(SYM_PARAM_id)" < 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 10: c1.language == "pl"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 10: c4.not_found == true
+--     c4 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 11: $"Length(SYM_PARAM_id)" < 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 11: c1.language == "pl"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 11: c4.not_found == true
+--     c4 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 11: c5.not_found != true
+--     no schema: `.not_found` on c5 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 12: $"Length(SYM_PARAM_id)" >= 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 12: c1.language != "pl"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 12: c1.language != "xx"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 13: $"Length(SYM_PARAM_id)" >= 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 13: c1.language != "pl"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 13: c1.language != "xx"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 13: c2.not_found == true
+--     c2 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 14: $"Length(SYM_PARAM_id)" >= 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 14: c1.language != "pl"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 14: c1.language != "xx"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 14: c2.not_found == true
+--     c2 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 15: $"Length(SYM_PARAM_id)" >= 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 15: c1.language != "pl"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 15: c1.language != "xx"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 15: c2.not_found == true
+--     c2 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 15: c4.not_found != true
+--     no schema: `.not_found` on c4 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 16: $"Length(SYM_PARAM_id)" >= 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 16: c1.language != "pl"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 16: c1.language != "xx"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 16: c2.not_found != true
+--     no schema: `.not_found` on c2 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 17: $"Length(SYM_PARAM_id)" >= 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 17: c1.language != "pl"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 17: c1.language != "xx"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 17: c2.not_found != true
+--     c2 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 18: $"Length(SYM_PARAM_id)" < 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 18: c1.language != "pl"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 18: c1.language != "xx"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 19: $"Length(SYM_PARAM_id)" < 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 19: c1.language != "pl"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 19: c1.language != "xx"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 19: c2.not_found == true
+--     c2 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 20: $"Length(SYM_PARAM_id)" < 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 20: c1.language != "pl"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 20: c1.language != "xx"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 20: c2.not_found == true
+--     c2 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 21: $"Length(SYM_PARAM_id)" < 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 21: c1.language != "pl"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 21: c1.language != "xx"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 21: c2.not_found == true
+--     c2 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 21: c4.not_found != true
+--     no schema: `.not_found` on c4 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 22: $"Length(SYM_PARAM_id)" < 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 22: c1.language != "pl"
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 22: c1.language != "xx"
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 22: c2.not_found == true
+--     c2 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 22: c4.not_found == true
+--     c4 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 23: $"Length(SYM_PARAM_id)" < 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 23: c1.language != "pl"
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 23: c1.language != "xx"
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 23: c2.not_found == true
+--     c2 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 23: c4.not_found == true
+--     c4 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 23: c5.not_found != true
+--     no schema: `.not_found` on c5 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 24: $"Length(SYM_PARAM_id)" < 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 24: c1.language != "pl"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 24: c1.language != "xx"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 24: c2.not_found != true
+--     no schema: `.not_found` on c2 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 25: $"Length(SYM_PARAM_id)" < 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 25: c1.language != "pl"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 25: c1.language != "xx"
+--     no schema: `.language` on c1 cannot be confirmed to be a column of
+--     `users`, so it is not folded
+-- atom 25: c2.not_found != true
+--     c2 is not joined into this statement, so the condition constrains
+--     rows this view does not read

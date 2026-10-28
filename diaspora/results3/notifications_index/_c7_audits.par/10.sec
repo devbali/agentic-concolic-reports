@@ -1,0 +1,87 @@
+
+##### boundary_declaration #####
+== notifications_index: 89 distinct target methods declared ==
+   finders          complete
+   existence        complete
+   materialization  complete
+   calculations     complete
+   batches          complete
+   writes           complete
+   raw              complete
+   -- exercise census over 313977 dumps (symbolic_call events only) --
+        1657883  records
+         868396  count
+         374805  exists?
+         341149  first
+         308300  to_ary
+         177523  sum
+         153797  find_by
+         116363  load_target
+      REVIEW: declared but invoked 0 times: any? average calculate count_by_sql delete_all destroy destroy! destroy_all empty? find find_by! find_by_sql find_each find_in_batches first! ids in_batches last! many? maximum minimum none? one? save save! take take! to_a touch update update! update_all update_attribute
+              not a verdict — is the family unreachable here, or is a
+              pin removing its call site? only the code answers that.
+
+== comments_index: 117 distinct target methods declared ==
+   finders          complete
+   existence        complete
+   materialization  complete
+   calculations     complete
+   batches          complete
+   writes           complete
+   raw              complete
+   -- exercise census over 26528 dumps (symbolic_call events only) --
+          85999  exists?
+          81309  records
+          13257  to_a
+          12424  first
+      REVIEW: declared but invoked 0 times: any? average calculate count count_by_sql delete_all destroy destroy! destroy_all empty? find find_by find_by! find_by_sql find_each find_in_batches first! ids in_batches last last! load_target many? maximum minimum none? one? pluck save save! size sum take take! to_ary touch update update! update_all update_attribute
+              not a verdict — is the family unreachable here, or is a
+              pin removing its call site? only the code answers that.
+
+== conversations_index: 122 distinct target methods declared ==
+   finders          complete
+   existence        complete
+   materialization  complete
+   calculations     complete
+   batches          complete
+   writes           complete
+   raw              complete
+   -- exercise census over 18623 dumps (symbolic_call events only) --
+          78668  count
+          45865  records
+          37309  exists?
+          25798  to_a
+          22930  find_by
+          22883  pluck
+          21181  first
+          18306  sum
+      REVIEW: declared but invoked 0 times: any? average calculate count_by_sql delete_all destroy destroy! destroy_all find find_by! find_by_sql find_each find_in_batches first! ids in_batches last last! load_target many? maximum minimum none? one? save! size take! touch update update! update_all update_attribute
+              not a verdict — is the family unreachable here, or is a
+              pin removing its call site? only the code answers that.
+
+== cross-batch contrast: invoked elsewhere, never here ==
+   notifications_index:
+      empty?           0 here | conversations_index 6120
+      save             0 here | conversations_index 9211
+      take             0 here | conversations_index 115
+      to_a             0 here | conversations_index 25798, comments_index 13257
+   comments_index:
+      count            0 here | notifications_index 868396, conversations_index 78668
+      empty?           0 here | conversations_index 6120
+      find_by          0 here | notifications_index 153797, conversations_index 22930
+      last             0 here | notifications_index 116363
+      load_target      0 here | notifications_index 116363
+      pluck            0 here | notifications_index 32856, conversations_index 22883
+      save             0 here | conversations_index 9211
+      size             0 here | notifications_index 95964
+      sum              0 here | notifications_index 177523, conversations_index 18306
+      take             0 here | conversations_index 115
+      to_ary           0 here | notifications_index 308300, conversations_index 8948
+   conversations_index:
+      last             0 here | notifications_index 116363
+      load_target      0 here | notifications_index 116363
+      size             0 here | notifications_index 95964
+   REVIEW ONLY — endpoints differ legitimately; ask the code, not this table.
+
+RESULT: pass — every boundary family is declared in every batch.
+EXIT=0

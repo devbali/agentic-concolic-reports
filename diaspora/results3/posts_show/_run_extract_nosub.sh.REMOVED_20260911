@@ -1,0 +1,21 @@
+#!/bin/bash
+# The SKIP_SUBSUME extraction, started EARLY and deliberately NOT behind
+# `wait_alone`: the extraction loop measured 56 MB peak (§22) and one core, so
+# it is not a heavy job under the memory rule — it is a LONG one (~90 ms/dump
+# over 183 335 dumps ~= 4.6 h). It still goes through the cage with a 1 G cap
+# and the launch gate, so it can never be the job that fills the box.
+set +e; unset JAVA_TOOL_OPTIONS
+B=/home/dev/project/reports/diaspora/results3/posts_show
+Q=/home/dev/project/reports/diaspora/results3/queries_from_runs
+. "$B/_cage.sh"
+cd /home/dev/project
+export QFR_APP_CONFIG=/home/dev/project/reports/diaspora/queries_config/app.json
+V=/home/dev/project/venvs/queries_from_runs/bin/python
+L="$Q/_extract_posts_show_NOSUB_20260911.log"
+cage p13ext1.scope 1G env SKIP_SUBSUME=1 QFR_APP_CONFIG="$QFR_APP_CONFIG" \
+  OUT_SQL=$Q/posts_show.sql.nosub OUT_SUMMARY=$Q/_summary_posts_show.json.nosub \
+  JAVA_TOOL_OPTIONS= PYTHONPATH=/home/dev/project/src \
+  $V -u $Q/_extract_posts_show_streaming.py > "$L" 2>&1
+echo "[$(date -Is)] extract-nosub exit=$?" >> "$B/_p13d.log"
+caged_verdict p13ext1.scope "$L" '^posts_show: ' >> "$B/_p13d.log"
+grep -E '^posts_show: |RED|unparseable|rotation|subsumption' "$L" | head -12 >> "$B/_p13d.log"

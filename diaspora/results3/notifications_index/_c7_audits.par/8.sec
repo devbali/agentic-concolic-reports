@@ -1,0 +1,12 @@
+
+##### cardinality_consistency #####
+== cardinality_consistency_audit: 313977 dumps, 1459284 list-cardinality decisions ==
+   rule population: 337416 (note, list) pair(s) where a BULK loader reads a list's own rows
+
+-- MANY-row `=` notes EXPLAINED by the run's own decisions --
+      32625 events  parent of the emitting step not found (pre-existing escape)
+   (the predicate follows the KEY set; the row count only bounds it.
+    whether a recorded `keys_many` was legitimately FREE is H4's question)
+
+RESULT: pass — every note's key shape agrees with the run's own cardinality decision (337416 pair(s) judged, 32625 explained).
+EXIT=0

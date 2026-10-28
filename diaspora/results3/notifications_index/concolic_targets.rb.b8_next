@@ -1,0 +1,46 @@
+# STAGED SPLICE, NOT A FILE TO COPY — B-8 cache-replay repair (C21, 2026-09-13).
+#
+# HAZARD (2026-09-14): this used to be a COMPLETE concolic_targets.rb built from
+# the Aug-29 base. Copying it over the live file would have SILENTLY REVERTED the
+# 2026-09-14 name-boundary shim (SEED_MISS / length_var? / seed_aliases /
+# seed_lookup, and `seed_for(SymbolicVar.len_var_name(vn), 1)`) in whichever copy
+# it was landed on, and the shim is shared by all eight batches. The real B-8
+# repair is ONE line plus its comment, so the full file has been REDUCED to that
+# splice. The original full staged file is preserved, unmodified, at
+#   results3/_bak_sfxlen_20260914_2241/results3_notifications_index_concolic_targets.rb.b8_next
+# Do NOT reconstruct a whole-file version of this from that backup.
+#
+# WHERE: concolic_targets.rb, `ConcolicTargets.finder_mock`, inside
+#   `if fhit` ... immediately BEFORE the `next fval` line (the ONE-FACT
+#   cache-replay arm). `next fval` occurs exactly ONCE in the file — assert that
+#   before splicing. As of 2026-09-14 that is L804; do not trust the number,
+#   match the anchor.
+#
+# ANCHOR (splice the body below between these two existing lines):
+#           raise ActiveRecord::RecordNotFound, "concolic: empty result for: #{sql}" if fval.nil? && raise_on_missing
+#           next fval
+#
+# WHEN: still held behind the confinement loop — landing it mid-campaign would
+# make the empty-note shape `(find_by, "", args)` mark DRIVE EPOCH rather than
+# program behaviour in a mixed corpus, and that shape is exactly the
+# matched-context signal §16c measures footprints from. Lands after the
+# confinement loop and all driving are done, with `_c21_b8_diff.rb` as its
+# ground-truth differential (expect 0 new decisions, 0 new statement shapes);
+# then POLICY_HEADER records it as a post-corpus batch-local fix + a
+# TO-PROPAGATE item for the other batches.
+#
+# ---------------- SPLICE BODY (verbatim, keep the indentation) ----------------
+          # B-8, CACHE-REPLAY ARM (C21, 2026-09-13). The `not_found` arm below
+          # already publishes its statement out of band (line ~760), but the
+          # ONE-FACT replay above it returns the MEMOISED answer, and when that
+          # answer is `nil` the returned value again has nothing to hang a note
+          # on -- so the replayed call was recorded as a note-less
+          # `symbolic_call` (noteless_call_audit RED: 1 target,
+          # `FinderMethods.find_by`, 329 events / 126 dumps in a 5 000-dump
+          # sample). The replay issues the SAME statement the miss did, so
+          # publish it the same way. Measured on that sample before the change:
+          # 0/329 of these ordinals mint a variable or record a PC (the replay
+          # returns before `symbool`), and 329/329 already have this statement
+          # published elsewhere in the same dump -- so the repair adds notes to
+          # existing events and adds no decision and no statement SHAPE.
+          Thread.current[:concolic_pending_note] = sql if fval.nil?

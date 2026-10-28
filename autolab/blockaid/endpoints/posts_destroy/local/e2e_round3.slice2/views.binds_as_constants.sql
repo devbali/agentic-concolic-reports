@@ -1,0 +1,10 @@
+SELECT `posts`.* FROM `posts` INNER JOIN `share_visibilities` ON `share_visibilities`.`shareable_id` = `posts`.`id` AND `share_visibilities`.`shareable_type` = 'Post' WHERE `share_visibilities`.`user_id` = _C1_ID;
+SELECT `people`.* FROM `people` WHERE `people`.`id` = _C2_AUTHOR_ID;
+SELECT `people`.* FROM `people` WHERE `people`.`id` = _C4_AUTHOR_ID;
+SELECT `people`.* FROM `people` WHERE `people`.`id` = _C5_AUTHOR_ID;
+SELECT `people`.* FROM `people` WHERE `people`.`owner_id` = _C1_ID;
+SELECT `posts`.* FROM `posts` WHERE `posts`.`author_id` = _C2_ID;
+SELECT `posts`.* FROM `posts` WHERE `posts`.`author_id` = _C3_ID;
+SELECT `posts`.* FROM `posts` WHERE `posts`.`public` = TRUE;
+SELECT `profiles`.* FROM `profiles` WHERE `profiles`.`person_id` = _C2_ID;
+SELECT `users`.* FROM `users` WHERE `users`.`id` = _MY_UID;

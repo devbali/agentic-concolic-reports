@@ -1,0 +1,12 @@
+
+##### identity_symbolicity #####
+   principal: users.id + columns owner_id,recipient_id,user_id
+== identity_symbolicity_audit: 313977 dumps ==
+-- principal-column binds --
+  owner_id       symbolic 256241   literal      0
+  recipient_id   symbolic 1150239   literal      0
+  user_id        symbolic 548532   literal      0
+  users.id       symbolic 342700   literal      0
+
+RESULT: pass — every principal bind is symbolic.
+EXIT=0

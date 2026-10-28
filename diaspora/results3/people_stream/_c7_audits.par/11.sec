@@ -1,0 +1,54 @@
+
+##### note_fidelity #####
+== note_fidelity_audit: 1 run file(s), 23 distinct real SELECTs under 5 frames; 9 targets carry notes ==
+
+-- wildcard notes per target (corpus) --
+   ActiveRecord::Associations::CollectionProxy.records                    notes=2    star=2
+   ActiveRecord::Associations::SingularAssociation.find_target            notes=26   star=26
+   ActiveRecord::Calculations.sum                                         notes=2    agg=2
+   ActiveRecord::Core::ClassMethods.find_by                               notes=2    star=2
+   ActiveRecord::FinderMethods.exists?                                    notes=2    cols=2
+   ActiveRecord::FinderMethods.find_by                                    notes=3    star=3
+   ActiveRecord::FinderMethods.first                                      notes=1    star=1
+   ActiveRecord::FinderMethods.take                                       notes=6    star=6
+   ActiveRecord::Relation.records                                         notes=1192 star=1192
+
+-- DECLARED: 6 --
+   PRED-OP-DIFF  ActiveRecord::Relation.records  [concrete_run.json:people-stream-auth-json]
+      real: SELECT "likes".* FROM "likes" WHERE "likes"."author_id" = ? AND "likes"."target_id" IN (?, ?) AND "likes"."target_type" = ?
+      declared: PRELOAD ARITY, not a mock defect. The real request issues a BULK preload — one statement over the whole page, `IN (?, ?)`, no LIMIT — while every collection in this corpus has exactly ONE representative row (shared-boundary Gate 1b: 'attach a SINGLE representative model row'), so the only shape the corpus can produce is the per-row `= $(...) LIMIT 1` form. MEASURED: seeding len(...records_N_rows) to 2 and 3 (_x7_len_roots.json, 18 rooted seeds, all drained) produced ZERO IN(...) notes - a length-N SymbolicList still has ONE representative, hence one distinct id. A MODEL limitation (X4/H4), not a driving one. FALSIFIER: give a collection mock two DISTINCT representatives and the IN(...) / no-LIMIT forms appear in the next corpus.
+   PRED-OP-DIFF  ActiveRecord::Relation.records  [concrete_run.json:people-stream-auth-json]
+      real: SELECT "mentions".* FROM "mentions" WHERE "mentions"."mentions_container_type" = ? AND "mentions"."mentions_container_id" IN (?, ?)
+      declared: PRELOAD ARITY, not a mock defect. The real request issues a BULK preload — one statement over the whole page, `IN (?, ?)`, no LIMIT — while every collection in this corpus has exactly ONE representative row (shared-boundary Gate 1b: 'attach a SINGLE representative model row'), so the only shape the corpus can produce is the per-row `= $(...) LIMIT 1` form. MEASURED: seeding len(...records_N_rows) to 2 and 3 (_x7_len_roots.json, 18 rooted seeds, all drained) produced ZERO IN(...) notes - a length-N SymbolicList still has ONE representative, hence one distinct id. A MODEL limitation (X4/H4), not a driving one. FALSIFIER: give a collection mock two DISTINCT representatives and the IN(...) / no-LIMIT forms appear in the next corpus.
+   LIMIT-DIFF    ActiveRecord::Relation.records  [concrete_run.json:people-stream-anon-json, concrete_run.json:people-stream-anon-json-handle, concrete_run.json:people-stream-auth-json]
+      real: SELECT "o_embed_caches".* FROM "o_embed_caches" WHERE "o_embed_caches"."id" = ?
+      declared: PRELOAD ARITY, not a mock defect. The real request issues a BULK preload — one statement over the whole page, `IN (?, ?)`, no LIMIT — while every collection in this corpus has exactly ONE representative row (shared-boundary Gate 1b: 'attach a SINGLE representative model row'), so the only shape the corpus can produce is the per-row `= $(...) LIMIT 1` form. MEASURED: seeding len(...records_N_rows) to 2 and 3 (_x7_len_roots.json, 18 rooted seeds, all drained) produced ZERO IN(...) notes - a length-N SymbolicList still has ONE representative, hence one distinct id. A MODEL limitation (X4/H4), not a driving one. FALSIFIER: give a collection mock two DISTINCT representatives and the IN(...) / no-LIMIT forms appear in the next corpus.
+   LIMIT-DIFF    ActiveRecord::Relation.records  [concrete_run.json:people-stream-anon-json, concrete_run.json:people-stream-anon-json-handle, concrete_run.json:people-stream-auth-json]
+      real: SELECT "open_graph_caches".* FROM "open_graph_caches" WHERE "open_graph_caches"."id" = ?
+      declared: PRELOAD ARITY, not a mock defect. The real request issues a BULK preload — one statement over the whole page, `IN (?, ?)`, no LIMIT — while every collection in this corpus has exactly ONE representative row (shared-boundary Gate 1b: 'attach a SINGLE representative model row'), so the only shape the corpus can produce is the per-row `= $(...) LIMIT 1` form. MEASURED: seeding len(...records_N_rows) to 2 and 3 (_x7_len_roots.json, 18 rooted seeds, all drained) produced ZERO IN(...) notes - a length-N SymbolicList still has ONE representative, hence one distinct id. A MODEL limitation (X4/H4), not a driving one. FALSIFIER: give a collection mock two DISTINCT representatives and the IN(...) / no-LIMIT forms appear in the next corpus.
+   LIMIT-DIFF    ActiveRecord::Relation.records  [concrete_run.json:people-stream-anon-json, concrete_run.json:people-stream-anon-json-handle, concrete_run.json:people-stream-auth-json]
+      real: SELECT "people".* FROM "people" WHERE "people"."id" = ?
+      declared: PRELOAD ARITY, not a mock defect. The real request issues a BULK preload — one statement over the whole page, `IN (?, ?)`, no LIMIT — while every collection in this corpus has exactly ONE representative row (shared-boundary Gate 1b: 'attach a SINGLE representative model row'), so the only shape the corpus can produce is the per-row `= $(...) LIMIT 1` form. MEASURED: seeding len(...records_N_rows) to 2 and 3 (_x7_len_roots.json, 18 rooted seeds, all drained) produced ZERO IN(...) notes - a length-N SymbolicList still has ONE representative, hence one distinct id. A MODEL limitation (X4/H4), not a driving one. FALSIFIER: give a collection mock two DISTINCT representatives and the IN(...) / no-LIMIT forms appear in the next corpus.
+   LIMIT-DIFF    ActiveRecord::Relation.records  [concrete_run.json:people-stream-anon-json, concrete_run.json:people-stream-anon-json-handle, concrete_run.json:people-stream-auth-json]
+      real: SELECT "profiles".* FROM "profiles" WHERE "profiles"."person_id" = ?
+      declared: PRELOAD ARITY, not a mock defect. The real request issues a BULK preload — one statement over the whole page, `IN (?, ?)`, no LIMIT — while every collection in this corpus has exactly ONE representative row (shared-boundary Gate 1b: 'attach a SINGLE representative model row'), so the only shape the corpus can produce is the per-row `= $(...) LIMIT 1` form. MEASURED: seeding len(...records_N_rows) to 2 and 3 (_x7_len_roots.json, 18 rooted seeds, all drained) produced ZERO IN(...) notes - a length-N SymbolicList still has ONE representative, hence one distinct id. A MODEL limitation (X4/H4), not a driving one. FALSIFIER: give a collection mock two DISTINCT representatives and the IN(...) / no-LIMIT forms appear in the next corpus.
+
+-- MISSING: 0 --
+
+-- STAR-OVER: 0 --
+
+-- AGG-COLLAPSE: 0 --
+
+-- PROJ-DIFF: 0 --
+
+-- PRED-OP-DIFF: 0 --
+
+-- LIMIT-DIFF: 0 --
+
+-- ORDER-DIFF: 0 --
+
+-- PRED-DIFF: 0 --
+
+-- EXACT: 17 --
+RESULT: every real statement has a projection-faithful note.
+EXIT=0 [checkpoint: replayed, not re-run]

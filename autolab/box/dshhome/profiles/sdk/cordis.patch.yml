@@ -1,0 +1,43 @@
+# OpenRouter route for dsh's pi-ai LLM adapter.
+- id: llm-pi-ai
+  config:
+    providers:
+      openrouter:
+        displayName: OpenRouter
+        apiKeyEnv: OPENROUTER_API_KEY
+        api: openai-completions
+        baseURL: https://openrouter.ai/api/v1
+        models:
+          - id: deepseek/deepseek-v4-flash
+            name: DeepSeek V4 Flash (OpenRouter)
+            contextWindow: 1048576
+            maxTokens: 8192
+          - id: deepseek/deepseek-chat
+            name: DeepSeek Chat (OpenRouter)
+            contextWindow: 163840
+            maxTokens: 8192
+          # W4 (2026-09-29): added so `agents.batch.model` can name something
+          # other than flash. MEASURED on 2026-09-29 (sweep_out_w3): with
+          # deepseek-v4-flash three `sm` boxes each ran ONE turn of 279-310
+          # tool calls, 680k tokens of their own history in context, and
+          # every one of those turns ended with the model saying "I'll start
+          # by exploring the environment" — it never began the task. That is
+          # a model-tier failure, not a brief or a plumbing failure, and the
+          # allowlist above was the only thing stopping a different tier
+          # being tried. Adding an id here costs nothing until a spec names it.
+          - id: deepseek/deepseek-v4-pro
+            name: DeepSeek V4 Pro (OpenRouter)
+            contextWindow: 1048576
+            maxTokens: 16384
+          - id: openai/gpt-5.1-codex
+            name: GPT-5.1 Codex (OpenRouter)
+            contextWindow: 400000
+            maxTokens: 16384
+          - id: anthropic/claude-sonnet-4.6
+            name: Claude Sonnet 4.6 (OpenRouter)
+            contextWindow: 1000000
+            maxTokens: 16384
+          - id: moonshotai/kimi-k2.7-code
+            name: Kimi K2.7 Code (OpenRouter)
+            contextWindow: 262144
+            maxTokens: 16384

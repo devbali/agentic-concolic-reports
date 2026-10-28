@@ -1,0 +1,1532 @@
+-- comments_index — SQL SELECT views rendered from the policy IR
+--
+-- 38 atoms in; 8 views out.
+--   0 atoms do not terminate in a SELECT and are
+--   excluded — every one is named below, never merely counted
+--   (DESIGN_DOMAIN_LAYER §3A.3).
+--   38 statements extracted, 8 distinct after the prune,
+--   0 syntactically subsumed, 8 views.
+--   PC predicates: 0 folded, 0 kept — a predicate the
+--   policy shows this shape running BOTH WITH AND WITHOUT does not
+--   constrain it and is dropped.
+--   544 condition predicates did not resolve to a column; listed below.
+--   Subsumption: SYNTACTIC ONLY (conjunct containment). The solver-backed
+--   checker is not run from a render, so a statement it would have dropped
+--   is still here: this over-reports the policy, never under-reports it.
+--   no app config supplied: no schema, so a condition on a result field
+--   cannot be confirmed to be a column and is reported rather than folded;
+--   framework-default symbol conventions only
+--
+-- ==========================================================================
+-- VIEWS
+-- ==========================================================================
+
+SELECT `people`.* FROM `people`, `mentions`, `comments`, `posts` WHERE `people`.`id` = `mentions`.`person_id` AND `comments`.`commentable_id` = `posts`.`id` AND `comments`.`commentable_type` = 'Post' AND `mentions`.`mentions_container_id` = `comments`.`id` AND `mentions`.`mentions_container_type` = 'Comment';
+
+SELECT `profiles`.* FROM `profiles`, `mentions`, `comments`, `posts` WHERE `profiles`.`person_id` = `mentions`.`person_id` AND `comments`.`commentable_id` = `posts`.`id` AND `comments`.`commentable_type` = 'Post' AND `mentions`.`mentions_container_id` = `comments`.`id` AND `mentions`.`mentions_container_type` = 'Comment';
+
+SELECT `mentions`.* FROM `mentions`, `comments`, `posts` WHERE `mentions`.`mentions_container_id` = `comments`.`id` AND `mentions`.`mentions_container_type` = 'Comment' AND `comments`.`commentable_id` = `posts`.`id` AND `comments`.`commentable_type` = 'Post';
+
+SELECT `people`.* FROM `people`, `comments`, `posts` WHERE `people`.`id` = `comments`.`author_id` AND `comments`.`commentable_id` = `posts`.`id` AND `comments`.`commentable_type` = 'Post';
+
+SELECT `profiles`.* FROM `profiles`, `comments`, `posts` WHERE `profiles`.`person_id` = `comments`.`author_id` AND `comments`.`commentable_id` = `posts`.`id` AND `comments`.`commentable_type` = 'Post';
+
+SELECT `comments`.* FROM `comments`, `posts` WHERE `comments`.`commentable_id` = `posts`.`id` AND `comments`.`commentable_type` = 'Post';
+
+SELECT 1 AS one FROM `posts`;
+
+SELECT `posts`.* FROM `posts`;
+
+-- ==========================================================================
+-- EXCLUDED ATOMS — 0 of 38 do not terminate in a SELECT
+-- `supports()` returned False for each. Named, never silently skipped.
+-- ==========================================================================
+-- (none: every atom terminates in a SELECT)
+
+-- ==========================================================================
+-- CONDITIONS NOT RENDERED — 544 predicates
+-- The IR keeps a path condition the renderer cannot resolve to a column;
+-- this is where that loss is REPORTED rather than taken silently (DESIGN_IR §2).
+-- ==========================================================================
+-- atom 1: $"Length(SYM_PARAM_post_id)" >= 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 2: $"Length(SYM_PARAM_post_id)" >= 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 2: c1.not_found != true
+--     no schema: `.not_found` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 2: c1.public == true
+--     no schema: `.public` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 2: c1.type != "Photo"
+--     no schema: `.type` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 3: $"Length(SYM_PARAM_post_id)" >= 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 3: c1.not_found != true
+--     no schema: `.not_found` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 3: c1.public == true
+--     no schema: `.public` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 3: c1.type != "Photo"
+--     no schema: `.type` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 3: c2.row_text_has_dlink != true
+--     no schema: `.row_text_has_dlink` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 3: c2.row_text_has_mention != true
+--     no schema: `.row_text_has_mention` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 3: len(c2.rows) <= 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 4: $"Length(SYM_PARAM_post_id)" >= 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 4: c1.not_found != true
+--     no schema: `.not_found` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 4: c1.public == true
+--     no schema: `.public` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 4: c1.type != "Photo"
+--     no schema: `.type` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 4: c2.row_text_has_dlink != true
+--     no schema: `.row_text_has_dlink` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 4: c2.row_text_has_mention != true
+--     no schema: `.row_text_has_mention` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 4: len(c2.rows) <= 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 5: $"Length(SYM_PARAM_post_id)" >= 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 5: c1.not_found != true
+--     no schema: `.not_found` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 5: c1.public == true
+--     no schema: `.public` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 5: c1.type != "Photo"
+--     no schema: `.type` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 5: c2.row_author_profile_not_found != true
+--     no schema: `.row_author_profile_not_found` on c2 cannot be confirmed
+--     to be a column of `comments`, so it is not folded
+-- atom 5: c2.row_text_has_dlink != true
+--     no schema: `.row_text_has_dlink` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 5: c2.row_text_has_mention != true
+--     no schema: `.row_text_has_mention` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 5: len(c2.rows) != 0
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 5: len(c2.rows) <= 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 6: $"Length(SYM_PARAM_post_id)" >= 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 6: c1.not_found != true
+--     no schema: `.not_found` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 6: c1.public == true
+--     no schema: `.public` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 6: c1.type != "Photo"
+--     no schema: `.type` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 6: c2.row_author_profile_not_found != true
+--     no schema: `.row_author_profile_not_found` on c2 cannot be confirmed
+--     to be a column of `comments`, so it is not folded
+-- atom 6: c2.row_text_has_dlink != true
+--     no schema: `.row_text_has_dlink` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 6: c2.row_text_has_mention != true
+--     no schema: `.row_text_has_mention` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 6: len(c2.rows) != 0
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 6: len(c2.rows) <= 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 6: len(c5.rows) <= 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 7: $"Length(SYM_PARAM_post_id)" >= 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 7: c1.not_found != true
+--     no schema: `.not_found` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 7: c1.public == true
+--     no schema: `.public` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 7: c1.type != "Photo"
+--     no schema: `.type` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 7: c2.row_author_profile_not_found != true
+--     no schema: `.row_author_profile_not_found` on c2 cannot be confirmed
+--     to be a column of `comments`, so it is not folded
+-- atom 7: c2.row_text_has_dlink != true
+--     no schema: `.row_text_has_dlink` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 7: c2.row_text_has_mention != true
+--     no schema: `.row_text_has_mention` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 7: c5.row_person_not_found != true
+--     no schema: `.row_person_not_found` on c5 cannot be confirmed to be a
+--     column of `mentions`, so it is not folded
+-- atom 7: len(c2.rows) != 0
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 7: len(c2.rows) <= 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 7: len(c5.rows) <= 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 8: $"Length(SYM_PARAM_post_id)" >= 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 8: c1.not_found != true
+--     no schema: `.not_found` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 8: c1.public == true
+--     no schema: `.public` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 8: c1.type != "Photo"
+--     no schema: `.type` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 8: c2.row_author_profile_not_found != true
+--     no schema: `.row_author_profile_not_found` on c2 cannot be confirmed
+--     to be a column of `comments`, so it is not folded
+-- atom 8: c2.row_text_has_dlink != true
+--     no schema: `.row_text_has_dlink` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 8: c2.row_text_has_mention != true
+--     no schema: `.row_text_has_mention` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 8: c5.row_person_not_found != true
+--     c5 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 8: c5.row_person_profile_not_found != true
+--     c5 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 8: len(c2.rows) != 0
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 8: len(c2.rows) <= 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 8: len(c5.rows) != 0
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 8: len(c5.rows) <= 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 9: $"Length(SYM_PARAM_post_id)" >= 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 9: c1.not_found != true
+--     no schema: `.not_found` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 9: c1.public == true
+--     no schema: `.public` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 9: c1.type != "Photo"
+--     no schema: `.type` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 9: c2.row_author_profile_not_found != true
+--     no schema: `.row_author_profile_not_found` on c2 cannot be confirmed
+--     to be a column of `comments`, so it is not folded
+-- atom 9: c2.row_text_has_dlink != true
+--     no schema: `.row_text_has_dlink` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 9: c2.row_text_has_mention != true
+--     no schema: `.row_text_has_mention` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 9: c5.row_person_not_found != true
+--     no schema: `.row_person_not_found` on c5 cannot be confirmed to be a
+--     column of `mentions`, so it is not folded
+-- atom 9: c5.row_person_profile_not_found != true
+--     no schema: `.row_person_profile_not_found` on c5 cannot be confirmed
+--     to be a column of `mentions`, so it is not folded
+-- atom 9: len(c2.rows) != 0
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 9: len(c2.rows) <= 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 9: len(c5.rows) != 0
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 9: len(c5.rows) <= 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 10: $"Length(SYM_PARAM_post_id)" >= 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 10: c1.not_found != true
+--     no schema: `.not_found` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 10: c1.public == true
+--     no schema: `.public` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 10: c1.type != "Photo"
+--     no schema: `.type` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 10: c2.row_author_profile_not_found != true
+--     no schema: `.row_author_profile_not_found` on c2 cannot be confirmed
+--     to be a column of `comments`, so it is not folded
+-- atom 10: c2.row_text_has_dlink != true
+--     no schema: `.row_text_has_dlink` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 10: c2.row_text_has_mention != true
+--     no schema: `.row_text_has_mention` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 10: c5.row_person_not_found != true
+--     no schema: `.row_person_not_found` on c5 cannot be confirmed to be a
+--     column of `mentions`, so it is not folded
+-- atom 10: c5.row_person_profile_not_found != true
+--     no schema: `.row_person_profile_not_found` on c5 cannot be confirmed
+--     to be a column of `mentions`, so it is not folded
+-- atom 10: len(c2.rows) != 0
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 10: len(c2.rows) <= 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 10: len(c5.rows) != 0
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 10: len(c5.rows) <= 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 11: $"Length(SYM_PARAM_post_id)" < 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 12: $"Length(SYM_PARAM_post_id)" < 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 12: c1.not_found != true
+--     no schema: `.not_found` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 12: c1.public == true
+--     no schema: `.public` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 12: c1.type != "Photo"
+--     no schema: `.type` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 13: c2.row_text_has_dlink != true
+--     not implied by every branch of a 4-branch condition
+-- atom 13: c2.row_text_has_mention != true
+--     not implied by every branch of a 4-branch condition
+-- atom 13: len(c2.rows) <= 1
+--     not implied by every branch of a 4-branch condition
+-- atom 13: c2.row_text_has_dlink != true
+--     not implied by every branch of a 4-branch condition
+-- atom 13: c2.row_text_has_mention == true
+--     not implied by every branch of a 4-branch condition
+-- atom 13: c2.row_text_mention_has_name == true
+--     not implied by every branch of a 4-branch condition
+-- atom 13: len(c2.rows) <= 1
+--     not implied by every branch of a 4-branch condition
+-- atom 13: c2.row_text_dlink_ge2 != true
+--     not implied by every branch of a 4-branch condition
+-- atom 13: c2.row_text_dlink_is_post == true
+--     not implied by every branch of a 4-branch condition
+-- atom 13: c2.row_text_has_dlink == true
+--     not implied by every branch of a 4-branch condition
+-- atom 13: c2.row_text_has_mention != true
+--     not implied by every branch of a 4-branch condition
+-- atom 13: len(c2.rows) <= 1
+--     not implied by every branch of a 4-branch condition
+-- atom 13: c2.row2_text_has_dlink != true
+--     not implied by every branch of a 4-branch condition
+-- atom 13: c2.row2_text_has_mention != true
+--     not implied by every branch of a 4-branch condition
+-- atom 13: c2.row_author_keys_many != true
+--     not implied by every branch of a 4-branch condition
+-- atom 13: c2.row_text_has_dlink != true
+--     not implied by every branch of a 4-branch condition
+-- atom 13: c2.row_text_has_mention != true
+--     not implied by every branch of a 4-branch condition
+-- atom 13: len(c2.rows) > 1
+--     not implied by every branch of a 4-branch condition
+-- atom 13: $"Length(SYM_PARAM_post_id)" < 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 13: c1.not_found != true
+--     no schema: `.not_found` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 13: c1.public == true
+--     no schema: `.public` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 13: c1.type != "Photo"
+--     no schema: `.type` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 14: c2.row_text_has_dlink != true
+--     not implied by every branch of a 4-branch condition
+-- atom 14: c2.row_text_has_mention != true
+--     not implied by every branch of a 4-branch condition
+-- atom 14: len(c2.rows) <= 1
+--     not implied by every branch of a 4-branch condition
+-- atom 14: c2.row_text_has_dlink != true
+--     not implied by every branch of a 4-branch condition
+-- atom 14: c2.row_text_has_mention == true
+--     not implied by every branch of a 4-branch condition
+-- atom 14: c2.row_text_mention_has_name == true
+--     not implied by every branch of a 4-branch condition
+-- atom 14: len(c2.rows) <= 1
+--     not implied by every branch of a 4-branch condition
+-- atom 14: c2.row_text_dlink_ge2 != true
+--     not implied by every branch of a 4-branch condition
+-- atom 14: c2.row_text_dlink_is_post == true
+--     not implied by every branch of a 4-branch condition
+-- atom 14: c2.row_text_has_dlink == true
+--     not implied by every branch of a 4-branch condition
+-- atom 14: c2.row_text_has_mention != true
+--     not implied by every branch of a 4-branch condition
+-- atom 14: len(c2.rows) <= 1
+--     not implied by every branch of a 4-branch condition
+-- atom 14: c2.row2_text_has_dlink != true
+--     not implied by every branch of a 4-branch condition
+-- atom 14: c2.row2_text_has_mention != true
+--     not implied by every branch of a 4-branch condition
+-- atom 14: c2.row_author_keys_many != true
+--     not implied by every branch of a 4-branch condition
+-- atom 14: c2.row_text_has_dlink != true
+--     not implied by every branch of a 4-branch condition
+-- atom 14: c2.row_text_has_mention != true
+--     not implied by every branch of a 4-branch condition
+-- atom 14: len(c2.rows) > 1
+--     not implied by every branch of a 4-branch condition
+-- atom 14: $"Length(SYM_PARAM_post_id)" < 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 14: c1.not_found != true
+--     no schema: `.not_found` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 14: c1.public == true
+--     no schema: `.public` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 14: c1.type != "Photo"
+--     no schema: `.type` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 15: c2.row_text_has_dlink != true
+--     not implied by every branch of a 4-branch condition
+-- atom 15: c2.row_text_has_mention != true
+--     not implied by every branch of a 4-branch condition
+-- atom 15: len(c2.rows) != 0
+--     not implied by every branch of a 4-branch condition
+-- atom 15: len(c2.rows) <= 1
+--     not implied by every branch of a 4-branch condition
+-- atom 15: c2.row_author_profile_not_found != true
+--     not implied by every branch of a 4-branch condition
+-- atom 15: c2.row_text_has_dlink != true
+--     not implied by every branch of a 4-branch condition
+-- atom 15: c2.row_text_has_mention == true
+--     not implied by every branch of a 4-branch condition
+-- atom 15: c2.row_text_mention_has_name == true
+--     not implied by every branch of a 4-branch condition
+-- atom 15: len(c2.rows) != 0
+--     not implied by every branch of a 4-branch condition
+-- atom 15: len(c2.rows) <= 1
+--     not implied by every branch of a 4-branch condition
+-- atom 15: c2.row2_text_has_dlink != true
+--     not implied by every branch of a 4-branch condition
+-- atom 15: c2.row2_text_has_mention != true
+--     not implied by every branch of a 4-branch condition
+-- atom 15: c2.row_author_keys_many != true
+--     not implied by every branch of a 4-branch condition
+-- atom 15: c2.row_author_profile_not_found != true
+--     not implied by every branch of a 4-branch condition
+-- atom 15: c2.row_text_has_dlink != true
+--     not implied by every branch of a 4-branch condition
+-- atom 15: c2.row_text_has_mention != true
+--     not implied by every branch of a 4-branch condition
+-- atom 15: len(c2.rows) > 1
+--     not implied by every branch of a 4-branch condition
+-- atom 15: c2.row_author_profile_not_found != true
+--     not implied by every branch of a 4-branch condition
+-- atom 15: c2.row_text_dlink_ge2 != true
+--     not implied by every branch of a 4-branch condition
+-- atom 15: c2.row_text_dlink_is_post == true
+--     not implied by every branch of a 4-branch condition
+-- atom 15: c2.row_text_has_dlink == true
+--     not implied by every branch of a 4-branch condition
+-- atom 15: c2.row_text_has_mention != true
+--     not implied by every branch of a 4-branch condition
+-- atom 15: len(c2.rows) != 0
+--     not implied by every branch of a 4-branch condition
+-- atom 15: len(c2.rows) <= 1
+--     not implied by every branch of a 4-branch condition
+-- atom 15: $"Length(SYM_PARAM_post_id)" < 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 15: c1.not_found != true
+--     no schema: `.not_found` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 15: c1.public == true
+--     no schema: `.public` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 15: c1.type != "Photo"
+--     no schema: `.type` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 16: $"Length(SYM_PARAM_post_id)" < 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 16: c1.not_found != true
+--     no schema: `.not_found` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 16: c1.public == true
+--     no schema: `.public` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 16: c1.type != "Photo"
+--     no schema: `.type` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 16: c2.row_author_profile_not_found != true
+--     no schema: `.row_author_profile_not_found` on c2 cannot be confirmed
+--     to be a column of `comments`, so it is not folded
+-- atom 16: c2.row_text_has_dlink != true
+--     no schema: `.row_text_has_dlink` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 16: c2.row_text_has_mention != true
+--     no schema: `.row_text_has_mention` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 16: len(c2.rows) != 0
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 16: len(c2.rows) <= 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 16: len(c5.rows) == 0
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 17: $"Length(SYM_PARAM_post_id)" < 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 17: c1.not_found != true
+--     no schema: `.not_found` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 17: c1.public == true
+--     no schema: `.public` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 17: c1.type != "Photo"
+--     no schema: `.type` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 17: c2.row_author_profile_not_found != true
+--     no schema: `.row_author_profile_not_found` on c2 cannot be confirmed
+--     to be a column of `comments`, so it is not folded
+-- atom 17: c2.row_text_has_dlink != true
+--     no schema: `.row_text_has_dlink` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 17: c2.row_text_has_mention != true
+--     no schema: `.row_text_has_mention` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 17: len(c2.rows) != 0
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 17: len(c2.rows) <= 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 17: len(c5.rows) > 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 18: $"Length(SYM_PARAM_post_id)" < 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 18: c1.not_found != true
+--     no schema: `.not_found` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 18: c1.public == true
+--     no schema: `.public` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 18: c1.type != "Photo"
+--     no schema: `.type` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 18: c2.row_author_profile_not_found != true
+--     no schema: `.row_author_profile_not_found` on c2 cannot be confirmed
+--     to be a column of `comments`, so it is not folded
+-- atom 18: c2.row_text_has_dlink != true
+--     no schema: `.row_text_has_dlink` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 18: c2.row_text_has_mention != true
+--     no schema: `.row_text_has_mention` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 18: c5.row2_person_not_found != true
+--     no schema: `.row2_person_not_found` on c5 cannot be confirmed to be
+--     a column of `mentions`, so it is not folded
+-- atom 18: c5.row_person_not_found != true
+--     no schema: `.row_person_not_found` on c5 cannot be confirmed to be a
+--     column of `mentions`, so it is not folded
+-- atom 18: len(c2.rows) != 0
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 18: len(c2.rows) <= 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 18: len(c5.rows) > 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 19: $"Length(SYM_PARAM_post_id)" < 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 19: c1.not_found != true
+--     no schema: `.not_found` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 19: c1.public == true
+--     no schema: `.public` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 19: c1.type != "Photo"
+--     no schema: `.type` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 19: c2.row_author_profile_not_found != true
+--     no schema: `.row_author_profile_not_found` on c2 cannot be confirmed
+--     to be a column of `comments`, so it is not folded
+-- atom 19: c2.row_text_has_dlink != true
+--     no schema: `.row_text_has_dlink` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 19: c2.row_text_has_mention != true
+--     no schema: `.row_text_has_mention` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 19: c5.row2_person_not_found != true
+--     c5 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 19: c5.row2_person_profile_not_found != true
+--     c5 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 19: c5.row_person_not_found != true
+--     c5 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 19: c5.row_person_profile_not_found != true
+--     c5 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 19: len(c2.rows) != 0
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 19: len(c2.rows) <= 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 19: len(c5.rows) > 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 20: $"Length(SYM_PARAM_post_id)" < 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 20: c1.not_found != true
+--     no schema: `.not_found` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 20: c1.public == true
+--     no schema: `.public` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 20: c1.type != "Photo"
+--     no schema: `.type` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 20: c2.row_author_profile_not_found != true
+--     no schema: `.row_author_profile_not_found` on c2 cannot be confirmed
+--     to be a column of `comments`, so it is not folded
+-- atom 20: c2.row_text_has_dlink != true
+--     no schema: `.row_text_has_dlink` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 20: c2.row_text_has_mention != true
+--     no schema: `.row_text_has_mention` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 20: c5.row2_person_not_found != true
+--     no schema: `.row2_person_not_found` on c5 cannot be confirmed to be
+--     a column of `mentions`, so it is not folded
+-- atom 20: c5.row2_person_profile_not_found != true
+--     no schema: `.row2_person_profile_not_found` on c5 cannot be
+--     confirmed to be a column of `mentions`, so it is not folded
+-- atom 20: c5.row_person_not_found != true
+--     no schema: `.row_person_not_found` on c5 cannot be confirmed to be a
+--     column of `mentions`, so it is not folded
+-- atom 20: c5.row_person_profile_not_found != true
+--     no schema: `.row_person_profile_not_found` on c5 cannot be confirmed
+--     to be a column of `mentions`, so it is not folded
+-- atom 20: len(c2.rows) != 0
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 20: len(c2.rows) <= 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 20: len(c5.rows) > 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 21: $"Length(SYM_PARAM_post_id)" < 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 21: c1.not_found != true
+--     no schema: `.not_found` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 21: c1.public == true
+--     no schema: `.public` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 21: c1.type != "Photo"
+--     no schema: `.type` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 21: c2.row_author_profile_not_found != true
+--     no schema: `.row_author_profile_not_found` on c2 cannot be confirmed
+--     to be a column of `comments`, so it is not folded
+-- atom 21: c2.row_text_has_dlink != true
+--     no schema: `.row_text_has_dlink` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 21: c2.row_text_has_mention != true
+--     no schema: `.row_text_has_mention` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 21: c5.row2_person_not_found != true
+--     no schema: `.row2_person_not_found` on c5 cannot be confirmed to be
+--     a column of `mentions`, so it is not folded
+-- atom 21: c5.row2_person_profile_not_found != true
+--     no schema: `.row2_person_profile_not_found` on c5 cannot be
+--     confirmed to be a column of `mentions`, so it is not folded
+-- atom 21: c5.row_person_not_found != true
+--     no schema: `.row_person_not_found` on c5 cannot be confirmed to be a
+--     column of `mentions`, so it is not folded
+-- atom 21: c5.row_person_profile_not_found != true
+--     no schema: `.row_person_profile_not_found` on c5 cannot be confirmed
+--     to be a column of `mentions`, so it is not folded
+-- atom 21: len(c2.rows) != 0
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 21: len(c2.rows) <= 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 21: len(c5.rows) > 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 22: c2.row_text_has_dlink != true
+--     not implied by every branch of a 4-branch condition
+-- atom 22: c2.row_text_has_mention != true
+--     not implied by every branch of a 4-branch condition
+-- atom 22: len(c2.rows) != 0
+--     not implied by every branch of a 4-branch condition
+-- atom 22: len(c2.rows) <= 1
+--     not implied by every branch of a 4-branch condition
+-- atom 22: c2.row_author_profile_not_found != true
+--     not implied by every branch of a 4-branch condition
+-- atom 22: c2.row_text_has_dlink != true
+--     not implied by every branch of a 4-branch condition
+-- atom 22: c2.row_text_has_mention == true
+--     not implied by every branch of a 4-branch condition
+-- atom 22: c2.row_text_mention_has_name == true
+--     not implied by every branch of a 4-branch condition
+-- atom 22: len(c2.rows) != 0
+--     not implied by every branch of a 4-branch condition
+-- atom 22: len(c2.rows) <= 1
+--     not implied by every branch of a 4-branch condition
+-- atom 22: c2.row2_text_has_dlink != true
+--     not implied by every branch of a 4-branch condition
+-- atom 22: c2.row2_text_has_mention != true
+--     not implied by every branch of a 4-branch condition
+-- atom 22: c2.row_author_keys_many != true
+--     not implied by every branch of a 4-branch condition
+-- atom 22: c2.row_author_profile_not_found != true
+--     not implied by every branch of a 4-branch condition
+-- atom 22: c2.row_text_has_dlink != true
+--     not implied by every branch of a 4-branch condition
+-- atom 22: c2.row_text_has_mention != true
+--     not implied by every branch of a 4-branch condition
+-- atom 22: len(c2.rows) > 1
+--     not implied by every branch of a 4-branch condition
+-- atom 22: c2.row_author_profile_not_found != true
+--     not implied by every branch of a 4-branch condition
+-- atom 22: c2.row_text_dlink_ge2 != true
+--     not implied by every branch of a 4-branch condition
+-- atom 22: c2.row_text_dlink_is_post == true
+--     not implied by every branch of a 4-branch condition
+-- atom 22: c2.row_text_has_dlink == true
+--     not implied by every branch of a 4-branch condition
+-- atom 22: c2.row_text_has_mention != true
+--     not implied by every branch of a 4-branch condition
+-- atom 22: len(c2.rows) != 0
+--     not implied by every branch of a 4-branch condition
+-- atom 22: len(c2.rows) <= 1
+--     not implied by every branch of a 4-branch condition
+-- atom 22: $"Length(SYM_PARAM_post_id)" < 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 22: c1.not_found != true
+--     no schema: `.not_found` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 22: c1.public == true
+--     no schema: `.public` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 22: c1.type != "Photo"
+--     no schema: `.type` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 22: len(c5.rows) <= 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 23: $"Length(SYM_PARAM_post_id)" < 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 23: c1.not_found != true
+--     no schema: `.not_found` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 23: c1.public == true
+--     no schema: `.public` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 23: c1.type != "Photo"
+--     no schema: `.type` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 23: c2.row_author_profile_not_found != true
+--     no schema: `.row_author_profile_not_found` on c2 cannot be confirmed
+--     to be a column of `comments`, so it is not folded
+-- atom 23: c2.row_text_has_dlink != true
+--     no schema: `.row_text_has_dlink` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 23: c2.row_text_has_mention != true
+--     no schema: `.row_text_has_mention` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 23: c5.row_person_not_found == true
+--     c5 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 23: len(c2.rows) != 0
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 23: len(c2.rows) <= 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 23: len(c5.rows) != 0
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 23: len(c5.rows) <= 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 24: $"Length(SYM_PARAM_post_id)" < 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 24: c1.not_found != true
+--     no schema: `.not_found` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 24: c1.public == true
+--     no schema: `.public` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 24: c1.type != "Photo"
+--     no schema: `.type` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 24: c2.row_author_profile_not_found != true
+--     no schema: `.row_author_profile_not_found` on c2 cannot be confirmed
+--     to be a column of `comments`, so it is not folded
+-- atom 24: c2.row_text_has_dlink != true
+--     no schema: `.row_text_has_dlink` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 24: c2.row_text_has_mention != true
+--     no schema: `.row_text_has_mention` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 24: c5.row_person_not_found == true
+--     no schema: `.row_person_not_found` on c5 cannot be confirmed to be a
+--     column of `mentions`, so it is not folded
+-- atom 24: len(c2.rows) != 0
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 24: len(c2.rows) <= 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 24: len(c5.rows) != 0
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 24: len(c5.rows) <= 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 25: c2.row_text_has_dlink != true
+--     not implied by every branch of a 4-branch condition
+-- atom 25: c2.row_text_has_mention != true
+--     not implied by every branch of a 4-branch condition
+-- atom 25: len(c2.rows) != 0
+--     not implied by every branch of a 4-branch condition
+-- atom 25: len(c2.rows) <= 1
+--     not implied by every branch of a 4-branch condition
+-- atom 25: c2.row_author_profile_not_found != true
+--     not implied by every branch of a 4-branch condition
+-- atom 25: c2.row_text_has_dlink != true
+--     not implied by every branch of a 4-branch condition
+-- atom 25: c2.row_text_has_mention == true
+--     not implied by every branch of a 4-branch condition
+-- atom 25: c2.row_text_mention_has_name == true
+--     not implied by every branch of a 4-branch condition
+-- atom 25: len(c2.rows) != 0
+--     not implied by every branch of a 4-branch condition
+-- atom 25: len(c2.rows) <= 1
+--     not implied by every branch of a 4-branch condition
+-- atom 25: c2.row2_text_has_dlink != true
+--     not implied by every branch of a 4-branch condition
+-- atom 25: c2.row2_text_has_mention != true
+--     not implied by every branch of a 4-branch condition
+-- atom 25: c2.row_author_keys_many != true
+--     not implied by every branch of a 4-branch condition
+-- atom 25: c2.row_author_profile_not_found != true
+--     not implied by every branch of a 4-branch condition
+-- atom 25: c2.row_text_has_dlink != true
+--     not implied by every branch of a 4-branch condition
+-- atom 25: c2.row_text_has_mention != true
+--     not implied by every branch of a 4-branch condition
+-- atom 25: len(c2.rows) > 1
+--     not implied by every branch of a 4-branch condition
+-- atom 25: c2.row_author_profile_not_found != true
+--     not implied by every branch of a 4-branch condition
+-- atom 25: c2.row_text_dlink_ge2 != true
+--     not implied by every branch of a 4-branch condition
+-- atom 25: c2.row_text_dlink_is_post == true
+--     not implied by every branch of a 4-branch condition
+-- atom 25: c2.row_text_has_dlink == true
+--     not implied by every branch of a 4-branch condition
+-- atom 25: c2.row_text_has_mention != true
+--     not implied by every branch of a 4-branch condition
+-- atom 25: len(c2.rows) != 0
+--     not implied by every branch of a 4-branch condition
+-- atom 25: len(c2.rows) <= 1
+--     not implied by every branch of a 4-branch condition
+-- atom 25: $"Length(SYM_PARAM_post_id)" < 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 25: c1.not_found != true
+--     no schema: `.not_found` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 25: c1.public == true
+--     no schema: `.public` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 25: c1.type != "Photo"
+--     no schema: `.type` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 25: c5.row_person_not_found != true
+--     no schema: `.row_person_not_found` on c5 cannot be confirmed to be a
+--     column of `mentions`, so it is not folded
+-- atom 25: len(c5.rows) <= 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 26: $"Length(SYM_PARAM_post_id)" < 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 26: c1.not_found != true
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 26: c1.public == true
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 26: c1.type != "Photo"
+--     c1 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 26: c2.row_author_profile_not_found != true
+--     c2 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 26: c2.row_text_dlink_ge2 != true
+--     c2 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 26: c2.row_text_dlink_is_post == true
+--     c2 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 26: c2.row_text_has_dlink == true
+--     c2 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 26: c2.row_text_has_mention != true
+--     c2 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 26: c5.row_person_not_found != true
+--     c5 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 26: c5.row_person_profile_not_found != true
+--     c5 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 26: len(c2.rows) != 0
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 26: len(c2.rows) <= 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 26: len(c5.rows) != 0
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 26: len(c5.rows) <= 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 27: $"Length(SYM_PARAM_post_id)" < 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 27: $SYM_RESULT_ActiveRecord__FinderMethods_exists__1_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 27: c1.not_found != true
+--     no schema: `.not_found` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 27: c1.public == true
+--     no schema: `.public` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 27: c1.type != "Photo"
+--     no schema: `.type` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 27: c2.row_author_profile_not_found != true
+--     no schema: `.row_author_profile_not_found` on c2 cannot be confirmed
+--     to be a column of `comments`, so it is not folded
+-- atom 27: c2.row_text_dlink_ge2 != true
+--     no schema: `.row_text_dlink_ge2` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 27: c2.row_text_dlink_is_post == true
+--     no schema: `.row_text_dlink_is_post` on c2 cannot be confirmed to be
+--     a column of `comments`, so it is not folded
+-- atom 27: c2.row_text_has_dlink == true
+--     no schema: `.row_text_has_dlink` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 27: c2.row_text_has_mention != true
+--     no schema: `.row_text_has_mention` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 27: c5.row_person_not_found != true
+--     c5 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 27: c5.row_person_profile_not_found != true
+--     c5 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 27: len(c2.rows) != 0
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 27: len(c2.rows) <= 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 27: len(c5.rows) != 0
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 27: len(c5.rows) <= 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 28: $"Length(SYM_PARAM_post_id)" < 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 28: $SYM_RESULT_ActiveRecord__FinderMethods_exists__1_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 28: c1.not_found != true
+--     no schema: `.not_found` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 28: c1.public == true
+--     no schema: `.public` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 28: c1.type != "Photo"
+--     no schema: `.type` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 28: c2.row_author_profile_not_found != true
+--     no schema: `.row_author_profile_not_found` on c2 cannot be confirmed
+--     to be a column of `comments`, so it is not folded
+-- atom 28: c2.row_text_dlink_ge2 != true
+--     no schema: `.row_text_dlink_ge2` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 28: c2.row_text_dlink_is_post == true
+--     no schema: `.row_text_dlink_is_post` on c2 cannot be confirmed to be
+--     a column of `comments`, so it is not folded
+-- atom 28: c2.row_text_has_dlink == true
+--     no schema: `.row_text_has_dlink` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 28: c2.row_text_has_mention != true
+--     no schema: `.row_text_has_mention` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 28: c5.row_person_not_found != true
+--     no schema: `.row_person_not_found` on c5 cannot be confirmed to be a
+--     column of `mentions`, so it is not folded
+-- atom 28: c5.row_person_profile_not_found != true
+--     no schema: `.row_person_profile_not_found` on c5 cannot be confirmed
+--     to be a column of `mentions`, so it is not folded
+-- atom 28: len(c2.rows) != 0
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 28: len(c2.rows) <= 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 28: len(c5.rows) != 0
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 28: len(c5.rows) <= 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 29: $"Length(SYM_PARAM_post_id)" < 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 29: $SYM_RESULT_ActiveRecord__FinderMethods_exists__1_exists != true
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 29: c1.not_found != true
+--     no schema: `.not_found` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 29: c1.public == true
+--     no schema: `.public` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 29: c1.type != "Photo"
+--     no schema: `.type` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 29: c2.row_author_profile_not_found != true
+--     no schema: `.row_author_profile_not_found` on c2 cannot be confirmed
+--     to be a column of `comments`, so it is not folded
+-- atom 29: c2.row_text_dlink_ge2 != true
+--     no schema: `.row_text_dlink_ge2` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 29: c2.row_text_dlink_is_post == true
+--     no schema: `.row_text_dlink_is_post` on c2 cannot be confirmed to be
+--     a column of `comments`, so it is not folded
+-- atom 29: c2.row_text_has_dlink == true
+--     no schema: `.row_text_has_dlink` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 29: c2.row_text_has_mention != true
+--     no schema: `.row_text_has_mention` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 29: c5.row_person_not_found != true
+--     no schema: `.row_person_not_found` on c5 cannot be confirmed to be a
+--     column of `mentions`, so it is not folded
+-- atom 29: c5.row_person_profile_not_found != true
+--     no schema: `.row_person_profile_not_found` on c5 cannot be confirmed
+--     to be a column of `mentions`, so it is not folded
+-- atom 29: len(c2.rows) != 0
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 29: len(c2.rows) <= 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 29: len(c5.rows) != 0
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 29: len(c5.rows) <= 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 30: c2.row_text_has_mention != true
+--     not implied by every branch of a 3-branch condition
+-- atom 30: len(c2.rows) != 0
+--     not implied by every branch of a 3-branch condition
+-- atom 30: len(c2.rows) <= 1
+--     not implied by every branch of a 3-branch condition
+-- atom 30: c2.row_text_has_mention == true
+--     not implied by every branch of a 3-branch condition
+-- atom 30: c2.row_text_mention_has_name == true
+--     not implied by every branch of a 3-branch condition
+-- atom 30: c5.row_person_profile_not_found != true
+--     not implied by every branch of a 3-branch condition
+-- atom 30: len(c2.rows) != 0
+--     not implied by every branch of a 3-branch condition
+-- atom 30: len(c2.rows) <= 1
+--     not implied by every branch of a 3-branch condition
+-- atom 30: c2.row2_text_has_dlink != true
+--     not implied by every branch of a 3-branch condition
+-- atom 30: c2.row2_text_has_mention != true
+--     not implied by every branch of a 3-branch condition
+-- atom 30: c2.row_author_keys_many != true
+--     not implied by every branch of a 3-branch condition
+-- atom 30: c2.row_text_has_mention != true
+--     not implied by every branch of a 3-branch condition
+-- atom 30: c5.row_person_profile_not_found != true
+--     not implied by every branch of a 3-branch condition
+-- atom 30: len(c2.rows) > 1
+--     not implied by every branch of a 3-branch condition
+-- atom 30: $"Length(SYM_PARAM_post_id)" < 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 30: c1.not_found != true
+--     no schema: `.not_found` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 30: c1.public == true
+--     no schema: `.public` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 30: c1.type != "Photo"
+--     no schema: `.type` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 30: c2.row_author_profile_not_found != true
+--     no schema: `.row_author_profile_not_found` on c2 cannot be confirmed
+--     to be a column of `comments`, so it is not folded
+-- atom 30: c2.row_text_has_dlink != true
+--     no schema: `.row_text_has_dlink` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 30: c5.row_person_not_found != true
+--     c5 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 30: len(c5.rows) != 0
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 30: len(c5.rows) <= 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 31: c2.row_text_has_mention != true
+--     not implied by every branch of a 3-branch condition
+-- atom 31: len(c2.rows) != 0
+--     not implied by every branch of a 3-branch condition
+-- atom 31: len(c2.rows) <= 1
+--     not implied by every branch of a 3-branch condition
+-- atom 31: c2.row_text_has_mention == true
+--     not implied by every branch of a 3-branch condition
+-- atom 31: c2.row_text_mention_has_name == true
+--     not implied by every branch of a 3-branch condition
+-- atom 31: c5.row_person_profile_not_found != true
+--     not implied by every branch of a 3-branch condition
+-- atom 31: len(c2.rows) != 0
+--     not implied by every branch of a 3-branch condition
+-- atom 31: len(c2.rows) <= 1
+--     not implied by every branch of a 3-branch condition
+-- atom 31: c2.row2_text_has_dlink != true
+--     not implied by every branch of a 3-branch condition
+-- atom 31: c2.row2_text_has_mention != true
+--     not implied by every branch of a 3-branch condition
+-- atom 31: c2.row_author_keys_many != true
+--     not implied by every branch of a 3-branch condition
+-- atom 31: c2.row_text_has_mention != true
+--     not implied by every branch of a 3-branch condition
+-- atom 31: c5.row_person_profile_not_found != true
+--     not implied by every branch of a 3-branch condition
+-- atom 31: len(c2.rows) > 1
+--     not implied by every branch of a 3-branch condition
+-- atom 31: $"Length(SYM_PARAM_post_id)" < 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 31: c1.not_found != true
+--     no schema: `.not_found` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 31: c1.public == true
+--     no schema: `.public` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 31: c1.type != "Photo"
+--     no schema: `.type` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 31: c2.row_author_profile_not_found != true
+--     no schema: `.row_author_profile_not_found` on c2 cannot be confirmed
+--     to be a column of `comments`, so it is not folded
+-- atom 31: c2.row_text_has_dlink != true
+--     no schema: `.row_text_has_dlink` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 31: c5.row_person_not_found != true
+--     no schema: `.row_person_not_found` on c5 cannot be confirmed to be a
+--     column of `mentions`, so it is not folded
+-- atom 31: len(c5.rows) != 0
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 31: len(c5.rows) <= 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 32: c2.row_text_has_mention != true
+--     not implied by every branch of a 3-branch condition
+-- atom 32: len(c2.rows) != 0
+--     not implied by every branch of a 3-branch condition
+-- atom 32: len(c2.rows) <= 1
+--     not implied by every branch of a 3-branch condition
+-- atom 32: c2.row_text_has_mention == true
+--     not implied by every branch of a 3-branch condition
+-- atom 32: c2.row_text_mention_has_name == true
+--     not implied by every branch of a 3-branch condition
+-- atom 32: c5.row_person_profile_not_found != true
+--     not implied by every branch of a 3-branch condition
+-- atom 32: len(c2.rows) != 0
+--     not implied by every branch of a 3-branch condition
+-- atom 32: len(c2.rows) <= 1
+--     not implied by every branch of a 3-branch condition
+-- atom 32: c2.row2_text_has_dlink != true
+--     not implied by every branch of a 3-branch condition
+-- atom 32: c2.row2_text_has_mention != true
+--     not implied by every branch of a 3-branch condition
+-- atom 32: c2.row_author_keys_many != true
+--     not implied by every branch of a 3-branch condition
+-- atom 32: c2.row_text_has_mention != true
+--     not implied by every branch of a 3-branch condition
+-- atom 32: c5.row_person_profile_not_found != true
+--     not implied by every branch of a 3-branch condition
+-- atom 32: len(c2.rows) > 1
+--     not implied by every branch of a 3-branch condition
+-- atom 32: $"Length(SYM_PARAM_post_id)" < 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 32: c1.not_found != true
+--     no schema: `.not_found` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 32: c1.public == true
+--     no schema: `.public` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 32: c1.type != "Photo"
+--     no schema: `.type` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 32: c2.row_author_profile_not_found != true
+--     no schema: `.row_author_profile_not_found` on c2 cannot be confirmed
+--     to be a column of `comments`, so it is not folded
+-- atom 32: c2.row_text_has_dlink != true
+--     no schema: `.row_text_has_dlink` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 32: c5.row_person_not_found != true
+--     no schema: `.row_person_not_found` on c5 cannot be confirmed to be a
+--     column of `mentions`, so it is not folded
+-- atom 32: len(c5.rows) != 0
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 32: len(c5.rows) <= 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 33: $"Length(SYM_PARAM_post_id)" < 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 33: c1.not_found != true
+--     no schema: `.not_found` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 33: c1.public == true
+--     no schema: `.public` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 33: c1.type != "Photo"
+--     no schema: `.type` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 33: c2.row2_text_has_dlink != true
+--     no schema: `.row2_text_has_dlink` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 33: c2.row2_text_has_mention != true
+--     no schema: `.row2_text_has_mention` on c2 cannot be confirmed to be
+--     a column of `comments`, so it is not folded
+-- atom 33: c2.row_author_keys_many != true
+--     no schema: `.row_author_keys_many` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 33: c2.row_author_profile_not_found != true
+--     no schema: `.row_author_profile_not_found` on c2 cannot be confirmed
+--     to be a column of `comments`, so it is not folded
+-- atom 33: c2.row_text_has_dlink != true
+--     no schema: `.row_text_has_dlink` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 33: c2.row_text_has_mention != true
+--     no schema: `.row_text_has_mention` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 33: c5.row_person_not_found != true
+--     c5 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 33: c5.row_person_profile_not_found != true
+--     c5 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 33: len(c2.rows) > 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 33: len(c5.rows) != 0
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 33: len(c5.rows) <= 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 34: $"Length(SYM_PARAM_post_id)" < 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 34: c1.not_found != true
+--     no schema: `.not_found` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 34: c1.public == true
+--     no schema: `.public` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 34: c1.type != "Photo"
+--     no schema: `.type` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 34: c2.row2_text_has_dlink != true
+--     no schema: `.row2_text_has_dlink` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 34: c2.row2_text_has_mention != true
+--     no schema: `.row2_text_has_mention` on c2 cannot be confirmed to be
+--     a column of `comments`, so it is not folded
+-- atom 34: c2.row_author_keys_many != true
+--     no schema: `.row_author_keys_many` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 34: c2.row_author_profile_not_found != true
+--     no schema: `.row_author_profile_not_found` on c2 cannot be confirmed
+--     to be a column of `comments`, so it is not folded
+-- atom 34: c2.row_text_has_dlink != true
+--     no schema: `.row_text_has_dlink` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 34: c2.row_text_has_mention != true
+--     no schema: `.row_text_has_mention` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 34: c5.row_person_not_found != true
+--     no schema: `.row_person_not_found` on c5 cannot be confirmed to be a
+--     column of `mentions`, so it is not folded
+-- atom 34: c5.row_person_profile_not_found != true
+--     no schema: `.row_person_profile_not_found` on c5 cannot be confirmed
+--     to be a column of `mentions`, so it is not folded
+-- atom 34: len(c2.rows) > 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 34: len(c5.rows) != 0
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 34: len(c5.rows) <= 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 35: $"Length(SYM_PARAM_post_id)" < 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 35: c1.not_found != true
+--     no schema: `.not_found` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 35: c1.public == true
+--     no schema: `.public` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 35: c1.type != "Photo"
+--     no schema: `.type` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 35: c2.row2_text_has_dlink != true
+--     no schema: `.row2_text_has_dlink` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 35: c2.row2_text_has_mention != true
+--     no schema: `.row2_text_has_mention` on c2 cannot be confirmed to be
+--     a column of `comments`, so it is not folded
+-- atom 35: c2.row_author_keys_many != true
+--     no schema: `.row_author_keys_many` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 35: c2.row_author_profile_not_found != true
+--     no schema: `.row_author_profile_not_found` on c2 cannot be confirmed
+--     to be a column of `comments`, so it is not folded
+-- atom 35: c2.row_text_has_dlink != true
+--     no schema: `.row_text_has_dlink` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 35: c2.row_text_has_mention != true
+--     no schema: `.row_text_has_mention` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 35: c5.row_person_not_found != true
+--     no schema: `.row_person_not_found` on c5 cannot be confirmed to be a
+--     column of `mentions`, so it is not folded
+-- atom 35: c5.row_person_profile_not_found != true
+--     no schema: `.row_person_profile_not_found` on c5 cannot be confirmed
+--     to be a column of `mentions`, so it is not folded
+-- atom 35: len(c2.rows) > 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 35: len(c5.rows) != 0
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 35: len(c5.rows) <= 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 36: $"Length(SYM_PARAM_post_id)" < 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 36: c1.not_found != true
+--     no schema: `.not_found` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 36: c1.public == true
+--     no schema: `.public` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 36: c1.type != "Photo"
+--     no schema: `.type` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 36: c2.row2_text_has_dlink != true
+--     no schema: `.row2_text_has_dlink` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 36: c2.row2_text_has_mention != true
+--     no schema: `.row2_text_has_mention` on c2 cannot be confirmed to be
+--     a column of `comments`, so it is not folded
+-- atom 36: c2.row_author_keys_many != true
+--     no schema: `.row_author_keys_many` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 36: c2.row_author_profile_not_found != true
+--     no schema: `.row_author_profile_not_found` on c2 cannot be confirmed
+--     to be a column of `comments`, so it is not folded
+-- atom 36: c2.row_text_has_dlink != true
+--     no schema: `.row_text_has_dlink` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 36: c2.row_text_has_mention != true
+--     no schema: `.row_text_has_mention` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 36: c5.row_person_not_found != true
+--     c5 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 36: c5.row_person_profile_not_found != true
+--     c5 is not joined into this statement, so the condition constrains
+--     rows this view does not read
+-- atom 36: len(c2.rows) > 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 36: len(c5.rows) != 0
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 36: len(c5.rows) <= 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 37: $"Length(SYM_PARAM_post_id)" < 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 37: c1.not_found != true
+--     no schema: `.not_found` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 37: c1.public == true
+--     no schema: `.public` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 37: c1.type != "Photo"
+--     no schema: `.type` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 37: c2.row2_text_has_dlink != true
+--     no schema: `.row2_text_has_dlink` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 37: c2.row2_text_has_mention != true
+--     no schema: `.row2_text_has_mention` on c2 cannot be confirmed to be
+--     a column of `comments`, so it is not folded
+-- atom 37: c2.row_author_keys_many != true
+--     no schema: `.row_author_keys_many` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 37: c2.row_author_profile_not_found != true
+--     no schema: `.row_author_profile_not_found` on c2 cannot be confirmed
+--     to be a column of `comments`, so it is not folded
+-- atom 37: c2.row_text_has_dlink != true
+--     no schema: `.row_text_has_dlink` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 37: c2.row_text_has_mention != true
+--     no schema: `.row_text_has_mention` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 37: c5.row_person_not_found != true
+--     no schema: `.row_person_not_found` on c5 cannot be confirmed to be a
+--     column of `mentions`, so it is not folded
+-- atom 37: c5.row_person_profile_not_found != true
+--     no schema: `.row_person_profile_not_found` on c5 cannot be confirmed
+--     to be a column of `mentions`, so it is not folded
+-- atom 37: len(c2.rows) > 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 37: len(c5.rows) != 0
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 37: len(c5.rows) <= 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 38: $"Length(SYM_PARAM_post_id)" < 16
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 38: c1.not_found != true
+--     no schema: `.not_found` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 38: c1.public == true
+--     no schema: `.public` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 38: c1.type != "Photo"
+--     no schema: `.type` on c1 cannot be confirmed to be a column of
+--     `posts`, so it is not folded
+-- atom 38: c2.row2_text_has_dlink != true
+--     no schema: `.row2_text_has_dlink` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 38: c2.row2_text_has_mention != true
+--     no schema: `.row2_text_has_mention` on c2 cannot be confirmed to be
+--     a column of `comments`, so it is not folded
+-- atom 38: c2.row_author_keys_many != true
+--     no schema: `.row_author_keys_many` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 38: c2.row_author_profile_not_found != true
+--     no schema: `.row_author_profile_not_found` on c2 cannot be confirmed
+--     to be a column of `comments`, so it is not folded
+-- atom 38: c2.row_text_has_dlink != true
+--     no schema: `.row_text_has_dlink` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 38: c2.row_text_has_mention != true
+--     no schema: `.row_text_has_mention` on c2 cannot be confirmed to be a
+--     column of `comments`, so it is not folded
+-- atom 38: c5.row_person_not_found != true
+--     no schema: `.row_person_not_found` on c5 cannot be confirmed to be a
+--     column of `mentions`, so it is not folded
+-- atom 38: c5.row_person_profile_not_found != true
+--     no schema: `.row_person_profile_not_found` on c5 cannot be confirmed
+--     to be a column of `mentions`, so it is not folded
+-- atom 38: len(c2.rows) > 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 38: len(c5.rows) != 0
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)
+-- atom 38: len(c5.rows) <= 1
+--     the constrained term is not a field of a produced row, so it names
+--     no column (DESIGN_IR §2)

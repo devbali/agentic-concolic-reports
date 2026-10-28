@@ -1,0 +1,1 @@
+/home/dev/project/reports/diaspora/results3/people_stream/concrete_manifest_anon_handle.rb

@@ -1,0 +1,25 @@
+#!/bin/bash
+# When the early SKIP_SUBSUME extraction finishes, INSTALL it and fill the
+# header — without waiting for the pass, which is gated behind `free -g >= 6`
+# and may not fire tonight. The subsumption edition (blockaid JVM, ~5 G) cannot
+# run under the 4 G cage at all; if it runs later, _p13d.sh replaces the file
+# and re-fills the header. A missing subsumption is recorded as state=None and
+# is NEVER folded into "not subsumed".
+set +e; unset JAVA_TOOL_OPTIONS
+B=/home/dev/project/reports/diaspora/results3/posts_show
+Q=/home/dev/project/reports/diaspora/results3/queries_from_runs
+L="$B/_p13d.log"
+say(){ echo "[$(date -Is)] $*" | tee -a "$L"; }
+while pgrep -f "_extract_posts_show_streamin[g].py" >/dev/null; do sleep 30; done
+V=$(grep -E '^posts_show: ' "$Q/_extract_posts_show_NOSUB_20260911.log" 2>/dev/null)
+say "early extraction :: ${V:-NO VERDICT LINE — killed, not done}"
+if [ -z "$V" ]; then say "NOT installed — no verdict line"; exit 1; fi
+mv "$Q/posts_show.sql.nosub" "$Q/posts_show.sql"
+mv "$Q/_summary_posts_show.json.nosub" "$Q/_summary_posts_show.json"
+say "INSTALLED the SKIP_SUBSUME edition (subsumption state=None, never False)"
+python3 -u "$B/_mk_residual_classes.py" >> "$L" 2>&1
+python3 -u "$B/_fill_header.py"        >> "$L" 2>&1 || say "HEADER NOT FILLED — see the log"
+python3 -u "$B/_apply_header.py"       >> "$L" 2>&1
+python3 -u "$B/_policy_numbers.py"      > "$B/_policy_numbers.log" 2>&1
+say "views=$(grep -c '^SELECT' $Q/posts_show.sql 2>/dev/null) todo=$(grep -c 'TODO(drive)' $Q/posts_show.sql 2>/dev/null)"
+say "policy installed and header filled"

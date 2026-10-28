@@ -1,0 +1,19 @@
+
+##### skipped_pcs_VANILLA #####
+== skipped_pcs_audit (vanilla src/): 313977 dumps, 171 distinct exprs, 17859648 PC records ==
+   parsed: 10723343 | dropped: 3285401 | dropped-by-design: 3850904
+
+-- DROPPED SHAPES (evidence recorded by the runtime, discarded by the fold) --
+   3245515  (VAR == VAR(_))  <-- RED (Class B in fold-space)
+     39886  (VAR != VAR(_))  <-- RED (Class B in fold-space)
+
+-- DROPPED BY DESIGN (len()/arithmetic operands, outcome-suffix vars) --
+   1779213  (len(VAR) > N)
+   1459284  (len(VAR) == N)
+    374805  (VAR == True)
+    198126  (len(VAR) != N)
+     35872  (VAR == VAR)
+      3604  (VAR != VAR)
+
+RESULT: RED — high-frequency PC shapes dropped.
+EXIT=1

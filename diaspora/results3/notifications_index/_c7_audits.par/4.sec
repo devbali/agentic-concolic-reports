@@ -1,0 +1,18 @@
+
+##### skipped_pcs_PATCHED #####
+== skipped_pcs_audit (PATCHED pipeline): 313977 dumps, 171 distinct exprs, 17859648 PC records ==
+   parsed: 14008744 | dropped: 0 | dropped-by-design: 3850904
+
+-- DROPPED SHAPES (evidence recorded by the runtime, discarded by the fold) --
+
+-- DROPPED BY DESIGN (len()/arithmetic operands, outcome-suffix vars) --
+   1779213  (len(VAR) > N)
+   1459284  (len(VAR) == N)
+    374805  (VAR == True)
+    198126  (len(VAR) != N)
+     35872  (VAR == VAR)
+      3604  (VAR != VAR)
+  (none — every recorded PC shape parses)
+
+RESULT: pass.
+EXIT=0

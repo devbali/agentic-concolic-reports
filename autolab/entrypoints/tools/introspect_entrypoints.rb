@@ -1,0 +1,420 @@
+# frozen_string_literal: true
+#
+# introspect_entrypoints.rb — enumerate every routable diaspora controller action
+# from INSIDE a booted Rails app, and emit the raw facts as JSON.
+#
+# This is deliberately a RUNTIME introspection, not a static parse of
+# config/routes.rb: `resources`, engine mounts and constraint blocks are all
+# expanded by the real router before we look at them.
+#
+# Usage (from the diaspora app root, via scripts/diaspora-concolic env):
+#   RAILS_ENV=concolic bundle exec jruby \
+#     /home/dev/project/reports/autolab/entrypoints/tools/introspect_entrypoints.rb \
+#     /path/to/raw_introspection.json
+#
+# The JSON is written to the file named by ARGV[0] (an app initializer prints
+# to stdout at boot, so stdout is not a clean channel); progress goes to stderr.
+
+require "json"
+require File.expand_path("config/environment", Dir.pwd)
+
+APP_ROOT = Dir.pwd
+
+def log(msg)
+  warn("[introspect] #{msg}")
+end
+
+# --------------------------------------------------------------------------
+# helpers
+
+# Read the source text of a method, from its `def` line to the matching `end`
+# at the same indentation. Rails controllers are uniformly formatted, so this
+# is reliable; we record `body_extracted: false` when it is not.
+def method_source(file, line)
+  return [nil, false] unless file && File.exist?(file)
+  lines = File.readlines(file)
+  idx = line - 1
+  return [nil, false] unless lines[idx]
+  indent = lines[idx][/\A\s*/].length
+  out = [lines[idx]]
+  (idx + 1).upto(lines.length - 1) do |i|
+    out << lines[i]
+    stripped = lines[i].rstrip
+    if stripped == (" " * indent) + "end"
+      return [out.join, true]
+    end
+  end
+  [out.join, false]
+end
+
+# Decide whether a callback applies to `action`. Rails compiles `only:` /
+# `except:` into one-arg procs that touch nothing but `c.action_name`
+# (AbstractController::Callbacks#_normalize_callback_option), so we can simply
+# CALL them with a stub. A Symbol/String predicate (`if: :some_method?`) is a
+# runtime decision, not a route fact, and is reported as "conditional" rather
+# than guessed at.
+#
+# Semantics, kept explicit because getting them wrong is silent:
+#   * an EMPTY @if / @unless list imposes no constraint;
+#   * any @if condition that evaluates false blocks the callback;
+#   * any @unless condition that evaluates true blocks the callback;
+#   * anything unevaluable makes the verdict "conditional".
+ActionStub = Struct.new(:action_name)
+
+def eval_cond(c, action)
+  case c
+  when Proc
+    begin
+      c.arity == 1 ? !!c.call(ActionStub.new(action.to_s)) : nil
+    rescue StandardError, NameError
+      nil
+    end
+  else
+    nil
+  end
+end
+
+def callbacks_for(klass, action)
+  chain = (klass._process_action_callbacks rescue [])
+  chain.map do |cb|
+    filter = cb.filter
+    name =
+      case filter
+      when Symbol, String then filter.to_s
+      when Proc then "(block@#{(filter.source_location || []).join(':')})"
+      else filter.class.name
+      end
+
+    ifs = Array(cb.instance_variable_get(:@if)).map { |c| eval_cond(c, action) }
+    uns = Array(cb.instance_variable_get(:@unless)).map { |c| eval_cond(c, action) }
+
+    applies =
+      if ifs.include?(false) || uns.include?(true) then "no"
+      elsif ifs.include?(nil) || uns.include?(nil) then "conditional"
+      else "yes"
+      end
+
+    {"kind" => cb.kind.to_s, "filter" => name, "applies" => applies}
+  end
+end
+
+# Static scan of a controller source for explicitly *declared* filter lines,
+# so skip_before_action shows up as an authored fact even though the resolved
+# chain has already removed it.
+def declared_filters(file)
+  return [] unless file && File.exist?(file)
+  out = []
+  File.readlines(file).each_with_index do |l, i|
+    s = l.strip
+    next unless s =~ /\A(skip_)?(before|after|around)_action\b/ ||
+                s =~ /\A(skip_)?(before|after|around)_filter\b/
+    out << {"line" => i + 1, "source" => s}
+  end
+  out
+end
+
+# --------------------------------------------------------------------------
+# collect routes (runtime-expanded, including mounted engines)
+
+def collect_routes(route_set, mount_prefix, engine_name, acc)
+  route_set.routes.each do |r|
+    defaults = r.defaults || {}
+    ctrl = defaults[:controller]
+    act  = defaults[:action]
+    app  = r.app
+    # unwrap ActionDispatch::Routing::Mapper::Constraints
+    inner = app
+    inner = inner.app while inner.respond_to?(:app) && inner.app != inner && !inner.is_a?(Proc)
+
+    path = mount_prefix.to_s + r.path.spec.to_s
+
+    # A mounted engine. Unwrapping `app` reaches the engine's RouteSet directly
+    # (Rails 5.2), so match on that rather than on a class name containing
+    # "Engine". `r.name` is the mount's name ("diaspora_federation").
+    is_engine_mount =
+      inner.is_a?(ActionDispatch::Routing::RouteSet) && !inner.equal?(Rails.application.routes)
+    if is_engine_mount
+      begin
+        prefix = path.sub(/\(\.:format\)\z/, "").chomp("/")
+        collect_routes(inner, prefix, (r.name || inner.class.name).to_s, acc)
+        log "recursed into mounted engine at #{prefix.empty? ? '/' : prefix} (#{r.name})"
+      rescue StandardError => e
+        log "engine recurse failed for #{path}: #{e.class}: #{e.message}"
+      end
+      next
+    end
+
+    kind =
+      if ctrl.nil? || act.nil?
+        if defaults[:status] || path =~ /redirect/ then "redirect" else "non_controller" end
+      else
+        "action"
+      end
+
+    acc << {
+      "name"           => r.name,
+      "verb"           => (r.verb.is_a?(String) ? r.verb : r.verb.to_s).gsub(%r{\A/\^?|\$?/\z}, ""),
+      "path"           => path,
+      "controller"     => ctrl,
+      "action"         => act,
+      "engine"         => engine_name,
+      "kind"           => kind,
+      "required_parts" => r.required_parts.map(&:to_s),
+      "defaults"       => defaults.reject { |k, _| %i[controller action].include?(k) }
+                                  .transform_keys(&:to_s)
+                                  .transform_values(&:to_s),
+      "app_class"      => inner.class.name.to_s
+    }
+  end
+  acc
+end
+
+log "collecting routes..."
+raw_routes = collect_routes(Rails.application.routes, "", nil, [])
+log "#{raw_routes.length} raw route entries"
+
+# --------------------------------------------------------------------------
+# controllers
+
+def controller_class(ctrl)
+  return nil if ctrl.nil?
+  "#{ctrl.camelize}Controller".constantize
+rescue StandardError, LoadError
+  begin
+    "#{ctrl}_controller".camelize.constantize
+  rescue StandardError, LoadError
+    nil
+  end
+end
+
+MODEL_RE  = /\b([A-Z][A-Za-z0-9]*(?:::[A-Z][A-Za-z0-9]*)*)\b/
+PARAMS_RE = /params\[:([a-z_0-9]+)\]|params\.require\(:([a-z_0-9]+)\)|params\.fetch\(:([a-z_0-9]+)/
+
+controllers = {}
+routed = Hash.new { |h, k| h[k] = [] }
+
+raw_routes.each do |r|
+  next unless r["kind"] == "action"
+  routed[r["controller"]] << r["action"]
+end
+
+routed.keys.sort.each do |ctrl|
+  klass = controller_class(ctrl)
+  if klass.nil?
+    controllers[ctrl] = {"resolved" => false}
+    log "UNRESOLVED controller: #{ctrl}"
+    next
+  end
+  file = nil
+  begin
+    file = klass.instance_methods(false).map { |m| klass.instance_method(m).source_location&.first }.compact.first
+    file ||= Object.const_source_location(klass.name)&.first if Object.respond_to?(:const_source_location)
+  rescue StandardError
+  end
+  controllers[ctrl] = {
+    "resolved"          => true,
+    "class"             => klass.name,
+    "file"              => file && file.sub(APP_ROOT + "/", ""),
+    "ancestry"          => klass.ancestors.select { |a| a.is_a?(Class) }.map(&:name).take_while { |n| n != "ActionController::Base" }.compact,
+    "action_methods"    => klass.action_methods.to_a.sort,
+    "declared_filters"  => declared_filters(file)
+  }
+end
+
+# --------------------------------------------------------------------------
+# per-action facts
+
+def scan_body(body)
+  return {} if body.nil?
+  params = body.scan(PARAMS_RE).flatten.compact.uniq.sort
+  consts = body.scan(MODEL_RE).flatten.uniq
+  {
+    "loc"             => body.lines.length,
+    "params_read"     => params,
+    "constants"       => consts.sort,
+    "renders_stream"  => !!(body =~ /Stream::|stream_responder|@stream|StreamHelper/),
+    "enqueues_job"    => !!(body =~ /Workers::|perform_async|perform_later|\.delay\b/),
+    "federation"      => !!(body =~ /Diaspora::Federation|DiasporaFederation|Federation::/),
+    "sends_mail"      => !!(body =~ /Mailer|deliver_now|deliver_later|Notifier\b/),
+    "external_http"   => !!(body =~ /Faraday|HTTParty|Net::HTTP|open-uri|URI\.parse.*open/),
+    "writes_db"       => !!(body =~ /\.save\b|\.create!?\b|\.update!?\b|\.destroy!?\b|\.delete\b|\.update_attributes/),
+    "respond_to"      => body.scan(/format\.(\w+)/).flatten.uniq.sort,
+    "renders_json"    => !!(body =~ /render\s+json:|:json/),
+    "redirects"       => !!(body =~ /redirect_to/),
+    # `authenticate_user!` being enforced is NOT the same question as whether
+    # the action needs a principal: PeopleController exempts show/stream from
+    # authenticate_user! yet both read current_user. A driver needs both facts.
+    "reads_current_user" => !!(body =~ /current_user/),
+    "reads_session"      => !!(body =~ /\bsession\b/),
+    "reads_request"      => !!(body =~ /\brequest\./),
+    "uses_presenter"     => !!(body =~ /Presenter/),
+    "paginates"          => !!(body =~ /\bpage\b|paginate|per_page/)
+  }
+end
+
+actions = []
+raw_routes.each do |r|
+  next unless r["kind"] == "action"
+  ctrl = r["controller"]
+  act  = r["action"]
+  cinfo = controllers[ctrl]
+  entry = {
+    "route_name" => r["name"], "verb" => r["verb"], "path" => r["path"],
+    "controller" => ctrl, "action" => act, "engine" => r["engine"],
+    "required_parts" => r["required_parts"], "route_defaults" => r["defaults"]
+  }
+  if cinfo.nil? || !cinfo["resolved"]
+    entry["status"] = "controller_unresolved"
+    actions << entry
+    next
+  end
+  klass = controller_class(ctrl)
+  has = klass.action_methods.include?(act.to_s)
+  # A route with no action method is not automatically dead: Rails renders
+  # app/views/<controller>/<action>.* implicitly. Separate the two cases —
+  # "implicit_render" is a real, drivable entry point; "action_missing" is a
+  # route that would raise AbstractController::ActionNotFound.
+  views = Dir.glob(File.join(APP_ROOT, "app", "views", ctrl.to_s, "#{act}.*"))
+  entry["views"] = views.map { |v| v.sub(APP_ROOT + "/", "") }
+  entry["view_loc"] = views.sum { |v| (File.readlines(v).length rescue 0) }
+  entry["status"] =
+    if has then "ok"
+    elsif views.any? then "implicit_render"
+    else "action_missing"
+    end
+  entry["controller_class"] = klass.name
+  if has && klass.method_defined?(act) || klass.private_method_defined?(act)
+    begin
+      um = klass.instance_method(act)
+      loc = um.source_location
+      if loc
+        entry["source_file"] = loc[0].sub(APP_ROOT + "/", "")
+        entry["source_line"] = loc[1]
+        body, complete = method_source(loc[0], loc[1])
+        entry["body_extracted"] = complete
+        entry.merge!(scan_body(body))
+        entry["defined_in"] = um.owner.name
+        # e2e FIX-8. An action often reads its params through one of the
+        # controller's OWN private helpers -- LinksController#resolve calls
+        # `query`, and `query` is `params.fetch(:q)`. Scanning the action
+        # body alone misses it and the scaffold then makes no symbolic param
+        # at all, so the endpoint stops at ParameterMissing.
+        #
+        # ONE LEVEL, NAME-DIRECTED: only the class's own private/protected
+        # methods whose name appears in the action body. Scanning every
+        # method on the class would symbolise params for actions that never
+        # read them.
+        helper_params = []
+        helper_names = []
+        (klass.private_instance_methods(false) +
+         klass.protected_instance_methods(false)).each do |hm|
+          next if hm.to_s == act.to_s
+          next unless body.to_s =~ /(?<![A-Za-z0-9_])#{Regexp.escape(hm.to_s)}(?![A-Za-z0-9_])/
+          hloc = (klass.instance_method(hm).source_location rescue nil)
+          next unless hloc
+          hbody, = method_source(hloc[0], hloc[1])
+          next unless hbody
+          found = hbody.scan(PARAMS_RE).flatten.compact.uniq
+          next if found.empty?
+          helper_names << hm.to_s
+          helper_params.concat(found)
+        end
+        entry["params_read_in_helpers"] = helper_params.uniq.sort
+        entry["helpers_scanned"] = helper_names.uniq.sort
+      else
+        entry["source_file"] = nil
+      end
+    rescue NameError
+      entry["status"] = "action_missing"
+    end
+  end
+  entry["filters"] = callbacks_for(klass, act)
+  actions << entry
+end
+
+# unrouted public actions
+#
+# `action_methods` includes every public instance method inherited from
+# ApplicationController and from the many included helper modules, so the bare
+# set difference is mostly noise. A genuine "public action with no route" is
+# one whose method is DEFINED IN THIS APP'S OWN app/controllers tree — that is
+# the discrepancy worth recording. We keep the raw count too, for honesty.
+unrouted = []
+unrouted_raw_count = 0
+controllers.each do |ctrl, info|
+  next unless info["resolved"]
+  klass = controller_class(ctrl)
+  candidates = info["action_methods"] - routed[ctrl].uniq
+  unrouted_raw_count += candidates.length
+  candidates.each do |a|
+    loc = (klass.instance_method(a).source_location rescue nil)
+    next unless loc
+    file = loc[0]
+    next unless file.start_with?(File.join(APP_ROOT, "app", "controllers"))
+    owner = (klass.instance_method(a).owner.name rescue nil)
+    unrouted << {
+      "controller" => ctrl, "class" => info["class"], "action" => a,
+      "defined_in" => owner,
+      "source_file" => file.sub(APP_ROOT + "/", ""), "source_line" => loc[1]
+    }
+  end
+end
+
+# --------------------------------------------------------------------------
+# the model graph — so "pulls in a large object graph" can be measured rather
+# than guessed. For every ActiveRecord model in the app we record its table
+# and its association count; the manifest builder joins this against the
+# constants each action body mentions.
+
+log "loading models..."
+Dir.glob(File.join(APP_ROOT, "app", "models", "**", "*.rb")).sort.each do |f|
+  begin
+    require f
+  rescue StandardError, LoadError => e
+    log "model load skipped #{f.sub(APP_ROOT + '/', '')}: #{e.class}"
+  end
+end
+
+models = {}
+ObjectSpace.each_object(Class).select { |c|
+  begin
+    c < ActiveRecord::Base
+  rescue StandardError
+    false
+  end
+}.each do |m|
+  next if m.name.nil? || m.abstract_class?
+  begin
+    assoc = m.reflect_on_all_associations
+    models[m.name] = {
+      "table"          => (m.table_name rescue nil),
+      "associations"   => assoc.length,
+      "has_many"       => assoc.count { |a| a.macro == :has_many },
+      "belongs_to"     => assoc.count { |a| a.macro == :belongs_to },
+      "assoc_names"    => assoc.map { |a| a.name.to_s }.sort
+    }
+  rescue StandardError => e
+    log "model introspect failed #{m.name}: #{e.class}"
+  end
+end
+log "#{models.length} ActiveRecord models"
+
+out = {
+  "generated_by" => "reports/autolab/entrypoints/tools/introspect_entrypoints.rb",
+  "rails_env"    => Rails.env.to_s,
+  "rails_version"=> Rails.version,
+  "app_root"     => APP_ROOT,
+  "boot"         => "real (runtime router introspection)",
+  "routes_raw"   => raw_routes,
+  "controllers"  => controllers,
+  "actions"      => actions,
+  "models" => models,
+  "unrouted_public_actions" => unrouted,
+  "unrouted_raw_candidate_count" => unrouted_raw_count
+}
+# An app initializer prints to stdout at boot ("Rack::SSL is enabled"), so the
+# JSON goes to a file named by ARGV[0] rather than to stdout.
+dest = ARGV[0] or abort("usage: introspect_entrypoints.rb <out.json>")
+File.write(dest, JSON.pretty_generate(out))
+log "wrote #{dest}"
+log "done: #{actions.length} routed actions, #{unrouted.length} unrouted public actions"

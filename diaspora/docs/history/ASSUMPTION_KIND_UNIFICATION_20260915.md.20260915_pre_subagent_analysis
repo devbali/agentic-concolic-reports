@@ -1,0 +1,141 @@
+# Design note — independence and confinement license the same thing
+
+**Status: DESIGN NOTE, not a live rule. Nothing in this file changes how any
+endpoint is run today.** Raised by the owner, 2026-09-15, while posts_show and
+notifications_index were mid-campaign. Deliberately NOT acted on then; see
+"Why not now".
+
+---
+
+## The observation
+
+`IndependenceAssumption` and confinement (`ConfinementAssumption`, §16c) are
+two assumption kinds that grant the **same licence**: a pair of decisions needs
+no cross product. Confinement's own docstring in `coverage.py` states it
+directly — "A confined pair needs no cross product". Same pairwise shape, same
+effect on the demand, both applied inside a demand set.
+
+They are not two ideas. They are one idea with two provenances.
+
+## What actually differs
+
+The difference is epistemic, not semantic. Four things, all real, none of them
+about *what is licensed*:
+
+1. **Confinement has a mechanised proof; independence has an assertion.**
+   Confinement: suppose a shape `Z` required both outcomes, `A=x ∧ B=y ⇒ Z`.
+   Then in any matched context with `B=y`, flipping `A` toggles `Z`, so
+   `Z ∈ footprint(A)`; symmetrically `Z ∈ footprint(B)`; disjointness refutes
+   `Z`'s existence. Independence rests on the author's reasoning about access
+   patterns — which is why `assumptions.py:198` calls it, in caps, the most
+   dangerous assumption in the system.
+
+2. **Confinement is continuously falsified; independence is tested once.**
+   A counterexample search runs at load on EVERY pass: for every confined
+   decision and every shape in its footprint, one run anywhere in the corpus
+   with the decision on its non-enabling side and the shape present
+   DISQUALIFIES it (`confinement_disqualified`, run and shape named).
+   Independence is probed at the gate and otherwise trusted.
+
+3. **Confinement knows where it is valid; independence does not.**
+   Footprints are measured over matched contexts — pairs of runs with the SAME
+   tree shape — so the claim holds only WITHIN a leaf, and the implementation
+   enforces that by splitting demand sets into gates ∪ cliques. Independence
+   removes the pairwise edge wherever both expressions appear.
+
+4. **Confinement checks its preconditions and refuses itself.**
+   Tree incomplete ⇒ footprints PROVISIONAL and the combination claim declined.
+   No matched contexts ⇒ undecidable, stays fully demanded. No trace layer ⇒
+   projection is the identity. It also carries a proven nesting
+   (`weak ⊆ strict ⊆ §16b ⊆ §16`) pinned by property tests on random corpora.
+   Independence has none of this.
+
+**Accurate one-line description: confinement is independence, derived instead
+of asserted, bounded to a leaf, proven nested, and continuously falsified.**
+
+## Foreclosure is NOT in this family
+
+§16b/§16e/§16f/§16g are a genuinely different claim and should stay a separate
+kind. Independence and confinement deny an *interaction* — both outcomes still
+occur, they just need not be paired. Foreclosure denies that an outcome
+*exists* in a context: given `C`, `d` never occurs. It removes specific
+combinations rather than a product, its evidence is corpus co-occurrence
+(`A(C)>0, B(C,d)=0`) rather than footprint disjointness, and its refutation is
+a WITNESS (build a run exhibiting `C ∧ d`), not a perturbation (flip A, watch
+B's footprint).
+
+That difference in refutation is why the gate work authorised on 2026-09-15
+makes foreclosure a construction-attempt test with a mandatory positive
+control, rather than reusing the flip probe.
+
+## Why the split exists
+
+Historical, not principled. Independence came first and was hand-written.
+Confinement was added (2026-09-11) when it became clear that nobody can
+hand-write thousands of pairwise claims. The derivation made licences cheap to
+CREATE while testing them stayed expensive — roughly 100k probes for
+posts_show's 2,701 — and that cost asymmetry is exactly where an unearned
+completion number hid: `MISSING=147` rested on 2,701 licences of which not one
+had ever been probed, and became `MISSING=710` once the gate tested them.
+
+## If it were designed today
+
+ONE assumption kind — "no cross product for this pair" — carrying a
+provenance/evidence field rather than two kinds that happen to license the same
+thing:
+
+```
+NoCrossProductAssumption(pair, provenance, evidence, scope, grade)
+    provenance : DECLARED | DERIVED_FOOTPRINT | (future derivations)
+    evidence   : the author's rationale | measured footprints + disqualifier search
+    scope      : GLOBAL_PAIRWISE | WITHIN_LEAF
+    grade      : from the gate — bases_probed/realising/passing/failing (X12)
+```
+
+The benefits are not cosmetic:
+
+- **One gate path.** `_test_confinement` and the independence flip-both probe
+  are near-duplicates today; X10 (flip-both never ran on canonicalising
+  endpoints) and X11 (gate blind to removal) were defects in ONE of the two
+  paths, found separately, at separate cost. One path fails once.
+- **Declared claims inherit the standing disqualifier search.** Point 2 above
+  is currently a confinement-only safety net. There is no reason a hand-written
+  independence claim should not also be disqualified the moment the corpus
+  contradicts it.
+- **`scope` becomes explicit rather than implied by kind.** Today "within a
+  leaf" is a property of being confinement; it should be a property of the
+  claim.
+- **One nesting proof** instead of a nesting proof for confinement and nothing
+  for independence.
+
+## Why not now
+
+1. Both live endpoints are mid-campaign against the current kinds; posts_show's
+   probe bank (102,178 records) is keyed on the gate's engine/phase/cfg digest
+   and this refactor invalidates it.
+2. It is a `src/` change of real size, and `src/` changes here have a history of
+   being subtly wrong in the licensing direction (see the name-boundary sanitiser
+   near-miss in NAME_BOUNDARY_PLAN_20260914.md §8).
+3. It buys no completion on any open endpoint. It buys correctness insurance for
+   the NEXT one.
+
+## If it is taken up
+
+Falsifier, stated in advance: **the unified kind must produce a byte-identical
+verdict on every closed endpoint** (people_stream, notifications, comments,
+conversations) — it is a refactor of provenance, not of licence, so any endpoint
+whose verdict moves means the semantics changed and the implementation is wrong.
+Nesting must be re-pinned by the existing property tests on random corpora.
+Default OFF and gate-testable like every other rung.
+
+Do not carry `scope=WITHIN_LEAF` over to declared claims by default — a
+hand-written independence claim has never been scoped to a leaf and silently
+narrowing it would CHANGE what existing declarations mean.
+
+## Related
+
+- `docs/DISCIPLINE.md` §16c (confinement), §16b/§16e/§16f/§16g (foreclosure)
+- `docs/CONFINEMENT_PRECISION_20260913.md` (C1/C2/C3 precision knobs)
+- `src/concolic_engine/assumptions.py:198` (`IndependenceAssumption`, safety warning)
+- `src/concolic_engine/coverage.py` (confinement: claim, falsifier, nesting, gate)
+- X10 / X11 / X12 gate defects — three defects in the two near-duplicate gate paths

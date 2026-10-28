@@ -1,0 +1,13 @@
+#!/bin/bash
+# Coordinator memory update 2026-09-11: the cage is MemoryMax=9G/High=8G and
+# this endpoint's share is <= 2 GB TOTAL, so its jobs are SERIALISED: one
+# caged JRuby (1500M) or one caged pass (1G), never both. Refuses to start
+# when the slice already holds more than the argument (default 7G).
+LIMIT_G="${1:-7}"
+cur=$(systemctl --user show concolic-cov.slice -p MemoryCurrent --value 2>/dev/null)
+[ -z "$cur" ] && cur=0
+curg=$(( cur / 1024 / 1024 / 1024 ))
+mine=$(pgrep -fc "people_stream/(run_dse|coverage_report|concrete_run_probe)" 2>/dev/null || echo 0)
+echo "slice=${curg}G limit=${LIMIT_G}G my_jobs=${mine}"
+[ "$curg" -ge "$LIMIT_G" ] && { echo "HEADROOM: slice at ${curg}G — holding"; exit 1; }
+exit 0

@@ -1,0 +1,21 @@
+#!/bin/bash
+# UNIFIED MEMORY RULE (coordinator, 2026-09-11) for EVERY launch >= 1 GB.
+# Immediately before launching, BOTH must hold, polled every 30 s:
+#     free -g (available)                >= 4
+#     8G - slice MemoryCurrent           >= the job's cap
+# Name patterns (coverage_report / _exact_enum / confinement_census) are an
+# OPTIMISATION on top; these two numbers are the invariant. Both are LOGGED at
+# launch, so a run's own record says what the box looked like when it started.
+#   usage: _memwait <capG> [timeout_s]   -> prints "MEMWAIT ok free=<n>G slice_headroom=<n>G cap=<n>G"
+CAP="${1:-2}"; TMO="${2:-21600}"; w=0
+while :; do
+  FG=$(free -g | awk '/^Mem/{print $7}')
+  CUR=$(systemctl --user show concolic-cov.slice -p MemoryCurrent --value 2>/dev/null); [ -z "$CUR" ] && CUR=0
+  HEAD=$(( 8 - CUR/1024/1024/1024 ))
+  if [ "$FG" -ge 4 ] && [ "$HEAD" -ge "$CAP" ]; then
+    echo "MEMWAIT ok free=${FG}G slice_headroom=${HEAD}G cap=${CAP}G waited=${w}s"; exit 0
+  fi
+  [ $((w % 600)) -eq 0 ] && echo "MEMWAIT hold free=${FG}G slice_headroom=${HEAD}G need free>=4 head>=${CAP}G (${w}s)"
+  [ "$w" -ge "$TMO" ] && { echo "MEMWAIT TIMEOUT after ${w}s free=${FG}G slice_headroom=${HEAD}G cap=${CAP}G"; exit 1; }
+  sleep 30; w=$((w+30))
+done

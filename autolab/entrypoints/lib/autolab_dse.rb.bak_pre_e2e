@@ -1,0 +1,545 @@
+# frozen_string_literal: true
+#
+# autolab_dse.rb — the generic, endpoint-independent half of a concolic runner.
+#
+# The two known-good batches (reports/diaspora/results4/comments_index and
+# .../aspect_memberships_create) each carry a ~600-line run_dse.rb, of which
+# roughly 450 lines are *identical* algorithm: the harness factory, the
+# symbolic-principal wiring, the term-to-string renderer, the four flip
+# matchers and the prefix-directed worklist. Only a ~30-line CFG differs.
+#
+# This file is that identical remainder, lifted verbatim in behaviour so a
+# generated runner is thin. Every comment marked "GROUND TRUTH" records a fact
+# those two batches paid for; do not simplify one away without re-measuring.
+#
+# NOTHING endpoint-specific belongs here. Per-endpoint target declarations and
+# mocks live in reports/autolab/targets/endpoints/<id>.rb (the peer library),
+# loaded through targets/registry.json by `boot!`.
+#
+# Usage from a generated runner:
+#
+#   require "/home/dev/project/reports/autolab/entrypoints/lib/autolab_dse"
+#   AutolabDSE.boot!("comments_index")
+#   AutolabDSE.explore(
+#     entry:            "comments_index",
+#     controller_class: "CommentsController",
+#     action:           :index,
+#     format:           :json,
+#     signed_in:        false,
+#     params:           { post_id: { sym: "SYM_PARAM_post_id", default: "5" } }
+#   )
+
+require "json"
+require "set"
+require "digest"
+require "fileutils"
+
+module AutolabDSE
+  RUNTIME  = "/home/dev/project/src_new/runtimes/ruby_runtime"
+  AUTOLAB  = "/home/dev/project/reports/autolab"
+  REGISTRY = File.join(AUTOLAB, "targets", "registry.json")
+
+  module_function
+
+  # -----------------------------------------------------------------------
+  # boot
+  # -----------------------------------------------------------------------
+
+  # Load the Rails environment, the symbolic runtime and the target library.
+  #
+  # ORDER MATTERS (GROUND TRUTH from both reference batches):
+  #   call_interceptor first — it require_relative's path_condition, base, int,
+  #   string, bool, symbolic_func and term — then the individual type files,
+  #   then the targets.
+  #
+  # `require "./config/environment"` is cwd-relative and only resolves because
+  # scripts/diaspora-concolic cd's into the diaspora app first.
+  def boot!(endpoint_id)
+    require "./config/environment"
+
+    require File.join(RUNTIME, "call_interceptor")
+    require File.join(RUNTIME, "base")
+    require File.join(RUNTIME, "int")
+    require File.join(RUNTIME, "string")
+    require File.join(RUNTIME, "bool")
+    require File.join(RUNTIME, "list")
+    require "action_controller/test_case"
+
+    ActiveRecord::Base.establish_connection(:concolic)
+    ActionController::Base.allow_forgery_protection = false
+    $interceptor = CallInterceptor.instance
+
+    load_targets!(endpoint_id)
+    $interceptor
+  end
+
+  # Load the shared target library through the peer-owned registry, rather
+  # than by copying any batch's targets.rb. Core modules install first, the
+  # endpoint's override second; last declaration for a (class, method) wins,
+  # which is how an override beats the core.
+  def load_targets!(endpoint_id)
+    unless File.exist?(REGISTRY)
+      raise "targets registry not found at #{REGISTRY} — the shared targets " \
+            "library must exist before a runner can be driven"
+    end
+    reg = JSON.parse(File.read(REGISTRY))
+
+    core = reg["core"] or raise "registry has no `core` entry"
+    require File.join(AUTOLAB, core["file"].sub(%r{\Atargets/}, "targets/"))
+    Array(core["modules"]).each { |m| install_module!(m) }
+
+    ep = (reg["endpoints"] || {})[endpoint_id]
+    if ep.nil?
+      warn "[autolab] no target override for #{endpoint_id} " \
+           "(tier=candidate) — running on core targets only. Expect " \
+           "unmocked call sites; that is a finding, not a crash to hide."
+      @targets_tier = "candidate"
+      return
+    end
+    require File.join(AUTOLAB, ep["file"])
+    Array(ep["modules"]).each { |m| install_module!(m) }
+    @targets_tier = ep["tier"] || "gold"
+  end
+
+  def install_module!(name)
+    mod = Object.const_get(name)
+    mod.install!($interceptor)
+  rescue NameError => e
+    warn "[autolab] target module #{name} not installed: #{e.class}: #{e.message}"
+  end
+
+  def targets_tier
+    @targets_tier || "unknown"
+  end
+
+  # -----------------------------------------------------------------------
+  # harness
+  # -----------------------------------------------------------------------
+
+  # GROUND TRUTH: this is an ActionController::TestCase used purely as a rig
+  # FACTORY — the action is then invoked DIRECTLY (`ctrl.send(action)`), not
+  # routed. There is no verb, path, header or session in the dispatch; the
+  # route only tells us which params to make symbolic.
+  def make_harness(controller_class)
+    # The rig's TestCase subclass is registered as a TOP-LEVEL constant, so
+    # the namespace has to be flattened: Object.const_set cannot take
+    # "Api::OpenidConnect::IdTokensControllerTest" (NameError: wrong constant
+    # name). The two reference batches only ever drove top-level controllers,
+    # so this case first appeared when the lab generalised to the 9
+    # api/openid_connect and 11 admin/* actions.
+    cname = controller_class.to_s.gsub("::", "").sub(/Controller\z/, "ControllerTest")
+    Object.const_set(cname, Class.new(ActionController::TestCase)) unless Object.const_defined?(cname)
+    test_class = Object.const_get(cname)
+    test_class.instance_variable_set(:@concolic_ctrl, controller_class)
+    def test_class.determine_default_controller_class(_name)
+      @concolic_ctrl
+    end
+    tc = test_class.new("noop")
+    tc.setup_controller_request_and_response
+    tc.instance_variable_set(:@routes, Rails.application.routes)
+    ctrl = tc.instance_variable_get(:@controller)
+    ctrl.response = tc.instance_variable_get(:@response) # real render needs the response wired
+    [ctrl, tc]
+  end
+
+  # -----------------------------------------------------------------------
+  # PC term rendering
+  # -----------------------------------------------------------------------
+
+  # PC EXPRESSION SHAPE (DESIGN_IR §4.1.1c TERMS) — WITHOUT THIS THE DSE IS A
+  # SINGLE RUN. The runtimes record a path condition's `expr` as a structured
+  # TERM (a Hash), where they used to record the rendered string. Every flip
+  # matcher below is a REGEX over that old spelling, so a Hash expr matches
+  # nothing: flip_any returns nil, the PC is booked "unflippable", no child
+  # seed is pushed, and the worklist drains after run 1 reporting
+  # worklist_exhausted: true — a FALSE completion signal, not a visible
+  # failure.
+  def pc_expr_to_s(expr)
+    return expr.to_s unless expr.is_a?(::Hash)
+    return expr["sym"].to_s if expr.key?("sym")
+    if expr.key?("lit")
+      lit  = expr["lit"] || {}
+      sort = lit["sort"]
+      v    = lit["value"]
+      return case sort
+             when "str"  then "StringVal('#{v}')"
+             when "bool" then (v ? "True" : "False")
+             when "int"  then v.to_s
+             when "null" then "None"
+             else v.inspect
+             end
+    end
+    op   = expr["op"].to_s
+    args = expr["args"] || []
+    rend = args.map { |a| pc_expr_to_s(a) }
+    case op
+    when "length" then "len(#{rend[0]})"
+    when "not"    then "Not(#{rend[0]})"
+    else
+      rend.size == 2 ? "(#{rend[0]} #{op} #{rend[1]})" : "#{op}(#{rend.join(', ')})"
+    end
+  end
+
+  def path_conditions(dump)
+    (dump["events"] || [])
+      .select { |e| e["type"] == "path_condition" }
+      .map { |e| [pc_expr_to_s(e["expr"]), e["taken"] ? true : false] }
+  end
+
+  # NAME BOUNDARY: the runtimes mint a list's cardinality var as `SYM_LEN_X`;
+  # the matchers are written in the old `len(X)` spelling.
+  def canon_len(expr)
+    expr.to_s.strip.gsub(/SYM_LEN_([A-Za-z0-9_]+)/, 'len(\1)')
+  end
+
+  # -----------------------------------------------------------------------
+  # flip matchers
+  # -----------------------------------------------------------------------
+
+  # The principal's identity vars are NEVER reseeded: a concrete key folds
+  # every signed-in view as `users.id = 1` instead of `_MY_UID`.
+  PRINCIPAL = lambda do |v|
+    v.include?("devise_user_first") || v.start_with?("SYM_USER_CI")
+  end
+
+  def flip_seed(expr, want_taken, vals = {})
+    m = /\A\(([A-Za-z_][A-Za-z0-9_]*) (==|!=) (.+)\)\z/m.match(canon_len(expr))
+    return nil unless m
+    var, op, lit = m[1], m[2], m[3].strip
+    want_taken = !want_taken if op == "!="
+
+    if /\A[A-Za-z_][A-Za-z0-9_]*\z/.match?(lit) && lit != var && !%w[True False].include?(lit)
+      free, anchor = if PRINCIPAL.call(var) && !PRINCIPAL.call(lit) && vals.key?(var)
+                       [lit, vals[var]]
+                     elsif PRINCIPAL.call(lit) && !PRINCIPAL.call(var) && vals.key?(lit)
+                       [var, vals[lit]]
+                     elsif vals.key?(lit) then [var, vals[lit]]
+                     elsif vals.key?(var) then [lit, vals[var]]
+                     end
+      return nil if free.nil?
+      av = anchor
+      av = av.to_i if av.is_a?(String) && av =~ /\A-?\d+\z/
+      return nil unless av.is_a?(Integer) || av.is_a?(String) || av == true || av == false
+      other = case av
+              when true, false then !av
+              when Integer     then av + 1
+              when String      then av.empty? ? "concolic_other" : ""
+              end
+      return { free => (want_taken ? av : other) }
+    end
+
+    parsed =
+      case lit
+      when "True"  then true
+      when "False" then false
+      when /\AStringVal\('(.*)'\)\z/m then Regexp.last_match(1)
+      when /\A'(.*)'\z/m then Regexp.last_match(1)
+      when /\A"(.*)"\z/m then Regexp.last_match(1)
+      when /\A-?\d+\z/   then lit.to_i
+      else return nil
+      end
+
+    alt = nil
+    alt = "en" if var.end_with?("_language")
+
+    value =
+      if want_taken
+        parsed
+      else
+        case parsed
+        when true, false then !parsed
+        when Integer     then parsed + 1
+        when String      then alt || (parsed.empty? ? "concolic_other" : "")
+        else return nil
+        end
+      end
+
+    { var => value }
+  end
+
+  def flip_len_seed(expr, want_taken)
+    m = /\A\((len\(.+\)) != 0\)\z/m.match(canon_len(expr))
+    return nil unless m
+    { m[1] => (want_taken ? 1 : 0) }
+  end
+
+  def flip_len_many_seed(expr, want_taken)
+    m = /\A\((len\(.+\)) > 1\)\z/m.match(canon_len(expr))
+    return nil unless m
+    { m[1] => (want_taken ? 2 : 1) }
+  end
+
+  def flip_length_seed(expr, want_taken)
+    m = /\A\(Length\(([A-Za-z_][A-Za-z0-9_]*)\) (<=|>=|==|!=|<|>) (-?\d+)\)\z/m.match(canon_len(expr))
+    return nil unless m
+    var, op, n = m[1], m[2], m[3].to_i
+    len =
+      case op
+      when "<"  then want_taken ? n - 1 : n
+      when "<=" then want_taken ? n     : n + 1
+      when ">"  then want_taken ? n + 1 : n
+      when ">=" then want_taken ? n     : n - 1
+      when "==" then want_taken ? n     : n + 1
+      when "!=" then want_taken ? n + 1 : n
+      else return nil
+      end
+    len = 0 if len.negative?
+    { var => ("g" * len) }
+  end
+
+  def flip_any(expr, want_taken, vals = {})
+    flip_seed(expr, want_taken, vals) || flip_len_seed(expr, want_taken) ||
+      flip_len_many_seed(expr, want_taken) || flip_length_seed(expr, want_taken)
+  end
+
+  def sig_of(pcs)
+    pcs.map { |e, t| "#{e}:#{t}" }.join("|")
+  end
+
+  def digest(str)
+    Digest::MD5.digest(str)
+  end
+
+  # -----------------------------------------------------------------------
+  # one run
+  # -----------------------------------------------------------------------
+
+  def run_one(cfg, label, seeds, terminal_box)
+    ConcolicTargets.seed_overrides = seeds
+    terminal_box[:value] = nil
+
+    klass = Object.const_get(cfg[:controller_class])
+    ctrl, = make_harness(klass)
+
+    if cfg[:signed_in]
+      # PRINCIPAL MUST BE SYMBOLIC. LAZY/memoized so the resolution's queries
+      # fire INSIDE $interceptor.run (at the action's first current_user
+      # call), not before it.
+      ctrl.singleton_class.define_method(:current_user) do
+        ci_uid = symint("SYM_USER_CI_id", ConcolicTargets.seed_for("SYM_USER_CI_id", 1))
+        @ci_user ||= User.serialize_from_session(ci_uid, "concolicsalt")
+      end
+      ctrl.singleton_class.define_method(:user_signed_in?) { true }
+      # devise's authenticate_user! -> warden, which the controller-test rig
+      # has no middleware for. A guard, not concolic logic.
+      ctrl.singleton_class.define_method(:authenticate_user!) { :authenticate_user_called }
+    else
+      ctrl.singleton_class.define_method(:current_user) { nil }
+      ctrl.singleton_class.define_method(:user_signed_in?) { false }
+    end
+
+    begin
+      ctrl.request.format = cfg[:format]
+    rescue StandardError => e
+      warn "[warn] could not set request format: #{e.class}"
+    end
+    ctrl.send(:action_name=, cfg[:action].to_s)
+
+    body = lambda do
+      # THE SYMBOLIC ENTRYPOINT ARGUMENTS. Declared INSIDE the `run` block:
+      # CallInterceptor#run calls SymbolicFunc.reset! at its very start, which
+      # clears @registered_vars — a symstr made before `run` would never
+      # appear in the dump's symbolic_vars and Z3 would drop every PC over it.
+      params = {}
+      (cfg[:params] || {}).each do |key, spec|
+        params[key] = symstr(spec[:sym], ConcolicTargets.seed_for(spec[:sym], spec[:default]))
+      end
+      ctrl.params = params.with_indifferent_access
+
+      begin
+        # Direct dispatch skips process_action, so the before_action callbacks
+        # that READ DATA are replayed by hand. On a signed-in request
+        # set_locale reads current_user.language and set_grammatical_gender
+        # reads current_user.gender -> person -> profile.
+        I18n.locale = "en" # deterministic per run (I18n.locale is global state)
+        Array(cfg[:replay_callbacks]).each { |cb| ctrl.send(cb) }
+        # An implicit-render action has NO method to send: HelpController is
+        # an empty class body and `GET /help` renders app/views/help/faq.*
+        # through Rails' default render. Direct dispatch skips the machinery
+        # that would do that, so call default_render explicitly rather than
+        # raising NoMethodError and booking it as an app outcome.
+        if klass.method_defined?(cfg[:action]) || klass.private_method_defined?(cfg[:action])
+          ctrl.send(cfg[:action])
+        else
+          ctrl.send(:default_render)
+        end
+      rescue Exception => e # rubocop:disable Lint/RescueException
+        handled = begin
+          ctrl.send(:rescue_with_handler, e)
+        rescue Exception
+          nil
+        end
+        unless handled
+          # SCAFFOLD POLICY, not a curated one. The reference batches each
+          # carry a hand-written `app_error_terminal?` predicate naming the
+          # unrescued 500s that are REAL app outcomes for that action. A
+          # generated runner has no such list, so it records every unrescued
+          # exception as a terminal outcome and FLAGS the summary
+          # (`terminal_policy: "generic"`). Curating this predicate is part of
+          # promoting an endpoint from scaffolded to driven.
+          terminal_box[:value] = {
+            "type" => e.class.name,
+            "cause" => (e.cause && e.cause.class.name),
+            "message" => e.message.to_s[0, 160]
+          }
+          next :app_error_500
+        end
+        handled
+      end
+      :ok
+    end
+
+    dump = $interceptor.run(body, {}, label: label, script: "run_dse.rb")
+    dump["concolic_seeds"] = seeds
+    dump["concolic_scenario"] = {
+      "name" => cfg[:variant], "format" => cfg[:format].to_s,
+      "signed_in" => !!cfg[:signed_in]
+    }
+    dump["concolic_terminal"] = terminal_box[:value] if terminal_box[:value]
+
+    # RUNNER-LOCAL LEAK WORKAROUND (reported, not patched in src_new/):
+    # CallInterceptor keeps an unbounded @all_calls history ACROSS runs
+    # (`run` only slices @all_calls[old_count..]). `run` recomputes old_count
+    # at entry, so clearing the array between runs is safe.
+    $interceptor.instance_variable_set(:@all_calls, [])
+
+    dump
+  end
+
+  # -----------------------------------------------------------------------
+  # prefix-directed exploration
+  # -----------------------------------------------------------------------
+
+  def explore(cfg)
+    cfg = {
+      format: :json, signed_in: false, params: {},
+      replay_callbacks: (cfg[:signed_in] ? %i[set_locale set_grammatical_gender] : []),
+      variant: nil
+    }.merge(cfg)
+    cfg[:variant] ||= "#{cfg[:signed_in] ? 'auth' : 'anon'}_#{cfg[:format]}"
+
+    entry       = cfg[:entry]
+    out         = ENV["DUMP_OUT"] || cfg[:out] || Dir.pwd
+    max_runs    = (ENV["MAX_RUNS"] || cfg[:max_runs] || 6).to_i
+    time_budget = (ENV["TIME_BUDGET"] || cfg[:time_budget] || 600).to_i
+    FileUtils.mkdir_p(out)
+
+    puts "== #{entry} :: prefix-directed DSE " \
+         "(MAX_RUNS=#{max_runs}, TIME_BUDGET=#{time_budget}s, targets=#{targets_tier}) =="
+    started = Time.now
+
+    stack = [{}]
+    if ENV["EXTRA_SEEDS_JSON"] && File.exist?(ENV["EXTRA_SEEDS_JSON"])
+      extra = JSON.parse(File.read(ENV["EXTRA_SEEDS_JSON"]))
+      extra = [extra] if extra.is_a?(Hash)
+      stack = ENV["SEEDS_ONLY"] ? extra : (extra + stack)
+    end
+
+    seen_seeds   = Set.new
+    seen_paths   = Set.new
+    unflippable  = Hash.new(0)
+    errors       = Hash.new(0)
+    terminals    = Hash.new(0)
+    runs         = 0
+    written      = 0
+    terminal_box = { value: nil }
+
+    until stack.empty?
+      if runs >= max_runs
+        puts "[stop] MAX_RUNS reached"
+        break
+      end
+      if Time.now - started > time_budget
+        puts "[stop] time budget exhausted"
+        break
+      end
+
+      seeds = stack.shift # FIFO: single flips of the root first, then pairs, …
+      key = digest(JSON.generate(seeds.sort.to_h))
+      next if !ENV["SEEDS_ONLY"] && seen_seeds.include?(key)
+      seen_seeds << key
+
+      runs += 1
+      label = format("%s_dse%04d%s", cfg[:variant], runs, ENV["LABEL_SUFFIX"].to_s)
+
+      begin
+        dump = run_one(cfg, label, seeds, terminal_box)
+      rescue Exception => e # rubocop:disable Lint/RescueException
+        puts "[#{label}] HARNESS FAILURE #{e.class}: #{e.message.to_s[0, 300]}"
+        puts e.backtrace.take(25).join("\n") if ENV["TRACE"]
+        errors["harness:#{e.class}"] += 1
+        next
+      end
+
+      errors["run:#{dump['error']['type']}"] += 1 if dump["error"]
+      terminals[dump["concolic_terminal"]["type"]] += 1 if dump["concolic_terminal"]
+
+      pcs = path_conditions(dump)
+      sig = digest(sig_of(pcs))
+      next if !ENV["SEEDS_ONLY"] && seen_paths.include?(sig)
+
+      seen_paths << sig
+      written += 1
+      File.write(File.join(out, "dump_#{label}.json"), JSON.pretty_generate(dump))
+
+      puts format("[%s] paths=%d runs=%d pcs=%d stack=%d %s",
+                  label, written, runs, pcs.size, stack.size,
+                  dump["error"] ? "error=#{dump['error']['type']}" : "")
+
+      vals = {}
+      (dump["symbolic_vars"] || []).each { |sv| vals[sv["name"].to_s] = sv["value"] }
+      pcs.each do |(expr, taken)|
+        fl = flip_any(expr, !taken, vals)
+        if fl.nil?
+          unflippable[expr] += 1
+          next
+        end
+        child = seeds.merge(fl)
+        ckey = digest(JSON.generate(child.sort.to_h))
+        next if ENV["SEEDS_ONLY"]
+        stack.push(child) unless seen_seeds.include?(ckey)
+      end
+    end
+
+    elapsed = Time.now - started
+
+    summary = {
+      "entrypoint"         => entry,
+      "strategy"           => "prefix-directed DSE (seed inheritance + single-branch flip)",
+      "driver"             => "reports/autolab/entrypoints/lib/autolab_dse.rb",
+      "targets_tier"       => targets_tier,
+      "terminal_policy"    => "generic (uncurated: every unrescued exception is recorded " \
+                              "as an outcome; see autolab_dse.rb)",
+      "signed_in"          => !!cfg[:signed_in],
+      "variant"            => cfg[:variant],
+      "format"             => cfg[:format].to_s,
+      "action"             => cfg[:action].to_s,
+      "controller"         => cfg[:controller_class],
+      "params"             => (cfg[:params] || {}).map { |k, v|
+        [k.to_s, { "symbolic_name" => v[:sym], "seed" => v[:default] }]
+      }.to_h,
+      "runs_executed"      => runs,
+      "distinct_paths"     => written,
+      "seed_sets_tried"    => seen_seeds.size,
+      "stack_remaining"    => stack.size,
+      "worklist_exhausted" => stack.empty?,
+      "max_runs"           => max_runs,
+      "time_budget"        => time_budget,
+      "elapsed_seconds"    => elapsed.round(1),
+      "run_errors"         => errors,
+      "terminals"          => terminals,
+      "unflippable_pcs"    => unflippable
+    }
+    File.write(File.join(out, "exploration_summary.json"), JSON.pretty_generate(summary))
+
+    puts "\n== #{entry} exploration done =="
+    puts "  runs executed  : #{runs}"
+    puts "  distinct paths : #{written}"
+    puts "  worklist empty : #{stack.empty?}"
+    puts "  elapsed        : #{elapsed.round(1)}s"
+    puts "  run errors     : #{errors.inspect}"
+    puts "  terminals      : #{terminals.inspect}"
+    puts "  unflippable    : #{unflippable.keys.size} distinct PC shapes"
+    summary
+  end
+end

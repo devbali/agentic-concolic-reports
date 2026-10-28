@@ -1,0 +1,446 @@
+#!/usr/bin/env python3
+"""C22 round 1 — construct every remaining leaf of the 7 BLOCKING gap-sets of
+`_cov_C21_C21R1.json`.
+
+Ported from `_c20_round4.py` (the build that closed C20's last three sets) with
+four additions, each of them a rule an earlier round paid for:
+
+  * §33.7a rule 2 (round 4) is KEPT: a member whose NAME depends on the call
+    prefix may not be overlaid — the base must already record it.
+  * NEW, and the generalisation of §33.6: **a member the overlay CANNOT WRITE
+    is hard too.** `_c20_round4.py` silently skipped every literal that is not
+    `(<var> == True|False)` or `(<var> > <int>)` — the var-var identity compare
+    and the `__prior` self-compare among them — and then let base scoring
+    decide whether it happened to hold. Here they are promoted into `hard`, so
+    the base is REQUIRED to carry them and the seeds are only ever written for
+    literals the seeder can actually express.
+  * §30/C17: `fix_seeds` — a demand on a re-minted `_<assoc>_row_rows` length
+    is ALSO written at the upstream key the runtime actually reads. Two of the
+    seven sets demand `..._row_actors_row_rows`, which is exactly that shape.
+  * UNSEED: `Not((X == X__prior))` is realised by X being UNSEEDED (§33.6, 860
+    runs, all unseeded), so X's seed keys are POPPED from the base seeds; and
+    negatives are written before positives so a positive demand wins a key
+    collision.
+
+usage: python3 _c22_round1.py <cov.json> <candidate_list> [K]
+"""
+import json, os, re, sys, itertools, collections
+from multiprocessing import Pool
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, "/home/dev/project/src")
+sys.path.insert(0, HERE)
+from concolic_engine.assumptions import alias_map_for, renamer   # noqa: E402
+from coverage_assumptions import ALIASES                          # noqa: E402
+from _c20_scan2 import parse                                      # noqa: E402
+from _c17_seedkey_fix import fix_seeds                            # noqa: E402
+from concolic_engine.coverage import _combo_constraint            # noqa: E402
+from concolic_engine.solver import check_satisfiability           # noqa: E402
+
+VARIANTS = ("html_plain", "html_typed", "json_plain", "json_typed",
+            "mobile_plain", "mobile_typed", "xml_plain")
+PREF = os.environ.get("C22_PREF", "_c22_r1_seeds_")
+MANIFEST = os.environ.get("C22_MANIFEST", "_c22_r1_manifest.json")
+_LEN = re.compile(r"len\(([^()]+)\)")
+fixlen = lambda s: _LEN.sub(r"SYM_LEN_\1", s) if s else s
+_CANON_RE = re.compile(r"SYM_RESULT_[A-Za-z0-9_]*?_(?:notifications|aspect_memberships|"
+                       r"photos|tags|aspects|services|mentions)_[0-9a-f]{8}")
+_EQT = re.compile(r"^\((\w+) == (True|False)\)$")
+_EQI = re.compile(r"^\((\w+) == (-?\d+)\)$")
+_GTI = re.compile(r"^\((\w+) > (-?\d+)\)$")
+_PRIOR = re.compile(r"^\((\w+) == (\w+)__prior\)$")
+#: THE LOADER'S SELF-COMPARE SPLIT, mirrored. `coverage_report.split_self_compare`
+#: rewrites a recorded `(V == V)` to `(V == V__prior)`, and it runs INSIDE
+#: `canonicalize_ordinals` — i.e. AFTER alias renaming and only when the dump
+#: HAS an alias map (the function returns early otherwise) — and BEFORE
+#: `fix_len_names`. A tool that joins checker-side names to dump-side ones must
+#: do the same or the join fails SILENTLY as "never evaluated": measured here,
+#: `(find_by_1_person_id == find_by_1_person_id__prior)` was recorded in
+#: 0 of 39 529 candidate dumps before this was applied and in 4 107 after — the
+#: same class of defect the RUNBOOK's Phase 2 records three times for `len`
+#: spelling, one transform along. `_c20_round4.py` has it too, which is why C20
+#: needed the bespoke `_c20_ident_bases.py` for that one set.
+_SELFCMP = re.compile(r"\((SYM_[A-Za-z0-9_]+) == \1\)")
+SETS = None
+
+#: value ladders, in preference order. Lengths take the domain the endpoint's
+#: own mocks produce (DISCIPLINE/§18: empty / one / the `< 4` arm), widened by
+#: the two values a `> 1` demand needs; the dispatch integer takes its declared
+#: 0-7. A value is only ever CHOSEN from a ladder, never invented, so a demand
+#: the ladder cannot meet is reported (`no-ladder-value`) and not faked.
+LADDER_LEN = [0, 1, 2, 4, 3, 5, 6, 7]
+LADDER_INT = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+LADDER_BOOL = [True, False]
+
+
+def lit_of(e):
+    """(var, kind, rhs) for a member the overlay can WRITE, else None."""
+    m = _EQT.match(e)
+    if m:
+        return m.group(1), "eqb", m.group(2) == "True"
+    m = _EQI.match(e)
+    if m:
+        return m.group(1), "eqi", int(m.group(2))
+    m = _GTI.match(e)
+    if m:
+        return m.group(1), "gt", int(m.group(2))
+    return None
+
+
+def holds(val, kind, rhs, want):
+    if kind == "eqb":
+        got = (val is rhs) or (bool(val) == bool(rhs))
+    elif kind == "eqi":
+        got = (val == rhs)
+    else:
+        got = (val > rhs)
+    return bool(got) == bool(want)
+
+
+def ladder_value(var, lits):
+    """One value satisfying EVERY demanded literal over `var`, taken from the
+    ladder — the joint solve the per-literal writer of `_c20_round4.py` could
+    not do (six mutually exclusive `== k` literals over one variable)."""
+    kinds = {k for k, _r, _w in lits}
+    cands = (LADDER_BOOL if "eqb" in kinds
+             else LADDER_LEN if var.startswith("SYM_LEN_") else LADDER_INT)
+    for c in cands:
+        if all(holds(c, k, r, w) for k, r, w in lits):
+            return c
+    return None
+
+
+def split_lits(nc):
+    out = []
+    for part in nc.split(" AND "):
+        p, w = part.strip(), True
+        if p.startswith("Not(") and p.endswith(")"):
+            w, p = False, p[4:-1]
+        out.append((p, w))
+    return out
+
+
+def writable(e):
+    return lit_of(e) is not None
+
+
+def prefix_coupled(e):
+    return ("_exists__" in e
+            or (e.endswith("_rows > 1)") and "row_actors" not in e
+                and "mentions" not in e and "aspect_member" not in e))
+
+
+def per_row(e):
+    """A decision made PER NOTIFICATION ROW (or on a per-row association).
+
+    C22 round 1 measured why this matters: over its 336 driven runs the
+    per-row members of the two width-12 sets were evaluated in as few as
+    4/336 (`..._photos_aa895602_rows`) and 15-22/336
+    (`..._row_target_text_dlink_is_post`), even though every base had been
+    selected to RECORD them. Overlaying the row-level values changes which
+    partial the row renders, and the per-row decision downstream of it then
+    never happens — the same coupling §33.7a's rule 2 found for the call
+    prefix, one level in. So in round 2 they are carried by the base, not
+    written."""
+    return "_row_" in e or "_photos_" in e
+
+
+_DECL = {bool: "Bool", int: "Int", str: "String"}
+
+
+def declarations(members, cv):
+    """Z3 declarations for every variable a set's literals name, typed from the
+    checker's OWN counterexample model (`concrete_values`) — not guessed."""
+    out, seen = [], set()
+    for e in members:
+        for v in re.findall(r"SYM_[A-Za-z0-9_]*", e):
+            if v in seen:
+                continue
+            seen.add(v)
+            val = cv.get(v)
+            k = _DECL.get(type(val))
+            if k is None:
+                k = "Int" if v.startswith("SYM_LEN_") else "Bool"
+            out.append(f"{v} = {k}('{v}')")
+    return out
+
+
+def _init(sets):
+    global SETS
+    SETS = sets
+
+
+def work(path):
+    try:
+        evs, pcs, seeds, _v = parse(path)
+    except Exception:
+        return None
+    amap = alias_map_for(evs, ALIASES)
+    mint = set(amap.values())
+    rn = renamer(amap)
+    seen = {}
+    for expr, taken, _s in pcs:
+        e = rn(expr)
+        if amap:
+            e = _SELFCMP.sub(r"(\1 == \1__prior)", e)
+        seen.setdefault(fixlen(e), set()).add(bool(taken))
+    rows = []
+    for si, (members, canons, hard) in enumerate(SETS):
+        if not canons <= mint:
+            continue
+        obs = tuple((("B" if len(seen[e]) > 1 else ("T" if True in seen[e] else "F"))
+                     if e in seen else "U") for e in members)
+        if all(c == "U" for c in obs):
+            continue
+        rows.append((si, obs))
+    if not rows:
+        return None
+    return (path, len(seeds), rows)
+
+
+def main():
+    cov, lst = sys.argv[1], sys.argv[2]
+    K = int(sys.argv[3]) if len(sys.argv) > 3 else 6
+    miss = [m for m in json.load(open(cov))["missing"] if not m["untracked"]]
+    sets, meta = [], []
+    for m in miss:
+        lits = split_lits(m["node_constraint"])
+        members = [e for e, _w in lits]
+        canons = set()
+        for e in members:
+            canons |= set(_CANON_RE.findall(e))
+        hard, why = [], {}
+        for e in members:
+            r = []
+            if prefix_coupled(e):
+                r.append("prefix-coupled")
+            if not writable(e):
+                r.append("unwritable-by-overlay")
+            if os.environ.get("HARD_PER_ROW") and per_row(e):
+                r.append("per-row")
+            if r:
+                hard.append(e); why[e] = "+".join(r)
+        sets.append((members, canons, hard))
+        meta.append({"members": members, "witness": [w for _e, w in lits],
+                     "hard": hard, "hard_why": why})
+        print(f"  set{len(sets)-1}: width {len(members)}  hard {len(hard)}")
+        for e in hard:
+            print(f"        HARD [{why[e]}] {e}")
+    # ONE SCAN, MANY BUILDS. The corpus pass is the expensive part (132 524
+    # dumps, ~20 min); the base choice and the seed values are cheap and get
+    # re-tuned every round. `INDEX_OUT` saves the per-set observations,
+    # `INDEX_IN` replays them — keyed by the members, so a changed gap list
+    # refuses the index rather than silently mismatching it.
+    key = [m["members"] for m in meta]
+    idx_in = os.environ.get("INDEX_IN")
+    if idx_in and os.path.exists(idx_in):
+        import pickle
+        blob = pickle.load(open(idx_in, "rb"))
+        if blob["key"] != key:
+            raise SystemExit(f"INDEX_IN {idx_in} was built for a DIFFERENT gap list "
+                             "— rebuild it, do not reuse it")
+        pool_rows = collections.defaultdict(list, blob["rows"])
+        print(f"index replayed from {idx_in}: "
+              f"{ {si: len(v) for si, v in pool_rows.items()} }", flush=True)
+        # INDEX_MERGE: fold a SMALL extra file list (this round's own driven
+        # dumps) into a replayed index, so a round does not have to re-scan
+        # 132 k dumps to know what its own 336 runs walked.
+        extra = os.environ.get("INDEX_MERGE")
+        if extra:
+            xf = [l.strip() for l in open(extra) if l.strip()]
+            have = {r[0] for v in pool_rows.values() for r in v}
+            xf = [f for f in xf if f not in have]
+            print(f"merging {len(xf)} new dumps into the index", flush=True)
+            with Pool(int(os.environ.get("JOBS", "2")), initializer=_init,
+                      initargs=(sets,)) as pool:
+                for r in pool.imap_unordered(work, xf, chunksize=16):
+                    if r:
+                        path, ns, rws = r
+                        for si, obs in rws:
+                            pool_rows[si].append((path, ns, obs))
+            if os.environ.get("INDEX_OUT"):
+                import pickle as _pk
+                _pk.dump({"key": key, "rows": dict(pool_rows)},
+                         open(os.environ["INDEX_OUT"], "wb"), protocol=4)
+                print(f"merged index written to {os.environ['INDEX_OUT']}", flush=True)
+    else:
+        files = [l.strip() for l in open(lst) if l.strip()]
+        print(f"candidates {len(files)}", flush=True)
+        pool_rows = collections.defaultdict(list)
+        with Pool(int(os.environ.get("JOBS", "3")), initializer=_init,
+                  initargs=(sets,)) as pool:
+            for r in pool.imap_unordered(work, files, chunksize=32):
+                if r:
+                    path, ns, rows = r
+                    for si, obs in rows:
+                        pool_rows[si].append((path, ns, obs))
+        if os.environ.get("INDEX_OUT"):
+            import pickle
+            pickle.dump({"key": key, "rows": dict(pool_rows)},
+                        open(os.environ["INDEX_OUT"], "wb"), protocol=4)
+            print(f"index written to {os.environ['INDEX_OUT']}", flush=True)
+    per_variant, manifest = collections.defaultdict(list), []
+    stats = []
+    TODO_CAP = int(os.environ.get("TODO_CAP", "40"))
+    ONLY = os.environ.get("SETS_ONLY")
+    ONLY = {int(x) for x in ONLY.split(",")} if ONLY else None
+    for si, (members, canons, hard) in enumerate(sets):
+        if ONLY is not None and si not in ONLY:
+            print(f"  set{si}: SKIPPED (SETS_ONLY)", flush=True)
+            stats.append(dict(set=si, skipped=True))
+            continue
+        w = len(members)
+        decls = declarations(members, miss[si]["concrete_values"])
+        space = set()
+        for asg in itertools.product(*[[True, False]] * w):
+            c = _combo_constraint(list(zip(members, asg)))
+            r = check_satisfiability([c], decls, timeout_ms=5000)
+            if r.satisfiable:
+                space.add(asg)
+        # COVERED is read from EVERY dump that minted the set's canonicals, not
+        # only from the ones eligible as bases: a leaf some run already walked
+        # is covered whether or not that run can serve as a base.
+        covered = set()
+        for _p, _n, obs in pool_rows[si]:
+            if "U" in obs:
+                continue
+            covered |= set(itertools.product(*[[True, False] if c == "B" else [c == "T"]
+                                               for c in obs]))
+        todo = sorted(space - covered)
+        # WIDTH CAP (C20 round 2's rule, applied by TODO count rather than by
+        # width): a 12-member set has 448 satisfiable leaves and the checker
+        # named ONE of them. Drive the WITNESS and its 1-flip neighbours — the
+        # gap the engine actually reports, plus the ring around it — and let
+        # the re-census name the next one. Driving 448 leaves x K bases is a
+        # 6 000-run round for a set the engine reports as one gap.
+        wit = tuple(meta[si]["witness"])
+        capped = False
+        if len(todo) > TODO_CAP:
+            ring = {wit} | {wit[:j] + (not wit[j],) + wit[j + 1:] for j in range(w)}
+            sel = sorted((ring & space) - covered)
+            if sel:
+                todo, capped = sel, True
+        # PER-HARD-MEMBER DIAGNOSTIC: when a set has no base, say WHICH member
+        # no dump records with the others, instead of reporting "bases 0".
+        rec = [sum(1 for _p, _n, o in pool_rows[si] if o[members.index(h)] != "U")
+               for h in hard]
+        hidx = [members.index(h) for h in hard]
+        # REQUIRE_ALL_MEMBERS (C20 round 3's rule): the base must CO-EVALUATE
+        # the whole set, or the overlay writes seeds on decisions the run never
+        # reaches — which is precisely what round 1's 13/56 realisation was.
+        if os.environ.get("REQUIRE_ALL_MEMBERS"):
+            eligible = [r for r in pool_rows[si] if "U" not in r[2]]
+        else:
+            eligible = [r for r in pool_rows[si]
+                        if all(r[2][j] != "U" for j in hidx)]
+        print(f"  set{si}: rows {len(pool_rows[si])}  eligible-bases {len(eligible)}  "
+              f"SAT-space {len(space)}/{2**w}  covered {len(covered & space)}  "
+              f"todo {len(todo)}{' (CAPPED to witness+ring)' if capped else ''}",
+              flush=True)
+        for h, n in zip(hard, rec):
+            print(f"        hard-member recorded in {n} rows: {h[:110]}")
+        stats.append(dict(set=si, width=w, rows=len(pool_rows[si]),
+                          eligible=len(eligible), space=len(space),
+                          covered=len(covered & space), todo=len(todo),
+                          capped=capped,
+                          hard_recorded=dict(zip(hard, rec))))
+        if os.environ.get("PLAN"):
+            stats[-1]["built"] = 0
+            continue
+        pool_rows[si] = eligible
+        built = 0
+        for asg in todo:
+            cand = []
+            for p, ns, obs in pool_rows[si]:
+                if not all(obs[j] in ("B", "T" if asg[j] else "F") for j in hidx):
+                    continue
+                nm = sum(1 for j in range(w) if obs[j] in ("B", "T" if asg[j] else "F"))
+                cand.append((nm, ns, p))
+            cand.sort(reverse=True)
+            for _nm, _ns, p in cand[:K]:
+                d = json.load(open(p))
+                amap = alias_map_for([(e.get("result_name"), e.get("note"))
+                                      for e in d.get("events") or ()
+                                      if e.get("type") == "symbolic_call"], ALIASES)
+                rnm = renamer(amap)
+                rev = collections.defaultdict(list)
+                for o, c in (amap or {}).items():
+                    rev[c].append(o)
+                rev_sorted = sorted(rev, key=len, reverse=True)
+                s = dict(d.get("concolic_seeds") or {})
+                variant = next((v for v in VARIANTS
+                                if os.path.basename(p).startswith("dump_" + v)), None)
+                if variant is None:
+                    del d
+                    continue
+
+                def seedkeys(k):
+                    dn = f"len({k[8:]})" if k.startswith("SYM_LEN_") else k
+                    outs = [dn]
+                    for c in rev_sorted:
+                        if re.search(re.escape(c) + r"(?![0-9])", dn):
+                            outs = [re.sub(re.escape(c) + r"(?![0-9])",
+                                           o.replace("\\", "\\\\"), dn) for o in rev[c]]
+                            break
+                    return [o for o in outs if fixlen(rnm(o)) == k]
+
+                # ---- UNSEED: Not((X == X__prior)) is realised by X UNSEEDED.
+                unseeded = []
+                for j, (e, want) in enumerate(zip(members, asg)):
+                    mp = _PRIOR.match(e)
+                    if mp and mp.group(1) == mp.group(2) and not want:
+                        for sk in seedkeys(mp.group(1)):
+                            if s.pop(sk, None) is not None:
+                                unseeded.append(sk)
+                # ---- write PER VARIABLE, not per literal. A variable named by
+                #      a HARD member is never written (the base carries it);
+                #      every other variable gets ONE ladder value that
+                #      satisfies all of its demanded literals jointly.
+                hardvars = set()
+                for j in hidx:
+                    hardvars |= set(re.findall(r"SYM_[A-Za-z0-9_]*", members[j]))
+                varlits = collections.defaultdict(list)
+                for j, (e, want) in enumerate(zip(members, asg)):
+                    if j in hidx:
+                        continue
+                    lo = lit_of(e)
+                    if lo is None:
+                        continue
+                    v, k, r = lo
+                    varlits[v].append((k, r, bool(want)))
+                # negatives first, positives last: if two checker names share a
+                # runtime seed key, the positive demand wins the collision.
+                order = sorted(varlits, key=lambda v: any(w for _k, _r, w in varlits[v]))
+                wrote, nolad = 0, []
+                for v in order:
+                    if v in hardvars:
+                        continue
+                    val = ladder_value(v, varlits[v])
+                    if val is None:
+                        nolad.append(v)
+                        continue
+                    for sk in seedkeys(v):
+                        s[sk] = val
+                        wrote += 1
+                # ---- C17: a re-minted length also written at the upstream key
+                s, moved = fix_seeds(s, d)
+                del d
+                per_variant[variant].append(s)
+                manifest.append({"set": si, "assignment": [bool(x) for x in asg],
+                                 "base": os.path.basename(p), "variant": variant,
+                                 "wrote": wrote, "unseeded": unseeded,
+                                 "no_ladder_value": nolad,
+                                 "remint_moved": [[a, b] for a, b, _v in moved]})
+                built += 1
+        stats[-1]["built"] = built
+    for v in VARIANTS:
+        json.dump(per_variant.get(v, []),
+                  open(os.path.join(HERE, f"{PREF}{v}.json"), "w"))
+    json.dump({"meta": meta, "stats": stats, "manifest": manifest},
+              open(os.path.join(HERE, MANIFEST), "w"), indent=1)
+    print("per variant:", {v: len(per_variant.get(v, [])) for v in VARIANTS})
+    print(f"C22-R1-BUILT {sum(len(x) for x in per_variant.values())} seeds")
+
+
+if __name__ == "__main__":
+    main()

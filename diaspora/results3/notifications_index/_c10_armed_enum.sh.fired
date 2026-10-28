@@ -1,0 +1,8 @@
+#!/bin/bash
+# ARMED: fires the S3 enumeration the moment the exclusive slot frees.
+B=/home/dev/project/reports/diaspora/results3/notifications_index
+cd "$B"
+W0=$(date +%s)
+until [ -z "$(./_box_clear.sh)" ]; do sleep 60; done
+echo "[$(date -Is)] slot free after $(( ($(date +%s)-W0)/60 )) min of waiting" >> "$B/_c10_armed_enum.log"
+./_c10_enum.sh _snapshot_pruned_20260911_081950.txt s3post 4600M >> "$B/_c10_armed_enum.log" 2>&1

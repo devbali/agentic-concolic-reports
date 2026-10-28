@@ -1,0 +1,289 @@
+#!/usr/bin/env python3
+"""Checker-demanded exploration roots for people_stream, built ON TOP OF A REAL DUMP'S SEEDS.
+
+PORT of notifications_index/_demand_root.py (2026-09-10 version), replacing
+this batch's 2026-09-09 copy. What the port BRINGS that the old copy lacked:
+
+  * the MANY-ORDINAL fix. The old copy built `inv.setdefault(canon, ordn)` —
+    "first ordinal wins" — but the alias map is many-to-one BY DESIGN, so the
+    seed landed on ONE arbitrary ordinal while the path could evaluate a
+    different one and the run then CONTRADICTED the demand. Measured on
+    notifications before the fix: 13 423 honoured, **6 656 contradicted**
+    (25 % of evaluated seeds). Seeding EVERY ordinal backing the canonical
+    makes the demand hold whichever one the path takes.
+  * the SKIP-AND-COUNT filter for environmentally unreachable outcomes, and
+    the count of demanded lengths whose statement the base dump never minted
+    (seeding those by a guessed ordinal is how 164 seeds were inert in D1).
+  * DUMP_LIST, so a root is built from a dump the coverage pass actually saw.
+  * the LEAN corpus index: keep the PATH, load the base dump's seeds lazily.
+    The old copy held every seed dict for every dump; with v3 seeds at ~270
+    keys that is several GB on a 96 357-dump corpus and OOMs the round.
+
+Why not `demand_round.py`: it seeds ONLY the clique variables the checker
+named, so every other dimension falls back to its default. A combination whose
+decisions are only evaluated in a particular context (an STI type, a non-empty
+list, a mention-bearing text) is then never reached at all — the replay simply
+re-walks the default path and the missing entry survives round after round.
+
+This builds each root as  BASE SEEDS OF A REAL DUMP  +  the demanded
+assignment: the base is the corpus dump that records the most of the
+combination's expressions (preferring the same variant and, for each
+expression, the OTHER polarity), so the context that evaluates them is
+reproduced and only the demanded decisions are flipped.
+
+    MAX_MISSING_PER_CLIQUE=<n> PYTHONPATH=src python3 coverage_report.py   # SKIP_COMPLETION=1
+    python3 _demand_root.py [--dry-run]      # writes _demandR_<scenario>.json
+"""
+import glob, json, os, re, sys
+from collections import defaultdict
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+# P0 (2026-09-08): the checker's exprs are CANONICAL (statement-named) — see
+# coverage_report.canonicalize_ordinals. Dumps are indexed after the same
+# canonicalization, and a demanded `len(<canonical>_rows)` seed is mapped
+# BACK to the base dump's own ordinal (the runtime seeds by ordinal). A
+# demanded length whose statement the base dump never issued has no ordinal
+# there and is SKIPPED (counted) — seeding it by a guessed ordinal is exactly
+# how 164 `records_11` seeds were inert in round D1.
+sys.path.insert(0, "/home/dev/project/src")
+sys.path.insert(0, HERE)
+from coverage_report import canonicalize_ordinals  # noqa: E402
+# run_dse.rb SCENARIOS — dump files are `dump_<scenario><NNNN><suffix>.json`.
+VARIANTS = ("anon_all", "anon_json", "auth_json")
+
+summary = json.load(open(os.path.join(HERE, "coverage_summary.json")))
+missing = [m for m in summary.get("missing", []) if not m.get("untracked")]
+print(f"missing (blocking): {len(missing)}")
+
+# ---- corpus index (LEAN: only the exprs the missing set mentions are kept
+# per dump — a full {expr: taken} map over 20k dumps is gigabytes) ----------
+_WANTED = set()
+for _m in missing:
+    for _part in (_m.get("node_constraint") or "").split(" AND "):
+        _part = _part.strip()
+        _mm = re.match(r"^Not\((.*)\)$", _part, re.S)
+        if _mm:
+            _part = _mm.group(1).strip()
+        elif _part.startswith("NOT "):
+            _part = _part[4:].strip()
+        _WANTED.add(_part)
+        _WANTED.add(re.sub(r"SYM_LEN_([A-Za-z0-9_]+)", r"len(\1)", _part))
+
+dumps = []            # (variant, seeds, {expr: taken})  -- wanted exprs only
+expr_variants = defaultdict(set)
+_DL = os.environ.get("DUMP_LIST")
+if _DL:
+    _files = [l.strip() for l in open(_DL) if l.strip()]
+    _files = sorted(f if os.path.isabs(f) else os.path.join(HERE, f) for f in _files)
+    print(f"DUMP_LIST {_DL}: {len(_files)} dumps (fixed snapshot — the SAME list "
+          f"the pass measured, so a root is built from a dump the witness saw)")
+else:
+    _files = sorted(glob.glob(os.path.join(HERE, "dump_*.json")))
+for p in _files:
+    base = os.path.basename(p)
+    v = next((x for x in VARIANTS if base.startswith("dump_" + x)), None)
+    try:
+        d = json.load(open(p))
+    except Exception:
+        continue
+    amap = canonicalize_ordinals(d)          # exprs now canonical, like the checker's
+    # canonical -> ALL of this dump's ordinals backing it.
+    # BUG FIXED 2026-09-09: this was `{c: o for o, c in amap.items()}`, which
+    # inverts a MANY-to-one map by keeping whichever ordinal came LAST. The
+    # alias map is many-to-one BY DESIGN (8 ordinals -> one `aspects`), so the
+    # seed landed on one arbitrary ordinal while the path could evaluate a
+    # different one — the demanded variable then took its default and the run
+    # CONTRADICTED the seed. Measured before the fix: 13 423 honoured,
+    # **6 656 contradicted** (25% of evaluated seeds), 6 794 never evaluated.
+    # Seeding EVERY ordinal that backs the canonical makes the demand hold
+    # whichever one the path takes.
+    inv = {}
+    for _o, _c in amap.items():
+        inv.setdefault(_c, []).append(_o)
+    pcs = {}
+    for e in d.get("events") or ():
+        if e.get("type") == "path_condition":
+            ex = e["expr"]
+            expr_variants[ex].add(v)
+            if ex in _WANTED:
+                pcs[ex] = bool(e.get("taken"))
+    # MEMORY (2026-09-10): keep the PATH, not the seeds. v3 seed dicts carry
+    # ~270 keys; holding them for 125 000 dumps is several GB and OOMs the
+    # round. Only the chosen bases' seeds are ever needed, so they are loaded
+    # lazily below (memoised).
+    dumps.append((v, p, pcs, inv))
+    del d
+print(f"indexed {len(dumps)} dumps, {len(expr_variants)} distinct exprs, "
+      f"{len(_WANTED)} wanted")
+
+_LEN = re.compile(r"len\(([^()]+)\)")
+fixed_to_orig = {_LEN.sub(r"SYM_LEN_\1", e): e for e in expr_variants}
+
+
+def unfix(name):
+    return f"len({name[8:]})" if name.startswith("SYM_LEN_") else name
+
+
+def to_seed(v):
+    if isinstance(v, bool) or v is None:
+        return v
+    if isinstance(v, (int, float)):
+        return int(v)
+    s = str(v)
+    if s in ("True", "False"):
+        return s == "True"
+    try:
+        return int(s)
+    except ValueError:
+        return s.strip('"')
+
+
+def conjuncts(nc):
+    """node_constraint -> [(expr, wanted_polarity)]"""
+    out = []
+    for part in nc.split(" AND "):
+        part = part.strip()
+        want = True
+        m = re.match(r"^Not\((.*)\)$", part, re.S)
+        if m:
+            part, want = m.group(1).strip(), False
+        elif part.startswith("NOT "):
+            part, want = part[4:].strip(), False
+        out.append((part, want))
+    return out
+
+
+# UNREACHABLE OUTCOMES — the skip-and-count filter (ported from
+# notifications_index/_demand_root.py, _COMPLETION_CAMPAIGN_20260910.md
+# §7.4/§7.7). Some branch outcomes cannot be OBSERVED in this environment: on
+# notifications, taking either discovery entry condition enters
+# `Discovery#fetch_and_save` and SIGSEGVs the JVM in libcurl BEFORE the dump is
+# written (37/37 toxic seeds carried one, 0 of the 25.6 % control quarter did),
+# and one `username == ''` is foreclosed by a route constraint two lines above
+# the compare. A demand cube that assigns such an outcome is not drivable, so
+# it is SKIPPED and COUNTED rather than turned into a seed that kills the
+# runner — and the count is PRINTED, so a skipped demand can never be mistaken
+# for a covered one.
+#
+# EMPTY FOR THIS ENDPOINT. No environmentally-unreachable outcome has been
+# established here; the mechanism is in place and the list is where the
+# evidence goes. Add an entry ONLY with a measured witness (a control-vs-flip
+# differential, an hs_err log, a route constraint), never on suspicion — an
+# entry here removes a demand from the round without removing it from the
+# checker, so a wrong one hides a real gap.
+_UNREACHABLE = set()          # {(expr, wanted_polarity), ...}
+# Seeds forced into every root (notifications pins the two discovery booleans
+# OFF, which is what made its demand rounds abort-free: 0 aborts in 157 runs).
+# Empty here for the same reason as above.
+_FORCE_OFF = {}
+
+_seed_cache = {}
+per_variant = {v: [] for v in VARIANTS}
+seen = {v: set() for v in VARIANTS}
+no_base = 0
+skipped_no_ordinal = 0
+skipped_unreachable = 0
+for m in missing:
+    cj = conjuncts(m.get("node_constraint") or "")
+    if any((x, w) in _UNREACHABLE for x, w in cj):
+        skipped_unreachable += 1
+        continue
+    origs = []
+    for x, want in cj:
+        o = fixed_to_orig.get(x) or (x if x in expr_variants else None)
+        if o:
+            origs.append((o, want))
+    # variants that record every expr of the combination
+    vs = None
+    for o, _w in origs:
+        s_ = expr_variants[o]
+        vs = set(s_) if vs is None else (vs & s_)
+    vs = vs or set(VARIANTS)
+    # ONLY the variables the COMBINATION constrains may be overlaid. The Z3
+    # model assigns EVERY variable in the clique's declaration set, and its
+    # defaults are 0 — including every list length — so overlaying the whole
+    # model seeds `len(...to_ary_1_rows) = 0`, which FORECLOSES the very
+    # decisions the combination is about (they live on rows that then do not
+    # exist). That is why two full demand rounds moved BLOCKING 478 -> 478.
+    # Overlay the constrained variables onto a REAL dump's seeds and leave the
+    # rest of that dump's context alone.
+    want = set()
+    for _o, _w in origs:
+        for tok in re.findall(r"[A-Za-z_][A-Za-z0-9_]*", _o):
+            want.add(tok)
+            if tok.startswith("SYM_LEN_"):
+                want.add("len(" + tok[8:] + ")")
+    demanded = {unfix(k): to_seed(v) for k, v in (m.get("concrete_values") or {}).items()
+                if k in want or unfix(k) in want}
+    # best base dump: records the most of the combination's exprs; among ties
+    # prefer one whose polarities DIFFER from the demand (the "other polarity"
+    # dump the coordinator asked for) and whose variant is in vs.
+    best, bestscore = None, (-1, -1, -1)
+    for (v, _path, pcs, _inv) in dumps:
+        hit = sum(1 for o, _w in origs if o in pcs)
+        if hit == 0:
+            continue
+        opp = sum(1 for o, w in origs if o in pcs and pcs[o] != w)
+        score = (hit, opp, 1 if v in vs else 0)
+        if score > bestscore:
+            best, bestscore = (v, _path, _inv), score
+    if best is None:
+        no_base += 1
+        base_seeds, base_v, base_inv = {}, None, {}
+    else:
+        base_v, _base_path, base_inv = best
+        base_seeds = _seed_cache.get(_base_path)
+        if base_seeds is None:
+            try:
+                base_seeds = json.load(open(_base_path)).get("concolic_seeds") or {}
+            except Exception:
+                base_seeds = {}
+            _seed_cache[_base_path] = base_seeds
+    seed = dict(base_seeds)
+    # canonical -> the base dump's ordinal; a canonical the base never minted
+    # has no runtime key there: skip it rather than seed a guessed ordinal.
+    _canon_re = re.compile(r"(" + "|".join(sorted(map(re.escape, base_inv), key=len, reverse=True))
+                           + r")(?![0-9])") if base_inv else None
+    for k, val in demanded.items():
+        if "SYM_RESULT_" in k and re.search(r"_(?:records|to_ary)_[a-z_]+_[0-9a-f]{8}", k):
+            if _canon_re is None or not _canon_re.search(k):
+                skipped_no_ordinal += 1
+                continue
+            # Seed EVERY ordinal backing this canonical, not one arbitrary
+            # pick: the alias map is many-to-one, so the path may evaluate any
+            # of them and a single pick contradicts the demand whenever it
+            # picks wrong (measured: 25% of evaluated seeds contradicted).
+            m = _canon_re.search(k)
+            for _ordn in base_inv[m.group(1)]:
+                seed[k[:m.start()] + _ordn + k[m.end():]] = val
+        else:
+            seed[k] = val
+    for _k, _v in _FORCE_OFF.items():
+        seed[_k] = _v
+    if not seed:
+        continue
+    targets = sorted(vs) if vs else ([base_v] if base_v else list(VARIANTS))
+    if base_v and base_v not in targets:
+        targets.append(base_v)
+    key = json.dumps(seed, sort_keys=True)
+    for v in targets:
+        if v is None or key in seen[v]:
+            continue
+        seen[v].add(key)
+        per_variant[v].append(seed)
+
+DRY = "--dry-run" in sys.argv
+for v, lst in per_variant.items():
+    out = os.path.join(HERE, f"_demandR_{v}.json")
+    if DRY:
+        print(f"{v}: {len(lst)} rooted seed dicts (DRY RUN — nothing written)")
+        continue
+    if lst:
+        json.dump(lst, open(out, "w"))
+    elif os.path.exists(out):
+        os.remove(out)
+    print(f"{v}: {len(lst)} rooted seed dicts")
+print(f"combinations with no corpus base: {no_base}")
+print(f"combinations SKIPPED as environmentally unreachable "
+      f"(_UNREACHABLE, {len(_UNREACHABLE)} witnesses declared): {skipped_unreachable}")
+print(f"demanded lengths skipped because the base dump never minted that statement: {skipped_no_ordinal}")

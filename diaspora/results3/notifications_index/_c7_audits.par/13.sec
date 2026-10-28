@@ -1,0 +1,43 @@
+
+##### hardening_lint #####
+== hardening_lint: 400 dumps sampled from notifications_index; 21 targets, 7 scenarios ==
+
+-- H1 formats (corpus scenarios) --
+   scenarios: ['html_plain', 'html_typed', 'json_plain', 'json_typed', 'mobile_plain', 'mobile_typed', 'xml_plain']
+   ok: mobile variant present
+
+-- H2 link-bearing text (the Post.exists? family) --
+   seeded text values carrying 'diaspora://': NO
+   an exists?-family target in the corpus: yes
+   any existence-probe note (`1 AS one`): yes
+
+-- H3 opaque notes (a target mock that can swallow nested SQL) --
+   CHECK ActiveRecord::Associations::CollectionProxy.load_target        note='preloaded association #actors: answered from the loaded targ'
+   CHECK ActiveRecord::Base.to_param                                    note='ActiveRecord::Integration#to_param'
+   2 target(s) with no SQL note and not a documented wall — each must be proven unable to reach a target (N-1: MessageRenderer#title swallowed Post.exists?)
+
+-- H4 collection lengths (0 / 1 / many) --
+   18 len(...) decisions recorded as PCs; 0 appear with ONE polarity only, 0 declared by construction
+
+-- H5 pinned type columns --
+   (pin declared in pc_pin_ledger)    ok    mentions_container_type: ['Post']
+   (pin declared in pc_pin_ledger)    ok    taggable_type: ['Profile']
+   ok    type: ['Notifications::Liked', 'StatusMessage']
+
+-- H6 over-emission (note families no concrete run issued) --
+   answered ActiveRecord::FinderMethods.first: KEY-SET ARITY, not a different family. Since DISCIPLINE §13 Rule D a p
+   answered ActiveRecord::FinderMethods.last: KEY-SET ARITY, not a different family. Since DISCIPLINE §13 Rule D a p
+   answered ActiveRecord::Relation.to_ary: SCOPE-CONSTANT LITERAL vs BOUND value. `Notification.unread` puts `unr
+   answered Anonymous.load_intermediate: KEY-SET ARITY, not a different family. Since DISCIPLINE §13 Rule D a p
+   answered Anonymous.load_intermediate: KEY-SET ARITY, not a different family. Since DISCIPLINE §13 Rule D a p
+   answered Anonymous.load_intermediate: KEY-SET ARITY, not a different family. Since DISCIPLINE §13 Rule D a p
+   CHECK ActiveRecord::Associations::CollectionProxy.records: SELECT "photos".* FROM "photos" WHERE "photos"."status_messa
+   CHECK ActiveRecord::Associations::CollectionProxy.records: SELECT "photos".* FROM "photos" WHERE "photos"."status_messa
+   CHECK ActiveRecord::Associations::CollectionProxy.records: SELECT "photos".* FROM "photos" WHERE "photos"."status_messa
+   CHECK ActiveRecord::Core::ClassMethods.find_by: SELECT "people".* FROM "people" WHERE "people"."diaspora_han
+   CHECK ActiveRecord::Relation.size: SELECT COUNT(*) FROM "reports" WHERE "reports"."reviewed" = 
+   CHECK Anonymous.load_intermediate: SELECT "tag_followings".* FROM "tag_followings" WHERE "tag_f
+   6 note shape(s) never issued by the 22 concrete run(s) — over-emission inflates the policy
+
+RESULT: 2 hardening check(s) need an answer (each is a class a real run already caught on some endpoint).
+EXIT=1

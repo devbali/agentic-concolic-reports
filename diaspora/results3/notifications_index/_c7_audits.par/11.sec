@@ -1,0 +1,12 @@
+
+##### format_coverage #####
+== format_coverage_audit: notifications_controller.rb#index ==
+   declared/explicit : ['html', 'json', 'xml']
+   templated         : ['html', 'mobile']
+   renderable        : ['html', 'json', 'mobile', 'xml']
+   html     OK   dumps=140659
+   json     OK   dumps=68499
+   mobile   OK   dumps=71353
+   xml      OK   dumps=33466
+RESULT: every renderable format is a corpus scenario.
+EXIT=0

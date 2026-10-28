@@ -1,0 +1,23 @@
+
+##### statement_note_lint #####
+== statement_note_lint: 13677 dumps, 388727 clean notes ==
+
+-- NO-WHERE finder notes (Class S, red): 0 events, 0 distinct --
+
+-- STAR-PLUCK notes (Class S, red): 0 events, 0 distinct --
+
+-- STAR-AGGREGATE notes (warn — broader than real COUNT/SUM statement): 0 events, 0 distinct --
+
+-- JUNK notes (warn — verify each is a documented wall): 157659 events, 9 distinct --
+     56567  Person.name | 
+     34853  Gon::ControllerHelpers.gon | 
+     24443  ActionController::Rendering._set_rendered_content_type | 
+     19512  Anonymous.escape_segment | 
+     13677  PeopleController.diaspora_id? | 
+      5696  Diaspora::MessageRenderer.title | 
+      2899  ActionController::Instrumentation.redirect_to | 
+         6  ActionController::Metal.status= | 
+         6  ActionController::Head.head | 
+
+RESULT: no red-level note findings.
+EXIT=0 [checkpoint: replayed, not re-run]

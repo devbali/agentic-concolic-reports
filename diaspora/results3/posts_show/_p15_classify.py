@@ -1,0 +1,322 @@
+#!/usr/bin/env python3
+"""P15 — CLASSIFY the P14 gaps (`_cov_FINAL_P14_20260912.json` /
+`_cov_p14.ckpt.jsonl`) before constructing anything.
+
+The checkpoint, not the 360 MB summary, is the source: it holds EVERY witness
+the pass produced (the summary's `missing[]` is capped at MISSING_CAP=4000),
+one record per demand set, `combos[i]` = the missing leaf's assignment and
+`models[i]` = its Z3 counterexample.
+
+Output: `_p15_gaps.json` (one entry per DEDUPLICATED witness, the same dedup
+the checker applies across sets) + the classification table on stdout.
+"""
+import json, os, pickle, re, sys
+from collections import Counter, defaultdict
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE); sys.path.insert(0, "/home/dev/project/src")
+from concolic_engine.checkpoint import digest                     # noqa: E402
+
+CKPT  = os.environ.get("P15_CKPT",  os.path.join(HERE, "_cov_p14.ckpt.jsonl"))
+COV   = os.environ.get("P15_COV",   os.path.join(HERE, "_cov_FINAL_P14_20260912.json"))
+PARTS = os.environ.get("PARTS_IN",  os.path.join(HERE, "_parts_OD0911.json"))
+INDEX = os.environ.get("P15_INDEX", os.path.join(HERE, "_p15_index.pkl"))
+OUT   = os.environ.get("P15_GAPS",  os.path.join(HERE, "_p15_gaps.json"))
+
+# ---------------------------------------------------------------- families
+_FAM = [
+    (r"as_api_response_\d+_row_guid",            "guid"),
+    (r"^SYM_LEN_.*_rows != 0",                   "length gate (rows != 0)"),
+    (r"^SYM_LEN_.*_ids != 0",                    "length gate (ids != 0)"),
+    (r"_text_empty == True",                     "text (empty)"),
+    (r"_text_has_mention == True",               "text (has_mention)"),
+    (r"find_by_\d+_not_found",                   "find_by not_found"),
+    (r"findpublic_.*_not_found",                 "findpublic not_found"),
+    (r"findpublic_.*_public == True",            "public gate"),
+    (r"_not_found == True",                      "evilq not_found"),
+    (r"CollectionProxy_size_\d+_size",           "size gate"),
+    (r"Anonymous_process_\d+ == ''",             "text (rendered)"),
+    (r"assoc_profile_nsfw",                      "nsfw gate"),
+    (r"Length\(SYM_PARAM_id\)",                  "param id length"),
+    (r"_row_status_message_guid !=",             "guid self-compare"),
+]
+def family(e):
+    for pat, name in _FAM:
+        if re.search(pat, e):
+            return name
+    return "other"
+
+# the coarse "which list/row is this about" grouping used by §76.1.5
+_PART_FAM = [(r"_photos_", "photos"), (r"_tags_", "tags"), (r"_comments_", "comments"),
+             (r"_likes_", "likes"), (r"_mentions_", "mentions"),
+             (r"_participations_", "participations"),
+             (r"as_api_response", "api-response"), (r"evilq_", "evilq"),
+             (r"findpublic_", "findpublic"), (r"find_by_", "find_by"),
+             (r"^\(assoc_", "assoc-root"), (r"SYM_PARAM_id", "param"),
+             (r"Anonymous_process", "render")]
+def pfam(e):
+    for pat, name in _PART_FAM:
+        if re.search(pat, e):
+            return name
+    return "other"
+
+
+_ID = r"[A-Za-z_][A-Za-z0-9_]*"
+_EQ = re.compile(rf"^\(\s*({_ID})\s*==\s*(.+?)\s*\)$")
+_NE = re.compile(rf"^\(\s*({_ID})\s*!=\s*(.+?)\s*\)$")
+_LN = re.compile(rf"^\(\s*Length\(({_ID})\)\s*<\s*(\d+)\s*\)$")
+
+
+def constrained_vars(nc):
+    """The variables the cube ACTUALLY constrains. A self-compare `(X != X)`
+    constrains nothing (the render family's always-false companion), and under
+    §16d model completion every other variable in the model is a Z3 default,
+    not a demanded value."""
+    out = set()
+    for part in (nc or "").split(" AND "):
+        part = part.strip()
+        m = re.match(r"^Not\((.*)\)$", part, re.S)
+        if m:
+            part = m.group(1).strip()
+        for rx in (_EQ, _NE, _LN):
+            m = rx.match(part)
+            if not m:
+                continue
+            if rx is not _LN and m.group(2).strip() == m.group(1):
+                break
+            out.add(m.group(1))
+            break
+    return out
+
+
+def slice_key(path, k):
+    """Read ONE top-level key out of the 360 MB summary without parsing it."""
+    pat = ('"%s":' % k).encode()
+    with open(path, "rb") as fh:
+        buf = b""; pos = 0
+        while True:
+            c = fh.read(1 << 24)
+            if not c:
+                return None
+            buf += c
+            i = buf.find(pat)
+            if i != -1:
+                start = pos + i
+                break
+            pos += len(buf) - 64; buf = buf[-64:]
+        fh.seek(start + len(pat))
+        dec = json.JSONDecoder()
+        chunk = ""
+        while True:
+            more = fh.read(1 << 22)
+            if not more:
+                raise ValueError("eof")
+            chunk += more.decode("utf-8", "replace")
+            try:
+                return dec.raw_decode(chunk.lstrip())[0]
+            except ValueError:
+                continue
+
+
+def main():
+    fg = slice_key(COV, "foreclosure_gates") or []
+    GATE_EXPRS = {e.split(" :: ")[0] for e, _ in fg}
+    print(f"foreclosure gate outcomes: {len(fg)} over {len(GATE_EXPRS)} expressions")
+
+    parts = json.load(open(PARTS))["parts"]
+    by_key = {}
+    for p in parts:
+        by_key.setdefault(digest(p["members"]), p)
+    contains = defaultdict(set)
+    memsets = []
+    for p in parts:
+        s = frozenset(p["members"]); memsets.append(s)
+        for m in s:
+            contains[m].add(p["i"])
+
+    idx = pickle.load(open(INDEX, "rb"))
+    domain = idx["domain"]
+    seedable = set(idx.get("seedable") or ())
+    print(f"observed domain: {len(domain)} variables over {len(idx['dumps'])} dumps")
+
+    f = open(CKPT); f.readline()
+    gaps = []; reported = set(); sets_seen = 0
+    unmatched = 0; synthesised = 0
+    for line in f:
+        rec = json.loads(line); v = rec["v"]; sets_seen += 1
+        combos = v.get("combos") or []; models = v.get("models") or []
+        if not combos:
+            continue
+        # ---- which demand set (part) is this?
+        p = by_key.get(rec["k"])
+        if p is None:
+            U = {e for cb in combos for e, _ in cb}
+            cand = None
+            for m in sorted(U, key=lambda m: len(contains.get(m, ()))):
+                s = contains.get(m, set())
+                cand = s if cand is None else (cand & s)
+                if len(cand) <= 1:
+                    break
+            cand = [i for i in (cand or ()) if U <= memsets[i]]
+            p = parts[cand[0]] if len(cand) >= 1 else None
+        if p is None:
+            # 2026-09-12 (round 2, §78.6). A STALE PARTS FILE MUST NOT SILENTLY
+            # DEGRADE BASE CHOICE. `_parts_OD0911.json` is the OR-refined
+            # decomposition of the PREVIOUS corpus; after a drive the demand
+            # universe is rebuilt (P14 1 747 sets -> P15A 1 079), so 354 of the
+            # 815 new witness cubes are contained in no OD0911 part. Under the
+            # old code those got `set = -1`, and `_p15_construct.py`'s
+            # `setmask.get(-1, 0)` is 0 — i.e. the "members of the set the base
+            # already walks" score, one of the four base-choice scores, was
+            # silently ZERO for 43 % of the batch. That is exactly the shape of
+            # defect §77.4 was about, so it is repaired the same way: the part
+            # is SYNTHESISED from the record's own witnesses (the union of the
+            # exprs its combos mention, which is the surviving part of the set
+            # and the only part base choice is about) and APPENDED, and the
+            # augmented file is written out for the constructor to read. The
+            # expr universe itself is unchanged and was verified so: 0 of the
+            # 110 exprs in the new witnesses is absent from the OD0911 members.
+            unmatched += 1
+            U = sorted({e for cb in combos for e, _ in cb})
+            p = {"i": len(parts), "width": len(U), "members": U,
+                 "sat": 0, "covered": 0, "remaining": 0, "leaf_groups": 0,
+                 "cubes": 0, "forecl": 0, "bound": False, "synthesised": True}
+            parts.append(p)
+            memsets.append(frozenset(U))
+            for m in U:
+                contains[m].add(p["i"])
+            synthesised += 1
+        for cb, model in zip(combos, models):
+            combo = [(e, bool(o)) for e, o in cb]
+            ck = tuple(combo)
+            if ck in reported:
+                continue
+            reported.add(ck)
+            gates = {e: o for e, o in combo if e in GATE_EXPRS}
+            nc = " AND ".join(e if o else f"Not({e})" for e, o in combo)
+            # §16d gives every member a value by MODEL COMPLETION: a variable the
+            # cube does not constrain gets Z3's default, not a demanded value.
+            # Only a CONSTRAINED variable's value is part of the counterexample;
+            # a free one is noise the seed must not carry.
+            con = constrained_vars(nc)
+            oo  = [k for k, val in (model or {}).items()
+                   if k in con and k in domain and repr(val) not in domain[k]]
+            oof = [k for k, val in (model or {}).items()
+                   if k not in con and k in domain and repr(val) not in domain[k]]
+            unknown = [k for k in (model or {}) if k in con and k not in domain]
+            noseed  = sorted(v for v in con if v in (model or {}) and v not in seedable)
+            unkf    = [k for k in (model or {}) if k not in con and k not in domain]
+            gaps.append({
+                "id": f"g{len(gaps):05d}",
+                "set": (p or {}).get("i", -1),
+                "width": (p or {}).get("width", len(combo)),
+                "surviving": len(combo),
+                "gates": gates,
+                "part_family": (sorted({pfam(e) for e in (p or {}).get("members", [e for e, _ in combo])})),
+                "families": sorted({family(e) for e, _ in combo}),
+                "node_constraint": nc,
+                "concrete_values": model,
+                "constrained": sorted(con & set(model or {})),
+                "out_of_domain": oo,
+                "out_of_domain_free": oof,
+                "unknown_vars": unknown,
+                "unknown_free": unkf,
+                "not_seedable": noseed,
+            })
+    print(f"checkpoint sets: {sets_seen};  witnesses after cross-set dedup: {len(gaps)}"
+          f";  sets not matched to a part: {unmatched} (all {synthesised} SYNTHESISED"
+          f" from their own witnesses, never left at set=-1)")
+    json.dump(gaps, open(OUT, "w"))
+    print(f"wrote {OUT}")
+    PARTS_OUT = os.environ.get("P15_PARTS_OUT")
+    if PARTS_OUT:
+        src = json.load(open(PARTS))
+        src["parts"] = parts
+        src.setdefault("totals", {})["synthesised_parts"] = synthesised
+        json.dump(src, open(PARTS_OUT, "w"))
+        print(f"wrote {PARTS_OUT} ({len(parts)} parts, {synthesised} synthesised)")
+
+    # ------------------------------------------------------------- the table
+    def bucket(g):
+        ab = {"api-response": "api", "assoc-root": "root", "comments": "cmt",
+              "find_by": "fnd", "evilq": "evq", "photos": "pho", "tags": "tag",
+              "mentions": "men", "likes": "lik", "participations": "par",
+              "findpublic": "fpb", "render": "rnd"}
+        fams = [ab[x] for x in g["part_family"] if x in ab]
+        return "+".join(sorted(fams)) or "(none)"
+    rows = defaultdict(lambda: {"gaps": 0, "sets": set(), "w": [], "ok": 0, "bad": 0,
+                                "unk": 0, "gates": Counter()})
+    for g in gaps:
+        r = rows[bucket(g)]
+        r["gaps"] += 1; r["sets"].add(g["set"]); r["w"].append(g["width"])
+        if g["out_of_domain"]:
+            r["bad"] += 1
+        else:
+            r["ok"] += 1
+        r["unk"] += len(g["unknown_vars"])
+        r["gates"][len(g["gates"])] += 1
+    print("\n%-46s %6s %6s %9s %10s %11s" %
+          ("part family mix", "#sets", "#gaps", "width", "in-domain", "needs-new"))
+    for k, r in sorted(rows.items(), key=lambda kv: -kv[1]["gaps"]):
+        print("%-46s %6d %6d %9s %10d %11d" %
+              (k[:46], len(r["sets"]), r["gaps"],
+               f"{min(r['w'])}-{max(r['w'])}", r["ok"], r["bad"]))
+    tot_ok = sum(1 for g in gaps if not g["out_of_domain"])
+    print("%-46s %6d %6d %9s %10d %11d" %
+          ("TOTAL", len({g['set'] for g in gaps}), len(gaps),
+           f"{min(g['width'] for g in gaps)}-{max(g['width'] for g in gaps)}",
+           tot_ok, len(gaps) - tot_ok))
+
+    print("\n-- by WIDTH")
+    w = defaultdict(lambda: [0, set(), 0])
+    for g in gaps:
+        w[g["width"]][0] += 1; w[g["width"]][1].add(g["set"])
+        w[g["width"]][2] += 0 if g["out_of_domain"] else 1
+    for k in sorted(w):
+        print(f"   width {k:3d}: gaps {w[k][0]:5d}  sets {len(w[k][1]):5d}  in-domain {w[k][2]:5d}")
+
+    print("\n-- by NUMBER OF ENABLING GATES the witness pins")
+    gc = Counter(len(g["gates"]) for g in gaps)
+    for k in sorted(gc):
+        print(f"   {k:2d} gates: {gc[k]:5d} gaps")
+
+    print("\n-- which DECISION FAMILIES the demanded outcomes touch (member-slots)")
+    fs = Counter(f for g in gaps for f in g["families"])
+    for k, n in fs.most_common():
+        print(f"   {n:6d}  {k}")
+
+    nfree = sum(1 for g in gaps if g["out_of_domain_free"] or g["unknown_free"])
+    print(f"\n-- MODEL COMPLETION split (§16d): gaps whose OUT-OF-DOMAIN values are"
+          f" all in the FREE (unconstrained) part of the model: {nfree}")
+    print(f"   gaps with >=1 CONSTRAINED out-of-domain value : "
+          f"{sum(1 for g in gaps if g['out_of_domain'])}")
+    print(f"   gaps with >=1 CONSTRAINED never-observed var  : "
+          f"{sum(1 for g in gaps if g['unknown_vars'])}")
+    print(f"   gaps fully constructible from observed values : "
+          f"{sum(1 for g in gaps if not g['out_of_domain'] and not g['unknown_vars'])}")
+    print(f"\n-- SEEDABILITY of the constrained variables "
+          f"({len(seedable)} seedable checker names in the corpus)")
+    ns = Counter(v for g in gaps for v in g["not_seedable"])
+    print(f"   gaps with a constrained variable NO run can seed: "
+          f"{sum(1 for g in gaps if g['not_seedable'])}")
+    for k, n in ns.most_common(10):
+        print(f"     {n:6d}  {k[:88]}")
+    print("\n-- OUT-OF-DOMAIN witness variables, CONSTRAINED only (value no run ever took)")
+    ood = Counter(k for g in gaps for k in g["out_of_domain"])
+    for k, n in ood.most_common(15):
+        print(f"   {n:6d}  {k[:88]}")
+    unk = Counter(k for g in gaps for k in g["unknown_vars"])
+    print(f"\n-- model variables with NO observed domain at all: {len(unk)} distinct")
+    for k, n in unk.most_common(10):
+        print(f"   {n:6d}  {k[:88]}")
+
+    print("\n-- TOP gate combinations (the enabling gates a seed must fix)")
+    gcombo = Counter(tuple(sorted(g["gates"].items())) for g in gaps)
+    print(f"   distinct gate combinations: {len(gcombo)}")
+    for k, n in gcombo.most_common(8):
+        print(f"   {n:5d}  " + ("; ".join(f"{e.split('__')[-1][:44]}={'T' if o else 'F'}"
+                                          for e, o in k[:3]) or "(no gate)"))
+    print("P15-CLASSIFY-DONE")
+
+
+main()

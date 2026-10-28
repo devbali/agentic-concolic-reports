@@ -1,0 +1,1 @@
+python3 /home/dev/project/reports/diaspora/results3/notifications_index/_c7_count_matrix.py /home/dev/project/reports/diaspora/results3/notifications_index --runs /home/dev/project/reports/diaspora/results3/notifications_index/concrete_run.json 

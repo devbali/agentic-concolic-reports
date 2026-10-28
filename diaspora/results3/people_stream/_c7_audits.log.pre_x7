@@ -1,0 +1,382 @@
+=== people_stream c7 audits 2026-09-10T17:54:57+00:00 ===
+corpus POPULATION: 1109 dumps
+
+##### identity_symbolicity #####
+== identity_symbolicity_audit: 1109 dumps ==
+-- principal-column binds --
+
+RESULT: pass — every principal bind is symbolic.
+EXIT=0
+
+##### statement_note_lint #####
+== statement_note_lint: 1109 dumps, 14415 clean notes ==
+
+-- NO-WHERE finder notes (Class S, red): 0 events, 0 distinct --
+
+-- STAR-PLUCK notes (Class S, red): 0 events, 0 distinct --
+
+-- STAR-AGGREGATE notes (warn — broader than real COUNT/SUM statement): 0 events, 0 distinct --
+
+-- JUNK notes (warn — verify each is a documented wall): 13948 events, 14 distinct --
+      3159  Person.name | 
+      2883  Gon::ControllerHelpers.gon | 
+      2017  ActionController::Rendering._set_rendered_content_type | 
+      1520  Anonymous.process | 
+      1109  PeopleController.diaspora_id? | 
+       908  PostPresenter.build_mentioned_people_json | 
+       754  Anonymous.escape_segment | 
+       488  Diaspora::MessageRenderer.title | 
+       320  ActiveRecord::Core::ClassMethods.find_by | Person query (class-level finder), args=args=nil
+       303  ActiveRecord::FinderMethods.find_by | Reshare query (render_relation_sql failed: NoMethodErrorundefined method `value' for #<Are
+       286  ActiveRecord::Core::ClassMethods.find_by | User query (class-level finder), args=args=nil
+       154  ActionController::Instrumentation.redirect_to | 
+        24  ActionController::Metal.status= | 
+        23  ActionController::Head.head | 
+
+RESULT: no red-level note findings.
+EXIT=0
+
+##### bind_resolution #####
+== bind_resolution_audit (schema-aware): 1109 dumps, 12836 bind occurrences ==
+   resolved: 10228 | param/leaf: 2608 | AMBIGUOUS: 0 | UNRESOLVABLE: 0| DERIVED-MISBOUND: 0
+
+RESULT: pass (0 unresolvable).
+EXIT=0
+
+##### skipped_pcs_VANILLA #####
+== skipped_pcs_audit (vanilla src/): 1109 dumps, 21 distinct exprs, 8382 PC records ==
+   parsed: 8073 | dropped: 309 | dropped-by-design: 0
+
+-- DROPPED SHAPES (evidence recorded by the runtime, discarded by the fold) --
+       309  (VAR != VAR(_))  <-- RED (Class B in fold-space)
+
+RESULT: RED — high-frequency PC shapes dropped.
+EXIT=1
+
+##### skipped_pcs_PATCHED #####
+== skipped_pcs_audit (PATCHED pipeline): 1109 dumps, 21 distinct exprs, 8382 PC records ==
+   parsed: 8382 | dropped: 0 | dropped-by-design: 0
+
+-- DROPPED SHAPES (evidence recorded by the runtime, discarded by the fold) --
+  (none — every recorded PC shape parses)
+
+RESULT: pass.
+EXIT=0
+
+##### pc_visibility #####
+== pc_visibility_audit: 1109 dumps, 301 distinct vars minted ==
+
+-- 1. BLIND-VARS CENSUS (minted, never referenced by any PC; informational) --
+  _id                                       38626 mints across   67 names
+  _year                                     23529 mints across   42 names
+  _at                                       22049 mints across   39 names
+  _guid                                      8384 mints across   13 names
+  _type                                      7105 mints across   14 names
+  _count                                     6853 mints across   12 names
+  _name                                      5227 mints across    7 names
+  _handle                                    4421 mints across    7 names
+  _key                                       3799 mints across    7 names
+  _url                                       3632 mints across    4 names
+  _status                                    3513 mints across    6 names
+  _public                                    2789 mints across    5 names
+  _ids                                       2503 mints across    4 names
+  _account                                   2428 mints across    3 names
+  _text                                      1561 mints across    3 names
+  len(SYM_RESULT_ActionController__Rendering__set_rendered_content_type_1)   1109 mints across    1 names
+  _positive                                   950 mints across    2 names
+  len(SYM_RESULT_ActiveRecord__Relation_records_1_rows)    908 mints across    1 names
+  len(SYM_RESULT_ActiveRecord__Relation_records_2_rows)    908 mints across    1 names
+  _small                                      908 mints across    1 names
+  _medium                                     908 mints across    1 names
+  _birthday                                   908 mints across    1 names
+  _gender                                     908 mints across    1 names
+  _bio                                        908 mints across    1 names
+  _searchable                                 908 mints across    1 names
+  _location                                   908 mints across    1 names
+  _details                                    908 mints across    1 names
+  _data                                       908 mints across    1 names
+  _title                                      908 mints across    1 names
+  _image                                      908 mints across    1 names
+  _description                                908 mints across    1 names
+  len(SYM_RESULT_PostPresenter_build_mentioned_people_json_1)    908 mints across    1 names
+  len(SYM_RESULT_ActionController__Rendering__set_rendered_content_type_2)    908 mints across    1 names
+  len(SYM_RESULT_ActiveRecord__Relation_records_3_rows)    806 mints across    1 names
+  len(SYM_RESULT_ActiveRecord__Relation_records_4_rows)    806 mints across    1 names
+  len(SYM_RESULT_ActiveRecord__Relation_records_5_rows)    806 mints across    1 names
+  _exists                                     646 mints across    1 names
+  len(SYM_RESULT_ActsAsApi__Collection_as_api_response_1)    612 mints across    1 names
+  _ip                                         572 mints across    2 names
+  _token                                      572 mints across    2 names
+   (Cannot alone distinguish 'never compared by the app' from 'branch
+    invisible' — cross-check with C2 real-mode coverage or code reading,
+    then gate the columns the app provably compares with --gate.)
+
+-- 2. PC-SHAPE CENSUS (top 25; compare against the extraction's PC grammar) --
+      5503  (VAR == True)
+      1662  (VAR == '_')
+       908  (VAR == N)
+       309  (VAR != VAR(_))
+
+-- 3. GATED COLUMNS (asserted app-compared; must be PC-visible) --
+  guid                           VISIBLE (1063 references)
+  text                           VISIBLE (908 references)
+  comments_count                 VISIBLE (908 references)
+  nsfw                           VISIBLE (908 references)
+  closed_account                 VISIBLE (1085 references)
+  diaspora_handle                BLIND  <-- RED (Class B) (0 references)
+
+RESULT: RED — gated column(s) blind (Class B).
+EXIT=1
+
+##### empty_relation #####
+== empty_relation_emission_audit: 1109 dumps, 908 empty-list states ==
+
+RESULT: pass — no note binds a row of a list that is empty in the same run.
+EXIT=0
+
+##### noteless_call #####
+== noteless_call_audit: 1109 dumps, 28363 target-call events ==
+
+-- documented walls with no SQL note (7 targets) --
+      2883  Gon::ControllerHelpers.gon
+      2017  ActionController::Rendering._set_rendered_content_type
+       754  Anonymous.escape_segment
+       488  Diaspora::MessageRenderer.title
+       154  ActionController::Instrumentation.redirect_to
+        24  ActionController::Metal.status=
+
+-- NOTE-LESS target calls (7 targets, 4344 dumps, 7405 events) --
+   each is a statement the corpus never recorded, so the extracted policy loses it
+      3159 events /    908 dumps   Person.name
+           e.g. dump_auth_json0555_b1.json
+      1520 events /    908 dumps   Anonymous.process
+           e.g. dump_auth_json0555_b1.json
+      1109 events /   1109 dumps   PeopleController.diaspora_id?
+           e.g. dump_auth_json0557_b1.json
+       908 events /    908 dumps   PostPresenter.build_mentioned_people_json
+           e.g. dump_auth_json0555_b1.json
+       685 events /    487 dumps   ActiveRecord::FinderMethods.find_by
+           e.g. dump_auth_json0551_b1.json
+        12 events /     12 dumps   ActiveRecord::FinderMethods.first
+           e.g. dump_auth_json0064_d1.json
+        12 events /     12 dumps   ActiveRecord::Core::ClassMethods.find_by
+           e.g. dump_auth_json0124_d1.json
+
+RESULT: RED — publish the note via Thread.current[:concolic_pending_note] before returning a falsy value (B-8).
+EXIT=1
+
+##### cardinality_consistency #####
+== cardinality_consistency_audit: 1109 dumps, 0 list-cardinality decisions ==
+   rule population: 0 (note, list) pair(s) where a BULK loader reads a list's own rows
+
+RESULT: pass but VACUOUS — this corpus contains no bulk loader reading a list's own rows, so the rule was never applied. Absence of the subject is not evidence about it; do not count this as a check that passed.
+EXIT=0
+
+##### rig_crash_census #####
+== rig_crash_census: 1109 dumps ==
+       967  <ok>
+       142  ActionController::UnknownFormat
+RESULT: pass — every terminal class is an application terminal (state that per class in the report).
+EXIT=0
+
+##### boundary_declaration #####
+== people_stream: 98 distinct target methods declared ==
+   finders          complete
+   existence        complete
+   materialization  complete
+   calculations     complete
+   batches          complete
+   writes           complete
+   raw              complete
+   -- exercise census over 1109 dumps (symbolic_call events only) --
+           5590  records
+           1910  find_by
+            646  exists?
+            491  first
+      REVIEW: declared but invoked 0 times: any? average calculate count count_by_sql delete_all destroy destroy! destroy_all empty? find find_by! find_by_sql find_each find_in_batches first! ids in_batches last last! load_target many? maximum minimum none? one? pluck save save! size sum take take! to_a to_ary touch update update! update_all update_attribute
+              not a verdict — is the family unreachable here, or is a
+              pin removing its call site? only the code answers that.
+
+== comments_index: 113 distinct target methods declared ==
+   finders          complete
+   existence        complete
+   materialization  complete
+   calculations     complete
+   batches          complete
+   writes           complete
+   raw              complete
+   -- exercise census over 26528 dumps (symbolic_call events only) --
+          85999  exists?
+          81309  records
+          13257  to_a
+          12424  first
+      REVIEW: declared but invoked 0 times: any? average calculate count count_by_sql delete_all destroy destroy! destroy_all empty? find find_by find_by! find_by_sql find_each find_in_batches first! ids in_batches last last! load_target many? maximum minimum none? one? pluck save save! size sum take take! to_ary touch update update! update_all update_attribute
+              not a verdict — is the family unreachable here, or is a
+              pin removing its call site? only the code answers that.
+
+== conversations_index: 122 distinct target methods declared ==
+   finders          complete
+   existence        complete
+   materialization  complete
+   calculations     complete
+   batches          complete
+   writes           complete
+   raw              complete
+   -- exercise census over 18623 dumps (symbolic_call events only) --
+          78668  count
+          45865  records
+          37309  exists?
+          25798  to_a
+          22930  find_by
+          22883  pluck
+          21181  first
+          18306  sum
+      REVIEW: declared but invoked 0 times: any? average calculate count_by_sql delete_all destroy destroy! destroy_all find find_by! find_by_sql find_each find_in_batches first! ids in_batches last last! load_target many? maximum minimum none? one? save! size take! touch update update! update_all update_attribute
+              not a verdict — is the family unreachable here, or is a
+              pin removing its call site? only the code answers that.
+
+== cross-batch contrast: invoked elsewhere, never here ==
+   people_stream:
+      count            0 here | conversations_index 78668
+      empty?           0 here | conversations_index 6120
+      pluck            0 here | conversations_index 22883
+      save             0 here | conversations_index 9211
+      sum              0 here | conversations_index 18306
+      take             0 here | conversations_index 115
+      to_a             0 here | conversations_index 25798, comments_index 13257
+      to_ary           0 here | conversations_index 8948
+   comments_index:
+      count            0 here | conversations_index 78668
+      empty?           0 here | conversations_index 6120
+      find_by          0 here | conversations_index 22930, people_stream 1910
+      pluck            0 here | conversations_index 22883
+      save             0 here | conversations_index 9211
+      sum              0 here | conversations_index 18306
+      take             0 here | conversations_index 115
+      to_ary           0 here | conversations_index 8948
+   conversations_index: nothing invoked elsewhere is missing here
+   REVIEW ONLY — endpoints differ legitimately; ask the code, not this table.
+
+RESULT: pass — every boundary family is declared in every batch.
+EXIT=0
+
+##### note_fidelity #####
+== note_fidelity_audit: 1 run file(s), 23 distinct real SELECTs under 5 frames; 5 targets carry notes ==
+
+-- wildcard notes per target (corpus) --
+   ActiveRecord::Associations::SingularAssociation.find_target            notes=15   star=15
+   ActiveRecord::FinderMethods.exists?                                    notes=1    cols=1
+   ActiveRecord::FinderMethods.find_by                                    notes=1    star=1
+   ActiveRecord::FinderMethods.first                                      notes=1    star=1
+   ActiveRecord::Relation.records                                         notes=134  star=134
+
+-- MISSING: 5 --
+   ActiveRecord::Associations::SingularAssociation.find_target  [concrete_run.json:people-stream-anon-json, concrete_run.json:people-stream-anon-json-handle, concrete_run.json:people-stream-auth-json]
+      real: SELECT "locations".* FROM "locations" WHERE "locations"."status_message_id" = ? LIMIT ?
+   ActiveRecord::Associations::SingularAssociation.find_target  [concrete_run.json:people-stream-anon-json, concrete_run.json:people-stream-anon-json-handle, concrete_run.json:people-stream-auth-json]
+      real: SELECT "polls".* FROM "polls" WHERE "polls"."status_message_id" = ? LIMIT ?
+   ActiveRecord::Associations::SingularAssociation.find_target  [concrete_run.json:people-stream-auth-json]
+      real: SELECT "profiles".* FROM "profiles" WHERE "profiles"."person_id" = ? LIMIT ?
+   ActiveRecord::Relation.records  [concrete_run.json:people-stream-anon-json, concrete_run.json:people-stream-anon-json-handle, concrete_run.json:people-stream-auth-json]
+      real: SELECT "profiles".* FROM "profiles" WHERE "profiles"."person_id" = ?
+   ActiveRecord::Relation.records  [concrete_run.json:people-stream-auth-json]
+      real: SELECT DISTINCT posts.* FROM "posts" LEFT OUTER JOIN share_visibilities ON share_visibilities.shareable_id = posts.id AND share_visibilities.shareable
+
+-- STAR-OVER: 1 --
+   ActiveRecord::FinderMethods.exists?  [concrete_run.json:people-stream-anon-json, concrete_run.json:people-stream-anon-json-handle, concrete_run.json:people-stream-auth-json]
+      real: SELECT 1 AS one FROM "posts" WHERE "posts"."guid" = ? LIMIT ?
+      note: SELECT "posts".* FROM "posts" WHERE "posts"."author_id" = 15 AND "posts"."created_at" < $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_id) A
+
+-- AGG-COLLAPSE: 0 --
+
+-- PROJ-DIFF: 0 --
+
+-- PRED-OP-DIFF: 6 --
+   ActiveRecord::Associations::SingularAssociation.find_target  [concrete_run.json:people-stream-auth-json]
+      real: SELECT "people".* FROM "people" WHERE "people"."owner_id" = ? LIMIT ?
+      note: SELECT "people".* FROM "people" WHERE "people"."id" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_author_id)
+   ActiveRecord::Core::ClassMethods.find_by  [concrete_run.json:people-stream-anon-all, concrete_run.json:people-stream-anon-json, concrete_run.json:people-stream-auth-json]
+      real: SELECT "people".* FROM "people" WHERE "people"."guid" = ? LIMIT ?
+      note: SELECT "people".* FROM "people" WHERE "people"."id" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_author_id)
+   ActiveRecord::Relation.records  [concrete_run.json:people-stream-auth-json]
+      real: SELECT "likes".* FROM "likes" WHERE "likes"."author_id" = ? AND "likes"."target_id" IN (?, ?) AND "likes"."target_type" = ?
+      note: SELECT "likes".* FROM "likes" WHERE "likes"."author_id" = $$(SYM_PERSON_PS_id) AND "likes"."target_id" = $$(SYM_RESULT_ActiveRecord__Relation_records_
+   ActiveRecord::Relation.records  [concrete_run.json:people-stream-auth-json]
+      real: SELECT "likes".* FROM "likes" WHERE "likes"."target_id" = ? AND "likes"."target_type" = ? AND "likes"."positive" = ? AND "likes"."author_id" = ? LIMIT
+      note: SELECT "likes".* FROM "likes" WHERE "likes"."author_id" = $$(SYM_PERSON_PS_id) AND "likes"."target_id" = $$(SYM_RESULT_ActiveRecord__Relation_records_
+   ActiveRecord::Relation.records  [concrete_run.json:people-stream-auth-json]
+      real: SELECT "mentions".* FROM "mentions" WHERE "mentions"."mentions_container_type" = ? AND "mentions"."mentions_container_id" IN (?, ?)
+      note: SELECT "mentions".* FROM "mentions" WHERE "mentions"."mentions_container_id" = $$(SYM_RESULT_ActiveRecord__Relation_records_4_row_id) AND "mentions"."
+   ActiveRecord::Relation.records  [concrete_run.json:people-stream-auth-json]
+      real: SELECT "posts".* FROM "posts" WHERE "posts"."type" IN ('Reshare') AND "posts"."root_guid" = ? AND "posts"."author_id" = ? LIMIT ?
+      note: SELECT "posts".* FROM "posts" WHERE "posts"."author_id" = 15 AND "posts"."created_at" < $$(SYM_RESULT_ActiveRecord__Core__ClassMethods_find_by_1_id) A
+
+-- LIMIT-DIFF: 2 --
+   ActiveRecord::Associations::SingularAssociation.find_target  [concrete_run.json:people-stream-auth-json]
+      real: SELECT "people".* FROM "people" WHERE "people"."id" = ? LIMIT ?
+      note: SELECT "people".* FROM "people" WHERE "people"."id" = $$(SYM_RESULT_ActiveRecord__FinderMethods_find_by_2_author_id)
+   ActiveRecord::Relation.records  [concrete_run.json:people-stream-anon-json-handle]
+      real: SELECT "people".* FROM "people" WHERE "people"."diaspora_handle" = ? ORDER BY "people"."id" ASC LIMIT ?
+      note: SELECT "people".* FROM "people" WHERE "people"."diaspora_handle" = $$(SYM_PARAM_username)
+
+-- ORDER-DIFF: 0 --
+
+-- PRED-DIFF: 0 --
+
+-- EXACT: 8 --
+RESULT: RED — 14 real statement(s) whose note is unfaithful in projection or missing.
+EXIT=1
+
+##### hardening_lint #####
+== hardening_lint: 400 dumps sampled from people_stream; 18 targets, 1 scenarios ==
+
+-- H1 formats (corpus scenarios) --
+   scenarios: []
+   CHECK: mobile variant ABSENT — if the controller has a *.mobile.haml view or mobile-fu applies, this is a blind format (M-2)
+
+-- H2 link-bearing text (the Post.exists? family) --
+   seeded text values carrying 'diaspora://': NO
+   an exists?-family target in the corpus: yes
+   any existence-probe note (`1 AS one`): yes
+
+-- H3 opaque notes (a target mock that can swallow nested SQL) --
+   CHECK ActiveRecord::Core::ClassMethods.find_by                       note='Person query (class-level finder), args=args=nil'
+   CHECK Anonymous.escape_segment                                       note=''
+   CHECK PeopleController.diaspora_id?                                  note='diaspora_id?(username) boundary decision (people_controller.'
+   3 target(s) with no SQL note and not a documented wall — each must be proven unable to reach a target (N-1: MessageRenderer#title swallowed Post.exists?)
+
+-- H4 collection lengths (0 / 1 / many) --
+   0 len(...) decisions recorded as PCs; 0 appear with ONE polarity only, 0 declared by construction
+   a frozen length hides empty-state branches, interior indexes and `count > 0 with zero rows` (notifications N/A-1, conversations near-misses)
+
+-- H5 pinned type columns --
+   ok    mentions_container_type: ['Comment', 'Post']
+   (pin declared in pc_pin_ledger)    ok    target_type: ['Post']
+
+-- H6 over-emission (note families no concrete run issued) --
+   CHECK ActiveRecord::FinderMethods.find_by: SELECT "likes".* FROM "likes" WHERE "likes"."target_id" = $$
+   CHECK ActiveRecord::FinderMethods.first: SELECT "people".* FROM "people" WHERE "people"."diaspora_han
+   CHECK ActiveRecord::Relation.records: SELECT "posts".* FROM "posts" WHERE "posts"."author_id" = 15
+   CHECK ActiveRecord::Relation.records: SELECT "posts".* FROM "posts" WHERE "posts"."author_id" = 15
+   CHECK ActiveRecord::Relation.records: SELECT "posts".* FROM "posts" WHERE "posts"."author_id" = 15
+   CHECK ActiveRecord::Relation.records: SELECT "posts".* FROM "posts" WHERE "posts"."author_id" = 15
+   CHECK ActiveRecord::Relation.records: SELECT "posts".* FROM "posts" WHERE "posts"."author_id" = 15
+   CHECK ActiveRecord::Relation.records: SELECT "posts".* FROM "posts" WHERE "posts"."author_id" = 15
+   CHECK ActiveRecord::Relation.records: SELECT "posts".* FROM "posts" WHERE "posts"."author_id" = 15
+   CHECK ActiveRecord::Relation.records: SELECT "posts".* FROM "posts" WHERE "posts"."author_id" = 15
+   114 note shape(s) never issued by the 5 concrete run(s) — over-emission inflates the policy
+
+RESULT: 4 hardening check(s) need an answer (each is a class a real run already caught on some endpoint).
+EXIT=1
+
+PAIRED VERDICT — skipped_pcs (RUNBOOK 2026-09-01, mandatory BOTH ways):
+  the VANILLA arm is the CONTROL, not the gate. Its RED is the SIGNAL that
+  tells the extractor which fold to install; the PATCHED arm is the pipeline
+  the shipped policy is actually extracted with (_experiment/variant_d's
+  AssocFoldingTransformer, confirmed in the extractor source). Both exits are
+  printed above and NEITHER is suppressed. Declared in POLICY_HEADER.txt (X2).
+
+NOT RUN (artefact absent on this endpoint, not a pass):
+  count_matrix    — notifications' own _c7_count_matrix.py; no people_stream equivalent exists
+  format_coverage — notifications' own script; people_stream's format arms are W1 in _WALLS.md
+=== c7 audits DONE 2026-09-10T17:55:39+00:00 ===

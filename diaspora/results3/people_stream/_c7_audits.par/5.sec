@@ -1,0 +1,66 @@
+
+##### pc_visibility #####
+== pc_visibility_audit: 13677 dumps, 469 distinct vars minted ==
+
+-- 1. BLIND-VARS CENSUS (minted, never referenced by any PC; informational) --
+  _id                                      623058 mints across  101 names
+  _year                                    358685 mints across   62 names
+  _at                                      347519 mints across   59 names
+  _guid                                    151974 mints across   24 names
+  _count                                   121855 mints across   21 names
+  _type                                    101365 mints across   19 names
+  _url                                      86128 mints across    8 names
+  _name                                     83427 mints across   11 names
+  _handle                                   66496 mints across    9 names
+  _status                                   65909 mints across   11 names
+  _key                                      55930 mints across    9 names
+  _public                                   51329 mints across    8 names
+  _account                                  42059 mints across    5 names
+  _ids                                      40363 mints across    6 names
+  _text                                     35448 mints across    7 names
+  _image                                    32298 mints across    5 names
+  len(SYM_RESULT_ActionController__Rendering__set_rendered_content_type_1)  13677 mints across    1 names
+  _positive                                 11151 mints across    3 names
+  len(SYM_RESULT_ActiveRecord__Relation_records_1_rows)  10766 mints across    1 names
+  len(SYM_RESULT_ActiveRecord__Relation_records_2_rows)  10766 mints across    1 names
+  len(SYM_RESULT_ActiveRecord__Relation_records_3_rows)  10766 mints across    1 names
+  len(SYM_RESULT_ActiveRecord__Relation_records_4_rows)  10766 mints across    1 names
+  _small                                    10766 mints across    1 names
+  _medium                                   10766 mints across    1 names
+  _birthday                                 10766 mints across    1 names
+  _gender                                   10766 mints across    1 names
+  _bio                                      10766 mints across    1 names
+  _searchable                               10766 mints across    1 names
+  _location                                 10766 mints across    1 names
+  _details                                  10766 mints across    1 names
+  _data                                     10766 mints across    1 names
+  _title                                    10766 mints across    1 names
+  _description                              10766 mints across    1 names
+  len(SYM_RESULT_ActsAsApi__Collection_as_api_response_1)  10766 mints across    1 names
+  _pending                                  10766 mints across    2 names
+  _path                                     10766 mints across    2 names
+  _string                                   10766 mints across    2 names
+  _height                                   10766 mints across    2 names
+  _width                                    10766 mints across    2 names
+  len(SYM_RESULT_ActionController__Rendering__set_rendered_content_type_2)  10766 mints across    1 names
+   (Cannot alone distinguish 'never compared by the app' from 'branch
+    invisible' — cross-check with C2 real-mode coverage or code reading,
+    then gate the columns the app provably compares with --gate.)
+
+-- 2. PC-SHAPE CENSUS (top 25; compare against the extraction's PC grammar) --
+    108201  (VAR == True)
+     30278  (VAR == '_')
+     11034  (VAR != VAR(_))
+     10766  (VAR != VAR)
+     10766  (VAR == N)
+      7495  (VAR == VAR)
+
+-- 3. GATED COLUMNS (asserted app-compared; must be PC-visible) --
+  guid                           VISIBLE (52078 references)
+  text                           VISIBLE (10766 references)
+  comments_count                 VISIBLE (10766 references)
+  nsfw                           VISIBLE (10766 references)
+  closed_account                 VISIBLE (13671 references)
+
+RESULT: pass.
+EXIT=0 [checkpoint: replayed, not re-run]

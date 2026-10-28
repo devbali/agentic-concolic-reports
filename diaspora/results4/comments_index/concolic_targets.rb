@@ -243,6 +243,710 @@ module ConcolicTargets
     nil
   end
 
+  # ======================================================================
+  # DML STATEMENT RENDERING  —  D1..D7  (app-general; 2026-09-25)
+  # ======================================================================
+  # Everything below is about ONE question: when a mock replaces a write,
+  # what statement does the note have to carry for the corpus to contain
+  # the write the application actually performed?
+  #
+  # Before this section the shared core answered instance persistence with
+  # `"Contact#save args={}"` — no DML keyword, so the extraction's `_is_dml`
+  # filter dropped it and 68 of the 69 write endpoints recorded NO evidence
+  # of writing at all (D6) — and answered `update_all`/`delete_all`/
+  # `destroy_all` with the relation's SELECT, recording a write as a
+  # full-row read (D5).
+  #
+  # WHAT IS GROUND TRUTH HERE. Every rule below was measured against
+  # `sql.active_record` on a private copy of `db/concolic.sqlite3` under
+  # `RAILS_ENV=concolic_mod`; the harness is
+  # `_staged_fixes/_verification/differential.rb` and the evidence is in
+  # `_staged_fixes/_verification/out/`. Nothing here is inferred from
+  # reading ActiveRecord.
+  #
+  # WHAT IS DELIBERATELY *NOT* DONE HERE, because it would change the
+  # execution tree:
+  #   * the INSERT-vs-UPDATE choice reads `persisted?`/`new_record?`, which
+  #     `symbolic_instance` answers with CONCRETE singletons — so this
+  #     section records NO new path condition and adds NO decision. Making
+  #     that gate symbolic is a separate, larger change.
+  #   * a mocked write's CASCADE (dependent: destroy) and its pending
+  #     AUTOSAVE association INSERTs are additional ACCESSES, not additional
+  #     text in one note (`concolic/model/note.py`: "a different note is a
+  #     different access"). They are staged separately.
+
+  # AR writes these itself, AFTER the mock has replaced `save` — so every
+  # rendered INSERT was short two columns and every save-UPDATE short one
+  # (D2). `_create_record` writes the create set only for columns that are
+  # not already present; `_update_record` writes the update set only when
+  # the record has changes at all (which is also why D4's no-change save
+  # renders nothing).
+  DML_TS_CREATE = %w[created_at created_on updated_at updated_on].freeze
+  DML_TS_UPDATE = %w[updated_at updated_on].freeze
+
+  # The value ActiveRecord supplies for a timestamp column at write time. It
+  # is genuinely concrete (`Time.now`), never a symbolic input, so a bind ref
+  # would be a lie about provenance; a literal keeps the COLUMN in the
+  # statement, which is the whole point of D2/D3.
+  # UNQUOTED: `render_arg_value` single-quotes a String, so pre-quoting it
+  # here rendered '''<concolic_now>''' (measured).
+  DML_NOW = "<concolic_now>"
+
+  # true / false / nil(unknown). Same source and same order as everywhere
+  # else in this library: `persisted?` first (on a `klass.allocate` symbolic
+  # instance `@new_record` is nil, so `new_record?` returns nil while
+  # `persisted?` correctly returns true), then `new_record?`, then the pk.
+  def dml_record_is_new?(receiver)
+    if receiver.respond_to?(:persisted?)
+      begin
+        p = receiver.persisted?
+        return !p unless p.nil?
+      rescue StandardError
+        nil
+      end
+    end
+    begin
+      n = receiver.new_record?
+      return n unless n.nil?
+    rescue StandardError
+      nil
+    end
+    begin
+      receiver[receiver.class.primary_key].nil?
+    rescue StandardError
+      nil
+    end
+  end
+
+  # The value of ONE column, PRESERVING symbolic identity.
+  #   1. `concolic_attrs` — a `symbolic_instance` keeps its symbolic columns
+  #      here (`klass.allocate` leaves @attributes nil, so
+  #      `attributes_before_type_cast` would raise on it).
+  #   2. `attributes_before_type_cast` — a REAL record keeps the value AS
+  #      ASSIGNED here. Reading `changes` instead hands back the TYPE CAST
+  #      value, which for a `CastableSymbolicInt` is the plain Integer its
+  #      `#to_i` produced — the note would render `1` where a bind belongs.
+  def dml_raw_value(receiver, col)
+    c = col.to_s
+    if receiver.respond_to?(:concolic_attrs)
+      v = begin
+        receiver.concolic_attrs[c]
+      rescue StandardError
+        nil
+      end
+      return v unless v.nil?
+    end
+    if receiver.respond_to?(:attributes_before_type_cast)
+      v = begin
+        receiver.attributes_before_type_cast[c]
+      rescue StandardError
+        nil
+      end
+      return v unless v.nil?
+    end
+    begin
+      receiver[c]
+    rescue StandardError
+      nil
+    end
+  end
+
+  # D1 — WHICH COLUMNS A WRITE NAMES.
+  #
+  # ActiveRecord writes `attributes_with_values(attribute_names_for_partial_
+  # writes)`, and with partial writes on (the default) that list IS
+  # `changed_attribute_names_to_save`. The core used to take every non-nil
+  # entry of `attributes_before_type_cast`, i.e. every attribute INCLUDING
+  # the ones that only carry a database default: measured on
+  # `contacts.find_or_initialize_by`, the changed set was
+  # ["user_id","person_id","receiving"] while the note added a spurious
+  # "sharing" valued 'f' — the sqlite raw default text, in a note about a
+  # deployment modelled as MySQL.
+  #
+  # `concolic_dirty` FIRST: on a `symbolic_instance` ActiveModel::Dirty
+  # cannot run at all, and the attribute writers are overridden to poke the
+  # attrs hash, so the dirty set is the only record of what the application
+  # assigned.
+  def dml_changed_names(receiver)
+    names = begin
+      if receiver.respond_to?(:concolic_dirty)
+        receiver.concolic_dirty
+      elsif receiver.respond_to?(:changed_attribute_names_to_save)
+        receiver.changed_attribute_names_to_save
+      elsif receiver.respond_to?(:changed)
+        receiver.changed
+      end
+    rescue StandardError
+      nil
+    end
+    return nil unless names.is_a?(::Array)
+    names.map(&:to_s)
+  end
+
+  # AR emits an INSERT's / UPDATE's columns in ATTRIBUTE-SET order, which is
+  # table column order — measured: the real INSERT on `contacts` is
+  # ("user_id","person_id","created_at","updated_at","receiving") for a
+  # changed set of ["user_id","person_id","receiving"], i.e. the changed set
+  # plus the timestamps, sorted by column position. Sorting here is what
+  # makes a rendered statement comparable to the real one column for column.
+  # ActiveRecord never writes an attribute declared `attr_readonly`: it
+  # filters them out of the UPDATE set. MEASURED —
+  # `ActsAsTaggableOn::Tag#taggings_count` is readonly, so a real `tag.save`
+  # after assigning it issues NOTHING, while the note rendered a full
+  # `UPDATE "tags" SET "taggings_count" = ...`. That is a FABRICATION, the
+  # same class of defect as D4.
+  def dml_readonly(klass)
+    r = klass.respond_to?(:readonly_attributes) ? klass.readonly_attributes : nil
+    r.respond_to?(:to_a) ? r.to_a.map(&:to_s) : []
+  rescue StandardError
+    []
+  end
+
+  def dml_order_columns(klass, names)
+    order = begin
+      klass.column_names
+    rescue StandardError
+      nil
+    end
+    return names unless order.is_a?(::Array)
+    idx = {}
+    order.each_with_index { |c, i| idx[c] = i }
+    names.sort_by { |c| [idx.key?(c) ? 0 : 1, idx[c] || 0, c] }
+  end
+
+  def dml_record_timestamps?(klass)
+    klass.respond_to?(:record_timestamps) ? !!klass.record_timestamps : false
+  rescue StandardError
+    false
+  end
+
+  def dml_timestamp_columns(klass, kind)
+    return [] unless dml_record_timestamps?(klass)
+    wanted = (kind == :create ? DML_TS_CREATE : DML_TS_UPDATE)
+    cols = begin
+      klass.column_names
+    rescue StandardError
+      []
+    end
+    wanted & cols
+  end
+
+  def dml_table(klass)
+    klass.respond_to?(:table_name) ? klass.table_name.to_s : klass.name.to_s
+  rescue StandardError
+    klass.name.to_s
+  end
+
+  def dml_pk(klass)
+    klass.primary_key || "id"
+  rescue StandardError
+    "id"
+  end
+
+  # The columns an `update` / `update_attribute` / `touch` mock must write.
+  # These three are intercepted BEFORE their body runs, so the assignment
+  # never happened and the receiver's dirty set is empty — the columns are
+  # in ARGS, not on the record. (`save`/`save!` are the opposite: the app
+  # already assigned, so the record is the source.)
+  # The POSITIONAL arguments of an intercepted call, whatever the wrapper did
+  # to their names.
+  #
+  # `declare_target` names args from `klass.instance_method(m).parameters`. On
+  # a SECOND declaration for the same (class, method) — which every endpoint
+  # layer that redeclares a core target makes — "the method" is already the
+  # first mock's wrapper, whose signature is `|*splat_args, **kwargs, &block|`
+  # (the D5 defect in ../../README.md). So the same call arrives as
+  # `{"attributes" => {...}}` under one declaration and
+  # `{"splat_args" => [{...}], "kwargs" => {}}` under two, and reading by name
+  # alone silently loses every column on the overridden endpoints. Read
+  # POSITIONALLY, from whichever shape arrived.
+  def dml_positional_args(args)
+    return [] unless args.is_a?(::Hash)
+    # MEASURED (args_probe.rb): the interceptor zips the actual arguments onto
+    # the declared parameter NAMES one by one, so on a redeclared target
+    # `update_attribute(:sharing, true)` arrives as
+    # `{"splat_args"=>:sharing, "kwargs"=>true, "block"=>nil}` — "splat_args"
+    # and "kwargs" are ordinary positional slots there, not a rest array and
+    # not a keyword hash. Take the values in order; flatten a slot that really
+    # does hold a rest array (`touch(*names)` on a singly-declared target
+    # arrives as `{"names"=>[:a, :b]}`); never flatten a Hash, which is
+    # `update`'s attributes.
+    vals = args.reject { |k, _| %w[block blk].include?(k.to_s) }.values
+    vals.flat_map { |v| v.is_a?(::Array) ? v : [v] }.compact
+  rescue StandardError
+    []
+  end
+
+  # N5's other half. The prepend at the bottom of this file records the
+  # arguments as the APPLICATION passed them, under the method it called;
+  # this is scoped to one call and restored on the way out, so a note can
+  # never pick up the previous call's arguments.
+  def with_stashed_write_args(op, args, kwargs)
+    prev = Thread.current[:concolic_write_args]
+    Thread.current[:concolic_write_args] = [op.to_s, args, kwargs]
+    yield
+  ensure
+    Thread.current[:concolic_write_args] = prev
+  end
+
+  def dml_stashed_positionals(op)
+    s = Thread.current[:concolic_write_args]
+    return nil unless s.is_a?(::Array) && s[0] == op.to_s
+    pos = Array(s[1]).dup
+    pos << s[2] if s[2].is_a?(::Hash) && !s[2].empty?
+    pos
+  rescue StandardError
+    nil
+  end
+
+  def dml_columns_from_args(op, args)
+    pos = dml_stashed_positionals(op)
+    if pos.nil?
+      return nil unless args.is_a?(::Hash)
+      pos = dml_positional_args(args)
+    end
+    case op.to_s
+    when "update", "update!", "update_attributes", "update_attributes!"
+      h = pos.find { |v| v.is_a?(::Hash) && !v.empty? }
+      h.is_a?(::Hash) ? h.map { |k, v| [k.to_s, v] }.to_h : nil
+    when "update_attribute", "update_column"
+      n = pos[0]
+      v = pos[1]
+      (n.nil? || n.is_a?(::Hash)) ? nil : { n.to_s => v }
+    when "touch"
+      # `touch(*names, time: nil)`: the names are the positionals, and the
+      # timestamp columns are added by the caller (dml_note) on top.
+      names = pos.flatten.reject { |v| v.is_a?(::Hash) }.compact
+      names.map { |c| [c.to_s, DML_NOW] }.to_h
+    end
+  rescue StandardError
+    nil
+  end
+
+  # ------------------------------------------------------------------
+  # THE RENDERER. Returns the statement, or nil when ActiveRecord itself
+  # would issue NOTHING (D4 — a `save` on a record with no changes).
+  # ------------------------------------------------------------------
+  def dml_note(receiver, op, args = nil)
+    klass = receiver.class
+    table = dml_table(klass)
+    pk    = dml_pk(klass)
+    o     = op.to_s
+
+    return dml_delete_note(receiver, klass, table, pk) if %w[destroy destroy! delete].include?(o)
+
+    from_args = dml_columns_from_args(o, args)
+    new_rec   = dml_record_is_new?(receiver)
+
+    if new_rec == false || (new_rec.nil? && !from_args.nil?)
+      # ---------------------------------------------------------- UPDATE
+      if from_args
+        ro = dml_readonly(klass)
+        setcols = from_args.reject { |k, _| ro.include?(k.to_s) || k.to_s == pk }
+      else
+        names = dml_changed_names(receiver)
+        # D4 — a `save` with nothing to write. Real ActiveRecord skips the
+        # statement entirely (`_update_record` returns 0 affected rows
+        # without touching the connection), so a note here would FABRICATE
+        # a statement, and `UPDATE … SET (no changed columns)` is not even
+        # valid SQL. Return a PROSE note: it carries the provenance, and
+        # `_is_dml` correctly drops it.
+        return nil if names.nil? || names.empty?
+        setcols = dml_order_columns(klass, names - [pk] - dml_readonly(klass))
+                  .map { |c| [c, dml_raw_value(receiver, c)] }.to_h
+      end
+      # D3 — `touch` with no explicit column names has an EMPTY column set
+      # here and its whole statement is the timestamp added below, so it must
+      # NOT short-circuit. `UPDATE … SET (no changed columns)` was not valid
+      # SQL and missed the one column `touch` exists to write; the real
+      # statement is `UPDATE "contacts" SET "updated_at" = ? WHERE …`.
+      return nil if setcols.empty? && o != "touch"
+      # D2/D3 — the timestamp AR writes in `_update_record`, which happens
+      # after the mock replaced `save`. `touch` is the same statement with
+      # the timestamp as its ONLY column, which is why D3's
+      # `SET (no changed columns)` was both invalid SQL and a lost write.
+      dml_timestamp_columns(klass, :update).each do |c|
+        setcols[c] = DML_NOW unless setcols.key?(c)
+      end
+      return nil if setcols.empty?
+      sets = dml_order_columns(klass, setcols.keys)
+             .map { |c| %("#{c}" = #{render_arg_value(setcols[c])}) }.join(", ")
+      pkv = dml_raw_value(receiver, pk)
+      %(UPDATE "#{table}" SET #{sets} WHERE "#{table}"."#{pk}" = #{render_arg_value(pkv)})
+    else
+      # ---------------------------------------------------------- INSERT
+      names = dml_changed_names(receiver)
+      if names.nil? || names.empty?
+        # No dirty information at all (a half-built record). Degrade to the
+        # non-nil assigned attributes and SAY SO in the note rather than
+        # rendering a column set that was never measured.
+        raw = begin
+          receiver.attributes_before_type_cast
+        rescue StandardError
+          nil
+        end
+        raw = begin
+          receiver.attributes
+        rescue StandardError
+          nil
+        end unless raw.is_a?(::Hash)
+        return %(#{klass.name}##{o} (attributes unavailable)) unless raw.is_a?(::Hash)
+        names = raw.reject { |_k, v| v.nil? }.keys.map(&:to_s)
+      end
+      # readonly is an UPDATE-side filter in ActiveRecord (an `attr_readonly`
+      # column IS written on create), so it is NOT applied here.
+      cols = dml_order_columns(klass, names - [pk])
+      vals = cols.map { |c| dml_raw_value(receiver, c) }
+      pairs = cols.zip(vals).to_h
+      dml_timestamp_columns(klass, :create).each do |c|
+        present = begin
+          receiver.attribute_present?(c)
+        rescue StandardError
+          pairs.key?(c)
+        end
+        pairs[c] = DML_NOW unless present || pairs.key?(c)
+      end
+      ordered = dml_order_columns(klass, pairs.keys)
+      prefix = new_rec.nil? ? "/* new_record? unavailable, rendered as INSERT */ " : ""
+      %(#{prefix}INSERT INTO "#{table}" (#{ordered.map { |c| %("#{c}") }.join(", ")}) ) +
+        %(VALUES (#{ordered.map { |c| render_arg_value(pairs[c]) }.join(", ")}))
+    end
+  rescue StandardError => e
+    %(#{receiver.class.name}##{op} (note render failed: #{e.class}))
+  end
+
+  # Render an INSERT for a record whose `persisted?` is pinned true by
+  # `symbolic_instance` but which the CALL is creating (D7a's
+  # `CollectionProxy#create`). Same column rules as `dml_note`'s INSERT arm;
+  # the difference is only that the new/persisted question is answered by the
+  # caller, which knows, rather than by a pin that does not.
+  def dml_insert_note_for(receiver, klass)
+    table = dml_table(klass)
+    names = dml_changed_names(receiver) || []
+    return %(#{klass.name}#create (no assigned columns)) if names.empty?
+    pairs = dml_order_columns(klass, names - [dml_pk(klass)])
+            .map { |c| [c, dml_raw_value(receiver, c)] }.to_h
+    dml_timestamp_columns(klass, :create).each { |c| pairs[c] = DML_NOW unless pairs.key?(c) }
+    ordered = dml_order_columns(klass, pairs.keys)
+    %(INSERT INTO "#{table}" (#{ordered.map { |c| %("#{c}") }.join(", ")}) ) +
+      %(VALUES (#{ordered.map { |c| render_arg_value(pairs[c]) }.join(", ")}))
+  rescue StandardError => e
+    %(#{klass.name}#create (note render failed: #{e.class}))
+  end
+
+  # D8 — PENDING AUTOSAVE ASSOCIATIONS.
+  #
+  # `contact.aspects << aspect` on an UNSAVED contact does not insert the join
+  # row: ActiveRecord builds it, parks it in the association target, and
+  # defers the INSERT to the owner's `save` (has_many_through_association.rb
+  # `build_through_record`, run by the `save_collection_association` autosave
+  # callback). MEASURED against `sql.active_record`: the real pair is
+  #   INSERT INTO "contacts"           ("user_id","person_id","created_at","updated_at")
+  #   INSERT INTO "aspect_memberships" ("aspect_id","contact_id","created_at","updated_at")
+  # and the second one VANISHES under the mock, because mocking `save`
+  # replaces the callback chain that would have run it. The MISS-arm dumps
+  # therefore carry the contacts INSERT and no join row at all.
+  #
+  # THE MECHANISM IS GENERAL, so the fix is: a mocked `save` runs the saves
+  # ActiveRecord would have run. It does this by CALLING `save` on each
+  # pending record, which reaches the SAME declared `ActiveRecord::Base#save`
+  # target — so each deferred write becomes its OWN symbolic_call with its
+  # OWN note, which is what it is: a different statement is a different
+  # access (`concolic/model/note.py`), never extra text in one note. No
+  # record is fabricated: only records the application itself put in a LOADED
+  # association are saved, and the mocked `save` issues no SQL, so this
+  # touches the database no more than the mock it runs inside.
+  #
+  # BOUNDED, because an association graph is not: a depth limit, a per-call
+  # visited set keyed on object identity, and a hard cap on how many pending
+  # records one save may account for. Exceeding any of them is reported in
+  # the note rather than silently truncated.
+  DML_AUTOSAVE_MAX_DEPTH = 3
+  DML_AUTOSAVE_MAX_RECORDS = 32
+
+  # --- [ D9 ] DESTROY CALLBACKS -------------------------------------------
+  #
+  # (2026-10-07, owner-authorised; escalation
+  # `ctl/ask/destroy-mock-skips-after-destroy-callbacks.json`, class SHARED.)
+  #
+  # THE GAP. `destroy` is declared with a `returns:` lambda, so the
+  # interceptor takes BODY-SKIP mode (`call_interceptor.rb` -- `value_fn` is
+  # truthy, `original` is never bound). In Rails the `after_destroy` chain
+  # runs INSIDE `ActiveRecord::Callbacks#destroy`, i.e. inside the very method
+  # the mock replaces, so skipping the body skipped every destroy callback and
+  # every `dependent: :destroy` cascade. `dml_run_pending_autosaves!` above
+  # repairs the same class of loss for `save`, and is gated to
+  # save/save!/update/update! -- destroy was excluded, which is this gap.
+  #
+  # MEASURED on `conversation_visibilities_destroy`.
+  # `ConversationVisibility after_destroy :check_orphan_conversation` counts
+  # the remaining participants and destroys the Conversation when none are
+  # left; `Conversation has_many :conversation_visibilities, dependent:
+  # :destroy` then cascades. Against real ActiveRecord on a private DB copy,
+  # destroying the LAST participant's row issues three further statements and
+  # takes `conversations` from 1 row to 0. None of the three appeared in any
+  # dump, and the endpoint's policy therefore nowhere says the endpoint can
+  # delete a conversation. One of the three is worse than a missing write: the
+  # cascade's load is `SELECT "conversation_visibilities".* ... WHERE
+  # "conversation_visibilities"."conversation_id" = ?`, which DROPS the
+  # `person_id` conjunct the policy's only such read carries -- every
+  # participant's row, not the principal's own.
+  #
+  # ORDER MATTERS, and `run_callbacks(:destroy) { ... }` is what gives it:
+  # before-callbacks, then the block (where the owner's own DELETE note is
+  # minted), then after-callbacks. That is the order the real statements
+  # appear in, so the dump reads as the run did.
+  #
+  # NO RECORD IS FABRICATED. Every statement a callback reaches goes through
+  # an already-declared target (the finder mocks, `Calculations.count`, this
+  # same `destroy`), so each one mints its OWN note and becomes its own
+  # access. That is what makes this the D8 pattern rather than one of the two
+  # remedies `_staged_fixes/KNOWN_GAPS.md` G2 rejected: nothing folds several
+  # statements into one note, and no `symbolic_instance` is invented.
+  #
+  # BOUNDED exactly as D8 is -- depth limit, per-top-level-destroy visited set
+  # keyed on object identity, hard record cap -- because a cascade graph is
+  # not bounded and `conversation.destroy` re-enters this very method.
+  #
+  # A RAISING CHAIN IS REPORTED, NOT PROPAGATED. `user.rb` carries
+  # `before_destroy { raise "Never destroy users!" }`, and `photo.rb`'s
+  # `ensure_user_picture` does real work on what is here a symbolic record. A
+  # chain that raises or halts means real ActiveRecord ISSUES NO DELETE, so
+  # not minting the note is faithful -- but the raise must not take the run
+  # down with it, because a crashed run records nothing at all. The reason
+  # lands in a PROSE note, which `_is_dml` drops from extraction while the
+  # dump still carries the provenance (the same device D4 uses for a `save`
+  # with no changed attributes).
+  DML_DESTROY_MAX_DEPTH = 3
+  DML_DESTROY_MAX_RECORDS = 32
+
+  def dml_destroy_chain?(receiver)
+    klass = receiver.class
+    return false unless klass.respond_to?(:_destroy_callbacks)
+    !Array(klass._destroy_callbacks).empty?
+  rescue StandardError
+    false
+  end
+
+  #: A unique stem for the prose notes below. `symbool` needs a name, and two
+  #: notes minted under one name would collide in the dump's result table.
+  def dml_destroy_mark!(receiver, text)
+    n = (Thread.current[:concolic_destroy_marks] =
+         (Thread.current[:concolic_destroy_marks] || 0) + 1)
+    symbool("destroy_cb_#{n}", true,
+            note: "#{receiver.class.name}#destroy #{text}")
+  rescue StandardError
+    nil
+  end
+
+  # Runs the receiver's destroy callback chain around `yield`, which is where
+  # the caller mints the owner's DELETE note. Returns nil when the block ran
+  # (so the DELETE was recorded) and a reason String when it did not.
+  def dml_run_destroy_callbacks!(receiver)
+    unless dml_destroy_chain?(receiver)
+      yield
+      return nil
+    end
+    depth = (Thread.current[:concolic_destroy_depth] ||= 0)
+    # PER TOP-LEVEL DESTROY, for D8's reason: a run-wide set would stop
+    # accounting after the 32nd record of the RUN rather than of this destroy,
+    # turning a reported cap into a creeping loss.
+    Thread.current[:concolic_destroy_seen] = {} if depth.zero?
+    seen = (Thread.current[:concolic_destroy_seen] ||= {})
+    if depth >= DML_DESTROY_MAX_DEPTH || seen.size >= DML_DESTROY_MAX_RECORDS
+      yield
+      dml_destroy_mark!(receiver, "(callback chain NOT run: depth #{depth}, " \
+                        "#{seen.size} records seen; D9 cap reached -- any " \
+                        "statements its callbacks would issue are MISSING)")
+      return nil
+    end
+    if seen[receiver.object_id]
+      # Already destroyed in this chain. Real ActiveRecord would not run the
+      # callbacks twice either (`destroyed?` short-circuits), so this is not a
+      # cap being hit.
+      yield
+      return nil
+    end
+    seen[receiver.object_id] = true
+    Thread.current[:concolic_destroy_depth] = depth + 1
+    ran = false
+    err = nil
+    begin
+      receiver.send(:run_callbacks, :destroy) { ran = true; yield; true }
+    rescue StandardError, ScriptError => e
+      err = e
+    ensure
+      Thread.current[:concolic_destroy_depth] = depth
+    end
+    return nil if ran
+    # The block never ran: a before-callback raised or threw `:abort`. Real
+    # ActiveRecord issues NO DELETE in that case, so the absent note is right
+    # and what is owed is the reason.
+    why = err ? "raised #{err.class}: #{err.message.to_s[0, 120]}"
+               : "halted (before_destroy threw :abort)"
+    dml_destroy_mark!(receiver, "(no DELETE: before_destroy #{why})")
+    why
+  end
+
+  def dml_pending_autosave_records(receiver)
+    out = []
+    klass = receiver.class
+    return out unless klass.respond_to?(:reflect_on_all_associations)
+    klass.reflect_on_all_associations.each do |refl|
+      name = refl.name
+      # LOADED ONLY. `receiver.association(name)` would BUILD the association
+      # object and could trigger a load; `association_cached?` asks whether
+      # the application already put something there, which is the only case
+      # where a pending record can exist.
+      cached = begin
+        receiver.association_cached?(name)
+      rescue StandardError
+        false
+      end
+      next unless cached
+      assoc = begin
+        receiver.association(name)
+      rescue StandardError
+        nil
+      end
+      next if assoc.nil?
+      targets = begin
+        refl.collection? ? Array(assoc.target) : [assoc.target].compact
+      rescue StandardError
+        []
+      end
+      targets.each do |rec|
+        next unless rec.is_a?(ActiveRecord::Base)
+        next unless dml_record_is_new?(rec) == true
+        out << [refl, rec]
+      end
+    end
+    out
+  rescue StandardError
+    []
+  end
+
+  # What `save_collection_association` does immediately before saving a
+  # deferred child: stamp the owner's key onto it. Without this the child's
+  # INSERT names only the columns the application set directly — MEASURED on
+  # the probe matrix, the join row came out as
+  # `INSERT INTO "aspect_memberships" ("created_at", "updated_at")`, missing
+  # both foreign keys, because under the mock stack the through-association
+  # writer never ran. Setting them here is not an invention: it is the
+  # assignment ActiveRecord itself makes at this exact point.
+  def dml_stamp_owner_key!(owner, refl, rec)
+    fk = refl.foreign_key.to_s
+    return unless rec.class.column_names.include?(fk)
+    cur = begin
+      rec[fk]
+    rescue StandardError
+      nil
+    end
+    rec[fk] = raw_owner_attr(owner, owner.class.primary_key) if cur.nil?
+    t = refl.respond_to?(:type) ? refl.type : nil
+    rec[t.to_s] = owner.class.base_class.name if t && rec.class.column_names.include?(t.to_s)
+  rescue StandardError
+    nil
+  end
+
+  def dml_run_pending_autosaves!(receiver)
+    depth = (Thread.current[:concolic_autosave_depth] ||= 0)
+    # The visited set is PER TOP-LEVEL SAVE. Kept across the whole run it
+    # would silently stop accounting for autosaves after the 32nd record of
+    # the run rather than the 32nd of one save — a cap that turns into a
+    # creeping loss instead of a reported one.
+    Thread.current[:concolic_autosave_seen] = {} if depth.zero?
+    seen = (Thread.current[:concolic_autosave_seen] ||= {})
+    return if depth >= DML_AUTOSAVE_MAX_DEPTH
+    return if seen.size >= DML_AUTOSAVE_MAX_RECORDS
+    seen[receiver.object_id] = true
+    pending = dml_pending_autosave_records(receiver)
+    return if pending.empty?
+    Thread.current[:concolic_autosave_depth] = depth + 1
+    begin
+      pending.each do |refl, rec|
+        break if seen.size >= DML_AUTOSAVE_MAX_RECORDS
+        next if seen[rec.object_id]
+        seen[rec.object_id] = true
+        dml_stamp_owner_key!(receiver, refl, rec) if refl.collection?
+        begin
+          rec.save   # -> the declared ActiveRecord::Base#save target -> its own note
+        rescue StandardError
+          nil
+        end
+      end
+    ensure
+      Thread.current[:concolic_autosave_depth] = depth
+    end
+  rescue StandardError
+    nil
+  end
+
+  def dml_delete_note(receiver, klass, table, pk)
+    %(DELETE FROM "#{table}" WHERE "#{table}"."#{pk}" = #{render_arg_value(dml_raw_value(receiver, pk))})
+  rescue StandardError => e
+    %(#{klass.name}#destroy (note render failed: #{e.class}))
+  end
+
+  # D5 — RELATION-LEVEL DML.
+  #
+  # `update_all` / `delete_all` / `destroy_all` were given `sql_for`, i.e.
+  # the relation's SELECT. A write was therefore recorded as a full-row
+  # READ of every row it touched — wrong verb, and wrong in the direction
+  # that over-discloses. The WHERE is the relation's; only the head changes.
+  def dml_relation_where(sel)
+    sel.to_s[/\sWHERE\s.*\z/m].to_s
+  end
+
+  # N4 (found BY THE DIFFERENTIAL, 2026-09-25, not in D1-D8) — the WHERE of a
+  # relation write must come from the RELATION ALONE.
+  # `sql_for(receiver, args)` appends `relation_args_where(receiver, args)`,
+  # which turns any Hash in `args` into extra WHERE conditions. For a finder
+  # that is right (`find_by(user_id:)` carries its conditions in args); for
+  # `update_all(user_id: 4242)` the hash is the SET list, and the note came
+  # out as `... WHERE "contacts"."id" IN (…) AND "contacts"."user_id" = 4242`
+  # — a predicate the real statement does not contain, on 37 of 37 measured
+  # models. Passing `{}` takes the relation's own WHERE and nothing else.
+  def dml_update_all_note(receiver, args)
+    sel = sql_for(receiver, {})
+    klass = model_class(receiver)
+    table = dml_table(klass)
+    updates = nil
+    if args.is_a?(::Hash)
+      updates = args["updates"] || args[:updates]
+      updates = args.values.find { |v| v.is_a?(::Hash) && !v.empty? } unless updates.is_a?(::Hash)
+    end
+    # `update_all(unread: false)` reaches a `def update_all(updates)` — a
+    # REQUIRED POSITIONAL, not a `*rest` — so Ruby 2.6 packs the trailing
+    # hash into the wrapper's `**kwargs` and the interceptor's repair (which
+    # fills a named `*rest` slot) does not apply; `args` comes back empty.
+    # The prepend below stashes the real hash for exactly this case.
+    tc = Thread.current[:concolic_update_all_values]
+    updates = tc if (updates.nil? || updates.empty?) && tc.is_a?(::Hash) && !tc.empty?
+    return sel if table.nil? || table.empty?
+    sets = if updates.is_a?(::Hash) && !updates.empty?
+             updates.map { |k, v| %("#{table}"."#{k}" = #{render_arg_value(v)}) }.join(", ")
+           else
+             "(updates unavailable)"
+           end
+    # `update_all` also writes `updated_at` ONLY when the caller asked for
+    # it — ActiveRecord does NOT touch timestamps on a relation update
+    # (measured: UPDATE "contacts" SET "user_id" = ? WHERE …, no
+    # updated_at). So no timestamp is added here, unlike the instance path.
+    %(UPDATE "#{table}" SET #{sets}#{dml_relation_where(sel)})
+  rescue StandardError
+    sql_for(receiver, args)
+  end
+
+  def dml_delete_all_note(receiver, args)
+    sel = sql_for(receiver, {})   # N4: the relation's WHERE, never args
+    table = dml_table(model_class(receiver))
+    return sel if table.nil? || table.empty?
+    %(DELETE FROM "#{table}"#{dml_relation_where(sel)})
+  rescue StandardError
+    sql_for(receiver, args)
+  end
+
   # results3 Phase A Patch 2: render REAL SQL for class-level finders
   # (Model.find(id), Model.find_by(...), dynamic finders). See
   # ../PHASE_A_PATCH.md Patch 2 for the full derivation and the documented,
@@ -503,9 +1207,25 @@ module ConcolicTargets
     # Hash directly (the symbolic values are already there). This clears the
     # to_hash / write_from_user / []-writer walls on symbolic records.
     obj.define_singleton_method(:attributes)      { attrs }
-    obj.define_singleton_method(:write_attribute) { |k, v| attrs[k.to_s] = v }
-    obj.define_singleton_method(:_write_attribute) { |k, v| attrs[k.to_s] = v }
-    obj.define_singleton_method(:[]=)             { |k, v| attrs[k.to_s] = v }
+    # D1 (2026-09-25) — DIRTY TRACKING, and it has to live here.
+    # A write note must name the columns the application ASSIGNED, not every
+    # column the record carries. On a `klass.allocate` symbolic instance
+    # ActiveModel::Dirty cannot run at all (@attributes is nil), and the
+    # writers below poke the attrs hash directly, so without this the dirty
+    # set is simply unknowable and the note falls back to "every non-nil
+    # attribute" — which is exactly the defect: the INSERT gained a spurious
+    # `"sharing" = 'f'`, the raw sqlite default text, on a deployment
+    # modelled as MySQL.
+    #
+    # DELIBERATELY INERT. `concolic_dirty` is read by `dml_note` and by
+    # nothing else; no AR control-flow predicate is answered from it here
+    # (`has_changes_to_save?` / `changed?` stay unanswered, as before, so
+    # this adds no decision and changes no path).
+    dirty = []
+    obj.define_singleton_method(:concolic_dirty) { dirty }
+    obj.define_singleton_method(:write_attribute) { |k, v| dirty << k.to_s unless dirty.include?(k.to_s); attrs[k.to_s] = v }
+    obj.define_singleton_method(:_write_attribute) { |k, v| dirty << k.to_s unless dirty.include?(k.to_s); attrs[k.to_s] = v }
+    obj.define_singleton_method(:[]=)             { |k, v| dirty << k.to_s unless dirty.include?(k.to_s); attrs[k.to_s] = v }
     # Profile#image_url is BOTH a DB column AND a real method (takes a size
     # arg, builds a URL). The column reader above returns a symbolic var with
     # arity 0, breaking `profile.image_url(:thumb_small)` in the avatar
@@ -900,11 +1620,26 @@ module ConcolicTargets
     end
 
     # --- [ DESIGN #7 ] E. Relation-level DML --------------------------------
-    %i[update_all delete_all].each do |m|
-      interceptor.declare_target(rel, m, kind: CallInterceptor::TARGET_FUNCTION, type: "int", returns: lambda do |receiver, args, name|
-        symint("#{name}_#{m}_count", 1, note: sql_for(receiver, args))
-      end)
-    end
+    # D5 (2026-09-25) — the note was `sql_for(receiver, args)`, i.e. the
+    # relation's SELECT, so a WRITE was recorded as a full-row READ of every
+    # row it touched: wrong verb, and wrong in the over-disclosing direction.
+    # MEASURED, differential.rb: real `Contact.where(id: [..]).update_all(
+    # user_id: 4242)` is `UPDATE "contacts" SET "user_id" = ? WHERE
+    # "contacts"."id" IN (?, ?)`; the note was `SELECT "contacts".* FROM
+    # "contacts" WHERE …`. The WHERE is the relation's either way — only the
+    # head and the SET list change.
+    interceptor.declare_target(rel, :update_all, kind: CallInterceptor::TARGET_FUNCTION, type: "int", returns: lambda do |receiver, args, name|
+      symint("#{name}_update_all_count", 1, note: dml_update_all_note(receiver, args))
+    end)
+    interceptor.declare_target(rel, :delete_all, kind: CallInterceptor::TARGET_FUNCTION, type: "int", returns: lambda do |receiver, args, name|
+      symint("#{name}_delete_all_count", 1, note: dml_delete_all_note(receiver, args))
+    end)
+    # `destroy_all` KEEPS the SELECT, and that is not an oversight: real
+    # ActiveRecord DOES issue exactly this SELECT to load the rows before
+    # destroying them (measured), so the note is a true statement of the
+    # call. What it does NOT carry is the per-row DELETE that follows, which
+    # is a SEPARATE access and is staged separately — see
+    # `_staged_fixes/CASCADE_AND_AUTOSAVE.md`.
     interceptor.declare_target(rel, :destroy_all, kind: CallInterceptor::TARGET_FUNCTION, type: "[?]", returns: lambda do |receiver, args, name|
       SymbolicList.new(1, name: "#{name}_destroyed", note: sql_for(receiver, args))
     end)
@@ -930,7 +1665,41 @@ module ConcolicTargets
                   base.private_instance_methods.include?(m) ||
                   base.protected_instance_methods.include?(m)
       interceptor.declare_target(base, m, kind: CallInterceptor::TARGET_FUNCTION, type: "bool", returns: lambda do |receiver, args, name|
-        symbool("#{name}_#{m}_ok", true, note: "#{receiver.class.name}##{m} args=#{args.inspect}")
+        # D6 (2026-09-25) — the note used to be `"<Class>#<m> args=<args>"`,
+        # which carries no DML keyword, so the extraction's `_is_dml` filter
+        # dropped it and 68 of the 69 write endpoints recorded no evidence of
+        # writing at all. MEASURED in the wild: the one core-only endpoint
+        # whose shakedown dumps reach a write,
+        # `api_openid_connect_authorizations_destroy`, carries exactly
+        # `Api::OpenidConnect::Authorization#destroy args={}`.
+        #
+        # `dml_note` returns nil for the one case where real ActiveRecord
+        # issues NOTHING — a `save` on a record with no changes (D4). A note
+        # is then a PROSE description, which `_is_dml` correctly drops, so
+        # the corpus records no statement where the application made none.
+        note = dml_note(receiver, m, args)
+        note = "#{receiver.class.name}##{m} (no changed attributes; ActiveRecord issues no statement)" if note.nil?
+        if %i[destroy destroy!].include?(m)
+          # D9 — the destroy callback chain runs AROUND the owner's note, not
+          # after it, because `before_destroy` statements precede the DELETE
+          # and `after_destroy` statements follow it. A chain that halts means
+          # no DELETE, so `r` can come back nil; the fallback below is then a
+          # SymbolicBool whose note is prose, carrying the reason and no
+          # statement.
+          r = nil
+          why = dml_run_destroy_callbacks!(receiver) do
+            r = symbool("#{name}_#{m}_ok", true, note: note)
+          end
+          r || symbool("#{name}_#{m}_ok", false,
+                       note: "#{receiver.class.name}##{m} (ActiveRecord issues no statement: #{why})")
+        else
+          r = symbool("#{name}_#{m}_ok", true, note: note)
+          # D8 — the writes ActiveRecord would have run from this save's own
+          # autosave callbacks. AFTER the owner's note is minted, so the two
+          # appear in the order the real statements do.
+          dml_run_pending_autosaves!(receiver) if %i[save save! update update!].include?(m)
+          r
+        end
       end)
     end
 
@@ -1385,9 +2154,60 @@ module ConcolicTargets
     # feeds a symbolic int into a real where -> to_sql -> Arel quote -> to_i.
     # Result is discarded by posts_controller; nil passes through unchanged.
     if defined?(PostService)
+      # D7b (2026-09-25) — KIND CHANGED: SHIM -> TARGET_FUNCTION.  APP-SPECIFIC
+      # (this is diaspora's PostService, not ActiveRecord), unlike D7a below.
+      #
+      # The SHIM contract asserts the real body issues no SQL. It does. The
+      # body (post_service.rb:24-28 -> :69-72 and :74-84) issues, in order:
+      #   1. UPDATE "notifications" SET "unread" = ? WHERE recipient_id = ?
+      #      AND target_type = 'Post' AND target_id = ? AND unread = ?
+      #   2. SELECT "mentions"."id" FROM "mentions" WHERE ...          (ids)
+      #   3. SELECT ... mentions in comments for the post              (pluck)
+      #   4. UPDATE "notifications" ... target_type = 'Mention' ...
+      #      -- CONDITIONAL, `if mention_ids.any?`
+      # A target whose body issues SQL cannot be a SHIM; a SHIM is not an
+      # access, so declaring it one hid four statements AND mis-declared the
+      # call. It is a TARGET_FUNCTION and it carries a note.
+      #
+      # THE NOTE IS STATEMENT 1 ONLY, AND THAT IS DELIBERATE. Statement 4 is
+      # gated on `mention_ids.any?`; folding it into one unconditional note
+      # would collapse a conditional access into an unconditional one — the
+      # one rule in ../../README.md:234 that this library will not break, and
+      # the over-disclosing direction. Statements 2-4 are therefore a NAMED,
+      # RESIDUAL GAP of this declaration.
+      #
+      # THE COMPLETE FIX IS TO DELETE THIS DECLARATION, not to widen the note:
+      # with the shim gone the real body runs and each inner call reaches its
+      # OWN declared target (`Relation#update_all` twice, the two finders),
+      # which is four correctly-attributed accesses with the conditional
+      # intact. What blocks that today is the wall this shim was written for
+      # (a symbolic int fed into a real `where` -> `to_sql` -> Arel quote ->
+      # `SymbolicInt#to_i`), which `CastableSymbolicInt` in the
+      # aspect_memberships endpoint layer already solves and which is
+      # app-general. Promoting it changes which targets fire on posts_show,
+      # so it is NOT done here — see the report.
       # type: int? -- the real body ends in an update_all row count; this mock records null.
       interceptor.declare_target(PostService, :mark_user_notifications,
-                                 kind: CallInterceptor::SHIM, type: "int?", returns: ->(_r, _a, _n) { nil })
+                                 kind: CallInterceptor::TARGET_FUNCTION, type: "int?",
+                                 returns: lambda do |receiver, args, _name|
+        pid = args.is_a?(::Hash) ? (args["post_id"] || args[:post_id]) : nil
+        # `PostService#user` is PRIVATE (post_service.rb:47-49), so
+        # `receiver.user` raises and the note rendered `recipient_id = nil`
+        # (measured). Read the ivar, which is what the private reader reads.
+        uid = begin
+          u = receiver.instance_variable_get(:@user)
+          u && raw_owner_attr(u, u.class.primary_key)
+        rescue StandardError
+          nil
+        end
+        Thread.current[:concolic_pending_note] =
+          %(UPDATE "notifications" SET "notifications"."unread" = false WHERE ) +
+          %("notifications"."recipient_id" = #{render_arg_value(uid)} AND ) +
+          %("notifications"."target_type" = 'Post' AND ) +
+          %("notifications"."target_id" = #{render_arg_value(pid)} AND ) +
+          %("notifications"."unread" = true)
+        nil
+      end)
     end
 
     # X6g. ActionController::Instrumentation#redirect_to -> terminal. Y3 mocks
@@ -1756,11 +2576,59 @@ module ConcolicTargets
     # a symbolic AspectMembership (SQL-free; the join bookkeeping is data).
     if defined?(ActiveRecord::Associations::CollectionProxy) &&
        defined?(AspectMembership)
+      # D7a (2026-09-25) — KIND CHANGED: SHIM -> TARGET_FUNCTION. APP-GENERAL
+      # (this is ActiveRecord's own CollectionProxy, on every endpoint).
+      #
+      # The SHIM contract asserts the real body issues no SQL. `collection
+      # .create(attrs)` BUILDS AND SAVES a record: its body is an INSERT into
+      # the association's table, and on aspects#create it is the actual write
+      # of the controller action. Declared SHIM with NO note, that INSERT was
+      # invisible twice over — a shim is not an access, and there was nothing
+      # to record even if it had been.
+      #
+      # The note is the INSERT, rendered by the same `dml_note` every other
+      # write goes through, on a symbolic instance of the association's OWN
+      # class (it was hard-coded to `AspectMembership`, which is one
+      # endpoint's join model, not a property of CollectionProxy) whose
+      # foreign key to the owner is set, exactly as the real `create` sets it.
       interceptor.declare_target(
         ActiveRecord::Associations::CollectionProxy, :create,
-        kind: CallInterceptor::SHIM, type: "obj<?>", returns: lambda do |_receiver, args, name|
-          symbolic_instance(AspectMembership, "#{name}_membership",
-                            "aspect_memberships.create #{args.inspect}")
+        kind: CallInterceptor::TARGET_FUNCTION, type: "obj<?>", returns: lambda do |receiver, args, name|
+          child = begin
+            receiver.klass
+          rescue StandardError
+            defined?(AspectMembership) ? AspectMembership : nil
+          end
+          child ||= defined?(AspectMembership) ? AspectMembership : ActiveRecord::Base
+          obj = symbolic_instance(child, "#{name}_created",
+                                  "#{child.table_name}.create #{args.inspect}")
+          # Replay the assignments the real `create` makes, so the INSERT
+          # note names the columns the application actually wrote: the
+          # attributes it was handed, plus the owner foreign key.
+          begin
+            pos = dml_stashed_positionals(:proxy_create) ||
+                  (args.is_a?(::Hash) ? dml_positional_args(args) : [])
+            attrs = pos.find { |v| v.is_a?(::Hash) && !v.empty? }
+            attrs.each { |k, v| obj[k.to_s] = v } if attrs.is_a?(::Hash)
+          rescue StandardError
+            nil
+          end
+          begin
+            refl = receiver.proxy_association.reflection
+            fk   = refl.foreign_key.to_s
+            owner = receiver.proxy_association.owner
+            obj[fk] = raw_owner_attr(owner, owner.class.primary_key)
+            if refl.type
+              obj[refl.type.to_s] = owner.class.base_class.name
+            end
+          rescue StandardError
+            nil
+          end
+          # `create` on a NEW record is an INSERT; `symbolic_instance` pins
+          # `persisted?` true, so render the INSERT explicitly rather than
+          # letting `dml_note` read that pin and emit an UPDATE.
+          Thread.current[:concolic_pending_note] = dml_insert_note_for(obj, child)
+          obj
         end
       )
     end
@@ -1873,6 +2741,119 @@ module ConcolicKwargsToPositional
 end
 ActiveRecord::Base.singleton_class.prepend(ConcolicKwargsToPositional) # Model.find_by / exists?
 ActiveRecord::Relation.prepend(ConcolicKwargsToPositional)            # relation / association find_by
+
+# ---------------------------------------------------------------------------
+# D5's other half — the SET list of a `Relation#update_all`.
+# ---------------------------------------------------------------------------
+# `update_all(unread: false)` reaches a `def update_all(updates)` — a REQUIRED
+# POSITIONAL, not a `*rest` — so on Ruby 2.6 (JRuby 9.3) the trailing hash is
+# packed into the interceptor wrapper's `**kwargs`, and the interceptor's
+# repair (which fills a NAMED `*rest` slot) does not apply: the mock's `args`
+# comes back EMPTY and the note could only say `SET (updates unavailable)`.
+# MEASURED on probe runs dse0001..4 of the aspect_memberships batch, where
+# this module was first written; it is app-general — every `update_all` in
+# every endpoint reaches the same signature — so it belongs here.
+#
+# NOT A TARGET: a plain `prepend`, which runs BEFORE the declared mock and
+# only stashes what it was handed. It changes no return value and issues no
+# SQL, so it is not an access and books no declaration.
+module ConcolicUpdateAllValueNaming
+  def update_all(*args, **kwargs, &block)
+    prev = Thread.current[:concolic_update_all_values]
+    begin
+      v = if !kwargs.empty?
+            kwargs
+          elsif args.length == 1 && args[0].is_a?(::Hash)
+            args[0]
+          end
+      Thread.current[:concolic_update_all_values] = v if v
+      if kwargs.empty?
+        super(*args, &block)
+      else
+        super(*args, **kwargs, &block)
+      end
+    ensure
+      Thread.current[:concolic_update_all_values] = prev
+    end
+  end
+end
+ActiveRecord::Relation.prepend(ConcolicUpdateAllValueNaming) unless
+  ActiveRecord::Relation < ConcolicUpdateAllValueNaming
+
+# ---------------------------------------------------------------------------
+# N5 (found BY EXECUTION, 2026-09-25) — the arguments of `update`,
+# `update_attribute` and `touch` do not survive the interceptor.
+# ---------------------------------------------------------------------------
+# These three are replaced BEFORE their body runs, so the columns they write
+# are in the ARGUMENTS, not on the receiver. MEASURED, `_verification/
+# args_probe.rb`, both stacks:
+#
+#   core stack (ONE declaration)
+#     update(receiving: true)        -> args={"attributes"=>nil}
+#     update_attribute(:sharing,true)-> args={"name"=>:sharing,"value"=>true}
+#   override stack (TWO declarations — the wrapper's own signature is read)
+#     update(receiving: true)        -> args={"splat_args"=>nil,"kwargs"=>nil,"block"=>nil}
+#     update_attribute(:sharing,true)-> args={"splat_args"=>:sharing,"kwargs"=>true,"block"=>nil}
+#     touch(:receiving)              -> args={"splat_args"=>:receiving,"kwargs"=>nil,"block"=>nil}
+#
+# So `update`'s attributes hash is LOST on BOTH stacks (a trailing hash is
+# packed into the wrapper's `**kwargs` and never reaches a named slot), and on
+# a redeclared target the remaining positionals are zipped onto the wrapper's
+# OWN parameter names. Reading `args` alone therefore renders
+# `SET "sharing" = nil`, or no statement at all.
+#
+# Same repair as `update_all` above, for the same reason and by the same
+# means: a plain `prepend` that stashes what it was handed. It changes no
+# return value, issues no SQL, and is not an access.
+module ConcolicWriteArgsNaming
+  def update(*args, **kwargs, &blk)
+    ConcolicTargets.with_stashed_write_args(:update, args, kwargs) do
+      kwargs.empty? ? super(*args, &blk) : super(*args, **kwargs, &blk)
+    end
+  end
+
+  def update!(*args, **kwargs, &blk)
+    ConcolicTargets.with_stashed_write_args(:update!, args, kwargs) do
+      kwargs.empty? ? super(*args, &blk) : super(*args, **kwargs, &blk)
+    end
+  end
+
+  def update_attribute(*args, **kwargs, &blk)
+    ConcolicTargets.with_stashed_write_args(:update_attribute, args, kwargs) do
+      kwargs.empty? ? super(*args, &blk) : super(*args, **kwargs, &blk)
+    end
+  end
+
+  def touch(*args, **kwargs, &blk)
+    ConcolicTargets.with_stashed_write_args(:touch, args, kwargs) do
+      kwargs.empty? ? super(*args, &blk) : super(*args, **kwargs, &blk)
+    end
+  end
+end
+ActiveRecord::Base.prepend(ConcolicWriteArgsNaming) unless
+  ActiveRecord::Base < ConcolicWriteArgsNaming
+
+# The same loss on the association side: `collection.create(aspect_id: 7)`
+# reached the D7a mock as `{"attributes"=>nil, "block"=>nil}` (MEASURED,
+# _verification/d7_probe.rb), so the rendered INSERT named the owner foreign
+# key and the timestamps and NOT the column the caller actually passed.
+module ConcolicProxyCreateArgsNaming
+  def create(*args, **kwargs, &blk)
+    ConcolicTargets.with_stashed_write_args(:proxy_create, args, kwargs) do
+      kwargs.empty? ? super(*args, &blk) : super(*args, **kwargs, &blk)
+    end
+  end
+
+  def create!(*args, **kwargs, &blk)
+    ConcolicTargets.with_stashed_write_args(:proxy_create, args, kwargs) do
+      kwargs.empty? ? super(*args, &blk) : super(*args, **kwargs, &blk)
+    end
+  end
+end
+if defined?(ActiveRecord::Associations::CollectionProxy) &&
+   !(ActiveRecord::Associations::CollectionProxy < ConcolicProxyCreateArgsNaming)
+  ActiveRecord::Associations::CollectionProxy.prepend(ConcolicProxyCreateArgsNaming)
+end
 
 # (bug 2b) arel-9 renders Casted/Quoted nodes inline via ToSql#quoted, which
 # calls connection.quote on the raw value -- a wall for symbolic values (and
