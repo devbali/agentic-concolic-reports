@@ -1,0 +1,1366 @@
+[
+ {
+  "request": {
+   "script": "config.php",
+   "GET": {},
+   "POST": {},
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 67,
+  "faults": [],
+  "lines": [
+   "config.php:12",
+   "config.php:2",
+   "config.php:3",
+   "config.php:4",
+   "config.php:5",
+   "config.php:6",
+   "config.php:8"
+  ]
+ },
+ {
+  "request": {
+   "script": "test-2.php",
+   "GET": {},
+   "POST": {},
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 213,
+  "faults": [],
+  "lines": [
+   "config.php:12",
+   "config.php:2",
+   "config.php:3",
+   "config.php:4",
+   "config.php:5",
+   "config.php:6",
+   "config.php:8",
+   "test-2.php:15",
+   "test-2.php:16",
+   "test-2.php:2",
+   "test-2.php:29",
+   "test-2.php:32",
+   "test-2.php:34",
+   "test-2.php:7"
+  ]
+ },
+ {
+  "request": {
+   "script": "test-2.php",
+   "GET": {},
+   "POST": {
+    "nv1": ""
+   },
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 213,
+  "faults": [],
+  "lines": [
+   "config.php:12",
+   "config.php:2",
+   "config.php:3",
+   "config.php:4",
+   "config.php:5",
+   "config.php:6",
+   "config.php:8",
+   "test-2.php:15",
+   "test-2.php:16",
+   "test-2.php:17",
+   "test-2.php:2",
+   "test-2.php:26",
+   "test-2.php:32",
+   "test-2.php:34",
+   "test-2.php:7"
+  ]
+ },
+ {
+  "request": {
+   "script": "test-2.php",
+   "GET": {},
+   "POST": {
+    "nv1": "",
+    "nv2": ""
+   },
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 213,
+  "faults": [],
+  "lines": [
+   "config.php:12",
+   "config.php:2",
+   "config.php:3",
+   "config.php:4",
+   "config.php:5",
+   "config.php:6",
+   "config.php:8",
+   "test-2.php:15",
+   "test-2.php:16",
+   "test-2.php:17",
+   "test-2.php:18",
+   "test-2.php:2",
+   "test-2.php:23",
+   "test-2.php:26",
+   "test-2.php:32",
+   "test-2.php:34",
+   "test-2.php:7"
+  ]
+ },
+ {
+  "request": {
+   "script": "test-2.php",
+   "GET": {},
+   "POST": {
+    "nv1": "",
+    "nv2": "",
+    "nv3": ""
+   },
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 226,
+  "faults": [
+   {
+    "kind": "sql",
+    "errno": 1064,
+    "sql": "select * from user where id=0'"
+   }
+  ],
+  "lines": [
+   "config.php:12",
+   "config.php:2",
+   "config.php:3",
+   "config.php:4",
+   "config.php:5",
+   "config.php:6",
+   "config.php:8",
+   "test-2.php:15",
+   "test-2.php:16",
+   "test-2.php:17",
+   "test-2.php:18",
+   "test-2.php:19",
+   "test-2.php:2",
+   "test-2.php:20",
+   "test-2.php:21",
+   "test-2.php:23",
+   "test-2.php:26",
+   "test-2.php:32",
+   "test-2.php:34",
+   "test-2.php:7"
+  ]
+ },
+ {
+  "request": {
+   "script": "test-2.php",
+   "GET": {
+    "vul1": ""
+   },
+   "POST": {
+    "nv1": "",
+    "nv2": "",
+    "nv3": ""
+   },
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 226,
+  "faults": [
+   {
+    "kind": "sql",
+    "errno": 1064,
+    "sql": "select * from user where id=0'"
+   }
+  ],
+  "lines": [
+   "config.php:12",
+   "config.php:2",
+   "config.php:3",
+   "config.php:4",
+   "config.php:5",
+   "config.php:6",
+   "config.php:8",
+   "test-2.php:15",
+   "test-2.php:16",
+   "test-2.php:17",
+   "test-2.php:18",
+   "test-2.php:19",
+   "test-2.php:2",
+   "test-2.php:20",
+   "test-2.php:21",
+   "test-2.php:23",
+   "test-2.php:26",
+   "test-2.php:32",
+   "test-2.php:34",
+   "test-2.php:7"
+  ]
+ },
+ {
+  "request": {
+   "script": "test-5-cmd.php",
+   "GET": {},
+   "POST": {},
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 213,
+  "faults": [],
+  "lines": [
+   "config.php:12",
+   "config.php:2",
+   "config.php:3",
+   "config.php:4",
+   "config.php:5",
+   "config.php:6",
+   "config.php:8",
+   "test-5-cmd.php:15",
+   "test-5-cmd.php:16",
+   "test-5-cmd.php:2",
+   "test-5-cmd.php:37",
+   "test-5-cmd.php:40",
+   "test-5-cmd.php:42",
+   "test-5-cmd.php:7"
+  ]
+ },
+ {
+  "request": {
+   "script": "test-5-cmd.php",
+   "GET": {},
+   "POST": {
+    "nv1": ""
+   },
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 213,
+  "faults": [],
+  "lines": [
+   "config.php:12",
+   "config.php:2",
+   "config.php:3",
+   "config.php:4",
+   "config.php:5",
+   "config.php:6",
+   "config.php:8",
+   "test-5-cmd.php:15",
+   "test-5-cmd.php:16",
+   "test-5-cmd.php:17",
+   "test-5-cmd.php:2",
+   "test-5-cmd.php:34",
+   "test-5-cmd.php:40",
+   "test-5-cmd.php:42",
+   "test-5-cmd.php:7"
+  ]
+ },
+ {
+  "request": {
+   "script": "test-5-cmd.php",
+   "GET": {},
+   "POST": {
+    "nv1": "",
+    "nv2": ""
+   },
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 213,
+  "faults": [],
+  "lines": [
+   "config.php:12",
+   "config.php:2",
+   "config.php:3",
+   "config.php:4",
+   "config.php:5",
+   "config.php:6",
+   "config.php:8",
+   "test-5-cmd.php:15",
+   "test-5-cmd.php:16",
+   "test-5-cmd.php:17",
+   "test-5-cmd.php:18",
+   "test-5-cmd.php:2",
+   "test-5-cmd.php:31",
+   "test-5-cmd.php:34",
+   "test-5-cmd.php:40",
+   "test-5-cmd.php:42",
+   "test-5-cmd.php:7"
+  ]
+ },
+ {
+  "request": {
+   "script": "test-5-cmd.php",
+   "GET": {},
+   "POST": {
+    "nv1": "",
+    "nv2": "",
+    "nv3": ""
+   },
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 213,
+  "faults": [],
+  "lines": [
+   "config.php:12",
+   "config.php:2",
+   "config.php:3",
+   "config.php:4",
+   "config.php:5",
+   "config.php:6",
+   "config.php:8",
+   "test-5-cmd.php:15",
+   "test-5-cmd.php:16",
+   "test-5-cmd.php:17",
+   "test-5-cmd.php:18",
+   "test-5-cmd.php:19",
+   "test-5-cmd.php:2",
+   "test-5-cmd.php:28",
+   "test-5-cmd.php:31",
+   "test-5-cmd.php:34",
+   "test-5-cmd.php:40",
+   "test-5-cmd.php:42",
+   "test-5-cmd.php:7"
+  ]
+ },
+ {
+  "request": {
+   "script": "test-5-cmd.php",
+   "GET": {},
+   "POST": {
+    "nv1": "",
+    "nv2": "",
+    "nv3": "",
+    "nv4": ""
+   },
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 213,
+  "faults": [],
+  "lines": [
+   "config.php:12",
+   "config.php:2",
+   "config.php:3",
+   "config.php:4",
+   "config.php:5",
+   "config.php:6",
+   "config.php:8",
+   "test-5-cmd.php:15",
+   "test-5-cmd.php:16",
+   "test-5-cmd.php:17",
+   "test-5-cmd.php:18",
+   "test-5-cmd.php:19",
+   "test-5-cmd.php:2",
+   "test-5-cmd.php:20",
+   "test-5-cmd.php:25",
+   "test-5-cmd.php:28",
+   "test-5-cmd.php:31",
+   "test-5-cmd.php:34",
+   "test-5-cmd.php:40",
+   "test-5-cmd.php:42",
+   "test-5-cmd.php:7"
+  ]
+ },
+ {
+  "request": {
+   "script": "test-5-cmd.php",
+   "GET": {},
+   "POST": {
+    "nv1": "",
+    "nv2": "",
+    "nv3": "",
+    "nv4": "",
+    "nv5": ""
+   },
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 222,
+  "faults": [
+   {
+    "kind": "shell",
+    "message": "sh: 1: Syntax error: end of file unexpected (expecting \")\")"
+   }
+  ],
+  "lines": [
+   "config.php:12",
+   "config.php:2",
+   "config.php:3",
+   "config.php:4",
+   "config.php:5",
+   "config.php:6",
+   "config.php:8",
+   "test-5-cmd.php:15",
+   "test-5-cmd.php:16",
+   "test-5-cmd.php:17",
+   "test-5-cmd.php:18",
+   "test-5-cmd.php:19",
+   "test-5-cmd.php:2",
+   "test-5-cmd.php:20",
+   "test-5-cmd.php:22",
+   "test-5-cmd.php:23",
+   "test-5-cmd.php:25",
+   "test-5-cmd.php:28",
+   "test-5-cmd.php:31",
+   "test-5-cmd.php:34",
+   "test-5-cmd.php:40",
+   "test-5-cmd.php:42",
+   "test-5-cmd.php:7"
+  ]
+ },
+ {
+  "request": {
+   "script": "test-cookie-5.php",
+   "GET": {},
+   "POST": {},
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 213,
+  "faults": [],
+  "lines": [
+   "config.php:12",
+   "config.php:2",
+   "config.php:3",
+   "config.php:4",
+   "config.php:5",
+   "config.php:6",
+   "config.php:8",
+   "test-cookie-5.php:15",
+   "test-cookie-5.php:16",
+   "test-cookie-5.php:2",
+   "test-cookie-5.php:37",
+   "test-cookie-5.php:40",
+   "test-cookie-5.php:42",
+   "test-cookie-5.php:7"
+  ]
+ },
+ {
+  "request": {
+   "script": "test-cookie-5.php",
+   "GET": {},
+   "POST": {},
+   "COOKIE": {
+    "nv1": ""
+   }
+  },
+  "exit": 0,
+  "body_bytes": 213,
+  "faults": [],
+  "lines": [
+   "config.php:12",
+   "config.php:2",
+   "config.php:3",
+   "config.php:4",
+   "config.php:5",
+   "config.php:6",
+   "config.php:8",
+   "test-cookie-5.php:15",
+   "test-cookie-5.php:16",
+   "test-cookie-5.php:17",
+   "test-cookie-5.php:2",
+   "test-cookie-5.php:34",
+   "test-cookie-5.php:40",
+   "test-cookie-5.php:42",
+   "test-cookie-5.php:7"
+  ]
+ },
+ {
+  "request": {
+   "script": "test-cookie-5.php",
+   "GET": {},
+   "POST": {},
+   "COOKIE": {
+    "nv1": "",
+    "nv2": ""
+   }
+  },
+  "exit": 0,
+  "body_bytes": 213,
+  "faults": [],
+  "lines": [
+   "config.php:12",
+   "config.php:2",
+   "config.php:3",
+   "config.php:4",
+   "config.php:5",
+   "config.php:6",
+   "config.php:8",
+   "test-cookie-5.php:15",
+   "test-cookie-5.php:16",
+   "test-cookie-5.php:17",
+   "test-cookie-5.php:18",
+   "test-cookie-5.php:2",
+   "test-cookie-5.php:31",
+   "test-cookie-5.php:34",
+   "test-cookie-5.php:40",
+   "test-cookie-5.php:42",
+   "test-cookie-5.php:7"
+  ]
+ },
+ {
+  "request": {
+   "script": "test-cookie-5.php",
+   "GET": {},
+   "POST": {},
+   "COOKIE": {
+    "nv1": "",
+    "nv2": "",
+    "nv3": ""
+   }
+  },
+  "exit": 0,
+  "body_bytes": 213,
+  "faults": [],
+  "lines": [
+   "config.php:12",
+   "config.php:2",
+   "config.php:3",
+   "config.php:4",
+   "config.php:5",
+   "config.php:6",
+   "config.php:8",
+   "test-cookie-5.php:15",
+   "test-cookie-5.php:16",
+   "test-cookie-5.php:17",
+   "test-cookie-5.php:18",
+   "test-cookie-5.php:19",
+   "test-cookie-5.php:2",
+   "test-cookie-5.php:28",
+   "test-cookie-5.php:31",
+   "test-cookie-5.php:34",
+   "test-cookie-5.php:40",
+   "test-cookie-5.php:42",
+   "test-cookie-5.php:7"
+  ]
+ },
+ {
+  "request": {
+   "script": "test-cookie-5.php",
+   "GET": {},
+   "POST": {},
+   "COOKIE": {
+    "nv1": "",
+    "nv2": "",
+    "nv3": "",
+    "nv4": ""
+   }
+  },
+  "exit": 0,
+  "body_bytes": 213,
+  "faults": [],
+  "lines": [
+   "config.php:12",
+   "config.php:2",
+   "config.php:3",
+   "config.php:4",
+   "config.php:5",
+   "config.php:6",
+   "config.php:8",
+   "test-cookie-5.php:15",
+   "test-cookie-5.php:16",
+   "test-cookie-5.php:17",
+   "test-cookie-5.php:18",
+   "test-cookie-5.php:19",
+   "test-cookie-5.php:2",
+   "test-cookie-5.php:20",
+   "test-cookie-5.php:25",
+   "test-cookie-5.php:28",
+   "test-cookie-5.php:31",
+   "test-cookie-5.php:34",
+   "test-cookie-5.php:40",
+   "test-cookie-5.php:42",
+   "test-cookie-5.php:7"
+  ]
+ },
+ {
+  "request": {
+   "script": "test-cookie-5.php",
+   "GET": {},
+   "POST": {},
+   "COOKIE": {
+    "nv1": "",
+    "nv2": "",
+    "nv3": "",
+    "nv4": "",
+    "nv5": ""
+   }
+  },
+  "exit": 0,
+  "body_bytes": 226,
+  "faults": [
+   {
+    "kind": "sql",
+    "errno": 1064,
+    "sql": "select * from user where id=0'"
+   }
+  ],
+  "lines": [
+   "config.php:12",
+   "config.php:2",
+   "config.php:3",
+   "config.php:4",
+   "config.php:5",
+   "config.php:6",
+   "config.php:8",
+   "test-cookie-5.php:15",
+   "test-cookie-5.php:16",
+   "test-cookie-5.php:17",
+   "test-cookie-5.php:18",
+   "test-cookie-5.php:19",
+   "test-cookie-5.php:2",
+   "test-cookie-5.php:20",
+   "test-cookie-5.php:21",
+   "test-cookie-5.php:22",
+   "test-cookie-5.php:23",
+   "test-cookie-5.php:25",
+   "test-cookie-5.php:28",
+   "test-cookie-5.php:31",
+   "test-cookie-5.php:34",
+   "test-cookie-5.php:40",
+   "test-cookie-5.php:42",
+   "test-cookie-5.php:7"
+  ]
+ },
+ {
+  "request": {
+   "script": "test-cookie-5.php",
+   "GET": {},
+   "POST": {},
+   "COOKIE": {
+    "nv1": "",
+    "nv2": "",
+    "nv3": "",
+    "nv4": "",
+    "nv5": "",
+    "vul1": ""
+   }
+  },
+  "exit": 0,
+  "body_bytes": 226,
+  "faults": [
+   {
+    "kind": "sql",
+    "errno": 1064,
+    "sql": "select * from user where id=0'"
+   }
+  ],
+  "lines": [
+   "config.php:12",
+   "config.php:2",
+   "config.php:3",
+   "config.php:4",
+   "config.php:5",
+   "config.php:6",
+   "config.php:8",
+   "test-cookie-5.php:15",
+   "test-cookie-5.php:16",
+   "test-cookie-5.php:17",
+   "test-cookie-5.php:18",
+   "test-cookie-5.php:19",
+   "test-cookie-5.php:2",
+   "test-cookie-5.php:20",
+   "test-cookie-5.php:21",
+   "test-cookie-5.php:22",
+   "test-cookie-5.php:23",
+   "test-cookie-5.php:25",
+   "test-cookie-5.php:28",
+   "test-cookie-5.php:31",
+   "test-cookie-5.php:34",
+   "test-cookie-5.php:40",
+   "test-cookie-5.php:42",
+   "test-cookie-5.php:7"
+  ]
+ },
+ {
+  "request": {
+   "script": "test-equal-1.php",
+   "GET": {},
+   "POST": {},
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 215,
+  "faults": [],
+  "lines": [
+   "config.php:12",
+   "config.php:2",
+   "config.php:3",
+   "config.php:4",
+   "config.php:5",
+   "config.php:6",
+   "config.php:8",
+   "test-equal-1.php:14",
+   "test-equal-1.php:15",
+   "test-equal-1.php:19",
+   "test-equal-1.php:2",
+   "test-equal-1.php:22",
+   "test-equal-1.php:24",
+   "test-equal-1.php:7"
+  ]
+ },
+ {
+  "request": {
+   "script": "test-equal-1.php",
+   "GET": {
+    "nv1": ""
+   },
+   "POST": {},
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 215,
+  "faults": [],
+  "lines": [
+   "config.php:12",
+   "config.php:2",
+   "config.php:3",
+   "config.php:4",
+   "config.php:5",
+   "config.php:6",
+   "config.php:8",
+   "test-equal-1.php:14",
+   "test-equal-1.php:15",
+   "test-equal-1.php:19",
+   "test-equal-1.php:2",
+   "test-equal-1.php:22",
+   "test-equal-1.php:24",
+   "test-equal-1.php:7"
+  ]
+ },
+ {
+  "request": {
+   "script": "test-equal-1.php",
+   "GET": {
+    "nv1": "YYYY"
+   },
+   "POST": {},
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 226,
+  "faults": [
+   {
+    "kind": "sql",
+    "errno": 1064,
+    "sql": "select * from user where id='"
+   }
+  ],
+  "lines": [
+   "config.php:12",
+   "config.php:2",
+   "config.php:3",
+   "config.php:4",
+   "config.php:5",
+   "config.php:6",
+   "config.php:8",
+   "test-equal-1.php:14",
+   "test-equal-1.php:15",
+   "test-equal-1.php:16",
+   "test-equal-1.php:17",
+   "test-equal-1.php:2",
+   "test-equal-1.php:22",
+   "test-equal-1.php:24",
+   "test-equal-1.php:7"
+  ]
+ },
+ {
+  "request": {
+   "script": "test-findvar-1.php",
+   "GET": {},
+   "POST": {},
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 213,
+  "faults": [],
+  "lines": [
+   "config.php:12",
+   "config.php:2",
+   "config.php:3",
+   "config.php:4",
+   "config.php:5",
+   "config.php:6",
+   "config.php:8",
+   "test-findvar-1.php:14",
+   "test-findvar-1.php:15",
+   "test-findvar-1.php:19",
+   "test-findvar-1.php:2",
+   "test-findvar-1.php:22",
+   "test-findvar-1.php:24",
+   "test-findvar-1.php:7"
+  ]
+ },
+ {
+  "request": {
+   "script": "test-findvar-1.php",
+   "GET": {},
+   "POST": {
+    "ao3": ""
+   },
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 226,
+  "faults": [
+   {
+    "kind": "sql",
+    "errno": 1064,
+    "sql": "select * from user where id='"
+   }
+  ],
+  "lines": [
+   "config.php:12",
+   "config.php:2",
+   "config.php:3",
+   "config.php:4",
+   "config.php:5",
+   "config.php:6",
+   "config.php:8",
+   "test-findvar-1.php:14",
+   "test-findvar-1.php:15",
+   "test-findvar-1.php:16",
+   "test-findvar-1.php:17",
+   "test-findvar-1.php:2",
+   "test-findvar-1.php:22",
+   "test-findvar-1.php:24",
+   "test-findvar-1.php:7"
+  ]
+ },
+ {
+  "request": {
+   "script": "test-get-5-crosspol.php",
+   "GET": {},
+   "POST": {},
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 213,
+  "faults": [],
+  "lines": [
+   "config.php:12",
+   "config.php:2",
+   "config.php:3",
+   "config.php:4",
+   "config.php:5",
+   "config.php:6",
+   "config.php:8",
+   "test-get-5-crosspol.php:15",
+   "test-get-5-crosspol.php:16",
+   "test-get-5-crosspol.php:2",
+   "test-get-5-crosspol.php:37",
+   "test-get-5-crosspol.php:40",
+   "test-get-5-crosspol.php:42",
+   "test-get-5-crosspol.php:7"
+  ]
+ },
+ {
+  "request": {
+   "script": "test-get-5-crosspol.php",
+   "GET": {
+    "nv1": ""
+   },
+   "POST": {},
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 213,
+  "faults": [],
+  "lines": [
+   "config.php:12",
+   "config.php:2",
+   "config.php:3",
+   "config.php:4",
+   "config.php:5",
+   "config.php:6",
+   "config.php:8",
+   "test-get-5-crosspol.php:15",
+   "test-get-5-crosspol.php:16",
+   "test-get-5-crosspol.php:17",
+   "test-get-5-crosspol.php:2",
+   "test-get-5-crosspol.php:34",
+   "test-get-5-crosspol.php:40",
+   "test-get-5-crosspol.php:42",
+   "test-get-5-crosspol.php:7"
+  ]
+ },
+ {
+  "request": {
+   "script": "test-get-5-crosspol.php",
+   "GET": {
+    "nv1": "",
+    "nv2": ""
+   },
+   "POST": {},
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 213,
+  "faults": [],
+  "lines": [
+   "config.php:12",
+   "config.php:2",
+   "config.php:3",
+   "config.php:4",
+   "config.php:5",
+   "config.php:6",
+   "config.php:8",
+   "test-get-5-crosspol.php:15",
+   "test-get-5-crosspol.php:16",
+   "test-get-5-crosspol.php:17",
+   "test-get-5-crosspol.php:18",
+   "test-get-5-crosspol.php:2",
+   "test-get-5-crosspol.php:31",
+   "test-get-5-crosspol.php:34",
+   "test-get-5-crosspol.php:40",
+   "test-get-5-crosspol.php:42",
+   "test-get-5-crosspol.php:7"
+  ]
+ },
+ {
+  "request": {
+   "script": "test-get-5-crosspol.php",
+   "GET": {
+    "nv1": "",
+    "nv2": "",
+    "nv3": ""
+   },
+   "POST": {},
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 213,
+  "faults": [],
+  "lines": [
+   "config.php:12",
+   "config.php:2",
+   "config.php:3",
+   "config.php:4",
+   "config.php:5",
+   "config.php:6",
+   "config.php:8",
+   "test-get-5-crosspol.php:15",
+   "test-get-5-crosspol.php:16",
+   "test-get-5-crosspol.php:17",
+   "test-get-5-crosspol.php:18",
+   "test-get-5-crosspol.php:19",
+   "test-get-5-crosspol.php:2",
+   "test-get-5-crosspol.php:28",
+   "test-get-5-crosspol.php:31",
+   "test-get-5-crosspol.php:34",
+   "test-get-5-crosspol.php:40",
+   "test-get-5-crosspol.php:42",
+   "test-get-5-crosspol.php:7"
+  ]
+ },
+ {
+  "request": {
+   "script": "test-get-5-crosspol.php",
+   "GET": {
+    "nv1": "",
+    "nv2": "",
+    "nv3": "",
+    "nv82": ""
+   },
+   "POST": {},
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 213,
+  "faults": [],
+  "lines": [
+   "config.php:12",
+   "config.php:2",
+   "config.php:3",
+   "config.php:4",
+   "config.php:5",
+   "config.php:6",
+   "config.php:8",
+   "test-get-5-crosspol.php:15",
+   "test-get-5-crosspol.php:16",
+   "test-get-5-crosspol.php:17",
+   "test-get-5-crosspol.php:18",
+   "test-get-5-crosspol.php:19",
+   "test-get-5-crosspol.php:2",
+   "test-get-5-crosspol.php:20",
+   "test-get-5-crosspol.php:25",
+   "test-get-5-crosspol.php:28",
+   "test-get-5-crosspol.php:31",
+   "test-get-5-crosspol.php:34",
+   "test-get-5-crosspol.php:40",
+   "test-get-5-crosspol.php:42",
+   "test-get-5-crosspol.php:7"
+  ]
+ },
+ {
+  "request": {
+   "script": "test-get-5-crosspol.php",
+   "GET": {
+    "nv1": "",
+    "nv2": "",
+    "nv3": "",
+    "nv82": "",
+    "nv92": ""
+   },
+   "POST": {},
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 226,
+  "faults": [
+   {
+    "kind": "sql",
+    "errno": 1064,
+    "sql": "select * from user where id='"
+   }
+  ],
+  "lines": [
+   "config.php:12",
+   "config.php:2",
+   "config.php:3",
+   "config.php:4",
+   "config.php:5",
+   "config.php:6",
+   "config.php:8",
+   "test-get-5-crosspol.php:15",
+   "test-get-5-crosspol.php:16",
+   "test-get-5-crosspol.php:17",
+   "test-get-5-crosspol.php:18",
+   "test-get-5-crosspol.php:19",
+   "test-get-5-crosspol.php:2",
+   "test-get-5-crosspol.php:20",
+   "test-get-5-crosspol.php:21",
+   "test-get-5-crosspol.php:22",
+   "test-get-5-crosspol.php:23",
+   "test-get-5-crosspol.php:25",
+   "test-get-5-crosspol.php:28",
+   "test-get-5-crosspol.php:31",
+   "test-get-5-crosspol.php:34",
+   "test-get-5-crosspol.php:40",
+   "test-get-5-crosspol.php:42",
+   "test-get-5-crosspol.php:7"
+  ]
+ },
+ {
+  "request": {
+   "script": "test-get-5-crosspol.php",
+   "GET": {
+    "nv1": "",
+    "nv2": "",
+    "nv3": "",
+    "nv82": "",
+    "nv92": "",
+    "vul1": ""
+   },
+   "POST": {},
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 226,
+  "faults": [
+   {
+    "kind": "sql",
+    "errno": 1064,
+    "sql": "select * from user where id='"
+   }
+  ],
+  "lines": [
+   "config.php:12",
+   "config.php:2",
+   "config.php:3",
+   "config.php:4",
+   "config.php:5",
+   "config.php:6",
+   "config.php:8",
+   "test-get-5-crosspol.php:15",
+   "test-get-5-crosspol.php:16",
+   "test-get-5-crosspol.php:17",
+   "test-get-5-crosspol.php:18",
+   "test-get-5-crosspol.php:19",
+   "test-get-5-crosspol.php:2",
+   "test-get-5-crosspol.php:20",
+   "test-get-5-crosspol.php:21",
+   "test-get-5-crosspol.php:22",
+   "test-get-5-crosspol.php:23",
+   "test-get-5-crosspol.php:25",
+   "test-get-5-crosspol.php:28",
+   "test-get-5-crosspol.php:31",
+   "test-get-5-crosspol.php:34",
+   "test-get-5-crosspol.php:40",
+   "test-get-5-crosspol.php:42",
+   "test-get-5-crosspol.php:7"
+  ]
+ },
+ {
+  "request": {
+   "script": "test-select-3.php",
+   "GET": {},
+   "POST": {},
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 215,
+  "faults": [],
+  "lines": [
+   "config.php:12",
+   "config.php:2",
+   "config.php:3",
+   "config.php:4",
+   "config.php:5",
+   "config.php:6",
+   "config.php:8",
+   "test-select-3.php:15",
+   "test-select-3.php:16",
+   "test-select-3.php:2",
+   "test-select-3.php:29",
+   "test-select-3.php:32",
+   "test-select-3.php:34",
+   "test-select-3.php:7"
+  ]
+ },
+ {
+  "request": {
+   "script": "test-select-3.php",
+   "GET": {
+    "sel1": ""
+   },
+   "POST": {},
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 215,
+  "faults": [],
+  "lines": [
+   "config.php:12",
+   "config.php:2",
+   "config.php:3",
+   "config.php:4",
+   "config.php:5",
+   "config.php:6",
+   "config.php:8",
+   "test-select-3.php:15",
+   "test-select-3.php:16",
+   "test-select-3.php:2",
+   "test-select-3.php:29",
+   "test-select-3.php:32",
+   "test-select-3.php:34",
+   "test-select-3.php:7"
+  ]
+ },
+ {
+  "request": {
+   "script": "test-select-3.php",
+   "GET": {
+    "sel1": "s-val1a"
+   },
+   "POST": {},
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 215,
+  "faults": [],
+  "lines": [
+   "config.php:12",
+   "config.php:2",
+   "config.php:3",
+   "config.php:4",
+   "config.php:5",
+   "config.php:6",
+   "config.php:8",
+   "test-select-3.php:15",
+   "test-select-3.php:16",
+   "test-select-3.php:17",
+   "test-select-3.php:2",
+   "test-select-3.php:26",
+   "test-select-3.php:32",
+   "test-select-3.php:34",
+   "test-select-3.php:7"
+  ]
+ },
+ {
+  "request": {
+   "script": "test-select-3.php",
+   "GET": {
+    "sel1": "s-val1a",
+    "sel2": ""
+   },
+   "POST": {},
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 215,
+  "faults": [],
+  "lines": [
+   "config.php:12",
+   "config.php:2",
+   "config.php:3",
+   "config.php:4",
+   "config.php:5",
+   "config.php:6",
+   "config.php:8",
+   "test-select-3.php:15",
+   "test-select-3.php:16",
+   "test-select-3.php:17",
+   "test-select-3.php:2",
+   "test-select-3.php:26",
+   "test-select-3.php:32",
+   "test-select-3.php:34",
+   "test-select-3.php:7"
+  ]
+ },
+ {
+  "request": {
+   "script": "test-select-3.php",
+   "GET": {
+    "sel1": "s-val1a",
+    "sel2": "s-val2b"
+   },
+   "POST": {},
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 215,
+  "faults": [],
+  "lines": [
+   "config.php:12",
+   "config.php:2",
+   "config.php:3",
+   "config.php:4",
+   "config.php:5",
+   "config.php:6",
+   "config.php:8",
+   "test-select-3.php:15",
+   "test-select-3.php:16",
+   "test-select-3.php:17",
+   "test-select-3.php:18",
+   "test-select-3.php:2",
+   "test-select-3.php:23",
+   "test-select-3.php:26",
+   "test-select-3.php:32",
+   "test-select-3.php:34",
+   "test-select-3.php:7"
+  ]
+ },
+ {
+  "request": {
+   "script": "test-select-3.php",
+   "GET": {
+    "sel1": "s-val1a",
+    "sel2": "s-val2b",
+    "sel3": ""
+   },
+   "POST": {},
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 215,
+  "faults": [],
+  "lines": [
+   "config.php:12",
+   "config.php:2",
+   "config.php:3",
+   "config.php:4",
+   "config.php:5",
+   "config.php:6",
+   "config.php:8",
+   "test-select-3.php:15",
+   "test-select-3.php:16",
+   "test-select-3.php:17",
+   "test-select-3.php:18",
+   "test-select-3.php:2",
+   "test-select-3.php:23",
+   "test-select-3.php:26",
+   "test-select-3.php:32",
+   "test-select-3.php:34",
+   "test-select-3.php:7"
+  ]
+ },
+ {
+  "request": {
+   "script": "test-select-3.php",
+   "GET": {
+    "sel1": "s-val1a",
+    "sel2": "s-val2b",
+    "sel3": "s-val3c"
+   },
+   "POST": {},
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 226,
+  "faults": [
+   {
+    "kind": "sql",
+    "errno": 1064,
+    "sql": "select * from user where id=0'"
+   }
+  ],
+  "lines": [
+   "config.php:12",
+   "config.php:2",
+   "config.php:3",
+   "config.php:4",
+   "config.php:5",
+   "config.php:6",
+   "config.php:8",
+   "test-select-3.php:15",
+   "test-select-3.php:16",
+   "test-select-3.php:17",
+   "test-select-3.php:18",
+   "test-select-3.php:19",
+   "test-select-3.php:2",
+   "test-select-3.php:20",
+   "test-select-3.php:21",
+   "test-select-3.php:23",
+   "test-select-3.php:26",
+   "test-select-3.php:32",
+   "test-select-3.php:34",
+   "test-select-3.php:7"
+  ]
+ },
+ {
+  "request": {
+   "script": "test-select-3.php",
+   "GET": {
+    "sel1": "s-val1a",
+    "sel2": "s-val2b",
+    "sel3": "s-val3c",
+    "vul1": ""
+   },
+   "POST": {},
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 226,
+  "faults": [
+   {
+    "kind": "sql",
+    "errno": 1064,
+    "sql": "select * from user where id=0'"
+   }
+  ],
+  "lines": [
+   "config.php:12",
+   "config.php:2",
+   "config.php:3",
+   "config.php:4",
+   "config.php:5",
+   "config.php:6",
+   "config.php:8",
+   "test-select-3.php:15",
+   "test-select-3.php:16",
+   "test-select-3.php:17",
+   "test-select-3.php:18",
+   "test-select-3.php:19",
+   "test-select-3.php:2",
+   "test-select-3.php:20",
+   "test-select-3.php:21",
+   "test-select-3.php:23",
+   "test-select-3.php:26",
+   "test-select-3.php:32",
+   "test-select-3.php:34",
+   "test-select-3.php:7"
+  ]
+ }
+]

@@ -1,0 +1,58 @@
+[
+ {
+  "script": "inject.php",
+  "wall_s": 1.0,
+  "requests": 3,
+  "rounds": 3,
+  "traces": 3,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [
+    "id"
+   ],
+   "POST": [],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [
+   {
+    "site": "inject.php:6",
+    "sink": "mysqli_query",
+    "kind": "injectable",
+    "instance": "select * from user where username='''",
+    "request": {
+     "GET": {
+      "id": "'"
+     },
+     "POST": {},
+     "COOKIE": {}
+    }
+   }
+  ]
+ },
+ {
+  "script": "guarded.php",
+  "wall_s": 1.3,
+  "requests": 4,
+  "rounds": 4,
+  "traces": 4,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [
+    "id"
+   ],
+   "POST": [],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": []
+ }
+]

@@ -1,0 +1,49 @@
+{
+ "script": "test-5-cmd.php",
+ "wall_s": 1.1,
+ "requests": 21,
+ "rounds": 3,
+ "traces": 7,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "vul1"
+  ],
+  "POST": [
+   "nv1",
+   "nv2",
+   "nv3",
+   "nv4",
+   "nv5"
+  ],
+  "COOKIE": []
+ },
+ "budget_hit": false,
+ "coverage_complete": true,
+ "missing": 1,
+ "assumptions": [
+  "shim result only, at config.php:8: no request can drive it"
+ ],
+ "sink_sites": [
+  {
+   "site": "test-5-cmd.php:22",
+   "sink": "system",
+   "kind": "malformed-at-reach",
+   "instance": "ls (",
+   "request": {
+    "GET": {
+     "vul1": "6"
+    },
+    "POST": {
+     "nv1": "1",
+     "nv2": "2",
+     "nv3": "3",
+     "nv4": "4",
+     "nv5": ""
+    },
+    "COOKIE": {}
+   }
+  }
+ ]
+}

@@ -1,0 +1,109 @@
+[
+ {
+  "script": "config.php",
+  "GET": {},
+  "POST": {},
+  "COOKIE": {}
+ },
+ {
+  "script": "test-2.php",
+  "GET": {},
+  "POST": {
+   "nv1": "1",
+   "nv2": "2",
+   "nv3": "3",
+   "nv4": "4"
+  },
+  "COOKIE": {}
+ },
+ {
+  "script": "test-5-cmd.php",
+  "GET": {
+   "vul1": "6"
+  },
+  "POST": {
+   "nv1": "1",
+   "nv2": "2",
+   "nv3": "3",
+   "nv4": "4"
+  },
+  "COOKIE": {}
+ },
+ {
+  "script": "test-cookie-5.php",
+  "GET": {
+   "vul1": "6"
+  },
+  "POST": {
+   "nv1": "nv_val1"
+  },
+  "COOKIE": {
+   "nv1": "1",
+   "nv2": "2",
+   "nv3": "3",
+   "nv4": "4"
+  }
+ },
+ {
+  "script": "test-equal-1.php",
+  "GET": {
+   "vul1": "6"
+  },
+  "POST": {
+   "nv1": "SSSS"
+  },
+  "COOKIE": {}
+ },
+ {
+  "script": "test-findvar-1.php",
+  "GET": {
+   "aaa": "1"
+  },
+  "POST": {},
+  "COOKIE": {}
+ },
+ {
+  "script": "test-get-5-crosspol.php",
+  "GET": {
+   "nv3": "3",
+   "nv82": "4"
+  },
+  "POST": {},
+  "COOKIE": {}
+ },
+ {
+  "script": "test-get-5-crosspol.php",
+  "GET": {
+   "nv1": "1",
+   "nv2": "2",
+   "nv3": "3",
+   "nv92": "5"
+  },
+  "POST": {},
+  "COOKIE": {}
+ },
+ {
+  "script": "test-select-3.php",
+  "GET": {
+   "sel1": "s-val2b"
+  },
+  "POST": {},
+  "COOKIE": {}
+ },
+ {
+  "script": "test-select-3.php",
+  "GET": {
+   "sel1": "\u0000\u0000\u0000\u0000\u0000\u0000\u0000"
+  },
+  "POST": {},
+  "COOKIE": {}
+ },
+ {
+  "script": "test-select-3.php",
+  "GET": {
+   "sel1": "s-val1a"
+  },
+  "POST": {},
+  "COOKIE": {}
+ }
+]

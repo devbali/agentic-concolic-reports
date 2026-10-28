@@ -1,0 +1,42 @@
+{
+ "script": "test-select-3.php",
+ "wall_s": 3.7,
+ "requests": 36,
+ "rounds": 12,
+ "traces": 12,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "sel1",
+   "sel2",
+   "sel3",
+   "vul1"
+  ],
+  "POST": [],
+  "COOKIE": []
+ },
+ "budget_hit": false,
+ "coverage_complete": true,
+ "missing": 1,
+ "assumptions": [
+  "shim result only, at config.php:8: no request can drive it"
+ ],
+ "sink_sites": [
+  {
+   "site": "test-select-3.php:20",
+   "sink": "mysqli_query",
+   "kind": "malformed-at-reach",
+   "instance": "select * from user where id=0'",
+   "request": {
+    "GET": {
+     "sel1": "s-val1a",
+     "sel2": "s-val2b",
+     "sel3": "s-val3c"
+    },
+    "POST": {},
+    "COOKIE": {}
+   }
+  }
+ ]
+}

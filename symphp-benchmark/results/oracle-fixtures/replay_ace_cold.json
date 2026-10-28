@@ -1,0 +1,133 @@
+[
+ {
+  "request": {
+   "script": "guarded.php",
+   "GET": {},
+   "POST": {},
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 67,
+  "faults": [],
+  "lines": [
+   "config.php:2",
+   "config.php:3",
+   "guarded.php:10",
+   "guarded.php:2",
+   "guarded.php:5"
+  ]
+ },
+ {
+  "request": {
+   "script": "guarded.php",
+   "GET": {
+    "id": ""
+   },
+   "POST": {},
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 67,
+  "faults": [],
+  "lines": [
+   "config.php:2",
+   "config.php:3",
+   "guarded.php:10",
+   "guarded.php:2",
+   "guarded.php:5"
+  ]
+ },
+ {
+  "request": {
+   "script": "guarded.php",
+   "GET": {
+    "id": "trickE"
+   },
+   "POST": {},
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 77,
+  "faults": [],
+  "lines": [
+   "config.php:2",
+   "config.php:3",
+   "guarded.php:10",
+   "guarded.php:2",
+   "guarded.php:5",
+   "guarded.php:6",
+   "guarded.php:7",
+   "guarded.php:8"
+  ]
+ },
+ {
+  "request": {
+   "script": "inject.php",
+   "GET": {},
+   "POST": {},
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 67,
+  "faults": [],
+  "lines": [
+   "config.php:2",
+   "config.php:3",
+   "inject.php:2",
+   "inject.php:4",
+   "inject.php:9"
+  ]
+ },
+ {
+  "request": {
+   "script": "inject.php",
+   "GET": {
+    "id": ""
+   },
+   "POST": {},
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 77,
+  "faults": [],
+  "lines": [
+   "config.php:2",
+   "config.php:3",
+   "inject.php:2",
+   "inject.php:4",
+   "inject.php:5",
+   "inject.php:6",
+   "inject.php:7",
+   "inject.php:9"
+  ]
+ },
+ {
+  "request": {
+   "script": "inject.php",
+   "GET": {
+    "id": "'"
+   },
+   "POST": {},
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 77,
+  "faults": [
+   {
+    "kind": "sql",
+    "errno": 1064,
+    "sql": "select * from user where username='''"
+   }
+  ],
+  "lines": [
+   "config.php:2",
+   "config.php:3",
+   "inject.php:2",
+   "inject.php:4",
+   "inject.php:5",
+   "inject.php:6",
+   "inject.php:7",
+   "inject.php:9"
+  ]
+ }
+]

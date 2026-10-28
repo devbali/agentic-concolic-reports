@@ -1,0 +1,319 @@
+[
+ {
+  "script": "config.php",
+  "wall_s": 0.3,
+  "requests": 1,
+  "rounds": 1,
+  "traces": 1,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 1,
+  "assumptions": [
+   "shim result only, at config.php:8: no request can drive it"
+  ],
+  "sink_sites": []
+ },
+ {
+  "script": "test-2.php",
+  "wall_s": 2.6,
+  "requests": 21,
+  "rounds": 9,
+  "traces": 9,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [
+    "vul1"
+   ],
+   "POST": [
+    "nv1",
+    "nv2",
+    "nv3"
+   ],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 1,
+  "assumptions": [
+   "shim result only, at config.php:8: no request can drive it"
+  ],
+  "sink_sites": [
+   {
+    "site": "test-2.php:20",
+    "sink": "mysqli_query",
+    "kind": "malformed-at-reach",
+    "instance": "select * from user where id=0'",
+    "request": {
+     "GET": {},
+     "POST": {
+      "nv1": "",
+      "nv2": "",
+      "nv3": ""
+     },
+     "COOKIE": {}
+    }
+   }
+  ]
+ },
+ {
+  "script": "test-5-cmd.php",
+  "wall_s": 3.2,
+  "requests": 31,
+  "rounds": 11,
+  "traces": 11,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [
+    "nv1",
+    "nv2",
+    "nv3",
+    "nv4",
+    "nv5"
+   ],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 1,
+  "assumptions": [
+   "shim result only, at config.php:8: no request can drive it"
+  ],
+  "sink_sites": [
+   {
+    "site": "test-5-cmd.php:22",
+    "sink": "system",
+    "kind": "malformed-at-reach",
+    "instance": "ls (",
+    "request": {
+     "GET": {},
+     "POST": {
+      "nv1": "",
+      "nv2": "",
+      "nv3": "",
+      "nv4": "",
+      "nv5": ""
+     },
+     "COOKIE": {}
+    }
+   }
+  ]
+ },
+ {
+  "script": "test-cookie-5.php",
+  "wall_s": 3.8,
+  "requests": 43,
+  "rounds": 13,
+  "traces": 13,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [],
+   "COOKIE": [
+    "nv1",
+    "nv2",
+    "nv3",
+    "nv4",
+    "nv5",
+    "vul1"
+   ]
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 1,
+  "assumptions": [
+   "shim result only, at config.php:8: no request can drive it"
+  ],
+  "sink_sites": [
+   {
+    "site": "test-cookie-5.php:22",
+    "sink": "mysqli_query",
+    "kind": "malformed-at-reach",
+    "instance": "select * from user where id=0'",
+    "request": {
+     "GET": {},
+     "POST": {},
+     "COOKIE": {
+      "nv1": "",
+      "nv2": "",
+      "nv3": "",
+      "nv4": "",
+      "nv5": ""
+     }
+    }
+   }
+  ]
+ },
+ {
+  "script": "test-equal-1.php",
+  "wall_s": 1.1,
+  "requests": 4,
+  "rounds": 4,
+  "traces": 4,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [
+    "nv1"
+   ],
+   "POST": [],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 1,
+  "assumptions": [
+   "shim result only, at config.php:8: no request can drive it"
+  ],
+  "sink_sites": [
+   {
+    "site": "test-equal-1.php:16",
+    "sink": "mysqli_query",
+    "kind": "malformed-at-reach",
+    "instance": "select * from user where id='",
+    "request": {
+     "GET": {
+      "nv1": "YYYY"
+     },
+     "POST": {},
+     "COOKIE": {}
+    }
+   }
+  ]
+ },
+ {
+  "script": "test-findvar-1.php",
+  "wall_s": 0.9,
+  "requests": 3,
+  "rounds": 3,
+  "traces": 3,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [
+    "ao3"
+   ],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 1,
+  "assumptions": [
+   "shim result only, at config.php:8: no request can drive it"
+  ],
+  "sink_sites": [
+   {
+    "site": "test-findvar-1.php:16",
+    "sink": "mysqli_query",
+    "kind": "malformed-at-reach",
+    "instance": "select * from user where id='",
+    "request": {
+     "GET": {},
+     "POST": {
+      "ao3": ""
+     },
+     "COOKIE": {}
+    }
+   }
+  ]
+ },
+ {
+  "script": "test-get-5-crosspol.php",
+  "wall_s": 3.9,
+  "requests": 43,
+  "rounds": 13,
+  "traces": 13,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [
+    "nv1",
+    "nv2",
+    "nv3",
+    "nv82",
+    "nv92",
+    "vul1"
+   ],
+   "POST": [],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 1,
+  "assumptions": [
+   "shim result only, at config.php:8: no request can drive it"
+  ],
+  "sink_sites": [
+   {
+    "site": "test-get-5-crosspol.php:22",
+    "sink": "mysqli_query",
+    "kind": "malformed-at-reach",
+    "instance": "select * from user where id='",
+    "request": {
+     "GET": {
+      "nv1": "",
+      "nv2": "",
+      "nv3": "",
+      "nv82": "",
+      "nv92": ""
+     },
+     "POST": {},
+     "COOKIE": {}
+    }
+   }
+  ]
+ },
+ {
+  "script": "test-select-3.php",
+  "wall_s": 3.7,
+  "requests": 36,
+  "rounds": 12,
+  "traces": 12,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [
+    "sel1",
+    "sel2",
+    "sel3",
+    "vul1"
+   ],
+   "POST": [],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 1,
+  "assumptions": [
+   "shim result only, at config.php:8: no request can drive it"
+  ],
+  "sink_sites": [
+   {
+    "site": "test-select-3.php:20",
+    "sink": "mysqli_query",
+    "kind": "malformed-at-reach",
+    "instance": "select * from user where id=0'",
+    "request": {
+     "GET": {
+      "sel1": "s-val1a",
+      "sel2": "s-val2b",
+      "sel3": "s-val3c"
+     },
+     "POST": {},
+     "COOKIE": {}
+    }
+   }
+  ]
+ }
+]

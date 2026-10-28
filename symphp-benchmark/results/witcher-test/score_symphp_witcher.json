@@ -1,0 +1,79 @@
+{
+ "app": "witcher-test",
+ "tool": "symphp:witcher",
+ "requests": 11,
+ "faulting_requests": 1,
+ "detected": 1,
+ "known": 7,
+ "coverage_pct": 72.94,
+ "covered_lines": 62,
+ "executable_lines": 85,
+ "vulns": [
+  {
+   "id": "W1",
+   "script": "test-2.php",
+   "line": 20,
+   "type": "sqli",
+   "detected": true,
+   "witness": {
+    "script": "test-2.php",
+    "GET": {},
+    "POST": {
+     "nv1": "1",
+     "nv2": "2",
+     "nv3": "3",
+     "nv4": "4"
+    },
+    "COOKIE": {}
+   }
+  },
+  {
+   "id": "W2",
+   "script": "test-5-cmd.php",
+   "line": 22,
+   "type": "cmdi",
+   "detected": false,
+   "witness": null
+  },
+  {
+   "id": "W3",
+   "script": "test-cookie-5.php",
+   "line": 22,
+   "type": "sqli",
+   "detected": false,
+   "witness": null
+  },
+  {
+   "id": "W4",
+   "script": "test-equal-1.php",
+   "line": 16,
+   "type": "sqli",
+   "detected": false,
+   "witness": null
+  },
+  {
+   "id": "W5",
+   "script": "test-findvar-1.php",
+   "line": 16,
+   "type": "sqli",
+   "detected": false,
+   "witness": null
+  },
+  {
+   "id": "W6",
+   "script": "test-get-5-crosspol.php",
+   "line": 22,
+   "type": "sqli",
+   "detected": false,
+   "witness": null
+  },
+  {
+   "id": "W7",
+   "script": "test-select-3.php",
+   "line": 20,
+   "type": "sqli",
+   "detected": false,
+   "witness": null
+  }
+ ]
+}

@@ -1,0 +1,54 @@
+{
+ "script": "test-cookie-5.php",
+ "wall_s": 1.7,
+ "requests": 33,
+ "rounds": 5,
+ "traces": 9,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "vul1"
+  ],
+  "POST": [
+   "nv1"
+  ],
+  "COOKIE": [
+   "nv1",
+   "nv2",
+   "nv3",
+   "nv4",
+   "nv5",
+   "vul1"
+  ]
+ },
+ "budget_hit": false,
+ "coverage_complete": true,
+ "missing": 1,
+ "assumptions": [
+  "shim result only, at config.php:8: no request can drive it"
+ ],
+ "sink_sites": [
+  {
+   "site": "test-cookie-5.php:22",
+   "sink": "mysqli_query",
+   "kind": "malformed-at-reach",
+   "instance": "select * from user where id=0'",
+   "request": {
+    "GET": {
+     "vul1": "6"
+    },
+    "POST": {
+     "nv1": "nv_val1"
+    },
+    "COOKIE": {
+     "nv1": "1",
+     "nv2": "2",
+     "nv3": "3",
+     "nv4": "4",
+     "nv5": ""
+    }
+   }
+  }
+ ]
+}

@@ -1,0 +1,28 @@
+{
+ "app": "oracle-fixtures",
+ "tool": "ace:cold",
+ "requests": 6,
+ "faulting_requests": 1,
+ "detected": 1,
+ "known": 1,
+ "coverage_pct": 100.0,
+ "covered_lines": 11,
+ "executable_lines": 11,
+ "vulns": [
+  {
+   "id": "F1",
+   "script": "inject.php",
+   "line": 6,
+   "type": "sqli",
+   "detected": true,
+   "witness": {
+    "script": "inject.php",
+    "GET": {
+     "id": "'"
+    },
+    "POST": {},
+    "COOKIE": {}
+   }
+  }
+ ]
+}

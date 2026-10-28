@@ -1,0 +1,322 @@
+{
+ "schema_version": "1.4",
+ "label": "r09_000",
+ "symbolic_vars": [
+  {
+   "name": "COOKIE_nv1",
+   "type": "str?",
+   "sort": "String",
+   "value": "",
+   "origin": {
+    "kind": "input",
+    "name": "COOKIE_nv1"
+   }
+  },
+  {
+   "name": "COOKIE_nv2",
+   "type": "str?",
+   "sort": "String",
+   "value": "",
+   "origin": {
+    "kind": "input",
+    "name": "COOKIE_nv2"
+   }
+  },
+  {
+   "name": "COOKIE_nv3",
+   "type": "str?",
+   "sort": "String",
+   "value": "",
+   "origin": {
+    "kind": "input",
+    "name": "COOKIE_nv3"
+   }
+  },
+  {
+   "name": "COOKIE_nv4",
+   "type": "str?",
+   "sort": "String",
+   "value": "",
+   "origin": {
+    "kind": "input",
+    "name": "COOKIE_nv4"
+   }
+  },
+  {
+   "name": "SYM_RESULT_mysqli_connect_1",
+   "type": "bool",
+   "sort": "Bool",
+   "value": true
+  },
+  {
+   "name": "SYM_RESULT_mysqli_connect_errno_1",
+   "type": "int",
+   "sort": "Int",
+   "value": 0
+  }
+ ],
+ "events": [
+  {
+   "type": "call",
+   "target": "mysqli_connect",
+   "args": {
+    "arg0": {
+     "lit": {
+      "sort": "str",
+      "value": "127.0.0.1"
+     }
+    },
+    "arg1": {
+     "lit": {
+      "sort": "str",
+      "value": "root"
+     }
+    },
+    "arg2": {
+     "lit": {
+      "sort": "str",
+      "value": ""
+     }
+    },
+    "arg3": {
+     "lit": {
+      "sort": "str",
+      "value": "testdb"
+     }
+    }
+   },
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/witcher-test/config.php",
+   "lineno": 6,
+   "function": "include"
+  },
+  {
+   "type": "symbolic_call",
+   "target": "mysqli_connect",
+   "args": {
+    "arg0": {
+     "lit": {
+      "sort": "str",
+      "value": "127.0.0.1"
+     }
+    },
+    "arg1": {
+     "lit": {
+      "sort": "str",
+      "value": "root"
+     }
+    },
+    "arg2": {
+     "lit": {
+      "sort": "str",
+      "value": ""
+     }
+    },
+    "arg3": {
+     "lit": {
+      "sort": "str",
+      "value": "testdb"
+     }
+    }
+   },
+   "result_name": "SYM_RESULT_mysqli_connect_1",
+   "result_type": "bool",
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/witcher-test/config.php",
+   "lineno": 6,
+   "function": "include",
+   "result_sort": "Bool",
+   "result_value": {
+    "lit": {
+     "sort": "bool",
+     "value": true
+    }
+   }
+  },
+  {
+   "type": "call",
+   "target": "mysqli_connect_errno",
+   "args": {},
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/witcher-test/config.php",
+   "lineno": 8,
+   "function": "include"
+  },
+  {
+   "type": "symbolic_call",
+   "target": "mysqli_connect_errno",
+   "args": {},
+   "result_name": "SYM_RESULT_mysqli_connect_errno_1",
+   "result_type": "int",
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/witcher-test/config.php",
+   "lineno": 8,
+   "function": "include",
+   "result_sort": "Int",
+   "result_value": {
+    "lit": {
+     "sort": "int",
+     "value": 0
+    }
+   }
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "!=",
+    "args": [
+     {
+      "sym": "SYM_RESULT_mysqli_connect_errno_1"
+     },
+     {
+      "lit": {
+       "sort": "int",
+       "value": 0
+      }
+     }
+    ]
+   },
+   "taken": false,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/witcher-test/config.php",
+   "lineno": 8,
+   "function": "include"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "COOKIE_nv1"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": false,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/witcher-test/test-cookie-5.php",
+   "lineno": 16,
+   "function": "include"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "COOKIE_nv2"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": false,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/witcher-test/test-cookie-5.php",
+   "lineno": 17,
+   "function": "include"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "COOKIE_nv3"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": false,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/witcher-test/test-cookie-5.php",
+   "lineno": 18,
+   "function": "include"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "COOKIE_nv4"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": false,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/witcher-test/test-cookie-5.php",
+   "lineno": 19,
+   "function": "include"
+  }
+ ],
+ "types": {},
+ "declarations": {
+  "mysqli_connect": {
+   "kind": "shim"
+  },
+  "mysqli_connect_errno": {
+   "kind": "shim"
+  },
+  "mysqli_connect_error": {
+   "kind": "shim"
+  },
+  "mysqli_select_db": {
+   "kind": "shim"
+  },
+  "mysqli_close": {
+   "kind": "shim"
+  },
+  "mysqli_error": {
+   "kind": "shim"
+  },
+  "mysqli_query": {
+   "kind": "target_function"
+  },
+  "mysqli_real_query": {
+   "kind": "target_function"
+  },
+  "mysqli_multi_query": {
+   "kind": "target_function"
+  },
+  "mysql_query": {
+   "kind": "target_function"
+  },
+  "system": {
+   "kind": "target_function"
+  },
+  "exec": {
+   "kind": "target_function"
+  },
+  "shell_exec": {
+   "kind": "target_function"
+  },
+  "passthru": {
+   "kind": "target_function"
+  },
+  "popen": {
+   "kind": "target_function"
+  },
+  "proc_open": {
+   "kind": "target_function"
+  }
+ },
+ "request": {
+  "GET": {},
+  "POST": {},
+  "COOKIE": {
+   "nv1": "",
+   "nv2": "",
+   "nv3": "",
+   "nv4": ""
+  }
+ }
+}

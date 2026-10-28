@@ -1,0 +1,87 @@
+{
+  "witcher-test": {
+    "src": "../../apps/witcher-src/base/witcher/tests/test_data/code",
+    "witcher_requests": "../../apps/witcher-src/base/witcher/tests/test_data/request_data.json",
+    "scripts": [
+      "config.php",
+      "test-2.php",
+      "test-5-cmd.php",
+      "test-cookie-5.php",
+      "test-equal-1.php",
+      "test-findvar-1.php",
+      "test-get-5-crosspol.php",
+      "test-select-3.php"
+    ],
+    "known_vulns": [
+      {
+        "id": "W1",
+        "script": "test-2.php",
+        "line": 20,
+        "type": "sqli"
+      },
+      {
+        "id": "W2",
+        "script": "test-5-cmd.php",
+        "line": 22,
+        "type": "cmdi"
+      },
+      {
+        "id": "W3",
+        "script": "test-cookie-5.php",
+        "line": 22,
+        "type": "sqli"
+      },
+      {
+        "id": "W4",
+        "script": "test-equal-1.php",
+        "line": 16,
+        "type": "sqli"
+      },
+      {
+        "id": "W5",
+        "script": "test-findvar-1.php",
+        "line": 16,
+        "type": "sqli"
+      },
+      {
+        "id": "W6",
+        "script": "test-get-5-crosspol.php",
+        "line": 22,
+        "type": "sqli"
+      },
+      {
+        "id": "W7",
+        "script": "test-select-3.php",
+        "line": 20,
+        "type": "sqli"
+      }
+    ],
+    "db_setup": [
+      "DROP DATABASE IF EXISTS testdb;",
+      "CREATE DATABASE testdb;",
+      "CREATE TABLE testdb.`user` (`id` int(11) NOT NULL AUTO_INCREMENT,`username` varchar(255) NOT NULL, PRIMARY KEY (id)) ENGINE=InnoDB DEFAULT CHARSET=latin1;",
+      "INSERT INTO testdb.`user` (`username`) VALUES ('trickE');"
+    ]
+  },
+  "oracle-fixtures": {
+    "src": "fixtures/oracle",
+    "scripts": [
+      "inject.php",
+      "guarded.php"
+    ],
+    "known_vulns": [
+      {
+        "id": "F1",
+        "script": "inject.php",
+        "line": 6,
+        "type": "sqli"
+      }
+    ],
+    "db_setup": [
+      "DROP DATABASE IF EXISTS testdb;",
+      "CREATE DATABASE testdb;",
+      "CREATE TABLE testdb.`user` (`id` int(11) NOT NULL AUTO_INCREMENT,`username` varchar(255) NOT NULL, PRIMARY KEY (id)) ENGINE=InnoDB DEFAULT CHARSET=latin1;",
+      "INSERT INTO testdb.`user` (`username`) VALUES ('trickE');"
+    ]
+  }
+}
