@@ -1,0 +1,71 @@
+{
+ "app": "drupal80",
+ "tool": "ace:m5_cold",
+ "requests": 2,
+ "findings": 0,
+ "findings_judge_confirmed": 0,
+ "findings_unconfirmed": [],
+ "faulting_requests": 2,
+ "detected": 0,
+ "known": 3,
+ "cves_detected": 0,
+ "cves_known": 2,
+ "cves": {
+  "CVE-2020-13688": false,
+  "CVE-2025-3057": false
+ },
+ "coverage_pct": 3.79,
+ "covered_lines": 12096,
+ "executable_lines": 318751,
+ "vulns": [
+  {
+   "id": "D80-1",
+   "cve": [
+    "CVE-2020-13688"
+   ],
+   "type": "xss",
+   "sink": "core/lib/Drupal/Core/Form/FormBuilder.php:847",
+   "auth": "none",
+   "confidence": "likely",
+   "param": [
+    "REQUEST_URI (path + query string)"
+   ],
+   "method": "GET",
+   "detected": false,
+   "witness": null
+  },
+  {
+   "id": "D80-2",
+   "cve": [
+    "CVE-2025-3057"
+   ],
+   "type": "xss",
+   "sink": "core/lib/Drupal/Core/DrupalKernel.php:673",
+   "auth": "none",
+   "confidence": "likely",
+   "param": [
+    "request-derived exception message"
+   ],
+   "method": "GET",
+   "detected": false,
+   "witness": null
+  },
+  {
+   "id": "D80-3",
+   "cve": [],
+   "type": "cmdi",
+   "sink": "core/lib/Drupal/Core/Mail/Plugin/Mail/PhpMail.php:94",
+   "auth": "admin",
+   "confidence": "likely",
+   "param": [
+    "site_mail"
+   ],
+   "method": "POST",
+   "detected": false,
+   "witness": null
+  }
+ ],
+ "xdebug_coverage_pct": 3.79,
+ "xdebug_covered_lines": 12096,
+ "xdebug_method": "auto_prepend_file (coverage-only, outside docroot); the fault replays themselves ran under it (judge_cgi xdebug), so trace == xdebug"
+}

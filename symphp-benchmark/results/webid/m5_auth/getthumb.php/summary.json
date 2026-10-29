@@ -1,0 +1,41 @@
+{
+ "script": "getthumb.php",
+ "wall_s": 5.8,
+ "requests": 25,
+ "rounds": 7,
+ "traces": 25,
+ "errored": 25,
+ "first_error": "Error: Call to undefined function imagecreate()",
+ "keys_discovered": {
+  "GET": [
+   "fromfile",
+   "lan",
+   "w"
+  ],
+  "POST": [],
+  "COOKIE": [
+   "PHPSESSID"
+  ]
+ },
+ "budget_hit": false,
+ "coverage_complete": true,
+ "missing": 0,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [
+  "Error: Call to undefined function imagecreate()"
+ ],
+ "halted_traces": 0,
+ "concretized": {
+  "intval @ getthumb.php:17": 12,
+  "internal argument @ includes/messages.inc.php:20": 6,
+  "internal argument @ getthumb.php:55": 16
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

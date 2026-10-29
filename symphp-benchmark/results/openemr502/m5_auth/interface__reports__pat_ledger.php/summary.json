@@ -1,0 +1,65 @@
+{
+ "script": "interface/reports/pat_ledger.php",
+ "wall_s": 34.8,
+ "requests": 121,
+ "rounds": 6,
+ "traces": 84,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "$form_dob",
+   "auth",
+   "form",
+   "form_csvexport",
+   "form_dob",
+   "form_facility",
+   "form_from_date",
+   "form_patient",
+   "form_pid",
+   "form_provider",
+   "form_refresh",
+   "patient_id",
+   "pid",
+   "site",
+   "skip_timeout_reset"
+  ],
+  "POST": [
+   "$form_dob",
+   "authUser",
+   "csrf_token_form",
+   "form_csvexport",
+   "form_dob",
+   "form_facility",
+   "form_from_date",
+   "form_patient",
+   "form_pid",
+   "form_provider",
+   "form_refresh",
+   "form_to_date",
+   "pid",
+   "skip_timeout_reset"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 3,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 83,
+ "concretized": {
+  "internal argument @ interface/globals.php:127": 2,
+  "internal argument @ interface/globals.php:141": 1
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

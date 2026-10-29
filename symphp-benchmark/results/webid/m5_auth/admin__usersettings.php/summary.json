@@ -1,0 +1,52 @@
+{
+ "script": "admin/usersettings.php",
+ "wall_s": 60.0,
+ "requests": 312,
+ "rounds": 12,
+ "traces": 228,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "lan"
+  ],
+  "POST": [
+   "action",
+   "anotes",
+   "bidding_visable_to_guest",
+   "csrftoken",
+   "email_admin_on_signup",
+   "prune_unactivated_users",
+   "prune_unactivated_users_days",
+   "user_request_seller_permission",
+   "usersauth",
+   "usersconf"
+  ],
+  "COOKIE": [
+   "PHPSESSID",
+   "USERLANGUAGE",
+   "WEBID_RM_ID"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 32,
+ "concretized": {
+  "internal argument @ includes/functions_global.php:467": 97,
+  "internal argument @ includes/messages.inc.php:41": 121,
+  "internal argument @ includes/messages.inc.php:20": 30,
+  "string conversion @ includes/database/DatabasePDO.php:80": 171,
+  "intval @ includes/functions_global.php:130": 115
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

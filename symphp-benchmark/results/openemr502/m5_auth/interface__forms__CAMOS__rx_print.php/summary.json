@@ -1,0 +1,52 @@
+{
+ "script": "interface/forms/CAMOS/rx_print.php",
+ "wall_s": 34.4,
+ "requests": 91,
+ "rounds": 5,
+ "traces": 91,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "letterhead",
+   "pid",
+   "site",
+   "skip_timeout_reset"
+  ],
+  "POST": [
+   "authUser",
+   "csrf_token_form",
+   "pid",
+   "print_html",
+   "print_pdf",
+   "skip_timeout_reset",
+   "update"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 3,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 91,
+ "concretized": {
+  "internal argument @ interface/globals.php:127": 1,
+  "internal argument @ interface/globals.php:141": 1,
+  "gettype @ vendor/adodb/adodb-php/adodb.inc.php:1189": 9,
+  "internal argument @ src/Common/Logging/EventAuditLogger.php:757": 9,
+  "empty() @ src/Common/Logging/EventAuditLogger.php:759": 9,
+  "string conversion @ src/Common/Logging/EventAuditLogger.php:765": 9
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

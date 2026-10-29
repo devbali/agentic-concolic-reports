@@ -1,0 +1,54 @@
+{
+ "script": "interface/patient_file/pos_checkout.php",
+ "wall_s": 30.0,
+ "requests": 51,
+ "rounds": 4,
+ "traces": 51,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "details",
+   "enc",
+   "pid",
+   "ptid",
+   "site",
+   "skip_timeout_reset"
+  ],
+  "POST": [
+   "authUser",
+   "csrf_token_form",
+   "form_save",
+   "pid",
+   "skip_timeout_reset"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 51,
+ "concretized": {
+  "internal argument @ interface/globals.php:127": 1,
+  "internal argument @ interface/globals.php:141": 1,
+  "gettype @ vendor/adodb/adodb-php/adodb.inc.php:1189": 32,
+  "internal argument @ vendor/adodb/adodb-php/adodb.inc.php:183": 32,
+  "internal argument @ src/Common/Logging/EventAuditLogger.php:757": 32,
+  "empty() @ src/Common/Logging/EventAuditLogger.php:759": 32,
+  "string conversion @ src/Common/Logging/EventAuditLogger.php:765": 32,
+  "arithmetic + @ interface/patient_file/pos_checkout.php:62": 2
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 2,
+  "call7": {}
+ }
+}

@@ -1,0 +1,43 @@
+{
+ "script": "auction_watch.php",
+ "wall_s": 59.9,
+ "requests": 260,
+ "rounds": 27,
+ "traces": 223,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "add",
+   "delete",
+   "insert",
+   "lan"
+  ],
+  "POST": [
+   "add"
+  ],
+  "COOKIE": [
+   "PHPSESSID",
+   "uniqueuser"
+  ]
+ },
+ "budget_hit": false,
+ "coverage_complete": false,
+ "missing": 5,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 0,
+ "concretized": {
+  "internal argument @ includes/messages.inc.php:20": 81,
+  "trim @ auction_watch.php:48": 6,
+  "internal argument @ auction_watch.php:35": 65
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

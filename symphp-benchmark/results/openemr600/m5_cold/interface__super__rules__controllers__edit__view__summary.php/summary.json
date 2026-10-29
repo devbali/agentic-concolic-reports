@@ -1,0 +1,31 @@
+{
+ "script": "interface/super/rules/controllers/edit/view/summary.php",
+ "wall_s": 0.7,
+ "requests": 1,
+ "rounds": 1,
+ "traces": 1,
+ "errored": 1,
+ "first_error": "Error: Call to undefined function js_src()",
+ "keys_discovered": {
+  "GET": [],
+  "POST": [],
+  "COOKIE": []
+ },
+ "budget_hit": false,
+ "coverage_complete": true,
+ "missing": 0,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [
+  "Error: Call to undefined function js_src()"
+ ],
+ "halted_traces": 0,
+ "concretized": {},
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

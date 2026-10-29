@@ -1,0 +1,83 @@
+{
+ "script": "phpmyadmin.css.php",
+ "wall_s": 90.0,
+ "requests": 169,
+ "rounds": 6,
+ "traces": 169,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "GLOBALS",
+   "back",
+   "collation_connection",
+   "db",
+   "goto",
+   "lang",
+   "selected_recent_table",
+   "server",
+   "set_fontsize",
+   "set_theme",
+   "sql_query",
+   "table"
+  ],
+  "POST": [
+   "GLOBALS",
+   "back",
+   "collation_connection",
+   "db",
+   "goto",
+   "lang",
+   "selected_recent_table",
+   "server",
+   "set_fontsize",
+   "set_theme",
+   "sql_query",
+   "table",
+   "token",
+   "usesubform"
+  ],
+  "COOKIE": [
+   "phpMyAdmin",
+   "pmaAuth-1",
+   "pmaCookieVer",
+   "pmaUser-1",
+   "pma_collation_connection",
+   "pma_fontsize",
+   "pma_lang",
+   "pma_theme"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 6,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 0,
+ "concretized": {
+  "internal argument @ libraries/Config.php:1266": 47,
+  "comparison != @ libraries/common.inc.php:237": 150,
+  "array key @ libraries/LanguageManager.php:790": 12,
+  "array key @ libraries/LanguageManager.php:791": 2,
+  "internal argument @ libraries/Config.php:1290": 72,
+  "is_string @ libraries/core.lib.php:394": 173,
+  "in_array @ libraries/core.lib.php:398": 173,
+  "internal argument @ libraries/core.lib.php:403": 173,
+  "internal argument @ libraries/core.lib.php:405": 173,
+  "internal argument @ libraries/core.lib.php:411": 173,
+  "internal argument @ libraries/Config.php:1264": 4,
+  "array_key_exists @ libraries/ThemeManager.php:350": 3,
+  "internal argument @ libraries/ThemeManager.php:205": 3,
+  "is_scalar @ libraries/Error.php:413": 3,
+  "gettype @ libraries/Error.php:414": 3,
+  "internal argument @ libraries/Error.php:414": 3
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

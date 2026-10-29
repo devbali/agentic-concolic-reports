@@ -1,0 +1,48 @@
+{
+ "script": "admin/time.php",
+ "wall_s": 49.2,
+ "requests": 314,
+ "rounds": 13,
+ "traces": 90,
+ "errored": 196,
+ "first_error": "Exception: DateTimeZone::__construct(): Unknown or bad timezone ()",
+ "keys_discovered": {
+  "GET": [
+   "lan"
+  ],
+  "POST": [
+   "action",
+   "anotes",
+   "csrftoken",
+   "datesformat",
+   "timezone"
+  ],
+  "COOKIE": [
+   "PHPSESSID",
+   "USERLANGUAGE",
+   "WEBID_RM_ID"
+  ]
+ },
+ "budget_hit": false,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [
+  "Exception: DateTimeZone::__construct(): Unknown or bad timezone ()"
+ ],
+ "halted_traces": 32,
+ "concretized": {
+  "internal argument @ includes/functions_global.php:467": 40,
+  "internal argument @ includes/messages.inc.php:41": 42,
+  "internal argument @ includes/messages.inc.php:20": 12,
+  "string conversion @ includes/database/DatabasePDO.php:80": 41
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

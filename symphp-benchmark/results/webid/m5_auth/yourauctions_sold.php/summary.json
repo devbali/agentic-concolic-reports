@@ -1,0 +1,95 @@
+{
+ "script": "yourauctions_sold.php",
+ "wall_s": 64.5,
+ "requests": 267,
+ "rounds": 10,
+ "traces": 197,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "PAGE",
+   "lan",
+   "solda_ord",
+   "solda_type"
+  ],
+  "POST": [
+   "action",
+   "csrftoken",
+   "relist"
+  ],
+  "COOKIE": [
+   "PHPSESSID",
+   "uniqueuser"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 6,
+ "assumptions": [],
+ "sink_sites": [
+  {
+   "site": "includes/database/DatabasePDO.php:76",
+   "sink": "PDO::prepare",
+   "kind": "injectable",
+   "instance": "SELECT a.* FROM webid_auctions a\n\tLEFT JOIN webid_winners w ON (a.id = w.auction)\n\tWHERE a.user = :user_id\n\tAND a.closed = 1\n\tAND a.suspended = 0\n\tGROUP BY w.auction\n\tORDER BY '  LIMIT :offset, :perpage",
+   "request": {
+    "GET": {
+     "PAGE": "",
+     "lan": "",
+     "solda_ord": "'"
+    },
+    "POST": {
+     "action": ""
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession",
+     "uniqueuser": ""
+    }
+   },
+   "db_errno": 1054
+  },
+  {
+   "site": "includes/database/DatabasePDO.php:76",
+   "sink": "PDO::prepare",
+   "kind": "injectable",
+   "instance": "SELECT a.* FROM webid_auctions a\n\tLEFT JOIN webid_winners w ON (a.id = w.auction)\n\tWHERE a.user = :user_id\n\tAND a.closed = 1\n\tAND a.suspended = 0\n\tGROUP BY w.auction\n\tORDER BY '  LIMIT :offset, :perpage",
+   "request": {
+    "GET": {
+     "PAGE": "",
+     "lan": "A",
+     "solda_ord": "'",
+     "solda_type": ""
+    },
+    "POST": {
+     "action": ""
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession",
+     "uniqueuser": ""
+    }
+   },
+   "db_errno": 1054
+  }
+ ],
+ "errors_distinct": [],
+ "halted_traces": 8,
+ "concretized": {
+  "comparison < @ yourauctions_sold.php:149": 141,
+  "internal argument @ includes/messages.inc.php:20": 31,
+  "intval @ yourauctions_sold.php:156": 44,
+  "internal argument @ includes/database/DatabasePDO.php:179": 58,
+  "string conversion @ includes/template/Template.php(163) : eval()'d code:39": 58,
+  "string conversion @ includes/template/Template.php(163) : eval()'d code:45": 58,
+  "string conversion @ includes/template/Template.php(163) : eval()'d code:51": 58,
+  "string conversion @ includes/template/Template.php(163) : eval()'d code:57": 58,
+  "string conversion @ includes/template/Template.php(163) : eval()'d code:63": 58
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 115,
+  "arith7": 0,
+  "call7": {}
+ }
+}

@@ -1,0 +1,68 @@
+{
+ "script": "interface/orders/patient_match_dialog.php",
+ "wall_s": 22.9,
+ "requests": 46,
+ "rounds": 4,
+ "traces": 46,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "key",
+   "pid",
+   "site",
+   "skip_timeout_reset"
+  ],
+  "POST": [
+   "authUser",
+   "key",
+   "pid",
+   "skip_timeout_reset"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [
+  {
+   "site": "interface/orders/patient_match_dialog.php:55",
+   "sink": "echo",
+   "kind": "xss-candidate",
+   "instance": "select[\\\"\\'><acexss3dc6e6d1>]",
+   "request": {
+    "GET": {
+     "auth": "",
+     "pid": "",
+     "site": ""
+    },
+    "POST": {
+     "key": "\"'><acexss3dc6e6d1>",
+     "pid": "",
+     "skip_timeout_reset": ""
+    },
+    "COOKIE": {
+     "OpenEMR": "acesession"
+    }
+   }
+  }
+ ],
+ "errors_distinct": [],
+ "halted_traces": 3,
+ "concretized": {
+  "internal argument @ interface/orders/patient_match_dialog.php:23": 42,
+  "internal argument @ interface/globals.php:146": 1,
+  "internal argument @ interface/globals.php:160": 1
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

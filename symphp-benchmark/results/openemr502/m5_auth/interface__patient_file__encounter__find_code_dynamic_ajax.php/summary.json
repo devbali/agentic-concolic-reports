@@ -1,0 +1,57 @@
+{
+ "script": "interface/patient_file/encounter/find_code_dynamic_ajax.php",
+ "wall_s": 30.1,
+ "requests": 52,
+ "rounds": 4,
+ "traces": 52,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "codetype",
+   "iDisplayLength",
+   "iDisplayStart",
+   "iSortCol_0",
+   "iSortingCols",
+   "inactive",
+   "layout_id",
+   "pid",
+   "sEcho",
+   "sSearch",
+   "site",
+   "skip_timeout_reset",
+   "source",
+   "what"
+  ],
+  "POST": [
+   "authUser",
+   "pid",
+   "skip_timeout_reset"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 44,
+ "concretized": {
+  "arithmetic + @ interface/patient_file/encounter/find_code_dynamic_ajax.php:22": 41,
+  "arithmetic + @ interface/patient_file/encounter/find_code_dynamic_ajax.php:23": 42,
+  "intval @ interface/patient_file/encounter/find_code_dynamic_ajax.php:157": 35,
+  "internal argument @ interface/globals.php:127": 1,
+  "internal argument @ interface/globals.php:141": 1
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 83,
+  "call7": {}
+ }
+}

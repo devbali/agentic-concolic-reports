@@ -1,0 +1,47 @@
+{
+ "script": "library/custom_template/updateDB.php",
+ "wall_s": 30.6,
+ "requests": 86,
+ "rounds": 5,
+ "traces": 79,
+ "errored": 10,
+ "first_error": "Concolic\\NotImplementedError: Iteration over symbolic values is not modelled",
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "pid",
+   "site",
+   "skip_timeout_reset"
+  ],
+  "POST": [
+   "action",
+   "authUser",
+   "clorder",
+   "pid",
+   "skip_timeout_reset"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 5,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [
+  "Concolic\\NotImplementedError: Iteration over symbolic values is not modelled"
+ ],
+ "halted_traces": 3,
+ "concretized": {
+  "internal argument @ interface/globals.php:127": 2,
+  "internal argument @ interface/globals.php:141": 1
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

@@ -1,0 +1,55 @@
+{
+ "script": "interface/patient_file/report/custom_report.php",
+ "wall_s": 30.0,
+ "requests": 49,
+ "rounds": 4,
+ "traces": 49,
+ "errored": 45,
+ "first_error": "TypeError: call_user_func(): Argument #1 ($callback) must be a valid callback, function \"_report\" not found or invalid function name",
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "pid",
+   "printable",
+   "site",
+   "skip_timeout_reset"
+  ],
+  "POST": [
+   "authUser",
+   "pdf",
+   "pid",
+   "skip_timeout_reset"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [
+  "TypeError: call_user_func(): Argument #1 ($callback) must be a valid callback, function \"_report\" not found or invalid function name"
+ ],
+ "halted_traces": 3,
+ "concretized": {
+  "is_array @ interface/patient_file/report/custom_report.php:120": 126,
+  "internal argument @ library/htmlspecialchars.inc.php:35": 126,
+  "gettype @ vendor/adodb/adodb-php/adodb.inc.php:1189": 53,
+  "internal argument @ vendor/adodb/adodb-php/adodb.inc.php:183": 48,
+  "internal argument @ src/Common/Logging/EventAuditLogger.php:757": 48,
+  "empty() @ src/Common/Logging/EventAuditLogger.php:759": 48,
+  "string conversion @ src/Common/Logging/EventAuditLogger.php:765": 48,
+  "internal argument @ interface/globals.php:127": 1,
+  "internal argument @ interface/globals.php:141": 1,
+  "intval @ interface/patient_file/report/custom_report.php:42": 4
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

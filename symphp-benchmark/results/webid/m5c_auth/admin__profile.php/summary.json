@@ -1,0 +1,60 @@
+{
+ "script": "admin/profile.php",
+ "wall_s": 60.0,
+ "requests": 192,
+ "rounds": 9,
+ "traces": 135,
+ "errored": 55,
+ "first_error": "Exception: Serialization of 'Closure' is not allowed",
+ "keys_discovered": {
+  "GET": [
+   "lan"
+  ],
+  "POST": [
+   "action",
+   "address",
+   "address_regshow",
+   "anotes",
+   "birthdate",
+   "birthdate_regshow",
+   "city",
+   "city_regshow",
+   "country",
+   "country_regshow",
+   "csrftoken",
+   "prov",
+   "prov_regshow",
+   "tel",
+   "tel_regshow",
+   "zip",
+   "zip_regshow"
+  ],
+  "COOKIE": [
+   "PHPSESSID",
+   "USERLANGUAGE",
+   "WEBID_RM_ID"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 3,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [
+  "Exception: Serialization of 'Closure' is not allowed"
+ ],
+ "halted_traces": 32,
+ "concretized": {
+  "internal argument @ includes/functions_global.php:467": 76,
+  "internal argument @ includes/messages.inc.php:41": 69,
+  "internal argument @ includes/messages.inc.php:20": 21,
+  "string conversion @ includes/database/DatabasePDO.php:80": 74
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

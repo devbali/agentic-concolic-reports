@@ -1,0 +1,52 @@
+{
+ "script": "admin/editadminuser.php",
+ "wall_s": 60.0,
+ "requests": 382,
+ "rounds": 14,
+ "traces": 288,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "id",
+   "lan"
+  ],
+  "POST": [
+   "action",
+   "anotes",
+   "csrftoken",
+   "id",
+   "password",
+   "repeatpassword",
+   "status"
+  ],
+  "COOKIE": [
+   "PHPSESSID",
+   "USERLANGUAGE",
+   "WEBID_RM_ID"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 4,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 118,
+ "concretized": {
+  "intval @ admin/editadminuser.php:21": 255,
+  "internal argument @ includes/functions_global.php:467": 128,
+  "internal argument @ includes/messages.inc.php:41": 149,
+  "internal argument @ includes/messages.inc.php:20": 40,
+  "string conversion @ includes/database/DatabasePDO.php:80": 192,
+  "internal argument @ includes/packages/PasswordHash.php:213": 53,
+  "comparison > @ includes/database/DatabasePDO.php:217": 44
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

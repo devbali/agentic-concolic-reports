@@ -1,0 +1,76 @@
+{
+ "script": "interface/orders/types_edit.php",
+ "wall_s": 30.0,
+ "requests": 53,
+ "rounds": 4,
+ "traces": 53,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "addfav",
+   "auth",
+   "labid",
+   "parent",
+   "pid",
+   "site",
+   "skip_timeout_reset",
+   "typeid"
+  ],
+  "POST": [
+   "addfav",
+   "authUser",
+   "form_body_site",
+   "form_delete",
+   "form_description",
+   "form_diagnosis_code",
+   "form_lab_id",
+   "form_laterality",
+   "form_name",
+   "form_procedure_code",
+   "form_procedure_type",
+   "form_range",
+   "form_related_code",
+   "form_route_admin",
+   "form_save",
+   "form_seq",
+   "form_specimen",
+   "form_standard_code",
+   "form_units",
+   "parent",
+   "pid",
+   "skip_timeout_reset",
+   "typeid"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 7,
+ "concretized": {
+  "arithmetic + @ interface/orders/types_edit.php:21": 41,
+  "arithmetic + @ interface/orders/types_edit.php:22": 42,
+  "arithmetic + @ interface/orders/types_edit.php:25": 44,
+  "internal argument @ interface/globals.php:127": 1,
+  "internal argument @ interface/globals.php:141": 1,
+  "internal argument @ library/options.inc.php:204": 12,
+  "gettype @ vendor/adodb/adodb-php/adodb.inc.php:1189": 4,
+  "internal argument @ vendor/adodb/adodb-php/adodb.inc.php:183": 4,
+  "internal argument @ src/Common/Logging/EventAuditLogger.php:757": 4,
+  "empty() @ src/Common/Logging/EventAuditLogger.php:759": 4,
+  "string conversion @ src/Common/Logging/EventAuditLogger.php:765": 4
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 144,
+  "call7": {}
+ }
+}

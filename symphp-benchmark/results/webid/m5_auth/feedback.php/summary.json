@@ -1,0 +1,61 @@
+{
+ "script": "feedback.php",
+ "wall_s": 63.9,
+ "requests": 356,
+ "rounds": 12,
+ "traces": 230,
+ "errored": 48,
+ "first_error": "Error: fatal: Cannot redeclare build_keyword_sql() (previously declared in /home/jamie/ace-eval/apps/webid-1.2.2/src/includes/functions_banners.php:153) at /home/jamie/ace-eval/apps/webid-1.2.2/src/includes/",
+ "keys_discovered": {
+  "GET": [
+   "auction_id",
+   "faction",
+   "id",
+   "lan",
+   "sid",
+   "wid",
+   "ws"
+  ],
+  "POST": [
+   "TPL_feedback",
+   "TPL_password",
+   "TPL_rate",
+   "addfeedback",
+   "auction_id",
+   "csrftoken",
+   "id"
+  ],
+  "COOKIE": [
+   "PHPSESSID",
+   "uniqueuser"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 1,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [
+  "Error: fatal: Cannot redeclare build_keyword_sql() (previously declared in /home/jamie/ace-eval/apps/webid-1.2.2/src/includes/functions_banners.php:153) at /hom"
+ ],
+ "halted_traces": 35,
+ "concretized": {
+  "string conversion @ includes/template/Template.php(163) : eval()'d code:12": 438,
+  "intval @ feedback.php:22": 123,
+  "comparison == @ feedback.php:308": 134,
+  "comparison == @ feedback.php:309": 134,
+  "comparison == @ feedback.php:310": 134,
+  "internal argument @ includes/messages.inc.php:20": 36,
+  "comparison == @ feedback.php:146": 55,
+  "string conversion @ includes/template/Template.php(163) : eval()'d code:23": 220,
+  "intval @ feedback.php:202": 6,
+  "string conversion @ includes/template/Template.php(163) : eval()'d code:7": 5
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 157,
+  "arith7": 0,
+  "call7": {}
+ }
+}

@@ -1,0 +1,78 @@
+{
+ "script": "select_category.php",
+ "wall_s": 62.0,
+ "requests": 253,
+ "rounds": 11,
+ "traces": 192,
+ "errored": 34,
+ "first_error": "TypeError: Illegal offset type",
+ "keys_discovered": {
+  "GET": [
+   "cat_no",
+   "change",
+   "lan"
+  ],
+  "POST": [
+   "action",
+   "box",
+   "cat-1",
+   "cat0",
+   "cat1",
+   "cat2",
+   "cat_no",
+   "csrftoken"
+  ],
+  "COOKIE": [
+   "PHPSESSID",
+   "uniqueuser"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 3,
+ "assumptions": [],
+ "sink_sites": [
+  {
+   "site": "cache/tpl_modern_select_category.tpl.php:24",
+   "sink": "echo",
+   "kind": "xss-candidate",
+   "instance": "\"'><acexssfb963d18>",
+   "request": {
+    "GET": {
+     "change": ""
+    },
+    "POST": {
+     "action": "",
+     "box": "",
+     "cat0": "",
+     "cat_no": "\"'><acexssfb963d18>",
+     "csrftoken": "acepinnedcsrftoken00000000000000"
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession",
+     "uniqueuser": ""
+    }
+   }
+  }
+ ],
+ "errors_distinct": [
+  "TypeError: Illegal offset type"
+ ],
+ "halted_traces": 10,
+ "concretized": {
+  "internal argument @ includes/messages.inc.php:20": 38,
+  "arithmetic + @ select_category.php:35": 120,
+  "comparison == @ select_category.php:148": 73,
+  "comparison == @ select_category.php:195": 1530,
+  "comparison == @ select_category.php:201": 88,
+  "comparison == @ cache/tpl_modern_select_category.tpl.php:27": 88,
+  "comparison == @ cache/tpl_modern_select_category.tpl.php:46": 88
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 14,
+  "cmp7": 77,
+  "arith7": 132,
+  "call7": {}
+ }
+}

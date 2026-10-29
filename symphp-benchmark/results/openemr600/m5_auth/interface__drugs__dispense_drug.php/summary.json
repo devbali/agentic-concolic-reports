@@ -1,0 +1,58 @@
+{
+ "script": "interface/drugs/dispense_drug.php",
+ "wall_s": 18.2,
+ "requests": 52,
+ "rounds": 4,
+ "traces": 52,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "drug_id",
+   "fee",
+   "pid",
+   "prescription",
+   "quantity",
+   "sale_id",
+   "site",
+   "skip_timeout_reset"
+  ],
+  "POST": [
+   "authUser",
+   "drug_id",
+   "fee",
+   "pid",
+   "prescription",
+   "quantity",
+   "sale_id",
+   "skip_timeout_reset"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 48,
+ "concretized": {
+  "internal argument @ interface/globals.php:146": 1,
+  "internal argument @ interface/globals.php:160": 1,
+  "gettype @ vendor/adodb/adodb-php/adodb.inc.php:1184": 6,
+  "internal argument @ vendor/adodb/adodb-php/adodb.inc.php:183": 6,
+  "internal argument @ src/Common/Logging/EventAuditLogger.php:563": 2,
+  "empty() @ src/Common/Logging/EventAuditLogger.php:565": 2,
+  "internal argument @ src/Common/Logging/EventAuditLogger.php:749": 2
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 2,
+  "arith7": 0,
+  "call7": {}
+ }
+}

@@ -1,0 +1,45 @@
+{
+ "script": "interface/soap_functions/soap_patientfullmedication.php",
+ "wall_s": 33.0,
+ "requests": 114,
+ "rounds": 6,
+ "traces": 91,
+ "errored": 108,
+ "first_error": "Error: eRxGlobals::__construct(): Argument #1 ($configuration) cannot be passed by reference",
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "pid",
+   "site",
+   "skip_timeout_reset"
+  ],
+  "POST": [
+   "authUser",
+   "pid",
+   "skip_timeout_reset"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 5,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [
+  "Error: eRxGlobals::__construct(): Argument #1 ($configuration) cannot be passed by reference"
+ ],
+ "halted_traces": 3,
+ "concretized": {
+  "internal argument @ interface/globals.php:127": 2,
+  "internal argument @ interface/globals.php:141": 1
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

@@ -1,0 +1,43 @@
+{
+ "script": "order_print.php",
+ "wall_s": 13.1,
+ "requests": 101,
+ "rounds": 10,
+ "traces": 87,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "hash",
+   "id",
+   "lan"
+  ],
+  "POST": [
+   "csrftoken",
+   "pfval",
+   "pfwon"
+  ],
+  "COOKIE": [
+   "PHPSESSID"
+  ]
+ },
+ "budget_hit": false,
+ "coverage_complete": true,
+ "missing": 0,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 87,
+ "concretized": {
+  "intval @ order_print.php:46": 55,
+  "internal argument @ includes/messages.inc.php:20": 20,
+  "intval @ order_print.php:38": 8
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

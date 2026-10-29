@@ -1,0 +1,43 @@
+{
+ "script": "interface/modules/zend_modules/public/index.php",
+ "wall_s": 15.2,
+ "requests": 27,
+ "rounds": 5,
+ "traces": 27,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "pid",
+   "recipient",
+   "site"
+  ],
+  "POST": [
+   "pid",
+   "recipient",
+   "site"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 4,
+ "assumptions": [
+  "shim result only, at Posix.php:136: no request can drive it"
+ ],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 27,
+ "concretized": {
+  "is_numeric @ vendor/laminas/laminas-console/src/Adapter/Posix.php:135": 27
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

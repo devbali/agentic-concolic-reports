@@ -1,0 +1,58 @@
+{
+ "script": "admin/fee_gateways.php",
+ "wall_s": 60.0,
+ "requests": 217,
+ "rounds": 10,
+ "traces": 184,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "lan"
+  ],
+  "POST": [
+   "action",
+   "anotes",
+   "authnet",
+   "csrftoken",
+   "moneybookers",
+   "paypal",
+   "toocheckout",
+   "worldpay"
+  ],
+  "COOKIE": [
+   "PHPSESSID",
+   "USERLANGUAGE",
+   "WEBID_RM_ID"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 1,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 32,
+ "concretized": {
+  "internal argument @ includes/functions_global.php:467": 98,
+  "internal argument @ includes/messages.inc.php:41": 95,
+  "internal argument @ includes/messages.inc.php:20": 36,
+  "string conversion @ includes/database/DatabasePDO.php:80": 116,
+  "subscript @ admin/fee_gateways.php:40": 394,
+  "subscript @ admin/fee_gateways.php:41": 394,
+  "isset subscript @ admin/fee_gateways.php:42": 394,
+  "isset subscript @ admin/fee_gateways.php:43": 394,
+  "subscript @ admin/fee_gateways.php:44": 394,
+  "subscript @ admin/fee_gateways.php:46": 394,
+  "subscript @ admin/fee_gateways.php:47": 394,
+  "isset subscript @ admin/fee_gateways.php:48": 394,
+  "isset subscript @ admin/fee_gateways.php:49": 394
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

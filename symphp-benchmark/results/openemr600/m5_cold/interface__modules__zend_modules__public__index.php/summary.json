@@ -1,0 +1,44 @@
+{
+ "script": "interface/modules/zend_modules/public/index.php",
+ "wall_s": 16.0,
+ "requests": 55,
+ "rounds": 5,
+ "traces": 55,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "pid",
+   "recipient",
+   "site"
+  ],
+  "POST": [
+   "authUser",
+   "pid",
+   "recipient",
+   "site"
+  ],
+  "COOKIE": []
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 3,
+ "assumptions": [
+  "shim result only, at Posix.php:136: no request can drive it"
+ ],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 55,
+ "concretized": {
+  "is_numeric @ vendor/laminas/laminas-console/src/Adapter/Posix.php:135": 55,
+  "gettype @ vendor/adodb/adodb-php/adodb.inc.php:1184": 11,
+  "internal argument @ vendor/adodb/adodb-php/adodb.inc.php:183": 11
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

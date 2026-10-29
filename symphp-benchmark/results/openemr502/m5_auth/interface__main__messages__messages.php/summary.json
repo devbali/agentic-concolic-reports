@@ -1,0 +1,75 @@
+{
+ "script": "interface/main/messages/messages.php",
+ "wall_s": 40.3,
+ "requests": 60,
+ "rounds": 4,
+ "traces": 60,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "begin",
+   "form_active",
+   "form_inactive",
+   "go",
+   "pid",
+   "show_all",
+   "site",
+   "skip_timeout_reset",
+   "sortby",
+   "sortorder",
+   "task"
+  ],
+  "POST": [
+   "authUser",
+   "begin",
+   "csrf_token_form",
+   "drR",
+   "form_active",
+   "form_facility",
+   "form_inactive",
+   "form_provider",
+   "go",
+   "pid",
+   "rcb_selectors",
+   "setting_bootstrap_submenu",
+   "skip_timeout_reset",
+   "sortby",
+   "sortorder",
+   "task"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 15,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 56,
+ "concretized": {
+  "gettype @ vendor/adodb/adodb-php/adodb.inc.php:1189": 15,
+  "internal argument @ vendor/adodb/adodb-php/adodb.inc.php:183": 30,
+  "internal argument @ src/Common/Logging/EventAuditLogger.php:757": 15,
+  "empty() @ src/Common/Logging/EventAuditLogger.php:759": 15,
+  "string conversion @ src/Common/Logging/EventAuditLogger.php:765": 15,
+  "internal argument @ src/Common/Logging/EventAuditLogger.php:891": 15,
+  "internal argument @ interface/globals.php:127": 1,
+  "internal argument @ interface/globals.php:141": 1,
+  "is_array @ library/formdata.inc.php:104": 1,
+  "array_search @ library/formdata.inc.php:221": 2,
+  "internal argument @ library/formdata.inc.php:234": 1,
+  "internal argument @ library/htmlspecialchars.inc.php:35": 1,
+  "comparison == @ interface/main/messages/messages.php:643": 1
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 5,
+  "arith7": 0,
+  "call7": {}
+ }
+}

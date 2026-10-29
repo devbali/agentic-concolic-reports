@@ -1,0 +1,76 @@
+{
+ "script": "import_status.php",
+ "wall_s": 30.0,
+ "requests": 104,
+ "rounds": 5,
+ "traces": 104,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "GLOBALS",
+   "back",
+   "collation_connection",
+   "db",
+   "goto",
+   "id",
+   "lang",
+   "message",
+   "selected_recent_table",
+   "server",
+   "set_fontsize",
+   "set_theme",
+   "sql_query",
+   "table"
+  ],
+  "POST": [
+   "GLOBALS",
+   "back",
+   "collation_connection",
+   "db",
+   "goto",
+   "lang",
+   "selected_recent_table",
+   "server",
+   "set_fontsize",
+   "set_theme",
+   "sql_query",
+   "table",
+   "token",
+   "usesubform"
+  ],
+  "COOKIE": [
+   "pmaCookieVer",
+   "pma_collation_connection",
+   "pma_fontsize",
+   "pma_lang",
+   "pma_theme"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 10,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 0,
+ "concretized": {
+  "internal argument @ libraries/Config.php:1284": 65,
+  "comparison != @ libraries/common.inc.php:234": 81,
+  "is_string @ libraries/core.lib.php:394": 165,
+  "in_array @ libraries/core.lib.php:398": 165,
+  "internal argument @ libraries/core.lib.php:403": 165,
+  "internal argument @ libraries/core.lib.php:405": 165,
+  "internal argument @ libraries/core.lib.php:411": 165,
+  "comparison == @ libraries/plugins/import/upload/UploadNoplugin.php:43": 2,
+  "internal argument @ libraries/Config.php:1258": 5,
+  "internal argument @ libraries/Config.php:1260": 6
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

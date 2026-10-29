@@ -1,0 +1,47 @@
+{
+ "script": "interface/forms/eye_mag/js/eye_base.php",
+ "wall_s": 22.3,
+ "requests": 80,
+ "rounds": 5,
+ "traces": 72,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "pid",
+   "providerID",
+   "site",
+   "skip_timeout_reset"
+  ],
+  "POST": [
+   "authUser",
+   "pid",
+   "providerID",
+   "skip_timeout_reset"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 4,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 3,
+ "concretized": {
+  "internal argument @ library/htmlspecialchars.inc.php:20": 68,
+  "internal argument @ vendor/adodb/adodb-php/adodb.inc.php:183": 114,
+  "internal argument @ interface/globals.php:146": 2,
+  "internal argument @ interface/globals.php:160": 1
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 2,
+  "arith7": 0,
+  "call7": {}
+ }
+}

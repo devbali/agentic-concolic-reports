@@ -1,0 +1,61 @@
+{
+ "script": "wp-cron.php",
+ "wall_s": 28.6,
+ "requests": 53,
+ "rounds": 5,
+ "traces": 38,
+ "errored": 1,
+ "first_error": "TypeError: closedir(): Argument #1 ($dir_handle) must be of type resource or null, bool given",
+ "keys_discovered": {
+  "GET": [
+   "_locale",
+   "customize_changeset_uuid",
+   "doing_wp_cron",
+   "preview_id",
+   "preview_nonce",
+   "replytocom",
+   "wp_customize",
+   "wp_lang",
+   "wp_scrape_key"
+  ],
+  "POST": [
+   "customize_changeset_uuid",
+   "wp_customize",
+   "wp_scrape_key"
+  ],
+  "COOKIE": [
+   "comment_author_15d6d54e3ae52e9a938f8853c833b792",
+   "comment_author_email_15d6d54e3ae52e9a938f8853c833b792",
+   "comment_author_url_15d6d54e3ae52e9a938f8853c833b792",
+   "wordpress_15d6d54e3ae52e9a938f8853c833b792",
+   "wordpress_logged_in_15d6d54e3ae52e9a938f8853c833b792"
+  ]
+ },
+ "budget_hit": false,
+ "coverage_complete": false,
+ "missing": 1,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [
+  "TypeError: closedir(): Argument #1 ($dir_handle) must be of type resource or null, bool given"
+ ],
+ "halted_traces": 37,
+ "concretized": {
+  "is_array @ wp-includes/functions.php:1057": 329,
+  "string conversion @ wp-includes/formatting.php:5152": 17,
+  "string conversion @ wp-includes/class-wp-hook.php:286": 18,
+  "internal argument @ wp-includes/formatting.php:5067": 21,
+  "comparison === @ wp-includes/l10n.php:137": 129,
+  "empty() @ wp-includes/l10n.php:141": 145,
+  "empty() @ wp-includes/pluggable.php:782": 96,
+  "empty() @ wp-includes/user.php:357": 33,
+  "string conversion @ wp-includes/pluggable.php:2065": 13
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

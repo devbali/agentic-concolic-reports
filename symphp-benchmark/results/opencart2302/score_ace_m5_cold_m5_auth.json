@@ -1,0 +1,50 @@
+{
+ "app": "opencart2302",
+ "tool": "ace:m5_cold+m5_auth",
+ "requests": 12,
+ "findings": 0,
+ "findings_judge_confirmed": 0,
+ "findings_unconfirmed": [],
+ "faulting_requests": 0,
+ "detected": 0,
+ "known": 1,
+ "cves_detected": 0,
+ "cves_known": 0,
+ "cves": {},
+ "coverage_pct": 1.65,
+ "covered_lines": 1469,
+ "executable_lines": 88916,
+ "vulns": [
+  {
+   "id": "OC2302-1",
+   "cve": [],
+   "type": "sqli",
+   "sink": "admin/model/tool/backup.php:48",
+   "auth": "admin",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "backup[]"
+   ],
+   "method": "POST",
+   "detected": false,
+   "witness": null
+  }
+ ],
+ "xdebug_coverage_pct": 1.65,
+ "xdebug_covered_lines": 1469,
+ "xdebug_method": "auto_prepend_file (coverage-only, outside docroot); the fault replays themselves ran under it (judge_cgi xdebug), so trace == xdebug",
+ "arms": {
+  "m5_cold": {
+   "requests": 8,
+   "detected": 0,
+   "detected_ids": [],
+   "coverage_pct": 1.63
+  },
+  "m5_auth": {
+   "requests": 6,
+   "detected": 0,
+   "detected_ids": [],
+   "coverage_pct": 0.87
+  }
+ }
+}

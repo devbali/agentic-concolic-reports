@@ -1,0 +1,46 @@
+{
+ "script": "email_request.php",
+ "wall_s": 30.8,
+ "requests": 154,
+ "rounds": 11,
+ "traces": 150,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "auction_id",
+   "lan",
+   "user_id"
+  ],
+  "POST": [
+   "TPL_text",
+   "action",
+   "auction_id",
+   "csrftoken",
+   "user_id"
+  ],
+  "COOKIE": [
+   "PHPSESSID",
+   "uniqueuser"
+  ]
+ },
+ "budget_hit": false,
+ "coverage_complete": false,
+ "missing": 1,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 19,
+ "concretized": {
+  "intval @ email_request.php:20": 74,
+  "string conversion @ includes/template/Template.php(163) : eval()'d code:25": 82,
+  "internal argument @ includes/messages.inc.php:20": 36
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

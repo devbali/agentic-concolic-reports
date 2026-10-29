@@ -1,0 +1,56 @@
+{
+ "script": "interface/patient_file/deleter.php",
+ "wall_s": 22.1,
+ "requests": 1,
+ "rounds": 1,
+ "traces": 1,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "billing",
+   "document",
+   "encounterid",
+   "formid",
+   "issue",
+   "patient",
+   "payment",
+   "pid",
+   "site",
+   "skip_timeout_reset",
+   "transaction"
+  ],
+  "POST": [
+   "billing",
+   "document",
+   "encounterid",
+   "form_submit",
+   "formid",
+   "issue",
+   "patient",
+   "payment",
+   "pid",
+   "skip_timeout_reset",
+   "transaction"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": true,
+ "missing": 0,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 0,
+ "concretized": {},
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

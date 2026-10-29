@@ -1,0 +1,42 @@
+{
+ "script": "sql_upgrade.php",
+ "wall_s": 29.7,
+ "requests": 62,
+ "rounds": 5,
+ "traces": 47,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "pid",
+   "site"
+  ],
+  "POST": [
+   "form_old_version",
+   "form_submit",
+   "pid"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 3,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 12,
+ "concretized": {
+  "internal argument @ interface/globals.php:146": 2,
+  "internal argument @ interface/globals.php:160": 1,
+  "internal argument @ sql_upgrade.php:310": 7
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

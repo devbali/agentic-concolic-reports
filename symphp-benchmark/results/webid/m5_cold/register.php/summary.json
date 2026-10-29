@@ -1,0 +1,365 @@
+{
+ "script": "register.php",
+ "wall_s": 60.2,
+ "requests": 22,
+ "rounds": 3,
+ "traces": 22,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "lan"
+  ],
+  "POST": [
+   "TPL_address",
+   "TPL_city",
+   "TPL_country",
+   "TPL_day",
+   "TPL_email",
+   "TPL_month",
+   "TPL_name",
+   "TPL_nick",
+   "TPL_nletter",
+   "TPL_phone",
+   "TPL_prov",
+   "TPL_timezone",
+   "TPL_year",
+   "TPL_zip",
+   "action"
+  ],
+  "COOKIE": [
+   "USERLANGUAGE",
+   "WEBID_ONLINE",
+   "WEBID_RM_ID",
+   "uniqueuser"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 1,
+ "assumptions": [],
+ "sink_sites": [
+  {
+   "site": "cache/tpl_modern_register.tpl.php:14",
+   "sink": "echo",
+   "kind": "xss-candidate",
+   "instance": "\"'><acexssaad5da49>",
+   "request": {
+    "GET": {
+     "lan": ""
+    },
+    "POST": {
+     "TPL_address": "",
+     "TPL_city": "",
+     "TPL_country": "",
+     "TPL_day": "",
+     "TPL_email": "",
+     "TPL_month": "",
+     "TPL_name": "\"'><acexssaad5da49>",
+     "TPL_nick": "",
+     "TPL_nletter": "",
+     "TPL_phone": "",
+     "TPL_prov": "",
+     "TPL_timezone": "",
+     "TPL_year": "",
+     "TPL_zip": "",
+     "action": ""
+    },
+    "COOKIE": {
+     "USERLANGUAGE": "",
+     "WEBID_ONLINE": "",
+     "WEBID_RM_ID": "",
+     "uniqueuser": ""
+    }
+   }
+  },
+  {
+   "site": "cache/tpl_modern_register.tpl.php:19",
+   "sink": "echo",
+   "kind": "xss-candidate",
+   "instance": "\"'><acexss70bb1495>",
+   "request": {
+    "GET": {
+     "lan": ""
+    },
+    "POST": {
+     "TPL_address": "",
+     "TPL_city": "",
+     "TPL_country": "",
+     "TPL_day": "",
+     "TPL_email": "",
+     "TPL_month": "",
+     "TPL_name": "",
+     "TPL_nick": "\"'><acexss70bb1495>",
+     "TPL_nletter": "",
+     "TPL_phone": "",
+     "TPL_prov": "",
+     "TPL_timezone": "",
+     "TPL_year": "",
+     "TPL_zip": "",
+     "action": ""
+    },
+    "COOKIE": {
+     "USERLANGUAGE": "",
+     "WEBID_ONLINE": "",
+     "WEBID_RM_ID": "",
+     "uniqueuser": ""
+    }
+   }
+  },
+  {
+   "site": "cache/tpl_modern_register.tpl.php:36",
+   "sink": "echo",
+   "kind": "xss-candidate",
+   "instance": "\"'><acexssc60bf85e>",
+   "request": {
+    "GET": {
+     "lan": ""
+    },
+    "POST": {
+     "TPL_address": "",
+     "TPL_city": "",
+     "TPL_country": "",
+     "TPL_day": "",
+     "TPL_email": "\"'><acexssc60bf85e>",
+     "TPL_month": "",
+     "TPL_name": "",
+     "TPL_nick": "",
+     "TPL_nletter": "",
+     "TPL_phone": "",
+     "TPL_prov": "",
+     "TPL_timezone": "",
+     "TPL_year": "",
+     "TPL_zip": "",
+     "action": ""
+    },
+    "COOKIE": {
+     "USERLANGUAGE": "",
+     "WEBID_ONLINE": "",
+     "WEBID_RM_ID": "",
+     "uniqueuser": ""
+    }
+   }
+  },
+  {
+   "site": "cache/tpl_modern_register.tpl.php:43",
+   "sink": "echo",
+   "kind": "xss-candidate",
+   "instance": "\"'><acexss1b3b54da>",
+   "request": {
+    "GET": {
+     "lan": ""
+    },
+    "POST": {
+     "TPL_address": "",
+     "TPL_city": "",
+     "TPL_country": "",
+     "TPL_day": "",
+     "TPL_email": "",
+     "TPL_month": "",
+     "TPL_name": "",
+     "TPL_nick": "",
+     "TPL_nletter": "",
+     "TPL_phone": "",
+     "TPL_prov": "",
+     "TPL_timezone": "",
+     "TPL_year": "\"'><acexss1b3b54da>",
+     "TPL_zip": "",
+     "action": ""
+    },
+    "COOKIE": {
+     "USERLANGUAGE": "",
+     "WEBID_ONLINE": "",
+     "WEBID_RM_ID": "",
+     "uniqueuser": ""
+    }
+   }
+  },
+  {
+   "site": "cache/tpl_modern_register.tpl.php:52",
+   "sink": "echo",
+   "kind": "xss-candidate",
+   "instance": "\"'><acexss5c7fd123>",
+   "request": {
+    "GET": {
+     "lan": ""
+    },
+    "POST": {
+     "TPL_address": "\"'><acexss5c7fd123>",
+     "TPL_city": "",
+     "TPL_country": "",
+     "TPL_day": "",
+     "TPL_email": "",
+     "TPL_month": "",
+     "TPL_name": "",
+     "TPL_nick": "",
+     "TPL_nletter": "",
+     "TPL_phone": "",
+     "TPL_prov": "",
+     "TPL_timezone": "",
+     "TPL_year": "",
+     "TPL_zip": "",
+     "action": ""
+    },
+    "COOKIE": {
+     "USERLANGUAGE": "",
+     "WEBID_ONLINE": "",
+     "WEBID_RM_ID": "",
+     "uniqueuser": ""
+    }
+   }
+  },
+  {
+   "site": "cache/tpl_modern_register.tpl.php:58",
+   "sink": "echo",
+   "kind": "xss-candidate",
+   "instance": "\"'><acexss98aa54d0>",
+   "request": {
+    "GET": {
+     "lan": ""
+    },
+    "POST": {
+     "TPL_address": "",
+     "TPL_city": "\"'><acexss98aa54d0>",
+     "TPL_country": "",
+     "TPL_day": "",
+     "TPL_email": "",
+     "TPL_month": "",
+     "TPL_name": "",
+     "TPL_nick": "",
+     "TPL_nletter": "",
+     "TPL_phone": "",
+     "TPL_prov": "",
+     "TPL_timezone": "",
+     "TPL_year": "",
+     "TPL_zip": "",
+     "action": ""
+    },
+    "COOKIE": {
+     "USERLANGUAGE": "",
+     "WEBID_ONLINE": "",
+     "WEBID_RM_ID": "",
+     "uniqueuser": ""
+    }
+   }
+  },
+  {
+   "site": "cache/tpl_modern_register.tpl.php:67",
+   "sink": "echo",
+   "kind": "xss-candidate",
+   "instance": "\"'><acexssd2abeeeb>",
+   "request": {
+    "GET": {
+     "lan": ""
+    },
+    "POST": {
+     "TPL_address": "",
+     "TPL_city": "",
+     "TPL_country": "",
+     "TPL_day": "",
+     "TPL_email": "",
+     "TPL_month": "",
+     "TPL_name": "",
+     "TPL_nick": "",
+     "TPL_nletter": "",
+     "TPL_phone": "",
+     "TPL_prov": "\"'><acexssd2abeeeb>",
+     "TPL_timezone": "",
+     "TPL_year": "",
+     "TPL_zip": "",
+     "action": ""
+    },
+    "COOKIE": {
+     "USERLANGUAGE": "",
+     "WEBID_ONLINE": "",
+     "WEBID_RM_ID": "",
+     "uniqueuser": ""
+    }
+   }
+  },
+  {
+   "site": "cache/tpl_modern_register.tpl.php:84",
+   "sink": "echo",
+   "kind": "xss-candidate",
+   "instance": "\"'><acexssdb5be28b>",
+   "request": {
+    "GET": {
+     "lan": ""
+    },
+    "POST": {
+     "TPL_address": "",
+     "TPL_city": "",
+     "TPL_country": "",
+     "TPL_day": "",
+     "TPL_email": "",
+     "TPL_month": "",
+     "TPL_name": "",
+     "TPL_nick": "",
+     "TPL_nletter": "",
+     "TPL_phone": "",
+     "TPL_prov": "",
+     "TPL_timezone": "",
+     "TPL_year": "",
+     "TPL_zip": "\"'><acexssdb5be28b>",
+     "action": ""
+    },
+    "COOKIE": {
+     "USERLANGUAGE": "",
+     "WEBID_ONLINE": "",
+     "WEBID_RM_ID": "",
+     "uniqueuser": ""
+    }
+   }
+  },
+  {
+   "site": "cache/tpl_modern_register.tpl.php:90",
+   "sink": "echo",
+   "kind": "xss-candidate",
+   "instance": "\"'><acexssa82aee06>",
+   "request": {
+    "GET": {
+     "lan": ""
+    },
+    "POST": {
+     "TPL_address": "",
+     "TPL_city": "",
+     "TPL_country": "",
+     "TPL_day": "",
+     "TPL_email": "",
+     "TPL_month": "",
+     "TPL_name": "",
+     "TPL_nick": "",
+     "TPL_nletter": "",
+     "TPL_phone": "\"'><acexssa82aee06>",
+     "TPL_prov": "",
+     "TPL_timezone": "",
+     "TPL_year": "",
+     "TPL_zip": "",
+     "action": ""
+    },
+    "COOKIE": {
+     "USERLANGUAGE": "",
+     "WEBID_ONLINE": "",
+     "WEBID_RM_ID": "",
+     "uniqueuser": ""
+    }
+   }
+  }
+ ],
+ "errors_distinct": [],
+ "halted_traces": 0,
+ "concretized": {
+  "internal argument @ includes/functions_global.php:467": 21,
+  "internal argument @ includes/messages.inc.php:41": 3,
+  "comparison == @ register.php:476": 154,
+  "comparison == @ register.php:548": 9,
+  "comparison == @ register.php:549": 9
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

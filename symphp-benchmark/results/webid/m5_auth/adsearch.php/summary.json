@@ -1,0 +1,45 @@
+{
+ "script": "adsearch.php",
+ "wall_s": 8.7,
+ "requests": 41,
+ "rounds": 8,
+ "traces": 41,
+ "errored": 8,
+ "first_error": "TypeError: in_array(): Argument #2 ($haystack) must be of type array, string given",
+ "keys_discovered": {
+  "GET": [
+   "PAGE",
+   "lan"
+  ],
+  "POST": [
+   "payment"
+  ],
+  "COOKIE": [
+   "PHPSESSID",
+   "uniqueuser"
+  ]
+ },
+ "budget_hit": false,
+ "coverage_complete": false,
+ "missing": 0,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [
+  "TypeError: in_array(): Argument #2 ($haystack) must be of type array, string given"
+ ],
+ "halted_traces": 32,
+ "concretized": {
+  "intval @ adsearch.php:43": 20,
+  "is_array @ adsearch.php:170": 24,
+  "internal argument @ includes/messages.inc.php:20": 10,
+  "internal argument @ includes/packages/htmLawed.php:90": 8,
+  "in_array @ adsearch.php:289": 8
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 1,
+  "arith7": 0,
+  "call7": {}
+ }
+}

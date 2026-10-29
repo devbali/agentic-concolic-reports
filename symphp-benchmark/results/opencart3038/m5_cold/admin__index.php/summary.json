@@ -1,0 +1,34 @@
+{
+ "script": "admin/index.php",
+ "wall_s": 5.8,
+ "requests": 5,
+ "rounds": 5,
+ "traces": 5,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [],
+  "POST": [],
+  "COOKIE": [
+   "OCSESSID"
+  ]
+ },
+ "budget_hit": false,
+ "coverage_complete": true,
+ "missing": 0,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 1,
+ "concretized": {
+  "is_array @ system/library/request.php:39": 6,
+  "internal argument @ system/library/session.php:66": 1
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

@@ -1,0 +1,57 @@
+{
+ "app": "drupal90",
+ "tool": "ace:m5_cold",
+ "requests": 2,
+ "findings": 0,
+ "findings_judge_confirmed": 0,
+ "findings_unconfirmed": [],
+ "faulting_requests": 2,
+ "detected": 0,
+ "known": 2,
+ "cves_detected": 0,
+ "cves_known": 2,
+ "cves": {
+  "CVE-2020-13688": false,
+  "CVE-2025-3057": false
+ },
+ "coverage_pct": 2.87,
+ "covered_lines": 12553,
+ "executable_lines": 437556,
+ "vulns": [
+  {
+   "id": "D90-1",
+   "cve": [
+    "CVE-2020-13688"
+   ],
+   "type": "xss",
+   "sink": "core/lib/Drupal/Core/Form/FormBuilder.php:863",
+   "auth": "none",
+   "confidence": "likely",
+   "param": [
+    "REQUEST_URI (path + query string)"
+   ],
+   "method": "GET",
+   "detected": false,
+   "witness": null
+  },
+  {
+   "id": "D90-2",
+   "cve": [
+    "CVE-2025-3057"
+   ],
+   "type": "xss",
+   "sink": "core/lib/Drupal/Core/DrupalKernel.php:745",
+   "auth": "none",
+   "confidence": "likely",
+   "param": [
+    "request-derived exception message"
+   ],
+   "method": "GET",
+   "detected": false,
+   "witness": null
+  }
+ ],
+ "xdebug_coverage_pct": 2.87,
+ "xdebug_covered_lines": 12553,
+ "xdebug_method": "auto_prepend_file (coverage-only, outside docroot); the fault replays themselves ran under it (judge_cgi xdebug), so trace == xdebug"
+}

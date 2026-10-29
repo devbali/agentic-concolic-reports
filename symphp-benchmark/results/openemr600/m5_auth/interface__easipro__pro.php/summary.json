@@ -1,0 +1,48 @@
+{
+ "script": "interface/easipro/pro.php",
+ "wall_s": 15.0,
+ "requests": 34,
+ "rounds": 4,
+ "traces": 34,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "pid",
+   "site",
+   "skip_timeout_reset"
+  ],
+  "POST": [
+   "authUser",
+   "pid",
+   "skip_timeout_reset"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 3,
+ "concretized": {
+  "internal argument @ interface/globals.php:146": 1,
+  "internal argument @ interface/globals.php:160": 1,
+  "comparison == @ library/patient.inc:719": 9,
+  "internal argument @ library/patient.inc:725": 9,
+  "internal argument @ vendor/adodb/adodb-php/adodb.inc.php:183": 27,
+  "trim @ src/Common/Logging/EventAuditLogger.php:525": 9,
+  "gettype @ vendor/adodb/adodb-php/adodb.inc.php:1184": 18
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

@@ -1,0 +1,58 @@
+{
+ "script": "interface/forms/eye_mag/taskman.php",
+ "wall_s": 19.1,
+ "requests": 52,
+ "rounds": 4,
+ "traces": 52,
+ "errored": 1,
+ "first_error": "Error: Failed opening required '/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/openemr502-m5_cold/sites/A/config.php' (include_path='.:/usr/local/lib/php')",
+ "keys_discovered": {
+  "GET": [
+   "CHOICE",
+   "action",
+   "choice",
+   "encid",
+   "formid",
+   "formname",
+   "pid",
+   "ptid",
+   "site"
+  ],
+  "POST": [
+   "CHOICE",
+   "action",
+   "authUser",
+   "choice",
+   "encid",
+   "formid",
+   "formname",
+   "pid",
+   "ptid"
+  ],
+  "COOKIE": []
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [
+  "Error: Failed opening required '/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/openemr502-m5_cold/sites/A/config.php' (include_path='.:/us"
+ ],
+ "halted_traces": 51,
+ "concretized": {
+  "gettype @ vendor/adodb/adodb-php/adodb.inc.php:1189": 56,
+  "internal argument @ src/Common/Logging/EventAuditLogger.php:757": 54,
+  "empty() @ src/Common/Logging/EventAuditLogger.php:759": 54,
+  "string conversion @ src/Common/Logging/EventAuditLogger.php:765": 54,
+  "internal argument @ interface/globals.php:127": 1,
+  "string conversion @ interface/globals.php:159": 1
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

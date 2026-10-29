@@ -1,0 +1,46 @@
+{
+ "script": "interface/super/layout_service_codes.php",
+ "wall_s": 30.0,
+ "requests": 89,
+ "rounds": 5,
+ "traces": 84,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "pid",
+   "site",
+   "skip_timeout_reset"
+  ],
+  "POST": [
+   "authUser",
+   "bn_upload",
+   "csrf_token_form",
+   "form_dryrun",
+   "pid",
+   "skip_timeout_reset"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 12,
+ "concretized": {
+  "internal argument @ interface/globals.php:127": 2,
+  "internal argument @ interface/globals.php:141": 1
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

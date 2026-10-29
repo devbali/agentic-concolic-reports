@@ -1,0 +1,66 @@
+{
+ "script": "interface/forms/eye_mag/js/eye_base.php",
+ "wall_s": 30.0,
+ "requests": 80,
+ "rounds": 5,
+ "traces": 72,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "pid",
+   "providerID",
+   "site",
+   "skip_timeout_reset"
+  ],
+  "POST": [
+   "authUser",
+   "pid",
+   "providerID",
+   "skip_timeout_reset"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 4,
+ "assumptions": [],
+ "sink_sites": [
+  {
+   "site": "interface/forms/eye_mag/js/eye_base.php:372",
+   "sink": "echo",
+   "kind": "xss-candidate",
+   "instance": "\"'><acexss1726e457>",
+   "request": {
+    "GET": {},
+    "POST": {
+     "providerID": "\"'><acexss1726e457>"
+    },
+    "COOKIE": {
+     "OpenEMR": "acesession"
+    }
+   }
+  }
+ ],
+ "errors_distinct": [],
+ "halted_traces": 3,
+ "concretized": {
+  "internal argument @ vendor/adodb/adodb-php/adodb.inc.php:1198": 114,
+  "string conversion @ vendor/adodb/adodb-php/adodb.inc.php:1201": 114,
+  "internal argument @ src/Common/Logging/EventAuditLogger.php:757": 114,
+  "empty() @ src/Common/Logging/EventAuditLogger.php:759": 114,
+  "string conversion @ src/Common/Logging/EventAuditLogger.php:765": 114,
+  "internal argument @ interface/globals.php:127": 2,
+  "internal argument @ interface/globals.php:141": 1
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

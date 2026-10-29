@@ -1,0 +1,41 @@
+{
+ "script": "search.php",
+ "wall_s": 8.0,
+ "requests": 33,
+ "rounds": 8,
+ "traces": 33,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "id",
+   "lan",
+   "q"
+  ],
+  "POST": [],
+  "COOKIE": [
+   "PHPSESSID",
+   "uniqueuser"
+  ]
+ },
+ "budget_hit": false,
+ "coverage_complete": true,
+ "missing": 0,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 0,
+ "concretized": {
+  "intval @ search.php:21": 32,
+  "string conversion @ search.php:23": 16,
+  "internal argument @ includes/functions_banners.php:78": 16,
+  "internal argument @ includes/messages.inc.php:20": 8
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

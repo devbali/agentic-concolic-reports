@@ -1,0 +1,44 @@
+{
+ "script": "interface/main/main_screen.php",
+ "wall_s": 60.1,
+ "requests": 9,
+ "rounds": 3,
+ "traces": 9,
+ "errored": 6,
+ "first_error": "SodiumException: a PHP string is required",
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "pid",
+   "site",
+   "skip_timeout_reset"
+  ],
+  "POST": [
+   "clearPass",
+   "csrf_token_form",
+   "new_login_session_management",
+   "pid",
+   "skip_timeout_reset"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [
+  "SodiumException: a PHP string is required"
+ ],
+ "halted_traces": 3,
+ "concretized": {},
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

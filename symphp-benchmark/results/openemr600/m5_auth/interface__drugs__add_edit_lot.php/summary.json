@@ -1,0 +1,50 @@
+{
+ "script": "interface/drugs/add_edit_lot.php",
+ "wall_s": 15.0,
+ "requests": 40,
+ "rounds": 4,
+ "traces": 40,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "drug",
+   "lot",
+   "pid",
+   "site",
+   "skip_timeout_reset"
+  ],
+  "POST": [
+   "authUser",
+   "drug",
+   "form_trans_type",
+   "lot",
+   "pid",
+   "skip_timeout_reset"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 3,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 40,
+ "concretized": {
+  "arithmetic + @ interface/drugs/add_edit_lot.php:99": 36,
+  "arithmetic + @ interface/drugs/add_edit_lot.php:100": 36,
+  "internal argument @ interface/globals.php:146": 1,
+  "internal argument @ interface/globals.php:160": 1
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

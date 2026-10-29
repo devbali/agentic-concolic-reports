@@ -1,0 +1,41 @@
+{
+ "script": "selleremails.php",
+ "wall_s": 15.8,
+ "requests": 94,
+ "rounds": 12,
+ "traces": 71,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "lan"
+  ],
+  "POST": [
+   "action",
+   "csrftoken",
+   "endemailmod"
+  ],
+  "COOKIE": [
+   "PHPSESSID",
+   "uniqueuser"
+  ]
+ },
+ "budget_hit": false,
+ "coverage_complete": true,
+ "missing": 0,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 12,
+ "concretized": {
+  "internal argument @ includes/messages.inc.php:20": 17,
+  "in_array @ selleremails.php:29": 24
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

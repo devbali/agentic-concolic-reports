@@ -1,0 +1,94 @@
+{
+ "script": "interface/forms/eye_mag/a_issue.php",
+ "wall_s": 30.0,
+ "requests": 53,
+ "rounds": 4,
+ "traces": 53,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "deletion",
+   "encounter",
+   "form_id",
+   "form_save",
+   "form_type",
+   "issue",
+   "pid",
+   "site",
+   "skip_timeout_reset",
+   "uniqueID"
+  ],
+  "POST": [
+   "authUser",
+   "dateEnd",
+   "dateState",
+   "deletion",
+   "encounter",
+   "form_id",
+   "form_save",
+   "form_type",
+   "issue",
+   "pid",
+   "skip_timeout_reset",
+   "uniqueID"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [
+  {
+   "site": "interface/forms/eye_mag/a_issue.php:1361",
+   "sink": "echo",
+   "kind": "xss-candidate",
+   "instance": "\"'><acexss9b544b1a>",
+   "request": {
+    "GET": {
+     "auth": "",
+     "pid": "\"'><acexss9b544b1a>",
+     "site": ""
+    },
+    "POST": {
+     "dateEnd": "",
+     "dateState": "",
+     "encounter": "",
+     "form_id": "",
+     "issue": "",
+     "pid": "",
+     "skip_timeout_reset": "",
+     "uniqueID": ""
+    },
+    "COOKIE": {
+     "OpenEMR": "acesession"
+    }
+   }
+  }
+ ],
+ "errors_distinct": [],
+ "halted_traces": 3,
+ "concretized": {
+  "gettype @ vendor/adodb/adodb-php/adodb.inc.php:1189": 172,
+  "internal argument @ src/Common/Logging/EventAuditLogger.php:757": 156,
+  "empty() @ src/Common/Logging/EventAuditLogger.php:759": 156,
+  "string conversion @ src/Common/Logging/EventAuditLogger.php:765": 156,
+  "internal argument @ interface/globals.php:127": 1,
+  "internal argument @ interface/globals.php:141": 1,
+  "arithmetic + @ interface/forms/eye_mag/a_issue.php:30": 4,
+  "internal argument @ src/Common/Logging/EventAuditLogger.php:1041": 30,
+  "internal argument @ src/Common/Logging/EventAuditLogger.php:891": 8,
+  "arithmetic + @ interface/forms/eye_mag/a_issue.php:36": 2
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 54,
+  "call7": {}
+ }
+}

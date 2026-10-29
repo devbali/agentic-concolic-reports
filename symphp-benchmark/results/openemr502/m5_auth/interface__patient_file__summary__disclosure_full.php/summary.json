@@ -1,0 +1,52 @@
+{
+ "script": "interface/patient_file/summary/disclosure_full.php",
+ "wall_s": 42.2,
+ "requests": 90,
+ "rounds": 5,
+ "traces": 83,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "csrf_token_form",
+   "deletelid",
+   "offset",
+   "pid",
+   "site",
+   "skip_timeout_reset"
+  ],
+  "POST": [
+   "authUser",
+   "csrf_token_form",
+   "mode",
+   "offset",
+   "pid",
+   "skip_timeout_reset"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 5,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 74,
+ "concretized": {
+  "(int) @ library/formdata.inc.php:43": 7,
+  "arithmetic - @ interface/patient_file/summary/disclosure_full.php:104": 7,
+  "comparison > @ interface/patient_file/summary/disclosure_full.php:153": 7,
+  "internal argument @ interface/globals.php:127": 1,
+  "internal argument @ interface/globals.php:141": 1
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 10,
+  "call7": {}
+ }
+}

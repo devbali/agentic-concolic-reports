@@ -1,0 +1,47 @@
+{
+ "script": "admin/login.php",
+ "wall_s": 36.2,
+ "requests": 246,
+ "rounds": 12,
+ "traces": 93,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "lan"
+  ],
+  "POST": [
+   "action",
+   "password",
+   "username"
+  ],
+  "COOKIE": [
+   "PHPSESSID",
+   "USERLANGUAGE",
+   "WEBID_RM_ID"
+  ]
+ },
+ "budget_hit": false,
+ "coverage_complete": true,
+ "missing": 0,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 14,
+ "concretized": {
+  "internal argument @ includes/functions_global.php:467": 52,
+  "internal argument @ includes/messages.inc.php:41": 40,
+  "internal argument @ includes/messages.inc.php:20": 12,
+  "internal argument @ admin/login.php:60": 6,
+  "internal argument @ includes/packages/htmLawed.php:90": 6,
+  "internal argument @ admin/login.php:74": 6,
+  "internal argument @ includes/packages/PasswordHash.php:245": 6
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

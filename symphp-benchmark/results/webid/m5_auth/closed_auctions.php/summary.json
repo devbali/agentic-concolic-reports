@@ -1,0 +1,41 @@
+{
+ "script": "closed_auctions.php",
+ "wall_s": 14.8,
+ "requests": 77,
+ "rounds": 9,
+ "traces": 77,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "PAGE",
+   "lan",
+   "user_id"
+  ],
+  "POST": [],
+  "COOKIE": [
+   "PHPSESSID",
+   "uniqueuser"
+  ]
+ },
+ "budget_hit": false,
+ "coverage_complete": true,
+ "missing": 0,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 4,
+ "concretized": {
+  "comparison == @ closed_auctions.php:45": 48,
+  "internal argument @ includes/messages.inc.php:20": 19,
+  "intval @ closed_auctions.php:19": 4,
+  "intval @ closed_auctions.php:52": 24
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

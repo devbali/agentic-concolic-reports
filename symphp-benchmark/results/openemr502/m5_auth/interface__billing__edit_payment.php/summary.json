@@ -1,0 +1,217 @@
+{
+ "script": "interface/billing/edit_payment.php",
+ "wall_s": 38.0,
+ "requests": 90,
+ "rounds": 5,
+ "traces": 87,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "ParentPage",
+   "auth",
+   "payment_id",
+   "pid",
+   "site",
+   "skip_timeout_reset"
+  ],
+  "POST": [
+   "DeletePaymentDistributionId",
+   "ParentPage",
+   "adjustment_code",
+   "authUser",
+   "check_date",
+   "check_number",
+   "deposit_date",
+   "description",
+   "mode",
+   "payment_amount",
+   "payment_id",
+   "payment_method",
+   "pid",
+   "post_to_date",
+   "skip_timeout_reset",
+   "type_name"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 5,
+ "assumptions": [],
+ "sink_sites": [
+  {
+   "site": "vendor/adodb/adodb-php/drivers/adodb-mysqli.inc.php:788",
+   "sink": "mysqli_query",
+   "kind": "malformed-at-reach",
+   "instance": "update ar_session set ', user_id = '1', closed = '0', reference = '', check_date = '', deposit_date = '2026-10-29', pay_total = '', modified_time = '2026-10-29 05:22:08', payment_type = '', description = '', adjustment_code = '', post_to_date = '2026-10-29', payment_method = ''    where session_id=''",
+   "request": {
+    "GET": {
+     "auth": "",
+     "pid": "",
+     "site": ""
+    },
+    "POST": {
+     "ParentPage": "",
+     "mode": "ModifyPayments",
+     "payment_id": "",
+     "pid": "",
+     "skip_timeout_reset": ""
+    },
+    "COOKIE": {
+     "OpenEMR": "acesession"
+    }
+   },
+   "db_errno": 1064
+  },
+  {
+   "site": "vendor/adodb/adodb-php/drivers/adodb-mysqli.inc.php:788",
+   "sink": "mysqli_query",
+   "kind": "malformed-at-reach",
+   "instance": "update ar_session set ', user_id = '1', closed = '0', reference = '', check_date = '', deposit_date = '2026-10-29', pay_total = '', modified_time = '2026-10-29 05:22:12', payment_type = '', description = '', adjustment_code = '', post_to_date = '2026-10-29', payment_method = ''    where session_id=''",
+   "request": {
+    "GET": {
+     "auth": "",
+     "pid": ""
+    },
+    "POST": {
+     "ParentPage": "",
+     "mode": "ModifyPayments",
+     "payment_id": "",
+     "pid": "",
+     "skip_timeout_reset": ""
+    },
+    "COOKIE": {
+     "OpenEMR": "acesession"
+    }
+   },
+   "db_errno": 1064
+  },
+  {
+   "site": "vendor/adodb/adodb-php/drivers/adodb-mysqli.inc.php:788",
+   "sink": "mysqli_query",
+   "kind": "malformed-at-reach",
+   "instance": "update ar_session set ', user_id = '1', closed = '0', reference = '', check_date = '', deposit_date = '2026-10-29', pay_total = '', modified_time = '2026-10-29 05:22:15', payment_type = '', description = '', adjustment_code = '', post_to_date = '2026-10-29', payment_method = ''    where session_id=''",
+   "request": {
+    "GET": {
+     "pid": ""
+    },
+    "POST": {
+     "ParentPage": "",
+     "mode": "ModifyPayments",
+     "payment_id": "",
+     "pid": "",
+     "skip_timeout_reset": ""
+    },
+    "COOKIE": {
+     "OpenEMR": "acesession"
+    }
+   },
+   "db_errno": 1064
+  },
+  {
+   "site": "vendor/adodb/adodb-php/drivers/adodb-mysqli.inc.php:788",
+   "sink": "mysqli_query",
+   "kind": "malformed-at-reach",
+   "instance": "update ar_session set ', user_id = '1', closed = '0', reference = '', check_date = '', deposit_date = '2026-10-29', pay_total = '', modified_time = '2026-10-29 05:22:27', payment_type = '', description = '', adjustment_code = '', post_to_date = '2026-10-29', payment_method = ''    where session_id=''",
+   "request": {
+    "GET": {
+     "pid": ""
+    },
+    "POST": {
+     "ParentPage": "",
+     "mode": "FinishPayments",
+     "payment_id": "",
+     "pid": "",
+     "skip_timeout_reset": ""
+    },
+    "COOKIE": {
+     "OpenEMR": "acesession"
+    }
+   },
+   "db_errno": 1064
+  },
+  {
+   "site": "vendor/adodb/adodb-php/drivers/adodb-mysqli.inc.php:788",
+   "sink": "mysqli_query",
+   "kind": "malformed-at-reach",
+   "instance": "update ar_session set ', user_id = '1', closed = '0', reference = '', check_date = '', deposit_date = '2026-10-29', pay_total = '', modified_time = '2026-10-29 05:22:29', payment_type = '', description = '', adjustment_code = '', post_to_date = '2026-10-29', payment_method = ''    where session_id=''",
+   "request": {
+    "GET": {
+     "pid": ""
+    },
+    "POST": {
+     "ParentPage": "",
+     "mode": "ModifyPayments",
+     "payment_id": "",
+     "pid": ""
+    },
+    "COOKIE": {
+     "OpenEMR": "acesession"
+    }
+   },
+   "db_errno": 1064
+  },
+  {
+   "site": "vendor/adodb/adodb-php/drivers/adodb-mysqli.inc.php:788",
+   "sink": "mysqli_query",
+   "kind": "malformed-at-reach",
+   "instance": "update ar_session set ', user_id = '1', closed = '0', reference = '', check_date = '', deposit_date = '2026-10-29', pay_total = '', modified_time = '2026-10-29 05:22:31', payment_type = '', description = '', adjustment_code = '', post_to_date = '2026-10-29', payment_method = ''    where session_id=''",
+   "request": {
+    "GET": {},
+    "POST": {
+     "ParentPage": "",
+     "mode": "ModifyPayments",
+     "payment_id": "",
+     "pid": ""
+    },
+    "COOKIE": {
+     "OpenEMR": "acesession"
+    }
+   },
+   "db_errno": 1064
+  },
+  {
+   "site": "vendor/adodb/adodb-php/drivers/adodb-mysqli.inc.php:788",
+   "sink": "mysqli_query",
+   "kind": "malformed-at-reach",
+   "instance": "update ar_session set ', user_id = '1', closed = '0', reference = '', check_date = '', deposit_date = '2026-10-29', pay_total = '', modified_time = '2026-10-29 05:22:33', payment_type = '', description = '', adjustment_code = '', post_to_date = '2026-10-29', payment_method = ''    where session_id=''",
+   "request": {
+    "GET": {},
+    "POST": {
+     "ParentPage": "",
+     "mode": "ModifyPayments",
+     "payment_id": ""
+    },
+    "COOKIE": {
+     "OpenEMR": "acesession"
+    }
+   },
+   "db_errno": 1064
+  }
+ ],
+ "errors_distinct": [],
+ "halted_traces": 15,
+ "concretized": {
+  "gettype @ vendor/adodb/adodb-php/adodb.inc.php:1189": 71,
+  "arithmetic * @ interface/billing/edit_payment.php:757": 71,
+  "arithmetic * @ interface/billing/edit_payment.php:765": 71,
+  "arithmetic * @ interface/billing/edit_payment.php:774": 71,
+  "internal argument @ src/Common/Logging/EventAuditLogger.php:757": 62,
+  "empty() @ src/Common/Logging/EventAuditLogger.php:759": 62,
+  "string conversion @ src/Common/Logging/EventAuditLogger.php:765": 62,
+  "internal argument @ interface/globals.php:127": 2,
+  "internal argument @ interface/globals.php:141": 1,
+  "trim @ src/Common/Logging/EventAuditLogger.php:730": 12,
+  "internal argument @ library/sql.inc:506": 12
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 198,
+  "call7": {}
+ }
+}

@@ -1,0 +1,60 @@
+{
+ "script": "interface/patient_file/reminder/patient_reminders.php",
+ "wall_s": 30.0,
+ "requests": 52,
+ "rounds": 4,
+ "traces": 52,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "begin",
+   "mode",
+   "patient_id",
+   "pid",
+   "site",
+   "skip_timeout_reset",
+   "sortby",
+   "sortorder"
+  ],
+  "POST": [
+   "authUser",
+   "pid",
+   "skip_timeout_reset"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 3,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 5,
+ "concretized": {
+  "internal argument @ interface/globals.php:127": 1,
+  "internal argument @ interface/globals.php:141": 1,
+  "comparison == @ library/patient.inc:788": 4,
+  "internal argument @ library/patient.inc:794": 4,
+  "internal argument @ vendor/adodb/adodb-php/adodb.inc.php:183": 200,
+  "trim @ src/Common/Logging/EventAuditLogger.php:730": 4,
+  "gettype @ vendor/adodb/adodb-php/adodb.inc.php:1189": 196,
+  "internal argument @ library/reminders.php:453": 10,
+  "internal argument @ library/htmlspecialchars.inc.php:35": 52,
+  "internal argument @ interface/patient_file/reminder/patient_reminders.php:149": 2,
+  "internal argument @ library/htmlspecialchars.inc.php:19": 2,
+  "internal argument @ interface/patient_file/reminder/patient_reminders.php:264": 2,
+  "array_search @ library/formdata.inc.php:221": 2,
+  "comparison == @ interface/patient_file/reminder/patient_reminders.php:162": 2
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 2,
+  "arith7": 0,
+  "call7": {}
+ }
+}

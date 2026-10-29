@@ -1,0 +1,46 @@
+{
+ "script": "interface/forms/prior_auth/view.php",
+ "wall_s": 30.0,
+ "requests": 80,
+ "rounds": 5,
+ "traces": 72,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "id",
+   "pid",
+   "site",
+   "skip_timeout_reset"
+  ],
+  "POST": [
+   "authUser",
+   "pid",
+   "skip_timeout_reset"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 4,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 3,
+ "concretized": {
+  "is_numeric @ interface/forms/prior_auth/C_FormPriorAuth.class.php:44": 57,
+  "internal argument @ interface/globals.php:127": 2,
+  "internal argument @ interface/globals.php:141": 1,
+  "string conversion @ sites/default/documents/smarty/main/%%1A^1A6^1A6578E4%%general_new.html.php:74": 18
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

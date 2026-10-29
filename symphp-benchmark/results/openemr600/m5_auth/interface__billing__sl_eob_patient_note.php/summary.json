@@ -1,0 +1,48 @@
+{
+ "script": "interface/billing/sl_eob_patient_note.php",
+ "wall_s": 16.7,
+ "requests": 46,
+ "rounds": 4,
+ "traces": 46,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "patient_id",
+   "pid",
+   "site",
+   "skip_timeout_reset"
+  ],
+  "POST": [
+   "authUser",
+   "form_save",
+   "pid",
+   "skip_timeout_reset"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 40,
+ "concretized": {
+  "internal argument @ interface/globals.php:146": 1,
+  "internal argument @ interface/globals.php:160": 1,
+  "gettype @ vendor/adodb/adodb-php/adodb.inc.php:1184": 12,
+  "internal argument @ vendor/adodb/adodb-php/adodb.inc.php:183": 12,
+  "internal argument @ library/htmlspecialchars.inc.php:36": 6
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

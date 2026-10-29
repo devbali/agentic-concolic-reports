@@ -1,0 +1,121 @@
+{
+ "script": "admin/excludeuser.php",
+ "wall_s": 63.6,
+ "requests": 328,
+ "rounds": 13,
+ "traces": 234,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "id",
+   "lan",
+   "offset"
+  ],
+  "POST": [
+   "action",
+   "anotes",
+   "csrftoken",
+   "id",
+   "mode",
+   "offset"
+  ],
+  "COOKIE": [
+   "PHPSESSID",
+   "USERLANGUAGE",
+   "WEBID_RM_ID"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 4,
+ "assumptions": [],
+ "sink_sites": [
+  {
+   "site": "includes/template/Template.php(163) : eval()'d code:49",
+   "sink": "echo",
+   "kind": "xss-candidate",
+   "instance": "\"'><acexss0b9b381a>",
+   "request": {
+    "GET": {
+     "id": "\"'><acexss0b9b381a>",
+     "lan": "",
+     "offset": ""
+    },
+    "POST": {
+     "id": "",
+     "offset": "",
+     "csrftoken": "acepinnedcsrftoken00000000000000"
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession",
+     "USERLANGUAGE": ""
+    }
+   }
+  },
+  {
+   "site": "includes/template/Template.php(163) : eval()'d code:60",
+   "sink": "echo",
+   "kind": "xss-candidate",
+   "instance": "\"'><acexss07c858e3>",
+   "request": {
+    "GET": {
+     "id": "\"'><acexss07c858e3>",
+     "lan": "",
+     "offset": ""
+    },
+    "POST": {
+     "id": "",
+     "offset": "",
+     "csrftoken": "acepinnedcsrftoken00000000000000"
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession",
+     "USERLANGUAGE": ""
+    }
+   }
+  },
+  {
+   "site": "includes/template/Template.php(163) : eval()'d code:61",
+   "sink": "echo",
+   "kind": "xss-candidate",
+   "instance": "\"'><acexss4877772c>",
+   "request": {
+    "GET": {
+     "id": "",
+     "lan": "",
+     "offset": "\"'><acexss4877772c>"
+    },
+    "POST": {
+     "id": "",
+     "offset": "",
+     "csrftoken": "acepinnedcsrftoken00000000000000"
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession",
+     "USERLANGUAGE": ""
+    }
+   }
+  }
+ ],
+ "errors_distinct": [],
+ "halted_traces": 51,
+ "concretized": {
+  "intval @ admin/excludeuser.php:23": 14,
+  "internal argument @ includes/functions_global.php:467": 111,
+  "internal argument @ includes/messages.inc.php:41": 112,
+  "internal argument @ includes/messages.inc.php:20": 34,
+  "string conversion @ includes/database/DatabasePDO.php:80": 133,
+  "intval @ admin/excludeuser.php:67": 2,
+  "intval @ admin/excludeuser.php:72": 2
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {
+   "implode": 2
+  }
+ }
+}

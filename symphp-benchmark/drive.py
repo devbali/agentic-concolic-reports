@@ -426,6 +426,7 @@ def main() -> int:
                                     if a.eval_instrument else None)}
         flags["realSession"] = bool(spec.get("ace_real_session"))
         flags["sessionIdBeforeStart"] = bool(spec.get("ace_session_id_before_start"))
+        flags["sessionUnsetBeforeStart"] = bool(spec.get("ace_session_unset_before_start"))
         extra = {"flags": flags, "session": {}, "session_ser": ""}
     seeds_by_script = witcher_seeds(a.app) if a.arm == "witcher" else {}
     if a.arm == "auth":

@@ -246,6 +246,9 @@ AceState::$standins = [];
                 // PHP's own handler does -- after the app has registered its
                 // autoloader, so session objects come back as their classes.
                 'session_start' => (function () {
+                    if (!isset($_SESSION)) {
+                        $_SESSION = [];
+                    }
                     if (!AceState::$session_started && !empty(AceState::$request['flags']['realSession'])
                         && session_status() !== PHP_SESSION_ACTIVE) {
                         // apps.json ace_real_session (OpenCart 2.3: its save handler extends
@@ -382,6 +385,11 @@ if (!empty(AceState::$request['flags']['arrayMode'])) {
 }
 $_FILES = [];
 $_SESSION = AceState::$request['session'] ?? [];
+if (!empty(AceState::$request['flags']['sessionUnsetBeforeStart']) && $_SESSION === []) {
+    // apps.json ace_session_unset_before_start (WebChess chess.php: `if (!isset($_SESSION))
+    // session_start();`): as in PHP, $_SESSION does not exist until session_start.
+    unset($_SESSION);
+}
 foreach (AceState::$request['server'] ?? [] as $__ace_k => $__ace_v) {
     $_SERVER[$__ace_k] = $__ace_v;
 }

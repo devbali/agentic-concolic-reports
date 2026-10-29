@@ -1,0 +1,51 @@
+{
+ "script": "interface/orders/load_compendium.php",
+ "wall_s": 22.4,
+ "requests": 50,
+ "rounds": 4,
+ "traces": 50,
+ "errored": 36,
+ "first_error": "TypeError: Cannot increment Concolic\\Template",
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "pid",
+   "site",
+   "skip_timeout_reset"
+  ],
+  "POST": [
+   "authUser",
+   "form_import",
+   "form_status",
+   "form_step",
+   "pid",
+   "skip_timeout_reset"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [
+  "TypeError: Cannot increment Concolic\\Template"
+ ],
+ "halted_traces": 3,
+ "concretized": {
+  "comparison == @ interface/orders/load_compendium.php:97": 36,
+  "comparison == @ interface/orders/load_compendium.php:167": 36,
+  "comparison == @ interface/orders/load_compendium.php:541": 36,
+  "internal argument @ interface/globals.php:146": 1,
+  "internal argument @ interface/globals.php:160": 1
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 36,
+  "arith7": 0,
+  "call7": {}
+ }
+}

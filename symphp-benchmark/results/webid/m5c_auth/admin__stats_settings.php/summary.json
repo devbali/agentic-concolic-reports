@@ -1,0 +1,73 @@
+{
+ "script": "admin/stats_settings.php",
+ "wall_s": 60.0,
+ "requests": 269,
+ "rounds": 11,
+ "traces": 188,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "lan"
+  ],
+  "POST": [
+   "accesses",
+   "action",
+   "activate",
+   "anotes",
+   "browsers",
+   "csrftoken",
+   "domains"
+  ],
+  "COOKIE": [
+   "PHPSESSID",
+   "USERLANGUAGE",
+   "WEBID_RM_ID"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 1,
+ "assumptions": [],
+ "sink_sites": [
+  {
+   "site": "cache/tpl_adminClassic_adminpages.tpl.php:63",
+   "sink": "echo",
+   "kind": "xss-candidate",
+   "instance": "\"'><acexss8f21672f>",
+   "request": {
+    "GET": {
+     "lan": ""
+    },
+    "POST": {
+     "action": "update",
+     "anotes": "",
+     "csrftoken": "acepinnedcsrftoken00000000000000",
+     "accesses": "\"'><acexss8f21672f>",
+     "activate": "",
+     "browsers": "",
+     "domains": ""
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession",
+     "USERLANGUAGE": ""
+    }
+   }
+  }
+ ],
+ "errors_distinct": [],
+ "halted_traces": 32,
+ "concretized": {
+  "internal argument @ includes/functions_global.php:467": 85,
+  "internal argument @ includes/messages.inc.php:41": 99,
+  "internal argument @ includes/messages.inc.php:20": 24,
+  "string conversion @ includes/database/DatabasePDO.php:80": 294
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

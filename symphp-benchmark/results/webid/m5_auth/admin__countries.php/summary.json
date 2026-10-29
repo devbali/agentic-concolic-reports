@@ -1,0 +1,48 @@
+{
+ "script": "admin/countries.php",
+ "wall_s": 60.0,
+ "requests": 295,
+ "rounds": 12,
+ "traces": 262,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "lan"
+  ],
+  "POST": [
+   "act",
+   "anotes",
+   "csrftoken",
+   "delete",
+   "new_countries",
+   "old_countries"
+  ],
+  "COOKIE": [
+   "PHPSESSID",
+   "USERLANGUAGE",
+   "WEBID_RM_ID"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 1,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 32,
+ "concretized": {
+  "internal argument @ includes/functions_global.php:467": 129,
+  "internal argument @ includes/messages.inc.php:41": 121,
+  "internal argument @ includes/messages.inc.php:20": 40,
+  "isset subscript @ admin/countries.php:60": 201,
+  "string conversion @ includes/database/DatabasePDO.php:80": 199
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 2,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

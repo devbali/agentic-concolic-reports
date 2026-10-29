@@ -1,0 +1,58 @@
+{
+ "script": "interface/reports/patient_flow_board_report.php",
+ "wall_s": 37.2,
+ "requests": 121,
+ "rounds": 6,
+ "traces": 84,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "pid",
+   "site",
+   "skip_timeout_reset"
+  ],
+  "POST": [
+   "authUser",
+   "csrf_token_form",
+   "form_apptcat",
+   "form_apptstatus",
+   "form_facility",
+   "form_from_date",
+   "form_orderby",
+   "form_patient",
+   "form_pid",
+   "form_provider",
+   "form_refresh",
+   "form_to_date",
+   "patient",
+   "pid",
+   "show_completed_drug_screens",
+   "show_details",
+   "show_drug_screens",
+   "skip_timeout_reset"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 3,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 83,
+ "concretized": {
+  "internal argument @ interface/globals.php:127": 2,
+  "internal argument @ interface/globals.php:141": 1
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

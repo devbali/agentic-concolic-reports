@@ -1,0 +1,95 @@
+{
+ "script": "admin/theme.php",
+ "wall_s": 60.0,
+ "requests": 200,
+ "rounds": 9,
+ "traces": 154,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "do",
+   "lan",
+   "theme"
+  ],
+  "POST": [
+   "action",
+   "anotes",
+   "csrftoken",
+   "dtheme",
+   "file",
+   "filename",
+   "new_filename",
+   "theme"
+  ],
+  "COOKIE": [
+   "PHPSESSID",
+   "USERLANGUAGE",
+   "WEBID_RM_ID"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 4,
+ "assumptions": [],
+ "sink_sites": [
+  {
+   "site": "includes/template/Template.php(163) : eval()'d code:27",
+   "sink": "echo",
+   "kind": "xss-candidate",
+   "instance": "\"'><acexss82bcf3b3>",
+   "request": {
+    "GET": {
+     "do": "addfile",
+     "theme": "\"'><acexss82bcf3b3>"
+    },
+    "POST": {
+     "file": ""
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession"
+    }
+   }
+  },
+  {
+   "site": "admin/theme.php:42",
+   "sink": "echo",
+   "kind": "xss-candidate",
+   "instance": "can't open file /home/jamie/ace-eval/apps/webid-1.2.2/src/themes/\"'><acexssf932ac1f>/",
+   "request": {
+    "GET": {
+     "do": "",
+     "lan": "",
+     "theme": ""
+    },
+    "POST": {
+     "action": "add",
+     "anotes": "",
+     "file": "",
+     "csrftoken": "acepinnedcsrftoken00000000000000",
+     "theme": "\"'><acexssf932ac1f>"
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession",
+     "USERLANGUAGE": ""
+    }
+   }
+  }
+ ],
+ "errors_distinct": [],
+ "halted_traces": 51,
+ "concretized": {
+  "internal argument @ includes/functions_global.php:467": 80,
+  "internal argument @ includes/messages.inc.php:41": 69,
+  "internal argument @ includes/messages.inc.php:20": 26,
+  "string conversion @ includes/database/DatabasePDO.php:80": 101,
+  "internal argument @ admin/theme.php:42": 20
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

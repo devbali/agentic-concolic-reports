@@ -1,0 +1,69 @@
+{
+ "script": "wp-admin/async-upload.php",
+ "wall_s": 67.6,
+ "requests": 136,
+ "rounds": 6,
+ "traces": 134,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "action",
+   "auth_cookie",
+   "customize_changeset_uuid",
+   "customize_messenger_channel",
+   "customize_theme",
+   "import",
+   "logged_in_cookie",
+   "preview_id",
+   "preview_nonce",
+   "replytocom",
+   "theme",
+   "wp_customize"
+  ],
+  "POST": [
+   "action",
+   "auth_cookie",
+   "customize_changeset_uuid",
+   "customize_messenger_channel",
+   "customize_theme",
+   "logged_in_cookie",
+   "theme",
+   "wp_customize"
+  ],
+  "COOKIE": [
+   "comment_author_710bf923a78c1956e56fa54d43de28a6",
+   "comment_author_email_710bf923a78c1956e56fa54d43de28a6",
+   "comment_author_url_710bf923a78c1956e56fa54d43de28a6",
+   "wordpress_710bf923a78c1956e56fa54d43de28a6",
+   "wordpress_logged_in_710bf923a78c1956e56fa54d43de28a6"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 1,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 134,
+ "concretized": {
+  "is_array @ wp-includes/functions.php:909": 1616,
+  "string conversion @ wp-includes/formatting.php:1024": 112,
+  "string conversion @ wp-includes/class-wp-hook.php:298": 114,
+  "internal argument @ wp-includes/formatting.php:4639": 116,
+  "empty() @ wp-includes/pluggable.php:763": 178,
+  "empty() @ wp-includes/user.php:335": 102,
+  "comparison == @ wp-admin/async-upload.php:22": 17,
+  "empty() @ wp-admin/async-upload.php:26": 159,
+  "empty() @ wp-admin/async-upload.php:28": 162,
+  "internal argument @ wp-includes/formatting.php:1881": 7,
+  "string conversion @ wp-includes/pluggable.php:1844": 23
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 158,
+  "arith7": 0,
+  "call7": {}
+ }
+}

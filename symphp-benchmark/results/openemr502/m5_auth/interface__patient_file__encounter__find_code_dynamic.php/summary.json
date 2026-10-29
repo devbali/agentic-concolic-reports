@@ -1,0 +1,51 @@
+{
+ "script": "interface/patient_file/encounter/find_code_dynamic.php",
+ "wall_s": 30.0,
+ "requests": 52,
+ "rounds": 4,
+ "traces": 52,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "codetype",
+   "layout_id",
+   "pid",
+   "site",
+   "skip_timeout_reset",
+   "source",
+   "target_element",
+   "what"
+  ],
+  "POST": [
+   "authUser",
+   "pid",
+   "skip_timeout_reset"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 3,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 3,
+ "concretized": {
+  "internal argument @ interface/globals.php:127": 1,
+  "internal argument @ interface/globals.php:141": 1,
+  "internal argument @ library/htmlspecialchars.inc.php:19": 2,
+  "strpos @ library/csv_like_join.php:87": 2,
+  "internal argument @ library/htmlspecialchars.inc.php:35": 2
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

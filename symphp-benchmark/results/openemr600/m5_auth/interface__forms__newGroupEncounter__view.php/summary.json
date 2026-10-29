@@ -1,0 +1,48 @@
+{
+ "script": "interface/forms/newGroupEncounter/view.php",
+ "wall_s": 28.0,
+ "requests": 47,
+ "rounds": 4,
+ "traces": 47,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "id",
+   "pid",
+   "site",
+   "skip_timeout_reset"
+  ],
+  "POST": [
+   "authUser",
+   "id",
+   "pid",
+   "skip_timeout_reset"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 3,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 3,
+ "concretized": {
+  "gettype @ vendor/adodb/adodb-php/adodb.inc.php:1184": 42,
+  "internal argument @ vendor/adodb/adodb-php/adodb.inc.php:183": 42,
+  "internal argument @ interface/globals.php:146": 1,
+  "internal argument @ interface/globals.php:160": 1,
+  "internal argument @ library/htmlspecialchars.inc.php:20": 9
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

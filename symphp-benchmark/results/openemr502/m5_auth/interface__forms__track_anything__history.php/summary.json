@@ -1,0 +1,53 @@
+{
+ "script": "interface/forms/track_anything/history.php",
+ "wall_s": 30.0,
+ "requests": 51,
+ "rounds": 4,
+ "traces": 51,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "formid",
+   "pid",
+   "site",
+   "skip_timeout_reset"
+  ],
+  "POST": [
+   "ASC_DESC",
+   "authUser",
+   "formid",
+   "fromencounter",
+   "pid",
+   "skip_timeout_reset"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 51,
+ "concretized": {
+  "gettype @ vendor/adodb/adodb-php/adodb.inc.php:1189": 47,
+  "internal argument @ src/Common/Logging/EventAuditLogger.php:757": 44,
+  "empty() @ src/Common/Logging/EventAuditLogger.php:759": 44,
+  "string conversion @ src/Common/Logging/EventAuditLogger.php:765": 44,
+  "internal argument @ interface/globals.php:127": 1,
+  "internal argument @ interface/globals.php:141": 1,
+  "comparison == @ interface/forms/track_anything/history.php:163": 2,
+  "comparison == @ interface/forms/track_anything/history.php:167": 2
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 2,
+  "arith7": 0,
+  "call7": {}
+ }
+}

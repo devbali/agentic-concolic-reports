@@ -1,0 +1,36 @@
+{
+ "script": "interface/logout.php",
+ "wall_s": 2.3,
+ "requests": 5,
+ "rounds": 5,
+ "traces": 5,
+ "errored": 1,
+ "first_error": "Error: Failed opening required '/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/openemr600-m5_cold/sites/A/sqlconf.php' (include_path='.:/usr/local/lib/php')",
+ "keys_discovered": {
+  "GET": [
+   "site"
+  ],
+  "POST": [],
+  "COOKIE": []
+ },
+ "budget_hit": false,
+ "coverage_complete": true,
+ "missing": 0,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [
+  "Error: Failed opening required '/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/openemr600-m5_cold/sites/A/sqlconf.php' (include_path='.:/u"
+ ],
+ "halted_traces": 4,
+ "concretized": {
+  "internal argument @ interface/globals.php:146": 1,
+  "string conversion @ library/sqlconf.php:14": 1
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

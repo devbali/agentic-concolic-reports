@@ -1,0 +1,57 @@
+{
+ "script": "admin/excludeuser.php",
+ "wall_s": 62.8,
+ "requests": 368,
+ "rounds": 14,
+ "traces": 222,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "id",
+   "lan",
+   "offset"
+  ],
+  "POST": [
+   "action",
+   "anotes",
+   "csrftoken",
+   "id",
+   "mode",
+   "offset"
+  ],
+  "COOKIE": [
+   "PHPSESSID",
+   "USERLANGUAGE",
+   "WEBID_RM_ID"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 154,
+ "concretized": {
+  "intval @ admin/excludeuser.php:23": 56,
+  "internal argument @ includes/functions_global.php:467": 107,
+  "internal argument @ includes/messages.inc.php:41": 102,
+  "internal argument @ includes/messages.inc.php:20": 30,
+  "string conversion @ includes/database/DatabasePDO.php:80": 102,
+  "string conversion @ includes/template/Template.php(163) : eval()'d code:49": 68,
+  "string conversion @ includes/template/Template.php(163) : eval()'d code:60": 68,
+  "string conversion @ includes/template/Template.php(163) : eval()'d code:61": 68,
+  "intval @ admin/excludeuser.php:67": 34,
+  "intval @ admin/excludeuser.php:72": 31
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {
+   "implode": 34
+  }
+ }
+}

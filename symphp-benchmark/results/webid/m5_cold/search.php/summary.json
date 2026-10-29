@@ -1,0 +1,45 @@
+{
+ "script": "search.php",
+ "wall_s": 46.0,
+ "requests": 225,
+ "rounds": 11,
+ "traces": 225,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "id",
+   "lan",
+   "q"
+  ],
+  "POST": [],
+  "COOKIE": [
+   "USERLANGUAGE",
+   "WEBID_ONLINE",
+   "WEBID_RM_ID",
+   "uniqueuser"
+  ]
+ },
+ "budget_hit": false,
+ "coverage_complete": true,
+ "missing": 0,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 0,
+ "concretized": {
+  "intval @ search.php:21": 224,
+  "internal argument @ includes/functions_global.php:467": 224,
+  "internal argument @ includes/messages.inc.php:41": 96,
+  "string conversion @ search.php:23": 112,
+  "internal argument @ includes/functions_banners.php:78": 112,
+  "internal argument @ includes/messages.inc.php:20": 32
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

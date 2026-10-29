@@ -1,0 +1,64 @@
+{
+ "script": "admin/emailsettings.php",
+ "wall_s": 62.7,
+ "requests": 473,
+ "rounds": 16,
+ "traces": 383,
+ "errored": 268,
+ "first_error": "Error: fatal: __autoload() is no longer supported, use spl_autoload_register() instead at /home/jamie/ace-eval/apps/webid-1.2.2/src/includes/packages/PHPMailer/PHPMailerAutoload.php:45",
+ "keys_discovered": {
+  "GET": [
+   "lan",
+   "test_email"
+  ],
+  "POST": [
+   "action",
+   "alert_emails",
+   "anotes",
+   "csrftoken",
+   "mail_parameter",
+   "mail_protocol",
+   "message",
+   "subject",
+   "user_email",
+   "user_name"
+  ],
+  "COOKIE": [
+   "PHPSESSID",
+   "USERLANGUAGE",
+   "WEBID_RM_ID"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 1,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [
+  "Error: fatal: __autoload() is no longer supported, use spl_autoload_register() instead at /home/jamie/ace-eval/apps/webid-1.2.2/src/includes/packages/PHPMailer/"
+ ],
+ "halted_traces": 32,
+ "concretized": {
+  "internal argument @ includes/functions_global.php:467": 186,
+  "internal argument @ includes/messages.inc.php:41": 184,
+  "internal argument @ includes/messages.inc.php:20": 54,
+  "internal argument @ admin/emailsettings.php:77": 219,
+  "internal argument @ admin/emailsettings.php:78": 219,
+  "internal argument @ admin/emailsettings.php:79": 219,
+  "internal argument @ admin/emailsettings.php:80": 219,
+  "intval @ admin/emailsettings.php:27": 223,
+  "intval @ admin/emailsettings.php:35": 223,
+  "intval @ admin/emailsettings.php:37": 223,
+  "string conversion @ includes/database/DatabasePDO.php:80": 448,
+  "intval @ includes/functions_global.php:130": 72,
+  "string conversion @ includes/template/Template.php(163) : eval()'d code:25": 73,
+  "string conversion @ includes/template/Template.php(163) : eval()'d code:55": 43
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

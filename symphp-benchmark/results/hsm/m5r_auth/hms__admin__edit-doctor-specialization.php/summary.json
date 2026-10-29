@@ -1,0 +1,57 @@
+{
+ "script": "hms/admin/edit-doctor-specialization.php",
+ "wall_s": 4.9,
+ "requests": 12,
+ "rounds": 5,
+ "traces": 9,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "id"
+  ],
+  "POST": [
+   "doctorspecilization",
+   "submit"
+  ],
+  "COOKIE": [
+   "PHPSESSID"
+  ]
+ },
+ "budget_hit": false,
+ "coverage_complete": true,
+ "missing": 0,
+ "assumptions": [],
+ "sink_sites": [
+  {
+   "site": "hms/admin/edit-doctor-specialization.php:11",
+   "sink": "mysqli_query",
+   "kind": "injectable",
+   "instance": "update  doctorSpecilization set specilization=''' where id='0'",
+   "request": {
+    "GET": {},
+    "POST": {
+     "submit": "",
+     "doctorspecilization": "'"
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession"
+    }
+   },
+   "db_errno": 0
+  }
+ ],
+ "errors_distinct": [],
+ "halted_traces": 0,
+ "concretized": {
+  "intval @ hms/admin/edit-doctor-specialization.php:7": 8,
+  "intval @ hms/admin/edit-doctor-specialization.php:85": 8
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

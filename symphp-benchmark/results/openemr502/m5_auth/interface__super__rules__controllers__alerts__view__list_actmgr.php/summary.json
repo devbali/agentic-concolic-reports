@@ -1,0 +1,38 @@
+{
+ "script": "interface/super/rules/controllers/alerts/view/list_actmgr.php",
+ "wall_s": 3.7,
+ "requests": 5,
+ "rounds": 5,
+ "traces": 5,
+ "errored": 5,
+ "first_error": "Error: Call to undefined function xlt()",
+ "keys_discovered": {
+  "GET": [
+   "site"
+  ],
+  "POST": [],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": false,
+ "coverage_complete": true,
+ "missing": 0,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [
+  "Error: Call to undefined function xlt()",
+  "Error: Failed opening required '/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/openemr502-m5_auth/library/../sites/A/sqlconf.php' (include"
+ ],
+ "halted_traces": 0,
+ "concretized": {
+  "string conversion @ library/sqlconf.php:20": 1
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

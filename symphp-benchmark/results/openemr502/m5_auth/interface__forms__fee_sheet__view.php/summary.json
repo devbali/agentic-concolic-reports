@@ -1,0 +1,77 @@
+{
+ "script": "interface/forms/fee_sheet/view.php",
+ "wall_s": 40.8,
+ "requests": 62,
+ "rounds": 4,
+ "traces": 62,
+ "errored": 2,
+ "first_error": "Concolic\\NotImplementedError: Iteration over symbolic values is not modelled",
+ "keys_discovered": {
+  "GET": [
+   "addmore",
+   "auth",
+   "pid",
+   "rde",
+   "site",
+   "skip_timeout_reset"
+  ],
+  "POST": [
+   "ProviderID",
+   "SupervisorID",
+   "authUser",
+   "bill",
+   "bn_addmore",
+   "bn_reopen",
+   "bn_save",
+   "bn_save_close",
+   "bn_save_stay",
+   "bn_search",
+   "default_warehouse",
+   "form_checksum",
+   "newcodes",
+   "pid",
+   "pricelevel",
+   "prod",
+   "running_as_ajax",
+   "search_term",
+   "search_type",
+   "skip_timeout_reset"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 6,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [
+  "Concolic\\NotImplementedError: Iteration over symbolic values is not modelled"
+ ],
+ "halted_traces": 3,
+ "concretized": {
+  "comparison != @ interface/forms/fee_sheet/new.php:470": 47,
+  "internal argument @ interface/globals.php:127": 1,
+  "internal argument @ interface/globals.php:141": 1,
+  "gettype @ vendor/adodb/adodb-php/adodb.inc.php:1189": 23,
+  "internal argument @ src/Common/Logging/EventAuditLogger.php:757": 21,
+  "empty() @ src/Common/Logging/EventAuditLogger.php:759": 21,
+  "string conversion @ src/Common/Logging/EventAuditLogger.php:765": 21,
+  "internal argument @ interface/forms/fee_sheet/new.php:744": 2,
+  "internal argument @ library/htmlspecialchars.inc.php:19": 2,
+  "internal argument @ src/Common/Logging/EventAuditLogger.php:891": 1,
+  "is_array @ library/FeeSheet.class.php:639": 2,
+  "is_array @ library/FeeSheet.class.php:743": 3,
+  "is_array @ library/FeeSheet.class.php:951": 3,
+  "internal argument @ interface/forms/fee_sheet/new.php:591": 1,
+  "internal argument @ interface/forms/fee_sheet/new.php:1315": 1
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 115,
+  "arith7": 60,
+  "call7": {}
+ }
+}

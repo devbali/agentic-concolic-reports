@@ -1,0 +1,57 @@
+{
+ "script": "interface/orders/procedure_stats.php",
+ "wall_s": 30.0,
+ "requests": 55,
+ "rounds": 4,
+ "traces": 55,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "pid",
+   "site",
+   "skip_timeout_reset"
+  ],
+  "POST": [
+   "authUser",
+   "csrf_token_form",
+   "form_by",
+   "form_facility",
+   "form_from_date",
+   "form_output",
+   "form_sexes",
+   "form_show",
+   "form_submit",
+   "form_to_date",
+   "pid",
+   "skip_timeout_reset"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 4,
+ "concretized": {
+  "comparison == @ library/formatting.inc.php:203": 83,
+  "arithmetic + @ interface/orders/procedure_stats.php:38": 45,
+  "comparison == @ interface/orders/procedure_stats.php:371": 132,
+  "internal argument @ interface/globals.php:127": 1,
+  "internal argument @ interface/globals.php:141": 1,
+  "comparison == @ interface/orders/procedure_stats.php:347": 4,
+  "is_array @ interface/orders/procedure_stats.php:415": 148
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 45,
+  "call7": {}
+ }
+}

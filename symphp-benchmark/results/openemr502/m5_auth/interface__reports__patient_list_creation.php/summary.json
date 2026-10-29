@@ -1,0 +1,60 @@
+{
+ "script": "interface/reports/patient_list_creation.php",
+ "wall_s": 34.2,
+ "requests": 81,
+ "rounds": 5,
+ "traces": 47,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "pid",
+   "site",
+   "skip_timeout_reset"
+  ],
+  "POST": [
+   "age_from",
+   "age_to",
+   "authUser",
+   "communication",
+   "cpms_ethnicity",
+   "csrf_token_form",
+   "date_from",
+   "date_to",
+   "form_diagnosis",
+   "form_drug_name",
+   "form_immunization",
+   "form_lab_results",
+   "form_refresh",
+   "form_service_codes",
+   "gender",
+   "patient_id",
+   "pid",
+   "race",
+   "skip_timeout_reset",
+   "srch_option"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 46,
+ "concretized": {
+  "internal argument @ interface/globals.php:127": 1,
+  "internal argument @ interface/globals.php:141": 1
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

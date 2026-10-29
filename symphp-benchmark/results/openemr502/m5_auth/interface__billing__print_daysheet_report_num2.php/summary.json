@@ -1,0 +1,58 @@
+{
+ "script": "interface/billing/print_daysheet_report_num2.php",
+ "wall_s": 33.9,
+ "requests": 94,
+ "rounds": 5,
+ "traces": 94,
+ "errored": 81,
+ "first_error": "Concolic\\NotImplementedError: Iteration over symbolic values is not modelled",
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "authorized",
+   "code_type",
+   "final_this_page_criteria",
+   "from_date",
+   "mode",
+   "pid",
+   "site",
+   "skip_timeout_reset",
+   "to_date",
+   "unbilled"
+  ],
+  "POST": [
+   "authUser",
+   "final_this_page_criteria",
+   "pid",
+   "skip_timeout_reset"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 4,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [
+  "Concolic\\NotImplementedError: Iteration over symbolic values is not modelled",
+  "Error: Call to undefined function billCodesList()"
+ ],
+ "halted_traces": 3,
+ "concretized": {
+  "internal argument @ interface/globals.php:127": 1,
+  "internal argument @ interface/globals.php:141": 1,
+  "gettype @ vendor/adodb/adodb-php/adodb.inc.php:1189": 8,
+  "internal argument @ src/Common/Logging/EventAuditLogger.php:757": 2,
+  "empty() @ src/Common/Logging/EventAuditLogger.php:759": 2,
+  "string conversion @ src/Common/Logging/EventAuditLogger.php:765": 2
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

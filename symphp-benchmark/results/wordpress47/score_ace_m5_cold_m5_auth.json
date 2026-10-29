@@ -1,0 +1,86 @@
+{
+ "app": "wordpress47",
+ "tool": "ace:m5_cold+m5_auth",
+ "requests": 15859,
+ "findings": 0,
+ "findings_judge_confirmed": 0,
+ "findings_unconfirmed": [],
+ "faulting_requests": 0,
+ "detected": 0,
+ "known": 3,
+ "cves_detected": 0,
+ "cves_known": 2,
+ "cves": {
+  "CVE-2019-16217": false,
+  "CVE-2017-9063": false
+ },
+ "coverage_pct": 19.56,
+ "covered_lines": 20951,
+ "executable_lines": 107100,
+ "vulns": [
+  {
+   "id": "WP47-1",
+   "cve": [],
+   "type": "sqli",
+   "sink": "wp-admin/includes/post.php:1178",
+   "auth": "user",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "s",
+    "query[s]"
+   ],
+   "method": "GET|POST",
+   "detected": false,
+   "witness": null
+  },
+  {
+   "id": "WP47-2",
+   "cve": [
+    "CVE-2019-16217"
+   ],
+   "type": "xss",
+   "sink": "wp-admin/includes/ajax-actions.php:2009",
+   "auth": "user",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "async-upload (uploaded file name, $_FILES['async-upload']['name'])"
+   ],
+   "method": "POST",
+   "detected": false,
+   "witness": null
+  },
+  {
+   "id": "WP47-3",
+   "cve": [
+    "CVE-2017-9063"
+   ],
+   "type": "xss",
+   "sink": "wp-includes/class-wp-customize-manager.php:452",
+   "auth": "admin",
+   "confidence": "likely",
+   "param": [
+    "customized"
+   ],
+   "method": "POST",
+   "detected": false,
+   "witness": null
+  }
+ ],
+ "xdebug_coverage_pct": 19.56,
+ "xdebug_covered_lines": 20951,
+ "xdebug_method": "auto_prepend_file (coverage-only, outside docroot); the fault replays themselves ran under it (judge_cgi xdebug), so trace == xdebug",
+ "arms": {
+  "m5_cold": {
+   "requests": 8165,
+   "detected": 0,
+   "detected_ids": [],
+   "coverage_pct": 8.78
+  },
+  "m5_auth": {
+   "requests": 7694,
+   "detected": 0,
+   "detected_ids": [],
+   "coverage_pct": 19.55
+  }
+ }
+}

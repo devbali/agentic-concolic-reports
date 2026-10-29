@@ -1,0 +1,64 @@
+{
+ "script": "admin/currency.php",
+ "wall_s": 60.0,
+ "requests": 492,
+ "rounds": 17,
+ "traces": 370,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "lan"
+  ],
+  "POST": [
+   "action",
+   "anotes",
+   "country",
+   "csrftoken",
+   "currency",
+   "currency_abbreviation",
+   "currency_type"
+  ],
+  "COOKIE": [
+   "PHPSESSID",
+   "USERLANGUAGE",
+   "WEBID_RM_ID"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 1,
+ "assumptions": [],
+ "sink_sites": [
+  {
+   "site": "cache/tpl_adminClassic_adminpages.tpl.php:45",
+   "sink": "echo",
+   "kind": "xss-candidate",
+   "instance": "\"'><acexss2f3b5b7a>",
+   "request": {
+    "GET": {},
+    "POST": {
+     "currency_abbreviation": "\"'><acexss2f3b5b7a>"
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession"
+    }
+   }
+  }
+ ],
+ "errors_distinct": [],
+ "halted_traces": 32,
+ "concretized": {
+  "internal argument @ includes/functions_global.php:467": 193,
+  "internal argument @ includes/messages.inc.php:41": 183,
+  "internal argument @ includes/messages.inc.php:20": 66,
+  "string conversion @ includes/database/DatabasePDO.php:80": 228
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

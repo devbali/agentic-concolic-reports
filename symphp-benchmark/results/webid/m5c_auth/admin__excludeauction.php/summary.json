@@ -1,0 +1,82 @@
+{
+ "script": "admin/excludeauction.php",
+ "wall_s": 61.2,
+ "requests": 226,
+ "rounds": 10,
+ "traces": 174,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "id",
+   "lan",
+   "offset"
+  ],
+  "POST": [
+   "action",
+   "anotes",
+   "csrftoken",
+   "id",
+   "offset"
+  ],
+  "COOKIE": [
+   "PHPSESSID",
+   "USERLANGUAGE",
+   "WEBID_RM_ID"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 1,
+ "assumptions": [],
+ "sink_sites": [
+  {
+   "site": "includes/template/Template.php(163) : eval()'d code:69",
+   "sink": "echo",
+   "kind": "xss-candidate",
+   "instance": "\"'><acexssc32702c0>",
+   "request": {
+    "GET": {
+     "id": "\"'><acexssc32702c0>"
+    },
+    "POST": {},
+    "COOKIE": {
+     "PHPSESSID": "acesession"
+    }
+   }
+  },
+  {
+   "site": "includes/template/Template.php(163) : eval()'d code:70",
+   "sink": "echo",
+   "kind": "xss-candidate",
+   "instance": "\"'><acexss4f94eb6e>",
+   "request": {
+    "GET": {
+     "id": ""
+    },
+    "POST": {
+     "offset": "\"'><acexss4f94eb6e>"
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession"
+    }
+   }
+  }
+ ],
+ "errors_distinct": [],
+ "halted_traces": 62,
+ "concretized": {
+  "internal argument @ includes/functions_global.php:467": 97,
+  "internal argument @ includes/messages.inc.php:41": 83,
+  "internal argument @ includes/messages.inc.php:20": 32,
+  "string conversion @ includes/database/DatabasePDO.php:80": 99,
+  "intval @ admin/excludeauction.php:34": 12
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

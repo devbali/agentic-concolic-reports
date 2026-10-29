@@ -1,0 +1,60 @@
+{
+ "script": "interface/forms/fee_sheet/review/fee_sheet_justify.php",
+ "wall_s": 15.0,
+ "requests": 50,
+ "rounds": 4,
+ "traces": 50,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "billing_id",
+   "diags",
+   "encounter",
+   "pid",
+   "site",
+   "skip_issues",
+   "skip_timeout_reset",
+   "task"
+  ],
+  "POST": [
+   "authUser",
+   "billing_id",
+   "diags",
+   "encounter",
+   "pid",
+   "skip_issues",
+   "skip_timeout_reset",
+   "task"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 3,
+ "concretized": {
+  "internal argument @ interface/globals.php:146": 1,
+  "internal argument @ interface/globals.php:160": 1,
+  "gettype @ vendor/adodb/adodb-php/adodb.inc.php:1184": 15,
+  "internal argument @ vendor/adodb/adodb-php/adodb.inc.php:183": 12,
+  "internal argument @ interface/forms/fee_sheet/review/fee_sheet_queries.php:51": 3,
+  "internal argument @ interface/forms/fee_sheet/review/fee_sheet_queries.php:57": 6,
+  "internal argument @ src/Common/Logging/EventAuditLogger.php:563": 3,
+  "empty() @ src/Common/Logging/EventAuditLogger.php:565": 3,
+  "internal argument @ src/Common/Logging/EventAuditLogger.php:749": 3
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 3,
+  "arith7": 0,
+  "call7": {}
+ }
+}

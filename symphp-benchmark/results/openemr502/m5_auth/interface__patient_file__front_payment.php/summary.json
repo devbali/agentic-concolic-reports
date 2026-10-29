@@ -1,0 +1,64 @@
+{
+ "script": "interface/patient_file/front_payment.php",
+ "wall_s": 30.0,
+ "requests": 50,
+ "rounds": 4,
+ "traces": 50,
+ "errored": 3,
+ "first_error": "Error: Call to a member function oeBelowContainerDiv() on null",
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "hidden_patient_code",
+   "patient",
+   "pid",
+   "radio_type_of_payment",
+   "receipt",
+   "site",
+   "skip_timeout_reset",
+   "time"
+  ],
+  "POST": [
+   "authUser",
+   "csrf_token_form",
+   "form_save",
+   "hidden_patient_code",
+   "pid",
+   "radio_type_of_payment",
+   "receipt",
+   "skip_timeout_reset"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [
+  "Error: Call to a member function oeBelowContainerDiv() on null"
+ ],
+ "halted_traces": 6,
+ "concretized": {
+  "comparison > @ interface/patient_file/front_payment.php:30": 40,
+  "internal argument @ interface/globals.php:127": 1,
+  "internal argument @ interface/globals.php:141": 1,
+  "gettype @ vendor/adodb/adodb-php/adodb.inc.php:1189": 35,
+  "internal argument @ vendor/adodb/adodb-php/adodb.inc.php:183": 28,
+  "internal argument @ src/Common/Logging/EventAuditLogger.php:757": 21,
+  "empty() @ src/Common/Logging/EventAuditLogger.php:759": 21,
+  "string conversion @ src/Common/Logging/EventAuditLogger.php:765": 21,
+  "comparison == @ library/patient.inc:788": 7,
+  "internal argument @ library/patient.inc:794": 7,
+  "trim @ src/Common/Logging/EventAuditLogger.php:730": 7
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

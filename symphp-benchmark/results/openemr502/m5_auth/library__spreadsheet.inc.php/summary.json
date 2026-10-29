@@ -1,0 +1,53 @@
+{
+ "script": "library/spreadsheet.inc.php",
+ "wall_s": 35.7,
+ "requests": 89,
+ "rounds": 5,
+ "traces": 84,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "id",
+   "pid",
+   "popup",
+   "site",
+   "skip_timeout_reset",
+   "thisenc"
+  ],
+  "POST": [
+   "authUser",
+   "bn_delete_template",
+   "bn_save_form",
+   "bn_save_template",
+   "form_start_date",
+   "form_template",
+   "pid",
+   "skip_timeout_reset"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 84,
+ "concretized": {
+  "arithmetic + @ library/spreadsheet.inc.php:64": 80,
+  "internal argument @ interface/globals.php:127": 2,
+  "internal argument @ interface/globals.php:141": 1,
+  "arithmetic + @ library/spreadsheet.inc.php:55": 8
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 8,
+  "call7": {}
+ }
+}

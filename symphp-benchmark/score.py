@@ -132,18 +132,25 @@ def main() -> int:
         for i in range(k):
             part = sent.with_suffix(f".j{i}.json")
             part.write_text(json.dumps(allreqs[i * size:(i + 1) * size]))
-            out = replay.with_suffix(f".j{i}.json.gz")
+            # A judge_cgi xdebug app streams its slice as JSON lines (judge.py resumes a partial
+            # one); others write one gzipped JSON document.
+            stream = APPS[app].get("judge_cgi") == "xdebug"
+            out = replay.with_suffix(f".j{i}.jsonl" if stream else f".j{i}.json.gz")
             parts.append(out)
-            try:
-                if out.exists() and [r["request"] for r in json.loads(gzip.decompress(out.read_bytes()))] == \
-                        [{k: v for k, v in r.items() if k != "reset"} for r in allreqs[i * size:(i + 1) * size]]:
-                    continue                     # this slice was already replayed (a resumed score)
-            except (json.JSONDecodeError, KeyError):
-                pass
+            if stream and out.exists() and out.read_bytes().count(b"\n") >= len(allreqs[i * size:(i + 1) * size]):
+                continue                         # this slice is complete (a resumed score)
+            if not stream:
+                try:
+                    if out.exists() and [r["request"] for r in json.loads(gzip.decompress(out.read_bytes()))] == \
+                            [{k: v for k, v in r.items() if k != "reset"} for r in allreqs[i * size:(i + 1) * size]]:
+                        continue                 # this slice was already replayed (a resumed score)
+                except (json.JSONDecodeError, KeyError):
+                    pass
             procs.append(subprocess.Popen([sys.executable, str(HERE / "judge.py"), "replay", app, str(part),
                                            "--out", str(out), "--instance", f"j{i}", *extra]))
-        if any(p.wait() != 0 for p in procs):
-            raise SystemExit("a judge shard failed")
+        codes = [p.wait() for p in procs]          # wait for EVERY slice before judging failure
+        if any(c != 0 for c in codes):
+            raise SystemExit(f"a judge shard failed: exit codes {codes}")
         for f in (sent.with_suffix(f".j{i}.json") for i in range(k)):
             f.unlink(missing_ok=True)
     else:
@@ -169,8 +176,19 @@ def main() -> int:
     covered, xcov_all = set(), set()
     arm_cov = {arm: set() for arm in arm_list}
     results = []
+    def _read(part):
+        if part.suffix == ".jsonl":
+            with part.open() as fh:
+                for line in fh:
+                    r = json.loads(line)
+                    r["lines"] = [f"{f}:{n}" for f, ns in r.pop("lines_by_file").items() for n in ns]
+                    r["xdebug_lines"] = r["lines"]          # judge_cgi xdebug: the same measurement
+                    yield r
+        else:
+            yield from json.loads(gzip.decompress(part.read_bytes()) if part.suffix == ".gz" else part.read_text())
+
     for part in parts:
-        for r in json.loads(gzip.decompress(part.read_bytes()) if part.suffix == ".gz" else part.read_text()):
+        for r in _read(part):
             lines = set(r["lines"]) & executable
             covered |= lines
             xcov_all |= set(r.get("xdebug_lines", [])) & executable

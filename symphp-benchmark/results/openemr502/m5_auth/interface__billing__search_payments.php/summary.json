@@ -1,0 +1,85 @@
+{
+ "script": "interface/billing/search_payments.php",
+ "wall_s": 39.5,
+ "requests": 91,
+ "rounds": 5,
+ "traces": 88,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "pid",
+   "site",
+   "skip_timeout_reset"
+  ],
+  "POST": [
+   "DeletePaymentId",
+   "FromDate",
+   "PaymentSortBy",
+   "PaymentStatus",
+   "ToDate",
+   "adjustment_code",
+   "authUser",
+   "check_number",
+   "hidden_type_code",
+   "mode",
+   "payment_amount",
+   "payment_date",
+   "payment_method",
+   "pid",
+   "skip_timeout_reset",
+   "type_name"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 4,
+ "assumptions": [],
+ "sink_sites": [
+  {
+   "site": "vendor/adodb/adodb-php/drivers/adodb-mysqli.inc.php:788",
+   "sink": "mysqli_query",
+   "kind": "malformed-at-reach",
+   "instance": "Select * from  ar_session where  ",
+   "request": {
+    "GET": {
+     "auth": "",
+     "pid": "",
+     "site": ""
+    },
+    "POST": {
+     "check_number": "",
+     "hidden_type_code": "",
+     "mode": "DeletePayments",
+     "payment_amount": "",
+     "pid": "",
+     "skip_timeout_reset": ""
+    },
+    "COOKIE": {
+     "OpenEMR": "acesession"
+    }
+   },
+   "db_errno": 1064
+  }
+ ],
+ "errors_distinct": [],
+ "halted_traces": 17,
+ "concretized": {
+  "internal argument @ interface/globals.php:127": 2,
+  "internal argument @ interface/globals.php:141": 1,
+  "comparison != @ interface/billing/search_payments.php:99": 14,
+  "comparison != @ interface/billing/search_payments.php:105": 14,
+  "comparison != @ interface/billing/search_payments.php:129": 14
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

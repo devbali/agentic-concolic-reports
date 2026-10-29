@@ -205,7 +205,12 @@ def _run_cgi(app: str, req: dict, *, xdebug: bool = False, cov_out: str | None =
         cmd = ["/hostlib/ld-linux-x86-64.so.2", "--library-path", "/hostlib", str(CGI_REAL), "-n", *ini]
     full = ["docker", "exec", "-i", "-w", str(src), runner(app), "env", "-i",
             *[f"{k}={v}" for k, v in env.items()], *cmd]
-    p = subprocess.run(full, input=body, capture_output=True, timeout=120)
+    try:
+        p = subprocess.run(full, input=body, capture_output=True, timeout=120)
+    except subprocess.TimeoutExpired as e:
+        # A request that runs past 120 s on the real 7.4 app (e.g. WordPress waiting on its own
+        # cron URL) is recorded with what it printed so far; its statement history still counts.
+        p = subprocess.CompletedProcess(full, -9, e.stdout or b"", (e.stderr or b"") + b"\n[judge: timed out after 120 s]")
     text = trace.read_text(errors="replace") if trace.exists() else ""
     return p, text
 
@@ -488,6 +493,36 @@ def main() -> int:
                 reset_sessions(a.app)
                 if reqs and is_authenticated(a.app, reqs[0]):
                     _run_cgi(a.app, login_recipe(a.app, reqs[0]["script"])["request"])
+        if a.out.endswith(".jsonl"):
+            # STREAMING (large apps): one compact JSON line per request, written as it is judged,
+            # so neither memory nor a crash loses the slice. Covered lines are stored per file
+            # (`lines_by_file`); for a judge_cgi xdebug app they ARE the Xdebug coverage. A rerun
+            # RESUMES: complete lines already in the file are kept and their requests skipped.
+            outp = pathlib.Path(a.out)
+            done = 0
+            if outp.exists():
+                raw = outp.read_bytes()
+                keep = raw[:raw.rfind(b"\n") + 1] if b"\n" in raw else b""
+                outp.write_bytes(keep)                   # drop a partial last line
+                done = keep.count(b"\n")
+            if done and reset == "marked" and done < len(reqs):
+                # The state the skipped requests left is gone: start the rest on a fresh snapshot.
+                reqs[done] = {**reqs[done], "reset": True}
+            faulted = 0
+            with outp.open("a") as fh:
+                for r in reqs[done:]:
+                    res = replay_one(a.app, r, reset)
+                    by_file: dict[str, list[int]] = {}
+                    for l in res.pop("lines"):
+                        f, _, n = l.rpartition(":")
+                        if n.isdigit():
+                            by_file.setdefault(f, []).append(int(n))
+                    res["lines_by_file"] = by_file
+                    faulted += bool(res["faults"])
+                    fh.write(json.dumps(res, separators=(",", ":")) + "\n")
+                    fh.flush()
+            print(f"{len(reqs) - done} requests replayed ({done} resumed), {faulted} faulted", file=sys.stderr)
+            return 0
         results = [replay_one(a.app, r, reset) for r in reqs]
         if a.coverage == "xdebug" and APPS[a.app].get("judge_cgi") == "xdebug":
             # The fault replays already ran under Xdebug: their lines ARE the Xdebug coverage.

@@ -1,0 +1,51 @@
+{
+ "script": "admin/removefrommoderation.php",
+ "wall_s": 49.6,
+ "requests": 207,
+ "rounds": 11,
+ "traces": 176,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "id",
+   "lan",
+   "offset"
+  ],
+  "POST": [
+   "action",
+   "anotes",
+   "csrftoken",
+   "id",
+   "offset"
+  ],
+  "COOKIE": [
+   "PHPSESSID",
+   "USERLANGUAGE",
+   "WEBID_RM_ID"
+  ]
+ },
+ "budget_hit": false,
+ "coverage_complete": true,
+ "missing": 0,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 118,
+ "concretized": {
+  "internal argument @ includes/functions_global.php:467": 85,
+  "internal argument @ includes/messages.inc.php:41": 75,
+  "string conversion @ includes/template/Template.php(163) : eval()'d code:65": 58,
+  "internal argument @ includes/messages.inc.php:20": 24,
+  "string conversion @ includes/template/Template.php(163) : eval()'d code:66": 57,
+  "string conversion @ includes/database/DatabasePDO.php:80": 70,
+  "intval @ admin/removefrommoderation.php:33": 28
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

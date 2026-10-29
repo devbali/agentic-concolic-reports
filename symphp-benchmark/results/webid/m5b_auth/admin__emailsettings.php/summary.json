@@ -1,0 +1,63 @@
+{
+ "script": "admin/emailsettings.php",
+ "wall_s": 61.8,
+ "requests": 313,
+ "rounds": 12,
+ "traces": 231,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "lan",
+   "test_email"
+  ],
+  "POST": [
+   "action",
+   "alert_emails",
+   "anotes",
+   "csrftoken",
+   "mail_parameter",
+   "mail_protocol",
+   "message",
+   "subject",
+   "user_email",
+   "user_name"
+  ],
+  "COOKIE": [
+   "PHPSESSID",
+   "USERLANGUAGE",
+   "WEBID_RM_ID"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 168,
+ "concretized": {
+  "internal argument @ includes/functions_global.php:467": 110,
+  "internal argument @ includes/messages.inc.php:41": 119,
+  "internal argument @ includes/messages.inc.php:20": 30,
+  "internal argument @ admin/emailsettings.php:77": 134,
+  "internal argument @ admin/emailsettings.php:78": 134,
+  "internal argument @ admin/emailsettings.php:79": 134,
+  "internal argument @ admin/emailsettings.php:80": 134,
+  "intval @ admin/emailsettings.php:27": 98,
+  "intval @ admin/emailsettings.php:35": 98,
+  "intval @ admin/emailsettings.php:37": 98,
+  "string conversion @ includes/database/DatabasePDO.php:80": 221,
+  "intval @ includes/functions_global.php:130": 22,
+  "string conversion @ includes/template/Template.php(163) : eval()'d code:25": 9,
+  "string conversion @ includes/template/Template.php(163) : eval()'d code:55": 5,
+  "internal argument @ includes/class_email_handler.php:439": 3
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

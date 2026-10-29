@@ -1,0 +1,50 @@
+{
+ "script": "interface/patient_file/summary/shot_record.php",
+ "wall_s": 38.2,
+ "requests": 89,
+ "rounds": 5,
+ "traces": 84,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "output",
+   "pid",
+   "site",
+   "skip_timeout_reset",
+   "sortby"
+  ],
+  "POST": [
+   "authUser",
+   "pid",
+   "skip_timeout_reset"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 3,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 3,
+ "concretized": {
+  "internal argument @ interface/globals.php:127": 2,
+  "internal argument @ interface/globals.php:141": 1,
+  "gettype @ vendor/adodb/adodb-php/adodb.inc.php:1189": 26,
+  "internal argument @ vendor/adodb/adodb-php/adodb.inc.php:183": 26,
+  "internal argument @ src/Common/Logging/EventAuditLogger.php:757": 26,
+  "empty() @ src/Common/Logging/EventAuditLogger.php:759": 26,
+  "string conversion @ src/Common/Logging/EventAuditLogger.php:765": 26
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 9,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

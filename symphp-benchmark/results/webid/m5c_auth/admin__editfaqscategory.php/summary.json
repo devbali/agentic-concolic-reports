@@ -1,0 +1,67 @@
+{
+ "script": "admin/editfaqscategory.php",
+ "wall_s": 54.3,
+ "requests": 192,
+ "rounds": 11,
+ "traces": 176,
+ "errored": 29,
+ "first_error": "Concolic\\NotImplementedError: Iteration over symbolic values is not modelled",
+ "keys_discovered": {
+  "GET": [
+   "id",
+   "lan"
+  ],
+  "POST": [
+   "action",
+   "anotes",
+   "category",
+   "csrftoken"
+  ],
+  "COOKIE": [
+   "PHPSESSID",
+   "USERLANGUAGE",
+   "WEBID_RM_ID"
+  ]
+ },
+ "budget_hit": false,
+ "coverage_complete": false,
+ "missing": 1,
+ "assumptions": [],
+ "sink_sites": [
+  {
+   "site": "includes/template/Template.php(163) : eval()'d code:25",
+   "sink": "echo",
+   "kind": "xss-candidate",
+   "instance": "\"'><acexss36a5f071>",
+   "request": {
+    "GET": {
+     "id": "\"'><acexss36a5f071>"
+    },
+    "POST": {
+     "action": ""
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession"
+    }
+   }
+  }
+ ],
+ "errors_distinct": [
+  "Concolic\\NotImplementedError: Iteration over symbolic values is not modelled"
+ ],
+ "halted_traces": 33,
+ "concretized": {
+  "internal argument @ includes/functions_global.php:467": 85,
+  "internal argument @ includes/messages.inc.php:41": 75,
+  "internal argument @ includes/messages.inc.php:20": 24,
+  "string conversion @ includes/database/DatabasePDO.php:80": 70,
+  "subscript @ admin/editfaqscategory.php:23": 28
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

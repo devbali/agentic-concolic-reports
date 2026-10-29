@@ -1,0 +1,87 @@
+{
+ "script": "confirm.php",
+ "wall_s": 60.0,
+ "requests": 370,
+ "rounds": 12,
+ "traces": 312,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "hash",
+   "id",
+   "lan"
+  ],
+  "POST": [
+   "action",
+   "hash",
+   "id"
+  ],
+  "COOKIE": [
+   "USERLANGUAGE",
+   "WEBID_ONLINE",
+   "WEBID_RM_ID",
+   "uniqueuser"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [
+  {
+   "site": "cache/tpl_modern_confirm.tpl.php:13",
+   "sink": "echo",
+   "kind": "xss-candidate",
+   "instance": "\"'><acexssc844ec39>",
+   "request": {
+    "GET": {
+     "hash": "",
+     "id": "\"'><acexssc844ec39>",
+     "lan": "A"
+    },
+    "POST": {},
+    "COOKIE": {
+     "USERLANGUAGE": "",
+     "WEBID_ONLINE": "",
+     "WEBID_RM_ID": "",
+     "uniqueuser": ""
+    }
+   }
+  },
+  {
+   "site": "cache/tpl_modern_confirm.tpl.php:14",
+   "sink": "echo",
+   "kind": "xss-candidate",
+   "instance": "\"'><acexss3df6b19e>",
+   "request": {
+    "GET": {
+     "hash": "\"'><acexss3df6b19e>",
+     "id": "",
+     "lan": "A"
+    },
+    "POST": {},
+    "COOKIE": {
+     "USERLANGUAGE": "",
+     "WEBID_ONLINE": "",
+     "WEBID_RM_ID": "",
+     "uniqueuser": ""
+    }
+   }
+  }
+ ],
+ "errors_distinct": [],
+ "halted_traces": 0,
+ "concretized": {
+  "internal argument @ includes/functions_global.php:467": 387,
+  "internal argument @ includes/messages.inc.php:41": 156,
+  "internal argument @ includes/messages.inc.php:20": 56
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

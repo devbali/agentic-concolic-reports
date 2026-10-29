@@ -1,0 +1,50 @@
+{
+ "script": "interface/forms/fee_sheet/review/fee_sheet_search_ajax.php",
+ "wall_s": 33.0,
+ "requests": 87,
+ "rounds": 5,
+ "traces": 79,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "pid",
+   "search_query",
+   "search_type",
+   "search_type_id",
+   "site",
+   "skip_timeout_reset"
+  ],
+  "POST": [
+   "authUser",
+   "pid",
+   "search_query",
+   "search_type",
+   "search_type_id",
+   "skip_timeout_reset"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 45,
+ "concretized": {
+  "string conversion @ library/sql.inc:499": 129,
+  "internal argument @ interface/globals.php:127": 2,
+  "internal argument @ interface/globals.php:141": 1
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

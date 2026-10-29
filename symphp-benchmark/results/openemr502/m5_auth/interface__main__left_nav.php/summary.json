@@ -1,0 +1,94 @@
+{
+ "script": "interface/main/left_nav.php",
+ "wall_s": 38.3,
+ "requests": 78,
+ "rounds": 6,
+ "traces": 38,
+ "errored": 40,
+ "first_error": "harness: batch exited 255: : ",
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "pid",
+   "site",
+   "skip_timeout_reset"
+  ],
+  "POST": [
+   "cb_bot",
+   "cb_top",
+   "pid",
+   "skip_timeout_reset"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": false,
+ "coverage_complete": false,
+ "missing": 7,
+ "assumptions": [],
+ "sink_sites": [
+  {
+   "site": "interface/main/left_nav.php:1225",
+   "sink": "echo",
+   "kind": "xss-candidate",
+   "instance": "\"'><acexssb7d6cec8>",
+   "request": {
+    "GET": {
+     "auth": "",
+     "pid": "",
+     "site": ""
+    },
+    "POST": {
+     "cb_bot": "",
+     "cb_top": "\"'><acexssb7d6cec8>",
+     "pid": "",
+     "skip_timeout_reset": ""
+    },
+    "COOKIE": {
+     "OpenEMR": "acesession"
+    }
+   }
+  },
+  {
+   "site": "interface/main/left_nav.php:1230",
+   "sink": "echo",
+   "kind": "xss-candidate",
+   "instance": "\"'><acexssf6bb327a>",
+   "request": {
+    "GET": {
+     "auth": "",
+     "pid": "",
+     "site": ""
+    },
+    "POST": {
+     "cb_bot": "\"'><acexssf6bb327a>",
+     "cb_top": "",
+     "pid": "",
+     "skip_timeout_reset": ""
+    },
+    "COOKIE": {
+     "OpenEMR": "acesession"
+    }
+   }
+  }
+ ],
+ "errors_distinct": [
+  "harness: batch exited 255: : "
+ ],
+ "halted_traces": 0,
+ "concretized": {
+  "gettype @ vendor/adodb/adodb-php/adodb.inc.php:1189": 30,
+  "internal argument @ src/Common/Logging/EventAuditLogger.php:757": 30,
+  "empty() @ src/Common/Logging/EventAuditLogger.php:759": 30,
+  "string conversion @ src/Common/Logging/EventAuditLogger.php:765": 30,
+  "internal argument @ src/Common/Logging/EventAuditLogger.php:891": 30
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

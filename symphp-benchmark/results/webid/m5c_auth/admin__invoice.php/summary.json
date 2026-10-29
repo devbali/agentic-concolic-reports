@@ -1,0 +1,79 @@
+{
+ "script": "admin/invoice.php",
+ "wall_s": 60.0,
+ "requests": 211,
+ "rounds": 8,
+ "traces": 211,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "PAGE",
+   "from_date",
+   "group",
+   "lan",
+   "to_date",
+   "username"
+  ],
+  "POST": [
+   "anotes"
+  ],
+  "COOKIE": [
+   "PHPSESSID",
+   "USERLANGUAGE",
+   "WEBID_RM_ID"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [
+  {
+   "site": "includes/template/Template.php(163) : eval()'d code:16",
+   "sink": "echo",
+   "kind": "xss-candidate",
+   "instance": "\"'><acexss4265faa6>",
+   "request": {
+    "GET": {
+     "PAGE": "",
+     "from_date": "",
+     "group": "",
+     "lan": "",
+     "to_date": "",
+     "username": "\"'><acexss4265faa6>"
+    },
+    "POST": {
+     "anotes": ""
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession",
+     "USERLANGUAGE": "",
+     "WEBID_RM_ID": ""
+    }
+   }
+  }
+ ],
+ "errors_distinct": [],
+ "halted_traces": 0,
+ "concretized": {
+  "internal argument @ includes/functions_global.php:467": 65,
+  "internal argument @ includes/messages.inc.php:41": 119,
+  "string conversion @ includes/database/DatabasePDO.php:80": 155,
+  "comparison == @ admin/invoice.php:28": 168,
+  "intval @ admin/invoice.php:35": 168,
+  "comparison != @ admin/invoice.php:58": 159,
+  "comparison != @ admin/invoice.php:68": 166,
+  "comparison == @ admin/invoice.php:218": 159,
+  "comparison == @ admin/invoice.php:219": 166,
+  "internal argument @ includes/messages.inc.php:20": 18,
+  "internal argument @ includes/packages/htmLawed.php:90": 37
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 650,
+  "arith7": 0,
+  "call7": {}
+ }
+}

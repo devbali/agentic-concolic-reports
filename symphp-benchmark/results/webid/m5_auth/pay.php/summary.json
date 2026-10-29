@@ -1,0 +1,45 @@
+{
+ "script": "pay.php",
+ "wall_s": 5.1,
+ "requests": 17,
+ "rounds": 7,
+ "traces": 17,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "a",
+   "lan"
+  ],
+  "POST": [],
+  "COOKIE": [
+   "PHPSESSID",
+   "uniqueuser"
+  ]
+ },
+ "budget_hit": false,
+ "coverage_complete": true,
+ "missing": 0,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 0,
+ "concretized": {
+  "comparison == @ pay.php:30": 8,
+  "comparison == @ pay.php:37": 8,
+  "comparison == @ pay.php:77": 8,
+  "comparison == @ pay.php:91": 8,
+  "comparison == @ pay.php:113": 8,
+  "comparison == @ pay.php:131": 8,
+  "comparison == @ pay.php:163": 8,
+  "comparison == @ pay.php:242": 8,
+  "internal argument @ includes/messages.inc.php:20": 4
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

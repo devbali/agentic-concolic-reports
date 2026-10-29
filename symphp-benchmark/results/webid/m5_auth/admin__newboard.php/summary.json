@@ -1,0 +1,51 @@
+{
+ "script": "admin/newboard.php",
+ "wall_s": 60.0,
+ "requests": 212,
+ "rounds": 10,
+ "traces": 205,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "lan"
+  ],
+  "POST": [
+   "action",
+   "active",
+   "anotes",
+   "csrftoken",
+   "msgstoshow",
+   "name"
+  ],
+  "COOKIE": [
+   "PHPSESSID",
+   "USERLANGUAGE",
+   "WEBID_RM_ID"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 3,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 32,
+ "concretized": {
+  "internal argument @ includes/functions_global.php:467": 118,
+  "internal argument @ includes/messages.inc.php:41": 111,
+  "comparison == @ admin/newboard.php:54": 132,
+  "comparison == @ admin/newboard.php:55": 132,
+  "internal argument @ includes/messages.inc.php:20": 33,
+  "string conversion @ includes/database/DatabasePDO.php:80": 128,
+  "string conversion @ includes/template/Template.php(163) : eval()'d code:14": 130,
+  "string conversion @ includes/template/Template.php(163) : eval()'d code:21": 131
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 132,
+  "arith7": 0,
+  "call7": {}
+ }
+}

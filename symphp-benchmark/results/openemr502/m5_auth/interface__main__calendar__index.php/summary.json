@@ -1,0 +1,52 @@
+{
+ "script": "interface/main/calendar/index.php",
+ "wall_s": 38.7,
+ "requests": 94,
+ "rounds": 5,
+ "traces": 94,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "framewidth",
+   "pc_facility",
+   "pc_username",
+   "pid",
+   "site",
+   "skip_timeout_reset",
+   "viewtype"
+  ],
+  "POST": [
+   "all_users",
+   "authUser",
+   "pc_facility",
+   "pc_username",
+   "pid",
+   "skip_timeout_reset",
+   "viewtype"
+  ],
+  "COOKIE": [
+   "OpenEMR",
+   "pc_facility"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 94,
+ "concretized": {
+  "internal argument @ interface/globals.php:127": 1,
+  "internal argument @ interface/globals.php:141": 1
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

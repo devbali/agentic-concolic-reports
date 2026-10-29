@@ -1,0 +1,53 @@
+{
+ "script": "api.php",
+ "wall_s": 300.1,
+ "requests": 92,
+ "rounds": 5,
+ "traces": 88,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "action",
+   "debug",
+   "forceHTTPS",
+   "lang",
+   "modules",
+   "mw127Token",
+   "mw127UserID",
+   "mw127_session",
+   "only",
+   "skin"
+  ],
+  "POST": [],
+  "COOKIE": [
+   "forceHTTPS",
+   "mw127Token",
+   "mw127UserID",
+   "mw127_session"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 1,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 0,
+ "concretized": {
+  "is_array @ includes/WebRequest.php:352": 1634,
+  "internal argument @ vendor/wikimedia/utfnormal/src/Validator.php:222": 1634,
+  "is_array @ includes/WebRequest.php:381": 1440,
+  "is_array @ languages/Language.php:2751": 1440,
+  "string conversion @ includes/libs/StringUtils.php:42": 1440
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 150,
+  "arith7": 0,
+  "call7": {
+   "implode": 52
+  }
+ }
+}

@@ -1,0 +1,49 @@
+{
+ "script": "admin/payments.php",
+ "wall_s": 61.2,
+ "requests": 547,
+ "rounds": 18,
+ "traces": 232,
+ "errored": 51,
+ "first_error": "Concolic\\NotImplementedError: Iteration over symbolic values is not modelled",
+ "keys_discovered": {
+  "GET": [
+   "lan"
+  ],
+  "POST": [
+   "action",
+   "anotes",
+   "csrftoken",
+   "new_payments",
+   "new_payments_clean",
+   "payment"
+  ],
+  "COOKIE": [
+   "PHPSESSID",
+   "USERLANGUAGE",
+   "WEBID_RM_ID"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 1,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [
+  "Concolic\\NotImplementedError: Iteration over symbolic values is not modelled"
+ ],
+ "halted_traces": 32,
+ "concretized": {
+  "internal argument @ includes/functions_global.php:467": 113,
+  "internal argument @ includes/messages.inc.php:41": 101,
+  "internal argument @ includes/messages.inc.php:20": 34,
+  "string conversion @ includes/database/DatabasePDO.php:80": 99
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

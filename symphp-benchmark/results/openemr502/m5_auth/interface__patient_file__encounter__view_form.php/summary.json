@@ -1,0 +1,50 @@
+{
+ "script": "interface/patient_file/encounter/view_form.php",
+ "wall_s": 34.3,
+ "requests": 89,
+ "rounds": 5,
+ "traces": 84,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "formname",
+   "id",
+   "pid",
+   "site",
+   "skip_timeout_reset"
+  ],
+  "POST": [
+   "authUser",
+   "pid",
+   "skip_timeout_reset"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 3,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 66,
+ "concretized": {
+  "arithmetic + @ library/sanitize.inc.php:122": 80,
+  "comparison == @ library/sanitize.inc.php:124": 69,
+  "internal argument @ library/sanitize.inc.php:50": 53,
+  "internal argument @ interface/globals.php:127": 2,
+  "internal argument @ interface/globals.php:141": 1,
+  "internal argument @ library/sanitize.inc.php:49": 18,
+  "string conversion @ interface/patient_file/encounter/view_form.php:25": 18
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 72,
+  "arith7": 72,
+  "call7": {}
+ }
+}

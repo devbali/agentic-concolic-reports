@@ -1,0 +1,41 @@
+{
+ "script": "library/MedEx/MedEx_background.php",
+ "wall_s": 16.8,
+ "requests": 48,
+ "rounds": 5,
+ "traces": 48,
+ "errored": 1,
+ "first_error": "Error: Failed opening required '/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/openemr502-m5_cold/sites/A/config.php' (include_path='.:/usr/local/lib/php')",
+ "keys_discovered": {
+  "GET": [
+   "pid",
+   "site"
+  ],
+  "POST": [
+   "authUser",
+   "pid"
+  ],
+  "COOKIE": []
+ },
+ "budget_hit": false,
+ "coverage_complete": false,
+ "missing": 3,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [
+  "Error: Failed opening required '/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/openemr502-m5_cold/sites/A/config.php' (include_path='.:/us"
+ ],
+ "halted_traces": 0,
+ "concretized": {
+  "internal argument @ interface/globals.php:127": 1,
+  "string conversion @ interface/globals.php:159": 1,
+  "gettype @ vendor/adodb/adodb-php/adodb.inc.php:1189": 10
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

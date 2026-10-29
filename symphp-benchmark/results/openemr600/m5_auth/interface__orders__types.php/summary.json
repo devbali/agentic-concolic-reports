@@ -1,0 +1,52 @@
+{
+ "script": "interface/orders/types.php",
+ "wall_s": 23.6,
+ "requests": 52,
+ "rounds": 4,
+ "traces": 52,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "formid",
+   "formseq",
+   "labid",
+   "order",
+   "pid",
+   "popup",
+   "site",
+   "skip_timeout_reset"
+  ],
+  "POST": [
+   "authUser",
+   "form_save",
+   "pid",
+   "skip_timeout_reset"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 3,
+ "concretized": {
+  "arithmetic + @ interface/orders/types.php:26": 41,
+  "arithmetic + @ interface/orders/types.php:27": 42,
+  "internal argument @ library/htmlspecialchars.inc.php:36": 88,
+  "internal argument @ interface/globals.php:146": 1,
+  "internal argument @ interface/globals.php:160": 1
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 83,
+  "call7": {}
+ }
+}

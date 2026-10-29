@@ -1,0 +1,56 @@
+{
+ "script": "admin/viewuserips.php",
+ "wall_s": 60.0,
+ "requests": 244,
+ "rounds": 10,
+ "traces": 195,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "PAGE",
+   "id",
+   "lan",
+   "offset"
+  ],
+  "POST": [
+   "accept",
+   "action",
+   "anotes",
+   "csrftoken",
+   "deny",
+   "id",
+   "offset"
+  ],
+  "COOKIE": [
+   "PHPSESSID",
+   "USERLANGUAGE",
+   "WEBID_RM_ID"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 195,
+ "concretized": {
+  "intval @ admin/viewuserips.php:21": 162,
+  "intval @ admin/viewuserips.php:22": 162,
+  "internal argument @ includes/functions_global.php:467": 98,
+  "internal argument @ includes/messages.inc.php:41": 103,
+  "internal argument @ includes/messages.inc.php:20": 34,
+  "arithmetic - @ admin/viewuserips.php:62": 27,
+  "string conversion @ includes/database/DatabasePDO.php:80": 122,
+  "is_array @ admin/viewuserips.php:35": 2,
+  "is_array @ admin/viewuserips.php:25": 1
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 27,
+  "call7": {}
+ }
+}

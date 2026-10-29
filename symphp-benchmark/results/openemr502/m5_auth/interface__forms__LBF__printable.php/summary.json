@@ -1,0 +1,61 @@
+{
+ "script": "interface/forms/LBF/printable.php",
+ "wall_s": 30.0,
+ "requests": 52,
+ "rounds": 4,
+ "traces": 52,
+ "errored": 49,
+ "first_error": "Error: fatal: Array and string offset access syntax with curly braces is no longer supported at /home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/openemr502-m5_auth/vendor/mpdf/mpdf/src/Pd",
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "formid",
+   "formname",
+   "isform",
+   "patientid",
+   "pid",
+   "site",
+   "skip_timeout_reset",
+   "visitid"
+  ],
+  "POST": [
+   "authUser",
+   "formid",
+   "isform",
+   "patientid",
+   "pid",
+   "skip_timeout_reset",
+   "visitid"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [
+  "Error: fatal: Array and string offset access syntax with curly braces is no longer supported at /home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/b"
+ ],
+ "halted_traces": 3,
+ "concretized": {
+  "gettype @ vendor/adodb/adodb-php/adodb.inc.php:1189": 41,
+  "internal argument @ src/Common/Logging/EventAuditLogger.php:757": 41,
+  "empty() @ src/Common/Logging/EventAuditLogger.php:759": 41,
+  "string conversion @ src/Common/Logging/EventAuditLogger.php:765": 41,
+  "internal argument @ interface/globals.php:127": 1,
+  "internal argument @ interface/globals.php:141": 1,
+  "arithmetic + @ interface/forms/LBF/printable.php:29": 2,
+  "arithmetic + @ interface/forms/LBF/printable.php:34": 2,
+  "arithmetic + @ interface/forms/LBF/printable.php:39": 2
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 6,
+  "call7": {}
+ }
+}

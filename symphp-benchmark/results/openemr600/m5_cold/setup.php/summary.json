@@ -1,0 +1,44 @@
+{
+ "script": "setup.php",
+ "wall_s": 8.5,
+ "requests": 14,
+ "rounds": 7,
+ "traces": 14,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "clone_database"
+  ],
+  "POST": [
+   "clone_database",
+   "inst",
+   "state"
+  ],
+  "COOKIE": []
+ },
+ "budget_hit": false,
+ "coverage_complete": true,
+ "missing": 0,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 1,
+ "concretized": {
+  "comparison == @ setup.php:400": 6,
+  "comparison == @ setup.php:467": 6,
+  "comparison == @ setup.php:503": 6,
+  "comparison == @ setup.php:997": 6,
+  "comparison == @ setup.php:1327": 6,
+  "comparison == @ setup.php:1453": 6,
+  "comparison == @ setup.php:1498": 6,
+  "comparison == @ setup.php:1544": 6
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 13,
+  "arith7": 0,
+  "call7": {}
+ }
+}

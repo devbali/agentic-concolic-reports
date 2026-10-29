@@ -1,0 +1,89 @@
+{
+ "script": "db_operations.php",
+ "wall_s": 32.5,
+ "requests": 107,
+ "rounds": 5,
+ "traces": 106,
+ "errored": 2,
+ "first_error": "TypeError: key(): Argument #1 ($array) must be of type array, string given",
+ "keys_discovered": {
+  "GET": [
+   "ajax_request",
+   "back",
+   "collation_connection",
+   "db",
+   "goto",
+   "lang",
+   "pma_password",
+   "pma_username",
+   "selected_recent_table",
+   "server",
+   "session_expired",
+   "set_fontsize",
+   "set_theme",
+   "sql_query",
+   "table",
+   "target"
+  ],
+  "POST": [
+   "ajax_request",
+   "back",
+   "collation_connection",
+   "db",
+   "goto",
+   "lang",
+   "pma_password",
+   "pma_username",
+   "selected_recent_table",
+   "server",
+   "set_fontsize",
+   "set_theme",
+   "sql_query",
+   "table",
+   "target",
+   "token",
+   "usesubform"
+  ],
+  "COOKIE": [
+   "ajax_request",
+   "pmaCookieVer",
+   "pmaUser-1",
+   "pma_collation_connection",
+   "pma_fontsize",
+   "pma_lang",
+   "pma_theme"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 4,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [
+  "TypeError: key(): Argument #1 ($array) must be of type array, string given"
+ ],
+ "halted_traces": 105,
+ "concretized": {
+  "internal argument @ libraries/common.inc.php:178": 1,
+  "internal argument @ libraries/Config.php:1284": 63,
+  "comparison != @ libraries/common.inc.php:234": 81,
+  "is_string @ libraries/core.lib.php:394": 165,
+  "in_array @ libraries/core.lib.php:398": 165,
+  "internal argument @ libraries/core.lib.php:403": 165,
+  "internal argument @ libraries/core.lib.php:405": 165,
+  "internal argument @ libraries/core.lib.php:411": 165,
+  "is_string @ libraries/Sanitize.php:450": 102,
+  "is_string @ libraries/Sanitize.php:453": 98,
+  "intval @ libraries/plugins/auth/AuthenticationCookie.php:140": 1,
+  "is_string @ libraries/Sanitize.php:459": 38,
+  "internal argument @ libraries/Config.php:1258": 4,
+  "internal argument @ libraries/Config.php:1260": 4
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

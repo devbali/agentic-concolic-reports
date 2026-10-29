@@ -1,0 +1,74 @@
+{
+ "script": "wp-admin/link-add.php",
+ "wall_s": 60.0,
+ "requests": 86,
+ "rounds": 4,
+ "traces": 86,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "_locale",
+   "customize_changeset_uuid",
+   "doing_wp_cron",
+   "hotkeys_highlight_first",
+   "hotkeys_highlight_last",
+   "import",
+   "page",
+   "post_type",
+   "preview_id",
+   "preview_nonce",
+   "replytocom",
+   "taxonomy",
+   "wp_customize",
+   "wp_lang",
+   "wp_scrape_key",
+   "wp_scrape_nonce"
+  ],
+  "POST": [
+   "customize_changeset_uuid",
+   "post_type",
+   "taxonomy",
+   "wp_customize",
+   "wp_scrape_key",
+   "wp_scrape_nonce",
+   "wp_screen_options"
+  ],
+  "COOKIE": [
+   "ace_auth",
+   "comment_author_15d6d54e3ae52e9a938f8853c833b792",
+   "comment_author_email_15d6d54e3ae52e9a938f8853c833b792",
+   "comment_author_url_15d6d54e3ae52e9a938f8853c833b792",
+   "wordpress_15d6d54e3ae52e9a938f8853c833b792",
+   "wordpress_logged_in_15d6d54e3ae52e9a938f8853c833b792",
+   "wordpress_test_cookie"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 1,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 86,
+ "concretized": {
+  "is_array @ wp-includes/functions.php:1057": 1409,
+  "empty() @ wp-includes/pluggable.php:782": 450,
+  "internal argument @ wp-includes/pluggable.php:788": 365,
+  "string conversion @ wp-includes/formatting.php:5152": 40,
+  "string conversion @ wp-includes/class-wp-hook.php:286": 44,
+  "internal argument @ wp-includes/formatting.php:5067": 48,
+  "comparison === @ wp-includes/l10n.php:137": 301,
+  "empty() @ wp-includes/l10n.php:141": 324,
+  "internal argument @ wp-includes/formatting.php:4725": 54,
+  "array key @ wp-includes/post.php:1174": 56,
+  "array key @ wp-includes/taxonomy.php:290": 58
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

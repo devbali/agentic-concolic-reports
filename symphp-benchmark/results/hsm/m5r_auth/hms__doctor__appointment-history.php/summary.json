@@ -1,0 +1,52 @@
+{
+ "script": "hms/doctor/appointment-history.php",
+ "wall_s": 4.8,
+ "requests": 7,
+ "rounds": 5,
+ "traces": 5,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "cancel",
+   "id"
+  ],
+  "POST": [],
+  "COOKIE": [
+   "PHPSESSID"
+  ]
+ },
+ "budget_hit": false,
+ "coverage_complete": true,
+ "missing": 0,
+ "assumptions": [],
+ "sink_sites": [
+  {
+   "site": "hms/doctor/appointment-history.php:9",
+   "sink": "mysqli_query",
+   "kind": "injectable",
+   "instance": "update appointment set doctorStatus='0' where id ='''",
+   "request": {
+    "GET": {
+     "cancel": "",
+     "id": "'"
+    },
+    "POST": {},
+    "COOKIE": {
+     "PHPSESSID": "acesession"
+    }
+   },
+   "db_errno": 0
+  }
+ ],
+ "errors_distinct": [],
+ "halted_traces": 0,
+ "concretized": {},
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

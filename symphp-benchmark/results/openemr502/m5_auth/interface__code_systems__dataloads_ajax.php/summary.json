@@ -1,0 +1,87 @@
+{
+ "script": "interface/code_systems/dataloads_ajax.php",
+ "wall_s": 35.6,
+ "requests": 120,
+ "rounds": 6,
+ "traces": 102,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "aas",
+   "auth",
+   "pid",
+   "site",
+   "skip_timeout_reset"
+  ],
+  "POST": [
+   "authUser",
+   "pid",
+   "skip_timeout_reset"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 5,
+ "assumptions": [],
+ "sink_sites": [
+  {
+   "site": "interface/code_systems/dataloads_ajax.php:135",
+   "sink": "echo",
+   "kind": "xss-candidate",
+   "instance": "\"'><acexss3b481326>",
+   "request": {
+    "GET": {
+     "aas": "\"'><acexss3b481326>",
+     "auth": "",
+     "pid": "",
+     "site": ""
+    },
+    "POST": {
+     "pid": "",
+     "skip_timeout_reset": ""
+    },
+    "COOKIE": {
+     "OpenEMR": "acesession"
+    }
+   }
+  },
+  {
+   "site": "interface/code_systems/dataloads_ajax.php:169",
+   "sink": "echo",
+   "kind": "xss-candidate",
+   "instance": "\"'><acexsse314986a>",
+   "request": {
+    "GET": {
+     "aas": "\"'><acexsse314986a>",
+     "auth": "",
+     "pid": "",
+     "site": ""
+    },
+    "POST": {
+     "pid": "",
+     "skip_timeout_reset": ""
+    },
+    "COOKIE": {
+     "OpenEMR": "acesession"
+    }
+   }
+  }
+ ],
+ "errors_distinct": [],
+ "halted_traces": 3,
+ "concretized": {
+  "internal argument @ interface/globals.php:127": 2,
+  "internal argument @ interface/globals.php:141": 1
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

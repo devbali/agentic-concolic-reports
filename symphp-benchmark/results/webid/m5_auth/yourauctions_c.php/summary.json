@@ -1,0 +1,99 @@
+{
+ "script": "yourauctions_c.php",
+ "wall_s": 64.2,
+ "requests": 344,
+ "rounds": 12,
+ "traces": 263,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "PAGE",
+   "ca_ord",
+   "ca_type",
+   "lan"
+  ],
+  "POST": [
+   "action",
+   "delete",
+   "relist",
+   "sell"
+  ],
+  "COOKIE": [
+   "PHPSESSID",
+   "uniqueuser"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 1,
+ "assumptions": [],
+ "sink_sites": [
+  {
+   "site": "includes/database/DatabasePDO.php:76",
+   "sink": "PDO::prepare",
+   "kind": "injectable",
+   "instance": "SELECT *  FROM webid_auctions\n\tWHERE user = :user_id\n\tAND closed = 1 AND suspended = 0\n\tAND (num_bids = 0 OR (num_bids > 0 AND reserve_price > 0 AND current_bid < reserve_price AND sold = 'n'))\n\tORDER BY '  LIMIT :offset, :perpage",
+   "request": {
+    "GET": {
+     "PAGE": "",
+     "ca_ord": "'",
+     "lan": ""
+    },
+    "POST": {
+     "action": ""
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession",
+     "uniqueuser": ""
+    }
+   },
+   "db_errno": 1054
+  },
+  {
+   "site": "includes/database/DatabasePDO.php:76",
+   "sink": "PDO::prepare",
+   "kind": "injectable",
+   "instance": "SELECT *  FROM webid_auctions\n\tWHERE user = :user_id\n\tAND closed = 1 AND suspended = 0\n\tAND (num_bids = 0 OR (num_bids > 0 AND reserve_price > 0 AND current_bid < reserve_price AND sold = 'n'))\n\tORDER BY '  LIMIT :offset, :perpage",
+   "request": {
+    "GET": {
+     "PAGE": "",
+     "ca_ord": "'",
+     "lan": "A",
+     "ca_type": ""
+    },
+    "POST": {
+     "action": ""
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession",
+     "uniqueuser": ""
+    }
+   },
+   "db_errno": 1054
+  }
+ ],
+ "errors_distinct": [],
+ "halted_traces": 0,
+ "concretized": {
+  "comparison == @ yourauctions_c.php:213": 169,
+  "intval @ yourauctions_c.php:220": 169,
+  "internal argument @ includes/messages.inc.php:20": 61,
+  "internal argument @ includes/database/DatabasePDO.php:179": 92,
+  "string conversion @ includes/template/Template.php(163) : eval()'d code:60": 92,
+  "string conversion @ includes/template/Template.php(163) : eval()'d code:66": 92,
+  "string conversion @ includes/template/Template.php(163) : eval()'d code:72": 92,
+  "string conversion @ includes/template/Template.php(163) : eval()'d code:78": 92,
+  "string conversion @ includes/template/Template.php(163) : eval()'d code:84": 92,
+  "is_array @ yourauctions_c.php:42": 26,
+  "is_array @ yourauctions_c.php:89": 41,
+  "is_array @ yourauctions_c.php:102": 54
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

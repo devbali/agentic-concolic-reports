@@ -1,0 +1,57 @@
+{
+ "script": "interface/billing/print_billing_report.php",
+ "wall_s": 38.9,
+ "requests": 94,
+ "rounds": 5,
+ "traces": 94,
+ "errored": 83,
+ "first_error": "Concolic\\NotImplementedError: Iteration over symbolic values is not modelled",
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "authorized",
+   "code_type",
+   "final_this_page_criteria",
+   "from_date",
+   "mode",
+   "pid",
+   "site",
+   "skip_timeout_reset",
+   "to_date",
+   "unbilled"
+  ],
+  "POST": [
+   "authUser",
+   "final_this_page_criteria",
+   "pid",
+   "skip_timeout_reset"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 4,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [
+  "Concolic\\NotImplementedError: Iteration over symbolic values is not modelled"
+ ],
+ "halted_traces": 3,
+ "concretized": {
+  "internal argument @ interface/globals.php:127": 1,
+  "internal argument @ interface/globals.php:141": 1,
+  "gettype @ vendor/adodb/adodb-php/adodb.inc.php:1189": 18,
+  "internal argument @ src/Common/Logging/EventAuditLogger.php:757": 18,
+  "empty() @ src/Common/Logging/EventAuditLogger.php:759": 18,
+  "string conversion @ src/Common/Logging/EventAuditLogger.php:765": 18
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

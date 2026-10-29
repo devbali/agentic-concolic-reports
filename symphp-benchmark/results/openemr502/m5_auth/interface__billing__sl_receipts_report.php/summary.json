@@ -1,0 +1,55 @@
+{
+ "script": "interface/billing/sl_receipts_report.php",
+ "wall_s": 30.0,
+ "requests": 57,
+ "rounds": 4,
+ "traces": 57,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "pid",
+   "site",
+   "skip_timeout_reset"
+  ],
+  "POST": [
+   "authUser",
+   "csrf_token_form",
+   "form_details",
+   "form_doctor",
+   "form_dx_codefull",
+   "form_facility",
+   "form_from_date",
+   "form_proc_codefull",
+   "form_procedures",
+   "form_refresh",
+   "form_to_date",
+   "form_use_edate",
+   "pid",
+   "skip_timeout_reset"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 4,
+ "concretized": {
+  "comparison == @ library/formatting.inc.php:203": 89,
+  "internal argument @ interface/globals.php:127": 1,
+  "internal argument @ interface/globals.php:141": 1
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

@@ -1,0 +1,43 @@
+{
+ "script": "interface/product_registration/product_registration_controller.php",
+ "wall_s": 18.9,
+ "requests": 67,
+ "rounds": 5,
+ "traces": 65,
+ "errored": 62,
+ "first_error": "Error: fatal: Declaration of Doctrine\\DBAL\\Driver\\DriverException::getMessage() must be compatible with Throwable::getMessage(): string at /home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build",
+ "keys_discovered": {
+  "GET": [
+   "pid",
+   "site"
+  ],
+  "POST": [
+   "authUser",
+   "email",
+   "pid"
+  ],
+  "COOKIE": []
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 3,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [
+  "Error: Failed opening required '/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/openemr502-m5_cold/sites/A/config.php' (include_path='.:/us",
+  "Error: fatal: Declaration of Doctrine\\DBAL\\Driver\\DriverException::getMessage() must be compatible with Throwable::getMessage(): string at /home/jamie/ace-eval/"
+ ],
+ "halted_traces": 0,
+ "concretized": {
+  "internal argument @ interface/globals.php:127": 1,
+  "string conversion @ interface/globals.php:159": 1,
+  "gettype @ vendor/adodb/adodb-php/adodb.inc.php:1189": 12
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

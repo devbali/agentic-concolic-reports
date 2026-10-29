@@ -1,0 +1,48 @@
+{
+ "script": "upldgallery.php",
+ "wall_s": 60.0,
+ "requests": 400,
+ "rounds": 15,
+ "traces": 273,
+ "errored": 60,
+ "first_error": "DivisionByZeroError: Division by zero",
+ "keys_discovered": {
+  "GET": [
+   "action",
+   "img",
+   "lan"
+  ],
+  "POST": [
+   "creategallery",
+   "csrftoken",
+   "w"
+  ],
+  "COOKIE": [
+   "PHPSESSID"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [
+  "DivisionByZeroError: Division by zero"
+ ],
+ "halted_traces": 71,
+ "concretized": {
+  "internal argument @ includes/messages.inc.php:20": 68,
+  "intval @ upldgallery.php:103": 32,
+  "intval @ upldgallery.php:108": 32,
+  "intval @ upldgallery.php:109": 32,
+  "internal argument @ upldgallery.php:160": 24,
+  "comparison != @ upldgallery.php:126": 15
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 214,
+  "cmp7": 15,
+  "arith7": 0,
+  "call7": {}
+ }
+}

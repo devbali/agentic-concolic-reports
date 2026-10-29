@@ -1,0 +1,54 @@
+{
+ "script": "hms/edit-profile.php",
+ "wall_s": 10.9,
+ "requests": 21,
+ "rounds": 8,
+ "traces": 19,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [],
+  "POST": [
+   "address",
+   "city",
+   "fname",
+   "gender",
+   "submit"
+  ],
+  "COOKIE": []
+ },
+ "budget_hit": false,
+ "coverage_complete": true,
+ "missing": 0,
+ "assumptions": [],
+ "sink_sites": [
+  {
+   "site": "hms/edit-profile.php:14",
+   "sink": "mysqli_query",
+   "kind": "injectable",
+   "instance": "Update users set fullName=''',address='',city='',gender='' where id=''",
+   "request": {
+    "GET": {},
+    "POST": {
+     "submit": "",
+     "address": "",
+     "city": "",
+     "fname": "'",
+     "gender": ""
+    },
+    "COOKIE": {}
+   },
+   "db_errno": 0
+  }
+ ],
+ "errors_distinct": [],
+ "halted_traces": 0,
+ "concretized": {},
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

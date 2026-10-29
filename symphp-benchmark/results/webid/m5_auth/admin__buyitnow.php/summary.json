@@ -1,0 +1,52 @@
+{
+ "script": "admin/buyitnow.php",
+ "wall_s": 60.0,
+ "requests": 309,
+ "rounds": 12,
+ "traces": 228,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "lan"
+  ],
+  "POST": [
+   "action",
+   "anotes",
+   "bn_only",
+   "bn_only_disable",
+   "bn_only_percent",
+   "buy_now",
+   "csrftoken"
+  ],
+  "COOKIE": [
+   "PHPSESSID",
+   "USERLANGUAGE",
+   "WEBID_RM_ID"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 1,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 32,
+ "concretized": {
+  "internal argument @ includes/functions_global.php:467": 118,
+  "internal argument @ includes/messages.inc.php:41": 125,
+  "internal argument @ includes/messages.inc.php:20": 38,
+  "intval @ admin/buyitnow.php:23": 136,
+  "string conversion @ includes/database/DatabasePDO.php:80": 324,
+  "comparison > @ admin/buyitnow.php:23": 36,
+  "comparison < @ admin/buyitnow.php:23": 36,
+  "intval @ includes/functions_global.php:130": 62
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 36,
+  "arith7": 0,
+  "call7": {}
+ }
+}

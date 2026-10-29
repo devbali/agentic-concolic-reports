@@ -1,0 +1,48 @@
+{
+ "script": "admin/editboards.php",
+ "wall_s": 63.6,
+ "requests": 271,
+ "rounds": 11,
+ "traces": 191,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "id",
+   "lan"
+  ],
+  "POST": [
+   "action",
+   "anotes",
+   "csrftoken",
+   "msgstoshow",
+   "name"
+  ],
+  "COOKIE": [
+   "PHPSESSID",
+   "USERLANGUAGE",
+   "WEBID_RM_ID"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 32,
+ "concretized": {
+  "intval @ admin/editboards.php:54": 158,
+  "internal argument @ includes/functions_global.php:467": 90,
+  "internal argument @ includes/messages.inc.php:41": 91,
+  "internal argument @ includes/messages.inc.php:20": 26,
+  "string conversion @ includes/database/DatabasePDO.php:80": 94
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

@@ -1,0 +1,38 @@
+{
+ "script": "yourmessages.php",
+ "wall_s": 4.5,
+ "requests": 17,
+ "rounds": 7,
+ "traces": 17,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "id",
+   "lan"
+  ],
+  "POST": [],
+  "COOKIE": [
+   "PHPSESSID",
+   "uniqueuser"
+  ]
+ },
+ "budget_hit": false,
+ "coverage_complete": true,
+ "missing": 0,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 0,
+ "concretized": {
+  "intval @ yourmessages.php:26": 16,
+  "internal argument @ includes/messages.inc.php:20": 4
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

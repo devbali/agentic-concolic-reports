@@ -1,0 +1,50 @@
+{
+ "script": "admin/deletemessage.php",
+ "wall_s": 60.0,
+ "requests": 453,
+ "rounds": 16,
+ "traces": 447,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "board_id",
+   "id",
+   "lan"
+  ],
+  "POST": [
+   "action",
+   "anotes",
+   "board_id",
+   "csrftoken",
+   "id"
+  ],
+  "COOKIE": [
+   "PHPSESSID",
+   "USERLANGUAGE",
+   "WEBID_RM_ID"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 1,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 234,
+ "concretized": {
+  "intval @ admin/deletemessage.php:21": 414,
+  "intval @ admin/deletemessage.php:22": 414,
+  "internal argument @ includes/functions_global.php:467": 220,
+  "internal argument @ includes/messages.inc.php:41": 201,
+  "internal argument @ includes/messages.inc.php:20": 68,
+  "string conversion @ includes/database/DatabasePDO.php:80": 218
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

@@ -1,0 +1,3064 @@
+{
+ "arm": "cold",
+ "options": [
+  "--php7compat",
+  "--exit-as-halt",
+  "--superglobal-reads",
+  "--real-app-builtins",
+  "--db-classes"
+ ],
+ "concretize": true,
+ "sanitizers": true,
+ "array_mode": true,
+ "site_by_statement": true,
+ "budget_s": 300.0,
+ "max_rounds": 50,
+ "instrument": {
+  "instrumented": 1141,
+  "failed": 0,
+  "warnings": [
+   "admin/model/localisation/tax_class.php: warning: parameter default at admin/model/localisation/tax_class.php:46 is a branch point this pass does not instrument",
+   "admin/model/localisation/zone.php: warning: parameter default at admin/model/localisation/zone.php:29 is a branch point this pass does not instrument",
+   "admin/model/localisation/order_status.php: warning: parameter default at admin/model/localisation/order_status.php:41 is a branch point this pass does not instrument",
+   "admin/model/localisation/location.php: warning: parameter default at admin/model/localisation/location.php:23 is a branch point this pass does not instrument",
+   "admin/model/localisation/country.php: warning: parameter default at admin/model/localisation/country.php:29 is a branch point this pass does not instrument",
+   "admin/model/localisation/geo_zone.php: warning: parameter default at admin/model/localisation/geo_zone.php:50 is a branch point this pass does not instrument",
+   "admin/model/localisation/currency.php: warning: parameter default at admin/model/localisation/currency.php:41 is a branch point this pass does not instrument",
+   "admin/model/localisation/currency.php: warning: parameter default at admin/model/localisation/currency.php:108 is a branch point this pass does not instrument",
+   "admin/model/localisation/return_status.php: warning: parameter default at admin/model/localisation/return_status.php:41 is a branch point this pass does not instrument",
+   "admin/model/localisation/weight_class.php: warning: parameter default at admin/model/localisation/weight_class.php:36 is a branch point this pass does not instrument",
+   "admin/model/localisation/language.php: warning: parameter default at admin/model/localisation/language.php:284 is a branch point this pass does not instrument",
+   "admin/model/localisation/tax_rate.php: warning: parameter default at admin/model/localisation/tax_rate.php:40 is a branch point this pass does not instrument",
+   "admin/model/localisation/length_class.php: warning: parameter default at admin/model/localisation/length_class.php:36 is a branch point this pass does not instrument",
+   "admin/model/localisation/return_reason.php: warning: parameter default at admin/model/localisation/return_reason.php:41 is a branch point this pass does not instrument",
+   "admin/model/localisation/stock_status.php: warning: parameter default at admin/model/localisation/stock_status.php:41 is a branch point this pass does not instrument",
+   "admin/model/localisation/return_action.php: warning: parameter default at admin/model/localisation/return_action.php:41 is a branch point this pass does not instrument",
+   "admin/model/extension/openbay/order.php: warning: parameter default at admin/model/extension/openbay/order.php:3 is a branch point this pass does not instrument",
+   "admin/model/extension/openbay/order.php: warning: parameter default at admin/model/extension/openbay/order.php:57 is a branch point this pass does not instrument",
+   "admin/model/extension/openbay/amazon.php: warning: parameter default at admin/model/extension/openbay/amazon.php:183 is a branch point this pass does not instrument",
+   "admin/model/extension/openbay/amazon.php: warning: parameter default at admin/model/extension/openbay/amazon.php:206 is a branch point this pass does not instrument",
+   "admin/model/extension/openbay/amazon.php: warning: parameter default at admin/model/extension/openbay/amazon.php:212 is a branch point this pass does not instrument",
+   "admin/model/extension/openbay/amazon.php: warning: parameter default at admin/model/extension/openbay/amazon.php:223 is a branch point this pass does not instrument",
+   "admin/model/extension/openbay/amazon.php: warning: parameter default at admin/model/extension/openbay/amazon.php:304 is a branch point this pass does not instrument",
+   "admin/model/extension/openbay/amazon.php: warning: parameter default at admin/model/extension/openbay/amazon.php:339 is a branch point this pass does not instrument",
+   "admin/model/extension/openbay/amazon.php: warning: parameter default at admin/model/extension/openbay/amazon.php:370 is a branch point this pass does not instrument",
+   "admin/model/extension/openbay/amazon.php: warning: parameter default at admin/model/extension/openbay/amazon.php:520 is a branch point this pass does not instrument",
+   "admin/model/extension/openbay/amazon.php: warning: parameter default at admin/model/extension/openbay/amazon.php:550 is a branch point this pass does not instrument",
+   "admin/model/extension/openbay/amazon.php: warning: parameter default at admin/model/extension/openbay/amazon.php:566 is a branch point this pass does not instrument",
+   "admin/model/extension/openbay/amazon.php: warning: parameter default at admin/model/extension/openbay/amazon.php:660 is a branch point this pass does not instrument",
+   "admin/model/extension/openbay/amazon.php: warning: parameter default at admin/model/extension/openbay/amazon.php:660 is a branch point this pass does not instrument",
+   "admin/model/extension/openbay/openbay.php: warning: parameter default at admin/model/extension/openbay/openbay.php:86 is a branch point this pass does not instrument",
+   "admin/model/extension/openbay/openbay.php: warning: parameter default at admin/model/extension/openbay/openbay.php:110 is a branch point this pass does not instrument",
+   "admin/model/extension/openbay/openbay.php: warning: parameter default at admin/model/extension/openbay/openbay.php:185 is a branch point this pass does not instrument",
+   "admin/model/extension/openbay/openbay.php: warning: parameter default at admin/model/extension/openbay/openbay.php:238 is a branch point this pass does not instrument",
+   "admin/model/extension/openbay/openbay.php: warning: parameter default at admin/model/extension/openbay/openbay.php:643 is a branch point this pass does not instrument",
+   "admin/model/extension/openbay/openbay.php: warning: parameter default at admin/model/extension/openbay/openbay.php:643 is a branch point this pass does not instrument",
+   "admin/model/extension/openbay/openbay.php: warning: parameter default at admin/model/extension/openbay/openbay.php:643 is a branch point this pass does not instrument",
+   "admin/model/extension/openbay/openbay.php: warning: parameter default at admin/model/extension/openbay/openbay.php:721 is a branch point this pass does not instrument",
+   "admin/model/extension/openbay/openbay.php: warning: parameter default at admin/model/extension/openbay/openbay.php:828 is a branch point this pass does not instrument",
+   "admin/model/extension/openbay/openbay.php: warning: parameter default at admin/model/extension/openbay/openbay.php:995 is a branch point this pass does not instrument",
+   "admin/model/extension/openbay/amazonus.php: warning: parameter default at admin/model/extension/openbay/amazonus.php:181 is a branch point this pass does not instrument",
+   "admin/model/extension/openbay/amazonus.php: warning: parameter default at admin/model/extension/openbay/amazonus.php:204 is a branch point this pass does not instrument",
+   "admin/model/extension/openbay/amazonus.php: warning: parameter default at admin/model/extension/openbay/amazonus.php:210 is a branch point this pass does not instrument",
+   "admin/model/extension/openbay/amazonus.php: warning: parameter default at admin/model/extension/openbay/amazonus.php:221 is a branch point this pass does not instrument",
+   "admin/model/extension/openbay/amazonus.php: warning: parameter default at admin/model/extension/openbay/amazonus.php:302 is a branch point this pass does not instrument",
+   "admin/model/extension/openbay/amazonus.php: warning: parameter default at admin/model/extension/openbay/amazonus.php:339 is a branch point this pass does not instrument",
+   "admin/model/extension/openbay/amazonus.php: warning: parameter default at admin/model/extension/openbay/amazonus.php:370 is a branch point this pass does not instrument",
+   "admin/model/extension/openbay/amazonus.php: warning: parameter default at admin/model/extension/openbay/amazonus.php:519 is a branch point this pass does not instrument",
+   "admin/model/extension/openbay/amazonus.php: warning: parameter default at admin/model/extension/openbay/amazonus.php:549 is a branch point this pass does not instrument",
+   "admin/model/extension/openbay/amazonus.php: warning: parameter default at admin/model/extension/openbay/amazonus.php:565 is a branch point this pass does not instrument",
+   "admin/model/extension/openbay/amazonus.php: warning: parameter default at admin/model/extension/openbay/amazonus.php:661 is a branch point this pass does not instrument",
+   "admin/model/extension/openbay/amazonus.php: warning: parameter default at admin/model/extension/openbay/amazonus.php:661 is a branch point this pass does not instrument",
+   "admin/model/extension/openbay/ebay_product.php: warning: parameter default at admin/model/extension/openbay/ebay_product.php:74 is a branch point this pass does not instrument",
+   "admin/model/extension/openbay/ebay_profile.php: warning: parameter default at admin/model/extension/openbay/ebay_profile.php:46 is a branch point this pass does not instrument",
+   "admin/model/extension/openbay/etsy_product.php: warning: parameter default at admin/model/extension/openbay/etsy_product.php:26 is a branch point this pass does not instrument",
+   "admin/model/extension/openbay/etsy_product.php: warning: parameter default at admin/model/extension/openbay/etsy_product.php:30 is a branch point this pass does not instrument",
+   "admin/model/extension/openbay/etsy_product.php: warning: parameter default at admin/model/extension/openbay/etsy_product.php:30 is a branch point this pass does not instrument",
+   "admin/model/extension/openbay/ebay.php: warning: parameter default at admin/model/extension/openbay/ebay.php:261 is a branch point this pass does not instrument",
+   "admin/model/extension/openbay/ebay.php: warning: parameter default at admin/model/extension/openbay/ebay.php:261 is a branch point this pass does not instrument",
+   "admin/model/extension/openbay/ebay.php: warning: parameter default at admin/model/extension/openbay/ebay.php:330 is a branch point this pass does not instrument",
+   "admin/model/extension/openbay/ebay.php: warning: parameter default at admin/model/extension/openbay/ebay.php:330 is a branch point this pass does not instrument",
+   "admin/model/extension/openbay/ebay.php: warning: parameter default at admin/model/extension/openbay/ebay.php:330 is a branch point this pass does not instrument",
+   "admin/model/extension/modification.php: warning: parameter default at admin/model/extension/modification.php:25 is a branch point this pass does not instrument",
+   "admin/model/extension/fraud/ip.php: warning: parameter default at admin/model/extension/fraud/ip.php:25 is a branch point this pass does not instrument",
+   "admin/model/extension/fraud/ip.php: warning: parameter default at admin/model/extension/fraud/ip.php:25 is a branch point this pass does not instrument",
+   "admin/model/extension/fraud/fraudlabspro.php: warning: parameter default at admin/model/extension/fraud/fraudlabspro.php:85 is a branch point this pass does not instrument",
+   "admin/model/extension/feed/google_base.php: warning: parameter default at admin/model/extension/feed/google_base.php:42 is a branch point this pass does not instrument",
+   "admin/model/extension/feed/google_base.php: warning: parameter default at admin/model/extension/feed/google_base.php:72 is a branch point this pass does not instrument",
+   "admin/model/extension/event.php: warning: parameter default at admin/model/extension/event.php:3 is a branch point this pass does not instrument",
+   "admin/model/extension/event.php: warning: parameter default at admin/model/extension/event.php:32 is a branch point this pass does not instrument",
+   "admin/model/extension/payment/eway.php: warning: .= on a non-trivial target at admin/model/extension/payment/eway.php:71 is a branch point this pass does not instrument",
+   "admin/model/extension/payment/eway.php: warning: .= on a non-trivial target at admin/model/extension/payment/eway.php:73 is a branch point this pass does not instrument",
+   "admin/model/extension/payment/pp_express.php: warning: parameter default at admin/model/extension/payment/pp_express.php:55 is a branch point this pass does not instrument",
+   "admin/model/extension/payment/pp_express.php: warning: parameter default at admin/model/extension/payment/pp_express.php:170 is a branch point this pass does not instrument",
+   "admin/model/extension/payment/pp_express.php: warning: parameter default at admin/model/extension/payment/pp_express.php:327 is a branch point this pass does not instrument",
+   "admin/model/extension/payment/amazon_login_pay.php: warning: parameter default at admin/model/extension/payment/amazon_login_pay.php:232 is a branch point this pass does not instrument",
+   "admin/model/extension/payment/amazon_login_pay.php: warning: parameter default at admin/model/extension/payment/amazon_login_pay.php:232 is a branch point this pass does not instrument",
+   "admin/model/extension/payment/amazon_login_pay.php: warning: parameter default at admin/model/extension/payment/amazon_login_pay.php:232 is a branch point this pass does not instrument",
+   "admin/model/extension/payment/amazon_login_pay.php: warning: parameter default at admin/model/extension/payment/amazon_login_pay.php:260 is a branch point this pass does not instrument",
+   "admin/model/extension/payment/laybuy.php: warning: parameter default at admin/model/extension/payment/laybuy.php:3 is a branch point this pass does not instrument",
+   "admin/model/extension/payment/laybuy.php: warning: parameter default at admin/model/extension/payment/laybuy.php:70 is a branch point this pass does not instrument",
+   "admin/model/extension/payment/laybuy.php: warning: parameter default at admin/model/extension/payment/laybuy.php:100 is a branch point this pass does not instrument",
+   "admin/model/extension/payment/laybuy.php: warning: parameter default at admin/model/extension/payment/laybuy.php:179 is a branch point this pass does not instrument",
+   "admin/model/extension/payment/laybuy.php: warning: parameter default at admin/model/extension/payment/laybuy.php:325 is a branch point this pass does not instrument",
+   "admin/model/extension/payment/laybuy.php: warning: parameter default at admin/model/extension/payment/laybuy.php:351 is a branch point this pass does not instrument",
+   "admin/model/extension/payment/pp_pro_iframe.php: warning: parameter default at admin/model/extension/payment/pp_pro_iframe.php:164 is a branch point this pass does not instrument",
+   "admin/model/extension/payment/pp_pro_iframe.php: warning: parameter default at admin/model/extension/payment/pp_pro_iframe.php:183 is a branch point this pass does not instrument",
+   "admin/model/user/user_group.php: warning: parameter default at admin/model/user/user_group.php:28 is a branch point this pass does not instrument",
+   "admin/model/user/user.php: warning: parameter default at admin/model/user/user.php:53 is a branch point this pass does not instrument",
+   "admin/model/user/api.php: warning: parameter default at admin/model/user/api.php:43 is a branch point this pass does not instrument",
+   "admin/model/sale/order.php: warning: parameter default at admin/model/sale/order.php:172 is a branch point this pass does not instrument",
+   "admin/model/sale/order.php: warning: parameter default at admin/model/sale/order.php:279 is a branch point this pass does not instrument",
+   "admin/model/sale/order.php: warning: parameter default at admin/model/sale/order.php:401 is a branch point this pass does not instrument",
+   "admin/model/sale/order.php: warning: parameter default at admin/model/sale/order.php:401 is a branch point this pass does not instrument",
+   "admin/model/sale/voucher_theme.php: warning: parameter default at admin/model/sale/voucher_theme.php:42 is a branch point this pass does not instrument",
+   "admin/model/sale/recurring.php: warning: .= on a non-trivial target at admin/model/sale/recurring.php:166 is a branch point this pass does not instrument",
+   "admin/model/sale/recurring.php: warning: .= on a non-trivial target at admin/model/sale/recurring.php:170 is a branch point this pass does not instrument",
+   "admin/model/sale/recurring.php: warning: .= on a non-trivial target at admin/model/sale/recurring.php:174 is a branch point this pass does not instrument",
+   "admin/model/sale/recurring.php: warning: .= on a non-trivial target at admin/model/sale/recurring.php:178 is a branch point this pass does not instrument",
+   "admin/model/sale/recurring.php: warning: .= on a non-trivial target at admin/model/sale/recurring.php:182 is a branch point this pass does not instrument",
+   "admin/model/sale/recurring.php: warning: .= on a non-trivial target at admin/model/sale/recurring.php:186 is a branch point this pass does not instrument",
+   "admin/model/sale/return.php: warning: parameter default at admin/model/sale/return.php:24 is a branch point this pass does not instrument",
+   "admin/model/sale/return.php: warning: parameter default at admin/model/sale/return.php:105 is a branch point this pass does not instrument",
+   "admin/model/sale/return.php: warning: parameter default at admin/model/sale/return.php:213 is a branch point this pass does not instrument",
+   "admin/model/sale/return.php: warning: parameter default at admin/model/sale/return.php:213 is a branch point this pass does not instrument",
+   "admin/model/sale/voucher.php: warning: parameter default at admin/model/sale/voucher.php:30 is a branch point this pass does not instrument",
+   "admin/model/sale/voucher.php: warning: parameter default at admin/model/sale/voucher.php:194 is a branch point this pass does not instrument",
+   "admin/model/sale/voucher.php: warning: parameter default at admin/model/sale/voucher.php:194 is a branch point this pass does not instrument",
+   "admin/model/marketing/coupon.php: warning: parameter default at admin/model/marketing/coupon.php:62 is a branch point this pass does not instrument",
+   "admin/model/marketing/coupon.php: warning: parameter default at admin/model/marketing/coupon.php:133 is a branch point this pass does not instrument",
+   "admin/model/marketing/coupon.php: warning: parameter default at admin/model/marketing/coupon.php:133 is a branch point this pass does not instrument",
+   "admin/model/marketing/marketing.php: warning: parameter default at admin/model/marketing/marketing.php:29 is a branch point this pass does not instrument",
+   "admin/model/marketing/marketing.php: warning: parameter default at admin/model/marketing/marketing.php:93 is a branch point this pass does not instrument",
+   "admin/model/marketing/affiliate.php: warning: parameter default at admin/model/marketing/affiliate.php:41 is a branch point this pass does not instrument",
+   "admin/model/marketing/affiliate.php: warning: parameter default at admin/model/marketing/affiliate.php:151 is a branch point this pass does not instrument",
+   "admin/model/marketing/affiliate.php: warning: parameter default at admin/model/marketing/affiliate.php:203 is a branch point this pass does not instrument",
+   "admin/model/marketing/affiliate.php: warning: parameter default at admin/model/marketing/affiliate.php:203 is a branch point this pass does not instrument",
+   "admin/model/marketing/affiliate.php: warning: parameter default at admin/model/marketing/affiliate.php:203 is a branch point this pass does not instrument",
+   "admin/model/marketing/affiliate.php: warning: parameter default at admin/model/marketing/affiliate.php:240 is a branch point this pass does not instrument",
+   "admin/model/marketing/affiliate.php: warning: parameter default at admin/model/marketing/affiliate.php:240 is a branch point this pass does not instrument",
+   "admin/model/customer/customer_group.php: warning: parameter default at admin/model/customer/customer_group.php:40 is a branch point this pass does not instrument",
+   "admin/model/customer/custom_field.php: warning: parameter default at admin/model/customer/custom_field.php:88 is a branch point this pass does not instrument",
+   "admin/model/customer/customer.php: warning: parameter default at admin/model/customer/customer.php:78 is a branch point this pass does not instrument",
+   "admin/model/customer/customer.php: warning: parameter default at admin/model/customer/customer.php:282 is a branch point this pass does not instrument",
+   "admin/model/customer/customer.php: warning: parameter default at admin/model/customer/customer.php:362 is a branch point this pass does not instrument",
+   "admin/model/customer/customer.php: warning: parameter default at admin/model/customer/customer.php:362 is a branch point this pass does not instrument",
+   "admin/model/customer/customer.php: warning: parameter default at admin/model/customer/customer.php:382 is a branch point this pass does not instrument",
+   "admin/model/customer/customer.php: warning: parameter default at admin/model/customer/customer.php:382 is a branch point this pass does not instrument",
+   "admin/model/customer/customer.php: warning: parameter default at admin/model/customer/customer.php:382 is a branch point this pass does not instrument",
+   "admin/model/customer/customer.php: warning: parameter default at admin/model/customer/customer.php:425 is a branch point this pass does not instrument",
+   "admin/model/customer/customer.php: warning: parameter default at admin/model/customer/customer.php:425 is a branch point this pass does not instrument",
+   "admin/model/customer/customer.php: warning: parameter default at admin/model/customer/customer.php:457 is a branch point this pass does not instrument",
+   "admin/model/customer/customer.php: warning: parameter default at admin/model/customer/customer.php:457 is a branch point this pass does not instrument",
+   "admin/model/customer/customer.php: warning: parameter default at admin/model/customer/customer.php:457 is a branch point this pass does not instrument",
+   "admin/model/customer/customer.php: warning: parameter default at admin/model/customer/customer.php:500 is a branch point this pass does not instrument",
+   "admin/model/customer/customer.php: warning: parameter default at admin/model/customer/customer.php:500 is a branch point this pass does not instrument",
+   "admin/model/customer/customer.php: warning: parameter default at admin/model/customer/customer.php:524 is a branch point this pass does not instrument",
+   "admin/model/customer/customer.php: warning: parameter default at admin/model/customer/customer.php:524 is a branch point this pass does not instrument",
+   "admin/model/report/coupon.php: warning: parameter default at admin/model/report/coupon.php:3 is a branch point this pass does not instrument",
+   "admin/model/report/coupon.php: warning: parameter default at admin/model/report/coupon.php:39 is a branch point this pass does not instrument",
+   "admin/model/report/marketing.php: warning: parameter default at admin/model/report/marketing.php:3 is a branch point this pass does not instrument",
+   "admin/model/report/marketing.php: warning: parameter default at admin/model/report/marketing.php:55 is a branch point this pass does not instrument",
+   "admin/model/report/return.php: warning: parameter default at admin/model/report/return.php:3 is a branch point this pass does not instrument",
+   "admin/model/report/return.php: warning: parameter default at admin/model/report/return.php:59 is a branch point this pass does not instrument",
+   "admin/model/report/sale.php: warning: parameter default at admin/model/report/sale.php:3 is a branch point this pass does not instrument",
+   "admin/model/report/sale.php: warning: parameter default at admin/model/report/sale.php:139 is a branch point this pass does not instrument",
+   "admin/model/report/sale.php: warning: parameter default at admin/model/report/sale.php:197 is a branch point this pass does not instrument",
+   "admin/model/report/sale.php: warning: parameter default at admin/model/report/sale.php:239 is a branch point this pass does not instrument",
+   "admin/model/report/sale.php: warning: parameter default at admin/model/report/sale.php:295 is a branch point this pass does not instrument",
+   "admin/model/report/sale.php: warning: parameter default at admin/model/report/sale.php:339 is a branch point this pass does not instrument",
+   "admin/model/report/sale.php: warning: parameter default at admin/model/report/sale.php:395 is a branch point this pass does not instrument",
+   "admin/model/report/customer.php: warning: parameter default at admin/model/report/customer.php:97 is a branch point this pass does not instrument",
+   "admin/model/report/customer.php: warning: parameter default at admin/model/report/customer.php:139 is a branch point this pass does not instrument",
+   "admin/model/report/customer.php: warning: parameter default at admin/model/report/customer.php:165 is a branch point this pass does not instrument",
+   "admin/model/report/customer.php: warning: parameter default at admin/model/report/customer.php:199 is a branch point this pass does not instrument",
+   "admin/model/report/customer.php: warning: parameter default at admin/model/report/customer.php:225 is a branch point this pass does not instrument",
+   "admin/model/report/customer.php: warning: parameter default at admin/model/report/customer.php:259 is a branch point this pass does not instrument",
+   "admin/model/report/customer.php: warning: parameter default at admin/model/report/customer.php:285 is a branch point this pass does not instrument",
+   "admin/model/report/customer.php: warning: parameter default at admin/model/report/customer.php:321 is a branch point this pass does not instrument",
+   "admin/model/report/customer.php: warning: parameter default at admin/model/report/customer.php:343 is a branch point this pass does not instrument",
+   "admin/model/report/customer.php: warning: parameter default at admin/model/report/customer.php:387 is a branch point this pass does not instrument",
+   "admin/model/report/customer.php: warning: parameter default at admin/model/report/customer.php:417 is a branch point this pass does not instrument",
+   "admin/model/report/customer.php: warning: parameter default at admin/model/report/customer.php:465 is a branch point this pass does not instrument",
+   "admin/model/report/product.php: warning: parameter default at admin/model/report/product.php:3 is a branch point this pass does not instrument",
+   "admin/model/report/product.php: warning: parameter default at admin/model/report/product.php:39 is a branch point this pass does not instrument",
+   "admin/model/report/affiliate.php: warning: parameter default at admin/model/report/affiliate.php:3 is a branch point this pass does not instrument",
+   "admin/model/report/affiliate.php: warning: parameter default at admin/model/report/affiliate.php:39 is a branch point this pass does not instrument",
+   "admin/model/report/affiliate.php: warning: parameter default at admin/model/report/affiliate.php:61 is a branch point this pass does not instrument",
+   "admin/model/report/affiliate.php: warning: parameter default at admin/model/report/affiliate.php:97 is a branch point this pass does not instrument",
+   "admin/model/report/affiliate.php: warning: parameter default at admin/model/report/affiliate.php:119 is a branch point this pass does not instrument",
+   "admin/model/report/affiliate.php: warning: parameter default at admin/model/report/affiliate.php:163 is a branch point this pass does not instrument",
+   "admin/model/catalog/download.php: warning: parameter default at admin/model/catalog/download.php:36 is a branch point this pass does not instrument",
+   "admin/model/catalog/category.php: warning: parameter default at admin/model/catalog/category.php:175 is a branch point this pass does not instrument",
+   "admin/model/catalog/category.php: warning: parameter default at admin/model/catalog/category.php:205 is a branch point this pass does not instrument",
+   "admin/model/catalog/information.php: warning: parameter default at admin/model/catalog/information.php:83 is a branch point this pass does not instrument",
+   "admin/model/catalog/attribute_group.php: warning: parameter default at admin/model/catalog/attribute_group.php:36 is a branch point this pass does not instrument",
+   "admin/model/catalog/review.php: warning: parameter default at admin/model/catalog/review.php:31 is a branch point this pass does not instrument",
+   "admin/model/catalog/review.php: warning: parameter default at admin/model/catalog/review.php:87 is a branch point this pass does not instrument",
+   "admin/model/catalog/attribute.php: warning: parameter default at admin/model/catalog/attribute.php:36 is a branch point this pass does not instrument",
+   "admin/model/catalog/filter.php: warning: parameter default at admin/model/catalog/filter.php:69 is a branch point this pass does not instrument",
+   "admin/model/catalog/recurring.php: warning: .= on a non-trivial target at admin/model/catalog/recurring.php:31 is a branch point this pass does not instrument",
+   "admin/model/catalog/recurring.php: warning: parameter default at admin/model/catalog/recurring.php:62 is a branch point this pass does not instrument",
+   "admin/model/catalog/product.php: warning: parameter default at admin/model/catalog/product.php:343 is a branch point this pass does not instrument",
+   "admin/model/catalog/product.php: warning: parameter default at admin/model/catalog/product.php:615 is a branch point this pass does not instrument",
+   "admin/model/catalog/option.php: warning: parameter default at admin/model/catalog/option.php:70 is a branch point this pass does not instrument",
+   "admin/model/catalog/manufacturer.php: warning: parameter default at admin/model/catalog/manufacturer.php:65 is a branch point this pass does not instrument",
+   "admin/model/setting/store.php: warning: parameter default at admin/model/setting/store.php:39 is a branch point this pass does not instrument",
+   "admin/model/setting/setting.php: warning: parameter default at admin/model/setting/setting.php:3 is a branch point this pass does not instrument",
+   "admin/model/setting/setting.php: warning: parameter default at admin/model/setting/setting.php:19 is a branch point this pass does not instrument",
+   "admin/model/setting/setting.php: warning: parameter default at admin/model/setting/setting.php:33 is a branch point this pass does not instrument",
+   "admin/model/setting/setting.php: warning: parameter default at admin/model/setting/setting.php:37 is a branch point this pass does not instrument",
+   "admin/model/setting/setting.php: warning: parameter default at admin/model/setting/setting.php:47 is a branch point this pass does not instrument",
+   "admin/model/setting/setting.php: warning: parameter default at admin/model/setting/setting.php:47 is a branch point this pass does not instrument",
+   "admin/model/setting/setting.php: warning: parameter default at admin/model/setting/setting.php:47 is a branch point this pass does not instrument",
+   "admin/model/setting/setting.php: warning: parameter default at admin/model/setting/setting.php:47 is a branch point this pass does not instrument",
+   "admin/model/tool/upload.php: warning: parameter default at admin/model/tool/upload.php:27 is a branch point this pass does not instrument",
+   "admin/model/design/banner.php: warning: parameter default at admin/model/design/banner.php:44 is a branch point this pass does not instrument",
+   "admin/model/design/layout.php: warning: parameter default at admin/model/design/layout.php:58 is a branch point this pass does not instrument",
+   "admin/model/design/menu.php: warning: parameter default at admin/model/design/menu.php:47 is a branch point this pass does not instrument",
+   "admin/controller/extension/openbay/amazonus_product.php: warning: parameter default at admin/controller/extension/openbay/amazonus_product.php:405 is a branch point this pass does not instrument",
+   "admin/controller/extension/openbay/amazonus_product.php: warning: parameter default at admin/controller/extension/openbay/amazonus_product.php:513 is a branch point this pass does not instrument",
+   "admin/controller/extension/openbay/amazon_product.php: warning: parameter default at admin/controller/extension/openbay/amazon_product.php:429 is a branch point this pass does not instrument",
+   "admin/controller/extension/openbay/amazon_product.php: warning: parameter default at admin/controller/extension/openbay/amazon_product.php:536 is a branch point this pass does not instrument",
+   "admin/controller/extension/modification.php: warning: parameter default at admin/controller/extension/modification.php:54 is a branch point this pass does not instrument",
+   "admin/controller/extension/payment/laybuy.php: warning: parameter default at admin/controller/extension/payment/laybuy.php:732 is a branch point this pass does not instrument",
+   "system/startup.php: warning: .= on a non-trivial target at system/startup.php:50 is a branch point this pass does not instrument",
+   "system/engine/action.php: warning: parameter default at system/engine/action.php:30 is a branch point this pass does not instrument",
+   "system/engine/loader.php: warning: parameter default at system/engine/loader.php:9 is a branch point this pass does not instrument",
+   "system/engine/loader.php: warning: parameter default at system/engine/loader.php:67 is a branch point this pass does not instrument",
+   "system/engine/event.php: warning: parameter default at system/engine/event.php:19 is a branch point this pass does not instrument",
+   "system/engine/event.php: warning: parameter default at system/engine/event.php:33 is a branch point this pass does not instrument",
+   "system/helper/json.php: warning: parameter default at system/helper/json.php:87 is a branch point this pass does not instrument",
+   "system/helper/utf8.php: warning: parameter default at system/helper/utf8.php:9 is a branch point this pass does not instrument",
+   "system/helper/utf8.php: warning: parameter default at system/helper/utf8.php:13 is a branch point this pass does not instrument",
+   "system/helper/utf8.php: warning: parameter default at system/helper/utf8.php:17 is a branch point this pass does not instrument",
+   "system/helper/utf8.php: warning: parameter default at system/helper/utf8.php:37 is a branch point this pass does not instrument",
+   "system/helper/utf8.php: warning: parameter default at system/helper/utf8.php:45 is a branch point this pass does not instrument",
+   "system/helper/general.php: warning: parameter default at system/helper/general.php:2 is a branch point this pass does not instrument",
+   "system/library/cache.php: warning: parameter default at system/library/cache.php:5 is a branch point this pass does not instrument",
+   "system/library/openbay/amazon.php: warning: parameter default at system/library/openbay/amazon.php:23 is a branch point this pass does not instrument",
+   "system/library/openbay/amazon.php: warning: parameter default at system/library/openbay/amazon.php:23 is a branch point this pass does not instrument",
+   "system/library/openbay/amazon.php: warning: parameter default at system/library/openbay/amazon.php:56 is a branch point this pass does not instrument",
+   "system/library/openbay/amazon.php: warning: parameter default at system/library/openbay/amazon.php:56 is a branch point this pass does not instrument",
+   "system/library/openbay/amazon.php: warning: parameter default at system/library/openbay/amazon.php:94 is a branch point this pass does not instrument",
+   "system/library/openbay/amazon.php: warning: parameter default at system/library/openbay/amazon.php:112 is a branch point this pass does not instrument",
+   "system/library/openbay/amazon.php: warning: parameter default at system/library/openbay/amazon.php:205 is a branch point this pass does not instrument",
+   "system/library/openbay/amazon.php: warning: parameter default at system/library/openbay/amazon.php:205 is a branch point this pass does not instrument",
+   "system/library/openbay/amazon.php: warning: parameter default at system/library/openbay/amazon.php:205 is a branch point this pass does not instrument",
+   "system/library/openbay/amazon.php: warning: parameter default at system/library/openbay/amazon.php:308 is a branch point this pass does not instrument",
+   "system/library/openbay/amazonus.php: warning: parameter default at system/library/openbay/amazonus.php:23 is a branch point this pass does not instrument",
+   "system/library/openbay/amazonus.php: warning: parameter default at system/library/openbay/amazonus.php:23 is a branch point this pass does not instrument",
+   "system/library/openbay/amazonus.php: warning: parameter default at system/library/openbay/amazonus.php:56 is a branch point this pass does not instrument",
+   "system/library/openbay/amazonus.php: warning: parameter default at system/library/openbay/amazonus.php:56 is a branch point this pass does not instrument",
+   "system/library/openbay/amazonus.php: warning: parameter default at system/library/openbay/amazonus.php:94 is a branch point this pass does not instrument",
+   "system/library/openbay/amazonus.php: warning: parameter default at system/library/openbay/amazonus.php:112 is a branch point this pass does not instrument",
+   "system/library/openbay/amazonus.php: warning: parameter default at system/library/openbay/amazonus.php:205 is a branch point this pass does not instrument",
+   "system/library/openbay/amazonus.php: warning: parameter default at system/library/openbay/amazonus.php:205 is a branch point this pass does not instrument",
+   "system/library/openbay/amazonus.php: warning: parameter default at system/library/openbay/amazonus.php:205 is a branch point this pass does not instrument",
+   "system/library/openbay/amazonus.php: warning: parameter default at system/library/openbay/amazonus.php:308 is a branch point this pass does not instrument",
+   "system/library/openbay/etsy.php: warning: parameter default at system/library/openbay/etsy.php:35 is a branch point this pass does not instrument",
+   "system/library/openbay/etsy.php: warning: parameter default at system/library/openbay/etsy.php:112 is a branch point this pass does not instrument",
+   "system/library/openbay/etsy.php: warning: parameter default at system/library/openbay/etsy.php:132 is a branch point this pass does not instrument",
+   "system/library/openbay/etsy.php: warning: parameter default at system/library/openbay/etsy.php:184 is a branch point this pass does not instrument",
+   "system/library/openbay/etsy.php: warning: parameter default at system/library/openbay/etsy.php:184 is a branch point this pass does not instrument",
+   "system/library/openbay/etsy.php: warning: parameter default at system/library/openbay/etsy.php:270 is a branch point this pass does not instrument",
+   "system/library/openbay/etsy.php: warning: parameter default at system/library/openbay/etsy.php:270 is a branch point this pass does not instrument",
+   "system/library/openbay/etsy.php: warning: parameter default at system/library/openbay/etsy.php:284 is a branch point this pass does not instrument",
+   "system/library/openbay/etsy.php: warning: parameter default at system/library/openbay/etsy.php:317 is a branch point this pass does not instrument",
+   "system/library/openbay/etsy.php: warning: parameter default at system/library/openbay/etsy.php:317 is a branch point this pass does not instrument",
+   "system/library/openbay/fba.php: warning: parameter default at system/library/openbay/fba.php:52 is a branch point this pass does not instrument",
+   "system/library/openbay/fba.php: warning: parameter default at system/library/openbay/fba.php:52 is a branch point this pass does not instrument",
+   "system/library/openbay/ebay.php: warning: parameter default at system/library/openbay/ebay.php:35 is a branch point this pass does not instrument",
+   "system/library/openbay/ebay.php: warning: parameter default at system/library/openbay/ebay.php:35 is a branch point this pass does not instrument",
+   "system/library/openbay/ebay.php: warning: parameter default at system/library/openbay/ebay.php:35 is a branch point this pass does not instrument",
+   "system/library/openbay/ebay.php: warning: parameter default at system/library/openbay/ebay.php:35 is a branch point this pass does not instrument",
+   "system/library/openbay/ebay.php: warning: parameter default at system/library/openbay/ebay.php:109 is a branch point this pass does not instrument",
+   "system/library/openbay/ebay.php: warning: parameter default at system/library/openbay/ebay.php:109 is a branch point this pass does not instrument",
+   "system/library/openbay/ebay.php: warning: parameter default at system/library/openbay/ebay.php:109 is a branch point this pass does not instrument",
+   "system/library/openbay/ebay.php: warning: parameter default at system/library/openbay/ebay.php:155 is a branch point this pass does not instrument",
+   "system/library/openbay/ebay.php: warning: parameter default at system/library/openbay/ebay.php:168 is a branch point this pass does not instrument",
+   "system/library/openbay/ebay.php: warning: parameter default at system/library/openbay/ebay.php:338 is a branch point this pass does not instrument",
+   "system/library/openbay/ebay.php: warning: parameter default at system/library/openbay/ebay.php:420 is a branch point this pass does not instrument",
+   "system/library/openbay/ebay.php: warning: parameter default at system/library/openbay/ebay.php:420 is a branch point this pass does not instrument",
+   "system/library/openbay/ebay.php: warning: parameter default at system/library/openbay/ebay.php:440 is a branch point this pass does not instrument",
+   "system/library/openbay/ebay.php: warning: parameter default at system/library/openbay/ebay.php:440 is a branch point this pass does not instrument",
+   "system/library/openbay/ebay.php: warning: parameter default at system/library/openbay/ebay.php:440 is a branch point this pass does not instrument",
+   "system/library/openbay/ebay.php: warning: parameter default at system/library/openbay/ebay.php:453 is a branch point this pass does not instrument",
+   "system/library/openbay/ebay.php: warning: parameter default at system/library/openbay/ebay.php:533 is a branch point this pass does not instrument",
+   "system/library/openbay/ebay.php: warning: parameter default at system/library/openbay/ebay.php:682 is a branch point this pass does not instrument",
+   "system/library/openbay/ebay.php: warning: parameter default at system/library/openbay/ebay.php:696 is a branch point this pass does not instrument",
+   "system/library/openbay/ebay.php: warning: parameter default at system/library/openbay/ebay.php:814 is a branch point this pass does not instrument",
+   "system/library/openbay/ebay.php: warning: parameter default at system/library/openbay/ebay.php:880 is a branch point this pass does not instrument",
+   "system/library/openbay/ebay.php: warning: parameter default at system/library/openbay/ebay.php:894 is a branch point this pass does not instrument",
+   "system/library/openbay/ebay.php: warning: parameter default at system/library/openbay/ebay.php:1053 is a branch point this pass does not instrument",
+   "system/library/openbay/ebay.php: warning: parameter default at system/library/openbay/ebay.php:1066 is a branch point this pass does not instrument",
+   "system/library/openbay/ebay.php: warning: parameter default at system/library/openbay/ebay.php:1066 is a branch point this pass does not instrument",
+   "system/library/openbay/ebay.php: warning: parameter default at system/library/openbay/ebay.php:1091 is a branch point this pass does not instrument",
+   "system/library/openbay/ebay.php: warning: parameter default at system/library/openbay/ebay.php:1484 is a branch point this pass does not instrument",
+   "system/library/mail.php: warning: parameter default at system/library/mail.php:20 is a branch point this pass does not instrument",
+   "system/library/openbay.php: warning: parameter default at system/library/openbay.php:25 is a branch point this pass does not instrument",
+   "system/library/openbay.php: warning: parameter default at system/library/openbay.php:38 is a branch point this pass does not instrument",
+   "system/library/openbay.php: warning: parameter default at system/library/openbay.php:66 is a branch point this pass does not instrument",
+   "system/library/openbay.php: warning: parameter default at system/library/openbay.php:98 is a branch point this pass does not instrument",
+   "system/library/openbay.php: warning: parameter default at system/library/openbay.php:128 is a branch point this pass does not instrument",
+   "system/library/openbay.php: warning: parameter default at system/library/openbay.php:343 is a branch point this pass does not instrument",
+   "system/library/db.php: warning: parameter default at system/library/db.php:5 is a branch point this pass does not instrument",
+   "system/library/db.php: warning: parameter default at system/library/db.php:15 is a branch point this pass does not instrument",
+   "system/library/url.php: warning: parameter default at system/library/url.php:7 is a branch point this pass does not instrument",
+   "system/library/url.php: warning: parameter default at system/library/url.php:16 is a branch point this pass does not instrument",
+   "system/library/url.php: warning: parameter default at system/library/url.php:16 is a branch point this pass does not instrument",
+   "system/library/session.php: warning: parameter default at system/library/session.php:6 is a branch point this pass does not instrument",
+   "system/library/session.php: warning: parameter default at system/library/session.php:34 is a branch point this pass does not instrument",
+   "system/library/session.php: warning: parameter default at system/library/session.php:34 is a branch point this pass does not instrument",
+   "system/library/session.php: warning: parameter default at system/library/session.php:72 is a branch point this pass does not instrument",
+   "system/library/document.php: warning: parameter default at system/library/document.php:45 is a branch point this pass does not instrument",
+   "system/library/document.php: warning: parameter default at system/library/document.php:45 is a branch point this pass does not instrument",
+   "system/library/document.php: warning: parameter default at system/library/document.php:57 is a branch point this pass does not instrument",
+   "system/library/document.php: warning: parameter default at system/library/document.php:61 is a branch point this pass does not instrument",
+   "system/library/image.php: warning: parameter default at system/library/image.php:57 is a branch point this pass does not instrument",
+   "system/library/image.php: warning: parameter default at system/library/image.php:75 is a branch point this pass does not instrument",
+   "system/library/image.php: warning: parameter default at system/library/image.php:75 is a branch point this pass does not instrument",
+   "system/library/image.php: warning: parameter default at system/library/image.php:75 is a branch point this pass does not instrument",
+   "system/library/image.php: warning: parameter default at system/library/image.php:125 is a branch point this pass does not instrument",
+   "system/library/image.php: warning: parameter default at system/library/image.php:183 is a branch point this pass does not instrument",
+   "system/library/image.php: warning: parameter default at system/library/image.php:198 is a branch point this pass does not instrument",
+   "system/library/image.php: warning: parameter default at system/library/image.php:198 is a branch point this pass does not instrument",
+   "system/library/image.php: warning: parameter default at system/library/image.php:198 is a branch point this pass does not instrument",
+   "system/library/image.php: warning: parameter default at system/library/image.php:198 is a branch point this pass does not instrument",
+   "system/library/image.php: warning: parameter default at system/library/image.php:204 is a branch point this pass does not instrument",
+   "system/library/image.php: warning: parameter default at system/library/image.php:204 is a branch point this pass does not instrument",
+   "system/library/image.php: warning: parameter default at system/library/image.php:204 is a branch point this pass does not instrument",
+   "system/library/response.php: warning: parameter default at system/library/response.php:11 is a branch point this pass does not instrument",
+   "system/library/response.php: warning: parameter default at system/library/response.php:28 is a branch point this pass does not instrument",
+   "system/library/language.php: warning: parameter default at system/library/language.php:7 is a branch point this pass does not instrument",
+   "system/library/language.php: warning: parameter default at system/library/language.php:29 is a branch point this pass does not instrument",
+   "system/library/cart/tax.php: warning: parameter default at system/library/cart/tax.php:58 is a branch point this pass does not instrument",
+   "system/library/cart/cart.php: warning: parameter default at system/library/cart/cart.php:272 is a branch point this pass does not instrument",
+   "system/library/cart/cart.php: warning: parameter default at system/library/cart/cart.php:272 is a branch point this pass does not instrument",
+   "system/library/cart/cart.php: warning: parameter default at system/library/cart/cart.php:272 is a branch point this pass does not instrument",
+   "system/library/cart/currency.php: warning: parameter default at system/library/cart/currency.php:24 is a branch point this pass does not instrument",
+   "system/library/cart/currency.php: warning: parameter default at system/library/cart/currency.php:24 is a branch point this pass does not instrument",
+   "system/library/cart/weight.php: warning: parameter default at system/library/cart/weight.php:42 is a branch point this pass does not instrument",
+   "system/library/cart/weight.php: warning: parameter default at system/library/cart/weight.php:42 is a branch point this pass does not instrument",
+   "system/library/cart/customer.php: warning: parameter default at system/library/cart/customer.php:47 is a branch point this pass does not instrument",
+   "system/library/cart/length.php: warning: parameter default at system/library/cart/length.php:42 is a branch point this pass does not instrument",
+   "system/library/cart/length.php: warning: parameter default at system/library/cart/length.php:42 is a branch point this pass does not instrument",
+   "system/library/db/mssql.php: warning: parameter default at system/library/db/mssql.php:6 is a branch point this pass does not instrument",
+   "system/library/db/mysqli.php: warning: parameter default at system/library/db/mysqli.php:6 is a branch point this pass does not instrument",
+   "system/library/db/mpdo.php: warning: parameter default at system/library/db/mpdo.php:7 is a branch point this pass does not instrument",
+   "system/library/db/mpdo.php: warning: parameter default at system/library/db/mpdo.php:24 is a branch point this pass does not instrument",
+   "system/library/db/mpdo.php: warning: parameter default at system/library/db/mpdo.php:24 is a branch point this pass does not instrument",
+   "system/library/db/mpdo.php: warning: parameter default at system/library/db/mpdo.php:51 is a branch point this pass does not instrument",
+   "system/library/db/mysql.php: warning: parameter default at system/library/db/mysql.php:6 is a branch point this pass does not instrument",
+   "system/library/db/postgre.php: warning: parameter default at system/library/db/postgre.php:6 is a branch point this pass does not instrument",
+   "system/library/cache/file.php: warning: parameter default at system/library/cache/file.php:6 is a branch point this pass does not instrument",
+   "catalog/model/localisation/return_reason.php: warning: parameter default at catalog/model/localisation/return_reason.php:3 is a branch point this pass does not instrument",
+   "catalog/model/account/order.php: warning: parameter default at catalog/model/account/order.php:104 is a branch point this pass does not instrument",
+   "catalog/model/account/order.php: warning: parameter default at catalog/model/account/order.php:104 is a branch point this pass does not instrument",
+   "catalog/model/account/download.php: warning: parameter default at catalog/model/account/download.php:21 is a branch point this pass does not instrument",
+   "catalog/model/account/download.php: warning: parameter default at catalog/model/account/download.php:21 is a branch point this pass does not instrument",
+   "catalog/model/account/transaction.php: warning: parameter default at catalog/model/account/transaction.php:3 is a branch point this pass does not instrument",
+   "catalog/model/account/recurring.php: warning: parameter default at catalog/model/account/recurring.php:9 is a branch point this pass does not instrument",
+   "catalog/model/account/recurring.php: warning: parameter default at catalog/model/account/recurring.php:9 is a branch point this pass does not instrument",
+   "catalog/model/account/return.php: warning: parameter default at catalog/model/account/return.php:17 is a branch point this pass does not instrument",
+   "catalog/model/account/return.php: warning: parameter default at catalog/model/account/return.php:17 is a branch point this pass does not instrument",
+   "catalog/model/account/custom_field.php: warning: parameter default at catalog/model/account/custom_field.php:9 is a branch point this pass does not instrument",
+   "catalog/model/account/reward.php: warning: parameter default at catalog/model/account/reward.php:3 is a branch point this pass does not instrument",
+   "catalog/model/extension/openbay/amazon_order.php: warning: parameter default at catalog/model/extension/openbay/amazon_order.php:34 is a branch point this pass does not instrument",
+   "catalog/model/extension/openbay/ebay_product.php: warning: parameter default at catalog/model/extension/openbay/ebay_product.php:594 is a branch point this pass does not instrument",
+   "catalog/model/extension/openbay/ebay_product.php: warning: parameter default at catalog/model/extension/openbay/ebay_product.php:633 is a branch point this pass does not instrument",
+   "catalog/model/extension/openbay/ebay_order.php: warning: parameter default at catalog/model/extension/openbay/ebay_order.php:168 is a branch point this pass does not instrument",
+   "catalog/model/extension/openbay/ebay_order.php: warning: parameter default at catalog/model/extension/openbay/ebay_order.php:235 is a branch point this pass does not instrument",
+   "catalog/model/extension/openbay/ebay_order.php: warning: parameter default at catalog/model/extension/openbay/ebay_order.php:509 is a branch point this pass does not instrument",
+   "catalog/model/extension/openbay/ebay_order.php: warning: parameter default at catalog/model/extension/openbay/ebay_order.php:509 is a branch point this pass does not instrument",
+   "catalog/model/extension/openbay/amazonus_product.php: warning: parameter default at catalog/model/extension/openbay/amazonus_product.php:47 is a branch point this pass does not instrument",
+   "catalog/model/extension/openbay/amazonus_product.php: warning: parameter default at catalog/model/extension/openbay/amazonus_product.php:54 is a branch point this pass does not instrument",
+   "catalog/model/extension/openbay/etsy_order.php: warning: parameter default at catalog/model/extension/openbay/etsy_order.php:97 is a branch point this pass does not instrument",
+   "catalog/model/extension/openbay/amazon_product.php: warning: parameter default at catalog/model/extension/openbay/amazon_product.php:47 is a branch point this pass does not instrument",
+   "catalog/model/extension/openbay/amazon_product.php: warning: parameter default at catalog/model/extension/openbay/amazon_product.php:54 is a branch point this pass does not instrument",
+   "catalog/model/extension/openbay/amazonus_order.php: warning: parameter default at catalog/model/extension/openbay/amazonus_order.php:34 is a branch point this pass does not instrument",
+   "catalog/model/extension/total/voucher_theme.php: warning: parameter default at catalog/model/extension/total/voucher_theme.php:9 is a branch point this pass does not instrument",
+   "catalog/model/extension/module/pp_login.php: warning: parameter default at catalog/model/extension/module/pp_login.php:50 is a branch point this pass does not instrument",
+   "catalog/model/extension/module/pp_login.php: warning: parameter default at catalog/model/extension/module/pp_login.php:74 is a branch point this pass does not instrument",
+   "catalog/model/extension/payment/eway.php: warning: parameter default at catalog/model/extension/payment/eway.php:136 is a branch point this pass does not instrument",
+   "catalog/model/extension/payment/pp_express.php: warning: .= on a non-trivial target at catalog/model/extension/payment/pp_express.php:91 is a branch point this pass does not instrument",
+   "catalog/model/extension/payment/pp_express.php: warning: parameter default at catalog/model/extension/payment/pp_express.php:323 is a branch point this pass does not instrument",
+   "catalog/model/extension/payment/pp_express.php: warning: parameter default at catalog/model/extension/payment/pp_express.php:336 is a branch point this pass does not instrument",
+   "catalog/model/extension/payment/cardinity.php: warning: parameter default at catalog/model/extension/payment/cardinity.php:96 is a branch point this pass does not instrument",
+   "catalog/model/extension/payment/cardinity.php: warning: parameter default at catalog/model/extension/payment/cardinity.php:96 is a branch point this pass does not instrument",
+   "catalog/model/extension/payment/klarna_checkout.php: warning: parameter default at catalog/model/extension/payment/klarna_checkout.php:156 is a branch point this pass does not instrument",
+   "catalog/model/extension/payment/securetrading_pp.php: warning: parameter default at catalog/model/extension/payment/securetrading_pp.php:46 is a branch point this pass does not instrument",
+   "catalog/model/extension/payment/securetrading_pp.php: warning: parameter default at catalog/model/extension/payment/securetrading_pp.php:46 is a branch point this pass does not instrument",
+   "catalog/model/extension/payment/securetrading_pp.php: warning: parameter default at catalog/model/extension/payment/securetrading_pp.php:85 is a branch point this pass does not instrument",
+   "catalog/model/extension/payment/securetrading_pp.php: warning: parameter default at catalog/model/extension/payment/securetrading_pp.php:85 is a branch point this pass does not instrument",
+   "catalog/model/extension/payment/realex_remote.php: warning: parameter default at catalog/model/extension/payment/realex_remote.php:125 is a branch point this pass does not instrument",
+   "catalog/model/extension/payment/realex_remote.php: warning: parameter default at catalog/model/extension/payment/realex_remote.php:125 is a branch point this pass does not instrument",
+   "catalog/model/extension/payment/realex_remote.php: warning: parameter default at catalog/model/extension/payment/realex_remote.php:125 is a branch point this pass does not instrument",
+   "catalog/model/extension/payment/sagepay_server.php: warning: parameter default at catalog/model/extension/payment/sagepay_server.php:76 is a branch point this pass does not instrument",
+   "catalog/model/extension/payment/sagepay_server.php: warning: parameter default at catalog/model/extension/payment/sagepay_server.php:193 is a branch point this pass does not instrument",
+   "catalog/model/extension/payment/sagepay_server.php: warning: parameter default at catalog/model/extension/payment/sagepay_server.php:396 is a branch point this pass does not instrument",
+   "catalog/model/extension/payment/firstdata.php: warning: parameter default at catalog/model/extension/payment/firstdata.php:50 is a branch point this pass does not instrument",
+   "catalog/model/extension/payment/amazon_login_pay.php: warning: parameter default at catalog/model/extension/payment/amazon_login_pay.php:389 is a branch point this pass does not instrument",
+   "catalog/model/extension/payment/firstdata_remote.php: warning: parameter default at catalog/model/extension/payment/firstdata_remote.php:238 is a branch point this pass does not instrument",
+   "catalog/model/extension/payment/globalpay_remote.php: warning: parameter default at catalog/model/extension/payment/globalpay_remote.php:125 is a branch point this pass does not instrument",
+   "catalog/model/extension/payment/globalpay_remote.php: warning: parameter default at catalog/model/extension/payment/globalpay_remote.php:125 is a branch point this pass does not instrument",
+   "catalog/model/extension/payment/globalpay_remote.php: warning: parameter default at catalog/model/extension/payment/globalpay_remote.php:125 is a branch point this pass does not instrument",
+   "catalog/model/extension/payment/laybuy.php: warning: parameter default at catalog/model/extension/payment/laybuy.php:3 is a branch point this pass does not instrument",
+   "catalog/model/extension/payment/laybuy.php: warning: parameter default at catalog/model/extension/payment/laybuy.php:163 is a branch point this pass does not instrument",
+   "catalog/model/extension/payment/securetrading_ws.php: warning: parameter default at catalog/model/extension/payment/securetrading_ws.php:97 is a branch point this pass does not instrument",
+   "catalog/model/extension/payment/securetrading_ws.php: warning: parameter default at catalog/model/extension/payment/securetrading_ws.php:97 is a branch point this pass does not instrument",
+   "catalog/model/extension/payment/securetrading_ws.php: warning: parameter default at catalog/model/extension/payment/securetrading_ws.php:132 is a branch point this pass does not instrument",
+   "catalog/model/extension/payment/securetrading_ws.php: warning: parameter default at catalog/model/extension/payment/securetrading_ws.php:132 is a branch point this pass does not instrument",
+   "catalog/model/extension/payment/divido.php: warning: parameter default at catalog/model/extension/payment/divido.php:77 is a branch point this pass does not instrument",
+   "catalog/model/extension/payment/divido.php: warning: parameter default at catalog/model/extension/payment/divido.php:77 is a branch point this pass does not instrument",
+   "catalog/model/extension/payment/divido.php: warning: parameter default at catalog/model/extension/payment/divido.php:77 is a branch point this pass does not instrument",
+   "catalog/model/extension/payment/worldpay.php: warning: parameter default at catalog/model/extension/payment/worldpay.php:330 is a branch point this pass does not instrument",
+   "catalog/model/extension/payment/sagepay_direct.php: warning: parameter default at catalog/model/extension/payment/sagepay_direct.php:188 is a branch point this pass does not instrument",
+   "catalog/model/extension/payment/sagepay_direct.php: warning: parameter default at catalog/model/extension/payment/sagepay_direct.php:391 is a branch point this pass does not instrument",
+   "catalog/model/checkout/order.php: warning: parameter default at catalog/model/checkout/order.php:241 is a branch point this pass does not instrument",
+   "catalog/model/checkout/order.php: warning: parameter default at catalog/model/checkout/order.php:241 is a branch point this pass does not instrument",
+   "catalog/model/checkout/order.php: warning: parameter default at catalog/model/checkout/order.php:241 is a branch point this pass does not instrument",
+   "catalog/model/catalog/category.php: warning: parameter default at catalog/model/catalog/category.php:9 is a branch point this pass does not instrument",
+   "catalog/model/catalog/category.php: warning: parameter default at catalog/model/catalog/category.php:64 is a branch point this pass does not instrument",
+   "catalog/model/catalog/review.php: warning: parameter default at catalog/model/catalog/review.php:51 is a branch point this pass does not instrument",
+   "catalog/model/catalog/review.php: warning: parameter default at catalog/model/catalog/review.php:51 is a branch point this pass does not instrument",
+   "catalog/model/catalog/product.php: warning: parameter default at catalog/model/catalog/product.php:59 is a branch point this pass does not instrument",
+   "catalog/model/catalog/product.php: warning: parameter default at catalog/model/catalog/product.php:209 is a branch point this pass does not instrument",
+   "catalog/model/catalog/product.php: warning: parameter default at catalog/model/catalog/product.php:416 is a branch point this pass does not instrument",
+   "catalog/model/catalog/manufacturer.php: warning: parameter default at catalog/model/catalog/manufacturer.php:9 is a branch point this pass does not instrument",
+   "catalog/model/affiliate/transaction.php: warning: parameter default at catalog/model/affiliate/transaction.php:3 is a branch point this pass does not instrument",
+   "catalog/model/affiliate/affiliate.php: warning: parameter default at catalog/model/affiliate/affiliate.php:118 is a branch point this pass does not instrument",
+   "catalog/model/affiliate/affiliate.php: warning: parameter default at catalog/model/affiliate/affiliate.php:118 is a branch point this pass does not instrument",
+   "catalog/model/setting/store.php: warning: parameter default at catalog/model/setting/store.php:3 is a branch point this pass does not instrument",
+   "catalog/model/setting/setting.php: warning: parameter default at catalog/model/setting/setting.php:3 is a branch point this pass does not instrument",
+   "catalog/controller/extension/captcha/google_captcha.php: warning: parameter default at catalog/controller/extension/captcha/google_captcha.php:3 is a branch point this pass does not instrument",
+   "catalog/controller/extension/captcha/basic_captcha.php: warning: parameter default at catalog/controller/extension/captcha/basic_captcha.php:3 is a branch point this pass does not instrument",
+   "catalog/controller/extension/feed/google_sitemap.php: warning: parameter default at catalog/controller/extension/feed/google_sitemap.php:74 is a branch point this pass does not instrument",
+   "catalog/controller/extension/feed/google_base.php: warning: parameter default at catalog/controller/extension/feed/google_base.php:124 is a branch point this pass does not instrument",
+   "catalog/controller/extension/payment/cardinity.php: warning: parameter default at catalog/controller/extension/payment/cardinity.php:226 is a branch point this pass does not instrument",
+   "catalog/controller/extension/payment/cardinity.php: warning: parameter default at catalog/controller/extension/payment/cardinity.php:226 is a branch point this pass does not instrument",
+   "catalog/controller/extension/payment/bluepay_hosted.php: warning: .= on a non-trivial target at catalog/controller/extension/payment/bluepay_hosted.php:32 is a branch point this pass does not instrument",
+   "catalog/controller/extension/payment/bluepay_hosted.php: warning: .= on a non-trivial target at catalog/controller/extension/payment/bluepay_hosted.php:36 is a branch point this pass does not instrument",
+   "catalog/controller/extension/payment/laybuy.php: warning: parameter default at catalog/controller/extension/payment/laybuy.php:339 is a branch point this pass does not instrument",
+   "catalog/controller/extension/payment/laybuy.php: warning: parameter default at catalog/controller/extension/payment/laybuy.php:339 is a branch point this pass does not instrument",
+   "catalog/controller/extension/payment/laybuy.php: warning: parameter default at catalog/controller/extension/payment/laybuy.php:339 is a branch point this pass does not instrument",
+   "catalog/controller/extension/payment/laybuy.php: warning: parameter default at catalog/controller/extension/payment/laybuy.php:339 is a branch point this pass does not instrument",
+   "catalog/controller/startup/seo_url.php: warning: .= on a non-trivial target at catalog/controller/startup/seo_url.php:32 is a branch point this pass does not instrument"
+  ],
+  "options": {
+   "php7Compat": true,
+   "exitAsHalt": true,
+   "switchCmp": false,
+   "superglobalReads": true,
+   "realAppBuiltins": true,
+   "evalInstrument": false,
+   "newClassMap": {
+    "pdo": "\\AcePDO",
+    "mysqli": "\\AceMysqli"
+   }
+  },
+  "failures": [],
+  "rewrites_total": {
+   "array_key": 950,
+   "builtin_routed": 26,
+   "call7": 402,
+   "catch": 40,
+   "const7": 3270,
+   "count7": 66,
+   "curly_offset": 1,
+   "exit": 58,
+   "explode": 175,
+   "internal_arg": 5484,
+   "new_class": 2,
+   "sg_read": 13,
+   "sig7": 10,
+   "switch": 54
+  },
+  "rewrites_by_file": {
+   "admin/controller/catalog/attribute.php": {
+    "array_key": 2,
+    "internal_arg": 6
+   },
+   "admin/controller/catalog/attribute_group.php": {
+    "array_key": 1,
+    "internal_arg": 3
+   },
+   "admin/controller/catalog/category.php": {
+    "array_key": 3,
+    "const7": 2,
+    "internal_arg": 9
+   },
+   "admin/controller/catalog/download.php": {
+    "array_key": 2,
+    "call7": 2,
+    "const7": 2,
+    "explode": 2,
+    "internal_arg": 19
+   },
+   "admin/controller/catalog/filter.php": {
+    "array_key": 4,
+    "internal_arg": 5
+   },
+   "admin/controller/catalog/information.php": {
+    "array_key": 3,
+    "internal_arg": 5
+   },
+   "admin/controller/catalog/manufacturer.php": {
+    "array_key": 1,
+    "const7": 2,
+    "internal_arg": 10
+   },
+   "admin/controller/catalog/option.php": {
+    "array_key": 5,
+    "const7": 2,
+    "internal_arg": 10
+   },
+   "admin/controller/catalog/product.php": {
+    "array_key": 4,
+    "const7": 4,
+    "internal_arg": 45
+   },
+   "admin/controller/catalog/recurring.php": {
+    "array_key": 1,
+    "internal_arg": 3
+   },
+   "admin/controller/catalog/review.php": {
+    "internal_arg": 32
+   },
+   "admin/controller/common/column_left.php": {
+    "call7": 5,
+    "const7": 1,
+    "internal_arg": 4
+   },
+   "admin/controller/common/dashboard.php": {
+    "array_key": 1,
+    "const7": 1,
+    "internal_arg": 2
+   },
+   "admin/controller/common/filemanager.php": {
+    "array_key": 5,
+    "call7": 6,
+    "const7": 24,
+    "count7": 2,
+    "internal_arg": 56
+   },
+   "admin/controller/common/footer.php": {
+    "const7": 1,
+    "internal_arg": 1
+   },
+   "admin/controller/common/forgotten.php": {
+    "internal_arg": 9
+   },
+   "admin/controller/common/header.php": {
+    "call7": 4,
+    "const7": 3,
+    "internal_arg": 1
+   },
+   "admin/controller/common/login.php": {
+    "const7": 2,
+    "internal_arg": 2
+   },
+   "admin/controller/customer/custom_field.php": {
+    "array_key": 3,
+    "internal_arg": 2,
+    "switch": 1
+   },
+   "admin/controller/customer/customer.php": {
+    "array_key": 18,
+    "const7": 1,
+    "internal_arg": 73
+   },
+   "admin/controller/customer/customer_group.php": {
+    "array_key": 1,
+    "internal_arg": 4
+   },
+   "admin/controller/design/banner.php": {
+    "array_key": 3,
+    "const7": 1,
+    "internal_arg": 3
+   },
+   "admin/controller/design/language.php": {
+    "array_key": 3,
+    "call7": 1,
+    "const7": 7,
+    "internal_arg": 21
+   },
+   "admin/controller/design/layout.php": {
+    "explode": 1,
+    "internal_arg": 10
+   },
+   "admin/controller/design/menu.php": {
+    "array_key": 2,
+    "explode": 1,
+    "internal_arg": 5
+   },
+   "admin/controller/design/theme.php": {
+    "call7": 1,
+    "const7": 19,
+    "internal_arg": 32
+   },
+   "admin/controller/design/translation.php": {
+    "call7": 1,
+    "const7": 19,
+    "count7": 3,
+    "internal_arg": 55
+   },
+   "admin/controller/event/compatibility.php": {
+    "const7": 4,
+    "explode": 3,
+    "internal_arg": 6
+   },
+   "admin/controller/extension/dashboard/activity.php": {
+    "internal_arg": 5
+   },
+   "admin/controller/extension/dashboard/chart.php": {
+    "internal_arg": 13,
+    "switch": 1
+   },
+   "admin/controller/extension/dashboard/customer.php": {
+    "internal_arg": 7
+   },
+   "admin/controller/extension/dashboard/map.php": {
+    "internal_arg": 1
+   },
+   "admin/controller/extension/dashboard/online.php": {
+    "internal_arg": 4
+   },
+   "admin/controller/extension/dashboard/order.php": {
+    "internal_arg": 7
+   },
+   "admin/controller/extension/dashboard/recent.php": {
+    "internal_arg": 2
+   },
+   "admin/controller/extension/dashboard/sale.php": {
+    "internal_arg": 8
+   },
+   "admin/controller/extension/event.php": {
+    "internal_arg": 4
+   },
+   "admin/controller/extension/extension.php": {
+    "const7": 2,
+    "count7": 1,
+    "internal_arg": 3
+   },
+   "admin/controller/extension/extension/analytics.php": {
+    "array_key": 1,
+    "call7": 1,
+    "const7": 3,
+    "internal_arg": 4
+   },
+   "admin/controller/extension/extension/captcha.php": {
+    "array_key": 1,
+    "call7": 1,
+    "const7": 3,
+    "internal_arg": 4
+   },
+   "admin/controller/extension/extension/dashboard.php": {
+    "array_key": 1,
+    "call7": 1,
+    "const7": 2,
+    "internal_arg": 3
+   },
+   "admin/controller/extension/extension/feed.php": {
+    "array_key": 1,
+    "call7": 1,
+    "const7": 3,
+    "internal_arg": 4
+   },
+   "admin/controller/extension/extension/fraud.php": {
+    "array_key": 1,
+    "call7": 1,
+    "const7": 3,
+    "internal_arg": 4
+   },
+   "admin/controller/extension/extension/module.php": {
+    "array_key": 2,
+    "call7": 1,
+    "const7": 3,
+    "internal_arg": 5
+   },
+   "admin/controller/extension/extension/payment.php": {
+    "array_key": 1,
+    "call7": 1,
+    "const7": 3,
+    "internal_arg": 4
+   },
+   "admin/controller/extension/extension/shipping.php": {
+    "array_key": 1,
+    "call7": 1,
+    "const7": 3,
+    "internal_arg": 4
+   },
+   "admin/controller/extension/extension/theme.php": {
+    "array_key": 1,
+    "call7": 1,
+    "const7": 3,
+    "internal_arg": 4
+   },
+   "admin/controller/extension/extension/total.php": {
+    "array_key": 1,
+    "call7": 1,
+    "const7": 3,
+    "internal_arg": 4
+   },
+   "admin/controller/extension/feed/google_base.php": {
+    "const7": 1,
+    "internal_arg": 15
+   },
+   "admin/controller/extension/feed/google_sitemap.php": {
+    "const7": 1
+   },
+   "admin/controller/extension/fraud/fraudlabspro.php": {
+    "const7": 1,
+    "internal_arg": 3,
+    "sg_read": 3
+   },
+   "admin/controller/extension/fraud/ip.php": {
+    "internal_arg": 6
+   },
+   "admin/controller/extension/installer.php": {
+    "call7": 1,
+    "catch": 3,
+    "const7": 35,
+    "count7": 3,
+    "internal_arg": 91
+   },
+   "admin/controller/extension/modification.php": {
+    "array_key": 14,
+    "call7": 4,
+    "const7": 23,
+    "count7": 6,
+    "explode": 7,
+    "internal_arg": 43,
+    "switch": 1
+   },
+   "admin/controller/extension/module/pp_login.php": {
+    "const7": 1
+   },
+   "admin/controller/extension/openbay.php": {
+    "array_key": 24,
+    "call7": 11,
+    "const7": 4,
+    "internal_arg": 44,
+    "switch": 1
+   },
+   "admin/controller/extension/openbay/amazon.php": {
+    "array_key": 10,
+    "call7": 2,
+    "const7": 3,
+    "internal_arg": 24
+   },
+   "admin/controller/extension/openbay/amazon_listing.php": {
+    "internal_arg": 21
+   },
+   "admin/controller/extension/openbay/amazon_product.php": {
+    "array_key": 6,
+    "call7": 4,
+    "const7": 8,
+    "exit": 1,
+    "explode": 1,
+    "internal_arg": 30
+   },
+   "admin/controller/extension/openbay/amazonus.php": {
+    "array_key": 10,
+    "call7": 2,
+    "const7": 3,
+    "internal_arg": 24
+   },
+   "admin/controller/extension/openbay/amazonus_listing.php": {
+    "internal_arg": 21
+   },
+   "admin/controller/extension/openbay/amazonus_product.php": {
+    "array_key": 5,
+    "call7": 4,
+    "const7": 8,
+    "exit": 1,
+    "explode": 1,
+    "internal_arg": 28
+   },
+   "admin/controller/extension/openbay/ebay.php": {
+    "array_key": 18,
+    "call7": 3,
+    "const7": 34,
+    "count7": 1,
+    "explode": 3,
+    "internal_arg": 69
+   },
+   "admin/controller/extension/openbay/ebay_profile.php": {
+    "array_key": 1,
+    "call7": 9,
+    "internal_arg": 9
+   },
+   "admin/controller/extension/openbay/etsy.php": {
+    "internal_arg": 2
+   },
+   "admin/controller/extension/openbay/etsy_product.php": {
+    "array_key": 4,
+    "call7": 2,
+    "const7": 2,
+    "count7": 5,
+    "exit": 14,
+    "explode": 1,
+    "internal_arg": 43
+   },
+   "admin/controller/extension/openbay/etsy_shipping.php": {
+    "internal_arg": 1
+   },
+   "admin/controller/extension/openbay/etsy_shop.php": {
+    "internal_arg": 1
+   },
+   "admin/controller/extension/openbay/fba.php": {
+    "count7": 1,
+    "internal_arg": 18
+   },
+   "admin/controller/extension/payment/amazon_login_pay.php": {
+    "call7": 1,
+    "const7": 4,
+    "internal_arg": 8
+   },
+   "admin/controller/extension/payment/authorizenet_sim.php": {
+    "const7": 1
+   },
+   "admin/controller/extension/payment/bluepay_hosted.php": {
+    "internal_arg": 7
+   },
+   "admin/controller/extension/payment/bluepay_redirect.php": {
+    "internal_arg": 7
+   },
+   "admin/controller/extension/payment/cardconnect.php": {
+    "const7": 1,
+    "internal_arg": 18,
+    "switch": 1
+   },
+   "admin/controller/extension/payment/cardinity.php": {
+    "call7": 2,
+    "internal_arg": 5
+   },
+   "admin/controller/extension/payment/divido.php": {
+    "catch": 1
+   },
+   "admin/controller/extension/payment/eway.php": {
+    "explode": 2,
+    "internal_arg": 4
+   },
+   "admin/controller/extension/payment/firstdata.php": {
+    "const7": 2,
+    "internal_arg": 3
+   },
+   "admin/controller/extension/payment/firstdata_remote.php": {
+    "internal_arg": 6
+   },
+   "admin/controller/extension/payment/g2apay.php": {
+    "const7": 1,
+    "internal_arg": 3
+   },
+   "admin/controller/extension/payment/globalpay.php": {
+    "const7": 1,
+    "internal_arg": 6
+   },
+   "admin/controller/extension/payment/globalpay_remote.php": {
+    "internal_arg": 6
+   },
+   "admin/controller/extension/payment/klarna_account.php": {
+    "array_key": 5,
+    "call7": 3,
+    "const7": 3,
+    "internal_arg": 22,
+    "switch": 1
+   },
+   "admin/controller/extension/payment/klarna_checkout.php": {
+    "array_key": 3,
+    "call7": 1,
+    "const7": 4,
+    "internal_arg": 43,
+    "switch": 1
+   },
+   "admin/controller/extension/payment/klarna_invoice.php": {
+    "call7": 1,
+    "const7": 2,
+    "internal_arg": 4,
+    "switch": 1
+   },
+   "admin/controller/extension/payment/laybuy.php": {
+    "const7": 5,
+    "count7": 1,
+    "internal_arg": 86,
+    "switch": 1
+   },
+   "admin/controller/extension/payment/payza.php": {
+    "const7": 1
+   },
+   "admin/controller/extension/payment/pilibaba.php": {
+    "internal_arg": 7
+   },
+   "admin/controller/extension/payment/pp_express.php": {
+    "array_key": 2,
+    "const7": 7,
+    "internal_arg": 55
+   },
+   "admin/controller/extension/payment/pp_payflow_iframe.php": {
+    "const7": 4,
+    "internal_arg": 5,
+    "switch": 1
+   },
+   "admin/controller/extension/payment/pp_pro_iframe.php": {
+    "const7": 1,
+    "internal_arg": 29
+   },
+   "admin/controller/extension/payment/realex.php": {
+    "const7": 1,
+    "internal_arg": 6
+   },
+   "admin/controller/extension/payment/realex_remote.php": {
+    "internal_arg": 6
+   },
+   "admin/controller/extension/payment/sagepay_direct.php": {
+    "const7": 1,
+    "internal_arg": 5
+   },
+   "admin/controller/extension/payment/sagepay_server.php": {
+    "const7": 1,
+    "internal_arg": 5
+   },
+   "admin/controller/extension/payment/securetrading_pp.php": {
+    "internal_arg": 11
+   },
+   "admin/controller/extension/payment/securetrading_ws.php": {
+    "array_key": 3,
+    "count7": 1,
+    "exit": 1,
+    "explode": 1,
+    "internal_arg": 17
+   },
+   "admin/controller/extension/payment/worldpay.php": {
+    "const7": 2,
+    "internal_arg": 4
+   },
+   "admin/controller/extension/shipping/auspost.php": {
+    "internal_arg": 1
+   },
+   "admin/controller/extension/store.php": {
+    "const7": 1,
+    "internal_arg": 23
+   },
+   "admin/controller/extension/theme/theme_default.php": {
+    "const7": 1,
+    "internal_arg": 2
+   },
+   "admin/controller/extension/total/klarna_fee.php": {
+    "call7": 1
+   },
+   "admin/controller/localisation/country.php": {
+    "internal_arg": 8
+   },
+   "admin/controller/localisation/currency.php": {
+    "internal_arg": 6
+   },
+   "admin/controller/localisation/geo_zone.php": {
+    "internal_arg": 3
+   },
+   "admin/controller/localisation/language.php": {
+    "const7": 1,
+    "internal_arg": 6
+   },
+   "admin/controller/localisation/length_class.php": {
+    "array_key": 2,
+    "internal_arg": 3
+   },
+   "admin/controller/localisation/location.php": {
+    "const7": 2,
+    "internal_arg": 4
+   },
+   "admin/controller/localisation/order_status.php": {
+    "array_key": 1,
+    "internal_arg": 5
+   },
+   "admin/controller/localisation/return_action.php": {
+    "array_key": 1,
+    "internal_arg": 3
+   },
+   "admin/controller/localisation/return_reason.php": {
+    "array_key": 1,
+    "internal_arg": 3
+   },
+   "admin/controller/localisation/return_status.php": {
+    "array_key": 1,
+    "internal_arg": 4
+   },
+   "admin/controller/localisation/stock_status.php": {
+    "array_key": 1,
+    "internal_arg": 3
+   },
+   "admin/controller/localisation/tax_class.php": {
+    "internal_arg": 3
+   },
+   "admin/controller/localisation/tax_rate.php": {
+    "internal_arg": 7
+   },
+   "admin/controller/localisation/weight_class.php": {
+    "array_key": 2,
+    "internal_arg": 3
+   },
+   "admin/controller/localisation/zone.php": {
+    "internal_arg": 6
+   },
+   "admin/controller/marketing/affiliate.php": {
+    "internal_arg": 50
+   },
+   "admin/controller/marketing/contact.php": {
+    "array_key": 1,
+    "internal_arg": 8,
+    "switch": 1
+   },
+   "admin/controller/marketing/coupon.php": {
+    "internal_arg": 12
+   },
+   "admin/controller/marketing/marketing.php": {
+    "const7": 1,
+    "internal_arg": 18
+   },
+   "admin/controller/report/affiliate.php": {
+    "internal_arg": 2
+   },
+   "admin/controller/report/affiliate_activity.php": {
+    "internal_arg": 9
+   },
+   "admin/controller/report/customer_activity.php": {
+    "internal_arg": 9
+   },
+   "admin/controller/report/customer_credit.php": {
+    "internal_arg": 4
+   },
+   "admin/controller/report/customer_online.php": {
+    "internal_arg": 6
+   },
+   "admin/controller/report/customer_order.php": {
+    "internal_arg": 4
+   },
+   "admin/controller/report/customer_reward.php": {
+    "internal_arg": 4
+   },
+   "admin/controller/report/customer_search.php": {
+    "internal_arg": 9
+   },
+   "admin/controller/report/marketing.php": {
+    "internal_arg": 2
+   },
+   "admin/controller/report/product_purchased.php": {
+    "internal_arg": 2
+   },
+   "admin/controller/report/product_viewed.php": {
+    "internal_arg": 3
+   },
+   "admin/controller/report/sale_coupon.php": {
+    "internal_arg": 2
+   },
+   "admin/controller/report/sale_order.php": {
+    "internal_arg": 8
+   },
+   "admin/controller/report/sale_return.php": {
+    "internal_arg": 6
+   },
+   "admin/controller/report/sale_shipping.php": {
+    "internal_arg": 6
+   },
+   "admin/controller/report/sale_tax.php": {
+    "internal_arg": 6
+   },
+   "admin/controller/sale/order.php": {
+    "array_key": 19,
+    "const7": 15,
+    "internal_arg": 61
+   },
+   "admin/controller/sale/recurring.php": {
+    "array_key": 1,
+    "internal_arg": 18
+   },
+   "admin/controller/sale/return.php": {
+    "internal_arg": 54
+   },
+   "admin/controller/sale/voucher.php": {
+    "internal_arg": 12
+   },
+   "admin/controller/sale/voucher_theme.php": {
+    "array_key": 1,
+    "const7": 2,
+    "internal_arg": 5
+   },
+   "admin/controller/setting/setting.php": {
+    "call7": 1,
+    "const7": 11,
+    "internal_arg": 11
+   },
+   "admin/controller/setting/store.php": {
+    "call7": 1,
+    "const7": 7,
+    "internal_arg": 8
+   },
+   "admin/controller/startup/compatibility.php": {
+    "call7": 1,
+    "explode": 1
+   },
+   "admin/controller/startup/error.php": {
+    "internal_arg": 1,
+    "switch": 1
+   },
+   "admin/controller/startup/login.php": {
+    "call7": 2
+   },
+   "admin/controller/startup/permission.php": {
+    "call7": 2,
+    "explode": 1
+   },
+   "admin/controller/startup/router.php": {
+    "internal_arg": 1
+   },
+   "admin/controller/startup/sass.php": {
+    "const7": 2,
+    "internal_arg": 7
+   },
+   "admin/controller/startup/startup.php": {
+    "const7": 2,
+    "internal_arg": 1
+   },
+   "admin/controller/tool/backup.php": {
+    "const7": 1,
+    "internal_arg": 3
+   },
+   "admin/controller/tool/log.php": {
+    "array_key": 1,
+    "const7": 3,
+    "internal_arg": 14
+   },
+   "admin/controller/tool/upload.php": {
+    "call7": 2,
+    "const7": 4,
+    "exit": 3,
+    "explode": 2,
+    "internal_arg": 28
+   },
+   "admin/controller/user/api.php": {
+    "internal_arg": 11
+   },
+   "admin/controller/user/user.php": {
+    "const7": 2,
+    "internal_arg": 7
+   },
+   "admin/controller/user/user_permission.php": {
+    "call7": 1,
+    "const7": 2,
+    "count7": 1,
+    "internal_arg": 7
+   },
+   "admin/index.php": {
+    "const7": 1,
+    "exit": 1
+   },
+   "admin/model/catalog/attribute.php": {
+    "array_key": 1,
+    "call7": 1,
+    "const7": 15
+   },
+   "admin/model/catalog/attribute_group.php": {
+    "array_key": 1,
+    "call7": 1,
+    "const7": 12
+   },
+   "admin/model/catalog/category.php": {
+    "array_key": 2,
+    "call7": 1,
+    "const7": 63
+   },
+   "admin/model/catalog/download.php": {
+    "array_key": 1,
+    "call7": 1,
+    "const7": 13
+   },
+   "admin/model/catalog/filter.php": {
+    "array_key": 2,
+    "call7": 1,
+    "const7": 30
+   },
+   "admin/model/catalog/information.php": {
+    "array_key": 2,
+    "call7": 1,
+    "const7": 30
+   },
+   "admin/model/catalog/manufacturer.php": {
+    "call7": 1,
+    "const7": 18
+   },
+   "admin/model/catalog/option.php": {
+    "array_key": 2,
+    "call7": 1,
+    "const7": 28,
+    "internal_arg": 3
+   },
+   "admin/model/catalog/product.php": {
+    "array_key": 4,
+    "call7": 1,
+    "const7": 127
+   },
+   "admin/model/catalog/recurring.php": {
+    "array_key": 1,
+    "call7": 1,
+    "const7": 14
+   },
+   "admin/model/catalog/review.php": {
+    "call7": 1,
+    "const7": 10,
+    "internal_arg": 2
+   },
+   "admin/model/catalog/url_alias.php": {
+    "const7": 1
+   },
+   "admin/model/customer/custom_field.php": {
+    "array_key": 3,
+    "call7": 1,
+    "const7": 36
+   },
+   "admin/model/customer/customer.php": {
+    "array_key": 1,
+    "call7": 3,
+    "const7": 53,
+    "internal_arg": 31
+   },
+   "admin/model/customer/customer_group.php": {
+    "array_key": 1,
+    "call7": 1,
+    "const7": 17
+   },
+   "admin/model/design/banner.php": {
+    "array_key": 1,
+    "call7": 1,
+    "const7": 11
+   },
+   "admin/model/design/language.php": {
+    "const7": 4
+   },
+   "admin/model/design/layout.php": {
+    "call7": 1,
+    "const7": 19
+   },
+   "admin/model/design/menu.php": {
+    "array_key": 1,
+    "call7": 1,
+    "const7": 15
+   },
+   "admin/model/design/theme.php": {
+    "const7": 4
+   },
+   "admin/model/extension/event.php": {
+    "call7": 1,
+    "const7": 9
+   },
+   "admin/model/extension/extension.php": {
+    "call7": 1,
+    "const7": 4
+   },
+   "admin/model/extension/feed/google_base.php": {
+    "const7": 14,
+    "explode": 1,
+    "internal_arg": 1
+   },
+   "admin/model/extension/fraud/fraudlabspro.php": {
+    "const7": 12,
+    "internal_arg": 15
+   },
+   "admin/model/extension/fraud/ip.php": {
+    "const7": 7
+   },
+   "admin/model/extension/fraud/maxmind.php": {
+    "const7": 3
+   },
+   "admin/model/extension/modification.php": {
+    "call7": 1,
+    "const7": 8
+   },
+   "admin/model/extension/module.php": {
+    "const7": 9,
+    "internal_arg": 3
+   },
+   "admin/model/extension/openbay/amazon.php": {
+    "array_key": 2,
+    "call7": 3,
+    "const7": 95,
+    "internal_arg": 9,
+    "switch": 2
+   },
+   "admin/model/extension/openbay/amazon_listing.php": {
+    "call7": 1,
+    "const7": 7,
+    "internal_arg": 8,
+    "switch": 1
+   },
+   "admin/model/extension/openbay/amazonus.php": {
+    "array_key": 2,
+    "call7": 3,
+    "const7": 94,
+    "internal_arg": 9,
+    "switch": 1
+   },
+   "admin/model/extension/openbay/amazonus_listing.php": {
+    "call7": 1,
+    "const7": 7,
+    "internal_arg": 8
+   },
+   "admin/model/extension/openbay/ebay.php": {
+    "array_key": 21,
+    "call7": 3,
+    "const7": 57,
+    "count7": 3,
+    "internal_arg": 7
+   },
+   "admin/model/extension/openbay/ebay_product.php": {
+    "const7": 11
+   },
+   "admin/model/extension/openbay/ebay_profile.php": {
+    "const7": 7,
+    "internal_arg": 4
+   },
+   "admin/model/extension/openbay/ebay_template.php": {
+    "const7": 5
+   },
+   "admin/model/extension/openbay/etsy.php": {
+    "const7": 4
+   },
+   "admin/model/extension/openbay/etsy_product.php": {
+    "const7": 8
+   },
+   "admin/model/extension/openbay/fba.php": {
+    "const7": 4
+   },
+   "admin/model/extension/openbay/openbay.php": {
+    "array_key": 3,
+    "call7": 7,
+    "catch": 7,
+    "const7": 42,
+    "internal_arg": 62
+   },
+   "admin/model/extension/openbay/order.php": {
+    "call7": 1,
+    "const7": 17
+   },
+   "admin/model/extension/payment/amazon_login_pay.php": {
+    "array_key": 19,
+    "call7": 4,
+    "const7": 16,
+    "count7": 2,
+    "explode": 1,
+    "internal_arg": 25,
+    "switch": 1
+   },
+   "admin/model/extension/payment/bluepay_hosted.php": {
+    "const7": 24,
+    "internal_arg": 23
+   },
+   "admin/model/extension/payment/bluepay_redirect.php": {
+    "const7": 24,
+    "internal_arg": 18
+   },
+   "admin/model/extension/payment/cardconnect.php": {
+    "const7": 11,
+    "internal_arg": 67
+   },
+   "admin/model/extension/payment/cardinity.php": {
+    "catch": 4,
+    "const7": 3,
+    "internal_arg": 1
+   },
+   "admin/model/extension/payment/divido.php": {
+    "const7": 5,
+    "internal_arg": 1
+   },
+   "admin/model/extension/payment/eway.php": {
+    "const7": 16,
+    "internal_arg": 23
+   },
+   "admin/model/extension/payment/firstdata.php": {
+    "array_key": 1,
+    "call7": 1,
+    "const7": 14,
+    "internal_arg": 35
+   },
+   "admin/model/extension/payment/firstdata_remote.php": {
+    "array_key": 1,
+    "call7": 1,
+    "const7": 14,
+    "internal_arg": 23
+   },
+   "admin/model/extension/payment/g2apay.php": {
+    "builtin_routed": 1,
+    "const7": 10,
+    "internal_arg": 18
+   },
+   "admin/model/extension/payment/globalpay.php": {
+    "const7": 14,
+    "internal_arg": 52
+   },
+   "admin/model/extension/payment/globalpay_remote.php": {
+    "const7": 14,
+    "internal_arg": 51
+   },
+   "admin/model/extension/payment/klarna_checkout.php": {
+    "catch": 12,
+    "const7": 3,
+    "internal_arg": 1
+   },
+   "admin/model/extension/payment/laybuy.php": {
+    "array_key": 2,
+    "call7": 3,
+    "const7": 19
+   },
+   "admin/model/extension/payment/pilibaba.php": {
+    "const7": 7,
+    "internal_arg": 47
+   },
+   "admin/model/extension/payment/pp_express.php": {
+    "array_key": 1,
+    "call7": 1,
+    "const7": 21,
+    "explode": 2,
+    "internal_arg": 17
+   },
+   "admin/model/extension/payment/pp_payflow_iframe.php": {
+    "call7": 3,
+    "const7": 9,
+    "internal_arg": 10
+   },
+   "admin/model/extension/payment/pp_pro_iframe.php": {
+    "array_key": 1,
+    "call7": 1,
+    "const7": 21,
+    "explode": 2,
+    "internal_arg": 9
+   },
+   "admin/model/extension/payment/realex.php": {
+    "const7": 14,
+    "internal_arg": 52
+   },
+   "admin/model/extension/payment/realex_remote.php": {
+    "const7": 14,
+    "internal_arg": 51
+   },
+   "admin/model/extension/payment/sagepay_direct.php": {
+    "const7": 16,
+    "explode": 1,
+    "internal_arg": 16
+   },
+   "admin/model/extension/payment/sagepay_server.php": {
+    "const7": 16,
+    "explode": 1,
+    "internal_arg": 16
+   },
+   "admin/model/extension/payment/securetrading_pp.php": {
+    "const7": 13,
+    "internal_arg": 7
+   },
+   "admin/model/extension/payment/securetrading_ws.php": {
+    "call7": 1,
+    "const7": 13,
+    "internal_arg": 16
+   },
+   "admin/model/extension/payment/worldpay.php": {
+    "const7": 14,
+    "internal_arg": 12
+   },
+   "admin/model/localisation/country.php": {
+    "call7": 1,
+    "const7": 7
+   },
+   "admin/model/localisation/currency.php": {
+    "array_key": 1,
+    "call7": 2,
+    "const7": 12,
+    "explode": 1,
+    "internal_arg": 8
+   },
+   "admin/model/localisation/geo_zone.php": {
+    "call7": 1,
+    "const7": 17
+   },
+   "admin/model/localisation/language.php": {
+    "array_key": 1,
+    "call7": 1,
+    "const7": 81
+   },
+   "admin/model/localisation/length_class.php": {
+    "array_key": 1,
+    "call7": 1,
+    "const7": 16
+   },
+   "admin/model/localisation/location.php": {
+    "call7": 1,
+    "const7": 6
+   },
+   "admin/model/localisation/order_status.php": {
+    "array_key": 1,
+    "const7": 10
+   },
+   "admin/model/localisation/return_action.php": {
+    "array_key": 1,
+    "const7": 10
+   },
+   "admin/model/localisation/return_reason.php": {
+    "array_key": 1,
+    "const7": 10
+   },
+   "admin/model/localisation/return_status.php": {
+    "array_key": 1,
+    "const7": 10
+   },
+   "admin/model/localisation/stock_status.php": {
+    "array_key": 1,
+    "const7": 10
+   },
+   "admin/model/localisation/tax_class.php": {
+    "const7": 13
+   },
+   "admin/model/localisation/tax_rate.php": {
+    "call7": 1,
+    "const7": 14
+   },
+   "admin/model/localisation/weight_class.php": {
+    "array_key": 1,
+    "call7": 1,
+    "const7": 16
+   },
+   "admin/model/localisation/zone.php": {
+    "call7": 1,
+    "const7": 9
+   },
+   "admin/model/marketing/affiliate.php": {
+    "call7": 3,
+    "const7": 26,
+    "internal_arg": 19
+   },
+   "admin/model/marketing/coupon.php": {
+    "call7": 1,
+    "const7": 21
+   },
+   "admin/model/marketing/marketing.php": {
+    "call7": 4,
+    "const7": 8
+   },
+   "admin/model/report/activity.php": {
+    "const7": 2
+   },
+   "admin/model/report/affiliate.php": {
+    "call7": 6,
+    "const7": 13
+   },
+   "admin/model/report/coupon.php": {
+    "call7": 2,
+    "const7": 3
+   },
+   "admin/model/report/customer.php": {
+    "array_key": 8,
+    "call7": 8,
+    "const7": 33,
+    "internal_arg": 25
+   },
+   "admin/model/report/marketing.php": {
+    "const7": 4
+   },
+   "admin/model/report/product.php": {
+    "const7": 9
+   },
+   "admin/model/report/return.php": {
+    "const7": 5,
+    "switch": 2
+   },
+   "admin/model/report/sale.php": {
+    "array_key": 8,
+    "call7": 4,
+    "const7": 28,
+    "internal_arg": 25,
+    "switch": 6
+   },
+   "admin/model/sale/order.php": {
+    "call7": 7,
+    "const7": 43,
+    "explode": 2,
+    "internal_arg": 3
+   },
+   "admin/model/sale/recurring.php": {
+    "call7": 3,
+    "const7": 6,
+    "switch": 2
+   },
+   "admin/model/sale/return.php": {
+    "call7": 3,
+    "const7": 20,
+    "internal_arg": 9
+   },
+   "admin/model/sale/voucher.php": {
+    "call7": 1,
+    "const7": 18,
+    "internal_arg": 20
+   },
+   "admin/model/sale/voucher_theme.php": {
+    "array_key": 1,
+    "const7": 15
+   },
+   "admin/model/setting/setting.php": {
+    "array_key": 2,
+    "const7": 8,
+    "internal_arg": 3
+   },
+   "admin/model/setting/store.php": {
+    "const7": 18
+   },
+   "admin/model/tool/backup.php": {
+    "call7": 2,
+    "const7": 8,
+    "explode": 1,
+    "internal_arg": 9
+   },
+   "admin/model/tool/image.php": {
+    "call7": 1,
+    "const7": 17,
+    "explode": 1,
+    "internal_arg": 12
+   },
+   "admin/model/tool/upload.php": {
+    "call7": 3,
+    "const7": 6,
+    "internal_arg": 2
+   },
+   "admin/model/user/api.php": {
+    "call7": 1,
+    "const7": 14
+   },
+   "admin/model/user/user.php": {
+    "call7": 1,
+    "const7": 15,
+    "internal_arg": 9
+   },
+   "admin/model/user/user_group.php": {
+    "array_key": 3,
+    "const7": 10,
+    "internal_arg": 8
+   },
+   "catalog/controller/account/account.php": {
+    "const7": 1,
+    "internal_arg": 3
+   },
+   "catalog/controller/account/address.php": {
+    "array_key": 4,
+    "internal_arg": 6
+   },
+   "catalog/controller/account/download.php": {
+    "array_key": 1,
+    "const7": 3,
+    "exit": 3,
+    "internal_arg": 12
+   },
+   "catalog/controller/account/edit.php": {
+    "array_key": 4,
+    "internal_arg": 5
+   },
+   "catalog/controller/account/forgotten.php": {
+    "internal_arg": 9
+   },
+   "catalog/controller/account/login.php": {
+    "array_key": 1,
+    "internal_arg": 2
+   },
+   "catalog/controller/account/order.php": {
+    "array_key": 4,
+    "internal_arg": 18
+   },
+   "catalog/controller/account/recurring.php": {
+    "internal_arg": 6
+   },
+   "catalog/controller/account/register.php": {
+    "array_key": 6,
+    "call7": 5,
+    "internal_arg": 8
+   },
+   "catalog/controller/account/return.php": {
+    "call7": 2,
+    "internal_arg": 17
+   },
+   "catalog/controller/account/reward.php": {
+    "internal_arg": 4
+   },
+   "catalog/controller/account/success.php": {
+    "internal_arg": 2
+   },
+   "catalog/controller/account/transaction.php": {
+    "internal_arg": 5
+   },
+   "catalog/controller/account/voucher.php": {
+    "array_key": 1,
+    "internal_arg": 5
+   },
+   "catalog/controller/account/wishlist.php": {
+    "call7": 1,
+    "count7": 1,
+    "internal_arg": 5
+   },
+   "catalog/controller/affiliate/edit.php": {
+    "internal_arg": 2
+   },
+   "catalog/controller/affiliate/forgotten.php": {
+    "internal_arg": 6
+   },
+   "catalog/controller/affiliate/login.php": {
+    "internal_arg": 3
+   },
+   "catalog/controller/affiliate/register.php": {
+    "call7": 2,
+    "internal_arg": 5
+   },
+   "catalog/controller/affiliate/success.php": {
+    "internal_arg": 2
+   },
+   "catalog/controller/affiliate/tracking.php": {
+    "internal_arg": 5
+   },
+   "catalog/controller/affiliate/transaction.php": {
+    "internal_arg": 5
+   },
+   "catalog/controller/api/cart.php": {
+    "array_key": 5,
+    "internal_arg": 7
+   },
+   "catalog/controller/api/coupon.php": {
+    "internal_arg": 1
+   },
+   "catalog/controller/api/currency.php": {
+    "internal_arg": 1
+   },
+   "catalog/controller/api/customer.php": {
+    "array_key": 4,
+    "call7": 1,
+    "internal_arg": 5
+   },
+   "catalog/controller/api/login.php": {
+    "call7": 1,
+    "internal_arg": 2
+   },
+   "catalog/controller/api/order.php": {
+    "array_key": 18,
+    "call7": 2,
+    "explode": 2,
+    "internal_arg": 7
+   },
+   "catalog/controller/api/payment.php": {
+    "array_key": 10,
+    "internal_arg": 7
+   },
+   "catalog/controller/api/reward.php": {
+    "internal_arg": 5
+   },
+   "catalog/controller/api/shipping.php": {
+    "array_key": 10,
+    "explode": 1,
+    "internal_arg": 6
+   },
+   "catalog/controller/api/voucher.php": {
+    "array_key": 4,
+    "internal_arg": 7
+   },
+   "catalog/controller/checkout/cart.php": {
+    "array_key": 12,
+    "call7": 1,
+    "const7": 1,
+    "count7": 2,
+    "internal_arg": 17
+   },
+   "catalog/controller/checkout/checkout.php": {
+    "call7": 1,
+    "internal_arg": 11
+   },
+   "catalog/controller/checkout/confirm.php": {
+    "array_key": 5,
+    "const7": 2,
+    "internal_arg": 4
+   },
+   "catalog/controller/checkout/failure.php": {
+    "internal_arg": 1
+   },
+   "catalog/controller/checkout/guest.php": {
+    "array_key": 4,
+    "call7": 4,
+    "internal_arg": 5
+   },
+   "catalog/controller/checkout/guest_shipping.php": {
+    "array_key": 2,
+    "internal_arg": 4
+   },
+   "catalog/controller/checkout/login.php": {
+    "array_key": 1,
+    "internal_arg": 2
+   },
+   "catalog/controller/checkout/payment_address.php": {
+    "array_key": 2,
+    "call7": 2,
+    "internal_arg": 4
+   },
+   "catalog/controller/checkout/payment_method.php": {
+    "array_key": 6,
+    "internal_arg": 6
+   },
+   "catalog/controller/checkout/register.php": {
+    "array_key": 4,
+    "call7": 4,
+    "internal_arg": 8
+   },
+   "catalog/controller/checkout/shipping_address.php": {
+    "array_key": 2,
+    "call7": 2,
+    "internal_arg": 4
+   },
+   "catalog/controller/checkout/shipping_method.php": {
+    "array_key": 6,
+    "explode": 1,
+    "internal_arg": 3
+   },
+   "catalog/controller/checkout/success.php": {
+    "internal_arg": 2
+   },
+   "catalog/controller/common/cart.php": {
+    "array_key": 2,
+    "count7": 1,
+    "internal_arg": 1
+   },
+   "catalog/controller/common/column_left.php": {
+    "explode": 2
+   },
+   "catalog/controller/common/column_right.php": {
+    "explode": 2
+   },
+   "catalog/controller/common/content_bottom.php": {
+    "explode": 2
+   },
+   "catalog/controller/common/content_top.php": {
+    "explode": 2
+   },
+   "catalog/controller/common/currency.php": {
+    "internal_arg": 2
+   },
+   "catalog/controller/common/footer.php": {
+    "internal_arg": 2
+   },
+   "catalog/controller/common/header.php": {
+    "const7": 2,
+    "count7": 1,
+    "internal_arg": 6
+   },
+   "catalog/controller/common/language.php": {
+    "internal_arg": 2
+   },
+   "catalog/controller/ebay/openbay.php": {
+    "const7": 2,
+    "internal_arg": 15
+   },
+   "catalog/controller/error/not_found.php": {
+    "internal_arg": 2
+   },
+   "catalog/controller/event/compatibility.php": {
+    "const7": 6,
+    "explode": 4,
+    "internal_arg": 10
+   },
+   "catalog/controller/event/debug.php": {
+    "array_key": 3
+   },
+   "catalog/controller/event/theme.php": {
+    "const7": 1,
+    "exit": 1,
+    "internal_arg": 1
+   },
+   "catalog/controller/extension/analytics/google_analytics.php": {
+    "internal_arg": 1
+   },
+   "catalog/controller/extension/captcha/basic_captcha.php": {
+    "exit": 1,
+    "internal_arg": 7
+   },
+   "catalog/controller/extension/captcha/google_captcha.php": {
+    "internal_arg": 3
+   },
+   "catalog/controller/extension/credit_card/sagepay_direct.php": {
+    "count7": 1,
+    "internal_arg": 14
+   },
+   "catalog/controller/extension/credit_card/sagepay_server.php": {
+    "count7": 1,
+    "exit": 2,
+    "internal_arg": 5
+   },
+   "catalog/controller/extension/feed/google_base.php": {
+    "call7": 2,
+    "explode": 1,
+    "internal_arg": 3
+   },
+   "catalog/controller/extension/feed/google_sitemap.php": {
+    "internal_arg": 2
+   },
+   "catalog/controller/extension/module/amazon_login.php": {
+    "call7": 1,
+    "explode": 1,
+    "internal_arg": 1
+   },
+   "catalog/controller/extension/module/amazon_pay.php": {
+    "call7": 2,
+    "explode": 2,
+    "internal_arg": 2
+   },
+   "catalog/controller/extension/module/banner.php": {
+    "const7": 1,
+    "internal_arg": 1
+   },
+   "catalog/controller/extension/module/bestseller.php": {
+    "internal_arg": 2
+   },
+   "catalog/controller/extension/module/carousel.php": {
+    "const7": 1,
+    "internal_arg": 1
+   },
+   "catalog/controller/extension/module/category.php": {
+    "explode": 1
+   },
+   "catalog/controller/extension/module/divido_calculator.php": {
+    "call7": 2,
+    "explode": 1,
+    "internal_arg": 1
+   },
+   "catalog/controller/extension/module/ebay_listing.php": {
+    "internal_arg": 5
+   },
+   "catalog/controller/extension/module/featured.php": {
+    "call7": 1,
+    "internal_arg": 2
+   },
+   "catalog/controller/extension/module/filter.php": {
+    "explode": 2,
+    "internal_arg": 1
+   },
+   "catalog/controller/extension/module/google_hangouts.php": {
+    "internal_arg": 3
+   },
+   "catalog/controller/extension/module/html.php": {
+    "array_key": 3,
+    "internal_arg": 2
+   },
+   "catalog/controller/extension/module/klarna_checkout_module.php": {
+    "array_key": 2
+   },
+   "catalog/controller/extension/module/latest.php": {
+    "internal_arg": 2
+   },
+   "catalog/controller/extension/module/laybuy_layout.php": {
+    "internal_arg": 5
+   },
+   "catalog/controller/extension/module/pp_button.php": {
+    "internal_arg": 1
+   },
+   "catalog/controller/extension/module/pp_login.php": {
+    "array_key": 2,
+    "call7": 1,
+    "const7": 2,
+    "internal_arg": 2
+   },
+   "catalog/controller/extension/module/slideshow.php": {
+    "const7": 1,
+    "internal_arg": 1
+   },
+   "catalog/controller/extension/module/special.php": {
+    "internal_arg": 2
+   },
+   "catalog/controller/extension/module/store.php": {
+    "const7": 1
+   },
+   "catalog/controller/extension/openbay/amazon.php": {
+    "array_key": 2,
+    "builtin_routed": 4,
+    "const7": 4,
+    "internal_arg": 22
+   },
+   "catalog/controller/extension/openbay/amazonus.php": {
+    "array_key": 2,
+    "builtin_routed": 3,
+    "const7": 4,
+    "internal_arg": 22
+   },
+   "catalog/controller/extension/openbay/etsy.php": {
+    "builtin_routed": 2,
+    "exit": 4,
+    "internal_arg": 1,
+    "switch": 1
+   },
+   "catalog/controller/extension/openbay/fba.php": {
+    "count7": 2,
+    "internal_arg": 3
+   },
+   "catalog/controller/extension/payment/amazon_login_pay.php": {
+    "array_key": 15,
+    "builtin_routed": 1,
+    "call7": 2,
+    "const7": 1,
+    "count7": 3,
+    "explode": 3,
+    "internal_arg": 7,
+    "switch": 1
+   },
+   "catalog/controller/extension/payment/authorizenet_aim.php": {
+    "array_key": 1,
+    "explode": 1,
+    "internal_arg": 56
+   },
+   "catalog/controller/extension/payment/authorizenet_sim.php": {
+    "internal_arg": 21
+   },
+   "catalog/controller/extension/payment/bank_transfer.php": {
+    "internal_arg": 1
+   },
+   "catalog/controller/extension/payment/bluepay_hosted.php": {
+    "internal_arg": 3
+   },
+   "catalog/controller/extension/payment/bluepay_redirect.php": {
+    "internal_arg": 11
+   },
+   "catalog/controller/extension/payment/cardconnect.php": {
+    "builtin_routed": 1,
+    "call7": 1,
+    "internal_arg": 21
+   },
+   "catalog/controller/extension/payment/cardinity.php": {
+    "builtin_routed": 2,
+    "call7": 2,
+    "catch": 2,
+    "internal_arg": 13
+   },
+   "catalog/controller/extension/payment/cheque.php": {
+    "internal_arg": 1
+   },
+   "catalog/controller/extension/payment/divido.php": {
+    "array_key": 6,
+    "call7": 3,
+    "explode": 1,
+    "internal_arg": 6
+   },
+   "catalog/controller/extension/payment/eway.php": {
+    "const7": 1,
+    "explode": 4,
+    "internal_arg": 9
+   },
+   "catalog/controller/extension/payment/firstdata.php": {
+    "array_key": 2,
+    "call7": 1,
+    "const7": 1,
+    "explode": 2,
+    "internal_arg": 6
+   },
+   "catalog/controller/extension/payment/firstdata_remote.php": {
+    "array_key": 2,
+    "internal_arg": 8
+   },
+   "catalog/controller/extension/payment/g2apay.php": {
+    "array_key": 7,
+    "builtin_routed": 1,
+    "internal_arg": 9,
+    "switch": 1
+   },
+   "catalog/controller/extension/payment/globalpay.php": {
+    "array_key": 1,
+    "const7": 1,
+    "explode": 1,
+    "internal_arg": 27
+   },
+   "catalog/controller/extension/payment/globalpay_remote.php": {
+    "array_key": 4,
+    "exit": 5,
+    "internal_arg": 19
+   },
+   "catalog/controller/extension/payment/klarna_account.php": {
+    "array_key": 31,
+    "builtin_routed": 1,
+    "call7": 2,
+    "const7": 3,
+    "internal_arg": 35,
+    "switch": 3
+   },
+   "catalog/controller/extension/payment/klarna_checkout.php": {
+    "array_key": 12,
+    "call7": 11,
+    "const7": 1,
+    "count7": 5,
+    "internal_arg": 53
+   },
+   "catalog/controller/extension/payment/klarna_invoice.php": {
+    "array_key": 22,
+    "builtin_routed": 1,
+    "call7": 1,
+    "const7": 4,
+    "internal_arg": 30,
+    "switch": 2
+   },
+   "catalog/controller/extension/payment/laybuy.php": {
+    "builtin_routed": 3,
+    "explode": 2,
+    "internal_arg": 60,
+    "switch": 1
+   },
+   "catalog/controller/extension/payment/liqpay.php": {
+    "internal_arg": 6
+   },
+   "catalog/controller/extension/payment/nochex.php": {
+    "internal_arg": 11
+   },
+   "catalog/controller/extension/payment/paymate.php": {
+    "internal_arg": 10
+   },
+   "catalog/controller/extension/payment/paypoint.php": {
+    "const7": 2,
+    "internal_arg": 8,
+    "switch": 1
+   },
+   "catalog/controller/extension/payment/perpetual_payments.php": {
+    "explode": 1,
+    "internal_arg": 24
+   },
+   "catalog/controller/extension/payment/pilibaba.php": {
+    "array_key": 2,
+    "builtin_routed": 1,
+    "const7": 1,
+    "internal_arg": 21
+   },
+   "catalog/controller/extension/payment/pp_express.php": {
+    "array_key": 22,
+    "call7": 10,
+    "const7": 26,
+    "explode": 3,
+    "internal_arg": 41,
+    "switch": 2
+   },
+   "catalog/controller/extension/payment/pp_payflow.php": {
+    "internal_arg": 48,
+    "switch": 1
+   },
+   "catalog/controller/extension/payment/pp_payflow_iframe.php": {
+    "internal_arg": 3
+   },
+   "catalog/controller/extension/payment/pp_pro.php": {
+    "internal_arg": 57
+   },
+   "catalog/controller/extension/payment/pp_pro_iframe.php": {
+    "const7": 1,
+    "internal_arg": 59,
+    "switch": 1
+   },
+   "catalog/controller/extension/payment/pp_standard.php": {
+    "internal_arg": 23,
+    "switch": 1
+   },
+   "catalog/controller/extension/payment/realex.php": {
+    "array_key": 1,
+    "const7": 1,
+    "explode": 1,
+    "internal_arg": 27
+   },
+   "catalog/controller/extension/payment/realex_remote.php": {
+    "array_key": 4,
+    "exit": 5,
+    "internal_arg": 19
+   },
+   "catalog/controller/extension/payment/sagepay_direct.php": {
+    "builtin_routed": 1,
+    "internal_arg": 17
+   },
+   "catalog/controller/extension/payment/sagepay_server.php": {
+    "builtin_routed": 1,
+    "call7": 1,
+    "exit": 3,
+    "explode": 1,
+    "internal_arg": 6
+   },
+   "catalog/controller/extension/payment/sagepay_us.php": {
+    "internal_arg": 25
+   },
+   "catalog/controller/extension/payment/securetrading_pp.php": {
+    "array_key": 5,
+    "builtin_routed": 1,
+    "call7": 3,
+    "internal_arg": 7
+   },
+   "catalog/controller/extension/payment/securetrading_ws.php": {
+    "array_key": 9,
+    "internal_arg": 26,
+    "sg_read": 6
+   },
+   "catalog/controller/extension/payment/skrill.php": {
+    "internal_arg": 2,
+    "switch": 1
+   },
+   "catalog/controller/extension/payment/twocheckout.php": {
+    "exit": 1,
+    "internal_arg": 1
+   },
+   "catalog/controller/extension/payment/web_payment_software.php": {
+    "internal_arg": 37
+   },
+   "catalog/controller/extension/payment/worldpay.php": {
+    "builtin_routed": 1,
+    "count7": 1,
+    "internal_arg": 5,
+    "switch": 1
+   },
+   "catalog/controller/extension/recurring/pp_express.php": {
+    "internal_arg": 15
+   },
+   "catalog/controller/extension/total/coupon.php": {
+    "internal_arg": 1
+   },
+   "catalog/controller/extension/total/reward.php": {
+    "internal_arg": 5
+   },
+   "catalog/controller/extension/total/shipping.php": {
+    "array_key": 6,
+    "explode": 2,
+    "internal_arg": 5
+   },
+   "catalog/controller/extension/total/voucher.php": {
+    "call7": 1,
+    "const7": 4,
+    "internal_arg": 11
+   },
+   "catalog/controller/information/contact.php": {
+    "call7": 2,
+    "internal_arg": 9
+   },
+   "catalog/controller/information/information.php": {
+    "internal_arg": 2
+   },
+   "catalog/controller/product/category.php": {
+    "call7": 1,
+    "count7": 1,
+    "explode": 1,
+    "internal_arg": 7
+   },
+   "catalog/controller/product/compare.php": {
+    "array_key": 7,
+    "call7": 2,
+    "count7": 2,
+    "internal_arg": 6
+   },
+   "catalog/controller/product/manufacturer.php": {
+    "array_key": 3,
+    "call7": 1,
+    "count7": 1,
+    "internal_arg": 6
+   },
+   "catalog/controller/product/product.php": {
+    "array_key": 3,
+    "call7": 2,
+    "explode": 2,
+    "internal_arg": 17
+   },
+   "catalog/controller/product/search.php": {
+    "call7": 1,
+    "count7": 1,
+    "internal_arg": 22
+   },
+   "catalog/controller/product/special.php": {
+    "call7": 1,
+    "count7": 1,
+    "internal_arg": 6
+   },
+   "catalog/controller/startup/error.php": {
+    "internal_arg": 1,
+    "switch": 1
+   },
+   "catalog/controller/startup/maintenance.php": {
+    "call7": 1
+   },
+   "catalog/controller/startup/router.php": {
+    "internal_arg": 1
+   },
+   "catalog/controller/startup/seo_url.php": {
+    "array_key": 2,
+    "const7": 3,
+    "explode": 3,
+    "internal_arg": 8
+   },
+   "catalog/controller/startup/session.php": {
+    "const7": 5
+   },
+   "catalog/controller/startup/startup.php": {
+    "array_key": 1,
+    "call7": 7,
+    "const7": 6,
+    "explode": 2,
+    "internal_arg": 7
+   },
+   "catalog/controller/tool/upload.php": {
+    "call7": 2,
+    "const7": 1,
+    "explode": 2,
+    "internal_arg": 11
+   },
+   "catalog/model/account/activity.php": {
+    "const7": 1,
+    "internal_arg": 1
+   },
+   "catalog/model/account/address.php": {
+    "array_key": 1,
+    "const7": 12,
+    "internal_arg": 4
+   },
+   "catalog/model/account/api.php": {
+    "const7": 3
+   },
+   "catalog/model/account/custom_field.php": {
+    "const7": 9
+   },
+   "catalog/model/account/customer.php": {
+    "call7": 2,
+    "const7": 20,
+    "explode": 1,
+    "internal_arg": 21
+   },
+   "catalog/model/account/customer_group.php": {
+    "const7": 4
+   },
+   "catalog/model/account/download.php": {
+    "call7": 3,
+    "const7": 12
+   },
+   "catalog/model/account/order.php": {
+    "const7": 17
+   },
+   "catalog/model/account/recurring.php": {
+    "const7": 10
+   },
+   "catalog/model/account/return.php": {
+    "const7": 10
+   },
+   "catalog/model/account/reward.php": {
+    "call7": 1,
+    "const7": 3
+   },
+   "catalog/model/account/search.php": {
+    "const7": 1
+   },
+   "catalog/model/account/transaction.php": {
+    "call7": 1,
+    "const7": 3
+   },
+   "catalog/model/account/wishlist.php": {
+    "const7": 5
+   },
+   "catalog/model/affiliate/activity.php": {
+    "const7": 1,
+    "internal_arg": 1
+   },
+   "catalog/model/affiliate/affiliate.php": {
+    "call7": 1,
+    "const7": 16,
+    "explode": 1,
+    "internal_arg": 22
+   },
+   "catalog/model/affiliate/transaction.php": {
+    "call7": 1,
+    "const7": 3
+   },
+   "catalog/model/catalog/category.php": {
+    "call7": 2,
+    "const7": 15
+   },
+   "catalog/model/catalog/information.php": {
+    "const7": 7
+   },
+   "catalog/model/catalog/manufacturer.php": {
+    "call7": 1,
+    "const7": 6
+   },
+   "catalog/model/catalog/product.php": {
+    "array_key": 6,
+    "call7": 8,
+    "const7": 75,
+    "explode": 6,
+    "internal_arg": 5
+   },
+   "catalog/model/catalog/review.php": {
+    "call7": 1,
+    "const7": 7,
+    "explode": 1,
+    "internal_arg": 11
+   },
+   "catalog/model/checkout/marketing.php": {
+    "const7": 1
+   },
+   "catalog/model/checkout/order.php": {
+    "call7": 11,
+    "const7": 52,
+    "explode": 1,
+    "internal_arg": 53
+   },
+   "catalog/model/checkout/recurring.php": {
+    "const7": 2
+   },
+   "catalog/model/design/banner.php": {
+    "const7": 2
+   },
+   "catalog/model/design/layout.php": {
+    "const7": 2
+   },
+   "catalog/model/design/theme.php": {
+    "const7": 1
+   },
+   "catalog/model/design/translation.php": {
+    "const7": 1
+   },
+   "catalog/model/extension/event.php": {
+    "const7": 1
+   },
+   "catalog/model/extension/extension.php": {
+    "const7": 1
+   },
+   "catalog/model/extension/feed/google_base.php": {
+    "const7": 4
+   },
+   "catalog/model/extension/fraud/fraudlabspro.php": {
+    "const7": 2,
+    "internal_arg": 15
+   },
+   "catalog/model/extension/fraud/ip.php": {
+    "const7": 2
+   },
+   "catalog/model/extension/fraud/maxmind.php": {
+    "array_key": 1,
+    "const7": 2,
+    "explode": 2,
+    "internal_arg": 30
+   },
+   "catalog/model/extension/module.php": {
+    "const7": 1,
+    "internal_arg": 1
+   },
+   "catalog/model/extension/module/laybuy_layout.php": {
+    "const7": 2
+   },
+   "catalog/model/extension/module/pp_login.php": {
+    "array_key": 1,
+    "internal_arg": 8
+   },
+   "catalog/model/extension/openbay/amazon_listing.php": {
+    "const7": 2,
+    "internal_arg": 1
+   },
+   "catalog/model/extension/openbay/amazon_order.php": {
+    "const7": 20,
+    "explode": 1,
+    "switch": 1
+   },
+   "catalog/model/extension/openbay/amazon_product.php": {
+    "array_key": 1,
+    "call7": 2,
+    "const7": 13,
+    "count7": 1,
+    "internal_arg": 2
+   },
+   "catalog/model/extension/openbay/amazonus_listing.php": {
+    "const7": 2,
+    "internal_arg": 1
+   },
+   "catalog/model/extension/openbay/amazonus_order.php": {
+    "const7": 20,
+    "explode": 1,
+    "switch": 1
+   },
+   "catalog/model/extension/openbay/amazonus_product.php": {
+    "call7": 1,
+    "const7": 13,
+    "count7": 1,
+    "internal_arg": 1
+   },
+   "catalog/model/extension/openbay/ebay_openbay.php": {
+    "call7": 2,
+    "const7": 15,
+    "exit": 2,
+    "explode": 1,
+    "internal_arg": 21
+   },
+   "catalog/model/extension/openbay/ebay_order.php": {
+    "const7": 35,
+    "internal_arg": 33
+   },
+   "catalog/model/extension/openbay/ebay_product.php": {
+    "array_key": 42,
+    "call7": 1,
+    "const7": 89,
+    "explode": 2,
+    "internal_arg": 32
+   },
+   "catalog/model/extension/openbay/etsy_order.php": {
+    "const7": 13,
+    "count7": 1,
+    "internal_arg": 4
+   },
+   "catalog/model/extension/payment/amazon_login_pay.php": {
+    "array_key": 2,
+    "call7": 5,
+    "catch": 1,
+    "const7": 19,
+    "count7": 2,
+    "explode": 2,
+    "internal_arg": 66
+   },
+   "catalog/model/extension/payment/authorizenet_aim.php": {
+    "const7": 1
+   },
+   "catalog/model/extension/payment/authorizenet_sim.php": {
+    "const7": 1
+   },
+   "catalog/model/extension/payment/bank_transfer.php": {
+    "const7": 1
+   },
+   "catalog/model/extension/payment/bluepay_hosted.php": {
+    "const7": 3
+   },
+   "catalog/model/extension/payment/bluepay_redirect.php": {
+    "const7": 7,
+    "internal_arg": 14
+   },
+   "catalog/model/extension/payment/cardconnect.php": {
+    "const7": 10,
+    "internal_arg": 21
+   },
+   "catalog/model/extension/payment/cardinity.php": {
+    "array_key": 2,
+    "call7": 1,
+    "catch": 2,
+    "const7": 3,
+    "internal_arg": 1,
+    "switch": 1
+   },
+   "catalog/model/extension/payment/cheque.php": {
+    "const7": 1
+   },
+   "catalog/model/extension/payment/cod.php": {
+    "const7": 1
+   },
+   "catalog/model/extension/payment/divido.php": {
+    "array_key": 2,
+    "call7": 3,
+    "const7": 5,
+    "explode": 1,
+    "internal_arg": 3
+   },
+   "catalog/model/extension/payment/eway.php": {
+    "const7": 9,
+    "internal_arg": 26
+   },
+   "catalog/model/extension/payment/firstdata.php": {
+    "array_key": 1,
+    "call7": 1,
+    "const7": 11,
+    "internal_arg": 2
+   },
+   "catalog/model/extension/payment/firstdata_remote.php": {
+    "array_key": 1,
+    "call7": 1,
+    "const7": 7,
+    "internal_arg": 23
+   },
+   "catalog/model/extension/payment/g2apay.php": {
+    "const7": 5,
+    "internal_arg": 9
+   },
+   "catalog/model/extension/payment/globalpay.php": {
+    "const7": 4
+   },
+   "catalog/model/extension/payment/globalpay_remote.php": {
+    "const7": 7,
+    "internal_arg": 40
+   },
+   "catalog/model/extension/payment/klarna_account.php": {
+    "array_key": 18,
+    "call7": 1,
+    "const7": 1,
+    "internal_arg": 6,
+    "switch": 1
+   },
+   "catalog/model/extension/payment/klarna_checkout.php": {
+    "array_key": 4,
+    "catch": 5,
+    "const7": 9,
+    "explode": 1,
+    "internal_arg": 1
+   },
+   "catalog/model/extension/payment/klarna_invoice.php": {
+    "array_key": 18,
+    "const7": 1,
+    "internal_arg": 2
+   },
+   "catalog/model/extension/payment/laybuy.php": {
+    "array_key": 2,
+    "call7": 3,
+    "const7": 13,
+    "count7": 1,
+    "explode": 2,
+    "internal_arg": 16
+   },
+   "catalog/model/extension/payment/liqpay.php": {
+    "const7": 1
+   },
+   "catalog/model/extension/payment/nochex.php": {
+    "const7": 1
+   },
+   "catalog/model/extension/payment/paymate.php": {
+    "call7": 1,
+    "const7": 1
+   },
+   "catalog/model/extension/payment/paypoint.php": {
+    "const7": 1
+   },
+   "catalog/model/extension/payment/payza.php": {
+    "const7": 1
+   },
+   "catalog/model/extension/payment/perpetual_payments.php": {
+    "const7": 1
+   },
+   "catalog/model/extension/payment/pilibaba.php": {
+    "call7": 1,
+    "const7": 3,
+    "explode": 1,
+    "internal_arg": 14
+   },
+   "catalog/model/extension/payment/pp_express.php": {
+    "array_key": 4,
+    "call7": 2,
+    "const7": 8,
+    "curly_offset": 1,
+    "explode": 2,
+    "internal_arg": 17
+   },
+   "catalog/model/extension/payment/pp_payflow.php": {
+    "const7": 1
+   },
+   "catalog/model/extension/payment/pp_payflow_iframe.php": {
+    "call7": 3,
+    "const7": 5,
+    "internal_arg": 10
+   },
+   "catalog/model/extension/payment/pp_pro.php": {
+    "const7": 1
+   },
+   "catalog/model/extension/payment/pp_pro_iframe.php": {
+    "const7": 3
+   },
+   "catalog/model/extension/payment/pp_standard.php": {
+    "call7": 1,
+    "const7": 1
+   },
+   "catalog/model/extension/payment/realex.php": {
+    "const7": 4
+   },
+   "catalog/model/extension/payment/realex_remote.php": {
+    "const7": 7,
+    "internal_arg": 40
+   },
+   "catalog/model/extension/payment/sagepay_direct.php": {
+    "const7": 21,
+    "explode": 1,
+    "internal_arg": 26
+   },
+   "catalog/model/extension/payment/sagepay_server.php": {
+    "const7": 22,
+    "explode": 1,
+    "internal_arg": 26
+   },
+   "catalog/model/extension/payment/sagepay_us.php": {
+    "const7": 1
+   },
+   "catalog/model/extension/payment/securetrading_pp.php": {
+    "const7": 9,
+    "switch": 1
+   },
+   "catalog/model/extension/payment/securetrading_ws.php": {
+    "const7": 11,
+    "internal_arg": 6,
+    "switch": 1
+   },
+   "catalog/model/extension/payment/skrill.php": {
+    "const7": 1
+   },
+   "catalog/model/extension/payment/twocheckout.php": {
+    "const7": 1
+   },
+   "catalog/model/extension/payment/web_payment_software.php": {
+    "const7": 1
+   },
+   "catalog/model/extension/payment/worldpay.php": {
+    "const7": 18,
+    "internal_arg": 23
+   },
+   "catalog/model/extension/shipping/auspost.php": {
+    "array_key": 2,
+    "const7": 1,
+    "explode": 4,
+    "internal_arg": 16
+   },
+   "catalog/model/extension/shipping/citylink.php": {
+    "const7": 1,
+    "explode": 2
+   },
+   "catalog/model/extension/shipping/fedex.php": {
+    "array_key": 1,
+    "call7": 3,
+    "const7": 1,
+    "count7": 1,
+    "explode": 1,
+    "internal_arg": 13
+   },
+   "catalog/model/extension/shipping/flat.php": {
+    "const7": 1
+   },
+   "catalog/model/extension/shipping/free.php": {
+    "const7": 1
+   },
+   "catalog/model/extension/shipping/item.php": {
+    "const7": 1
+   },
+   "catalog/model/extension/shipping/parcelforce_48.php": {
+    "const7": 1,
+    "explode": 4
+   },
+   "catalog/model/extension/shipping/pickup.php": {
+    "const7": 1
+   },
+   "catalog/model/extension/shipping/royal_mail.php": {
+    "call7": 17,
+    "const7": 1,
+    "explode": 33
+   },
+   "catalog/model/extension/shipping/ups.php": {
+    "array_key": 3,
+    "const7": 1,
+    "internal_arg": 12
+   },
+   "catalog/model/extension/shipping/usps.php": {
+    "array_key": 5,
+    "call7": 2,
+    "const7": 1,
+    "internal_arg": 19
+   },
+   "catalog/model/extension/shipping/weight.php": {
+    "const7": 2,
+    "explode": 2
+   },
+   "catalog/model/extension/total/coupon.php": {
+    "array_key": 2,
+    "call7": 3,
+    "const7": 9,
+    "internal_arg": 3
+   },
+   "catalog/model/extension/total/credit.php": {
+    "const7": 2,
+    "internal_arg": 2
+   },
+   "catalog/model/extension/total/handling.php": {
+    "array_key": 3
+   },
+   "catalog/model/extension/total/klarna_fee.php": {
+    "array_key": 11
+   },
+   "catalog/model/extension/total/low_order_fee.php": {
+    "array_key": 3
+   },
+   "catalog/model/extension/total/reward.php": {
+    "array_key": 1,
+    "const7": 2,
+    "internal_arg": 4
+   },
+   "catalog/model/extension/total/shipping.php": {
+    "array_key": 3
+   },
+   "catalog/model/extension/total/total.php": {
+    "internal_arg": 1
+   },
+   "catalog/model/extension/total/voucher.php": {
+    "call7": 1,
+    "const7": 10,
+    "internal_arg": 3
+   },
+   "catalog/model/extension/total/voucher_theme.php": {
+    "const7": 6
+   },
+   "catalog/model/localisation/country.php": {
+    "const7": 2
+   },
+   "catalog/model/localisation/currency.php": {
+    "array_key": 1,
+    "const7": 2
+   },
+   "catalog/model/localisation/language.php": {
+    "array_key": 1,
+    "const7": 2
+   },
+   "catalog/model/localisation/location.php": {
+    "const7": 1
+   },
+   "catalog/model/localisation/return_reason.php": {
+    "const7": 2
+   },
+   "catalog/model/localisation/zone.php": {
+    "const7": 2
+   },
+   "catalog/model/setting/api.php": {
+    "const7": 1
+   },
+   "catalog/model/setting/setting.php": {
+    "array_key": 2,
+    "const7": 1,
+    "internal_arg": 1
+   },
+   "catalog/model/setting/store.php": {
+    "const7": 1
+   },
+   "catalog/model/tool/image.php": {
+    "call7": 1,
+    "const7": 15,
+    "explode": 1,
+    "internal_arg": 13
+   },
+   "catalog/model/tool/online.php": {
+    "const7": 2,
+    "internal_arg": 1
+   },
+   "catalog/model/tool/upload.php": {
+    "const7": 2,
+    "internal_arg": 2
+   },
+   "index.php": {
+    "const7": 1,
+    "exit": 1
+   },
+   "system/config/admin.php": {
+    "const7": 8
+   },
+   "system/config/catalog.php": {
+    "const7": 8
+   },
+   "system/config/install.php": {
+    "const7": 2
+   },
+   "system/engine/action.php": {
+    "call7": 2,
+    "const7": 2,
+    "count7": 1,
+    "explode": 1,
+    "internal_arg": 5
+   },
+   "system/engine/event.php": {
+    "array_key": 8,
+    "internal_arg": 3
+   },
+   "system/engine/loader.php": {
+    "array_key": 3,
+    "const7": 4,
+    "internal_arg": 22
+   },
+   "system/engine/proxy.php": {
+    "exit": 1,
+    "internal_arg": 1
+   },
+   "system/engine/registry.php": {
+    "array_key": 4
+   },
+   "system/helper/general.php": {
+    "array_key": 2,
+    "internal_arg": 2
+   },
+   "system/helper/json.php": {
+    "array_key": 6,
+    "builtin_routed": 1,
+    "call7": 3,
+    "count7": 1,
+    "internal_arg": 23,
+    "switch": 1
+   },
+   "system/helper/utf8.php": {
+    "array_key": 49,
+    "count7": 3,
+    "internal_arg": 55
+   },
+   "system/library/cache.php": {
+    "internal_arg": 1
+   },
+   "system/library/cache/file.php": {
+    "internal_arg": 25
+   },
+   "system/library/cache/mem.php": {
+    "internal_arg": 1
+   },
+   "system/library/cart/affiliate.php": {
+    "internal_arg": 1
+   },
+   "system/library/cart/cart.php": {
+    "array_key": 3,
+    "internal_arg": 5
+   },
+   "system/library/cart/currency.php": {
+    "array_key": 20,
+    "internal_arg": 2
+   },
+   "system/library/cart/customer.php": {
+    "internal_arg": 1
+   },
+   "system/library/cart/length.php": {
+    "array_key": 9,
+    "internal_arg": 2
+   },
+   "system/library/cart/tax.php": {
+    "array_key": 11
+   },
+   "system/library/cart/user.php": {
+    "array_key": 4,
+    "internal_arg": 3
+   },
+   "system/library/cart/weight.php": {
+    "array_key": 9,
+    "internal_arg": 2
+   },
+   "system/library/config.php": {
+    "array_key": 4,
+    "call7": 1,
+    "const7": 1,
+    "exit": 1,
+    "internal_arg": 2
+   },
+   "system/library/db.php": {
+    "internal_arg": 1
+   },
+   "system/library/db/mpdo.php": {
+    "catch": 3,
+    "internal_arg": 1,
+    "new_class": 1
+   },
+   "system/library/db/mssql.php": {
+    "array_key": 1,
+    "internal_arg": 2
+   },
+   "system/library/db/mysql.php": {
+    "array_key": 1,
+    "exit": 1,
+    "internal_arg": 2
+   },
+   "system/library/db/mysqli.php": {
+    "new_class": 1
+   },
+   "system/library/db/postgre.php": {
+    "array_key": 1,
+    "internal_arg": 1
+   },
+   "system/library/document.php": {
+    "array_key": 6
+   },
+   "system/library/encryption.php": {
+    "const7": 4,
+    "internal_arg": 7
+   },
+   "system/library/image.php": {
+    "exit": 1,
+    "internal_arg": 9,
+    "switch": 1
+   },
+   "system/library/language.php": {
+    "array_key": 3,
+    "call7": 2,
+    "const7": 6,
+    "internal_arg": 9
+   },
+   "system/library/log.php": {
+    "const7": 1,
+    "internal_arg": 4
+   },
+   "system/library/mail.php": {
+    "call7": 1,
+    "explode": 1,
+    "internal_arg": 63
+   },
+   "system/library/openbay.php": {
+    "array_key": 1,
+    "call7": 3,
+    "const7": 27,
+    "explode": 2,
+    "internal_arg": 19
+   },
+   "system/library/openbay/amazon.php": {
+    "array_key": 4,
+    "internal_arg": 23
+   },
+   "system/library/openbay/amazonus.php": {
+    "array_key": 4,
+    "internal_arg": 23
+   },
+   "system/library/openbay/ebay.php": {
+    "array_key": 24,
+    "internal_arg": 72,
+    "switch": 1
+   },
+   "system/library/openbay/etsy.php": {
+    "internal_arg": 25
+   },
+   "system/library/openbay/fba.php": {
+    "internal_arg": 19
+   },
+   "system/library/pagination.php": {
+    "internal_arg": 11
+   },
+   "system/library/request.php": {
+    "array_key": 2
+   },
+   "system/library/response.php": {
+    "exit": 1,
+    "internal_arg": 2
+   },
+   "system/library/session.php": {
+    "array_key": 7,
+    "const7": 1,
+    "exit": 1,
+    "internal_arg": 7,
+    "sg_read": 4
+   },
+   "system/library/session/db.php": {
+    "internal_arg": 1
+   },
+   "system/library/session/file.php": {
+    "internal_arg": 14,
+    "sig7": 5
+   },
+   "system/library/session/native.php": {
+    "sig7": 5
+   },
+   "system/library/template.php": {
+    "internal_arg": 1
+   },
+   "system/library/template/php.php": {
+    "array_key": 1,
+    "exit": 1,
+    "internal_arg": 2
+   },
+   "system/library/template/tiwg.php": {
+    "array_key": 1,
+    "exit": 1,
+    "internal_arg": 2
+   },
+   "system/library/url.php": {
+    "internal_arg": 3
+   },
+   "system/startup.php": {
+    "array_key": 1,
+    "const7": 25,
+    "exit": 1,
+    "internal_arg": 10
+   }
+  }
+ }
+}

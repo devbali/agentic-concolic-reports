@@ -1,0 +1,53 @@
+{
+ "script": "admin/accounts.php",
+ "wall_s": 60.0,
+ "requests": 298,
+ "rounds": 12,
+ "traces": 291,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "PAGE",
+   "lan"
+  ],
+  "POST": [
+   "anotes",
+   "csrftoken",
+   "from_date",
+   "to_date",
+   "type"
+  ],
+  "COOKIE": [
+   "PHPSESSID",
+   "USERLANGUAGE",
+   "WEBID_RM_ID"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 4,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 32,
+ "concretized": {
+  "internal argument @ includes/functions_global.php:467": 159,
+  "internal argument @ includes/messages.inc.php:41": 159,
+  "is_numeric @ admin/accounts.php:31": 216,
+  "internal argument @ includes/messages.inc.php:20": 64,
+  "comparison != @ includes/functions_global.php:513": 74,
+  "string conversion @ includes/database/DatabasePDO.php:80": 211,
+  "string conversion @ includes/template/Template.php(163) : eval()'d code:17": 220,
+  "string conversion @ includes/template/Template.php(163) : eval()'d code:18": 220,
+  "string conversion @ includes/template/Template.php(163) : eval()'d code:19": 220,
+  "string conversion @ includes/template/Template.php(163) : eval()'d code:20": 220
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 74,
+  "arith7": 0,
+  "call7": {}
+ }
+}

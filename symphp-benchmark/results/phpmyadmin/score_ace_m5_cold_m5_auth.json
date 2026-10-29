@@ -1,0 +1,211 @@
+{
+ "app": "phpmyadmin",
+ "tool": "ace:m5_cold+m5_auth",
+ "requests": 11755,
+ "findings": 0,
+ "findings_judge_confirmed": 0,
+ "findings_unconfirmed": [],
+ "faulting_requests": 328,
+ "detected": 0,
+ "known": 10,
+ "cves_detected": 0,
+ "cves_known": 9,
+ "cves": {
+  "CVE-2018-7260": false,
+  "CVE-2019-6798": false,
+  "CVE-2020-5504": false,
+  "CVE-2020-10804": false,
+  "CVE-2020-10802": false,
+  "CVE-2020-26935": false,
+  "CVE-2020-10803": false,
+  "CVE-2020-26934": false,
+  "CVE-2020-22452": false
+ },
+ "coverage_pct": 7.63,
+ "covered_lines": 12343,
+ "executable_lines": 161802,
+ "vulns": [
+  {
+   "id": "PMA470-1",
+   "cve": [
+    "CVE-2018-7260"
+   ],
+   "type": "xss",
+   "sink": "libraries/central_columns.lib.php:811",
+   "auth": "user",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "total_rows"
+   ],
+   "method": "GET",
+   "detected": false,
+   "witness": null
+  },
+  {
+   "id": "PMA470-2",
+   "cve": [
+    "CVE-2019-6798"
+   ],
+   "type": "sqli",
+   "sink": "libraries/db_designer.lib.php:196",
+   "auth": "user",
+   "confidence": "likely",
+   "param": [
+    "pma_username"
+   ],
+   "method": "POST",
+   "detected": false,
+   "witness": null
+  },
+  {
+   "id": "PMA470-3",
+   "cve": [
+    "CVE-2020-5504"
+   ],
+   "type": "sqli",
+   "sink": "libraries/server_privileges.lib.php:3005",
+   "auth": "admin",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "username"
+   ],
+   "method": "GET",
+   "detected": false,
+   "witness": null
+  },
+  {
+   "id": "PMA470-4",
+   "cve": [
+    "CVE-2020-10804"
+   ],
+   "type": "sqli",
+   "sink": "libraries/server_privileges.lib.php:1796",
+   "auth": "admin",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "username",
+    "hostname"
+   ],
+   "method": "GET",
+   "detected": false,
+   "witness": null
+  },
+  {
+   "id": "PMA470-5",
+   "cve": [
+    "CVE-2020-10804"
+   ],
+   "type": "sqli",
+   "sink": "user_password.php:236",
+   "auth": "user",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "(current MySQL user name via getCurrentUserAndHost)",
+    "authentication_plugin"
+   ],
+   "method": "POST",
+   "detected": false,
+   "witness": null
+  },
+  {
+   "id": "PMA470-6",
+   "cve": [
+    "CVE-2020-10802"
+   ],
+   "type": "sqli",
+   "sink": "libraries/controllers/table/TableSearchController.php:415",
+   "auth": "user",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "db",
+    "table"
+   ],
+   "method": "POST",
+   "detected": false,
+   "witness": null
+  },
+  {
+   "id": "PMA470-7",
+   "cve": [
+    "CVE-2020-26935"
+   ],
+   "type": "sqli",
+   "sink": "libraries/controllers/table/TableSearchController.php:416",
+   "auth": "user",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "where_clause"
+   ],
+   "method": "POST",
+   "detected": false,
+   "witness": null
+  },
+  {
+   "id": "PMA470-8",
+   "cve": [
+    "CVE-2020-10803"
+   ],
+   "type": "sqli",
+   "sink": "tbl_get_field.php:39",
+   "auth": "user",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "where_clause"
+   ],
+   "method": "GET",
+   "detected": false,
+   "witness": null
+  },
+  {
+   "id": "PMA470-9",
+   "cve": [
+    "CVE-2020-26934"
+   ],
+   "type": "xss",
+   "sink": "transformation_wrapper.php:116",
+   "auth": "user",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "where_clause",
+    "ct"
+   ],
+   "method": "GET",
+   "detected": false,
+   "witness": null
+  },
+  {
+   "id": "PMA470-10",
+   "cve": [
+    "CVE-2020-22452"
+   ],
+   "type": "sqli",
+   "sink": "libraries/create_addfield.lib.php:418",
+   "auth": "user",
+   "confidence": "likely",
+   "param": [
+    "tbl_storage_engine",
+    "tbl_collation"
+   ],
+   "method": "POST",
+   "detected": false,
+   "witness": null
+  }
+ ],
+ "xdebug_coverage_pct": 7.03,
+ "xdebug_covered_lines": 11380,
+ "xdebug_method": "auto_prepend_file (coverage-only, outside docroot)",
+ "arms": {
+  "m5_cold": {
+   "requests": 5979,
+   "detected": 0,
+   "detected_ids": [],
+   "coverage_pct": 1.52
+  },
+  "m5_auth": {
+   "requests": 5776,
+   "detected": 0,
+   "detected_ids": [],
+   "coverage_pct": 7.57
+  }
+ }
+}

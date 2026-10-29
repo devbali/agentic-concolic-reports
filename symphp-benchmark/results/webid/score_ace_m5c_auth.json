@@ -1,0 +1,309 @@
+{
+ "app": "webid",
+ "tool": "ace:m5c_auth",
+ "requests": 14968,
+ "findings": 42,
+ "findings_judge_confirmed": 39,
+ "findings_unconfirmed": [
+  {
+   "site": "cache/tpl_adminClassic_adminpages.tpl.php:49",
+   "kind": "xss-candidate",
+   "request": {
+    "script": "admin/analytics.php",
+    "GET": {
+     "lan": ""
+    },
+    "POST": {
+     "action": "update",
+     "anotes": "",
+     "csrftoken": "acepinnedcsrftoken00000000000000",
+     "trackingcode": "\"'><acexss0606a7cb>"
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession",
+     "USERLANGUAGE": ""
+    }
+   }
+  },
+  {
+   "site": "cache/tpl_adminClassic_adminpages.tpl.php:49",
+   "kind": "xss-candidate",
+   "request": {
+    "script": "admin/spam.php",
+    "GET": {
+     "lan": ""
+    },
+    "POST": {
+     "action": "update",
+     "anotes": "",
+     "csrftoken": "acepinnedcsrftoken00000000000000",
+     "recaptcha_private": "",
+     "recaptcha_public": "",
+     "spam_blocked_email_domains": "\"'><acexss0606a7cb>",
+     "spam_blocked_email_enabled": "",
+     "spam_register": "",
+     "spam_reportitem": "",
+     "spam_sendtofriend": ""
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession",
+     "USERLANGUAGE": ""
+    }
+   }
+  },
+  {
+   "site": "includes/template/Template.php(163) : eval()'d code:97",
+   "kind": "xss-candidate",
+   "request": {
+    "script": "admin/userbanners.php",
+    "GET": {},
+    "POST": {
+     "keywords": "\"'><acexssf3fc5f26>"
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession"
+    }
+   }
+  }
+ ],
+ "faulting_requests": 47,
+ "detected": 3,
+ "known": 11,
+ "cves_detected": 1,
+ "cves_known": 3,
+ "cves": {
+  "CVE-2018-1000867": false,
+  "CVE-2018-1000868": false,
+  "CVE-2019-11592": true
+ },
+ "coverage_pct": 25.88,
+ "covered_lines": 5983,
+ "executable_lines": 23119,
+ "vulns": [
+  {
+   "id": "WB-1",
+   "cve": [
+    "CVE-2018-1000867"
+   ],
+   "type": "sqli",
+   "sink": "yourauctions.php:148",
+   "auth": "user",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "oa_ord",
+    "oa_type"
+   ],
+   "method": "GET",
+   "detected": false,
+   "witness": null
+  },
+  {
+   "id": "WB-2",
+   "cve": [
+    "CVE-2018-1000867"
+   ],
+   "type": "sqli",
+   "sink": "yourauctions_c.php:263",
+   "auth": "user",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "ca_ord",
+    "ca_type"
+   ],
+   "method": "GET",
+   "detected": false,
+   "witness": null
+  },
+  {
+   "id": "WB-3",
+   "cve": [
+    "CVE-2018-1000867"
+   ],
+   "type": "sqli",
+   "sink": "yourauctions_p.php:157",
+   "auth": "user",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "pa_ord",
+    "pa_type"
+   ],
+   "method": "GET",
+   "detected": false,
+   "witness": null
+  },
+  {
+   "id": "WB-4",
+   "cve": [
+    "CVE-2018-1000867"
+   ],
+   "type": "sqli",
+   "sink": "yourauctions_s.php:129",
+   "auth": "user",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "sa_ord",
+    "sa_type"
+   ],
+   "method": "GET",
+   "detected": false,
+   "witness": null
+  },
+  {
+   "id": "WB-5",
+   "cve": [
+    "CVE-2018-1000867"
+   ],
+   "type": "sqli",
+   "sink": "yourauctions_sold.php:202",
+   "auth": "user",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "solda_ord",
+    "solda_type"
+   ],
+   "method": "GET",
+   "detected": false,
+   "witness": null
+  },
+  {
+   "id": "WB-6",
+   "cve": [
+    "CVE-2018-1000868"
+   ],
+   "type": "xss",
+   "sink": "user_login.php:151",
+   "auth": "none",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "username"
+   ],
+   "method": "POST",
+   "detected": false,
+   "witness": null
+  },
+  {
+   "id": "WB-7",
+   "cve": [
+    "CVE-2018-1000868"
+   ],
+   "type": "xss",
+   "sink": "register.php:550",
+   "auth": "none",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "TPL_name",
+    "TPL_nick",
+    "TPL_email",
+    "TPL_address",
+    "..."
+   ],
+   "method": "POST",
+   "detected": false,
+   "witness": null
+  },
+  {
+   "id": "WB-8",
+   "cve": [
+    "CVE-2019-11592"
+   ],
+   "type": "xss",
+   "sink": "admin/editbannersuser.php:66",
+   "auth": "admin",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "id"
+   ],
+   "method": "GET",
+   "detected": true,
+   "witness": {
+    "script": "admin/editbannersuser.php",
+    "GET": {},
+    "POST": {
+     "id": "\"'><acexss87830477>"
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession"
+    }
+   }
+  },
+  {
+   "id": "WB-9",
+   "cve": [
+    "CVE-2019-11592"
+   ],
+   "type": "xss",
+   "sink": "admin/editfaqscategory.php:87",
+   "auth": "admin",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "id"
+   ],
+   "method": "GET",
+   "detected": true,
+   "witness": {
+    "script": "admin/editfaqscategory.php",
+    "GET": {
+     "id": "\"'><acexss36a5f071>"
+    },
+    "POST": {
+     "action": ""
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession"
+    }
+   }
+  },
+  {
+   "id": "WB-10",
+   "cve": [
+    "CVE-2019-11592"
+   ],
+   "type": "xss",
+   "sink": "admin/excludeuser.php:139",
+   "auth": "admin",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "id",
+    "offset"
+   ],
+   "method": "GET",
+   "detected": true,
+   "witness": {
+    "script": "admin/excludeuser.php",
+    "GET": {
+     "id": "\"'><acexss0b9b381a>",
+     "lan": "",
+     "offset": ""
+    },
+    "POST": {
+     "id": "",
+     "offset": "",
+     "csrftoken": "acepinnedcsrftoken00000000000000"
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession",
+     "USERLANGUAGE": ""
+    }
+   }
+  },
+  {
+   "id": "WB-11",
+   "cve": [
+    "CVE-2019-11592"
+   ],
+   "type": "xss",
+   "sink": "admin/edituser.php:251",
+   "auth": "admin",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "offset"
+   ],
+   "method": "GET",
+   "detected": false,
+   "witness": null
+  }
+ ],
+ "xdebug_coverage_pct": 25.88,
+ "xdebug_covered_lines": 5983,
+ "xdebug_method": "auto_prepend_file (coverage-only, outside docroot); the fault replays themselves ran under it (judge_cgi xdebug), so trace == xdebug"
+}

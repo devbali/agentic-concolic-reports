@@ -1,0 +1,41 @@
+{
+ "script": "profile.php",
+ "wall_s": 6.1,
+ "requests": 25,
+ "rounds": 8,
+ "traces": 25,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "auction_id",
+   "lan",
+   "user_id"
+  ],
+  "POST": [],
+  "COOKIE": [
+   "PHPSESSID",
+   "uniqueuser"
+  ]
+ },
+ "budget_hit": false,
+ "coverage_complete": true,
+ "missing": 0,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 0,
+ "concretized": {
+  "is_numeric @ profile.php:37": 8,
+  "string conversion @ includes/database/DatabasePDO.php:80": 8,
+  "string conversion @ includes/template/Template.php(163) : eval()'d code:8": 8,
+  "internal argument @ includes/messages.inc.php:20": 6
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

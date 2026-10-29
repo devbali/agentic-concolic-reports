@@ -1,0 +1,1826 @@
+{
+ "arm": "auth",
+ "options": [
+  "--php7compat",
+  "--exit-as-halt",
+  "--superglobal-reads",
+  "--real-app-builtins",
+  "--db-classes",
+  "--eval-instrument"
+ ],
+ "concretize": true,
+ "sanitizers": true,
+ "array_mode": true,
+ "site_by_statement": true,
+ "budget_s": 60.0,
+ "max_rounds": 50,
+ "instrument": {
+  "instrumented": 350,
+  "failed": 0,
+  "warnings": [
+   "forgotpasswd.php: warning: parameter default at forgotpasswd.php:17 is a branch point this pass does not instrument",
+   "bid.php: warning: parameter default at bid.php:46 is a branch point this pass does not instrument",
+   "includes/class_MPTTcategories.php: warning: parameter default at includes/class_MPTTcategories.php:21 is a branch point this pass does not instrument",
+   "includes/class_MPTTcategories.php: warning: parameter default at includes/class_MPTTcategories.php:21 is a branch point this pass does not instrument",
+   "includes/class_MPTTcategories.php: warning: parameter default at includes/class_MPTTcategories.php:111 is a branch point this pass does not instrument",
+   "includes/class_MPTTcategories.php: warning: parameter default at includes/class_MPTTcategories.php:160 is a branch point this pass does not instrument",
+   "includes/class_MPTTcategories.php: warning: parameter default at includes/class_MPTTcategories.php:271 is a branch point this pass does not instrument",
+   "includes/class_MPTTcategories.php: warning: parameter default at includes/class_MPTTcategories.php:395 is a branch point this pass does not instrument",
+   "includes/class_MPTTcategories.php: warning: parameter default at includes/class_MPTTcategories.php:418 is a branch point this pass does not instrument",
+   "includes/Time.php: warning: parameter default at includes/Time.php:24 is a branch point this pass does not instrument",
+   "includes/Time.php: warning: parameter default at includes/Time.php:40 is a branch point this pass does not instrument",
+   "includes/Time.php: warning: parameter default at includes/Time.php:40 is a branch point this pass does not instrument",
+   "includes/Time.php: warning: parameter default at includes/Time.php:56 is a branch point this pass does not instrument",
+   "includes/functions_admin.php: warning: parameter default at includes/functions_admin.php:64 is a branch point this pass does not instrument",
+   "includes/functions_admin.php: warning: parameter default at includes/functions_admin.php:64 is a branch point this pass does not instrument",
+   "includes/functions_admin.php: warning: parameter default at includes/functions_admin.php:64 is a branch point this pass does not instrument",
+   "includes/functions_admin.php: warning: parameter default at includes/functions_admin.php:64 is a branch point this pass does not instrument",
+   "includes/functions_admin.php: warning: parameter default at includes/functions_admin.php:64 is a branch point this pass does not instrument",
+   "includes/functions_admin.php: warning: parameter default at includes/functions_admin.php:64 is a branch point this pass does not instrument",
+   "includes/functions_admin.php: warning: parameter default at includes/functions_admin.php:64 is a branch point this pass does not instrument",
+   "includes/functions_admin.php: warning: parameter default at includes/functions_admin.php:82 is a branch point this pass does not instrument",
+   "includes/functions_admin.php: warning: parameter default at includes/functions_admin.php:82 is a branch point this pass does not instrument",
+   "includes/functions_admin.php: warning: parameter default at includes/functions_admin.php:82 is a branch point this pass does not instrument",
+   "includes/template/TemplateCompile.php: warning: parameter default at includes/template/TemplateCompile.php:58 is a branch point this pass does not instrument",
+   "includes/template/TemplateCompile.php: warning: parameter default at includes/template/TemplateCompile.php:95 is a branch point this pass does not instrument",
+   "includes/template/TemplateCompile.php: warning: parameter default at includes/template/TemplateCompile.php:95 is a branch point this pass does not instrument",
+   "includes/template/TemplateCompile.php: warning: parameter default at includes/template/TemplateCompile.php:697 is a branch point this pass does not instrument",
+   "includes/template/TemplateCompile.php: warning: parameter default at includes/template/TemplateCompile.php:697 is a branch point this pass does not instrument",
+   "includes/template/TemplateCompile.php: warning: parameter default at includes/template/TemplateCompile.php:722 is a branch point this pass does not instrument",
+   "includes/template/Template.php: warning: parameter default at includes/template/Template.php:154 is a branch point this pass does not instrument",
+   "includes/template/Template.php: warning: parameter default at includes/template/Template.php:173 is a branch point this pass does not instrument",
+   "includes/template/Template.php: warning: parameter default at includes/template/Template.php:173 is a branch point this pass does not instrument",
+   "includes/template/Template.php: warning: parameter default at includes/template/Template.php:173 is a branch point this pass does not instrument",
+   "includes/template/Template.php: warning: parameter default at includes/template/Template.php:354 is a branch point this pass does not instrument",
+   "includes/template/Template.php: warning: parameter default at includes/template/Template.php:354 is a branch point this pass does not instrument",
+   "includes/template/Template.php: warning: parameter default at includes/template/Template.php:440 is a branch point this pass does not instrument",
+   "includes/browseitems.inc.php: warning: parameter default at includes/browseitems.inc.php:17 is a branch point this pass does not instrument",
+   "includes/functions_sell.php: warning: parameter default at includes/functions_sell.php:346 is a branch point this pass does not instrument",
+   "includes/functions_sell.php: warning: parameter default at includes/functions_sell.php:494 is a branch point this pass does not instrument",
+   "includes/diff/engine.php: warning: parameter default at includes/diff/engine.php:34 is a branch point this pass does not instrument",
+   "includes/diff/diff.php: warning: parameter default at includes/diff/diff.php:31 is a branch point this pass does not instrument",
+   "includes/diff/diff.php: warning: parameter default at includes/diff/diff.php:339 is a branch point this pass does not instrument",
+   "includes/diff/diff.php: warning: parameter default at includes/diff/diff.php:481 is a branch point this pass does not instrument",
+   "includes/diff/diff.php: warning: parameter default at includes/diff/diff.php:481 is a branch point this pass does not instrument",
+   "includes/diff/diff.php: warning: parameter default at includes/diff/diff.php:481 is a branch point this pass does not instrument",
+   "includes/diff/diff.php: warning: parameter default at includes/diff/diff.php:687 is a branch point this pass does not instrument",
+   "includes/diff/diff.php: warning: parameter default at includes/diff/diff.php:687 is a branch point this pass does not instrument",
+   "includes/diff/diff.php: warning: parameter default at includes/diff/diff.php:687 is a branch point this pass does not instrument",
+   "includes/diff/diff.php: warning: parameter default at includes/diff/diff.php:733 is a branch point this pass does not instrument",
+   "includes/diff/renderer.php: warning: parameter default at includes/diff/renderer.php:38 is a branch point this pass does not instrument",
+   "includes/diff/renderer.php: warning: parameter default at includes/diff/renderer.php:237 is a branch point this pass does not instrument",
+   "includes/diff/renderer.php: warning: parameter default at includes/diff/renderer.php:394 is a branch point this pass does not instrument",
+   "includes/diff/renderer.php: warning: parameter default at includes/diff/renderer.php:394 is a branch point this pass does not instrument",
+   "includes/diff/renderer.php: warning: .= on a non-trivial target at includes/diff/renderer.php:415 is a branch point this pass does not instrument",
+   "includes/diff/renderer.php: warning: parameter default at includes/diff/renderer.php:419 is a branch point this pass does not instrument",
+   "includes/diff/renderer.php: warning: .= on a non-trivial target at includes/diff/renderer.php:423 is a branch point this pass does not instrument",
+   "includes/diff/renderer.php: warning: parameter default at includes/diff/renderer.php:464 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.smtp.php: warning: parameter default at includes/packages/PHPMailer/class.smtp.php:202 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.smtp.php: warning: parameter default at includes/packages/PHPMailer/class.smtp.php:247 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.smtp.php: warning: parameter default at includes/packages/PHPMailer/class.smtp.php:247 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.smtp.php: warning: parameter default at includes/packages/PHPMailer/class.smtp.php:247 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.smtp.php: warning: parameter default at includes/packages/PHPMailer/class.smtp.php:365 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.smtp.php: warning: parameter default at includes/packages/PHPMailer/class.smtp.php:366 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.smtp.php: warning: parameter default at includes/packages/PHPMailer/class.smtp.php:367 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.smtp.php: warning: parameter default at includes/packages/PHPMailer/class.smtp.php:368 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.smtp.php: warning: parameter default at includes/packages/PHPMailer/class.smtp.php:703 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.smtp.php: warning: parameter default at includes/packages/PHPMailer/class.smtp.php:801 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.smtp.php: warning: parameter default at includes/packages/PHPMailer/class.smtp.php:1092 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.smtp.php: warning: parameter default at includes/packages/PHPMailer/class.smtp.php:1113 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.smtp.php: warning: parameter default at includes/packages/PHPMailer/class.smtp.php:1113 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.smtp.php: warning: parameter default at includes/packages/PHPMailer/class.smtp.php:1113 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.smtp.php: warning: parameter default at includes/packages/PHPMailer/class.smtp.php:1127 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.smtp.php: warning: parameter default at includes/packages/PHPMailer/class.smtp.php:1145 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.smtp.php: warning: parameter default at includes/packages/PHPMailer/class.smtp.php:1163 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.pop3.php: warning: parameter default at includes/packages/PHPMailer/class.pop3.php:142 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.pop3.php: warning: parameter default at includes/packages/PHPMailer/class.pop3.php:143 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.pop3.php: warning: parameter default at includes/packages/PHPMailer/class.pop3.php:144 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.pop3.php: warning: parameter default at includes/packages/PHPMailer/class.pop3.php:145 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.pop3.php: warning: parameter default at includes/packages/PHPMailer/class.pop3.php:146 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.pop3.php: warning: parameter default at includes/packages/PHPMailer/class.pop3.php:165 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.pop3.php: warning: parameter default at includes/packages/PHPMailer/class.pop3.php:165 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.pop3.php: warning: parameter default at includes/packages/PHPMailer/class.pop3.php:165 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.pop3.php: warning: parameter default at includes/packages/PHPMailer/class.pop3.php:165 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.pop3.php: warning: parameter default at includes/packages/PHPMailer/class.pop3.php:165 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.pop3.php: warning: parameter default at includes/packages/PHPMailer/class.pop3.php:207 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.pop3.php: warning: parameter default at includes/packages/PHPMailer/class.pop3.php:207 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.pop3.php: warning: parameter default at includes/packages/PHPMailer/class.pop3.php:266 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.pop3.php: warning: parameter default at includes/packages/PHPMailer/class.pop3.php:266 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.pop3.php: warning: parameter default at includes/packages/PHPMailer/class.pop3.php:315 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.phpmailer.php: warning: parameter default at includes/packages/PHPMailer/class.phpmailer.php:625 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.phpmailer.php: warning: parameter default at includes/packages/PHPMailer/class.phpmailer.php:718 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.phpmailer.php: warning: parameter default at includes/packages/PHPMailer/class.phpmailer.php:783 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.phpmailer.php: warning: parameter default at includes/packages/PHPMailer/class.phpmailer.php:795 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.phpmailer.php: warning: parameter default at includes/packages/PHPMailer/class.phpmailer.php:807 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.phpmailer.php: warning: parameter default at includes/packages/PHPMailer/class.phpmailer.php:818 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.phpmailer.php: warning: parameter default at includes/packages/PHPMailer/class.phpmailer.php:833 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.phpmailer.php: warning: parameter default at includes/packages/PHPMailer/class.phpmailer.php:878 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.phpmailer.php: warning: parameter default at includes/packages/PHPMailer/class.phpmailer.php:931 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.phpmailer.php: warning: parameter default at includes/packages/PHPMailer/class.phpmailer.php:931 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.phpmailer.php: warning: parameter default at includes/packages/PHPMailer/class.phpmailer.php:979 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.phpmailer.php: warning: parameter default at includes/packages/PHPMailer/class.phpmailer.php:1383 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.phpmailer.php: warning: parameter default at includes/packages/PHPMailer/class.phpmailer.php:1514 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.phpmailer.php: warning: parameter default at includes/packages/PHPMailer/class.phpmailer.php:1514 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.phpmailer.php: warning: parameter default at includes/packages/PHPMailer/class.phpmailer.php:1616 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.phpmailer.php: warning: parameter default at includes/packages/PHPMailer/class.phpmailer.php:2252 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.phpmailer.php: warning: parameter default at includes/packages/PHPMailer/class.phpmailer.php:2252 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.phpmailer.php: warning: parameter default at includes/packages/PHPMailer/class.phpmailer.php:2252 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.phpmailer.php: warning: parameter default at includes/packages/PHPMailer/class.phpmailer.php:2252 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.phpmailer.php: warning: parameter default at includes/packages/PHPMailer/class.phpmailer.php:2434 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.phpmailer.php: warning: parameter default at includes/packages/PHPMailer/class.phpmailer.php:2475 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.phpmailer.php: warning: parameter default at includes/packages/PHPMailer/class.phpmailer.php:2511 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.phpmailer.php: warning: parameter default at includes/packages/PHPMailer/class.phpmailer.php:2604 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.phpmailer.php: warning: parameter default at includes/packages/PHPMailer/class.phpmailer.php:2646 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.phpmailer.php: warning: parameter default at includes/packages/PHPMailer/class.phpmailer.php:2673 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.phpmailer.php: warning: parameter default at includes/packages/PHPMailer/class.phpmailer.php:2674 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.phpmailer.php: warning: parameter default at includes/packages/PHPMailer/class.phpmailer.php:2687 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.phpmailer.php: warning: parameter default at includes/packages/PHPMailer/class.phpmailer.php:2742 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.phpmailer.php: warning: parameter default at includes/packages/PHPMailer/class.phpmailer.php:2743 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.phpmailer.php: warning: parameter default at includes/packages/PHPMailer/class.phpmailer.php:2744 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.phpmailer.php: warning: parameter default at includes/packages/PHPMailer/class.phpmailer.php:2779 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.phpmailer.php: warning: parameter default at includes/packages/PHPMailer/class.phpmailer.php:2779 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.phpmailer.php: warning: parameter default at includes/packages/PHPMailer/class.phpmailer.php:2779 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.phpmailer.php: warning: parameter default at includes/packages/PHPMailer/class.phpmailer.php:2779 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.phpmailer.php: warning: parameter default at includes/packages/PHPMailer/class.phpmailer.php:2827 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.phpmailer.php: warning: parameter default at includes/packages/PHPMailer/class.phpmailer.php:2828 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.phpmailer.php: warning: parameter default at includes/packages/PHPMailer/class.phpmailer.php:2829 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.phpmailer.php: warning: parameter default at includes/packages/PHPMailer/class.phpmailer.php:2830 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.phpmailer.php: warning: parameter default at includes/packages/PHPMailer/class.phpmailer.php:3089 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.phpmailer.php: warning: parameter default at includes/packages/PHPMailer/class.phpmailer.php:3121 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.phpmailer.php: warning: parameter default at includes/packages/PHPMailer/class.phpmailer.php:3121 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.phpmailer.php: warning: parameter default at includes/packages/PHPMailer/class.phpmailer.php:3205 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.phpmailer.php: warning: parameter default at includes/packages/PHPMailer/class.phpmailer.php:3224 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.phpmailer.php: warning: parameter default at includes/packages/PHPMailer/class.phpmailer.php:3361 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.phpmailer.php: warning: parameter default at includes/packages/PHPMailer/class.phpmailer.php:3411 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.phpmailer.php: warning: parameter default at includes/packages/PHPMailer/class.phpmailer.php:3443 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.phpmailer.php: warning: parameter default at includes/packages/PHPMailer/class.phpmailer.php:3457 is a branch point this pass does not instrument",
+   "includes/packages/PHPMailer/class.phpmailer.php: warning: .= on a non-trivial target at includes/packages/PHPMailer/class.phpmailer.php:3581 is a branch point this pass does not instrument",
+   "includes/packages/recaptcha/ReCaptcha/Response.php: warning: parameter default at includes/packages/recaptcha/ReCaptcha/Response.php:77 is a branch point this pass does not instrument",
+   "includes/packages/recaptcha/ReCaptcha/RequestMethod/CurlPost.php: warning: parameter default at includes/packages/recaptcha/ReCaptcha/RequestMethod/CurlPost.php:51 is a branch point this pass does not instrument",
+   "includes/packages/recaptcha/ReCaptcha/RequestMethod/Curl.php: warning: parameter default at includes/packages/recaptcha/ReCaptcha/RequestMethod/Curl.php:40 is a branch point this pass does not instrument",
+   "includes/packages/recaptcha/ReCaptcha/RequestMethod/SocketPost.php: warning: parameter default at includes/packages/recaptcha/ReCaptcha/RequestMethod/SocketPost.php:71 is a branch point this pass does not instrument",
+   "includes/packages/recaptcha/ReCaptcha/RequestMethod/Socket.php: warning: parameter default at includes/packages/recaptcha/ReCaptcha/RequestMethod/Socket.php:48 is a branch point this pass does not instrument",
+   "includes/packages/recaptcha/ReCaptcha/RequestMethod/Socket.php: warning: parameter default at includes/packages/recaptcha/ReCaptcha/RequestMethod/Socket.php:48 is a branch point this pass does not instrument",
+   "includes/packages/recaptcha/ReCaptcha/RequestMethod/Socket.php: warning: parameter default at includes/packages/recaptcha/ReCaptcha/RequestMethod/Socket.php:48 is a branch point this pass does not instrument",
+   "includes/packages/recaptcha/ReCaptcha/RequestMethod/Socket.php: warning: parameter default at includes/packages/recaptcha/ReCaptcha/RequestMethod/Socket.php:48 is a branch point this pass does not instrument",
+   "includes/packages/recaptcha/ReCaptcha/RequestMethod/Socket.php: warning: parameter default at includes/packages/recaptcha/ReCaptcha/RequestMethod/Socket.php:67 is a branch point this pass does not instrument",
+   "includes/packages/recaptcha/ReCaptcha/RequestMethod/Socket.php: warning: parameter default at includes/packages/recaptcha/ReCaptcha/RequestMethod/Socket.php:79 is a branch point this pass does not instrument",
+   "includes/packages/recaptcha/ReCaptcha/RequestParameters.php: warning: parameter default at includes/packages/recaptcha/ReCaptcha/RequestParameters.php:66 is a branch point this pass does not instrument",
+   "includes/packages/recaptcha/ReCaptcha/RequestParameters.php: warning: parameter default at includes/packages/recaptcha/ReCaptcha/RequestParameters.php:66 is a branch point this pass does not instrument",
+   "includes/packages/recaptcha/ReCaptcha/ReCaptcha.php: warning: parameter default at includes/packages/recaptcha/ReCaptcha/ReCaptcha.php:58 is a branch point this pass does not instrument",
+   "includes/packages/recaptcha/ReCaptcha/ReCaptcha.php: warning: parameter default at includes/packages/recaptcha/ReCaptcha/ReCaptcha.php:85 is a branch point this pass does not instrument",
+   "includes/packages/captcha/securimage.php: warning: parameter default at includes/packages/captcha/securimage.php:907 is a branch point this pass does not instrument",
+   "includes/packages/captcha/securimage.php: warning: parameter default at includes/packages/captcha/securimage.php:1032 is a branch point this pass does not instrument",
+   "includes/packages/captcha/securimage.php: warning: parameter default at includes/packages/captcha/securimage.php:1032 is a branch point this pass does not instrument",
+   "includes/packages/captcha/securimage.php: warning: parameter default at includes/packages/captcha/securimage.php:1060 is a branch point this pass does not instrument",
+   "includes/packages/captcha/securimage.php: warning: parameter default at includes/packages/captcha/securimage.php:1106 is a branch point this pass does not instrument",
+   "includes/packages/captcha/securimage.php: warning: parameter default at includes/packages/captcha/securimage.php:1190 is a branch point this pass does not instrument",
+   "includes/packages/captcha/securimage.php: warning: parameter default at includes/packages/captcha/securimage.php:1432 is a branch point this pass does not instrument",
+   "includes/packages/captcha/securimage.php: warning: parameter default at includes/packages/captcha/securimage.php:1573 is a branch point this pass does not instrument",
+   "includes/packages/captcha/securimage.php: warning: parameter default at includes/packages/captcha/securimage.php:1573 is a branch point this pass does not instrument",
+   "includes/packages/captcha/securimage.php: warning: parameter default at includes/packages/captcha/securimage.php:2155 is a branch point this pass does not instrument",
+   "includes/packages/captcha/securimage.php: warning: parameter default at includes/packages/captcha/securimage.php:2937 is a branch point this pass does not instrument",
+   "includes/packages/captcha/securimage.php: warning: parameter default at includes/packages/captcha/securimage.php:3223 is a branch point this pass does not instrument",
+   "includes/packages/captcha/securimage.php: warning: parameter default at includes/packages/captcha/securimage.php:3223 is a branch point this pass does not instrument",
+   "includes/packages/captcha/securimage.php: warning: parameter default at includes/packages/captcha/securimage.php:3223 is a branch point this pass does not instrument",
+   "includes/packages/captcha/securimage.php: warning: parameter default at includes/packages/captcha/securimage.php:3285 is a branch point this pass does not instrument",
+   "includes/packages/captcha/WavFile.php: warning: parameter default at includes/packages/captcha/WavFile.php:235 is a branch point this pass does not instrument",
+   "includes/packages/captcha/WavFile.php: warning: parameter default at includes/packages/captcha/WavFile.php:235 is a branch point this pass does not instrument",
+   "includes/packages/captcha/WavFile.php: warning: parameter default at includes/packages/captcha/WavFile.php:235 is a branch point this pass does not instrument",
+   "includes/packages/captcha/WavFile.php: warning: parameter default at includes/packages/captcha/WavFile.php:301 is a branch point this pass does not instrument",
+   "includes/packages/captcha/WavFile.php: warning: parameter default at includes/packages/captcha/WavFile.php:385 is a branch point this pass does not instrument",
+   "includes/packages/captcha/WavFile.php: warning: parameter default at includes/packages/captcha/WavFile.php:473 is a branch point this pass does not instrument",
+   "includes/packages/captcha/WavFile.php: warning: parameter default at includes/packages/captcha/WavFile.php:488 is a branch point this pass does not instrument",
+   "includes/packages/captcha/WavFile.php: warning: parameter default at includes/packages/captcha/WavFile.php:509 is a branch point this pass does not instrument",
+   "includes/packages/captcha/WavFile.php: warning: parameter default at includes/packages/captcha/WavFile.php:527 is a branch point this pass does not instrument",
+   "includes/packages/captcha/WavFile.php: warning: parameter default at includes/packages/captcha/WavFile.php:550 is a branch point this pass does not instrument",
+   "includes/packages/captcha/WavFile.php: warning: parameter default at includes/packages/captcha/WavFile.php:572 is a branch point this pass does not instrument",
+   "includes/packages/captcha/WavFile.php: warning: parameter default at includes/packages/captcha/WavFile.php:591 is a branch point this pass does not instrument",
+   "includes/packages/captcha/WavFile.php: warning: parameter default at includes/packages/captcha/WavFile.php:610 is a branch point this pass does not instrument",
+   "includes/packages/captcha/WavFile.php: warning: parameter default at includes/packages/captcha/WavFile.php:640 is a branch point this pass does not instrument",
+   "includes/packages/captcha/WavFile.php: warning: parameter default at includes/packages/captcha/WavFile.php:679 is a branch point this pass does not instrument",
+   "includes/packages/captcha/WavFile.php: warning: parameter default at includes/packages/captcha/WavFile.php:742 is a branch point this pass does not instrument",
+   "includes/packages/captcha/WavFile.php: warning: parameter default at includes/packages/captcha/WavFile.php:762 is a branch point this pass does not instrument",
+   "includes/packages/captcha/WavFile.php: warning: parameter default at includes/packages/captcha/WavFile.php:780 is a branch point this pass does not instrument",
+   "includes/packages/captcha/WavFile.php: warning: parameter default at includes/packages/captcha/WavFile.php:795 is a branch point this pass does not instrument",
+   "includes/packages/captcha/WavFile.php: warning: parameter default at includes/packages/captcha/WavFile.php:820 is a branch point this pass does not instrument",
+   "includes/packages/captcha/WavFile.php: warning: parameter default at includes/packages/captcha/WavFile.php:966 is a branch point this pass does not instrument",
+   "includes/packages/captcha/WavFile.php: warning: parameter default at includes/packages/captcha/WavFile.php:1006 is a branch point this pass does not instrument",
+   "includes/packages/captcha/WavFile.php: warning: parameter default at includes/packages/captcha/WavFile.php:1036 is a branch point this pass does not instrument",
+   "includes/packages/captcha/WavFile.php: warning: parameter default at includes/packages/captcha/WavFile.php:1312 is a branch point this pass does not instrument",
+   "includes/packages/captcha/WavFile.php: warning: parameter default at includes/packages/captcha/WavFile.php:1312 is a branch point this pass does not instrument",
+   "includes/packages/captcha/WavFile.php: warning: parameter default at includes/packages/captcha/WavFile.php:1606 is a branch point this pass does not instrument",
+   "includes/packages/captcha/WavFile.php: warning: parameter default at includes/packages/captcha/WavFile.php:1606 is a branch point this pass does not instrument",
+   "includes/packages/captcha/WavFile.php: warning: parameter default at includes/packages/captcha/WavFile.php:1751 is a branch point this pass does not instrument",
+   "includes/packages/captcha/WavFile.php: warning: parameter default at includes/packages/captcha/WavFile.php:1763 is a branch point this pass does not instrument",
+   "includes/packages/captcha/WavFile.php: warning: parameter default at includes/packages/captcha/WavFile.php:1785 is a branch point this pass does not instrument",
+   "includes/packages/captcha/WavFile.php: warning: parameter default at includes/packages/captcha/WavFile.php:1798 is a branch point this pass does not instrument",
+   "includes/packages/captcha/WavFile.php: warning: parameter default at includes/packages/captcha/WavFile.php:1798 is a branch point this pass does not instrument",
+   "includes/packages/ckeditor/ckeditor_php5.php: warning: parameter default at includes/packages/ckeditor/ckeditor_php5.php:96 is a branch point this pass does not instrument",
+   "includes/packages/ckeditor/ckeditor_php5.php: warning: parameter default at includes/packages/ckeditor/ckeditor_php5.php:131 is a branch point this pass does not instrument",
+   "includes/packages/ckeditor/ckeditor_php5.php: warning: parameter default at includes/packages/ckeditor/ckeditor_php5.php:131 is a branch point this pass does not instrument",
+   "includes/packages/ckeditor/ckeditor_php5.php: warning: parameter default at includes/packages/ckeditor/ckeditor_php5.php:131 is a branch point this pass does not instrument",
+   "includes/packages/ckeditor/ckeditor_php5.php: warning: parameter default at includes/packages/ckeditor/ckeditor_php5.php:173 is a branch point this pass does not instrument",
+   "includes/packages/ckeditor/ckeditor_php5.php: warning: parameter default at includes/packages/ckeditor/ckeditor_php5.php:173 is a branch point this pass does not instrument",
+   "includes/packages/ckeditor/ckeditor_php5.php: warning: parameter default at includes/packages/ckeditor/ckeditor_php5.php:216 is a branch point this pass does not instrument",
+   "includes/packages/ckeditor/ckeditor_php5.php: warning: parameter default at includes/packages/ckeditor/ckeditor_php5.php:288 is a branch point this pass does not instrument",
+   "includes/packages/ckeditor/ckeditor_php5.php: warning: parameter default at includes/packages/ckeditor/ckeditor_php5.php:328 is a branch point this pass does not instrument",
+   "includes/packages/ckeditor/ckeditor_php5.php: warning: parameter default at includes/packages/ckeditor/ckeditor_php5.php:360 is a branch point this pass does not instrument",
+   "includes/packages/ckeditor/ckeditor_php5.php: warning: parameter default at includes/packages/ckeditor/ckeditor_php5.php:360 is a branch point this pass does not instrument",
+   "includes/packages/ckeditor/ckeditor_php5.php: warning: .= on a non-trivial target at includes/packages/ckeditor/ckeditor_php5.php:391 is a branch point this pass does not instrument",
+   "includes/packages/ckeditor/ckeditor_php5.php: warning: .= on a non-trivial target at includes/packages/ckeditor/ckeditor_php5.php:393 is a branch point this pass does not instrument",
+   "includes/packages/ckeditor/ckeditor_php4.php: warning: parameter default at includes/packages/ckeditor/ckeditor_php4.php:100 is a branch point this pass does not instrument",
+   "includes/packages/ckeditor/ckeditor_php4.php: warning: parameter default at includes/packages/ckeditor/ckeditor_php4.php:135 is a branch point this pass does not instrument",
+   "includes/packages/ckeditor/ckeditor_php4.php: warning: parameter default at includes/packages/ckeditor/ckeditor_php4.php:135 is a branch point this pass does not instrument",
+   "includes/packages/ckeditor/ckeditor_php4.php: warning: parameter default at includes/packages/ckeditor/ckeditor_php4.php:135 is a branch point this pass does not instrument",
+   "includes/packages/ckeditor/ckeditor_php4.php: warning: parameter default at includes/packages/ckeditor/ckeditor_php4.php:177 is a branch point this pass does not instrument",
+   "includes/packages/ckeditor/ckeditor_php4.php: warning: parameter default at includes/packages/ckeditor/ckeditor_php4.php:177 is a branch point this pass does not instrument",
+   "includes/packages/ckeditor/ckeditor_php4.php: warning: parameter default at includes/packages/ckeditor/ckeditor_php4.php:220 is a branch point this pass does not instrument",
+   "includes/packages/ckeditor/ckeditor_php4.php: warning: parameter default at includes/packages/ckeditor/ckeditor_php4.php:292 is a branch point this pass does not instrument",
+   "includes/packages/ckeditor/ckeditor_php4.php: warning: parameter default at includes/packages/ckeditor/ckeditor_php4.php:332 is a branch point this pass does not instrument",
+   "includes/packages/ckeditor/ckeditor_php4.php: warning: parameter default at includes/packages/ckeditor/ckeditor_php4.php:366 is a branch point this pass does not instrument",
+   "includes/packages/ckeditor/ckeditor_php4.php: warning: parameter default at includes/packages/ckeditor/ckeditor_php4.php:366 is a branch point this pass does not instrument",
+   "includes/packages/ckeditor/ckeditor_php4.php: warning: .= on a non-trivial target at includes/packages/ckeditor/ckeditor_php4.php:397 is a branch point this pass does not instrument",
+   "includes/packages/ckeditor/ckeditor_php4.php: warning: .= on a non-trivial target at includes/packages/ckeditor/ckeditor_php4.php:399 is a branch point this pass does not instrument",
+   "includes/packages/useragent.inc.php: warning: parameter default at includes/packages/useragent.inc.php:242 is a branch point this pass does not instrument",
+   "includes/packages/useragent.inc.php: warning: parameter default at includes/packages/useragent.inc.php:242 is a branch point this pass does not instrument",
+   "includes/packages/useragent.inc.php: warning: parameter default at includes/packages/useragent.inc.php:1194 is a branch point this pass does not instrument",
+   "includes/packages/useragent.inc.php: warning: parameter default at includes/packages/useragent.inc.php:1194 is a branch point this pass does not instrument",
+   "includes/packages/useragent.inc.php: warning: parameter default at includes/packages/useragent.inc.php:1250 is a branch point this pass does not instrument",
+   "includes/packages/htmLawed.php: warning: parameter default at includes/packages/htmLawed.php:12 is a branch point this pass does not instrument",
+   "includes/packages/htmLawed.php: warning: parameter default at includes/packages/htmLawed.php:12 is a branch point this pass does not instrument",
+   "includes/packages/htmLawed.php: warning: parameter default at includes/packages/htmLawed.php:151 is a branch point this pass does not instrument",
+   "includes/packages/htmLawed.php: warning: parameter default at includes/packages/htmLawed.php:151 is a branch point this pass does not instrument",
+   "includes/packages/htmLawed.php: warning: parameter default at includes/packages/htmLawed.php:338 is a branch point this pass does not instrument",
+   "includes/packages/htmLawed.php: warning: .= on a non-trivial target at includes/packages/htmLawed.php:525 is a branch point this pass does not instrument",
+   "includes/packages/htmLawed.php: warning: parameter default at includes/packages/htmLawed.php:626 is a branch point this pass does not instrument",
+   "includes/packages/htmLawed.php: warning: parameter default at includes/packages/htmLawed.php:711 is a branch point this pass does not instrument",
+   "includes/packages/PluploadHandler.php: warning: parameter default at includes/packages/PluploadHandler.php:71 is a branch point this pass does not instrument",
+   "includes/packages/PluploadHandler.php: warning: parameter default at includes/packages/PluploadHandler.php:197 is a branch point this pass does not instrument",
+   "includes/packages/PluploadHandler.php: warning: parameter default at includes/packages/PluploadHandler.php:284 is a branch point this pass does not instrument",
+   "includes/packages/PluploadHandler.php: warning: parameter default at includes/packages/PluploadHandler.php:284 is a branch point this pass does not instrument",
+   "includes/packages/PluploadHandler.php: warning: parameter default at includes/packages/PluploadHandler.php:367 is a branch point this pass does not instrument",
+   "includes/database/DatabasePDO.php: warning: parameter default at includes/database/DatabasePDO.php:25 is a branch point this pass does not instrument",
+   "includes/database/DatabasePDO.php: warning: parameter default at includes/database/DatabasePDO.php:44 is a branch point this pass does not instrument",
+   "includes/database/DatabasePDO.php: warning: parameter default at includes/database/DatabasePDO.php:70 is a branch point this pass does not instrument",
+   "includes/database/DatabasePDO.php: warning: parameter default at includes/database/DatabasePDO.php:94 is a branch point this pass does not instrument",
+   "includes/database/DatabasePDO.php: warning: parameter default at includes/database/DatabasePDO.php:94 is a branch point this pass does not instrument",
+   "includes/database/DatabasePDO.php: warning: parameter default at includes/database/DatabasePDO.php:120 is a branch point this pass does not instrument",
+   "includes/database/DatabasePDO.php: warning: parameter default at includes/database/DatabasePDO.php:120 is a branch point this pass does not instrument",
+   "includes/database/DatabasePDO.php: warning: parameter default at includes/database/DatabasePDO.php:135 is a branch point this pass does not instrument",
+   "includes/database/DatabasePDO.php: warning: parameter default at includes/database/DatabasePDO.php:135 is a branch point this pass does not instrument",
+   "includes/database/DatabasePDO.php: warning: parameter default at includes/database/DatabasePDO.php:135 is a branch point this pass does not instrument",
+   "includes/database/DatabasePDO.php: warning: parameter default at includes/database/DatabasePDO.php:152 is a branch point this pass does not instrument",
+   "includes/database/Database.php: warning: parameter default at includes/database/Database.php:29 is a branch point this pass does not instrument",
+   "includes/database/Database.php: warning: parameter default at includes/database/Database.php:30 is a branch point this pass does not instrument",
+   "includes/database/Database.php: warning: parameter default at includes/database/Database.php:32 is a branch point this pass does not instrument",
+   "includes/database/Database.php: warning: parameter default at includes/database/Database.php:33 is a branch point this pass does not instrument",
+   "includes/database/Database.php: warning: parameter default at includes/database/Database.php:33 is a branch point this pass does not instrument",
+   "includes/database/Database.php: warning: parameter default at includes/database/Database.php:34 is a branch point this pass does not instrument",
+   "includes/database/Database.php: warning: parameter default at includes/database/Database.php:34 is a branch point this pass does not instrument",
+   "includes/database/Database.php: warning: parameter default at includes/database/Database.php:35 is a branch point this pass does not instrument",
+   "includes/database/Database.php: warning: parameter default at includes/database/Database.php:35 is a branch point this pass does not instrument",
+   "includes/database/Database.php: warning: parameter default at includes/database/Database.php:35 is a branch point this pass does not instrument",
+   "includes/database/Database.php: warning: parameter default at includes/database/Database.php:36 is a branch point this pass does not instrument",
+   "includes/functions_global.php: warning: parameter default at includes/functions_global.php:97 is a branch point this pass does not instrument",
+   "includes/functions_global.php: warning: parameter default at includes/functions_global.php:97 is a branch point this pass does not instrument",
+   "includes/functions_global.php: warning: parameter default at includes/functions_global.php:174 is a branch point this pass does not instrument",
+   "includes/functions_global.php: warning: parameter default at includes/functions_global.php:174 is a branch point this pass does not instrument",
+   "includes/functions_global.php: warning: parameter default at includes/functions_global.php:205 is a branch point this pass does not instrument",
+   "includes/functions_global.php: warning: parameter default at includes/functions_global.php:229 is a branch point this pass does not instrument",
+   "includes/functions_global.php: warning: parameter default at includes/functions_global.php:331 is a branch point this pass does not instrument",
+   "includes/functions_global.php: warning: parameter default at includes/functions_global.php:331 is a branch point this pass does not instrument",
+   "includes/functions_global.php: warning: parameter default at includes/functions_global.php:351 is a branch point this pass does not instrument",
+   "includes/functions_global.php: warning: parameter default at includes/functions_global.php:472 is a branch point this pass does not instrument",
+   "includes/functions_global.php: warning: parameter default at includes/functions_global.php:472 is a branch point this pass does not instrument",
+   "includes/functions_global.php: warning: parameter default at includes/functions_global.php:509 is a branch point this pass does not instrument",
+   "includes/class_fees.php: warning: parameter default at includes/class_fees.php:249 is a branch point this pass does not instrument",
+   "includes/functions_invoices.php: warning: parameter default at includes/functions_invoices.php:57 is a branch point this pass does not instrument",
+   "includes/functions_invoices.php: warning: parameter default at includes/functions_invoices.php:141 is a branch point this pass does not instrument",
+   "includes/dates.inc.php: warning: parameter default at includes/dates.inc.php:39 is a branch point this pass does not instrument",
+   "includes/dates.inc.php: warning: parameter default at includes/dates.inc.php:39 is a branch point this pass does not instrument",
+   "includes/dates.inc.php: warning: parameter default at includes/dates.inc.php:59 is a branch point this pass does not instrument",
+   "includes/class_email_handler.php: warning: parameter default at includes/class_email_handler.php:261 is a branch point this pass does not instrument",
+   "includes/class_email_handler.php: warning: parameter default at includes/class_email_handler.php:512 is a branch point this pass does not instrument",
+   "select_category.php: warning: .= on a non-trivial target at select_category.php:172 is a branch point this pass does not instrument"
+  ],
+  "options": {
+   "php7Compat": true,
+   "exitAsHalt": true,
+   "switchCmp": false,
+   "superglobalReads": true,
+   "realAppBuiltins": true,
+   "evalInstrument": true,
+   "newClassMap": {
+    "pdo": "\\AcePDO",
+    "mysqli": "\\AceMysqli"
+   }
+  },
+  "failures": [],
+  "rewrites_total": {
+   "array_key": 932,
+   "autoload7": 1,
+   "builtin_routed": 11,
+   "call7": 184,
+   "catch": 29,
+   "const7": 425,
+   "count7": 295,
+   "curly_offset": 3,
+   "eval": 3,
+   "exit": 223,
+   "explode": 77,
+   "internal_arg": 1454,
+   "nested_ternary": 2,
+   "new_class": 2,
+   "sg_read": 1965,
+   "switch": 78
+  },
+  "rewrites_by_file": {
+   "active_auctions.php": {
+    "const7": 1,
+    "exit": 1,
+    "internal_arg": 2,
+    "sg_read": 7
+   },
+   "admin/aboutus.php": {
+    "const7": 2,
+    "sg_read": 4
+   },
+   "admin/accounts.php": {
+    "const7": 1,
+    "internal_arg": 1,
+    "sg_read": 9
+   },
+   "admin/activatenewsletter.php": {
+    "const7": 1,
+    "sg_read": 3
+   },
+   "admin/addnew.php": {
+    "array_key": 11,
+    "const7": 2,
+    "exit": 1,
+    "sg_read": 20
+   },
+   "admin/adminusers.php": {
+    "array_key": 1,
+    "call7": 2,
+    "const7": 1,
+    "internal_arg": 1,
+    "sg_read": 4
+   },
+   "admin/analytics.php": {
+    "const7": 1,
+    "sg_read": 3
+   },
+   "admin/auctions.php": {
+    "const7": 1,
+    "sg_read": 30
+   },
+   "admin/banips.php": {
+    "const7": 1,
+    "sg_read": 14
+   },
+   "admin/banners.php": {
+    "const7": 1,
+    "sg_read": 3
+   },
+   "admin/boards.php": {
+    "const7": 1,
+    "sg_read": 3
+   },
+   "admin/boardsettings.php": {
+    "const7": 1,
+    "sg_read": 3
+   },
+   "admin/buyerprivacy.php": {
+    "const7": 1,
+    "sg_read": 3
+   },
+   "admin/buyitnow.php": {
+    "const7": 1,
+    "nested_ternary": 1,
+    "sg_read": 8
+   },
+   "admin/categories.php": {
+    "array_key": 14,
+    "call7": 2,
+    "const7": 2,
+    "count7": 2,
+    "exit": 1,
+    "explode": 1,
+    "internal_arg": 4,
+    "sg_read": 35
+   },
+   "admin/categoriestrans.php": {
+    "array_key": 2,
+    "const7": 3,
+    "count7": 1,
+    "internal_arg": 5,
+    "sg_read": 4
+   },
+   "admin/catsorting.php": {
+    "const7": 1,
+    "sg_read": 4
+   },
+   "admin/checkversion.php": {
+    "const7": 1,
+    "internal_arg": 1
+   },
+   "admin/clear_image_cache.php": {
+    "const7": 4,
+    "internal_arg": 5,
+    "sg_read": 2
+   },
+   "admin/clearcache.php": {
+    "const7": 4,
+    "internal_arg": 5,
+    "sg_read": 2
+   },
+   "admin/contactseller.php": {
+    "const7": 1,
+    "sg_read": 4
+   },
+   "admin/cookiespolicy.php": {
+    "const7": 2,
+    "sg_read": 4
+   },
+   "admin/counters.php": {
+    "const7": 1,
+    "sg_read": 5
+   },
+   "admin/countries.php": {
+    "array_key": 5,
+    "const7": 1,
+    "count7": 5,
+    "sg_read": 14
+   },
+   "admin/currency.php": {
+    "array_key": 4,
+    "const7": 1,
+    "sg_read": 25
+   },
+   "admin/defaultcountry.php": {
+    "array_key": 1,
+    "const7": 1,
+    "sg_read": 3
+   },
+   "admin/deleteauction.php": {
+    "array_key": 1,
+    "const7": 5,
+    "count7": 1,
+    "exit": 3,
+    "internal_arg": 7,
+    "sg_read": 8
+   },
+   "admin/deletebanner.php": {
+    "const7": 2,
+    "exit": 1,
+    "internal_arg": 1,
+    "sg_read": 3
+   },
+   "admin/deletemessage.php": {
+    "const7": 1,
+    "exit": 2,
+    "internal_arg": 1,
+    "sg_read": 6
+   },
+   "admin/deletenew.php": {
+    "const7": 1,
+    "exit": 2,
+    "internal_arg": 1,
+    "sg_read": 7
+   },
+   "admin/deleteuser.php": {
+    "array_key": 1,
+    "const7": 1,
+    "count7": 1,
+    "exit": 3,
+    "internal_arg": 3,
+    "sg_read": 6
+   },
+   "admin/deleteuserfeed.php": {
+    "const7": 1,
+    "exit": 2,
+    "internal_arg": 1,
+    "sg_read": 6
+   },
+   "admin/displaysettings.php": {
+    "const7": 1,
+    "sg_read": 12
+   },
+   "admin/durations.php": {
+    "array_key": 6,
+    "call7": 1,
+    "const7": 1,
+    "count7": 1,
+    "sg_read": 10
+   },
+   "admin/editadminuser.php": {
+    "const7": 2,
+    "exit": 1,
+    "sg_read": 12
+   },
+   "admin/editauction.php": {
+    "array_key": 9,
+    "call7": 3,
+    "const7": 8,
+    "count7": 6,
+    "exit": 3,
+    "explode": 1,
+    "internal_arg": 7,
+    "sg_read": 50
+   },
+   "admin/editbanner.php": {
+    "call7": 2,
+    "const7": 8,
+    "count7": 1,
+    "explode": 1,
+    "internal_arg": 10,
+    "sg_read": 19,
+    "switch": 1
+   },
+   "admin/editbannersuser.php": {
+    "const7": 1,
+    "exit": 1,
+    "internal_arg": 1,
+    "sg_read": 10
+   },
+   "admin/editboards.php": {
+    "const7": 1,
+    "exit": 1,
+    "sg_read": 12
+   },
+   "admin/editfaq.php": {
+    "array_key": 16,
+    "const7": 2,
+    "exit": 1,
+    "sg_read": 18
+   },
+   "admin/editfaqscategory.php": {
+    "array_key": 7,
+    "const7": 1,
+    "exit": 1,
+    "sg_read": 11
+   },
+   "admin/editmessage.php": {
+    "const7": 1,
+    "exit": 1,
+    "internal_arg": 1,
+    "sg_read": 11
+   },
+   "admin/editmessages.php": {
+    "const7": 1,
+    "internal_arg": 1,
+    "sg_read": 5
+   },
+   "admin/editnew.php": {
+    "array_key": 7,
+    "const7": 2,
+    "exit": 2,
+    "sg_read": 17
+   },
+   "admin/edituser.php": {
+    "call7": 2,
+    "const7": 2,
+    "exit": 2,
+    "explode": 2,
+    "internal_arg": 4,
+    "sg_read": 41
+   },
+   "admin/edituserfeed.php": {
+    "const7": 1,
+    "sg_read": 6
+   },
+   "admin/emailsettings.php": {
+    "array_key": 1,
+    "call7": 1,
+    "const7": 1,
+    "exit": 1,
+    "internal_arg": 5,
+    "sg_read": 30
+   },
+   "admin/enablefees.php": {
+    "const7": 1,
+    "sg_read": 10
+   },
+   "admin/errorhandling.php": {
+    "const7": 2,
+    "sg_read": 3
+   },
+   "admin/errorlog.php": {
+    "const7": 1,
+    "internal_arg": 1,
+    "sg_read": 4
+   },
+   "admin/excludeauction.php": {
+    "array_key": 3,
+    "const7": 3,
+    "count7": 2,
+    "exit": 3,
+    "internal_arg": 2,
+    "sg_read": 9
+   },
+   "admin/excludeuser.php": {
+    "const7": 4,
+    "exit": 3,
+    "sg_read": 15,
+    "switch": 1
+   },
+   "admin/faqs.php": {
+    "const7": 1,
+    "sg_read": 3
+   },
+   "admin/faqscategories.php": {
+    "array_key": 3,
+    "call7": 2,
+    "const7": 1,
+    "exit": 1,
+    "explode": 1,
+    "internal_arg": 1,
+    "sg_read": 15
+   },
+   "admin/fee_gateways.php": {
+    "array_key": 20,
+    "const7": 2,
+    "sg_read": 11
+   },
+   "admin/fees.php": {
+    "array_key": 16,
+    "const7": 1,
+    "count7": 2,
+    "sg_read": 51
+   },
+   "admin/footer.php": {
+    "exit": 1
+   },
+   "admin/header.php": {
+    "const7": 1,
+    "exit": 1
+   },
+   "admin/help.php": {
+    "const7": 1
+   },
+   "admin/increments.php": {
+    "array_key": 23,
+    "call7": 1,
+    "const7": 1,
+    "count7": 2,
+    "sg_read": 7
+   },
+   "admin/index.php": {
+    "array_key": 2,
+    "const7": 8,
+    "internal_arg": 11,
+    "sg_read": 2,
+    "switch": 2
+   },
+   "admin/invoice.php": {
+    "const7": 1,
+    "internal_arg": 3,
+    "sg_read": 15
+   },
+   "admin/invoice_settings.php": {
+    "const7": 1,
+    "sg_read": 4
+   },
+   "admin/listauctions.php": {
+    "const7": 1,
+    "internal_arg": 1,
+    "sg_read": 6
+   },
+   "admin/listclosedauctions.php": {
+    "const7": 1,
+    "internal_arg": 1,
+    "sg_read": 3
+   },
+   "admin/listreportedauctions.php": {
+    "const7": 1,
+    "internal_arg": 1,
+    "sg_read": 6
+   },
+   "admin/listsuspendedauctions.php": {
+    "const7": 1,
+    "internal_arg": 1,
+    "sg_read": 3
+   },
+   "admin/listusers.php": {
+    "const7": 1,
+    "internal_arg": 2,
+    "sg_read": 18,
+    "switch": 2
+   },
+   "admin/loggedin.inc.php": {
+    "array_key": 1,
+    "count7": 1,
+    "exit": 3,
+    "internal_arg": 3,
+    "sg_read": 3
+   },
+   "admin/login.php": {
+    "const7": 3,
+    "exit": 3,
+    "internal_arg": 5,
+    "sg_read": 15,
+    "switch": 1
+   },
+   "admin/logo_upload.php": {
+    "const7": 2,
+    "internal_arg": 2,
+    "sg_read": 2
+   },
+   "admin/logout.php": {
+    "const7": 1
+   },
+   "admin/maintainance.php": {
+    "const7": 2,
+    "sg_read": 6
+   },
+   "admin/managebanners.php": {
+    "const7": 1,
+    "sg_read": 3
+   },
+   "admin/membertypes.php": {
+    "array_key": 3,
+    "call7": 1,
+    "const7": 3,
+    "sg_read": 7
+   },
+   "admin/metatags.php": {
+    "const7": 1,
+    "sg_read": 4
+   },
+   "admin/moderateauctions.php": {
+    "const7": 1,
+    "internal_arg": 1,
+    "sg_read": 6
+   },
+   "admin/moderation.php": {
+    "const7": 1,
+    "sg_read": 5
+   },
+   "admin/multilingual.php": {
+    "const7": 1,
+    "sg_read": 4
+   },
+   "admin/newadminuser.php": {
+    "const7": 2,
+    "exit": 1,
+    "internal_arg": 1,
+    "sg_read": 16
+   },
+   "admin/newbannersuser.php": {
+    "const7": 1,
+    "exit": 1,
+    "internal_arg": 1,
+    "sg_read": 15
+   },
+   "admin/newboard.php": {
+    "const7": 1,
+    "exit": 1,
+    "sg_read": 19
+   },
+   "admin/newfaq.php": {
+    "array_key": 10,
+    "const7": 1,
+    "exit": 1,
+    "sg_read": 13
+   },
+   "admin/news.php": {
+    "const7": 1,
+    "internal_arg": 1,
+    "sg_read": 3
+   },
+   "admin/newsletter.php": {
+    "const7": 2,
+    "internal_arg": 1,
+    "sg_read": 11,
+    "switch": 1
+   },
+   "admin/newuser.php": {
+    "call7": 2,
+    "const7": 2,
+    "exit": 1,
+    "explode": 1,
+    "internal_arg": 4,
+    "sg_read": 64
+   },
+   "admin/payments.php": {
+    "const7": 1,
+    "internal_arg": 1,
+    "sg_read": 8
+   },
+   "admin/privacypolicy.php": {
+    "const7": 2,
+    "sg_read": 4
+   },
+   "admin/profile.php": {
+    "array_key": 4,
+    "call7": 2,
+    "const7": 1,
+    "internal_arg": 4,
+    "sg_read": 16
+   },
+   "admin/removefrommoderation.php": {
+    "array_key": 1,
+    "const7": 3,
+    "exit": 3,
+    "internal_arg": 2,
+    "sg_read": 9
+   },
+   "admin/searchauctions.php": {
+    "array_key": 2,
+    "const7": 1,
+    "internal_arg": 3,
+    "sg_read": 14,
+    "switch": 1
+   },
+   "admin/settings.php": {
+    "const7": 1,
+    "sg_read": 15
+   },
+   "admin/spam.php": {
+    "const7": 1,
+    "sg_read": 14
+   },
+   "admin/stats_settings.php": {
+    "const7": 1,
+    "sg_read": 13
+   },
+   "admin/tax.php": {
+    "const7": 1,
+    "sg_read": 4
+   },
+   "admin/tax_levels.php": {
+    "call7": 4,
+    "const7": 1,
+    "explode": 2,
+    "sg_read": 24
+   },
+   "admin/terms.php": {
+    "const7": 2,
+    "sg_read": 4
+   },
+   "admin/theme.php": {
+    "array_key": 3,
+    "call7": 1,
+    "const7": 2,
+    "count7": 1,
+    "exit": 1,
+    "internal_arg": 17,
+    "sg_read": 30
+   },
+   "admin/time.php": {
+    "const7": 2,
+    "sg_read": 4
+   },
+   "admin/userbanners.php": {
+    "call7": 2,
+    "const7": 8,
+    "count7": 1,
+    "exit": 1,
+    "explode": 1,
+    "internal_arg": 12,
+    "sg_read": 26,
+    "switch": 1
+   },
+   "admin/userfeedback.php": {
+    "const7": 2,
+    "count7": 1,
+    "internal_arg": 2,
+    "sg_read": 4,
+    "switch": 1
+   },
+   "admin/usergroups.php": {
+    "array_key": 6,
+    "const7": 1,
+    "count7": 1,
+    "explode": 1,
+    "sg_read": 32
+   },
+   "admin/usersettings.php": {
+    "const7": 1,
+    "sg_read": 9
+   },
+   "admin/util_cc1.php": {
+    "array_key": 4,
+    "const7": 3,
+    "internal_arg": 3
+   },
+   "admin/viewaccessstats.php": {
+    "array_key": 24,
+    "call7": 1,
+    "const7": 1,
+    "count7": 1,
+    "internal_arg": 3,
+    "sg_read": 3
+   },
+   "admin/viewbrowserstats.php": {
+    "array_key": 4,
+    "const7": 1,
+    "internal_arg": 2
+   },
+   "admin/viewfilters.php": {
+    "const7": 1,
+    "exit": 1,
+    "sg_read": 2
+   },
+   "admin/viewplatformstats.php": {
+    "array_key": 4,
+    "const7": 1,
+    "internal_arg": 2
+   },
+   "admin/viewuserips.php": {
+    "const7": 1,
+    "exit": 1,
+    "internal_arg": 3,
+    "sg_read": 13
+   },
+   "admin/viewwinners.php": {
+    "array_key": 1,
+    "const7": 1,
+    "exit": 2,
+    "sg_read": 2
+   },
+   "admin/wordsfilter.php": {
+    "const7": 1,
+    "explode": 1,
+    "sg_read": 4
+   },
+   "adsearch.php": {
+    "call7": 2,
+    "const7": 2,
+    "count7": 2,
+    "exit": 1,
+    "sg_read": 5
+   },
+   "ajax.php": {
+    "const7": 1,
+    "sg_read": 1,
+    "switch": 1
+   },
+   "auction_watch.php": {
+    "array_key": 4,
+    "call7": 2,
+    "const7": 1,
+    "count7": 2,
+    "exit": 1,
+    "explode": 3,
+    "internal_arg": 2,
+    "sg_read": 6
+   },
+   "bid.php": {
+    "call7": 2,
+    "const7": 4,
+    "count7": 1,
+    "exit": 4,
+    "explode": 1,
+    "internal_arg": 5,
+    "sg_read": 9
+   },
+   "boards.php": {
+    "exit": 1
+   },
+   "browse.php": {
+    "array_key": 6,
+    "call7": 1,
+    "const7": 2,
+    "count7": 1,
+    "exit": 1,
+    "internal_arg": 1,
+    "sg_read": 12
+   },
+   "buy_now.php": {
+    "call7": 1,
+    "const7": 4,
+    "count7": 1,
+    "exit": 6,
+    "internal_arg": 2,
+    "sg_read": 9
+   },
+   "buying.php": {
+    "const7": 1,
+    "exit": 1,
+    "internal_arg": 1,
+    "sg_read": 6
+   },
+   "buysellnofeedback.php": {
+    "const7": 1,
+    "exit": 1
+   },
+   "cache/tpl_adminClassic_adminpages.tpl.php": {
+    "array_key": 1,
+    "count7": 1
+   },
+   "cache/tpl_adminClassic_categories.tpl.php": {
+    "array_key": 1,
+    "count7": 1
+   },
+   "cache/tpl_adminClassic_fees.tpl.php": {
+    "array_key": 1,
+    "count7": 1
+   },
+   "cache/tpl_adminClassic_header.tpl.php": {
+    "array_key": 2,
+    "count7": 2
+   },
+   "cache/tpl_adminClassic_home.tpl.php": {
+    "array_key": 1,
+    "count7": 1
+   },
+   "cache/tpl_adminClassic_listauctions.tpl.php": {
+    "array_key": 2,
+    "count7": 2
+   },
+   "cache/tpl_adminClassic_listusers.tpl.php": {
+    "array_key": 2,
+    "count7": 2
+   },
+   "cache/tpl_adminClassic_news.tpl.php": {
+    "array_key": 2,
+    "count7": 2
+   },
+   "cache/tpl_modern_browse.tpl.php": {
+    "array_key": 3,
+    "count7": 3
+   },
+   "cache/tpl_modern_home.tpl.php": {
+    "array_key": 8,
+    "count7": 8
+   },
+   "cache/tpl_modern_item.tpl.php": {
+    "array_key": 5,
+    "count7": 5
+   },
+   "cache/tpl_modern_register.tpl.php": {
+    "array_key": 1,
+    "count7": 1
+   },
+   "cache/tpl_modern_select_category.tpl.php": {
+    "array_key": 2,
+    "count7": 2
+   },
+   "cache/tpl_modern_sell.tpl.php": {
+    "array_key": 1,
+    "const7": 1,
+    "count7": 1
+   },
+   "cache/tpl_modern_yourauctions.tpl.php": {
+    "array_key": 2,
+    "count7": 2
+   },
+   "cache/tpl_modern_yourbids.tpl.php": {
+    "array_key": 1,
+    "count7": 1
+   },
+   "clickthrough.php": {
+    "exit": 1,
+    "sg_read": 2
+   },
+   "closed_auctions.php": {
+    "const7": 1,
+    "exit": 1,
+    "internal_arg": 1,
+    "sg_read": 6
+   },
+   "common.php": {
+    "const7": 17,
+    "exit": 1,
+    "internal_arg": 9
+   },
+   "confirm.php": {
+    "internal_arg": 4,
+    "sg_read": 23
+   },
+   "contents.php": {
+    "sg_read": 1,
+    "switch": 1
+   },
+   "cron.php": {
+    "array_key": 19,
+    "call7": 3,
+    "const7": 18,
+    "count7": 4,
+    "exit": 1,
+    "internal_arg": 29
+   },
+   "edit_active_auction.php": {
+    "call7": 1,
+    "const7": 8,
+    "count7": 1,
+    "exit": 2,
+    "explode": 1,
+    "internal_arg": 10,
+    "sg_read": 4
+   },
+   "edit_data.php": {
+    "array_key": 15,
+    "const7": 4,
+    "exit": 1,
+    "internal_arg": 3,
+    "sg_read": 46
+   },
+   "email_request.php": {
+    "exit": 1,
+    "internal_arg": 3,
+    "sg_read": 9
+   },
+   "error.php": {
+    "internal_arg": 1
+   },
+   "feedback.php": {
+    "const7": 2,
+    "count7": 3,
+    "exit": 2,
+    "internal_arg": 2,
+    "sg_read": 53,
+    "switch": 1
+   },
+   "fees.php": {
+    "exit": 1
+   },
+   "forgotpasswd.php": {
+    "const7": 1,
+    "internal_arg": 3,
+    "sg_read": 8
+   },
+   "friend.php": {
+    "const7": 2,
+    "exit": 1,
+    "internal_arg": 2,
+    "sg_read": 24
+   },
+   "getthumb.php": {
+    "call7": 1,
+    "const7": 11,
+    "exit": 8,
+    "internal_arg": 13,
+    "sg_read": 7,
+    "switch": 2
+   },
+   "header.php": {
+    "const7": 5,
+    "exit": 2,
+    "internal_arg": 3
+   },
+   "includes/Time.php": {
+    "exit": 1,
+    "internal_arg": 3
+   },
+   "includes/User.php": {
+    "call7": 1,
+    "count7": 1,
+    "exit": 4,
+    "internal_arg": 4,
+    "sg_read": 3
+   },
+   "includes/auction/Auction.php": {
+    "array_key": 4,
+    "exit": 1
+   },
+   "includes/browseitems.inc.php": {
+    "const7": 1,
+    "exit": 1,
+    "internal_arg": 2
+   },
+   "includes/calendar.inc.php": {
+    "exit": 1,
+    "internal_arg": 3
+   },
+   "includes/class_MPTTcategories.php": {
+    "array_key": 10,
+    "call7": 2,
+    "const7": 1,
+    "count7": 23,
+    "exit": 1,
+    "internal_arg": 1
+   },
+   "includes/class_email_handler.php": {
+    "array_key": 19,
+    "call7": 9,
+    "catch": 4,
+    "const7": 2,
+    "count7": 11,
+    "eval": 1,
+    "exit": 1,
+    "explode": 3,
+    "internal_arg": 25,
+    "switch": 3
+   },
+   "includes/class_fees.php": {
+    "array_key": 1,
+    "const7": 1,
+    "count7": 1,
+    "exit": 6,
+    "explode": 6,
+    "internal_arg": 18,
+    "switch": 1
+   },
+   "includes/config/gateways.php": {
+    "exit": 1
+   },
+   "includes/config/timezones.php": {
+    "exit": 1
+   },
+   "includes/database/Database.php": {
+    "exit": 1
+   },
+   "includes/database/DatabasePDO.php": {
+    "array_key": 14,
+    "catch": 7,
+    "count7": 1,
+    "exit": 1,
+    "internal_arg": 1,
+    "new_class": 1
+   },
+   "includes/datacheck.inc.php": {
+    "count7": 1,
+    "exit": 1,
+    "internal_arg": 1
+   },
+   "includes/dates.inc.php": {
+    "array_key": 2,
+    "exit": 1,
+    "explode": 2,
+    "internal_arg": 13
+   },
+   "includes/diff/diff.php": {
+    "array_key": 8,
+    "call7": 9,
+    "count7": 15,
+    "internal_arg": 43
+   },
+   "includes/diff/engine.php": {
+    "array_key": 75,
+    "call7": 2,
+    "count7": 6,
+    "explode": 4,
+    "internal_arg": 7
+   },
+   "includes/diff/renderer.php": {
+    "array_key": 4,
+    "call7": 8,
+    "count7": 12,
+    "internal_arg": 18,
+    "switch": 4
+   },
+   "includes/email/auction_confirmation.php": {
+    "const7": 1,
+    "exit": 1
+   },
+   "includes/email/auction_pending.php": {
+    "const7": 1,
+    "exit": 1
+   },
+   "includes/email/auction_pending_moderation.php": {
+    "const7": 1,
+    "exit": 1
+   },
+   "includes/email/endauction_cumulative.php": {
+    "exit": 1
+   },
+   "includes/email/endauction_multi_item_win.php": {
+    "const7": 1,
+    "exit": 1
+   },
+   "includes/email/endauction_nowinner.php": {
+    "const7": 1,
+    "exit": 1
+   },
+   "includes/email/endauction_winner.php": {
+    "const7": 1,
+    "exit": 1
+   },
+   "includes/email/endauction_youwin.php": {
+    "array_key": 1,
+    "exit": 1,
+    "internal_arg": 2
+   },
+   "includes/email/endauction_youwin_nodutch.php": {
+    "const7": 1,
+    "exit": 1
+   },
+   "includes/email/outbid.php": {
+    "const7": 1,
+    "exit": 1
+   },
+   "includes/email/seller_end_buynowonly.php": {
+    "const7": 1,
+    "exit": 1
+   },
+   "includes/email/seller_partial_winner.php": {
+    "const7": 1,
+    "exit": 1
+   },
+   "includes/email/user_approved.php": {
+    "exit": 1
+   },
+   "includes/email/user_confirmation.php": {
+    "exit": 1,
+    "internal_arg": 1
+   },
+   "includes/email/user_needapproval.php": {
+    "exit": 1,
+    "internal_arg": 1,
+    "sg_read": 7
+   },
+   "includes/email/user_reactivated.php": {
+    "exit": 1
+   },
+   "includes/email/user_suspended.php": {
+    "exit": 1
+   },
+   "includes/errors.inc.php": {
+    "exit": 2,
+    "switch": 1
+   },
+   "includes/functions_admin.php": {
+    "array_key": 4,
+    "count7": 2,
+    "exit": 1,
+    "internal_arg": 12
+   },
+   "includes/functions_ajax.php": {
+    "call7": 1,
+    "const7": 3,
+    "count7": 1,
+    "exit": 4,
+    "internal_arg": 4
+   },
+   "includes/functions_banners.php": {
+    "array_key": 1,
+    "const7": 3,
+    "count7": 1,
+    "exit": 1,
+    "explode": 2,
+    "internal_arg": 5
+   },
+   "includes/functions_cron.php": {
+    "array_key": 6,
+    "call7": 1,
+    "const7": 1,
+    "count7": 1,
+    "exit": 1,
+    "explode": 1
+   },
+   "includes/functions_global.php": {
+    "array_key": 5,
+    "builtin_routed": 1,
+    "const7": 2,
+    "exit": 3,
+    "explode": 2,
+    "internal_arg": 36,
+    "sg_read": 2,
+    "switch": 2
+   },
+   "includes/functions_invoices.php": {
+    "array_key": 2,
+    "exit": 2,
+    "internal_arg": 2
+   },
+   "includes/functions_rebuild.php": {
+    "array_key": 3,
+    "call7": 1,
+    "const7": 1,
+    "count7": 1,
+    "exit": 1,
+    "internal_arg": 3,
+    "switch": 1
+   },
+   "includes/functions_sell.php": {
+    "array_key": 6,
+    "call7": 3,
+    "count7": 5,
+    "exit": 1,
+    "explode": 3,
+    "internal_arg": 5,
+    "sg_read": 68
+   },
+   "includes/maintainance.php": {
+    "exit": 1,
+    "internal_arg": 1
+   },
+   "includes/messages.inc.php": {
+    "array_key": 1,
+    "call7": 1,
+    "const7": 2,
+    "exit": 1,
+    "internal_arg": 6,
+    "sg_read": 5
+   },
+   "includes/packages/PHPMailer/PHPMailerAutoload.php": {
+    "autoload7": 1,
+    "internal_arg": 4
+   },
+   "includes/packages/PHPMailer/class.phpmailer.php": {
+    "array_key": 12,
+    "builtin_routed": 1,
+    "call7": 18,
+    "catch": 7,
+    "count7": 14,
+    "explode": 7,
+    "internal_arg": 163,
+    "switch": 10
+   },
+   "includes/packages/PHPMailer/class.pop3.php": {
+    "catch": 1,
+    "internal_arg": 7
+   },
+   "includes/packages/PHPMailer/class.smtp.php": {
+    "array_key": 2,
+    "call7": 9,
+    "count7": 1,
+    "explode": 3,
+    "internal_arg": 47,
+    "switch": 3
+   },
+   "includes/packages/PasswordHash.php": {
+    "array_key": 10,
+    "internal_arg": 24
+   },
+   "includes/packages/PluploadHandler.php": {
+    "array_key": 7,
+    "call7": 2,
+    "catch": 1,
+    "const7": 11,
+    "exit": 2,
+    "internal_arg": 44,
+    "sg_read": 6,
+    "switch": 2
+   },
+   "includes/packages/captcha/WavFile.php": {
+    "array_key": 3,
+    "call7": 9,
+    "catch": 1,
+    "curly_offset": 2,
+    "internal_arg": 87,
+    "switch": 4
+   },
+   "includes/packages/captcha/securimage.php": {
+    "array_key": 35,
+    "builtin_routed": 2,
+    "call7": 7,
+    "catch": 8,
+    "const7": 1,
+    "count7": 11,
+    "curly_offset": 1,
+    "exit": 4,
+    "explode": 1,
+    "internal_arg": 170,
+    "new_class": 1,
+    "switch": 8
+   },
+   "includes/packages/captcha/securimage_play.php": {
+    "sg_read": 4
+   },
+   "includes/packages/captcha/securimage_show.php": {
+    "sg_read": 2
+   },
+   "includes/packages/ckeditor/ckeditor.php": {
+    "internal_arg": 1
+   },
+   "includes/packages/ckeditor/ckeditor_php4.php": {
+    "array_key": 22,
+    "builtin_routed": 2,
+    "call7": 7,
+    "count7": 2,
+    "internal_arg": 7
+   },
+   "includes/packages/ckeditor/ckeditor_php5.php": {
+    "array_key": 22,
+    "builtin_routed": 2,
+    "call7": 7,
+    "count7": 2,
+    "internal_arg": 7
+   },
+   "includes/packages/htmLawed.php": {
+    "array_key": 135,
+    "builtin_routed": 3,
+    "call7": 12,
+    "count7": 15,
+    "explode": 15,
+    "internal_arg": 114,
+    "switch": 2
+   },
+   "includes/packages/recaptcha/ReCaptcha/RequestMethod/Curl.php": {
+    "internal_arg": 4
+   },
+   "includes/packages/recaptcha/ReCaptcha/RequestMethod/Post.php": {
+    "array_key": 1,
+    "internal_arg": 3
+   },
+   "includes/packages/recaptcha/ReCaptcha/RequestMethod/Socket.php": {
+    "internal_arg": 5
+   },
+   "includes/packages/recaptcha/ReCaptcha/RequestMethod/SocketPost.php": {
+    "internal_arg": 1
+   },
+   "includes/packages/recaptcha/ReCaptcha/RequestParameters.php": {
+    "internal_arg": 1
+   },
+   "includes/packages/recaptcha/ReCaptcha/Response.php": {
+    "internal_arg": 1
+   },
+   "includes/packages/recaptcha/autoload.php": {
+    "internal_arg": 4
+   },
+   "includes/packages/recaptcha/recaptcha.php": {
+    "const7": 1,
+    "exit": 2
+   },
+   "includes/packages/useragent.inc.php": {
+    "array_key": 44,
+    "call7": 2,
+    "count7": 15,
+    "exit": 2,
+    "internal_arg": 54,
+    "switch": 6
+   },
+   "includes/stats.inc.php": {
+    "array_key": 1,
+    "const7": 1,
+    "count7": 1,
+    "exit": 1,
+    "internal_arg": 5,
+    "sg_read": 1,
+    "switch": 1
+   },
+   "includes/template/Template.php": {
+    "array_key": 50,
+    "call7": 1,
+    "const7": 7,
+    "count7": 11,
+    "eval": 2,
+    "exit": 1,
+    "explode": 2,
+    "internal_arg": 9
+   },
+   "includes/template/TemplateCompile.php": {
+    "array_key": 31,
+    "call7": 8,
+    "count7": 12,
+    "exit": 1,
+    "explode": 2,
+    "internal_arg": 46,
+    "switch": 4
+   },
+   "includes/user_cp.php": {
+    "exit": 1
+   },
+   "index.php": {
+    "array_key": 5,
+    "const7": 3,
+    "count7": 1
+   },
+   "invoices.php": {
+    "const7": 1,
+    "exit": 1,
+    "internal_arg": 1,
+    "sg_read": 3
+   },
+   "item.php": {
+    "array_key": 15,
+    "call7": 5,
+    "const7": 7,
+    "count7": 6,
+    "exit": 1,
+    "explode": 2,
+    "internal_arg": 12,
+    "sg_read": 5
+   },
+   "item_report.php": {
+    "const7": 2,
+    "exit": 2,
+    "sg_read": 12
+   },
+   "item_watch.php": {
+    "array_key": 2,
+    "call7": 2,
+    "const7": 2,
+    "count7": 1,
+    "exit": 1,
+    "explode": 1,
+    "internal_arg": 3,
+    "sg_read": 6
+   },
+   "language/EN/messages.inc.php": {
+    "exit": 1
+   },
+   "logout.php": {
+    "exit": 1,
+    "sg_read": 2
+   },
+   "mail.php": {
+    "array_key": 1,
+    "const7": 1,
+    "count7": 1,
+    "exit": 3,
+    "internal_arg": 4,
+    "sg_read": 40,
+    "switch": 1
+   },
+   "message.php": {
+    "exit": 1,
+    "internal_arg": 2
+   },
+   "msgboard.php": {
+    "exit": 3,
+    "internal_arg": 4,
+    "sg_read": 20
+   },
+   "order_packingslip.php": {
+    "const7": 1,
+    "exit": 1,
+    "sg_read": 2
+   },
+   "order_print.php": {
+    "const7": 1,
+    "exit": 1,
+    "internal_arg": 1,
+    "sg_read": 11
+   },
+   "outstanding.php": {
+    "const7": 1,
+    "exit": 1,
+    "internal_arg": 1,
+    "sg_read": 3
+   },
+   "pay.php": {
+    "array_key": 6,
+    "call7": 1,
+    "exit": 6,
+    "explode": 1,
+    "internal_arg": 8,
+    "sg_read": 12,
+    "switch": 1
+   },
+   "preview_gallery.php": {
+    "array_key": 1,
+    "const7": 1,
+    "sg_read": 1
+   },
+   "profile.php": {
+    "array_key": 7,
+    "const7": 1,
+    "count7": 1,
+    "exit": 1,
+    "internal_arg": 5,
+    "sg_read": 5
+   },
+   "register.php": {
+    "array_key": 22,
+    "call7": 1,
+    "const7": 8,
+    "exit": 1,
+    "explode": 2,
+    "internal_arg": 8,
+    "sg_read": 122
+   },
+   "rss.php": {
+    "array_key": 4,
+    "const7": 1,
+    "count7": 1,
+    "internal_arg": 3,
+    "sg_read": 4,
+    "switch": 1
+   },
+   "search.php": {
+    "call7": 1,
+    "const7": 2,
+    "internal_arg": 1,
+    "sg_read": 4
+   },
+   "select_category.php": {
+    "array_key": 14,
+    "const7": 1,
+    "count7": 6,
+    "exit": 4,
+    "nested_ternary": 1,
+    "sg_read": 13
+   },
+   "sell.php": {
+    "array_key": 13,
+    "call7": 4,
+    "const7": 29,
+    "count7": 5,
+    "exit": 5,
+    "internal_arg": 34,
+    "sg_read": 17,
+    "switch": 2
+   },
+   "selleremails.php": {
+    "call7": 4,
+    "const7": 1,
+    "exit": 1,
+    "sg_read": 8
+   },
+   "selling.php": {
+    "const7": 1,
+    "exit": 1,
+    "internal_arg": 1,
+    "sg_read": 10
+   },
+   "sellsimilar.php": {
+    "call7": 1,
+    "const7": 9,
+    "count7": 1,
+    "exit": 2,
+    "explode": 1,
+    "internal_arg": 13,
+    "sg_read": 2
+   },
+   "send_email.php": {
+    "internal_arg": 3,
+    "sg_read": 16
+   },
+   "upldgallery.php": {
+    "const7": 8,
+    "count7": 2,
+    "exit": 2,
+    "internal_arg": 12,
+    "sg_read": 31,
+    "switch": 2
+   },
+   "user_login.php": {
+    "call7": 1,
+    "const7": 1,
+    "exit": 3,
+    "internal_arg": 7,
+    "sg_read": 15
+   },
+   "user_menu.php": {
+    "call7": 1,
+    "const7": 1,
+    "exit": 1,
+    "internal_arg": 3,
+    "sg_read": 3,
+    "switch": 2
+   },
+   "validate.php": {
+    "exit": 1,
+    "sg_read": 9
+   },
+   "viewhelp.php": {
+    "sg_read": 2
+   },
+   "viewnews.php": {
+    "sg_read": 2
+   },
+   "yourauctions.php": {
+    "const7": 5,
+    "count7": 4,
+    "exit": 1,
+    "internal_arg": 9,
+    "sg_read": 21
+   },
+   "yourauctions_c.php": {
+    "array_key": 1,
+    "const7": 5,
+    "count7": 8,
+    "exit": 2,
+    "internal_arg": 11,
+    "sg_read": 26
+   },
+   "yourauctions_p.php": {
+    "const7": 5,
+    "count7": 4,
+    "exit": 1,
+    "internal_arg": 9,
+    "sg_read": 21
+   },
+   "yourauctions_s.php": {
+    "const7": 5,
+    "count7": 2,
+    "exit": 1,
+    "internal_arg": 8,
+    "sg_read": 16
+   },
+   "yourauctions_sold.php": {
+    "array_key": 1,
+    "const7": 1,
+    "count7": 4,
+    "exit": 2,
+    "internal_arg": 3,
+    "sg_read": 17
+   },
+   "yourbids.php": {
+    "call7": 1,
+    "const7": 1,
+    "exit": 1
+   },
+   "yourfeedback.php": {
+    "const7": 2,
+    "count7": 2,
+    "exit": 1,
+    "internal_arg": 2,
+    "sg_read": 3,
+    "switch": 1
+   },
+   "yourmessages.php": {
+    "const7": 1,
+    "exit": 1,
+    "internal_arg": 3,
+    "sg_read": 1
+   }
+  }
+ }
+}

@@ -1,0 +1,41 @@
+{
+ "script": "msgboard.php",
+ "wall_s": 4.8,
+ "requests": 25,
+ "rounds": 8,
+ "traces": 25,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "board_id",
+   "lan",
+   "show"
+  ],
+  "POST": [
+   "board_id"
+  ],
+  "COOKIE": [
+   "PHPSESSID"
+  ]
+ },
+ "budget_hit": false,
+ "coverage_complete": true,
+ "missing": 0,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 25,
+ "concretized": {
+  "intval @ msgboard.php:34": 8,
+  "intval @ msgboard.php:38": 8,
+  "internal argument @ includes/messages.inc.php:20": 6
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

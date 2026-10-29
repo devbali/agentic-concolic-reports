@@ -1,0 +1,33 @@
+{
+ "script": "admin/util_cc1.php",
+ "wall_s": 0.5,
+ "requests": 1,
+ "rounds": 1,
+ "traces": 1,
+ "errored": 1,
+ "first_error": "Error: Call to a member function direct_query() on null",
+ "keys_discovered": {
+  "GET": [],
+  "POST": [],
+  "COOKIE": [
+   "PHPSESSID"
+  ]
+ },
+ "budget_hit": false,
+ "coverage_complete": true,
+ "missing": 0,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [
+  "Error: Call to a member function direct_query() on null"
+ ],
+ "halted_traces": 0,
+ "concretized": {},
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

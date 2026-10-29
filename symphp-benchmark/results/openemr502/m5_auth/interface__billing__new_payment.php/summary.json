@@ -1,0 +1,146 @@
+{
+ "script": "interface/billing/new_payment.php",
+ "wall_s": 30.0,
+ "requests": 53,
+ "rounds": 4,
+ "traces": 53,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "ParentPage",
+   "auth",
+   "global_amount",
+   "hidden_patient_code",
+   "hidden_type_code",
+   "payment_id",
+   "pid",
+   "site",
+   "skip_timeout_reset"
+  ],
+  "POST": [
+   "HiddenEncounter1",
+   "ParentPage",
+   "adjustment_code",
+   "authUser",
+   "check_date",
+   "check_number",
+   "default_search_patient",
+   "deposit_date",
+   "description",
+   "global_amount",
+   "hidden_patient_code",
+   "hidden_type_code",
+   "mode",
+   "payment_amount",
+   "payment_id",
+   "payment_method",
+   "pid",
+   "post_to_date",
+   "skip_timeout_reset",
+   "type_name"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 3,
+ "assumptions": [],
+ "sink_sites": [
+  {
+   "site": "vendor/adodb/adodb-php/drivers/adodb-mysqli.inc.php:788",
+   "sink": "mysqli_query",
+   "kind": "malformed-at-reach",
+   "instance": "insert into ar_session set ', user_id = '1', closed = '0', reference = '', check_date = '', deposit_date = '2026-10-29', pay_total = '', modified_time = '2026-10-29 05:12:19', payment_type = '', description = '', adjustment_code = '', post_to_date = '2026-10-29', payment_method = ''",
+   "request": {
+    "GET": {
+     "auth": "",
+     "pid": "",
+     "site": ""
+    },
+    "POST": {
+     "ParentPage": "",
+     "default_search_patient": "",
+     "hidden_patient_code": "",
+     "hidden_type_code": "",
+     "mode": "new_payment",
+     "payment_id": "",
+     "pid": "",
+     "skip_timeout_reset": ""
+    },
+    "COOKIE": {
+     "OpenEMR": "acesession"
+    }
+   },
+   "db_errno": 1064
+  },
+  {
+   "site": "vendor/adodb/adodb-php/drivers/adodb-mysqli.inc.php:788",
+   "sink": "mysqli_query",
+   "kind": "malformed-at-reach",
+   "instance": "insert into ar_session set ', user_id = '1', closed = '0', reference = '', check_date = '', deposit_date = '2026-10-29', pay_total = '', modified_time = '2026-10-29 05:12:24', payment_type = '', description = '', adjustment_code = '', post_to_date = '2026-10-29', payment_method = ''",
+   "request": {
+    "GET": {
+     "auth": "",
+     "pid": ""
+    },
+    "POST": {
+     "ParentPage": "",
+     "default_search_patient": "",
+     "hidden_patient_code": "",
+     "hidden_type_code": "",
+     "mode": "new_payment",
+     "payment_id": "",
+     "pid": "",
+     "skip_timeout_reset": ""
+    },
+    "COOKIE": {
+     "OpenEMR": "acesession"
+    }
+   },
+   "db_errno": 1064
+  },
+  {
+   "site": "vendor/adodb/adodb-php/drivers/adodb-mysqli.inc.php:788",
+   "sink": "mysqli_query",
+   "kind": "malformed-at-reach",
+   "instance": "insert into ar_session set ', user_id = '1', closed = '0', reference = '', check_date = '', deposit_date = '2026-10-29', pay_total = '', modified_time = '2026-10-29 05:12:25', payment_type = '', description = '', adjustment_code = '', post_to_date = '2026-10-29', payment_method = ''",
+   "request": {
+    "GET": {
+     "auth": "",
+     "pid": ""
+    },
+    "POST": {
+     "ParentPage": "",
+     "default_search_patient": "",
+     "hidden_patient_code": "",
+     "hidden_type_code": "",
+     "mode": "distribute",
+     "payment_id": "",
+     "pid": "",
+     "skip_timeout_reset": ""
+    },
+    "COOKIE": {
+     "OpenEMR": "acesession"
+    }
+   },
+   "db_errno": 1064
+  }
+ ],
+ "errors_distinct": [],
+ "halted_traces": 9,
+ "concretized": {
+  "arithmetic + @ interface/billing/new_payment.php:39": 42,
+  "internal argument @ interface/globals.php:127": 1,
+  "internal argument @ interface/globals.php:141": 1
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 42,
+  "call7": {}
+ }
+}

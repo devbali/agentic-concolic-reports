@@ -1,0 +1,57 @@
+{
+ "script": "interface/forms/fee_sheet/review/fee_sheet_ajax.php",
+ "wall_s": 15.0,
+ "requests": 49,
+ "rounds": 4,
+ "traces": 49,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "diags",
+   "encounter",
+   "mode",
+   "pid",
+   "procs",
+   "site",
+   "skip_timeout_reset",
+   "task"
+  ],
+  "POST": [
+   "authUser",
+   "diags",
+   "encounter",
+   "mode",
+   "pid",
+   "procs",
+   "skip_timeout_reset",
+   "task"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 3,
+ "concretized": {
+  "internal argument @ interface/globals.php:146": 1,
+  "internal argument @ interface/globals.php:160": 1,
+  "gettype @ vendor/adodb/adodb-php/adodb.inc.php:1184": 3,
+  "internal argument @ vendor/adodb/adodb-php/adodb.inc.php:183": 3,
+  "internal argument @ interface/forms/fee_sheet/review/fee_sheet_queries.php:51": 3,
+  "internal argument @ interface/forms/fee_sheet/review/fee_sheet_queries.php:57": 6
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

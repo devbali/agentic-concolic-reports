@@ -1,0 +1,66 @@
+{
+ "script": "interface/forms/LBF/new.php",
+ "wall_s": 23.4,
+ "requests": 55,
+ "rounds": 4,
+ "traces": 55,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "formOrigin",
+   "formname",
+   "from_issue_form",
+   "id",
+   "isPortal",
+   "isShow",
+   "pid",
+   "portalid",
+   "site",
+   "skip_timeout_reset",
+   "visitid"
+  ],
+  "POST": [
+   "authUser",
+   "bn_save",
+   "bn_save_continue",
+   "bn_save_print",
+   "from_issue_form",
+   "pid",
+   "skip_timeout_reset"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 14,
+ "concretized": {
+  "(int) @ interface/forms/LBF/new.php:17": 22,
+  "(int) @ interface/forms/LBF/new.php:95": 44,
+  "(int) @ interface/forms/LBF/new.php:96": 45,
+  "(int) @ interface/forms/LBF/new.php:98": 46,
+  "gettype @ vendor/adodb/adodb-php/adodb.inc.php:1184": 203,
+  "internal argument @ vendor/adodb/adodb-php/adodb.inc.php:183": 203,
+  "internal argument @ interface/forms/LBF/new.php:173": 39,
+  "internal argument @ interface/forms/LBF/new.php:789": 39,
+  "internal argument @ library/htmlspecialchars.inc.php:36": 39,
+  "internal argument @ interface/forms/LBF/new.php:1616": 39,
+  "internal argument @ interface/globals.php:146": 2,
+  "internal argument @ interface/globals.php:160": 2,
+  "(int) @ interface/forms/LBF/new.php:111": 1
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

@@ -1,0 +1,50 @@
+{
+ "script": "admin/editauction.php",
+ "wall_s": 61.1,
+ "requests": 733,
+ "rounds": 23,
+ "traces": 283,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "id",
+   "lan"
+  ],
+  "POST": [
+   "action",
+   "anotes",
+   "category",
+   "csrftoken",
+   "duration",
+   "id",
+   "title"
+  ],
+  "COOKIE": [
+   "PHPSESSID",
+   "USERLANGUAGE",
+   "WEBID_RM_ID"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 1,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 283,
+ "concretized": {
+  "internal argument @ includes/functions_global.php:467": 138,
+  "internal argument @ includes/messages.inc.php:41": 124,
+  "intval @ admin/editauction.php:269": 221,
+  "internal argument @ includes/messages.inc.php:20": 38,
+  "string conversion @ includes/database/DatabasePDO.php:80": 122
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

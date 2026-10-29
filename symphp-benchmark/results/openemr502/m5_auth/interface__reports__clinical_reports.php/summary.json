@@ -1,0 +1,69 @@
+{
+ "script": "interface/reports/clinical_reports.php",
+ "wall_s": 30.9,
+ "requests": 81,
+ "rounds": 5,
+ "traces": 47,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "pid",
+   "site",
+   "skip_timeout_reset"
+  ],
+  "POST": [
+   "age_from",
+   "age_to",
+   "authUser",
+   "communication",
+   "communication_check",
+   "csrf_token_form",
+   "date_from",
+   "date_to",
+   "ethnicity",
+   "facility",
+   "form_diagnosis",
+   "form_diagnosis_allergy",
+   "form_diagnosis_medprb",
+   "form_drug",
+   "form_drug_name",
+   "form_immunization",
+   "form_lab_results",
+   "form_pt_age",
+   "form_pt_name",
+   "form_refresh",
+   "form_service_codes",
+   "gender",
+   "lab_results",
+   "ndc_no",
+   "patient_id",
+   "pid",
+   "race",
+   "skip_timeout_reset",
+   "type"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 46,
+ "concretized": {
+  "internal argument @ interface/globals.php:127": 1,
+  "internal argument @ interface/globals.php:141": 1
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

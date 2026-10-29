@@ -1,0 +1,51 @@
+{
+ "script": "interface/forms/vitals/view.php",
+ "wall_s": 35.2,
+ "requests": 80,
+ "rounds": 5,
+ "traces": 72,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "id",
+   "pid",
+   "site",
+   "skip_timeout_reset"
+  ],
+  "POST": [
+   "authUser",
+   "pid",
+   "skip_timeout_reset"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 4,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 3,
+ "concretized": {
+  "gettype @ vendor/adodb/adodb-php/adodb.inc.php:1189": 104,
+  "is_numeric @ interface/forms/vitals/C_FormVitals.class.php:63": 57,
+  "internal argument @ src/Common/Logging/EventAuditLogger.php:757": 75,
+  "empty() @ src/Common/Logging/EventAuditLogger.php:759": 75,
+  "string conversion @ src/Common/Logging/EventAuditLogger.php:765": 75,
+  "internal argument @ interface/globals.php:127": 2,
+  "internal argument @ interface/globals.php:141": 1,
+  "string conversion @ sites/default/documents/smarty/main/%%7D^7DD^7DD69093%%general_new.html.php:522": 18,
+  "internal argument @ library/htmlspecialchars.inc.php:19": 18
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 375,
+  "call7": {}
+ }
+}

@@ -1,0 +1,81 @@
+{
+ "script": "url.php",
+ "wall_s": 30.5,
+ "requests": 104,
+ "rounds": 5,
+ "traces": 104,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "GLOBALS",
+   "ajax_request",
+   "back",
+   "collation_connection",
+   "db",
+   "goto",
+   "lang",
+   "selected_recent_table",
+   "server",
+   "set_fontsize",
+   "set_theme",
+   "sql_query",
+   "table",
+   "url"
+  ],
+  "POST": [
+   "GLOBALS",
+   "ajax_request",
+   "back",
+   "collation_connection",
+   "db",
+   "goto",
+   "lang",
+   "selected_recent_table",
+   "server",
+   "set_fontsize",
+   "set_theme",
+   "sql_query",
+   "table",
+   "token",
+   "url",
+   "usesubform"
+  ],
+  "COOKIE": [
+   "ajax_request",
+   "pmaCookieVer",
+   "pma_collation_connection",
+   "pma_fontsize",
+   "pma_lang",
+   "pma_theme"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 5,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 104,
+ "concretized": {
+  "internal argument @ libraries/Config.php:1284": 81,
+  "comparison != @ libraries/common.inc.php:234": 83,
+  "is_string @ libraries/core.lib.php:394": 169,
+  "in_array @ libraries/core.lib.php:398": 169,
+  "internal argument @ libraries/core.lib.php:403": 169,
+  "internal argument @ libraries/core.lib.php:405": 169,
+  "internal argument @ libraries/core.lib.php:411": 169,
+  "is_string @ libraries/Sanitize.php:450": 101,
+  "is_string @ libraries/Sanitize.php:453": 97,
+  "is_string @ libraries/Sanitize.php:459": 43,
+  "internal argument @ libraries/Config.php:1258": 5,
+  "internal argument @ libraries/Config.php:1260": 4
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

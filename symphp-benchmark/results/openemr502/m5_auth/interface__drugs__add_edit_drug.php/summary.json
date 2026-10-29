@@ -1,0 +1,53 @@
+{
+ "script": "interface/drugs/add_edit_drug.php",
+ "wall_s": 30.0,
+ "requests": 50,
+ "rounds": 4,
+ "traces": 50,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "drug",
+   "pid",
+   "site",
+   "skip_timeout_reset"
+  ],
+  "POST": [
+   "authUser",
+   "csrf_token_form",
+   "drug",
+   "form_delete",
+   "form_save",
+   "pid",
+   "skip_timeout_reset"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 8,
+ "concretized": {
+  "internal argument @ library/htmlspecialchars.inc.php:35": 41,
+  "gettype @ vendor/adodb/adodb-php/adodb.inc.php:1189": 47,
+  "internal argument @ src/Common/Logging/EventAuditLogger.php:757": 41,
+  "empty() @ src/Common/Logging/EventAuditLogger.php:759": 41,
+  "string conversion @ src/Common/Logging/EventAuditLogger.php:765": 41,
+  "internal argument @ interface/globals.php:127": 1,
+  "internal argument @ interface/globals.php:141": 1
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

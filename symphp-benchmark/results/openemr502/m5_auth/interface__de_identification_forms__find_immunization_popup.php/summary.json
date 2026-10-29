@@ -1,0 +1,51 @@
+{
+ "script": "interface/de_identification_forms/find_immunization_popup.php",
+ "wall_s": 34.4,
+ "requests": 89,
+ "rounds": 5,
+ "traces": 83,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "bn_search",
+   "codetype",
+   "pid",
+   "search_term",
+   "site",
+   "skip_timeout_reset"
+  ],
+  "POST": [
+   "authUser",
+   "bn_search",
+   "codetype",
+   "csrf_token_form",
+   "form_code_type",
+   "pid",
+   "search_term",
+   "skip_timeout_reset"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 13,
+ "concretized": {
+  "internal argument @ interface/globals.php:127": 2,
+  "internal argument @ interface/globals.php:141": 1
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

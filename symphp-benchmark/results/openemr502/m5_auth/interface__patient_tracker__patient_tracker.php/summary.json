@@ -1,0 +1,62 @@
+{
+ "script": "interface/patient_tracker/patient_tracker.php",
+ "wall_s": 32.0,
+ "requests": 81,
+ "rounds": 5,
+ "traces": 47,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "flb_table",
+   "form_from_date",
+   "form_to_date",
+   "kiosk",
+   "pid",
+   "site",
+   "skip_timeout_reset"
+  ],
+  "POST": [
+   "authUser",
+   "csrf_token_form",
+   "flb_table",
+   "form_apptcat",
+   "form_apptstatus",
+   "form_facility",
+   "form_from_date",
+   "form_patient_id",
+   "form_patient_name",
+   "form_provider",
+   "form_to_date",
+   "kiosk",
+   "pid",
+   "saveCALLback",
+   "setting_bootstrap_submenu",
+   "setting_new_window",
+   "setting_selectors",
+   "skip_timeout_reset"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 47,
+ "concretized": {
+  "internal argument @ interface/globals.php:127": 1,
+  "internal argument @ interface/globals.php:141": 1
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

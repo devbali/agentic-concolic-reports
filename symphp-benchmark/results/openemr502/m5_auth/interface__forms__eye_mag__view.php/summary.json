@@ -1,0 +1,71 @@
+{
+ "script": "interface/forms/eye_mag/view.php",
+ "wall_s": 30.0,
+ "requests": 57,
+ "rounds": 4,
+ "traces": 57,
+ "errored": 54,
+ "first_error": "TypeError: extract(): Argument #1 ($array) must be of type array, bool given",
+ "keys_discovered": {
+  "GET": [
+   "action",
+   "auth",
+   "display",
+   "finalize",
+   "id",
+   "pid",
+   "refresh",
+   "site",
+   "skip_timeout_reset",
+   "url"
+  ],
+  "POST": [
+   "action",
+   "authUser",
+   "display",
+   "finalize",
+   "id",
+   "pid",
+   "refresh",
+   "setting_ANTSEG",
+   "setting_EXT",
+   "setting_HPI",
+   "setting_IMPPLAN",
+   "setting_NEURO",
+   "setting_PMH",
+   "setting_POSTSEG",
+   "setting_tabs_left",
+   "skip_timeout_reset",
+   "url"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [
+  "Error: Call to undefined function redirector()",
+  "TypeError: extract(): Argument #1 ($array) must be of type array, bool given"
+ ],
+ "halted_traces": 3,
+ "concretized": {
+  "gettype @ vendor/adodb/adodb-php/adodb.inc.php:1189": 75,
+  "internal argument @ src/Common/Logging/EventAuditLogger.php:757": 73,
+  "empty() @ src/Common/Logging/EventAuditLogger.php:759": 73,
+  "string conversion @ src/Common/Logging/EventAuditLogger.php:765": 73,
+  "internal argument @ src/Common/Logging/EventAuditLogger.php:891": 24,
+  "internal argument @ interface/globals.php:127": 1,
+  "internal argument @ interface/globals.php:141": 1
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

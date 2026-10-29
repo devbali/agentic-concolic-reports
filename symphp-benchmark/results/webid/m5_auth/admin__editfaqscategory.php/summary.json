@@ -1,0 +1,50 @@
+{
+ "script": "admin/editfaqscategory.php",
+ "wall_s": 15.1,
+ "requests": 133,
+ "rounds": 9,
+ "traces": 119,
+ "errored": 29,
+ "first_error": "Concolic\\NotImplementedError: Iteration over symbolic values is not modelled",
+ "keys_discovered": {
+  "GET": [
+   "id",
+   "lan"
+  ],
+  "POST": [
+   "action",
+   "anotes",
+   "category",
+   "csrftoken"
+  ],
+  "COOKIE": [
+   "PHPSESSID",
+   "USERLANGUAGE",
+   "WEBID_RM_ID"
+  ]
+ },
+ "budget_hit": false,
+ "coverage_complete": false,
+ "missing": 1,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [
+  "Concolic\\NotImplementedError: Iteration over symbolic values is not modelled"
+ ],
+ "halted_traces": 33,
+ "concretized": {
+  "string conversion @ includes/template/Template.php(163) : eval()'d code:25": 57,
+  "internal argument @ includes/functions_global.php:467": 57,
+  "internal argument @ includes/messages.inc.php:41": 51,
+  "internal argument @ includes/messages.inc.php:20": 16,
+  "string conversion @ includes/database/DatabasePDO.php:80": 42,
+  "subscript @ admin/editfaqscategory.php:23": 28
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

@@ -1,0 +1,53 @@
+{
+ "script": "admin/membertypes.php",
+ "wall_s": 33.0,
+ "requests": 208,
+ "rounds": 12,
+ "traces": 176,
+ "errored": 114,
+ "first_error": "TypeError: fputs(): Argument #1 ($stream) must be of type resource, bool given",
+ "keys_discovered": {
+  "GET": [
+   "lan"
+  ],
+  "POST": [
+   "action",
+   "anotes",
+   "csrftoken",
+   "delete",
+   "new_membertype",
+   "new_membertypes",
+   "old_membertypes"
+  ],
+  "COOKIE": [
+   "PHPSESSID",
+   "USERLANGUAGE",
+   "WEBID_RM_ID"
+  ]
+ },
+ "budget_hit": false,
+ "coverage_complete": true,
+ "missing": 0,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [
+  "TypeError: fputs(): Argument #1 ($stream) must be of type resource, bool given"
+ ],
+ "halted_traces": 32,
+ "concretized": {
+  "internal argument @ includes/functions_global.php:467": 85,
+  "internal argument @ includes/messages.inc.php:41": 75,
+  "internal argument @ includes/messages.inc.php:20": 24,
+  "is_array @ admin/membertypes.php:40": 113,
+  "isset subscript @ admin/membertypes.php:60": 113,
+  "string conversion @ includes/database/DatabasePDO.php:80": 70,
+  "is_array @ admin/membertypes.php:30": 56
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

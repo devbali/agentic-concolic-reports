@@ -1,0 +1,51 @@
+{
+ "script": "admin/newsletter.php",
+ "wall_s": 60.0,
+ "requests": 218,
+ "rounds": 10,
+ "traces": 210,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "lan"
+  ],
+  "POST": [
+   "action",
+   "anotes",
+   "content",
+   "csrftoken",
+   "subject",
+   "usersfilter"
+  ],
+  "COOKIE": [
+   "PHPSESSID",
+   "USERLANGUAGE",
+   "WEBID_RM_ID"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 32,
+ "concretized": {
+  "internal argument @ includes/functions_global.php:467": 94,
+  "internal argument @ includes/messages.inc.php:41": 105,
+  "internal argument @ includes/messages.inc.php:20": 30,
+  "string conversion @ includes/database/DatabasePDO.php:80": 147,
+  "string conversion @ includes/template/Template.php(163) : eval()'d code:26": 156,
+  "string conversion @ includes/template/Template.php(163) : eval()'d code:32": 156,
+  "string conversion @ includes/template/Template.php(163) : eval()'d code:12": 13,
+  "string conversion @ includes/template/Template.php(163) : eval()'d code:13": 13
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

@@ -1,0 +1,44 @@
+{
+ "script": "admin/userfeedback.php",
+ "wall_s": 16.7,
+ "requests": 57,
+ "rounds": 8,
+ "traces": 57,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "id",
+   "lan"
+  ],
+  "POST": [
+   "anotes"
+  ],
+  "COOKIE": [
+   "PHPSESSID",
+   "USERLANGUAGE",
+   "WEBID_RM_ID"
+  ]
+ },
+ "budget_hit": false,
+ "coverage_complete": true,
+ "missing": 0,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 0,
+ "concretized": {
+  "intval @ admin/userfeedback.php:22": 56,
+  "internal argument @ includes/functions_global.php:467": 28,
+  "internal argument @ includes/messages.inc.php:41": 24,
+  "string conversion @ includes/database/DatabasePDO.php:80": 28,
+  "internal argument @ includes/messages.inc.php:20": 8
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

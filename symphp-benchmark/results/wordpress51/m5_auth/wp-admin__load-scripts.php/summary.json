@@ -1,0 +1,39 @@
+{
+ "script": "wp-admin/load-scripts.php",
+ "wall_s": 2.5,
+ "requests": 3,
+ "rounds": 3,
+ "traces": 3,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "load"
+  ],
+  "POST": [],
+  "COOKIE": [
+   "ace_auth",
+   "wordpress_15d6d54e3ae52e9a938f8853c833b792",
+   "wordpress_logged_in_15d6d54e3ae52e9a938f8853c833b792",
+   "wordpress_test_cookie"
+  ]
+ },
+ "budget_hit": false,
+ "coverage_complete": true,
+ "missing": 0,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 3,
+ "concretized": {
+  "is_array @ wp-admin/load-scripts.php:18": 2,
+  "internal argument @ wp-admin/load-scripts.php:22": 2
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

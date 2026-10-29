@@ -1,0 +1,214 @@
+{
+ "script": "admin/searchauctions.php",
+ "wall_s": 60.0,
+ "requests": 218,
+ "rounds": 10,
+ "traces": 207,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "PAGE",
+   "lan"
+  ],
+  "POST": [
+   "anotes",
+   "auctionid",
+   "auctiontype",
+   "csrftoken",
+   "titlekeywords",
+   "userid",
+   "usernick"
+  ],
+  "COOKIE": [
+   "PHPSESSID",
+   "USERLANGUAGE",
+   "WEBID_RM_ID"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 1,
+ "assumptions": [],
+ "sink_sites": [
+  {
+   "site": "includes/database/DatabasePDO.php:53",
+   "sink": "PDO::query",
+   "kind": "injectable",
+   "instance": "SELECT COUNT(a.id) As auctions FROM webid_auctions a INNER JOIN webid_users u\n\tON (u.id = a.user) WHERE a.closed = 1 AND u.nick = '''",
+   "request": {
+    "GET": {
+     "PAGE": "",
+     "lan": ""
+    },
+    "POST": {
+     "anotes": "",
+     "auctionid": "",
+     "auctiontype": "",
+     "titlekeywords": "",
+     "userid": "",
+     "usernick": "'",
+     "csrftoken": "acepinnedcsrftoken00000000000000"
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession",
+     "USERLANGUAGE": ""
+    }
+   },
+   "db_errno": 0
+  },
+  {
+   "site": "includes/database/DatabasePDO.php:76",
+   "sink": "PDO::prepare",
+   "kind": "injectable",
+   "instance": "SELECT a.id, u.nick, a.title, a.starts, a.ends, a.suspended, c.cat_name FROM webid_auctions a\n\t\tINNER JOIN webid_users u ON (u.id = a.user)\n\t\tLEFT JOIN webid_categories c ON (c.cat_id = a.category)\n\t\tWHERE a.closed = 1 AND u.nick = ''' ORDER BY nick, starts, title LIMIT :offset, :perpage",
+   "request": {
+    "GET": {
+     "PAGE": "",
+     "lan": ""
+    },
+    "POST": {
+     "anotes": "",
+     "auctionid": "",
+     "auctiontype": "",
+     "titlekeywords": "",
+     "userid": "",
+     "usernick": "'",
+     "csrftoken": "acepinnedcsrftoken00000000000000"
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession",
+     "USERLANGUAGE": ""
+    }
+   },
+   "db_errno": 0
+  },
+  {
+   "site": "includes/database/DatabasePDO.php:53",
+   "sink": "PDO::query",
+   "kind": "injectable",
+   "instance": "SELECT COUNT(a.id) As auctions FROM webid_auctions a INNER JOIN webid_users u\n\tON (u.id = a.user) WHERE a.closed = 1 AND INSTR(LCASE(a.title), ''') > 0",
+   "request": {
+    "GET": {
+     "PAGE": "",
+     "lan": ""
+    },
+    "POST": {
+     "anotes": "",
+     "auctionid": "",
+     "auctiontype": "",
+     "titlekeywords": "'",
+     "userid": "",
+     "usernick": "",
+     "csrftoken": "acepinnedcsrftoken00000000000000"
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession",
+     "USERLANGUAGE": ""
+    }
+   },
+   "db_errno": 0
+  },
+  {
+   "site": "includes/database/DatabasePDO.php:76",
+   "sink": "PDO::prepare",
+   "kind": "injectable",
+   "instance": "SELECT a.id, u.nick, a.title, a.starts, a.ends, a.suspended, c.cat_name FROM webid_auctions a\n\t\tINNER JOIN webid_users u ON (u.id = a.user)\n\t\tLEFT JOIN webid_categories c ON (c.cat_id = a.category)\n\t\tWHERE a.closed = 1 AND INSTR(LCASE(a.title), ''') > 0 ORDER BY nick, starts, title LIMIT :offset, :perpage",
+   "request": {
+    "GET": {
+     "PAGE": "",
+     "lan": ""
+    },
+    "POST": {
+     "anotes": "",
+     "auctionid": "",
+     "auctiontype": "",
+     "titlekeywords": "'",
+     "userid": "",
+     "usernick": "",
+     "csrftoken": "acepinnedcsrftoken00000000000000"
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession",
+     "USERLANGUAGE": ""
+    }
+   },
+   "db_errno": 0
+  },
+  {
+   "site": "includes/database/DatabasePDO.php:53",
+   "sink": "PDO::query",
+   "kind": "injectable",
+   "instance": "SELECT COUNT(a.id) As auctions FROM webid_auctions a INNER JOIN webid_users u\n\tON (u.id = a.user) WHERE a.closed = 1 AND u.nick = ''' AND INSTR(LCASE(a.title), 'a') > 0",
+   "request": {
+    "GET": {
+     "PAGE": "",
+     "lan": ""
+    },
+    "POST": {
+     "anotes": "",
+     "auctionid": "",
+     "auctiontype": "",
+     "titlekeywords": "A",
+     "userid": "",
+     "usernick": "'",
+     "csrftoken": "acepinnedcsrftoken00000000000000"
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession",
+     "USERLANGUAGE": ""
+    }
+   },
+   "db_errno": 0
+  },
+  {
+   "site": "includes/database/DatabasePDO.php:76",
+   "sink": "PDO::prepare",
+   "kind": "injectable",
+   "instance": "SELECT a.id, u.nick, a.title, a.starts, a.ends, a.suspended, c.cat_name FROM webid_auctions a\n\t\tINNER JOIN webid_users u ON (u.id = a.user)\n\t\tLEFT JOIN webid_categories c ON (c.cat_id = a.category)\n\t\tWHERE a.closed = 1 AND u.nick = ''' AND INSTR(LCASE(a.title), 'a') > 0 ORDER BY nick, starts, title LIMIT :offset, :perpage",
+   "request": {
+    "GET": {
+     "PAGE": "",
+     "lan": ""
+    },
+    "POST": {
+     "anotes": "",
+     "auctionid": "",
+     "auctiontype": "",
+     "titlekeywords": "A",
+     "userid": "",
+     "usernick": "'",
+     "csrftoken": "acepinnedcsrftoken00000000000000"
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession",
+     "USERLANGUAGE": ""
+    }
+   },
+   "db_errno": 0
+  }
+ ],
+ "errors_distinct": [],
+ "halted_traces": 32,
+ "concretized": {
+  "internal argument @ includes/functions_global.php:467": 90,
+  "internal argument @ includes/messages.inc.php:41": 123,
+  "intval @ admin/searchauctions.php:42": 150,
+  "is_numeric @ admin/searchauctions.php:82": 151,
+  "internal argument @ includes/messages.inc.php:20": 24,
+  "string conversion @ includes/database/DatabasePDO.php:80": 142,
+  "intval @ admin/searchauctions.php:26": 143,
+  "intval @ admin/searchauctions.php:34": 148,
+  "string conversion @ includes/template/Template.php(163) : eval()'d code:22": 149,
+  "string conversion @ includes/template/Template.php(163) : eval()'d code:34": 149,
+  "internal argument @ includes/database/DatabasePDO.php:179": 41,
+  "string conversion @ includes/template/Template.php(163) : eval()'d code:52": 21
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

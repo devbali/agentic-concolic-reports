@@ -1,0 +1,47 @@
+{
+ "script": "setup.php",
+ "wall_s": 4.6,
+ "requests": 14,
+ "rounds": 7,
+ "traces": 14,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "clone_database"
+  ],
+  "POST": [
+   "clone_database",
+   "inst",
+   "state"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": false,
+ "coverage_complete": true,
+ "missing": 0,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 1,
+ "concretized": {
+  "comparison == @ setup.php:381": 6,
+  "comparison == @ setup.php:444": 6,
+  "comparison == @ setup.php:467": 6,
+  "comparison == @ setup.php:957": 6,
+  "comparison == @ setup.php:1269": 6,
+  "comparison == @ setup.php:1306": 6,
+  "comparison == @ setup.php:1417": 6,
+  "comparison == @ setup.php:1456": 6,
+  "comparison == @ setup.php:1500": 6
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 13,
+  "arith7": 0,
+  "call7": {}
+ }
+}

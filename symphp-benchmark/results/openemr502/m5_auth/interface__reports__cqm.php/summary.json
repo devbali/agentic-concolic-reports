@@ -1,0 +1,52 @@
+{
+ "script": "interface/reports/cqm.php",
+ "wall_s": 30.0,
+ "requests": 81,
+ "rounds": 5,
+ "traces": 47,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "back",
+   "pid",
+   "report_id",
+   "site",
+   "skip_timeout_reset",
+   "type"
+  ],
+  "POST": [
+   "authUser",
+   "csrf_token_form",
+   "form_pat_prov_rel",
+   "form_plan_filter",
+   "form_provider",
+   "form_rule_filter",
+   "form_target_date",
+   "pid",
+   "skip_timeout_reset"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 46,
+ "concretized": {
+  "internal argument @ interface/globals.php:127": 1,
+  "internal argument @ interface/globals.php:141": 1
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

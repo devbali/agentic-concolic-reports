@@ -1,0 +1,53 @@
+{
+ "script": "admin/enablefees.php",
+ "wall_s": 60.0,
+ "requests": 351,
+ "rounds": 13,
+ "traces": 268,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "lan"
+  ],
+  "POST": [
+   "action",
+   "anotes",
+   "csrftoken",
+   "fee_disable_acc",
+   "fee_max_debt",
+   "fee_signup_bonus",
+   "fee_type",
+   "fees",
+   "payment_gateway_sandbox"
+  ],
+  "COOKIE": [
+   "PHPSESSID",
+   "USERLANGUAGE",
+   "WEBID_RM_ID"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 32,
+ "concretized": {
+  "internal argument @ includes/functions_global.php:467": 118,
+  "internal argument @ includes/messages.inc.php:41": 167,
+  "internal argument @ includes/messages.inc.php:20": 28,
+  "string conversion @ includes/database/DatabasePDO.php:80": 521,
+  "comparison < @ admin/enablefees.php:24": 40,
+  "intval @ includes/functions_global.php:130": 90,
+  "internal argument @ includes/functions_global.php:298": 8
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

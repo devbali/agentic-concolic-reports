@@ -1,0 +1,35 @@
+{
+ "script": "index.php",
+ "wall_s": 3.9,
+ "requests": 3,
+ "rounds": 3,
+ "traces": 3,
+ "errored": 3,
+ "first_error": "Error: fatal: During inheritance of PDOStatement: Uncaught ArgumentCountError: Too few arguments to function _drupal_error_handler(), 4 passed in /home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmar",
+ "keys_discovered": {
+  "GET": [],
+  "POST": [],
+  "COOKIE": [
+   "SIMPLETEST_USER_AGENT"
+  ]
+ },
+ "budget_hit": false,
+ "coverage_complete": true,
+ "missing": 0,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [
+  "Error: fatal: During inheritance of PDOStatement: Uncaught ArgumentCountError: Too few arguments to function _drupal_error_handler(), 4 passed in /home/jamie/ac"
+ ],
+ "halted_traces": 0,
+ "concretized": {
+  "internal argument @ core/includes/bootstrap.inc:621": 1
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

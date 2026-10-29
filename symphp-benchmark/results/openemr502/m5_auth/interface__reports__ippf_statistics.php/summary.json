@@ -1,0 +1,53 @@
+{
+ "script": "interface/reports/ippf_statistics.php",
+ "wall_s": 33.3,
+ "requests": 81,
+ "rounds": 5,
+ "traces": 47,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "pid",
+   "site",
+   "skip_timeout_reset",
+   "t"
+  ],
+  "POST": [
+   "authUser",
+   "csrf_token_form",
+   "form_by",
+   "form_content",
+   "form_facility",
+   "form_from_date",
+   "form_output",
+   "form_sexes",
+   "form_show",
+   "form_to_date",
+   "pid",
+   "skip_timeout_reset"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 47,
+ "concretized": {
+  "internal argument @ interface/globals.php:127": 1,
+  "internal argument @ interface/globals.php:141": 1
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

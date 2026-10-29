@@ -1,0 +1,93 @@
+{
+ "script": "tbl_operations.php",
+ "wall_s": 90.0,
+ "requests": 57,
+ "rounds": 3,
+ "traces": 54,
+ "errored": 5,
+ "first_error": "TypeError: mysqli_real_connect(): Argument #4 ($password) must be of type ?string, array given",
+ "keys_discovered": {
+  "GET": [
+   "access_time",
+   "ajax_request",
+   "back",
+   "collation_connection",
+   "db",
+   "goto",
+   "guid",
+   "lang",
+   "pma_password",
+   "pma_username",
+   "selected_recent_table",
+   "server",
+   "session_expired",
+   "set_fontsize",
+   "set_theme",
+   "sql_query",
+   "table",
+   "target"
+  ],
+  "POST": [
+   "access_time",
+   "ajax_request",
+   "back",
+   "collation_connection",
+   "db",
+   "goto",
+   "guid",
+   "lang",
+   "pma_password",
+   "pma_username",
+   "selected_recent_table",
+   "server",
+   "set_fontsize",
+   "set_theme",
+   "sql_query",
+   "table",
+   "target",
+   "token",
+   "usesubform"
+  ],
+  "COOKIE": [
+   "phpMyAdmin",
+   "pmaAuth-1",
+   "pmaCookieVer",
+   "pmaUser-1",
+   "pma_collation_connection",
+   "pma_fontsize",
+   "pma_lang",
+   "pma_theme"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 3,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [
+  "TypeError: key(): Argument #1 ($array) must be of type array, string given",
+  "TypeError: mysqli_real_connect(): Argument #4 ($password) must be of type ?string, array given"
+ ],
+ "halted_traces": 50,
+ "concretized": {
+  "internal argument @ libraries/Config.php:1266": 42,
+  "comparison != @ libraries/common.inc.php:237": 51,
+  "array key @ libraries/LanguageManager.php:790": 26,
+  "array key @ libraries/LanguageManager.php:791": 21,
+  "internal argument @ libraries/plugins/auth/AuthenticationCookie.php:781": 14,
+  "internal argument @ libraries/common.inc.php:181": 1,
+  "internal argument @ libraries/Config.php:1290": 3,
+  "is_string @ libraries/core.lib.php:394": 19,
+  "in_array @ libraries/core.lib.php:398": 19,
+  "internal argument @ libraries/core.lib.php:403": 19,
+  "internal argument @ libraries/core.lib.php:405": 19,
+  "internal argument @ libraries/core.lib.php:411": 19
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

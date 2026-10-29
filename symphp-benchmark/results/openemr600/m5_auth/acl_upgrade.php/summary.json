@@ -1,0 +1,39 @@
+{
+ "script": "acl_upgrade.php",
+ "wall_s": 15.1,
+ "requests": 36,
+ "rounds": 6,
+ "traces": 36,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "pid",
+   "site"
+  ],
+  "POST": [
+   "pid"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": false,
+ "coverage_complete": false,
+ "missing": 3,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 1,
+ "concretized": {
+  "internal argument @ interface/globals.php:146": 6,
+  "internal argument @ interface/globals.php:160": 1
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 105,
+  "arith7": 0,
+  "call7": {}
+ }
+}

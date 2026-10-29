@@ -1,0 +1,49 @@
+{
+ "script": "interface/forms/eye_mag/new.php",
+ "wall_s": 15.0,
+ "requests": 34,
+ "rounds": 4,
+ "traces": 34,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "pid",
+   "site",
+   "skip_timeout_reset"
+  ],
+  "POST": [
+   "authUser",
+   "pid",
+   "skip_timeout_reset"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 34,
+ "concretized": {
+  "gettype @ vendor/adodb/adodb-php/adodb.inc.php:1184": 51,
+  "internal argument @ vendor/adodb/adodb-php/adodb.inc.php:183": 91,
+  "internal argument @ src/Common/Logging/EventAuditLogger.php:563": 25,
+  "empty() @ src/Common/Logging/EventAuditLogger.php:565": 25,
+  "internal argument @ src/Common/Logging/EventAuditLogger.php:749": 25,
+  "internal argument @ interface/globals.php:146": 1,
+  "internal argument @ interface/globals.php:160": 1,
+  "string conversion @ src/Common/Logging/EventAuditLogger.php:785": 21
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 63,
+  "arith7": 0,
+  "call7": {}
+ }
+}

@@ -1,0 +1,38 @@
+{
+ "script": "yourbids.php",
+ "wall_s": 3.1,
+ "requests": 15,
+ "rounds": 6,
+ "traces": 15,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "lan"
+  ],
+  "POST": [],
+  "COOKIE": [
+   "USERLANGUAGE",
+   "WEBID_RM_ID"
+  ]
+ },
+ "budget_hit": false,
+ "coverage_complete": true,
+ "missing": 0,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 15,
+ "concretized": {
+  "internal argument @ includes/functions_global.php:467": 7,
+  "internal argument @ includes/messages.inc.php:41": 6,
+  "internal argument @ includes/messages.inc.php:20": 2
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

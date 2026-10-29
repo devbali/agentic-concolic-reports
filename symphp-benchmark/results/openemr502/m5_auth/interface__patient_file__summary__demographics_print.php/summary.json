@@ -1,0 +1,50 @@
+{
+ "script": "interface/patient_file/summary/demographics_print.php",
+ "wall_s": 47.0,
+ "requests": 89,
+ "rounds": 5,
+ "traces": 84,
+ "errored": 84,
+ "first_error": "Error: fatal: Array and string offset access syntax with curly braces is no longer supported at /home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/openemr502-m5_auth/vendor/mpdf/mpdf/src/Pd",
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "isform",
+   "patientid",
+   "pid",
+   "site",
+   "skip_timeout_reset"
+  ],
+  "POST": [
+   "authUser",
+   "isform",
+   "patientid",
+   "pid",
+   "skip_timeout_reset"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [
+  "Error: fatal: Array and string offset access syntax with curly braces is no longer supported at /home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/b"
+ ],
+ "halted_traces": 3,
+ "concretized": {
+  "internal argument @ interface/globals.php:127": 2,
+  "internal argument @ interface/globals.php:141": 1,
+  "arithmetic + @ interface/patient_file/summary/demographics_print.php:32": 8
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 8,
+  "call7": {}
+ }
+}

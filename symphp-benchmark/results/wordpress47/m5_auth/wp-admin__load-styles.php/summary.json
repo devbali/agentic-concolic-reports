@@ -1,0 +1,41 @@
+{
+ "script": "wp-admin/load-styles.php",
+ "wall_s": 5.5,
+ "requests": 31,
+ "rounds": 6,
+ "traces": 31,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "c",
+   "dir",
+   "load"
+  ],
+  "POST": [],
+  "COOKIE": [
+   "ace_auth",
+   "wordpress_710bf923a78c1956e56fa54d43de28a6",
+   "wordpress_logged_in_710bf923a78c1956e56fa54d43de28a6",
+   "wordpress_test_cookie"
+  ]
+ },
+ "budget_hit": false,
+ "coverage_complete": true,
+ "missing": 0,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 31,
+ "concretized": {
+  "is_array @ wp-admin/load-styles.php:22": 30,
+  "internal argument @ wp-admin/load-styles.php:25": 30
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

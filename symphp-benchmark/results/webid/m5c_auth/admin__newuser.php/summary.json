@@ -1,0 +1,75 @@
+{
+ "script": "admin/newuser.php",
+ "wall_s": 60.2,
+ "requests": 70,
+ "rounds": 6,
+ "traces": 45,
+ "errored": 12,
+ "first_error": "TypeError: in_array(): Argument #2 ($haystack) must be of type array, string given",
+ "keys_discovered": {
+  "GET": [
+   "lan"
+  ],
+  "POST": [
+   "",
+   "action",
+   "address",
+   "anotes",
+   "birthdate",
+   "city",
+   "country",
+   "csrftoken",
+   "email",
+   "group",
+   "name",
+   "phone",
+   "prov",
+   "username",
+   "zip"
+  ],
+  "COOKIE": [
+   "PHPSESSID",
+   "USERLANGUAGE",
+   "WEBID_RM_ID"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [
+  {
+   "site": "includes/template/Template.php(163) : eval()'d code:37",
+   "sink": "echo",
+   "kind": "xss-candidate",
+   "instance": "\"'><acexss0e765063>",
+   "request": {
+    "GET": {},
+    "POST": {
+     "birthdate": "\"'><acexss0e765063>"
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession"
+    }
+   }
+  }
+ ],
+ "errors_distinct": [
+  "TypeError: in_array(): Argument #2 ($haystack) must be of type array, string given"
+ ],
+ "halted_traces": 30,
+ "concretized": {
+  "internal argument @ includes/functions_global.php:467": 20,
+  "internal argument @ includes/messages.inc.php:41": 21,
+  "internal argument @ includes/messages.inc.php:20": 6,
+  "string conversion @ includes/database/DatabasePDO.php:80": 12,
+  "in_array @ admin/newuser.php:186": 12
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

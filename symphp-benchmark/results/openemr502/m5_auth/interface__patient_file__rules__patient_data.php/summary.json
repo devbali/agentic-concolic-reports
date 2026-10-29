@@ -1,0 +1,54 @@
+{
+ "script": "interface/patient_file/rules/patient_data.php",
+ "wall_s": 40.0,
+ "requests": 91,
+ "rounds": 5,
+ "traces": 87,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "category",
+   "entryID",
+   "item",
+   "pid",
+   "site",
+   "skip_timeout_reset"
+  ],
+  "POST": [
+   "authUser",
+   "csrf_token_form",
+   "form_complete",
+   "pid",
+   "skip_timeout_reset"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 3,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 10,
+ "concretized": {
+  "internal argument @ vendor/adodb/adodb-php/adodb.inc.php:183": 271,
+  "internal argument @ src/Common/Logging/EventAuditLogger.php:757": 271,
+  "empty() @ src/Common/Logging/EventAuditLogger.php:759": 271,
+  "string conversion @ src/Common/Logging/EventAuditLogger.php:765": 271,
+  "internal argument @ library/translation.inc.php:36": 131,
+  "internal argument @ interface/globals.php:127": 2,
+  "internal argument @ interface/globals.php:141": 1,
+  "gettype @ vendor/adodb/adodb-php/adodb.inc.php:1189": 11
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

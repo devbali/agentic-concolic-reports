@@ -1,0 +1,39 @@
+{
+ "script": "outstanding.php",
+ "wall_s": 5.5,
+ "requests": 17,
+ "rounds": 7,
+ "traces": 17,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "PAGE",
+   "lan"
+  ],
+  "POST": [],
+  "COOKIE": [
+   "PHPSESSID",
+   "uniqueuser"
+  ]
+ },
+ "budget_hit": false,
+ "coverage_complete": true,
+ "missing": 0,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 0,
+ "concretized": {
+  "comparison == @ outstanding.php:26": 8,
+  "intval @ outstanding.php:33": 8,
+  "internal argument @ includes/messages.inc.php:20": 4
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

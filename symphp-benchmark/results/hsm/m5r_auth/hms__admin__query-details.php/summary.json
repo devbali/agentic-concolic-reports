@@ -1,0 +1,57 @@
+{
+ "script": "hms/admin/query-details.php",
+ "wall_s": 5.0,
+ "requests": 11,
+ "rounds": 5,
+ "traces": 8,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "id"
+  ],
+  "POST": [
+   "adminremark",
+   "update"
+  ],
+  "COOKIE": [
+   "PHPSESSID"
+  ]
+ },
+ "budget_hit": false,
+ "coverage_complete": true,
+ "missing": 0,
+ "assumptions": [],
+ "sink_sites": [
+  {
+   "site": "hms/admin/query-details.php:14",
+   "sink": "mysqli_query",
+   "kind": "injectable",
+   "instance": "update tblcontactus set  AdminRemark=''',IsRead='1' where id='0'",
+   "request": {
+    "GET": {},
+    "POST": {
+     "update": "",
+     "adminremark": "'"
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession"
+    }
+   },
+   "db_errno": 0
+  }
+ ],
+ "errors_distinct": [],
+ "halted_traces": 0,
+ "concretized": {
+  "intval @ hms/admin/query-details.php:79": 7,
+  "intval @ hms/admin/query-details.php:11": 5
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

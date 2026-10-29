@@ -1,0 +1,108 @@
+{
+ "script": "admin/spam.php",
+ "wall_s": 60.0,
+ "requests": 312,
+ "rounds": 12,
+ "traces": 228,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "lan"
+  ],
+  "POST": [
+   "action",
+   "anotes",
+   "csrftoken",
+   "recaptcha_private",
+   "recaptcha_public",
+   "spam_blocked_email_domains",
+   "spam_blocked_email_enabled",
+   "spam_register",
+   "spam_reportitem",
+   "spam_sendtofriend"
+  ],
+  "COOKIE": [
+   "PHPSESSID",
+   "USERLANGUAGE",
+   "WEBID_RM_ID"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [
+  {
+   "site": "cache/tpl_adminClassic_adminpages.tpl.php:45",
+   "sink": "echo",
+   "kind": "xss-candidate",
+   "instance": "\"'><acexss2f3b5b7a>",
+   "request": {
+    "GET": {
+     "lan": ""
+    },
+    "POST": {
+     "action": "update",
+     "anotes": "",
+     "csrftoken": "acepinnedcsrftoken00000000000000",
+     "recaptcha_private": "",
+     "recaptcha_public": "\"'><acexss2f3b5b7a>",
+     "spam_blocked_email_domains": "",
+     "spam_blocked_email_enabled": "",
+     "spam_register": "",
+     "spam_reportitem": "",
+     "spam_sendtofriend": ""
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession",
+     "USERLANGUAGE": ""
+    }
+   }
+  },
+  {
+   "site": "cache/tpl_adminClassic_adminpages.tpl.php:49",
+   "sink": "echo",
+   "kind": "xss-candidate",
+   "instance": "\"'><acexss0606a7cb>",
+   "request": {
+    "GET": {
+     "lan": ""
+    },
+    "POST": {
+     "action": "update",
+     "anotes": "",
+     "csrftoken": "acepinnedcsrftoken00000000000000",
+     "recaptcha_private": "",
+     "recaptcha_public": "",
+     "spam_blocked_email_domains": "\"'><acexss0606a7cb>",
+     "spam_blocked_email_enabled": "",
+     "spam_register": "",
+     "spam_reportitem": "",
+     "spam_sendtofriend": ""
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession",
+     "USERLANGUAGE": ""
+    }
+   }
+  }
+ ],
+ "errors_distinct": [],
+ "halted_traces": 32,
+ "concretized": {
+  "internal argument @ includes/functions_global.php:467": 97,
+  "internal argument @ includes/messages.inc.php:41": 121,
+  "internal argument @ includes/messages.inc.php:20": 30,
+  "string conversion @ includes/database/DatabasePDO.php:80": 404,
+  "comparison == @ admin/spam.php:23": 113,
+  "intval @ includes/functions_global.php:130": 113
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

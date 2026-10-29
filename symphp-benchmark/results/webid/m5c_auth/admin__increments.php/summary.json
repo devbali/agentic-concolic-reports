@@ -1,0 +1,54 @@
+{
+ "script": "admin/increments.php",
+ "wall_s": 60.0,
+ "requests": 294,
+ "rounds": 12,
+ "traces": 212,
+ "errored": 32,
+ "first_error": "TypeError: in_array(): Argument #2 ($haystack) must be of type array, string given",
+ "keys_discovered": {
+  "GET": [
+   "lan"
+  ],
+  "POST": [
+   "action",
+   "anotes",
+   "csrftoken",
+   "delete",
+   "highs",
+   "id",
+   "increments",
+   "lows"
+  ],
+  "COOKIE": [
+   "PHPSESSID",
+   "USERLANGUAGE",
+   "WEBID_RM_ID"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [
+  "TypeError: in_array(): Argument #2 ($haystack) must be of type array, string given"
+ ],
+ "halted_traces": 32,
+ "concretized": {
+  "internal argument @ includes/functions_global.php:467": 104,
+  "internal argument @ includes/messages.inc.php:41": 107,
+  "internal argument @ includes/messages.inc.php:20": 30,
+  "string conversion @ includes/database/DatabasePDO.php:80": 104,
+  "isset subscript @ admin/increments.php:43": 61,
+  "in_array @ admin/increments.php:25": 32,
+  "intval @ admin/increments.php:64": 25
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 2,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

@@ -158,7 +158,9 @@
         }
       ],
       "note": "bob/pw2 was created by the installer run (tools/exercise.sh); bob is white in game 1"
-    }
+    },
+    "ace_session_unset_before_start": true,
+    "ace_session_unset_before_start_note": "chess.php starts the session only `if (!isset($_SESSION))`; the harness had defined $_SESSION = [] before the app, so the logged-in seed (restored at session_start) never arrived (a pre-M5 harness change; WebChess's M2 run predates it)"
   },
   "hsm": {
     "src": "../../apps/hsm-2019/src",
@@ -2283,7 +2285,9 @@
         }
       ],
       "note": "admin/admin123 (RUNLOG); WordPress keeps no PHP session: the auth cookies of each side's own login are used; ace_auth=1 only marks a request as authenticated (WordPress ignores it)"
-    }
+    },
+    "judge_cgi": "xdebug",
+    "judge_cgi_note": "tens of thousands of replays: fault replays run under the Xdebug prepend (one pass, streamed), as for the other M5 apps"
   },
   "wordpress51": {
     "src": "../../apps/wordpress-5.1/src",
@@ -2431,7 +2435,9 @@
         }
       ],
       "note": "admin/admin123 (RUNLOG); WordPress keeps no PHP session: the auth cookies of each side's own login are used; ace_auth=1 only marks a request as authenticated (WordPress ignores it)"
-    }
+    },
+    "judge_cgi": "xdebug",
+    "judge_cgi_note": "tens of thousands of replays: fault replays run under the Xdebug prepend (one pass, streamed), as for the other M5 apps"
   },
   "phpbb3110": {
     "src": "../../apps/phpbb-3.1.10/src/phpBB3",

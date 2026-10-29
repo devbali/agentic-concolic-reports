@@ -1,0 +1,60 @@
+{
+ "script": "interface/forms/fee_sheet/review/fee_sheet_justify.php",
+ "wall_s": 34.2,
+ "requests": 90,
+ "rounds": 5,
+ "traces": 86,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "billing_id",
+   "diags",
+   "encounter",
+   "pid",
+   "site",
+   "skip_issues",
+   "skip_timeout_reset",
+   "task"
+  ],
+  "POST": [
+   "authUser",
+   "billing_id",
+   "diags",
+   "encounter",
+   "pid",
+   "skip_issues",
+   "skip_timeout_reset",
+   "task"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 4,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 3,
+ "concretized": {
+  "internal argument @ interface/globals.php:127": 2,
+  "internal argument @ interface/globals.php:141": 1,
+  "gettype @ vendor/adodb/adodb-php/adodb.inc.php:1189": 35,
+  "internal argument @ src/Common/Logging/EventAuditLogger.php:757": 29,
+  "empty() @ src/Common/Logging/EventAuditLogger.php:759": 29,
+  "string conversion @ src/Common/Logging/EventAuditLogger.php:765": 29,
+  "internal argument @ interface/forms/fee_sheet/review/fee_sheet_queries.php:51": 6,
+  "internal argument @ interface/forms/fee_sheet/review/fee_sheet_queries.php:57": 13,
+  "internal argument @ src/Common/Logging/EventAuditLogger.php:891": 8
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

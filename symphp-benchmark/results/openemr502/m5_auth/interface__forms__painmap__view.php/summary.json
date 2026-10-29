@@ -1,0 +1,46 @@
+{
+ "script": "interface/forms/painmap/view.php",
+ "wall_s": 31.9,
+ "requests": 86,
+ "rounds": 5,
+ "traces": 79,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "id",
+   "pid",
+   "site",
+   "skip_timeout_reset"
+  ],
+  "POST": [
+   "authUser",
+   "pid",
+   "skip_timeout_reset"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 3,
+ "concretized": {
+  "internal argument @ interface/globals.php:127": 2,
+  "internal argument @ interface/globals.php:141": 1,
+  "string conversion @ sites/default/documents/smarty/main/%%A5^A5D^A5D7A187%%general_new.html.php:94": 17,
+  "is_numeric @ interface/clickmap/AbstractClickmapModel.php:101": 10
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

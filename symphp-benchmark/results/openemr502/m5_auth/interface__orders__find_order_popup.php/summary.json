@@ -1,0 +1,67 @@
+{
+ "script": "interface/orders/find_order_popup.php",
+ "wall_s": 35.5,
+ "requests": 96,
+ "rounds": 5,
+ "traces": 96,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "addfav",
+   "auth",
+   "bn_grpsearch",
+   "bn_search",
+   "formid",
+   "formseq",
+   "labid",
+   "ordLookup",
+   "order",
+   "pid",
+   "search_term",
+   "site",
+   "skip_timeout_reset",
+   "typeid"
+  ],
+  "POST": [
+   "addfav",
+   "authUser",
+   "bn_grpsearch",
+   "bn_search",
+   "ordLookup",
+   "pid",
+   "search_term",
+   "skip_timeout_reset"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 4,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 45,
+ "concretized": {
+  "arithmetic + @ interface/orders/find_order_popup.php:20": 92,
+  "arithmetic + @ interface/orders/find_order_popup.php:21": 92,
+  "arithmetic + @ interface/orders/find_order_popup.php:27": 42,
+  "internal argument @ library/htmlspecialchars.inc.php:43": 68,
+  "internal argument @ library/htmlspecialchars.inc.php:35": 68,
+  "internal argument @ interface/globals.php:127": 1,
+  "internal argument @ interface/globals.php:141": 1,
+  "internal argument @ vendor/adodb/adodb-php/adodb.inc.php:183": 10,
+  "internal argument @ src/Common/Logging/EventAuditLogger.php:757": 10,
+  "empty() @ src/Common/Logging/EventAuditLogger.php:759": 10,
+  "string conversion @ src/Common/Logging/EventAuditLogger.php:765": 10
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 42,
+  "call7": {}
+ }
+}

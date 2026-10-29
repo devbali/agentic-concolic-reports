@@ -1,0 +1,63 @@
+{
+ "script": "library/custom_template/personalize.php",
+ "wall_s": 30.0,
+ "requests": 51,
+ "rounds": 4,
+ "traces": 51,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "filter_context",
+   "filter_users",
+   "list_id",
+   "personalized",
+   "pid",
+   "site",
+   "skip_timeout_reset",
+   "submitform",
+   "topersonalized"
+  ],
+  "POST": [
+   "authUser",
+   "filter_context",
+   "filter_users",
+   "list_id",
+   "personalized",
+   "pid",
+   "skip_timeout_reset",
+   "submitform",
+   "topersonalized"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 13,
+ "concretized": {
+  "internal argument @ interface/globals.php:127": 1,
+  "internal argument @ interface/globals.php:141": 1,
+  "internal argument @ library/custom_template/personalize.php:376": 10,
+  "internal argument @ library/custom_template/personalize.php:377": 10,
+  "gettype @ vendor/adodb/adodb-php/adodb.inc.php:1189": 1,
+  "internal argument @ vendor/adodb/adodb-php/adodb.inc.php:183": 1,
+  "internal argument @ src/Common/Logging/EventAuditLogger.php:757": 1,
+  "empty() @ src/Common/Logging/EventAuditLogger.php:759": 1,
+  "string conversion @ src/Common/Logging/EventAuditLogger.php:765": 1,
+  "internal argument @ src/Common/Logging/EventAuditLogger.php:1041": 1
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

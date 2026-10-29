@@ -1,0 +1,384 @@
+{
+ "app": "openemr600",
+ "tool": "ace:m5_cold+m5_auth",
+ "requests": 18233,
+ "findings": 7,
+ "findings_judge_confirmed": 6,
+ "findings_unconfirmed": [
+  {
+   "site": "interface/orders/patient_match_dialog.php:55",
+   "kind": "xss-candidate",
+   "request": {
+    "script": "interface/orders/patient_match_dialog.php",
+    "GET": {
+     "auth": "",
+     "pid": "",
+     "site": ""
+    },
+    "POST": {
+     "key": "\"'><acexss3dc6e6d1>",
+     "pid": "",
+     "skip_timeout_reset": ""
+    },
+    "COOKIE": {
+     "OpenEMR": "acesession"
+    }
+   }
+  }
+ ],
+ "faulting_requests": 197,
+ "detected": 0,
+ "known": 19,
+ "cves_detected": 0,
+ "cves_known": 19,
+ "cves": {
+  "CVE-2021-41843": false,
+  "CVE-2026-29187": false,
+  "CVE-2026-33914": false,
+  "CVE-2026-25746": false,
+  "CVE-2024-22611": false,
+  "CVE-2026-32127": false,
+  "CVE-2026-33917": false,
+  "CVE-2021-25922": false,
+  "CVE-2022-1180": false,
+  "CVE-2022-2731": false,
+  "CVE-2022-2733": false,
+  "CVE-2022-4502": false,
+  "CVE-2023-2949": false,
+  "CVE-2023-22972": false,
+  "CVE-2025-29772": false,
+  "CVE-2025-30149": false,
+  "CVE-2026-33911": false,
+  "CVE-2026-32238": false,
+  "CVE-2026-23627": false
+ },
+ "coverage_pct": 3.48,
+ "covered_lines": 19549,
+ "executable_lines": 561736,
+ "vulns": [
+  {
+   "id": "OE600-1",
+   "cve": [
+    "CVE-2021-41843"
+   ],
+   "type": "sqli",
+   "sink": "interface/main/calendar/modules/PostCalendar/pnuserapi.php:938",
+   "auth": "user",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "provider_id[]"
+   ],
+   "method": "GET|POST",
+   "detected": false,
+   "witness": null
+  },
+  {
+   "id": "OE600-2",
+   "cve": [
+    "CVE-2026-29187"
+   ],
+   "type": "sqli",
+   "sink": "interface/new/new_search_popup.php:148",
+   "auth": "user",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "mf_<name> (request parameter KEY)"
+   ],
+   "method": "GET|POST",
+   "detected": false,
+   "witness": null
+  },
+  {
+   "id": "OE600-3",
+   "cve": [
+    "CVE-2026-33914"
+   ],
+   "type": "sqli",
+   "sink": "interface/main/calendar/modules/PostCalendar/pnadmin.php:389",
+   "auth": "admin",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "dels"
+   ],
+   "method": "POST",
+   "detected": false,
+   "witness": null
+  },
+  {
+   "id": "OE600-4",
+   "cve": [
+    "CVE-2026-25746"
+   ],
+   "type": "sqli",
+   "sink": "library/classes/Prescription.class.php:796",
+   "auth": "user",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "sort"
+   ],
+   "method": "GET",
+   "detected": false,
+   "witness": null
+  },
+  {
+   "id": "OE600-5",
+   "cve": [
+    "CVE-2024-22611"
+   ],
+   "type": "sqli",
+   "sink": "library/classes/Pharmacy.class.php:246",
+   "auth": "admin",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "sort"
+   ],
+   "method": "GET",
+   "detected": false,
+   "witness": null
+  },
+  {
+   "id": "OE600-6",
+   "cve": [
+    "CVE-2026-32127"
+   ],
+   "type": "sqli",
+   "sink": "library/ajax/graphs.php:76",
+   "auth": "user",
+   "confidence": "likely",
+   "param": [
+    "name"
+   ],
+   "method": "POST",
+   "detected": false,
+   "witness": null
+  },
+  {
+   "id": "OE600-7",
+   "cve": [
+    "CVE-2026-33917"
+   ],
+   "type": "sqli",
+   "sink": "interface/forms/CAMOS/content_parser.php:20",
+   "auth": "user",
+   "confidence": "likely",
+   "param": [
+    "content (embedded day count)"
+   ],
+   "method": "POST",
+   "detected": false,
+   "witness": null
+  },
+  {
+   "id": "OE600-8",
+   "cve": [
+    "CVE-2021-25922"
+   ],
+   "type": "xss",
+   "sink": "interface/orders/patient_match_dialog.php:55",
+   "auth": "user",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "key"
+   ],
+   "method": "GET",
+   "detected": false,
+   "witness": null
+  },
+  {
+   "id": "OE600-9",
+   "cve": [
+    "CVE-2022-1180"
+   ],
+   "type": "xss",
+   "sink": "interface/main/calendar/modules/PostCalendar/pnadmin.php:232",
+   "auth": "admin",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "newname"
+   ],
+   "method": "POST",
+   "detected": false,
+   "witness": null
+  },
+  {
+   "id": "OE600-10",
+   "cve": [
+    "CVE-2022-2731"
+   ],
+   "type": "xss",
+   "sink": "interface/main/backup.php:622",
+   "auth": "admin",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "form_status"
+   ],
+   "method": "POST",
+   "detected": false,
+   "witness": null
+  },
+  {
+   "id": "OE600-11",
+   "cve": [
+    "CVE-2022-2733"
+   ],
+   "type": "xss",
+   "sink": "interface/forms/fee_sheet/review/fee_sheet_options_ajax.php:34",
+   "auth": "user",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "pricelevel"
+   ],
+   "method": "GET|POST",
+   "detected": false,
+   "witness": null
+  },
+  {
+   "id": "OE600-12",
+   "cve": [
+    "CVE-2022-4502"
+   ],
+   "type": "xss",
+   "sink": "interface/main/messages/messages.php:116",
+   "auth": "user",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "stage"
+   ],
+   "method": "GET",
+   "detected": false,
+   "witness": null
+  },
+  {
+   "id": "OE600-13",
+   "cve": [
+    "CVE-2023-2949"
+   ],
+   "type": "xss",
+   "sink": "library/custom_template/share_template.php:58",
+   "auth": "user",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "list_id"
+   ],
+   "method": "GET|POST",
+   "detected": false,
+   "witness": null
+  },
+  {
+   "id": "OE600-14",
+   "cve": [
+    "CVE-2023-22972"
+   ],
+   "type": "xss",
+   "sink": "interface/forms/eye_mag/php/eye_mag_functions.php:3914",
+   "auth": "user",
+   "confidence": "likely",
+   "param": [
+    "REQUEST_URI (query string)"
+   ],
+   "method": "GET",
+   "detected": false,
+   "witness": null
+  },
+  {
+   "id": "OE600-15",
+   "cve": [
+    "CVE-2025-29772"
+   ],
+   "type": "xss",
+   "sink": "interface/forms/CAMOS/new.php:787",
+   "auth": "user",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "hidden_subcategory",
+    "hidden_category",
+    "hidden_item"
+   ],
+   "method": "POST",
+   "detected": false,
+   "witness": null
+  },
+  {
+   "id": "OE600-16",
+   "cve": [
+    "CVE-2025-30149"
+   ],
+   "type": "xss",
+   "sink": "interface/super/layout_listitems_ajax.php:32",
+   "auth": "user",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "target"
+   ],
+   "method": "GET",
+   "detected": false,
+   "witness": null
+  },
+  {
+   "id": "OE600-17",
+   "cve": [
+    "CVE-2026-33911"
+   ],
+   "type": "xss",
+   "sink": "library/ajax/graphs.php:290",
+   "auth": "user",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "title"
+   ],
+   "method": "POST",
+   "detected": false,
+   "witness": null
+  },
+  {
+   "id": "OE600-18",
+   "cve": [
+    "CVE-2026-32238"
+   ],
+   "type": "cmdi",
+   "sink": "interface/main/backup.php:630",
+   "auth": "admin",
+   "confidence": "likely",
+   "param": [
+    "form_sel_lists[]",
+    "form_sel_layouts[]"
+   ],
+   "method": "POST",
+   "detected": false,
+   "witness": null
+  },
+  {
+   "id": "OE600-19",
+   "cve": [
+    "CVE-2026-23627"
+   ],
+   "type": "sqli",
+   "sink": "interface/modules/zend_modules/module/Immunization/src/Immunization/Controller/ImmunizationController.php:73",
+   "auth": "user",
+   "confidence": "likely",
+   "param": [
+    "patient_id"
+   ],
+   "method": "POST",
+   "detected": false,
+   "witness": null
+  }
+ ],
+ "xdebug_coverage_pct": 3.48,
+ "xdebug_covered_lines": 19549,
+ "xdebug_method": "auto_prepend_file (coverage-only, outside docroot); the fault replays themselves ran under it (judge_cgi xdebug), so trace == xdebug",
+ "arms": {
+  "m5_cold": {
+   "requests": 6011,
+   "detected": 0,
+   "detected_ids": [],
+   "coverage_pct": 1.02
+  },
+  "m5_auth": {
+   "requests": 12222,
+   "detected": 0,
+   "detected_ids": [],
+   "coverage_pct": 3.39
+  }
+ }
+}

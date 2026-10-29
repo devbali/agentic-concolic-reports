@@ -1,0 +1,39 @@
+{
+ "script": "item_watch.php",
+ "wall_s": 27.1,
+ "requests": 129,
+ "rounds": 10,
+ "traces": 129,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "add",
+   "delete",
+   "lan"
+  ],
+  "POST": [],
+  "COOKIE": [
+   "PHPSESSID",
+   "uniqueuser"
+  ]
+ },
+ "budget_hit": false,
+ "coverage_complete": false,
+ "missing": 0,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 0,
+ "concretized": {
+  "internal argument @ includes/messages.inc.php:20": 32,
+  "intval @ item_watch.php:28": 32
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 121,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

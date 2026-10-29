@@ -1,0 +1,55 @@
+{
+ "script": "admin/categories.php",
+ "wall_s": 60.0,
+ "requests": 282,
+ "rounds": 11,
+ "traces": 182,
+ "errored": 74,
+ "first_error": "TypeError: fputs(): Argument #1 ($stream) must be of type resource, bool given",
+ "keys_discovered": {
+  "GET": [
+   "lan",
+   "parent"
+  ],
+  "POST": [
+   "action",
+   "anotes",
+   "categories",
+   "csrftoken",
+   "delete",
+   "mass_add",
+   "new_category"
+  ],
+  "COOKIE": [
+   "PHPSESSID",
+   "USERLANGUAGE",
+   "WEBID_RM_ID"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 5,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [
+  "TypeError: fputs(): Argument #1 ($stream) must be of type resource, bool given"
+ ],
+ "halted_traces": 32,
+ "concretized": {
+  "internal argument @ includes/functions_global.php:467": 92,
+  "internal argument @ includes/messages.inc.php:41": 91,
+  "intval @ admin/categories.php:206": 47,
+  "internal argument @ includes/messages.inc.php:20": 33,
+  "string conversion @ includes/database/DatabasePDO.php:80": 101,
+  "is_array @ admin/categories.php:58": 7,
+  "is_array @ admin/categories.php:100": 26,
+  "is_array @ admin/categories.php:156": 6
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

@@ -1,0 +1,61 @@
+{
+ "script": "interface/patient_file/transaction/add_transaction.php",
+ "wall_s": 42.8,
+ "requests": 90,
+ "rounds": 5,
+ "traces": 87,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "pid",
+   "site",
+   "skip_timeout_reset",
+   "title",
+   "transid"
+  ],
+  "POST": [
+   "authUser",
+   "csrf_token_form",
+   "mode",
+   "pid",
+   "skip_timeout_reset",
+   "title",
+   "transid"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 3,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 11,
+ "concretized": {
+  "internal argument @ interface/globals.php:127": 2,
+  "internal argument @ interface/globals.php:141": 1,
+  "comparison == @ library/patient.inc:788": 11,
+  "internal argument @ library/patient.inc:794": 11,
+  "internal argument @ vendor/adodb/adodb-php/adodb.inc.php:183": 72,
+  "trim @ src/Common/Logging/EventAuditLogger.php:730": 11,
+  "gettype @ vendor/adodb/adodb-php/adodb.inc.php:1189": 61,
+  "internal argument @ src/Common/Logging/EventAuditLogger.php:757": 61,
+  "empty() @ src/Common/Logging/EventAuditLogger.php:759": 61,
+  "string conversion @ src/Common/Logging/EventAuditLogger.php:765": 61,
+  "internal argument @ library/sanitize.inc.php:60": 7,
+  "internal argument @ interface/patient_file/transaction/add_transaction.php:295": 7,
+  "internal argument @ interface/patient_file/transaction/add_transaction.php:578": 7,
+  "arithmetic + @ interface/patient_file/transaction/add_transaction.php:35": 7
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 7,
+  "call7": {}
+ }
+}

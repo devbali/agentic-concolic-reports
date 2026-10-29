@@ -1,0 +1,59 @@
+{
+ "script": "interface/main/messages/messages.php",
+ "wall_s": 20.2,
+ "requests": 1,
+ "rounds": 1,
+ "traces": 1,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "begin",
+   "form_active",
+   "form_inactive",
+   "go",
+   "pid",
+   "show_all",
+   "site",
+   "skip_timeout_reset",
+   "sortby",
+   "sortorder",
+   "task"
+  ],
+  "POST": [
+   "begin",
+   "drR",
+   "form_active",
+   "form_facility",
+   "form_inactive",
+   "form_provider",
+   "go",
+   "pid",
+   "rcb_selectors",
+   "setting_bootstrap_submenu",
+   "skip_timeout_reset",
+   "sortby",
+   "sortorder",
+   "task"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": true,
+ "missing": 0,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 0,
+ "concretized": {},
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 9,
+  "arith7": 0,
+  "call7": {}
+ }
+}

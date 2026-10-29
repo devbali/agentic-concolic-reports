@@ -1,0 +1,55 @@
+{
+ "script": "interface/forms/CAMOS/new.php",
+ "wall_s": 15.9,
+ "requests": 51,
+ "rounds": 4,
+ "traces": 51,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "pid",
+   "site",
+   "skip_timeout_reset"
+  ],
+  "POST": [
+   "authUser",
+   "change_category",
+   "change_item",
+   "change_subcategory",
+   "hidden_category",
+   "hidden_item",
+   "hidden_mode",
+   "hidden_subcategory",
+   "pid",
+   "skip_timeout_reset",
+   "textarea_content"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 3,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 51,
+ "concretized": {
+  "internal argument @ interface/forms/CAMOS/new.php:56": 47,
+  "internal argument @ interface/forms/CAMOS/new.php:57": 47,
+  "internal argument @ interface/forms/CAMOS/new.php:58": 47,
+  "internal argument @ interface/forms/CAMOS/new.php:59": 47,
+  "internal argument @ interface/globals.php:146": 1,
+  "internal argument @ interface/globals.php:160": 1
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

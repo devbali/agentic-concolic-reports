@@ -1,0 +1,53 @@
+{
+ "script": "interface/patient_file/summary/labdata.php",
+ "wall_s": 30.0,
+ "requests": 50,
+ "rounds": 4,
+ "traces": 50,
+ "errored": 2,
+ "first_error": "Concolic\\NotImplementedError: Iteration over symbolic values is not modelled",
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "pid",
+   "site",
+   "skip_timeout_reset"
+  ],
+  "POST": [
+   "authUser",
+   "mode",
+   "pid",
+   "print",
+   "skip_timeout_reset",
+   "value_code"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [
+  "Concolic\\NotImplementedError: Iteration over symbolic values is not modelled"
+ ],
+ "halted_traces": 3,
+ "concretized": {
+  "internal argument @ interface/globals.php:127": 1,
+  "internal argument @ interface/globals.php:141": 1,
+  "gettype @ vendor/adodb/adodb-php/adodb.inc.php:1189": 12,
+  "internal argument @ vendor/adodb/adodb-php/adodb.inc.php:183": 12,
+  "internal argument @ src/Common/Logging/EventAuditLogger.php:757": 12,
+  "empty() @ src/Common/Logging/EventAuditLogger.php:759": 12,
+  "string conversion @ src/Common/Logging/EventAuditLogger.php:765": 12
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

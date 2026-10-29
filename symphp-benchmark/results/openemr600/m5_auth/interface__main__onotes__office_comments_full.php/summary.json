@@ -1,0 +1,54 @@
+{
+ "script": "interface/main/onotes/office_comments_full.php",
+ "wall_s": 15.0,
+ "requests": 50,
+ "rounds": 4,
+ "traces": 50,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "active",
+   "auth",
+   "offset",
+   "pid",
+   "site",
+   "skip_timeout_reset"
+  ],
+  "POST": [
+   "active",
+   "authUser",
+   "csrf_token_form",
+   "mode",
+   "offset",
+   "pid",
+   "skip_timeout_reset"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 3,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 45,
+ "concretized": {
+  "internal argument @ interface/globals.php:146": 1,
+  "internal argument @ interface/globals.php:160": 1,
+  "comparison == @ src/Services/ONoteService.php:68": 3,
+  "(int) @ library/formdata.inc.php:44": 3,
+  "gettype @ vendor/adodb/adodb-php/adodb.inc.php:1184": 3,
+  "internal argument @ vendor/adodb/adodb-php/adodb.inc.php:183": 3,
+  "comparison > @ interface/main/onotes/office_comments_full.php:164": 3
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 3,
+  "arith7": 0,
+  "call7": {}
+ }
+}

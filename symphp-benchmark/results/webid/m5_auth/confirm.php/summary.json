@@ -1,0 +1,79 @@
+{
+ "script": "confirm.php",
+ "wall_s": 59.3,
+ "requests": 299,
+ "rounds": 13,
+ "traces": 263,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "hash",
+   "id",
+   "lan"
+  ],
+  "POST": [
+   "action",
+   "hash",
+   "id"
+  ],
+  "COOKIE": [
+   "PHPSESSID",
+   "uniqueuser"
+  ]
+ },
+ "budget_hit": false,
+ "coverage_complete": true,
+ "missing": 0,
+ "assumptions": [],
+ "sink_sites": [
+  {
+   "site": "cache/tpl_modern_confirm.tpl.php:13",
+   "sink": "echo",
+   "kind": "xss-candidate",
+   "instance": "\"'><acexssc844ec39>",
+   "request": {
+    "GET": {
+     "hash": "",
+     "id": "\"'><acexssc844ec39>",
+     "lan": ""
+    },
+    "POST": {},
+    "COOKIE": {
+     "PHPSESSID": "acesession",
+     "uniqueuser": ""
+    }
+   }
+  },
+  {
+   "site": "cache/tpl_modern_confirm.tpl.php:14",
+   "sink": "echo",
+   "kind": "xss-candidate",
+   "instance": "\"'><acexss3df6b19e>",
+   "request": {
+    "GET": {
+     "hash": "\"'><acexss3df6b19e>",
+     "id": "",
+     "lan": ""
+    },
+    "POST": {},
+    "COOKIE": {
+     "PHPSESSID": "acesession",
+     "uniqueuser": ""
+    }
+   }
+  }
+ ],
+ "errors_distinct": [],
+ "halted_traces": 0,
+ "concretized": {
+  "internal argument @ includes/messages.inc.php:20": 64
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

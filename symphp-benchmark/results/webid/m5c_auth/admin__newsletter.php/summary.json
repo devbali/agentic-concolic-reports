@@ -1,0 +1,117 @@
+{
+ "script": "admin/newsletter.php",
+ "wall_s": 60.0,
+ "requests": 138,
+ "rounds": 8,
+ "traces": 130,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "lan"
+  ],
+  "POST": [
+   "action",
+   "anotes",
+   "content",
+   "csrftoken",
+   "subject",
+   "usersfilter"
+  ],
+  "COOKIE": [
+   "PHPSESSID",
+   "USERLANGUAGE",
+   "WEBID_RM_ID"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 3,
+ "assumptions": [],
+ "sink_sites": [
+  {
+   "site": "includes/template/Template.php(163) : eval()'d code:26",
+   "sink": "echo",
+   "kind": "xss-candidate",
+   "instance": "\"'><acexssbbefd814>",
+   "request": {
+    "GET": {
+     "lan": ""
+    },
+    "POST": {
+     "action": "",
+     "anotes": "",
+     "content": "",
+     "subject": "\"'><acexssbbefd814>",
+     "usersfilter": "",
+     "csrftoken": "acepinnedcsrftoken00000000000000"
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession",
+     "USERLANGUAGE": ""
+    }
+   }
+  },
+  {
+   "site": "includes/template/Template.php(163) : eval()'d code:12",
+   "sink": "echo",
+   "kind": "xss-candidate",
+   "instance": "\"'><acexss211ce86e>",
+   "request": {
+    "GET": {
+     "lan": ""
+    },
+    "POST": {
+     "action": "preview",
+     "anotes": "",
+     "content": "",
+     "subject": "\"'><acexss211ce86e>",
+     "usersfilter": "",
+     "csrftoken": "acepinnedcsrftoken00000000000000"
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession",
+     "USERLANGUAGE": ""
+    }
+   }
+  },
+  {
+   "site": "includes/template/Template.php(163) : eval()'d code:13",
+   "sink": "echo",
+   "kind": "xss-candidate",
+   "instance": "\"'><acexss88bbb61d>",
+   "request": {
+    "GET": {
+     "lan": ""
+    },
+    "POST": {
+     "action": "preview",
+     "anotes": "",
+     "content": "\"'><acexss88bbb61d>",
+     "subject": "",
+     "usersfilter": "",
+     "csrftoken": "acepinnedcsrftoken00000000000000"
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession",
+     "USERLANGUAGE": ""
+    }
+   }
+  }
+ ],
+ "errors_distinct": [],
+ "halted_traces": 30,
+ "concretized": {
+  "internal argument @ includes/functions_global.php:467": 68,
+  "internal argument @ includes/messages.inc.php:41": 69,
+  "internal argument @ includes/messages.inc.php:20": 26,
+  "string conversion @ includes/database/DatabasePDO.php:80": 85
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

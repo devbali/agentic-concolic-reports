@@ -1,0 +1,61 @@
+{
+ "script": "mail.php",
+ "wall_s": 60.0,
+ "requests": 276,
+ "rounds": 12,
+ "traces": 237,
+ "errored": 181,
+ "first_error": "TypeError: Illegal offset type",
+ "keys_discovered": {
+  "GET": [
+   "action",
+   "deleteid",
+   "id",
+   "lan",
+   "message",
+   "order",
+   "u",
+   "x"
+  ],
+  "POST": [
+   "csrftoken",
+   "delete",
+   "deleteid",
+   "message",
+   "sendto",
+   "subject"
+  ],
+  "COOKIE": [
+   "PHPSESSID",
+   "uniqueuser"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 1,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [
+  "TypeError: Illegal offset type"
+ ],
+ "halted_traces": 10,
+ "concretized": {
+  "is_array @ mail.php:133": 189,
+  "internal argument @ includes/messages.inc.php:20": 58,
+  "intval @ mail.php:28": 182,
+  "comparison == @ mail.php:147": 182,
+  "comparison == @ mail.php:202": 182,
+  "comparison == @ mail.php:206": 182,
+  "comparison == @ mail.php:210": 182,
+  "comparison == @ mail.php:214": 182,
+  "comparison == @ mail.php:218": 182,
+  "comparison == @ mail.php:222": 182
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

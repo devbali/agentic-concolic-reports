@@ -1,0 +1,49 @@
+{
+ "script": "interface/main/calendar/find_patient_popup.php",
+ "wall_s": 33.8,
+ "requests": 91,
+ "rounds": 5,
+ "traces": 87,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "pflag",
+   "pid",
+   "res",
+   "searchby",
+   "searchparm",
+   "site",
+   "skip_timeout_reset"
+  ],
+  "POST": [
+   "authUser",
+   "pid",
+   "searchby",
+   "searchparm",
+   "skip_timeout_reset"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 3,
+ "concretized": {
+  "internal argument @ interface/globals.php:127": 2,
+  "internal argument @ interface/globals.php:141": 1
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 76,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

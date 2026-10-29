@@ -1,0 +1,42 @@
+{
+ "script": "interface/batchcom/batch_phone_notification.php",
+ "wall_s": 10.7,
+ "requests": 35,
+ "rounds": 7,
+ "traces": 28,
+ "errored": 3,
+ "first_error": "Error: Failed opening required '/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/openemr502-m5_cold/sites/A/config.php' (include_path='.:/usr/local/lib/php')",
+ "keys_discovered": {
+  "GET": [
+   "pid",
+   "site"
+  ],
+  "POST": [
+   "authUser",
+   "pid",
+   "site"
+  ],
+  "COOKIE": []
+ },
+ "budget_hit": false,
+ "coverage_complete": false,
+ "missing": 7,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [
+  "Error: Failed opening required '/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/openemr502-m5_cold/sites/A/config.php' (include_path='.:/us"
+ ],
+ "halted_traces": 27,
+ "concretized": {
+  "internal argument @ interface/globals.php:127": 1,
+  "string conversion @ interface/globals.php:159": 1,
+  "gettype @ vendor/adodb/adodb-php/adodb.inc.php:1189": 4
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

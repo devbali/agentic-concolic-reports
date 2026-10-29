@@ -1,0 +1,48 @@
+{
+ "script": "interface/super/rules/index.php",
+ "wall_s": 30.0,
+ "requests": 48,
+ "rounds": 4,
+ "traces": 48,
+ "errored": 45,
+ "first_error": "Error: Call to undefined function Exception()",
+ "keys_discovered": {
+  "GET": [
+   "action",
+   "auth",
+   "pid",
+   "plan_id",
+   "site",
+   "skip_timeout_reset"
+  ],
+  "POST": [
+   "authUser",
+   "pid",
+   "skip_timeout_reset"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [
+  "Error: Call to undefined function Exception()"
+ ],
+ "halted_traces": 3,
+ "concretized": {
+  "internal argument @ interface/globals.php:127": 1,
+  "internal argument @ interface/globals.php:141": 1,
+  "internal argument @ interface/super/rules/base/library/ControllerRouter.php:23": 18
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

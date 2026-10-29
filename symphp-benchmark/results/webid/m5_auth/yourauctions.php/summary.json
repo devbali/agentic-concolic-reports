@@ -1,0 +1,90 @@
+{
+ "script": "yourauctions.php",
+ "wall_s": 60.8,
+ "requests": 224,
+ "rounds": 9,
+ "traces": 173,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "PAGE",
+   "lan",
+   "oa_ord",
+   "oa_type"
+  ],
+  "POST": [
+   "O_delete",
+   "action",
+   "closenow",
+   "csrftoken"
+  ],
+  "COOKIE": [
+   "PHPSESSID",
+   "uniqueuser"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [
+  {
+   "site": "includes/database/DatabasePDO.php:76",
+   "sink": "PDO::prepare",
+   "kind": "injectable",
+   "instance": "SELECT * FROM webid_auctions\n\tWHERE user = :user_id AND closed = 0\n\tAND starts <= :time AND suspended = 0\n\tORDER BY '  LIMIT :offset, :perpage",
+   "request": {
+    "GET": {
+     "PAGE": "",
+     "lan": "",
+     "oa_ord": "'"
+    },
+    "POST": {
+     "action": ""
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession",
+     "uniqueuser": ""
+    }
+   },
+   "db_errno": 1054
+  },
+  {
+   "site": "includes/database/DatabasePDO.php:76",
+   "sink": "PDO::prepare",
+   "kind": "injectable",
+   "instance": "SELECT * FROM webid_auctions\n\tWHERE user = :user_id AND closed = 0\n\tAND starts <= :time AND suspended = 0\n\tORDER BY '  LIMIT :offset, :perpage",
+   "request": {
+    "GET": {
+     "PAGE": "",
+     "lan": "A",
+     "oa_ord": "'",
+     "oa_type": ""
+    },
+    "POST": {
+     "action": ""
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession",
+     "uniqueuser": ""
+    }
+   },
+   "db_errno": 1054
+  }
+ ],
+ "errors_distinct": [],
+ "halted_traces": 7,
+ "concretized": {
+  "comparison <= @ yourauctions.php:102": 114,
+  "internal argument @ includes/messages.inc.php:20": 29,
+  "internal argument @ includes/database/DatabasePDO.php:179": 86
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

@@ -1,0 +1,55 @@
+{
+ "script": "interface/patient_file/summary/pnotes.php",
+ "wall_s": 34.8,
+ "requests": 89,
+ "rounds": 5,
+ "traces": 84,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "docid",
+   "orderid",
+   "pid",
+   "site",
+   "skip_timeout_reset"
+  ],
+  "POST": [
+   "authUser",
+   "docid",
+   "orderid",
+   "pid",
+   "skip_timeout_reset"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 3,
+ "concretized": {
+  "internal argument @ interface/globals.php:127": 2,
+  "internal argument @ interface/globals.php:141": 1,
+  "gettype @ vendor/adodb/adodb-php/adodb.inc.php:1189": 39,
+  "internal argument @ vendor/adodb/adodb-php/adodb.inc.php:183": 39,
+  "internal argument @ src/Common/Logging/EventAuditLogger.php:757": 39,
+  "empty() @ src/Common/Logging/EventAuditLogger.php:759": 39,
+  "string conversion @ src/Common/Logging/EventAuditLogger.php:765": 39,
+  "internal argument @ library/pnotes.inc:122": 13,
+  "intval @ interface/patient_file/summary/pnotes.php:22": 8,
+  "intval @ interface/patient_file/summary/pnotes.php:25": 9
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

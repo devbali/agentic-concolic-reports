@@ -1,0 +1,53 @@
+{
+ "script": "admin/addnew.php",
+ "wall_s": 60.1,
+ "requests": 492,
+ "rounds": 24,
+ "traces": 292,
+ "errored": 28,
+ "first_error": "Concolic\\NotImplementedError: Iteration over symbolic values is not modelled",
+ "keys_discovered": {
+  "GET": [
+   "lan"
+  ],
+  "POST": [
+   "action",
+   "anotes",
+   "content",
+   "csrftoken",
+   "suspended",
+   "title"
+  ],
+  "COOKIE": [
+   "PHPSESSID",
+   "USERLANGUAGE",
+   "WEBID_RM_ID"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 1,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [
+  "Concolic\\NotImplementedError: Iteration over symbolic values is not modelled"
+ ],
+ "halted_traces": 32,
+ "concretized": {
+  "isset subscript @ admin/addnew.php:73": 231,
+  "isset subscript @ admin/addnew.php:74": 231,
+  "internal argument @ includes/functions_global.php:467": 144,
+  "internal argument @ includes/messages.inc.php:41": 125,
+  "comparison == @ admin/addnew.php:83": 113,
+  "comparison == @ admin/addnew.php:84": 113,
+  "internal argument @ includes/messages.inc.php:20": 42,
+  "string conversion @ includes/database/DatabasePDO.php:80": 126
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 253,
+  "arith7": 0,
+  "call7": {}
+ }
+}

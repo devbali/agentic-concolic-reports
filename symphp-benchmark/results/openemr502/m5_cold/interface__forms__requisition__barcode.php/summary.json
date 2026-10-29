@@ -1,0 +1,45 @@
+{
+ "script": "interface/forms/requisition/barcode.php",
+ "wall_s": 10.1,
+ "requests": 45,
+ "rounds": 10,
+ "traces": 37,
+ "errored": 45,
+ "first_error": "Error: Call to undefined function imagecreate()",
+ "keys_discovered": {
+  "GET": [
+   "codetype",
+   "orientation",
+   "size",
+   "text"
+  ],
+  "POST": [],
+  "COOKIE": []
+ },
+ "budget_hit": false,
+ "coverage_complete": false,
+ "missing": 1,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [
+  "Error: Call to undefined function imagecreate()"
+ ],
+ "halted_traces": 0,
+ "concretized": {
+  "string conversion @ interface/forms/requisition/barcode.php:20": 16,
+  "comparison == @ interface/forms/requisition/barcode.php:34": 8,
+  "comparison == @ interface/forms/requisition/barcode.php:49": 8,
+  "comparison == @ interface/forms/requisition/barcode.php:60": 8,
+  "comparison == @ interface/forms/requisition/barcode.php:83": 8,
+  "comparison == @ interface/forms/requisition/barcode.php:106": 19,
+  "array key @ interface/forms/requisition/barcode.php:28": 61,
+  "array key @ interface/forms/requisition/barcode.php:29": 61
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

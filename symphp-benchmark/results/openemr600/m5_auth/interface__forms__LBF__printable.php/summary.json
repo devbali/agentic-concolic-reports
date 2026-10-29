@@ -1,0 +1,60 @@
+{
+ "script": "interface/forms/LBF/printable.php",
+ "wall_s": 21.0,
+ "requests": 53,
+ "rounds": 4,
+ "traces": 53,
+ "errored": 4,
+ "first_error": "TypeError: Unsupported operand types: string + int",
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "formid",
+   "formname",
+   "isform",
+   "patientid",
+   "pid",
+   "return_content",
+   "site",
+   "skip_timeout_reset",
+   "visitid"
+  ],
+  "POST": [
+   "authUser",
+   "formid",
+   "isform",
+   "patientid",
+   "pid",
+   "skip_timeout_reset",
+   "visitid"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [
+  "TypeError: Unsupported operand types: string + int"
+ ],
+ "halted_traces": 49,
+ "concretized": {
+  "gettype @ vendor/adodb/adodb-php/adodb.inc.php:1184": 82,
+  "internal argument @ vendor/adodb/adodb-php/adodb.inc.php:183": 82,
+  "internal argument @ interface/globals.php:146": 1,
+  "internal argument @ interface/globals.php:160": 1,
+  "arithmetic + @ interface/forms/LBF/printable.php:32": 2,
+  "arithmetic + @ interface/forms/LBF/printable.php:41": 2,
+  "arithmetic + @ interface/forms/LBF/printable.php:46": 2
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 4,
+  "arith7": 66,
+  "call7": {}
+ }
+}

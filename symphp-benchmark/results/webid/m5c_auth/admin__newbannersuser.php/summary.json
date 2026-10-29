@@ -1,0 +1,109 @@
+{
+ "script": "admin/newbannersuser.php",
+ "wall_s": 60.0,
+ "requests": 132,
+ "rounds": 8,
+ "traces": 125,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "lan"
+  ],
+  "POST": [
+   "action",
+   "anotes",
+   "company",
+   "csrftoken",
+   "email",
+   "name"
+  ],
+  "COOKIE": [
+   "PHPSESSID",
+   "USERLANGUAGE",
+   "WEBID_RM_ID"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 1,
+ "assumptions": [],
+ "sink_sites": [
+  {
+   "site": "includes/template/Template.php(163) : eval()'d code:21",
+   "sink": "echo",
+   "kind": "xss-candidate",
+   "instance": "\"'><acexss59533be1>",
+   "request": {
+    "GET": {},
+    "POST": {
+     "email": "\"'><acexss59533be1>"
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession"
+    }
+   }
+  },
+  {
+   "site": "includes/template/Template.php(163) : eval()'d code:13",
+   "sink": "echo",
+   "kind": "xss-candidate",
+   "instance": "\"'><acexss88bbb61d>",
+   "request": {
+    "GET": {
+     "lan": ""
+    },
+    "POST": {
+     "action": "",
+     "anotes": "",
+     "company": "",
+     "email": "",
+     "name": "\"'><acexss88bbb61d>",
+     "csrftoken": "acepinnedcsrftoken00000000000000"
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession",
+     "USERLANGUAGE": ""
+    }
+   }
+  },
+  {
+   "site": "includes/template/Template.php(163) : eval()'d code:17",
+   "sink": "echo",
+   "kind": "xss-candidate",
+   "instance": "\"'><acexssd94d3d2d>",
+   "request": {
+    "GET": {
+     "lan": ""
+    },
+    "POST": {
+     "action": "",
+     "anotes": "",
+     "company": "\"'><acexssd94d3d2d>",
+     "email": "",
+     "name": "",
+     "csrftoken": "acepinnedcsrftoken00000000000000"
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession",
+     "USERLANGUAGE": ""
+    }
+   }
+  }
+ ],
+ "errors_distinct": [],
+ "halted_traces": 32,
+ "concretized": {
+  "internal argument @ includes/functions_global.php:467": 58,
+  "internal argument @ includes/messages.inc.php:41": 61,
+  "internal argument @ includes/messages.inc.php:20": 18,
+  "string conversion @ includes/database/DatabasePDO.php:80": 74
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

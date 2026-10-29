@@ -1,0 +1,44 @@
+{
+ "script": "rss.php",
+ "wall_s": 9.0,
+ "requests": 57,
+ "rounds": 8,
+ "traces": 57,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "feed",
+   "lan",
+   "user_id"
+  ],
+  "POST": [
+   "user_id"
+  ],
+  "COOKIE": [
+   "USERLANGUAGE",
+   "WEBID_RM_ID"
+  ]
+ },
+ "budget_hit": false,
+ "coverage_complete": true,
+ "missing": 0,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 0,
+ "concretized": {
+  "internal argument @ includes/functions_global.php:467": 28,
+  "internal argument @ includes/messages.inc.php:41": 24,
+  "intval @ rss.php:23": 28,
+  "intval @ rss.php:25": 28,
+  "internal argument @ includes/messages.inc.php:20": 8
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

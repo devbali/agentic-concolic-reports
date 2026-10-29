@@ -1,0 +1,52 @@
+{
+ "script": "interface/therapy_groups/index.php",
+ "wall_s": 30.0,
+ "requests": 48,
+ "rounds": 4,
+ "traces": 48,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "deleteGroup",
+   "deleteParticipant",
+   "editParticipants",
+   "group_id",
+   "method",
+   "pid",
+   "site",
+   "skip_timeout_reset"
+  ],
+  "POST": [
+   "authUser",
+   "group_end_date",
+   "group_start_date",
+   "pid",
+   "save",
+   "save_new",
+   "skip_timeout_reset"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 17,
+ "concretized": {
+  "internal argument @ interface/globals.php:127": 1,
+  "internal argument @ interface/globals.php:141": 1
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 4,
+  "arith7": 0,
+  "call7": {}
+ }
+}

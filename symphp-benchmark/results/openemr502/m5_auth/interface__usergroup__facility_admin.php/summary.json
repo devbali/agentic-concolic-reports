@@ -1,0 +1,52 @@
+{
+ "script": "interface/usergroup/facility_admin.php",
+ "wall_s": 30.0,
+ "requests": 46,
+ "rounds": 4,
+ "traces": 46,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "fid",
+   "pid",
+   "site",
+   "skip_timeout_reset"
+  ],
+  "POST": [
+   "authUser",
+   "pid",
+   "skip_timeout_reset"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 3,
+ "concretized": {
+  "gettype @ vendor/adodb/adodb-php/adodb.inc.php:1189": 42,
+  "internal argument @ vendor/adodb/adodb-php/adodb.inc.php:183": 42,
+  "internal argument @ src/Common/Logging/EventAuditLogger.php:757": 36,
+  "empty() @ src/Common/Logging/EventAuditLogger.php:759": 36,
+  "string conversion @ src/Common/Logging/EventAuditLogger.php:765": 36,
+  "internal argument @ interface/globals.php:127": 1,
+  "internal argument @ interface/globals.php:141": 1,
+  "comparison !== @ vendor/adodb/adodb-php/adodb.inc.php:1136": 6,
+  "is_array @ vendor/adodb/adodb-php/adodb.inc.php:1137": 6,
+  "is_array @ src/Common/Logging/EventAuditLogger.php:751": 6
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

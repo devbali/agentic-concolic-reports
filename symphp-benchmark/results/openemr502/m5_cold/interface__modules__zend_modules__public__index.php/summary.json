@@ -1,0 +1,43 @@
+{
+ "script": "interface/modules/zend_modules/public/index.php",
+ "wall_s": 5.1,
+ "requests": 30,
+ "rounds": 6,
+ "traces": 21,
+ "errored": 10,
+ "first_error": "Error: Failed opening required '/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/openemr502-m5_cold/sites/A/config.php' (include_path='.:/usr/local/lib/php')",
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "me",
+   "recipient",
+   "site"
+  ],
+  "POST": [
+   "me",
+   "recipient"
+  ],
+  "COOKIE": []
+ },
+ "budget_hit": false,
+ "coverage_complete": true,
+ "missing": 0,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [
+  "Error: Failed opening required '../library/auth.inc' (include_path='.:/usr/local/lib/php')",
+  "Error: Failed opening required '/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/openemr502-m5_cold/sites/A/config.php' (include_path='.:/us"
+ ],
+ "halted_traces": 13,
+ "concretized": {
+  "internal argument @ interface/globals.php:127": 2,
+  "string conversion @ interface/globals.php:159": 2
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

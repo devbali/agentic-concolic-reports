@@ -1,0 +1,79 @@
+{
+ "script": "wp-admin/install-helper.php",
+ "wall_s": 60.0,
+ "requests": 136,
+ "rounds": 6,
+ "traces": 136,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "_ajax_nonce",
+   "_locale",
+   "_wpnonce",
+   "customize_changeset_uuid",
+   "customize_messenger_channel",
+   "customize_preview_nonce",
+   "customize_theme",
+   "doing_wp_cron",
+   "nonce",
+   "preview_id",
+   "preview_nonce",
+   "replytocom",
+   "theme",
+   "wp_customize",
+   "wp_lang",
+   "wp_scrape_key",
+   "wp_scrape_nonce"
+  ],
+  "POST": [
+   "_ajax_nonce",
+   "_wpnonce",
+   "customize_changeset_uuid",
+   "customize_messenger_channel",
+   "customize_preview_nonce",
+   "customize_theme",
+   "nonce",
+   "theme",
+   "wp_customize",
+   "wp_scrape_key",
+   "wp_scrape_nonce"
+  ],
+  "COOKIE": [
+   "comment_author_15d6d54e3ae52e9a938f8853c833b792",
+   "comment_author_email_15d6d54e3ae52e9a938f8853c833b792",
+   "comment_author_url_15d6d54e3ae52e9a938f8853c833b792",
+   "wordpress_15d6d54e3ae52e9a938f8853c833b792",
+   "wordpress_logged_in_15d6d54e3ae52e9a938f8853c833b792"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 1,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 42,
+ "concretized": {
+  "is_array @ wp-includes/functions.php:1057": 1626,
+  "string conversion @ wp-includes/formatting.php:5152": 110,
+  "string conversion @ wp-includes/class-wp-hook.php:286": 111,
+  "internal argument @ wp-includes/formatting.php:5067": 114,
+  "comparison === @ wp-includes/l10n.php:137": 523,
+  "empty() @ wp-includes/l10n.php:141": 533,
+  "empty() @ wp-includes/pluggable.php:782": 310,
+  "empty() @ wp-includes/user.php:357": 104,
+  "internal argument @ wp-includes/formatting.php:2120": 7,
+  "is_array @ wp-includes/formatting.php:4715": 4,
+  "is_object @ wp-includes/formatting.php:4719": 4,
+  "internal argument @ wp-includes/formatting.php:4725": 4,
+  "string conversion @ wp-includes/pluggable.php:2065": 22
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 55,
+  "arith7": 0,
+  "call7": {}
+ }
+}

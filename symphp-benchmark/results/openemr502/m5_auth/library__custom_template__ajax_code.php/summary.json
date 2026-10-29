@@ -1,0 +1,65 @@
+{
+ "script": "library/custom_template/ajax_code.php",
+ "wall_s": 30.0,
+ "requests": 49,
+ "rounds": 4,
+ "traces": 49,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "auth",
+   "content",
+   "item",
+   "list_id",
+   "multi",
+   "pid",
+   "site",
+   "skip_timeout_reset",
+   "source",
+   "templateid"
+  ],
+  "POST": [
+   "authUser",
+   "content",
+   "item",
+   "list_id",
+   "multi",
+   "pid",
+   "skip_timeout_reset",
+   "source",
+   "templateid"
+  ],
+  "COOKIE": [
+   "OpenEMR"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 5,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [],
+ "halted_traces": 5,
+ "concretized": {
+  "gettype @ vendor/adodb/adodb-php/adodb.inc.php:1189": 63,
+  "internal argument @ vendor/adodb/adodb-php/adodb.inc.php:183": 50,
+  "internal argument @ src/Common/Logging/EventAuditLogger.php:757": 44,
+  "empty() @ src/Common/Logging/EventAuditLogger.php:759": 44,
+  "string conversion @ src/Common/Logging/EventAuditLogger.php:765": 44,
+  "internal argument @ src/Common/Logging/EventAuditLogger.php:1041": 42,
+  "internal argument @ interface/globals.php:127": 1,
+  "internal argument @ interface/globals.php:141": 1,
+  "internal argument @ library/custom_template/ajax_code.php:40": 2,
+  "internal argument @ library/custom_template/ajax_code.php:61": 2,
+  "internal argument @ library/custom_template/ajax_code.php:112": 1,
+  "internal argument @ src/Common/Logging/EventAuditLogger.php:891": 1
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}
