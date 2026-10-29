@@ -41,6 +41,7 @@ import functools
 import json
 import os
 import pathlib
+import re
 import subprocess
 import sys
 import time
@@ -112,7 +113,7 @@ def instrument(app: str, label: str | None = None, options: tuple[str, ...] = ()
     src = (HERE / APPS[app]["src"]).resolve()
     if MODE["app"]:
         cmd = ["docker", "run", "--rm", "-i", *appdb.LOG_OPTS, "-u", f"{os.getuid()}:{os.getgid()}",
-               "-v", f"{ROOT}:{ROOT}", "-v", f"{src}:{src}:ro", "-w", str(HERE), app_image(), "php",
+               "-v", f"{ROOT}:{ROOT}", "-v", f"{src}:{src}:ro", "-w", str(HERE), app_image(), "php", "-d", "memory_limit=4G",
                "instrument_app.php", str(src), str(build), "--app-targets", *options]
     else:
         cmd = [*PHP, "instrument_app.php", str(src), str(build)]
@@ -131,9 +132,21 @@ def canon(req: dict) -> str:
     return json.dumps({g: dict(sorted(req.get(g, {}).items())) for g in GLOBALS}, sort_keys=True)
 
 
+#: The authenticated arm's credential default (decision DEFAULT, M2): a newly declared key whose
+#: name matches `login.credential_keys` starts with the login password instead of absent, as a
+#: logged-in crawler fills a password field. Empty in every other arm.
+KEY_DEFAULTS: dict = {}
+
+
+def _default(g: str, k: str):
+    rx = KEY_DEFAULTS.get("regex")
+    return KEY_DEFAULTS["value"] if rx and g == "POST" and re.search(rx, k) else None
+
+
 def with_keys(req: dict, keys: dict[str, set]) -> dict:
-    """`req` with every known key declared; ones it does not set are absent."""
-    return {g: {k: req.get(g, {}).get(k) for k in sorted(keys[g] | set(req.get(g, {})))} for g in GLOBALS}
+    """`req` with every known key declared; ones it does not set are absent (or a credential default)."""
+    return {g: {k: req.get(g, {}).get(k, _default(g, k)) for k in sorted(keys[g] | set(req.get(g, {})))}
+            for g in GLOBALS}
 
 
 def witcher_seeds(app: str) -> dict[str, list[dict]]:
@@ -179,13 +192,15 @@ def _from_model(model: dict, names: dict[str, tuple], base: dict) -> dict:
     return req
 
 
-def negations(dump: dict, names: dict[str, tuple], base: dict):
+def negations(dump: dict, names: dict[str, tuple], base: dict, deadline: float | None = None):
     """One request per branch this run took, flipped against its prefix."""
     run = Run.from_dict(dump)
     symbols = run.symbols()
     pcs = run.path_conditions
     observed = [pc.expr if pc.taken else ("not", pc.expr) for pc in pcs]
     for i, pc in enumerate(pcs):
+        if deadline is not None and time.monotonic() >= deadline:
+            return
         flipped = ("not", pc.expr) if pc.taken else pc.expr
         res = solve_and_evaluate([*observed[:i], flipped], symbols,
                                  eval_conditions=[pc.expr for pc in pcs])
@@ -248,7 +263,7 @@ def explore(app_dir: pathlib.Path, script: str, seeds: list[dict], max_rounds: i
                 fresh.append(req)
         queue = []
         if not fresh:
-            if kept:
+            if kept and (deadline is None or time.monotonic() < deadline):
                 cov, _ = coverage(kept, names)
                 for m in cov.missing:
                     if not m.untracked and m.concrete_values:
@@ -299,7 +314,9 @@ def explore(app_dir: pathlib.Path, script: str, seeds: list[dict], max_rounds: i
             traces.add(sig)
             dump["request"] = req
             kept.append(dump)
-            queue.extend(negations(dump, names, req))
+            if deadline is not None and time.monotonic() >= deadline:
+                continue                         # budget spent: keep the trace, expand no further
+            queue.extend(negations(dump, names, req, deadline))
     return {"kept": kept, "errors": errors, "keys": {g: sorted(k) for g, k in keys.items()},
             "requests": len(seen), "rounds": rounds, "names": names, "budget_hit": bool(queue), "php7": php7}
 
@@ -330,6 +347,9 @@ def main() -> int:
     ap.add_argument("--exit-as-halt", action="store_true", help="E3 (app mode)")
     ap.add_argument("--switch-cmp", action="store_true", help="switch via __cmp (app mode)")
     ap.add_argument("--concretize", action="store_true", help="E4 (app mode)")
+    ap.add_argument("--array-mode", action="store_true", help="decision (b): real-array superglobals (app mode)")
+    ap.add_argument("--real-app-builtins", action="store_true", help="route type predicates through __fn (app mode)")
+    ap.add_argument("--sanitizers", action="store_true", help="E5: sanitizers as tagged template parts (app mode)")
     a = ap.parse_args()
 
     spec = APPS[a.app]
@@ -337,21 +357,24 @@ def main() -> int:
     app_mode = bool(spec.get("db"))
     MODE["app"] = a.app if app_mode else None
     options = tuple(f for f, on in (("--php7compat", a.php7compat), ("--exit-as-halt", a.exit_as_halt),
-                                    ("--switch-cmp", a.switch_cmp)) if on)
+                                    ("--switch-cmp", a.switch_cmp), ("--superglobal-reads", a.array_mode),
+                                    ("--real-app-builtins", a.real_app_builtins)) if on)
     app_dir = instrument(a.app, label, options)
     src = (HERE / spec["src"]).resolve()
     extra: dict = {}
     if app_mode:
-        flags = {"php7Compare": a.php7compat, "concretize": a.concretize}
-        sessions = auth_sessions(a.app) if a.arm == "auth" else {}
-
-        extra = {"flags": flags, "session": sessions.get("session", {})}
+        flags = {"php7Compare": a.php7compat, "concretize": a.concretize, "arrayMode": a.array_mode, "sanitizers": a.sanitizers}
+        extra = {"flags": flags, "session": {}, "session_ser": ""}
     seeds_by_script = witcher_seeds(a.app) if a.arm == "witcher" else {}
     if a.arm == "auth":
         seeds_by_script = {s: [auth_seed(a.app)] for s in spec["scripts"]}
+        login = spec["login"]
+        if login.get("credential_keys"):
+            KEY_DEFAULTS.update(regex=login["credential_keys"])
     out = HERE / "results" / a.app / label
     out.mkdir(parents=True, exist_ok=True)
     (out / "run.json").write_text(json.dumps({"arm": a.arm, "options": options, "concretize": a.concretize,
+                                              "sanitizers": a.sanitizers, "array_mode": a.array_mode,
                                               "budget_s": a.budget, "max_rounds": a.max_rounds,
                                               "instrument": json.loads((HERE / "build" / f"{app_dir.name}.instrument.json").read_text())
                                               if app_mode else None}, indent=1) + "\n")
@@ -363,6 +386,10 @@ def main() -> int:
         if app_mode:
             appdb.restore(a.app, "ace")                 # decision (a): reset per script
             extra["server"] = functools.partial(server_vars, a.app, src, script)
+            if a.arm == "auth":
+                extra["script"] = script
+                login_session(a.app, app_dir, extra)       # sets extra["session_ser"] (and auth cookies)
+                seeds = [{"COOKIE": {**auth_seed(a.app)["COOKIE"], **extra.pop("auth_cookies", {})}}]
         t0 = time.monotonic()
         r = explore(app_dir, script, seeds, a.max_rounds, a.budget, extra)
         wall = round(time.monotonic() - t0, 1)
@@ -411,13 +438,46 @@ def main() -> int:
     return 0
 
 
-def auth_sessions(app: str) -> dict:
-    """M2: the authenticated arm's seeded session (apps.json `login`)."""
-    raise SystemExit("the authenticated arm is not configured for this app yet")
+def login_session(app: str, app_dir: pathlib.Path, extra: dict) -> dict:
+    """M2: run the app's OWN login request (apps.json `login.request`) through the harness, on the
+    freshly restored DB, and return the `$_SESSION` it leaves -- the authenticated arm's seed."""
+    recipe = judge.login_recipe(app, extra["script"])
+    src = (HERE / APPS[app]["src"]).resolve()
+
+    def run(req, session_ser):
+        return php([{"app": str(app_dir), "script": req["script"], "label": "login",
+                     "inputs": {g: req.get(g, {}) for g in GLOBALS}, "flags": extra.get("flags", {}),
+                     "session": {}, "session_ser": session_ser, "server": server_vars(app, src, req["script"], req)}])[0]
+    req, ser = recipe["request"], ""
+    if recipe.get("pre"):
+        # Two-step login (phpMyAdmin): the form token comes from the first page's output.
+        res = run(recipe["pre"], "")
+        ser = res.get("session_after_ser") or ""
+        m = re.search(recipe["token"]["regex"], res.get("output") or "")
+        if m:
+            req = {**req, "POST": {**req.get("POST", {}), recipe["token"]["into"]: m.group(1)}}
+    res = run(req, ser)
+    session = res.get("session_after") or {}
+    extra["session_ser"] = res.get("session_after_ser") or ""
+    cookies = {}
+    for name, args in res.get("standins") or []:
+        if name in ("setcookie", "setrawcookie") and args and len(args) > 1 and args[1] not in (None, "", False):
+            cookies[args[0]] = str(args[1])
+    if "success_cookie" in recipe:
+        ok = recipe["success_cookie"] in cookies
+    else:
+        ok = isinstance(session, dict) and str(session.get(recipe["success_key"], "")) not in ("", "-1")
+    if not ok:
+        raise SystemExit(f"{app}: login recipe {recipe['prefix']!r} did not log in (session keys {list(session)[:12]}, "
+                         f"cookies {list(cookies)}, error {(res.get('dump') or {}).get('error')})")
+    KEY_DEFAULTS["value"] = recipe.get("password")
+    extra["auth_cookies"] = cookies if APPS[app]["login"].get("cookies_from_login") else {}
+    return session
 
 
 def auth_seed(app: str) -> dict:
-    return {}
+    """The authenticated arm's seed request: just the login cookie (the judge logs in on it)."""
+    return {"COOKIE": dict(APPS[app]["login"]["cookie"])}
 
 
 if __name__ == "__main__":

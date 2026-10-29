@@ -23,6 +23,7 @@ MySQL, and only a replayed fault counts.
 
 from __future__ import annotations
 
+import html.entities
 import json
 import re
 import subprocess
@@ -71,10 +72,101 @@ def _note(event: dict) -> tuple[str, dict[str, str]]:
     return note, {}
 
 
-def _instantiate(text: str, refs: dict[str, str], values: dict[str, t.Any]) -> str:
+# -- E5: the sanitizer chains a note's ref can carry ({name, apply}) -----------------
+#
+# Python twins of the PHP functions, checked against PHP on random strings by
+# test_sanitizers.py. Only the behaviour that matters for a byte string the
+# oracle builds (ASCII payloads around arbitrary model values) is modelled.
+
+ENT_COMPAT, ENT_QUOTES_DOUBLE, ENT_QUOTES_SINGLE = 2, 2, 1          # bits of PHP's ENT_* flags
+ENT_HTML401, ENT_SUBSTITUTE = 0, 8
+PHP_DEFAULT_HTML_FLAGS = 3 | 8                                     # ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401 (PHP >= 8.1)
+
+
+def _htmlspecialchars(s: str, flags: int = PHP_DEFAULT_HTML_FLAGS, encoding=None, double_encode: bool = True) -> str:
+    out = []
+    i = 0
+    while i < len(s):
+        c = s[i]
+        if c == "&":
+            if not double_encode:
+                m = re.match(r"&(#[0-9]+|#x[0-9a-fA-F]+|[A-Za-z][A-Za-z0-9]*);", s[i:])
+                if m and (m.group(1).startswith("#") or m.group(1) in html.entities.entitydefs):
+                    out.append(m.group(0))
+                    i += len(m.group(0))
+                    continue
+            out.append("&amp;")
+        elif c == "<":
+            out.append("&lt;")
+        elif c == ">":
+            out.append("&gt;")
+        elif c == '"' and flags & 2:
+            out.append("&quot;")
+        elif c == "'" and flags & 1:
+            out.append("&#039;")
+        else:
+            out.append(c)
+        i += 1
+    return "".join(out)
+
+
+def _escapeshellarg(s: str) -> str:
+    return "'" + s.replace("'", "'\\''") + "'"
+
+
+def _escapeshellcmd(s: str) -> str:
+    """PHP's ext/standard/exec.c: a quote is left alone when a later one of the same kind
+    exists (and that later one, the pending close, is left alone too); otherwise escaped."""
+    out, pending = [], None
+    for x, c in enumerate(s):
+        if c in "#&;`|*?~<>^()[]{}$\\\x0A\xFF":
+            out.append("\\" + c)
+        elif c in "'\"":
+            if pending is None and s.find(c, x + 1) != -1:
+                pending = c
+            elif pending is not None and pending == c:
+                pending = None
+            else:
+                out.append("\\")
+            out.append(c)
+        else:
+            out.append(c)
+    return "".join(out)
+
+
+SANITIZERS = {
+    "addslashes": lambda s, *a: re.sub(r"([\\'\"])", r"\\\1", s).replace("\0", "\\0"),
+    "mysqli_real_escape_string": lambda s, *a: s.translate({0: "\\0", 10: "\\n", 13: "\\r", 92: "\\\\",
+                                                            39: "\\'", 34: '\\"', 26: "\\Z"}),
+    "htmlspecialchars": _htmlspecialchars,
+    # htmlentities differs only for non-ASCII; the oracle's payloads are ASCII.
+    "htmlentities": _htmlspecialchars,
+    "escapeshellarg": lambda s, *a: _escapeshellarg(s),
+    "escapeshellcmd": lambda s, *a: _escapeshellcmd(s),
+    "trim": lambda s, chars=" \t\n\r\0\x0B", *a: s.strip(chars),
+    "strtolower": lambda s, *a: s.translate({c: c + 32 for c in range(65, 91)}),
+    "strtoupper": lambda s, *a: s.translate({c: c - 32 for c in range(97, 123)}),
+}
+
+
+def apply_chain(value: str, chain: list) -> str:
+    for fn, args in chain:
+        value = SANITIZERS[fn](value, *args)
+    return value
+
+
+def _ref_name(ref) -> str:
+    return ref["name"] if isinstance(ref, dict) else ref
+
+
+def _instantiate(text: str, refs: dict, values: dict[str, t.Any]) -> str:
     def sub(m):
-        v = values.get(refs.get(m.group(1), m.group(1)))
-        return "" if v is None else str(v)
+        ref = refs.get(m.group(1), m.group(1))
+        v = values.get(_ref_name(ref))
+        if v is None:
+            return ""
+        v = str(v)
+        return apply_chain(v, ref.get("apply", [])) if isinstance(ref, dict) else v
     return REF.sub(sub, text)
 
 
@@ -102,7 +194,7 @@ def findings(dump: dict, families: dict[str, str], timeout_ms: int = 5000) -> li
         if not parses(family, concrete):
             out.append(site | {"kind": "malformed-at-reach", "instance": concrete, "witness": values})
             continue
-        for name in dict.fromkeys(refs.values()):
+        for name in dict.fromkeys(_ref_name(r) for r in refs.values()):
             hit = _inject(run, prefix, name, text, refs, values, family, timeout_ms)
             if hit is not None:
                 out.append(site | {"kind": "injectable", "carried": name} | hit)

@@ -109,16 +109,52 @@ if (($argv[1] ?? '') !== '--one') {
 
 // ---------------------------------------------------------------- one request
 
-$__ace_request = json_decode(file_get_contents($argv[2]), true, 512, JSON_THROW_ON_ERROR);
-$__ace_result_path = $argv[3];
+/**
+ * The harness's state lives in a static class, not in globals: an app may
+ * unset every global it does not know (phpMyAdmin's common.inc.php does).
+ */
+final class AceState
+{
+    public static Runtime $rt;
+    public static string $result_path;
+    public static array $sinks = [];
+    public static array $standins = [];
+    public static array $names = [];
+    public static array $discovered = [];
+    public static string $output = '';
+    public static bool $done = false;
+    public static int $ob_base = 0;
+    public static array $request = [];
+    public static string $app = '';
+    public static bool $session_started = false;
+}
+
+/** A copy of `$v` with every symbolic value made concrete and every object kept. */
+function deplain(mixed $v): mixed
+{
+    if ($v instanceof Template) {
+        return $v->text();
+    }
+    if ($v instanceof Value) {
+        return $v->fields === null && !str_starts_with($v->type, '[') ? $v->concrete() : null;
+    }
+    if (is_array($v)) {
+        return array_map('deplain', $v);
+    }
+    return $v;
+}
+
+AceState::$request = json_decode(file_get_contents($argv[2]), true, 512, JSON_THROW_ON_ERROR);
+AceState::$result_path = $argv[3];
 mysqli_report(MYSQLI_REPORT_OFF);
 
-$__ace_rt = new Runtime();
-$__ace_rt->templates = true;
-$__ace_rt->concretizeUnmodelled = (bool) ($__ace_request['flags']['concretize'] ?? false);
-Runtime::$php7Compare = (bool) ($__ace_request['flags']['php7Compare'] ?? false);
-$__ace_sinks = [];
-$__ace_standins = [];
+AceState::$rt = new Runtime();
+AceState::$rt->templates = true;
+AceState::$rt->concretizeUnmodelled = (bool) (AceState::$request['flags']['concretize'] ?? false);
+AceState::$rt->sanitizers = (bool) (AceState::$request['flags']['sanitizers'] ?? false);     // E5
+Runtime::$php7Compare = (bool) (AceState::$request['flags']['php7Compare'] ?? false);
+AceState::$sinks = [];
+AceState::$standins = [];
 
 (static function (Runtime $rt, array &$sinks, array &$standins): void {
     foreach (SQL_SINKS as $name) {
@@ -126,7 +162,7 @@ $__ace_standins = [];
             $values = array_values($args);
             $stmt = statement_arg($name, $args);
             $note = match (true) {
-                $stmt instanceof Template => $stmt->render(fn(Value $v) => $rt->bindRef($v)),
+                $stmt instanceof Template => $stmt->render(fn(Value $v, array $apply = []) => $rt->bindRef($v, $apply)),
                 $stmt instanceof Value => $rt->bindRef($stmt),
                 default => (string) $stmt,
             };
@@ -157,7 +193,7 @@ $__ace_standins = [];
     foreach (SHELL_SINKS as $name) {
         $rt->target($name, 'target_function', 'bool', function (array $args) use ($rt, $name, &$sinks) {
             $stmt = statement_arg($name, $args);
-            $rt->publishNote($stmt instanceof Template ? $stmt->render(fn(Value $v) => $rt->bindRef($v))
+            $rt->publishNote($stmt instanceof Template ? $stmt->render(fn(Value $v, array $apply = []) => $rt->bindRef($v, $apply))
                 : ($stmt instanceof Value ? $rt->bindRef($stmt) : (string) $stmt));
             $sinks[] = ['sink' => $name, 'family' => 'shell', 'text' => (string) plain($rt, $stmt)];
             return true;      // never executed
@@ -168,6 +204,17 @@ $__ace_standins = [];
             $plain = array_map(fn($v) => plain($rt, $v), array_values($args));
             $standins[] = [$name, $plain];
             $value = match ($name) {
+                // The seeded session arrives SERIALIZED and is restored here, as
+                // PHP's own handler does -- after the app has registered its
+                // autoloader, so session objects come back as their classes.
+                'session_start' => (function () {
+                    if (!AceState::$session_started && (AceState::$request['session_ser'] ?? '') !== '') {
+                        $restored = unserialize(base64_decode(AceState::$request['session_ser']));
+                        $_SESSION = is_array($restored) ? $restored + (is_array($_SESSION ?? null) ? $_SESSION : []) : ($_SESSION ?? []);
+                    }
+                    AceState::$session_started = true;
+                    return true;
+                })(),
                 'session_destroy', 'session_unset' => (function () { $_SESSION = []; return true; })(),
                 'session_id' => 'acesession',
                 'session_name' => 'PHPSESSID',
@@ -179,50 +226,63 @@ $__ace_standins = [];
             return ['value' => $value, 'summary' => ['args' => $plain]];
         });
     }
-})($__ace_rt, $__ace_sinks, $__ace_standins);
+})(AceState::$rt, AceState::$sinks, AceState::$standins);
 
-$__ace_seeds = $__ace_types = $__ace_names = [];
+$__ace_seeds = $__ace_types = AceState::$names = [];
 foreach (['GET', 'POST', 'COOKIE'] as $__ace_g) {
-    foreach ($__ace_request['inputs'][$__ace_g] ?? [] as $__ace_k => $__ace_v) {
+    foreach (AceState::$request['inputs'][$__ace_g] ?? [] as $__ace_k => $__ace_v) {
         $__ace_n = input_name($__ace_g, (string) $__ace_k);
         $__ace_seeds[$__ace_n] = $__ace_v;
         $__ace_types[$__ace_n] = 'str?';
-        $__ace_names[$__ace_n] = [$__ace_g, (string) $__ace_k];
+        AceState::$names[$__ace_n] = [$__ace_g, (string) $__ace_k];
     }
 }
 
-$__ace_discovered = [];
-$__ace_output = '';
-$__ace_app = rtrim($__ace_request['app'], '/');
-$__ace_done = false;
+AceState::$discovered = [];
+AceState::$output = '';
+AceState::$app = rtrim(AceState::$request['app'], '/');
+AceState::$done = false;
 
 /** Write the result; also the path a fatal error or a real exit takes. */
 function __ace_write_result(?Throwable $caught): void
 {
-    global $__ace_rt, $__ace_done, $__ace_result_path, $__ace_names, $__ace_discovered, $__ace_sinks,
-        $__ace_standins, $__ace_output, $__ace_ob_base;
-    if ($__ace_done) {
+    if (AceState::$done) {
         return;
     }
-    $__ace_done = true;
-    while (ob_get_level() > $__ace_ob_base) {
-        $__ace_output = ob_get_clean() . $__ace_output;
+    AceState::$done = true;
+    while (ob_get_level() > AceState::$ob_base) {
+        AceState::$output = ob_get_clean() . AceState::$output;
     }
-    $dump = $__ace_rt->finish($caught);
+    $dump = AceState::$rt->finish($caught);
+    foreach (Concolic\Superglobals::$discovered as $g => $keys) {
+        // A $_REQUEST key could come from GET or POST: declare it in both.
+        foreach ($g === 'REQUEST' ? ['GET', 'POST'] : [$g] as $gg) {
+            foreach ($keys as $k => $_) {
+                AceState::$discovered[$gg][$k] = true;
+            }
+        }
+    }
     $res = [
         'dump' => $dump,
-        'inputs' => (object) array_map(fn($p) => ['global' => $p[0], 'key' => $p[1]], $__ace_names),
-        'discovered' => (object) array_map(fn($keys) => array_map('strval', array_keys($keys)), $__ace_discovered),
-        'sinks' => $__ace_sinks,
-        'standins' => $__ace_standins,
-        'output_bytes' => strlen($__ace_output),
-        'output' => substr($__ace_output, 0, 65536),
-        'session_after' => isset($_SESSION) && is_array($_SESSION) ? array_map(fn($v) => is_scalar($v) || $v === null ? $v : gettype($v), $_SESSION) : null,
+        'inputs' => (object) array_map(fn($p) => ['global' => $p[0], 'key' => $p[1]], AceState::$names),
+        'discovered' => (object) array_map(fn($keys) => array_map('strval', array_keys($keys)), AceState::$discovered),
+        'sinks' => AceState::$sinks,
+        'standins' => AceState::$standins,
+        'output_bytes' => strlen(AceState::$output),
+        'output' => substr(AceState::$output, 0, 65536),
+        'session_after' => isset($_SESSION) && is_array($_SESSION) ? array_map(fn($v) => plain(AceState::$rt, $v), $_SESSION) : null,
+        'session_after_ser' => isset($_SESSION) && is_array($_SESSION) ? (static function () {
+            try {
+                return base64_encode(serialize(deplain($_SESSION)));   // binary-safe through JSON
+            } catch (\Throwable $e) {
+                return null;                          // e.g. a closure in the session
+            }
+        })() : null,
         'php7' => ['const7' => $GLOBALS['__ace_const7'] ?? [], 'count7' => $GLOBALS['__ace_count7'] ?? 0,
             'cmp7' => $GLOBALS['__ace_cmp7'] ?? 0, 'arith7' => $GLOBALS['__ace_arith7'] ?? 0,
             'call7' => $GLOBALS['__ace_call7'] ?? []],
     ];
-    file_put_contents($__ace_result_path, json_encode($res, JSON_UNESCAPED_SLASHES | JSON_INVALID_UTF8_SUBSTITUTE | JSON_PARTIAL_OUTPUT_ON_ERROR));
+    file_put_contents(AceState::$result_path, json_encode($res, JSON_UNESCAPED_SLASHES | JSON_INVALID_UTF8_SUBSTITUTE | JSON_PARTIAL_OUTPUT_ON_ERROR));
 }
 
 register_shutdown_function(static function (): void {
@@ -232,34 +292,58 @@ register_shutdown_function(static function (): void {
     __ace_write_result(new Error($e ? "fatal: {$e['message']} at {$e['file']}:{$e['line']}" : 'the process exited inside the app'));
 });
 
-$__ace_inputs = $__ace_rt->begin($__ace_seeds, $__ace_request['label'] ?? null, [], $__ace_types);
+$__ace_inputs = AceState::$rt->begin($__ace_seeds, AceState::$request['label'] ?? null, [], $__ace_types);
 $__ace_known = ['GET' => [], 'POST' => [], 'COOKIE' => []];
 foreach ($__ace_inputs as $__ace_n => $__ace_v) {
-    [$__ace_g, $__ace_k] = $__ace_names[$__ace_n];
+    [$__ace_g, $__ace_k] = AceState::$names[$__ace_n];
     $__ace_known[$__ace_g][$__ace_k] = $__ace_v;
 }
-$_GET = new RecordingSuperglobal('GET', $__ace_known['GET'], $__ace_discovered);
-$_POST = new RecordingSuperglobal('POST', $__ace_known['POST'], $__ace_discovered);
-$_COOKIE = new RecordingSuperglobal('COOKIE', $__ace_known['COOKIE'], $__ace_discovered);
-$_REQUEST = new RequestSuperglobal([$_GET, $_POST, $_COOKIE]);
+if (!empty(AceState::$request['flags']['arrayMode'])) {
+    // Decision (b), ARRAY MODE: real arrays of the PRESENT inputs; reads go
+    // through the instrumentor's __sg_read (Concolic\Superglobals). $_REQUEST
+    // is GET, then POST, then COOKIE (php-cgi -n: variables_order EGPCS).
+    $__ace_present = $__ace_absent = ['GET' => [], 'POST' => [], 'COOKIE' => []];
+    foreach ($__ace_known as $__ace_g => $__ace_kv) {
+        foreach ($__ace_kv as $__ace_k => $__ace_v) {
+            if ($__ace_v->concrete() === null) {
+                $__ace_absent[$__ace_g][$__ace_k] = $__ace_v;
+            } else {
+                $__ace_present[$__ace_g][$__ace_k] = $__ace_v;
+            }
+        }
+    }
+    $__ace_absent['REQUEST'] = $__ace_absent['COOKIE'] + $__ace_absent['POST'] + $__ace_absent['GET'];
+    Concolic\Superglobals::reset($__ace_absent);
+    $_GET = $__ace_present['GET'];
+    $_POST = $__ace_present['POST'];
+    $_COOKIE = $__ace_present['COOKIE'];
+    $_REQUEST = array_merge($_GET, $_POST, $_COOKIE);
+    unset($__ace_present, $__ace_absent, $__ace_kv);
+} else {
+    $_GET = new RecordingSuperglobal('GET', $__ace_known['GET'], AceState::$discovered);
+    $_POST = new RecordingSuperglobal('POST', $__ace_known['POST'], AceState::$discovered);
+    $_COOKIE = new RecordingSuperglobal('COOKIE', $__ace_known['COOKIE'], AceState::$discovered);
+    $_REQUEST = new RequestSuperglobal([$_GET, $_POST, $_COOKIE]);
+}
 $_FILES = [];
-$_SESSION = $__ace_request['session'] ?? [];
-foreach ($__ace_request['server'] ?? [] as $__ace_k => $__ace_v) {
+$_SESSION = AceState::$request['session'] ?? [];
+foreach (AceState::$request['server'] ?? [] as $__ace_k => $__ace_v) {
     $_SERVER[$__ace_k] = $__ace_v;
 }
-$_SERVER['REQUEST_METHOD'] = $__ace_known['POST'] ? 'POST' : 'GET';
-$_SERVER['SCRIPT_FILENAME'] = $__ace_app . '/' . $__ace_request['script'];
-$_SERVER['DOCUMENT_ROOT'] = $__ace_app;
+// The judge's own REQUEST_METHOD for this request (POST iff a POST value is present).
+$_SERVER['REQUEST_METHOD'] ??= array_filter(AceState::$request['inputs']['POST'] ?? [], fn($v) => $v !== null) ? 'POST' : 'GET';
+$_SERVER['SCRIPT_FILENAME'] = AceState::$app . '/' . AceState::$request['script'];
+$_SERVER['DOCUMENT_ROOT'] = AceState::$app;
 $_SERVER['argv'] = [];
 $_SERVER['argc'] = 0;
 unset($__ace_g, $__ace_k, $__ace_v, $__ace_n, $__ace_known, $__ace_inputs);
 
-chdir(dirname($__ace_app . '/' . $__ace_request['script']));
-$__ace_ob_base = ob_get_level();
+chdir(dirname(AceState::$app . '/' . AceState::$request['script']));
+AceState::$ob_base = ob_get_level();
 ob_start();
 $__ace_caught = null;
 try {
-    include $__ace_app . '/' . $__ace_request['script'];
+    include AceState::$app . '/' . AceState::$request['script'];
 } catch (\Throwable $__ace_e) {
     $__ace_caught = $__ace_e;
 }
