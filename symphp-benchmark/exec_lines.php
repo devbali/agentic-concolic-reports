@@ -35,7 +35,11 @@ foreach ($it as $f) {
     };
     $t = new NodeTraverser();
     $t->addVisitor($visitor);
-    $t->traverse($parser->parse(file_get_contents($f->getPathname())));
+    $code = @file_get_contents($f->getPathname());
+    if ($code === false) {
+        continue;                    // e.g. a dangling symlink (HSM's `doctor/.#search.php`)
+    }
+    $t->traverse($parser->parse($code));
     $lines = array_keys($visitor->lines);
     sort($lines);
     $out[substr($f->getPathname(), strlen($root) + 1)] = $lines;

@@ -133,6 +133,336 @@
       "display_errors": "0",
       "session.save_path": "/tmp"
     },
-    "login": null
+    "login": {
+      "cookie": {
+        "PHPSESSID": "acesession"
+      },
+      "credential_keys": "(?i)pass|pwd",
+      "recipes": [
+        {
+          "prefix": "",
+          "request": {
+            "script": "mainmenu.php",
+            "GET": {},
+            "POST": {
+              "ToDo": "Login",
+              "txtNick": "bob",
+              "pwdPassword": "pw2"
+            },
+            "COOKIE": {
+              "PHPSESSID": "acesession"
+            }
+          },
+          "password": "pw2",
+          "success_key": "playerID"
+        }
+      ],
+      "note": "bob/pw2 was created by the installer run (tools/exercise.sh); bob is white in game 1"
+    }
+  },
+  "hsm": {
+    "src": "../../apps/hsm-2019/src",
+    "known_vulns_file": "known_vulns/hsm-2019.json",
+    "scripts": [
+      "contact.php",
+      "hms/admin/add-doctor.php",
+      "hms/admin/appointment-history.php",
+      "hms/admin/between-dates-reports.php",
+      "hms/admin/betweendates-detailsreports.php",
+      "hms/admin/change-password.php",
+      "hms/admin/check_availability.php",
+      "hms/admin/dashboard.php",
+      "hms/admin/doctor-logs.php",
+      "hms/admin/doctor-specilization.php",
+      "hms/admin/edit-doctor-specialization.php",
+      "hms/admin/edit-doctor.php",
+      "hms/admin/include/checklogin.php",
+      "hms/admin/include/config.php",
+      "hms/admin/include/dbcontroller.php",
+      "hms/admin/include/footer.php",
+      "hms/admin/include/header.php",
+      "hms/admin/include/setting.php",
+      "hms/admin/include/sidebar.php",
+      "hms/admin/index.php",
+      "hms/admin/logout.php",
+      "hms/admin/manage-doctors.php",
+      "hms/admin/manage-patient.php",
+      "hms/admin/manage-users.php",
+      "hms/admin/patient-search.php",
+      "hms/admin/query-details.php",
+      "hms/admin/read-query.php",
+      "hms/admin/registration.php",
+      "hms/admin/unread-queries.php",
+      "hms/admin/user-logs.php",
+      "hms/admin/view-patient.php",
+      "hms/appointment-history.php",
+      "hms/book-appointment.php",
+      "hms/change-emaild.php",
+      "hms/change-password.php",
+      "hms/check_availability.php",
+      "hms/checklogin.php",
+      "hms/dashboard.php",
+      "hms/doctor/add-patient.php",
+      "hms/doctor/appointment-history.php",
+      "hms/doctor/change-password.php",
+      "hms/doctor/check_availability.php",
+      "hms/doctor/dashboard.php",
+      "hms/doctor/edit-patient.php",
+      "hms/doctor/edit-profile.php",
+      "hms/doctor/forgot-password.php",
+      "hms/doctor/include/checklogin.php",
+      "hms/doctor/include/config.php",
+      "hms/doctor/include/footer.php",
+      "hms/doctor/include/header.php",
+      "hms/doctor/include/setting.php",
+      "hms/doctor/include/sidebar.php",
+      "hms/doctor/index.php",
+      "hms/doctor/logout.php",
+      "hms/doctor/manage-patient.php",
+      "hms/doctor/reset-password.php",
+      "hms/doctor/search.php",
+      "hms/doctor/view-patient.php",
+      "hms/edit-profile.php",
+      "hms/forgot-password.php",
+      "hms/get_doctor.php",
+      "hms/include/checklogin.php",
+      "hms/include/config.php",
+      "hms/include/footer.php",
+      "hms/include/header.php",
+      "hms/include/setting.php",
+      "hms/include/sidebar.php",
+      "hms/logout.php",
+      "hms/manage-medhistory.php",
+      "hms/registration.php",
+      "hms/reset-password.php",
+      "hms/user-login.php",
+      "hms/view-medhistory.php"
+    ],
+    "db": {
+      "image": "mysql:5.7",
+      "installed": "hsm-mysql57",
+      "port": 3306,
+      "database": "hms",
+      "mysqld_args": [
+        "--lower-case-table-names=1"
+      ],
+      "init_sql": [
+        "CREATE USER IF NOT EXISTS 'hms'@'%' IDENTIFIED BY 'hms';",
+        "GRANT ALL PRIVILEGES ON hms.* TO 'hms'@'%';",
+        "FLUSH PRIVILEGES;"
+      ],
+      "snapshot": "build/snapshots/hsm.sql",
+      "snapshot_note": "copy of apps/hsm-2019/dl/hms-pristine-after-load.sql (the as-shipped dump, loaded as init.sh does)"
+    },
+    "ini": {
+      "display_errors": "0"
+    },
+    "login": {
+      "cookie": {
+        "PHPSESSID": "acesession"
+      },
+      "credential_keys": "(?i)pass|pwd",
+      "recipes": [
+        {
+          "prefix": "hms/admin/",
+          "password": "Test@12345",
+          "success_key": "login",
+          "request": {
+            "script": "hms/admin/index.php",
+            "GET": {},
+            "POST": {
+              "username": "admin",
+              "password": "Test@12345",
+              "submit": ""
+            },
+            "COOKIE": {
+              "PHPSESSID": "acesession"
+            }
+          }
+        },
+        {
+          "prefix": "hms/doctor/",
+          "password": "Test@123",
+          "success_key": "dlogin",
+          "request": {
+            "script": "hms/doctor/index.php",
+            "GET": {},
+            "POST": {
+              "username": "test@demo.com",
+              "password": "Test@123",
+              "submit": ""
+            },
+            "COOKIE": {
+              "PHPSESSID": "acesession"
+            }
+          }
+        },
+        {
+          "prefix": "",
+          "password": "Test@123",
+          "success_key": "login",
+          "request": {
+            "script": "hms/user-login.php",
+            "GET": {},
+            "POST": {
+              "username": "test@gmail.com",
+              "password": "Test@123",
+              "submit": ""
+            },
+            "COOKIE": {
+              "PHPSESSID": "acesession"
+            }
+          }
+        }
+      ],
+      "note": "credentials from hms/Read Me.txt (RUNLOG section 1); the login for a script is chosen by its path"
+    }
+  },
+  "phpmyadmin": {
+    "src": "../../apps/phpmyadmin-4.7.0/src",
+    "known_vulns_file": "known_vulns/phpmyadmin-4.7.0.json",
+    "scripts": [
+      "browse_foreigners.php",
+      "changelog.php",
+      "chk_rel.php",
+      "config.inc.php",
+      "config.sample.inc.php",
+      "db_central_columns.php",
+      "db_datadict.php",
+      "db_designer.php",
+      "db_events.php",
+      "db_export.php",
+      "db_import.php",
+      "db_operations.php",
+      "db_qbe.php",
+      "db_routines.php",
+      "db_search.php",
+      "db_sql.php",
+      "db_sql_autocomplete.php",
+      "db_sql_format.php",
+      "db_structure.php",
+      "db_tracking.php",
+      "db_triggers.php",
+      "error_report.php",
+      "export.php",
+      "gis_data_editor.php",
+      "import.php",
+      "import_status.php",
+      "index.php",
+      "license.php",
+      "lint.php",
+      "logout.php",
+      "navigation.php",
+      "normalization.php",
+      "phpinfo.php",
+      "phpmyadmin.css.php",
+      "prefs_forms.php",
+      "prefs_manage.php",
+      "schema_export.php",
+      "server_binlog.php",
+      "server_collations.php",
+      "server_databases.php",
+      "server_engines.php",
+      "server_export.php",
+      "server_import.php",
+      "server_plugins.php",
+      "server_privileges.php",
+      "server_replication.php",
+      "server_sql.php",
+      "server_status.php",
+      "server_status_advisor.php",
+      "server_status_monitor.php",
+      "server_status_processes.php",
+      "server_status_queries.php",
+      "server_status_variables.php",
+      "server_user_groups.php",
+      "server_variables.php",
+      "show_config_errors.php",
+      "sql.php",
+      "tbl_addfield.php",
+      "tbl_change.php",
+      "tbl_chart.php",
+      "tbl_create.php",
+      "tbl_export.php",
+      "tbl_find_replace.php",
+      "tbl_get_field.php",
+      "tbl_gis_visualization.php",
+      "tbl_import.php",
+      "tbl_indexes.php",
+      "tbl_operations.php",
+      "tbl_recent_favorite.php",
+      "tbl_relation.php",
+      "tbl_replace.php",
+      "tbl_row_action.php",
+      "tbl_select.php",
+      "tbl_sql.php",
+      "tbl_structure.php",
+      "tbl_tracking.php",
+      "tbl_triggers.php",
+      "tbl_zoom_select.php",
+      "themes.php",
+      "transformation_overview.php",
+      "transformation_wrapper.php",
+      "url.php",
+      "user_password.php",
+      "version_check.php",
+      "view_create.php",
+      "view_operations.php"
+    ],
+    "db": {
+      "image": "mysql:8.0",
+      "installed": "ace-judge-mysql",
+      "port": 3307,
+      "database": "pma47",
+      "mysqld_args": [
+        "--default-authentication-plugin=mysql_native_password"
+      ],
+      "schema_filter": false,
+      "snapshot": "build/snapshots/pma47.sql",
+      "snapshot_note": "read-only mysqldump of pma47 from ace-judge-mysql; the clone server is phpMyAdmin's alone, so no CURRENT_SCHEMA filter"
+    },
+    "ini": {
+      "display_errors": "0",
+      "memory_limit": "512M"
+    },
+    "login": {
+      "cookie": {
+        "phpMyAdmin": "acesession"
+      },
+      "cookies_from_login": true,
+      "credential_keys": "(?i)pass|pwd",
+      "recipes": [
+        {
+          "prefix": "",
+          "password": "",
+          "request": {
+            "script": "index.php",
+            "GET": {},
+            "POST": {
+              "pma_username": "root",
+              "pma_password": "",
+              "server": "1"
+            },
+            "COOKIE": {
+              "phpMyAdmin": "acesession"
+            }
+          },
+          "success_cookie": "pmaUser-1",
+          "pre": {
+            "script": "index.php",
+            "GET": {},
+            "POST": {},
+            "COOKIE": {
+              "phpMyAdmin": "acesession"
+            }
+          },
+          "token": {
+            "regex": "name=\"token\" value=\"([0-9a-f]+)\"",
+            "into": "token"
+          }
+        }
+      ],
+      "note": "root with an empty password (AllowNoPassword); the judge logs in itself and uses ITS cookies"
+    }
   }
 }

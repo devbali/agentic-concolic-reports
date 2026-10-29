@@ -15,6 +15,8 @@
  * --php7compat    E2: the copy behaves as on PHP 7.4 where 8.x would differ
  * --exit-as-halt  E3: exit/die end the run, not the process
  * --switch-cmp    switch cases compare through __cmp (implied by --php7compat)
+ * --superglobal-reads  decision (b) array mode: direct superglobal reads -> __sg_key probe
+ * --real-app-builtins   route type predicates (is_scalar, gettype, ...) through __fn
  * Every rewrite an option performs is counted, per file and in total.
  */
 
@@ -33,6 +35,8 @@ $options = [
     'php7Compat' => in_array('--php7compat', $flags, true),
     'exitAsHalt' => in_array('--exit-as-halt', $flags, true),
     'switchCmp' => in_array('--switch-cmp', $flags, true),
+    'superglobalReads' => in_array('--superglobal-reads', $flags, true),
+    'realAppBuiltins' => in_array('--real-app-builtins', $flags, true),
 ];
 
 if (in_array('--app-targets', $flags, true)) {

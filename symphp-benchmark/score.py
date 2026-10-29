@@ -83,8 +83,13 @@ def main() -> int:
     ap.add_argument("--coverage", choices=("trace", "xdebug"), default="trace")
     a = ap.parse_args()
     app, label = a.app, a.label
+    arms_of: dict[str, set] = {}
     if label.startswith("ace:"):
-        reqs = [r for arm in label[4:].split("+") for r in ace_requests(app, arm)]
+        reqs = []
+        for arm in label[4:].split("+"):
+            for r in ace_requests(app, arm):
+                arms_of.setdefault(json.dumps(r, sort_keys=True), set()).add(arm)
+                reqs.append(r)
         reqs = list({json.dumps(r, sort_keys=True): r for r in reqs}.values())
     else:
         reqs = json.loads(pathlib.Path(a.requests).read_text())
@@ -135,6 +140,15 @@ def main() -> int:
         xcov = {l for r in results for l in r.get("xdebug_lines", [])} & executable
         row |= {"xdebug_coverage_pct": round(100 * len(xcov) / len(executable), 2) if executable else None,
                 "xdebug_covered_lines": len(xcov), "xdebug_method": "auto_prepend_file (coverage-only, outside docroot)"}
+    if len(label[4:].split("+")) > 1 and label.startswith("ace:"):
+        # Decision (e): each arm separately, from the SAME replay (each request is judged once).
+        row["arms"] = {}
+        for arm in label[4:].split("+"):
+            mine = [r for r in results if arm in arms_of.get(json.dumps(r["request"], sort_keys=True), ())]
+            cov = {l for r in mine for l in r["lines"]} & executable
+            row["arms"][arm] = {"requests": len(mine), "detected": sum(bool(detected(v, mine)) for v in known_vulns(app)),
+                                "detected_ids": [v["id"] for v in known_vulns(app) if detected(v, mine)],
+                                "coverage_pct": round(100 * len(cov) / len(executable), 2) if executable else None}
     (work / f"score_{tag}.json").write_text(json.dumps(row, indent=1) + "\n")
     print(f"{label:16} detected {row['detected']}/{row['known']}  coverage {row['coverage_pct']}% "
           f"({row['covered_lines']}/{row['executable_lines']})  requests {row['requests']}"

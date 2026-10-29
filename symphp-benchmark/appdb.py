@@ -60,6 +60,7 @@ def ensure(app: str, role: str) -> str:
         args = [f"--port={s['port']}", "--performance-schema-consumer-events-statements-history-long=ON"]
         if s.get("sql_mode") is not None:
             args.append(f"--sql-mode={s['sql_mode']}")
+        args += s.get("mysqld_args", [])
         subprocess.run(["docker", "run", "-d", "--name", name, *LOG_OPTS,
                         "-e", "MYSQL_ALLOW_EMPTY_PASSWORD=yes", s.get("image", "mysql:5.7"), *args],
                        check=True, capture_output=True)
@@ -94,6 +95,9 @@ def restore(app: str, role: str) -> None:
     name = container(app, role)
     dump = (HERE / s["snapshot"]).read_text()
     sql(name, f"DROP DATABASE IF EXISTS `{s['database']}`;\n" + dump)
+    if s.get("init_sql"):
+        # Server-level state a `--databases` dump does not carry (e.g. the app's DB user).
+        sql(name, "\n".join(s["init_sql"]))
 
 
 def statement_errors(name: str, schema: str | None) -> list[dict]:
