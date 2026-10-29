@@ -1,0 +1,65 @@
+{
+ "script": "sendmessage.php",
+ "wall_s": 9.9,
+ "requests": 66,
+ "rounds": 10,
+ "traces": 53,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "autoreload",
+   "to"
+  ],
+  "POST": [
+   "from",
+   "newMessage",
+   "to",
+   "txtMessage",
+   "txtTitle"
+  ],
+  "COOKIE": [
+   "PHPSESSID"
+  ]
+ },
+ "budget_hit": false,
+ "coverage_complete": false,
+ "missing": 0,
+ "assumptions": [],
+ "sink_sites": [
+  {
+   "site": "sendmessage.php:76",
+   "sink": "mysqli_query",
+   "kind": "injectable",
+   "instance": "INSERT INTO communication (gameID,fromID,toID,title,text,postDate,expireDate,ack,commType) VALUES ( NULL , ' , NULL, '', '', NOW( ) , NULL , '0', '0' );",
+   "request": {
+    "GET": {
+     "autoreload": "",
+     "to": ""
+    },
+    "POST": {
+     "newMessage": "A",
+     "from": "'",
+     "to": ""
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession"
+    }
+   },
+   "db_errno": 1054
+  }
+ ],
+ "errors_distinct": [],
+ "halted_traces": 34,
+ "concretized": {
+  "mysqli_real_escape_string @ sendmessage.php:67": 32,
+  "mysqli_real_escape_string @ sendmessage.php:68": 32
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

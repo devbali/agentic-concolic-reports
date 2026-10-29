@@ -1,0 +1,59 @@
+{
+ "script": "hms/registration.php",
+ "wall_s": 4.8,
+ "requests": 37,
+ "rounds": 9,
+ "traces": 35,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [],
+  "POST": [
+   "address",
+   "city",
+   "email",
+   "full_name",
+   "gender",
+   "password",
+   "submit"
+  ],
+  "COOKIE": []
+ },
+ "budget_hit": false,
+ "coverage_complete": true,
+ "missing": 0,
+ "assumptions": [],
+ "sink_sites": [
+  {
+   "site": "hms/registration.php:11",
+   "sink": "mysqli_query",
+   "kind": "injectable",
+   "instance": "insert into users(fullname,address,city,gender,email,password) values(''','','','','','d41d8cd98f00b204e9800998ecf8427e')",
+   "request": {
+    "GET": {},
+    "POST": {
+     "submit": "",
+     "address": "",
+     "city": "",
+     "email": "",
+     "full_name": "'",
+     "gender": ""
+    },
+    "COOKIE": {}
+   },
+   "db_errno": 0
+  }
+ ],
+ "errors_distinct": [],
+ "halted_traces": 0,
+ "concretized": {
+  "string conversion @ hms/registration.php:10": 32
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

@@ -1,0 +1,246 @@
+{
+ "arm": "auth",
+ "options": [
+  "--php7compat",
+  "--exit-as-halt"
+ ],
+ "concretize": true,
+ "budget_s": 600.0,
+ "max_rounds": 50,
+ "instrument": {
+  "instrumented": 85,
+  "failed": 0,
+  "warnings": [
+   "hms/vendor/jquery-file-upload/server/php/UploadHandler.php: warning: parameter default at hms/vendor/jquery-file-upload/server/php/UploadHandler.php:43 is a branch point this pass does not instrument",
+   "hms/vendor/jquery-file-upload/server/php/UploadHandler.php: warning: parameter default at hms/vendor/jquery-file-upload/server/php/UploadHandler.php:43 is a branch point this pass does not instrument",
+   "hms/vendor/jquery-file-upload/server/php/UploadHandler.php: warning: parameter default at hms/vendor/jquery-file-upload/server/php/UploadHandler.php:43 is a branch point this pass does not instrument",
+   "hms/vendor/jquery-file-upload/server/php/UploadHandler.php: warning: parameter default at hms/vendor/jquery-file-upload/server/php/UploadHandler.php:212 is a branch point this pass does not instrument",
+   "hms/vendor/jquery-file-upload/server/php/UploadHandler.php: warning: parameter default at hms/vendor/jquery-file-upload/server/php/UploadHandler.php:212 is a branch point this pass does not instrument",
+   "hms/vendor/jquery-file-upload/server/php/UploadHandler.php: warning: parameter default at hms/vendor/jquery-file-upload/server/php/UploadHandler.php:231 is a branch point this pass does not instrument",
+   "hms/vendor/jquery-file-upload/server/php/UploadHandler.php: warning: parameter default at hms/vendor/jquery-file-upload/server/php/UploadHandler.php:231 is a branch point this pass does not instrument",
+   "hms/vendor/jquery-file-upload/server/php/UploadHandler.php: warning: parameter default at hms/vendor/jquery-file-upload/server/php/UploadHandler.php:278 is a branch point this pass does not instrument",
+   "hms/vendor/jquery-file-upload/server/php/UploadHandler.php: warning: parameter default at hms/vendor/jquery-file-upload/server/php/UploadHandler.php:321 is a branch point this pass does not instrument",
+   "hms/vendor/jquery-file-upload/server/php/UploadHandler.php: warning: parameter default at hms/vendor/jquery-file-upload/server/php/UploadHandler.php:549 is a branch point this pass does not instrument",
+   "hms/vendor/jquery-file-upload/server/php/UploadHandler.php: warning: parameter default at hms/vendor/jquery-file-upload/server/php/UploadHandler.php:777 is a branch point this pass does not instrument",
+   "hms/vendor/jquery-file-upload/server/php/UploadHandler.php: warning: parameter default at hms/vendor/jquery-file-upload/server/php/UploadHandler.php:1047 is a branch point this pass does not instrument",
+   "hms/vendor/jquery-file-upload/server/php/UploadHandler.php: warning: parameter default at hms/vendor/jquery-file-upload/server/php/UploadHandler.php:1047 is a branch point this pass does not instrument",
+   "hms/vendor/jquery-file-upload/server/php/UploadHandler.php: warning: parameter default at hms/vendor/jquery-file-upload/server/php/UploadHandler.php:1238 is a branch point this pass does not instrument",
+   "hms/vendor/jquery-file-upload/server/php/UploadHandler.php: warning: parameter default at hms/vendor/jquery-file-upload/server/php/UploadHandler.php:1278 is a branch point this pass does not instrument",
+   "hms/vendor/jquery-file-upload/server/php/UploadHandler.php: warning: parameter default at hms/vendor/jquery-file-upload/server/php/UploadHandler.php:1295 is a branch point this pass does not instrument",
+   "hms/vendor/jquery-file-upload/server/php/UploadHandler.php: warning: parameter default at hms/vendor/jquery-file-upload/server/php/UploadHandler.php:1351 is a branch point this pass does not instrument",
+   "hms/doctor/vendor/jquery-file-upload/server/php/UploadHandler.php: warning: parameter default at hms/doctor/vendor/jquery-file-upload/server/php/UploadHandler.php:43 is a branch point this pass does not instrument",
+   "hms/doctor/vendor/jquery-file-upload/server/php/UploadHandler.php: warning: parameter default at hms/doctor/vendor/jquery-file-upload/server/php/UploadHandler.php:43 is a branch point this pass does not instrument",
+   "hms/doctor/vendor/jquery-file-upload/server/php/UploadHandler.php: warning: parameter default at hms/doctor/vendor/jquery-file-upload/server/php/UploadHandler.php:43 is a branch point this pass does not instrument",
+   "hms/doctor/vendor/jquery-file-upload/server/php/UploadHandler.php: warning: parameter default at hms/doctor/vendor/jquery-file-upload/server/php/UploadHandler.php:212 is a branch point this pass does not instrument",
+   "hms/doctor/vendor/jquery-file-upload/server/php/UploadHandler.php: warning: parameter default at hms/doctor/vendor/jquery-file-upload/server/php/UploadHandler.php:212 is a branch point this pass does not instrument",
+   "hms/doctor/vendor/jquery-file-upload/server/php/UploadHandler.php: warning: parameter default at hms/doctor/vendor/jquery-file-upload/server/php/UploadHandler.php:231 is a branch point this pass does not instrument",
+   "hms/doctor/vendor/jquery-file-upload/server/php/UploadHandler.php: warning: parameter default at hms/doctor/vendor/jquery-file-upload/server/php/UploadHandler.php:231 is a branch point this pass does not instrument",
+   "hms/doctor/vendor/jquery-file-upload/server/php/UploadHandler.php: warning: parameter default at hms/doctor/vendor/jquery-file-upload/server/php/UploadHandler.php:278 is a branch point this pass does not instrument",
+   "hms/doctor/vendor/jquery-file-upload/server/php/UploadHandler.php: warning: parameter default at hms/doctor/vendor/jquery-file-upload/server/php/UploadHandler.php:321 is a branch point this pass does not instrument",
+   "hms/doctor/vendor/jquery-file-upload/server/php/UploadHandler.php: warning: parameter default at hms/doctor/vendor/jquery-file-upload/server/php/UploadHandler.php:549 is a branch point this pass does not instrument",
+   "hms/doctor/vendor/jquery-file-upload/server/php/UploadHandler.php: warning: parameter default at hms/doctor/vendor/jquery-file-upload/server/php/UploadHandler.php:777 is a branch point this pass does not instrument",
+   "hms/doctor/vendor/jquery-file-upload/server/php/UploadHandler.php: warning: parameter default at hms/doctor/vendor/jquery-file-upload/server/php/UploadHandler.php:1047 is a branch point this pass does not instrument",
+   "hms/doctor/vendor/jquery-file-upload/server/php/UploadHandler.php: warning: parameter default at hms/doctor/vendor/jquery-file-upload/server/php/UploadHandler.php:1047 is a branch point this pass does not instrument",
+   "hms/doctor/vendor/jquery-file-upload/server/php/UploadHandler.php: warning: parameter default at hms/doctor/vendor/jquery-file-upload/server/php/UploadHandler.php:1238 is a branch point this pass does not instrument",
+   "hms/doctor/vendor/jquery-file-upload/server/php/UploadHandler.php: warning: parameter default at hms/doctor/vendor/jquery-file-upload/server/php/UploadHandler.php:1278 is a branch point this pass does not instrument",
+   "hms/doctor/vendor/jquery-file-upload/server/php/UploadHandler.php: warning: parameter default at hms/doctor/vendor/jquery-file-upload/server/php/UploadHandler.php:1295 is a branch point this pass does not instrument",
+   "hms/doctor/vendor/jquery-file-upload/server/php/UploadHandler.php: warning: parameter default at hms/doctor/vendor/jquery-file-upload/server/php/UploadHandler.php:1351 is a branch point this pass does not instrument",
+   "hms/admin/vendor/jquery-file-upload/server/php/UploadHandler.php: warning: parameter default at hms/admin/vendor/jquery-file-upload/server/php/UploadHandler.php:43 is a branch point this pass does not instrument",
+   "hms/admin/vendor/jquery-file-upload/server/php/UploadHandler.php: warning: parameter default at hms/admin/vendor/jquery-file-upload/server/php/UploadHandler.php:43 is a branch point this pass does not instrument",
+   "hms/admin/vendor/jquery-file-upload/server/php/UploadHandler.php: warning: parameter default at hms/admin/vendor/jquery-file-upload/server/php/UploadHandler.php:43 is a branch point this pass does not instrument",
+   "hms/admin/vendor/jquery-file-upload/server/php/UploadHandler.php: warning: parameter default at hms/admin/vendor/jquery-file-upload/server/php/UploadHandler.php:212 is a branch point this pass does not instrument",
+   "hms/admin/vendor/jquery-file-upload/server/php/UploadHandler.php: warning: parameter default at hms/admin/vendor/jquery-file-upload/server/php/UploadHandler.php:212 is a branch point this pass does not instrument",
+   "hms/admin/vendor/jquery-file-upload/server/php/UploadHandler.php: warning: parameter default at hms/admin/vendor/jquery-file-upload/server/php/UploadHandler.php:231 is a branch point this pass does not instrument",
+   "hms/admin/vendor/jquery-file-upload/server/php/UploadHandler.php: warning: parameter default at hms/admin/vendor/jquery-file-upload/server/php/UploadHandler.php:231 is a branch point this pass does not instrument",
+   "hms/admin/vendor/jquery-file-upload/server/php/UploadHandler.php: warning: parameter default at hms/admin/vendor/jquery-file-upload/server/php/UploadHandler.php:278 is a branch point this pass does not instrument",
+   "hms/admin/vendor/jquery-file-upload/server/php/UploadHandler.php: warning: parameter default at hms/admin/vendor/jquery-file-upload/server/php/UploadHandler.php:321 is a branch point this pass does not instrument",
+   "hms/admin/vendor/jquery-file-upload/server/php/UploadHandler.php: warning: parameter default at hms/admin/vendor/jquery-file-upload/server/php/UploadHandler.php:549 is a branch point this pass does not instrument",
+   "hms/admin/vendor/jquery-file-upload/server/php/UploadHandler.php: warning: parameter default at hms/admin/vendor/jquery-file-upload/server/php/UploadHandler.php:777 is a branch point this pass does not instrument",
+   "hms/admin/vendor/jquery-file-upload/server/php/UploadHandler.php: warning: parameter default at hms/admin/vendor/jquery-file-upload/server/php/UploadHandler.php:1047 is a branch point this pass does not instrument",
+   "hms/admin/vendor/jquery-file-upload/server/php/UploadHandler.php: warning: parameter default at hms/admin/vendor/jquery-file-upload/server/php/UploadHandler.php:1047 is a branch point this pass does not instrument",
+   "hms/admin/vendor/jquery-file-upload/server/php/UploadHandler.php: warning: parameter default at hms/admin/vendor/jquery-file-upload/server/php/UploadHandler.php:1238 is a branch point this pass does not instrument",
+   "hms/admin/vendor/jquery-file-upload/server/php/UploadHandler.php: warning: parameter default at hms/admin/vendor/jquery-file-upload/server/php/UploadHandler.php:1278 is a branch point this pass does not instrument",
+   "hms/admin/vendor/jquery-file-upload/server/php/UploadHandler.php: warning: parameter default at hms/admin/vendor/jquery-file-upload/server/php/UploadHandler.php:1295 is a branch point this pass does not instrument",
+   "hms/admin/vendor/jquery-file-upload/server/php/UploadHandler.php: warning: parameter default at hms/admin/vendor/jquery-file-upload/server/php/UploadHandler.php:1351 is a branch point this pass does not instrument"
+  ],
+  "options": {
+   "php7Compat": true,
+   "exitAsHalt": true,
+   "switchCmp": false,
+   "superglobalReads": false
+  },
+  "failures": [],
+  "rewrites_total": {
+   "call7": 75,
+   "catch": 4,
+   "const7": 24,
+   "count7": 9,
+   "exit": 6,
+   "switch": 33
+  },
+  "rewrites_by_file": {
+   "hms/admin/add-doctor.php": {
+    "call7": 1
+   },
+   "hms/admin/appointment-history.php": {
+    "call7": 1
+   },
+   "hms/admin/betweendates-detailsreports.php": {
+    "call7": 1
+   },
+   "hms/admin/change-password.php": {
+    "call7": 1
+   },
+   "hms/admin/check_availability.php": {
+    "call7": 1
+   },
+   "hms/admin/dashboard.php": {
+    "call7": 5
+   },
+   "hms/admin/doctor-logs.php": {
+    "call7": 1
+   },
+   "hms/admin/doctor-specilization.php": {
+    "call7": 1
+   },
+   "hms/admin/edit-doctor-specialization.php": {
+    "call7": 1
+   },
+   "hms/admin/edit-doctor.php": {
+    "call7": 2
+   },
+   "hms/admin/include/config.php": {
+    "const7": 4
+   },
+   "hms/admin/include/dbcontroller.php": {
+    "catch": 1
+   },
+   "hms/admin/index.php": {
+    "call7": 1,
+    "exit": 2
+   },
+   "hms/admin/manage-doctors.php": {
+    "call7": 1
+   },
+   "hms/admin/manage-patient.php": {
+    "call7": 1
+   },
+   "hms/admin/manage-users.php": {
+    "call7": 1
+   },
+   "hms/admin/patient-search.php": {
+    "call7": 2
+   },
+   "hms/admin/query-details.php": {
+    "call7": 1
+   },
+   "hms/admin/read-query.php": {
+    "call7": 1
+   },
+   "hms/admin/unread-queries.php": {
+    "call7": 1
+   },
+   "hms/admin/user-logs.php": {
+    "call7": 1
+   },
+   "hms/admin/vendor/jquery-file-upload/server/php/UploadHandler.php": {
+    "call7": 7,
+    "catch": 1,
+    "const7": 4,
+    "count7": 3,
+    "switch": 11
+   },
+   "hms/admin/view-patient.php": {
+    "call7": 2
+   },
+   "hms/appointment-history.php": {
+    "call7": 1
+   },
+   "hms/book-appointment.php": {
+    "call7": 1
+   },
+   "hms/change-password.php": {
+    "call7": 1
+   },
+   "hms/check_availability.php": {
+    "call7": 1
+   },
+   "hms/doctor/appointment-history.php": {
+    "call7": 1
+   },
+   "hms/doctor/change-password.php": {
+    "call7": 1
+   },
+   "hms/doctor/check_availability.php": {
+    "call7": 1
+   },
+   "hms/doctor/edit-patient.php": {
+    "call7": 1
+   },
+   "hms/doctor/edit-profile.php": {
+    "call7": 2
+   },
+   "hms/doctor/forgot-password.php": {
+    "call7": 1
+   },
+   "hms/doctor/include/config.php": {
+    "const7": 4
+   },
+   "hms/doctor/include/header.php": {
+    "call7": 1
+   },
+   "hms/doctor/index.php": {
+    "call7": 1,
+    "exit": 2
+   },
+   "hms/doctor/manage-patient.php": {
+    "call7": 1
+   },
+   "hms/doctor/search.php": {
+    "call7": 2
+   },
+   "hms/doctor/vendor/jquery-file-upload/server/php/UploadHandler.php": {
+    "call7": 7,
+    "catch": 1,
+    "const7": 4,
+    "count7": 3,
+    "switch": 11
+   },
+   "hms/doctor/view-patient.php": {
+    "call7": 2
+   },
+   "hms/edit-profile.php": {
+    "call7": 1
+   },
+   "hms/forgot-password.php": {
+    "call7": 1
+   },
+   "hms/get_doctor.php": {
+    "call7": 2
+   },
+   "hms/include/config.php": {
+    "const7": 4
+   },
+   "hms/include/header.php": {
+    "call7": 1
+   },
+   "hms/manage-medhistory.php": {
+    "call7": 1
+   },
+   "hms/user-login.php": {
+    "call7": 1,
+    "exit": 2
+   },
+   "hms/vendor/jquery-file-upload/server/php/UploadHandler.php": {
+    "call7": 7,
+    "catch": 1,
+    "const7": 4,
+    "count7": 3,
+    "switch": 11
+   },
+   "hms/view-medhistory.php": {
+    "call7": 2
+   }
+  }
+ }
+}

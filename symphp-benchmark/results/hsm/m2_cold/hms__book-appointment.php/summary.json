@@ -1,0 +1,56 @@
+{
+ "script": "hms/book-appointment.php",
+ "wall_s": 4.7,
+ "requests": 37,
+ "rounds": 9,
+ "traces": 35,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [],
+  "POST": [
+   "Doctorspecialization",
+   "appdate",
+   "apptime",
+   "doctor",
+   "fees",
+   "submit"
+  ],
+  "COOKIE": []
+ },
+ "budget_hit": false,
+ "coverage_complete": true,
+ "missing": 0,
+ "assumptions": [],
+ "sink_sites": [
+  {
+   "site": "hms/book-appointment.php:18",
+   "sink": "mysqli_query",
+   "kind": "injectable",
+   "instance": "insert into appointment(doctorSpecialization,doctorId,userId,consultancyFees,appointmentDate,appointmentTime,userStatus,doctorStatus) values(''','','','','','','1','1')",
+   "request": {
+    "GET": {},
+    "POST": {
+     "submit": "",
+     "Doctorspecialization": "'",
+     "appdate": "",
+     "apptime": "",
+     "doctor": "",
+     "fees": ""
+    },
+    "COOKIE": {}
+   },
+   "db_errno": 1366
+  }
+ ],
+ "errors_distinct": [],
+ "halted_traces": 0,
+ "concretized": {},
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

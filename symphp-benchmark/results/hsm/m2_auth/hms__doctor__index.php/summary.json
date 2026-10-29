@@ -1,0 +1,74 @@
+{
+ "script": "hms/doctor/index.php",
+ "wall_s": 1.8,
+ "requests": 7,
+ "rounds": 5,
+ "traces": 5,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [],
+  "POST": [
+   "password",
+   "submit",
+   "username"
+  ],
+  "COOKIE": [
+   "PHPSESSID"
+  ]
+ },
+ "budget_hit": false,
+ "coverage_complete": true,
+ "missing": 0,
+ "assumptions": [],
+ "sink_sites": [
+  {
+   "site": "hms/doctor/index.php:7",
+   "sink": "mysqli_query",
+   "kind": "injectable",
+   "instance": "SELECT * FROM doctors WHERE docEmail=''' and password='f925916e2754e5e03f75dd58a5733251'",
+   "request": {
+    "GET": {},
+    "POST": {
+     "submit": "",
+     "password": "Test@123",
+     "username": "'"
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession"
+    }
+   },
+   "db_errno": 0
+  },
+  {
+   "site": "hms/doctor/index.php:28",
+   "sink": "mysqli_query",
+   "kind": "injectable",
+   "instance": "insert into doctorslog(username,userip,status) values(''','127.0.0.1','0')",
+   "request": {
+    "GET": {},
+    "POST": {
+     "submit": "",
+     "password": "Test@123",
+     "username": "'"
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession"
+    }
+   },
+   "db_errno": 0
+  }
+ ],
+ "errors_distinct": [],
+ "halted_traces": 3,
+ "concretized": {
+  "string conversion @ hms/doctor/index.php:7": 2
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

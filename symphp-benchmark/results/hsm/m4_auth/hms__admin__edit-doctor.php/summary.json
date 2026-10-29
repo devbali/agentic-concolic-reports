@@ -1,0 +1,66 @@
+{
+ "script": "hms/admin/edit-doctor.php",
+ "wall_s": 11.3,
+ "requests": 136,
+ "rounds": 10,
+ "traces": 133,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "id"
+  ],
+  "POST": [
+   "Doctorspecialization",
+   "clinicaddress",
+   "doccontact",
+   "docemail",
+   "docfees",
+   "docname",
+   "submit"
+  ],
+  "COOKIE": [
+   "PHPSESSID"
+  ]
+ },
+ "budget_hit": false,
+ "coverage_complete": true,
+ "missing": 0,
+ "assumptions": [],
+ "sink_sites": [
+  {
+   "site": "hms/admin/edit-doctor.php:16",
+   "sink": "mysqli_query",
+   "kind": "injectable",
+   "instance": "Update doctors set specilization=''',doctorName='',address='',docFees='',contactno='',docEmail='' where id='0'",
+   "request": {
+    "GET": {},
+    "POST": {
+     "submit": "",
+     "Doctorspecialization": "'",
+     "clinicaddress": "",
+     "doccontact": "",
+     "docemail": "",
+     "docfees": "",
+     "docname": ""
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession"
+    }
+   },
+   "db_errno": 0
+  }
+ ],
+ "errors_distinct": [],
+ "halted_traces": 0,
+ "concretized": {
+  "intval @ hms/admin/edit-doctor.php:7": 132
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

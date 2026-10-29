@@ -1,0 +1,3102 @@
+[
+ {
+  "script": "contact.php",
+  "wall_s": 3.1,
+  "requests": 21,
+  "rounds": 8,
+  "traces": 19,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [
+    "description",
+    "emailid",
+    "fullname",
+    "mobileno",
+    "submit"
+   ],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [
+   {
+    "site": "contact.php:9",
+    "sink": "mysqli_query",
+    "kind": "injectable",
+    "instance": "insert into tblcontactus(fullname,email,contactno,message) value(''','','','')",
+    "request": {
+     "GET": {},
+     "POST": {
+      "submit": "",
+      "description": "",
+      "emailid": "",
+      "fullname": "'",
+      "mobileno": ""
+     },
+     "COOKIE": {}
+    },
+    "db_errno": 1366
+   }
+  ],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/admin/add-doctor.php",
+  "wall_s": 6.5,
+  "requests": 69,
+  "rounds": 10,
+  "traces": 67,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [
+    "Doctorspecialization",
+    "clinicaddress",
+    "doccontact",
+    "docemail",
+    "docfees",
+    "docname",
+    "npass",
+    "submit"
+   ],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [
+   {
+    "site": "hms/admin/add-doctor.php:16",
+    "sink": "mysqli_query",
+    "kind": "injectable",
+    "instance": "insert into doctors(specilization,doctorName,address,docFees,contactno,docEmail,password) values(''','','','','','','d41d8cd98f00b204e9800998ecf8427e')",
+    "request": {
+     "GET": {},
+     "POST": {
+      "submit": "",
+      "Doctorspecialization": "'",
+      "clinicaddress": "",
+      "doccontact": "",
+      "docemail": "",
+      "docfees": "",
+      "docname": ""
+     },
+     "COOKIE": {}
+    },
+    "db_errno": 1366
+   }
+  ],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {
+   "string conversion @ hms/admin/add-doctor.php:15": 64
+  },
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/admin/appointment-history.php",
+  "wall_s": 0.3,
+  "requests": 1,
+  "rounds": 1,
+  "traces": 1,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/admin/between-dates-reports.php",
+  "wall_s": 0.3,
+  "requests": 1,
+  "rounds": 1,
+  "traces": 1,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/admin/betweendates-detailsreports.php",
+  "wall_s": 1.4,
+  "requests": 5,
+  "rounds": 4,
+  "traces": 5,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [
+    "fromdate",
+    "todate"
+   ],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [
+   {
+    "site": "hms/admin/betweendates-detailsreports.php:78",
+    "sink": "mysqli_query",
+    "kind": "injectable",
+    "instance": "select * from tblpatient where date(CreationDate) between ''' and ''",
+    "request": {
+     "GET": {},
+     "POST": {
+      "fromdate": "'",
+      "todate": ""
+     },
+     "COOKIE": {}
+    },
+    "db_errno": 0
+   }
+  ],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/admin/change-password.php",
+  "wall_s": 1.7,
+  "requests": 7,
+  "rounds": 5,
+  "traces": 5,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [
+    "cpass",
+    "submit"
+   ],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [
+   {
+    "site": "hms/admin/change-password.php:11",
+    "sink": "mysqli_query",
+    "kind": "injectable",
+    "instance": "SELECT password FROM  admin where password=''' && username=''",
+    "request": {
+     "GET": {},
+     "POST": {
+      "submit": "",
+      "cpass": "'"
+     },
+     "COOKIE": {}
+    },
+    "db_errno": 0
+   }
+  ],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/admin/check_availability.php",
+  "wall_s": 1.6,
+  "requests": 5,
+  "rounds": 5,
+  "traces": 5,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [
+    "emailid"
+   ],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [
+   {
+    "site": "hms/admin/check_availability.php:6",
+    "sink": "mysqli_query",
+    "kind": "injectable",
+    "instance": "SELECT docEmail FROM doctors WHERE docEmail='''",
+    "request": {
+     "GET": {},
+     "POST": {
+      "emailid": "'"
+     },
+     "COOKIE": {}
+    },
+    "db_errno": 0
+   }
+  ],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/admin/dashboard.php",
+  "wall_s": 0.3,
+  "requests": 1,
+  "rounds": 1,
+  "traces": 1,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/admin/doctor-logs.php",
+  "wall_s": 0.3,
+  "requests": 1,
+  "rounds": 1,
+  "traces": 1,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/admin/doctor-specilization.php",
+  "wall_s": 2.5,
+  "requests": 18,
+  "rounds": 6,
+  "traces": 12,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [
+    "del",
+    "id"
+   ],
+   "POST": [
+    "doctorspecilization",
+    "submit"
+   ],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [
+   {
+    "site": "hms/admin/doctor-specilization.php:15",
+    "sink": "mysqli_query",
+    "kind": "injectable",
+    "instance": "delete from doctorSpecilization where id = '''",
+    "request": {
+     "GET": {
+      "del": "",
+      "id": "'"
+     },
+     "POST": {
+      "doctorspecilization": ""
+     },
+     "COOKIE": {}
+    },
+    "db_errno": 0
+   },
+   {
+    "site": "hms/admin/doctor-specilization.php:9",
+    "sink": "mysqli_query",
+    "kind": "injectable",
+    "instance": "insert into doctorSpecilization(specilization) values(''')",
+    "request": {
+     "GET": {
+      "del": "",
+      "id": ""
+     },
+     "POST": {
+      "submit": "",
+      "doctorspecilization": "'"
+     },
+     "COOKIE": {}
+    },
+    "db_errno": 0
+   }
+  ],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/admin/edit-doctor-specialization.php",
+  "wall_s": 1.9,
+  "requests": 12,
+  "rounds": 5,
+  "traces": 9,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [
+    "id"
+   ],
+   "POST": [
+    "doctorspecilization",
+    "submit"
+   ],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [
+   {
+    "site": "hms/admin/edit-doctor-specialization.php:11",
+    "sink": "mysqli_query",
+    "kind": "injectable",
+    "instance": "update  doctorSpecilization set specilization=''' where id='0'",
+    "request": {
+     "GET": {},
+     "POST": {
+      "submit": "",
+      "doctorspecilization": "'"
+     },
+     "COOKIE": {}
+    },
+    "db_errno": 0
+   }
+  ],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {
+   "intval @ hms/admin/edit-doctor-specialization.php:7": 8,
+   "intval @ hms/admin/edit-doctor-specialization.php:85": 8
+  },
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/admin/edit-doctor.php",
+  "wall_s": 10.7,
+  "requests": 136,
+  "rounds": 10,
+  "traces": 133,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [
+    "id"
+   ],
+   "POST": [
+    "Doctorspecialization",
+    "clinicaddress",
+    "doccontact",
+    "docemail",
+    "docfees",
+    "docname",
+    "submit"
+   ],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [
+   {
+    "site": "hms/admin/edit-doctor.php:16",
+    "sink": "mysqli_query",
+    "kind": "injectable",
+    "instance": "Update doctors set specilization=''',doctorName='',address='',docFees='',contactno='',docEmail='' where id='0'",
+    "request": {
+     "GET": {},
+     "POST": {
+      "submit": "",
+      "Doctorspecialization": "'",
+      "clinicaddress": "",
+      "doccontact": "",
+      "docemail": "",
+      "docfees": "",
+      "docname": ""
+     },
+     "COOKIE": {}
+    },
+    "db_errno": 0
+   }
+  ],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {
+   "intval @ hms/admin/edit-doctor.php:7": 132
+  },
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/admin/include/checklogin.php",
+  "wall_s": 0.3,
+  "requests": 1,
+  "rounds": 1,
+  "traces": 1,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/admin/include/config.php",
+  "wall_s": 0.3,
+  "requests": 1,
+  "rounds": 1,
+  "traces": 1,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/admin/include/dbcontroller.php",
+  "wall_s": 0.3,
+  "requests": 1,
+  "rounds": 1,
+  "traces": 1,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/admin/include/footer.php",
+  "wall_s": 0.3,
+  "requests": 1,
+  "rounds": 1,
+  "traces": 1,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/admin/include/header.php",
+  "wall_s": 0.3,
+  "requests": 1,
+  "rounds": 1,
+  "traces": 1,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/admin/include/setting.php",
+  "wall_s": 0.3,
+  "requests": 1,
+  "rounds": 1,
+  "traces": 1,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/admin/include/sidebar.php",
+  "wall_s": 0.3,
+  "requests": 1,
+  "rounds": 1,
+  "traces": 1,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/admin/index.php",
+  "wall_s": 2.1,
+  "requests": 9,
+  "rounds": 6,
+  "traces": 7,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [
+    "password",
+    "submit",
+    "username"
+   ],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [
+   {
+    "site": "hms/admin/index.php:7",
+    "sink": "mysqli_query",
+    "kind": "injectable",
+    "instance": "SELECT * FROM admin WHERE username=''' and password=''",
+    "request": {
+     "GET": {},
+     "POST": {
+      "submit": "",
+      "password": "",
+      "username": "'"
+     },
+     "COOKIE": {}
+    },
+    "db_errno": 0
+   }
+  ],
+  "errors_distinct": [],
+  "halted_traces": 5,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/admin/logout.php",
+  "wall_s": 0.3,
+  "requests": 1,
+  "rounds": 1,
+  "traces": 1,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/admin/manage-doctors.php",
+  "wall_s": 1.6,
+  "requests": 7,
+  "rounds": 5,
+  "traces": 5,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [
+    "del",
+    "id"
+   ],
+   "POST": [],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [
+   {
+    "site": "hms/admin/manage-doctors.php:11",
+    "sink": "mysqli_query",
+    "kind": "injectable",
+    "instance": "delete from doctors where id = '''",
+    "request": {
+     "GET": {
+      "del": "",
+      "id": "'"
+     },
+     "POST": {},
+     "COOKIE": {}
+    },
+    "db_errno": 0
+   }
+  ],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/admin/manage-patient.php",
+  "wall_s": 0.3,
+  "requests": 1,
+  "rounds": 1,
+  "traces": 1,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/admin/manage-users.php",
+  "wall_s": 1.7,
+  "requests": 7,
+  "rounds": 5,
+  "traces": 5,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [
+    "del",
+    "id"
+   ],
+   "POST": [],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [
+   {
+    "site": "hms/admin/manage-users.php:10",
+    "sink": "mysqli_query",
+    "kind": "injectable",
+    "instance": "delete from users where id = '''",
+    "request": {
+     "GET": {
+      "del": "",
+      "id": "'"
+     },
+     "POST": {},
+     "COOKIE": {}
+    },
+    "db_errno": 0
+   }
+  ],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/admin/patient-search.php",
+  "wall_s": 1.7,
+  "requests": 7,
+  "rounds": 5,
+  "traces": 5,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [
+    "search",
+    "searchdata"
+   ],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/admin/query-details.php",
+  "wall_s": 1.9,
+  "requests": 11,
+  "rounds": 5,
+  "traces": 8,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [
+    "id"
+   ],
+   "POST": [
+    "adminremark",
+    "update"
+   ],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [
+   {
+    "site": "hms/admin/query-details.php:14",
+    "sink": "mysqli_query",
+    "kind": "injectable",
+    "instance": "update tblcontactus set  AdminRemark=''',IsRead='1' where id='0'",
+    "request": {
+     "GET": {},
+     "POST": {
+      "update": "",
+      "adminremark": "'"
+     },
+     "COOKIE": {}
+    },
+    "db_errno": 0
+   }
+  ],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {
+   "intval @ hms/admin/query-details.php:79": 7,
+   "intval @ hms/admin/query-details.php:11": 5
+  },
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/admin/read-query.php",
+  "wall_s": 1.7,
+  "requests": 7,
+  "rounds": 5,
+  "traces": 5,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [
+    "del",
+    "id"
+   ],
+   "POST": [],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [
+   {
+    "site": "hms/admin/read-query.php:11",
+    "sink": "mysqli_query",
+    "kind": "injectable",
+    "instance": "delete from doctors where id = '''",
+    "request": {
+     "GET": {
+      "del": "",
+      "id": "'"
+     },
+     "POST": {},
+     "COOKIE": {}
+    },
+    "db_errno": 0
+   }
+  ],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/admin/registration.php",
+  "wall_s": 4.3,
+  "requests": 37,
+  "rounds": 9,
+  "traces": 35,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [
+    "address",
+    "city",
+    "email",
+    "full_name",
+    "gender",
+    "password",
+    "submit"
+   ],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [
+   {
+    "site": "hms/admin/registration.php:11",
+    "sink": "mysql_query",
+    "kind": "injectable",
+    "instance": "insert into users(fullname,address,city,gender,email,password) values(''','','','','','d41d8cd98f00b204e9800998ecf8427e')",
+    "request": {
+     "GET": {},
+     "POST": {
+      "submit": "",
+      "address": "",
+      "city": "",
+      "email": "",
+      "full_name": "'",
+      "gender": ""
+     },
+     "COOKIE": {}
+    }
+   }
+  ],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {
+   "string conversion @ hms/admin/registration.php:10": 32
+  },
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/admin/unread-queries.php",
+  "wall_s": 1.7,
+  "requests": 7,
+  "rounds": 5,
+  "traces": 5,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [
+    "del",
+    "id"
+   ],
+   "POST": [],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [
+   {
+    "site": "hms/admin/unread-queries.php:11",
+    "sink": "mysqli_query",
+    "kind": "injectable",
+    "instance": "delete from doctors where id = '''",
+    "request": {
+     "GET": {
+      "del": "",
+      "id": "'"
+     },
+     "POST": {},
+     "COOKIE": {}
+    },
+    "db_errno": 0
+   }
+  ],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/admin/user-logs.php",
+  "wall_s": 0.3,
+  "requests": 1,
+  "rounds": 1,
+  "traces": 1,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/admin/view-patient.php",
+  "wall_s": 7.6,
+  "requests": 71,
+  "rounds": 9,
+  "traces": 68,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [
+    "viewid"
+   ],
+   "POST": [
+    "bp",
+    "bs",
+    "pres",
+    "submit",
+    "temp",
+    "weight"
+   ],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [
+   {
+    "site": "hms/admin/view-patient.php:18",
+    "sink": "mysqli_query",
+    "kind": "injectable",
+    "instance": "insert   tblmedicalhistory(PatientID,BloodPressure,BloodSugar,Weight,Temperature,MedicalPres)value(''','','','','','')",
+    "request": {
+     "GET": {
+      "viewid": "'"
+     },
+     "POST": {
+      "submit": ""
+     },
+     "COOKIE": {}
+    },
+    "db_errno": 1366
+   },
+   {
+    "site": "hms/admin/view-patient.php:81",
+    "sink": "mysqli_query",
+    "kind": "injectable",
+    "instance": "select * from tblpatient where ID='''",
+    "request": {
+     "GET": {
+      "viewid": "'"
+     },
+     "POST": {
+      "submit": ""
+     },
+     "COOKIE": {}
+    },
+    "db_errno": 0
+   },
+   {
+    "site": "hms/admin/view-patient.php:120",
+    "sink": "mysqli_query",
+    "kind": "injectable",
+    "instance": "select * from tblmedicalhistory  where PatientID='''",
+    "request": {
+     "GET": {
+      "viewid": "'"
+     },
+     "POST": {
+      "submit": ""
+     },
+     "COOKIE": {}
+    },
+    "db_errno": 0
+   }
+  ],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/appointment-history.php",
+  "wall_s": 1.8,
+  "requests": 7,
+  "rounds": 5,
+  "traces": 5,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [
+    "cancel",
+    "id"
+   ],
+   "POST": [],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [
+   {
+    "site": "hms/appointment-history.php:9",
+    "sink": "mysqli_query",
+    "kind": "injectable",
+    "instance": "update appointment set userStatus='0' where id = '''",
+    "request": {
+     "GET": {
+      "cancel": "",
+      "id": "'"
+     },
+     "POST": {},
+     "COOKIE": {}
+    },
+    "db_errno": 0
+   }
+  ],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/book-appointment.php",
+  "wall_s": 4.7,
+  "requests": 37,
+  "rounds": 9,
+  "traces": 35,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [
+    "Doctorspecialization",
+    "appdate",
+    "apptime",
+    "doctor",
+    "fees",
+    "submit"
+   ],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [
+   {
+    "site": "hms/book-appointment.php:18",
+    "sink": "mysqli_query",
+    "kind": "injectable",
+    "instance": "insert into appointment(doctorSpecialization,doctorId,userId,consultancyFees,appointmentDate,appointmentTime,userStatus,doctorStatus) values(''','','','','','','1','1')",
+    "request": {
+     "GET": {},
+     "POST": {
+      "submit": "",
+      "Doctorspecialization": "'",
+      "appdate": "",
+      "apptime": "",
+      "doctor": "",
+      "fees": ""
+     },
+     "COOKIE": {}
+    },
+    "db_errno": 1366
+   }
+  ],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/change-emaild.php",
+  "wall_s": 1.8,
+  "requests": 7,
+  "rounds": 5,
+  "traces": 5,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [
+    "email",
+    "submit"
+   ],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [
+   {
+    "site": "hms/change-emaild.php:10",
+    "sink": "mysqli_query",
+    "kind": "injectable",
+    "instance": "Update users set email=''' where id=''",
+    "request": {
+     "GET": {},
+     "POST": {
+      "submit": "",
+      "email": "'"
+     },
+     "COOKIE": {}
+    },
+    "db_errno": 0
+   }
+  ],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/change-password.php",
+  "wall_s": 1.5,
+  "requests": 5,
+  "rounds": 4,
+  "traces": 3,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [
+    "cpass",
+    "submit"
+   ],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/check_availability.php",
+  "wall_s": 1.7,
+  "requests": 5,
+  "rounds": 5,
+  "traces": 5,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [
+    "email"
+   ],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [
+   {
+    "site": "hms/check_availability.php:6",
+    "sink": "mysqli_query",
+    "kind": "injectable",
+    "instance": "SELECT email FROM users WHERE email='''",
+    "request": {
+     "GET": {},
+     "POST": {
+      "email": "'"
+     },
+     "COOKIE": {}
+    },
+    "db_errno": 0
+   }
+  ],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/checklogin.php",
+  "wall_s": 0.3,
+  "requests": 1,
+  "rounds": 1,
+  "traces": 1,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/dashboard.php",
+  "wall_s": 0.3,
+  "requests": 1,
+  "rounds": 1,
+  "traces": 1,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/doctor/add-patient.php",
+  "wall_s": 11.8,
+  "requests": 133,
+  "rounds": 11,
+  "traces": 131,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [
+    "gender",
+    "medhis",
+    "pataddress",
+    "patage",
+    "patcontact",
+    "patemail",
+    "patname",
+    "submit"
+   ],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [
+   {
+    "site": "hms/doctor/add-patient.php:18",
+    "sink": "mysqli_query",
+    "kind": "injectable",
+    "instance": "insert into tblpatient(Docid,PatientName,PatientContno,PatientEmail,PatientGender,PatientAdd,PatientAge,PatientMedhis) values('',''','','','','','','')",
+    "request": {
+     "GET": {},
+     "POST": {
+      "submit": "",
+      "gender": "",
+      "medhis": "",
+      "pataddress": "",
+      "patage": "",
+      "patcontact": "",
+      "patemail": "",
+      "patname": "'"
+     },
+     "COOKIE": {}
+    },
+    "db_errno": 1366
+   }
+  ],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/doctor/appointment-history.php",
+  "wall_s": 1.8,
+  "requests": 7,
+  "rounds": 5,
+  "traces": 5,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [
+    "cancel",
+    "id"
+   ],
+   "POST": [],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [
+   {
+    "site": "hms/doctor/appointment-history.php:9",
+    "sink": "mysqli_query",
+    "kind": "injectable",
+    "instance": "update appointment set doctorStatus='0' where id ='''",
+    "request": {
+     "GET": {
+      "cancel": "",
+      "id": "'"
+     },
+     "POST": {},
+     "COOKIE": {}
+    },
+    "db_errno": 0
+   }
+  ],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/doctor/change-password.php",
+  "wall_s": 1.4,
+  "requests": 5,
+  "rounds": 4,
+  "traces": 3,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [
+    "cpass",
+    "submit"
+   ],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/doctor/check_availability.php",
+  "wall_s": 1.8,
+  "requests": 5,
+  "rounds": 5,
+  "traces": 5,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [
+    "email"
+   ],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [
+   {
+    "site": "hms/doctor/check_availability.php:5",
+    "sink": "mysqli_query",
+    "kind": "injectable",
+    "instance": "SELECT PatientEmail FROM tblpatient WHERE PatientEmail='''",
+    "request": {
+     "GET": {},
+     "POST": {
+      "email": "'"
+     },
+     "COOKIE": {}
+    },
+    "db_errno": 0
+   }
+  ],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/doctor/dashboard.php",
+  "wall_s": 0.4,
+  "requests": 1,
+  "rounds": 1,
+  "traces": 1,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/doctor/edit-patient.php",
+  "wall_s": 25.1,
+  "requests": 263,
+  "rounds": 13,
+  "traces": 260,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [
+    "editid"
+   ],
+   "POST": [
+    "gender",
+    "medhis",
+    "pataddress",
+    "patage",
+    "patcontact",
+    "patemail",
+    "patname",
+    "submit"
+   ],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [
+   {
+    "site": "hms/doctor/edit-patient.php:18",
+    "sink": "mysqli_query",
+    "kind": "injectable",
+    "instance": "update tblpatient set PatientName='',PatientContno='',PatientEmail='',PatientGender='',PatientAdd='',PatientAge='',PatientMedhis='' where ID='''",
+    "request": {
+     "GET": {
+      "editid": "'"
+     },
+     "POST": {
+      "submit": ""
+     },
+     "COOKIE": {}
+    },
+    "db_errno": 0
+   },
+   {
+    "site": "hms/doctor/edit-patient.php:86",
+    "sink": "mysqli_query",
+    "kind": "injectable",
+    "instance": "select * from tblpatient where ID='''",
+    "request": {
+     "GET": {
+      "editid": "'"
+     },
+     "POST": {
+      "submit": ""
+     },
+     "COOKIE": {}
+    },
+    "db_errno": 0
+   }
+  ],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/doctor/edit-profile.php",
+  "wall_s": 4.6,
+  "requests": 37,
+  "rounds": 9,
+  "traces": 35,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [
+    "Doctorspecialization",
+    "clinicaddress",
+    "doccontact",
+    "docemail",
+    "docfees",
+    "docname",
+    "submit"
+   ],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [
+   {
+    "site": "hms/doctor/edit-profile.php:14",
+    "sink": "mysqli_query",
+    "kind": "injectable",
+    "instance": "Update doctors set specilization=''',doctorName='',address='',docFees='',contactno='' where id=''",
+    "request": {
+     "GET": {},
+     "POST": {
+      "submit": "",
+      "Doctorspecialization": "'",
+      "clinicaddress": "",
+      "doccontact": "",
+      "docfees": "",
+      "docname": ""
+     },
+     "COOKIE": {}
+    },
+    "db_errno": 0
+   }
+  ],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/doctor/forgot-password.php",
+  "wall_s": 2.1,
+  "requests": 9,
+  "rounds": 6,
+  "traces": 7,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [
+    "contactno",
+    "email",
+    "submit"
+   ],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [
+   {
+    "site": "hms/doctor/forgot-password.php:9",
+    "sink": "mysqli_query",
+    "kind": "injectable",
+    "instance": "select id from  doctors where contactno=''' and docEmail=''",
+    "request": {
+     "GET": {},
+     "POST": {
+      "submit": "",
+      "contactno": "'",
+      "email": ""
+     },
+     "COOKIE": {}
+    },
+    "db_errno": 0
+   }
+  ],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/doctor/include/checklogin.php",
+  "wall_s": 0.3,
+  "requests": 1,
+  "rounds": 1,
+  "traces": 1,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/doctor/include/config.php",
+  "wall_s": 0.3,
+  "requests": 1,
+  "rounds": 1,
+  "traces": 1,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/doctor/include/footer.php",
+  "wall_s": 0.3,
+  "requests": 1,
+  "rounds": 1,
+  "traces": 1,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/doctor/include/header.php",
+  "wall_s": 0.3,
+  "requests": 1,
+  "rounds": 1,
+  "traces": 1,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {
+    "mysqli_fetch_array": 1
+   }
+  }
+ },
+ {
+  "script": "hms/doctor/include/setting.php",
+  "wall_s": 0.3,
+  "requests": 1,
+  "rounds": 1,
+  "traces": 1,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/doctor/include/sidebar.php",
+  "wall_s": 0.3,
+  "requests": 1,
+  "rounds": 1,
+  "traces": 1,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/doctor/index.php",
+  "wall_s": 1.8,
+  "requests": 7,
+  "rounds": 5,
+  "traces": 5,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [
+    "password",
+    "submit",
+    "username"
+   ],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [
+   {
+    "site": "hms/doctor/index.php:7",
+    "sink": "mysqli_query",
+    "kind": "injectable",
+    "instance": "SELECT * FROM doctors WHERE docEmail=''' and password='d41d8cd98f00b204e9800998ecf8427e'",
+    "request": {
+     "GET": {},
+     "POST": {
+      "submit": "",
+      "username": "'"
+     },
+     "COOKIE": {}
+    },
+    "db_errno": 0
+   },
+   {
+    "site": "hms/doctor/index.php:28",
+    "sink": "mysqli_query",
+    "kind": "injectable",
+    "instance": "insert into doctorslog(username,userip,status) values(''','127.0.0.1','0')",
+    "request": {
+     "GET": {},
+     "POST": {
+      "submit": "",
+      "username": "'"
+     },
+     "COOKIE": {}
+    },
+    "db_errno": 0
+   }
+  ],
+  "errors_distinct": [],
+  "halted_traces": 3,
+  "concretized": {
+   "string conversion @ hms/doctor/index.php:7": 2
+  },
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/doctor/logout.php",
+  "wall_s": 0.3,
+  "requests": 1,
+  "rounds": 1,
+  "traces": 1,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/doctor/manage-patient.php",
+  "wall_s": 0.3,
+  "requests": 1,
+  "rounds": 1,
+  "traces": 1,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/doctor/reset-password.php",
+  "wall_s": 1.3,
+  "requests": 5,
+  "rounds": 4,
+  "traces": 3,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [
+    "change",
+    "password"
+   ],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/doctor/search.php",
+  "wall_s": 1.7,
+  "requests": 7,
+  "rounds": 5,
+  "traces": 5,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [
+    "search",
+    "searchdata"
+   ],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/doctor/view-patient.php",
+  "wall_s": 7.1,
+  "requests": 71,
+  "rounds": 9,
+  "traces": 68,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [
+    "viewid"
+   ],
+   "POST": [
+    "bp",
+    "bs",
+    "pres",
+    "submit",
+    "temp",
+    "weight"
+   ],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [
+   {
+    "site": "hms/doctor/view-patient.php:18",
+    "sink": "mysqli_query",
+    "kind": "injectable",
+    "instance": "insert   tblmedicalhistory(PatientID,BloodPressure,BloodSugar,Weight,Temperature,MedicalPres)value(''','','','','','')",
+    "request": {
+     "GET": {
+      "viewid": "'"
+     },
+     "POST": {
+      "submit": ""
+     },
+     "COOKIE": {}
+    },
+    "db_errno": 1366
+   },
+   {
+    "site": "hms/doctor/view-patient.php:81",
+    "sink": "mysqli_query",
+    "kind": "injectable",
+    "instance": "select * from tblpatient where ID='''",
+    "request": {
+     "GET": {
+      "viewid": "'"
+     },
+     "POST": {
+      "submit": ""
+     },
+     "COOKIE": {}
+    },
+    "db_errno": 0
+   },
+   {
+    "site": "hms/doctor/view-patient.php:120",
+    "sink": "mysqli_query",
+    "kind": "injectable",
+    "instance": "select * from tblmedicalhistory  where PatientID='''",
+    "request": {
+     "GET": {
+      "viewid": "'"
+     },
+     "POST": {
+      "submit": ""
+     },
+     "COOKIE": {}
+    },
+    "db_errno": 0
+   }
+  ],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/edit-profile.php",
+  "wall_s": 3.2,
+  "requests": 21,
+  "rounds": 8,
+  "traces": 19,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [
+    "address",
+    "city",
+    "fname",
+    "gender",
+    "submit"
+   ],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [
+   {
+    "site": "hms/edit-profile.php:14",
+    "sink": "mysqli_query",
+    "kind": "injectable",
+    "instance": "Update users set fullName=''',address='',city='',gender='' where id=''",
+    "request": {
+     "GET": {},
+     "POST": {
+      "submit": "",
+      "address": "",
+      "city": "",
+      "fname": "'",
+      "gender": ""
+     },
+     "COOKIE": {}
+    },
+    "db_errno": 0
+   }
+  ],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/forgot-password.php",
+  "wall_s": 2.0,
+  "requests": 9,
+  "rounds": 6,
+  "traces": 7,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [
+    "email",
+    "fullname",
+    "submit"
+   ],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [
+   {
+    "site": "hms/forgot-password.php:9",
+    "sink": "mysqli_query",
+    "kind": "injectable",
+    "instance": "select id from  users where fullName=''' and email=''",
+    "request": {
+     "GET": {},
+     "POST": {
+      "submit": "",
+      "email": "",
+      "fullname": "'"
+     },
+     "COOKIE": {}
+    },
+    "db_errno": 0
+   }
+  ],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/get_doctor.php",
+  "wall_s": 2.8,
+  "requests": 17,
+  "rounds": 7,
+  "traces": 17,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [
+    "doctor",
+    "specilizationid"
+   ],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [
+   {
+    "site": "hms/get_doctor.php:6",
+    "sink": "mysqli_query",
+    "kind": "injectable",
+    "instance": "select doctorName,id from doctors where specilization='''",
+    "request": {
+     "GET": {},
+     "POST": {
+      "doctor": "",
+      "specilizationid": "'"
+     },
+     "COOKIE": {}
+    },
+    "db_errno": 0
+   },
+   {
+    "site": "hms/get_doctor.php:20",
+    "sink": "mysqli_query",
+    "kind": "injectable",
+    "instance": "select docFees from doctors where id='''",
+    "request": {
+     "GET": {},
+     "POST": {
+      "doctor": "'",
+      "specilizationid": ""
+     },
+     "COOKIE": {}
+    },
+    "db_errno": 0
+   }
+  ],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/include/checklogin.php",
+  "wall_s": 0.3,
+  "requests": 1,
+  "rounds": 1,
+  "traces": 1,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/include/config.php",
+  "wall_s": 0.3,
+  "requests": 1,
+  "rounds": 1,
+  "traces": 1,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/include/footer.php",
+  "wall_s": 0.4,
+  "requests": 1,
+  "rounds": 1,
+  "traces": 1,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/include/header.php",
+  "wall_s": 0.3,
+  "requests": 1,
+  "rounds": 1,
+  "traces": 1,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {
+    "mysqli_fetch_array": 1
+   }
+  }
+ },
+ {
+  "script": "hms/include/setting.php",
+  "wall_s": 0.4,
+  "requests": 1,
+  "rounds": 1,
+  "traces": 1,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/include/sidebar.php",
+  "wall_s": 0.3,
+  "requests": 1,
+  "rounds": 1,
+  "traces": 1,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/logout.php",
+  "wall_s": 0.3,
+  "requests": 1,
+  "rounds": 1,
+  "traces": 1,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/manage-medhistory.php",
+  "wall_s": 0.3,
+  "requests": 1,
+  "rounds": 1,
+  "traces": 1,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/registration.php",
+  "wall_s": 4.8,
+  "requests": 37,
+  "rounds": 9,
+  "traces": 35,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [
+    "address",
+    "city",
+    "email",
+    "full_name",
+    "gender",
+    "password",
+    "submit"
+   ],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [
+   {
+    "site": "hms/registration.php:11",
+    "sink": "mysqli_query",
+    "kind": "injectable",
+    "instance": "insert into users(fullname,address,city,gender,email,password) values(''','','','','','d41d8cd98f00b204e9800998ecf8427e')",
+    "request": {
+     "GET": {},
+     "POST": {
+      "submit": "",
+      "address": "",
+      "city": "",
+      "email": "",
+      "full_name": "'",
+      "gender": ""
+     },
+     "COOKIE": {}
+    },
+    "db_errno": 0
+   }
+  ],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {
+   "string conversion @ hms/registration.php:10": 32
+  },
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/reset-password.php",
+  "wall_s": 1.3,
+  "requests": 5,
+  "rounds": 4,
+  "traces": 3,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [
+    "change",
+    "password"
+   ],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/user-login.php",
+  "wall_s": 1.7,
+  "requests": 7,
+  "rounds": 5,
+  "traces": 5,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [
+    "password",
+    "submit",
+    "username"
+   ],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [
+   {
+    "site": "hms/user-login.php:7",
+    "sink": "mysqli_query",
+    "kind": "injectable",
+    "instance": "SELECT * FROM users WHERE email=''' and password='d41d8cd98f00b204e9800998ecf8427e'",
+    "request": {
+     "GET": {},
+     "POST": {
+      "submit": "",
+      "username": "'"
+     },
+     "COOKIE": {}
+    },
+    "db_errno": 0
+   },
+   {
+    "site": "hms/user-login.php:29",
+    "sink": "mysqli_query",
+    "kind": "injectable",
+    "instance": "insert into userlog(username,userip,status) values(''','127.0.0.1','0')",
+    "request": {
+     "GET": {},
+     "POST": {
+      "submit": "",
+      "username": "'"
+     },
+     "COOKIE": {}
+    },
+    "db_errno": 0
+   }
+  ],
+  "errors_distinct": [],
+  "halted_traces": 3,
+  "concretized": {
+   "string conversion @ hms/user-login.php:7": 2
+  },
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "hms/view-medhistory.php",
+  "wall_s": 6.7,
+  "requests": 71,
+  "rounds": 9,
+  "traces": 68,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [
+    "viewid"
+   ],
+   "POST": [
+    "bp",
+    "bs",
+    "pres",
+    "submit",
+    "temp",
+    "weight"
+   ],
+   "COOKIE": []
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [
+   {
+    "site": "hms/view-medhistory.php:18",
+    "sink": "mysqli_query",
+    "kind": "injectable",
+    "instance": "insert   tblmedicalhistory(PatientID,BloodPressure,BloodSugar,Weight,Temperature,MedicalPres)value(''','','','','','')",
+    "request": {
+     "GET": {
+      "viewid": "'"
+     },
+     "POST": {
+      "submit": ""
+     },
+     "COOKIE": {}
+    },
+    "db_errno": 1366
+   },
+   {
+    "site": "hms/view-medhistory.php:81",
+    "sink": "mysqli_query",
+    "kind": "injectable",
+    "instance": "select * from tblpatient where ID='''",
+    "request": {
+     "GET": {
+      "viewid": "'"
+     },
+     "POST": {
+      "submit": ""
+     },
+     "COOKIE": {}
+    },
+    "db_errno": 0
+   },
+   {
+    "site": "hms/view-medhistory.php:120",
+    "sink": "mysqli_query",
+    "kind": "injectable",
+    "instance": "select * from tblmedicalhistory  where PatientID='''",
+    "request": {
+     "GET": {
+      "viewid": "'"
+     },
+     "POST": {
+      "submit": ""
+     },
+     "COOKIE": {}
+    },
+    "db_errno": 0
+   }
+  ],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ }
+]

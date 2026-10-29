@@ -1,0 +1,57 @@
+{
+ "script": "hms/doctor/edit-profile.php",
+ "wall_s": 4.9,
+ "requests": 37,
+ "rounds": 9,
+ "traces": 35,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [],
+  "POST": [
+   "Doctorspecialization",
+   "clinicaddress",
+   "doccontact",
+   "docemail",
+   "docfees",
+   "docname",
+   "submit"
+  ],
+  "COOKIE": []
+ },
+ "budget_hit": false,
+ "coverage_complete": true,
+ "missing": 0,
+ "assumptions": [],
+ "sink_sites": [
+  {
+   "site": "hms/doctor/edit-profile.php:14",
+   "sink": "mysqli_query",
+   "kind": "injectable",
+   "instance": "Update doctors set specilization=''',doctorName='',address='',docFees='',contactno='' where id=''",
+   "request": {
+    "GET": {},
+    "POST": {
+     "submit": "",
+     "Doctorspecialization": "'",
+     "clinicaddress": "",
+     "doccontact": "",
+     "docfees": "",
+     "docname": ""
+    },
+    "COOKIE": {}
+   },
+   "db_errno": 0
+  }
+ ],
+ "errors_distinct": [],
+ "halted_traces": 0,
+ "concretized": {},
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

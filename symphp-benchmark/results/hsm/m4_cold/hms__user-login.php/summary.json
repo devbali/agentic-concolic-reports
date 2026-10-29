@@ -1,0 +1,66 @@
+{
+ "script": "hms/user-login.php",
+ "wall_s": 1.7,
+ "requests": 7,
+ "rounds": 5,
+ "traces": 5,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [],
+  "POST": [
+   "password",
+   "submit",
+   "username"
+  ],
+  "COOKIE": []
+ },
+ "budget_hit": false,
+ "coverage_complete": true,
+ "missing": 0,
+ "assumptions": [],
+ "sink_sites": [
+  {
+   "site": "hms/user-login.php:7",
+   "sink": "mysqli_query",
+   "kind": "injectable",
+   "instance": "SELECT * FROM users WHERE email=''' and password='d41d8cd98f00b204e9800998ecf8427e'",
+   "request": {
+    "GET": {},
+    "POST": {
+     "submit": "",
+     "username": "'"
+    },
+    "COOKIE": {}
+   },
+   "db_errno": 0
+  },
+  {
+   "site": "hms/user-login.php:29",
+   "sink": "mysqli_query",
+   "kind": "injectable",
+   "instance": "insert into userlog(username,userip,status) values(''','127.0.0.1','0')",
+   "request": {
+    "GET": {},
+    "POST": {
+     "submit": "",
+     "username": "'"
+    },
+    "COOKIE": {}
+   },
+   "db_errno": 0
+  }
+ ],
+ "errors_distinct": [],
+ "halted_traces": 3,
+ "concretized": {
+  "string conversion @ hms/user-login.php:7": 2
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

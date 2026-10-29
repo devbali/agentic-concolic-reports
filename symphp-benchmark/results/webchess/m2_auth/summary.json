@@ -1,0 +1,1872 @@
+[
+ {
+  "script": "capt.php",
+  "wall_s": 0.3,
+  "requests": 1,
+  "rounds": 1,
+  "traces": 1,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [],
+   "COOKIE": [
+    "PHPSESSID"
+   ]
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "chess.php",
+  "wall_s": 600.6,
+  "requests": 1893,
+  "rounds": 50,
+  "traces": 1782,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [
+    "autoreload"
+   ],
+   "POST": [
+    "drawResponse",
+    "fromCol",
+    "fromRow",
+    "gameID",
+    "isCheckMate",
+    "isDrawResponseDone",
+    "isInCheck",
+    "isUndoResponseDone",
+    "promotion",
+    "requestDraw",
+    "requestUndo",
+    "resign",
+    "toCol",
+    "toRow",
+    "undoResponse"
+   ],
+   "COOKIE": [
+    "PHPSESSID"
+   ]
+  },
+  "budget_hit": true,
+  "coverage_complete": false,
+  "missing": 3,
+  "assumptions": [],
+  "sink_sites": [
+   {
+    "site": "chess.php:56",
+    "sink": "mysqli_query",
+    "kind": "malformed-at-reach",
+    "instance": "SELECT nick FROM players, games WHERE playerID = whitePlayer AND gameID = ",
+    "request": {
+     "GET": {},
+     "POST": {},
+     "COOKIE": {
+      "PHPSESSID": "acesession"
+     }
+    },
+    "db_errno": 1064
+   },
+   {
+    "site": "chess.php:60",
+    "sink": "mysqli_query",
+    "kind": "malformed-at-reach",
+    "instance": "SELECT nick FROM players, games WHERE playerID = blackPlayer AND gameID = ",
+    "request": {
+     "GET": {},
+     "POST": {},
+     "COOKIE": {
+      "PHPSESSID": "acesession"
+     }
+    },
+    "db_errno": 1064
+   },
+   {
+    "site": "chessdb.php:35",
+    "sink": "mysqli_query",
+    "kind": "malformed-at-reach",
+    "instance": "SELECT * FROM history WHERE gameID =  ORDER BY timeOfMove",
+    "request": {
+     "GET": {},
+     "POST": {},
+     "COOKIE": {
+      "PHPSESSID": "acesession"
+     }
+    },
+    "db_errno": 1064
+   },
+   {
+    "site": "chessdb.php:244",
+    "sink": "mysqli_query",
+    "kind": "malformed-at-reach",
+    "instance": "SELECT * FROM pieces WHERE gameID = ",
+    "request": {
+     "GET": {},
+     "POST": {},
+     "COOKIE": {
+      "PHPSESSID": "acesession"
+     }
+    },
+    "db_errno": 1064
+   },
+   {
+    "site": "chessdb.php:254",
+    "sink": "mysqli_query",
+    "kind": "malformed-at-reach",
+    "instance": "SELECT whitePlayer, blackPlayer FROM games WHERE gameID = ",
+    "request": {
+     "GET": {},
+     "POST": {},
+     "COOKIE": {
+      "PHPSESSID": "acesession"
+     }
+    },
+    "db_errno": 1064
+   },
+   {
+    "site": "chessdb.php:453",
+    "sink": "mysqli_query",
+    "kind": "malformed-at-reach",
+    "instance": "SELECT * FROM messages WHERE gameID =  AND destination = 'black'",
+    "request": {
+     "GET": {},
+     "POST": {},
+     "COOKIE": {
+      "PHPSESSID": "acesession"
+     }
+    },
+    "db_errno": 1064
+   },
+   {
+    "site": "chessdb.php:502",
+    "sink": "mysqli_query",
+    "kind": "malformed-at-reach",
+    "instance": "SELECT * FROM messages WHERE gameID =  AND msgStatus = 'request' AND destination = 'white'",
+    "request": {
+     "GET": {},
+     "POST": {},
+     "COOKIE": {
+      "PHPSESSID": "acesession"
+     }
+    },
+    "db_errno": 1064
+   },
+   {
+    "site": "chessdb.php:524",
+    "sink": "mysqli_query",
+    "kind": "malformed-at-reach",
+    "instance": "SELECT gameMessage, messageFrom FROM games WHERE gameID = ",
+    "request": {
+     "GET": {},
+     "POST": {},
+     "COOKIE": {
+      "PHPSESSID": "acesession"
+     }
+    },
+    "db_errno": 1064
+   },
+   {
+    "site": "capt.php:25",
+    "sink": "mysqli_query",
+    "kind": "injectable",
+    "instance": "SELECT * FROM history WHERE ((replaced > '') OR (curPiece = 'pawn' AND toCol <> fromCol AND replaced IS NULL)) AND gameID =  ''' ORDER BY curColor DESC, replaced DESC",
+    "request": {
+     "GET": {
+      "autoreload": ""
+     },
+     "POST": {
+      "drawResponse": "",
+      "fromRow": "",
+      "gameID": "'",
+      "isCheckMate": "",
+      "isInCheck": "",
+      "promotion": "",
+      "requestDraw": "",
+      "requestUndo": "",
+      "resign": "",
+      "undoResponse": ""
+     },
+     "COOKIE": {
+      "PHPSESSID": "acesession"
+     }
+    },
+    "db_errno": 0
+   },
+   {
+    "site": "chessdb.php:346",
+    "sink": "mysqli_query",
+    "kind": "injectable",
+    "instance": "INSERT INTO messages (gameID, msgType, msgStatus, destination) VALUES (', 'undo', 'request', 'white')",
+    "request": {
+     "GET": {
+      "autoreload": ""
+     },
+     "POST": {
+      "drawResponse": "",
+      "fromRow": "",
+      "gameID": "'",
+      "isCheckMate": "",
+      "isInCheck": "",
+      "promotion": "",
+      "requestDraw": "",
+      "requestUndo": "yes",
+      "resign": "",
+      "undoResponse": ""
+     },
+     "COOKIE": {
+      "PHPSESSID": "acesession"
+     }
+    },
+    "db_errno": 1064
+   },
+   {
+    "site": "chessdb.php:27",
+    "sink": "mysqli_query",
+    "kind": "malformed-at-reach",
+    "instance": "UPDATE games SET lastMove = NOW() WHERE gameID = ",
+    "request": {
+     "GET": {
+      "autoreload": ""
+     },
+     "POST": {
+      "drawResponse": "",
+      "fromRow": "",
+      "gameID": "",
+      "isCheckMate": "",
+      "isInCheck": "",
+      "promotion": "",
+      "requestDraw": "",
+      "requestUndo": "yes",
+      "resign": "",
+      "undoResponse": ""
+     },
+     "COOKIE": {
+      "PHPSESSID": "acesession"
+     }
+    },
+    "db_errno": 1064
+   },
+   {
+    "site": "chessdb.php:366",
+    "sink": "mysqli_query",
+    "kind": "injectable",
+    "instance": "INSERT INTO messages (gameID, msgType, msgStatus, destination) VALUES (', 'draw', 'request', 'white')",
+    "request": {
+     "GET": {
+      "autoreload": ""
+     },
+     "POST": {
+      "drawResponse": "",
+      "fromRow": "",
+      "gameID": "'",
+      "isCheckMate": "",
+      "isInCheck": "",
+      "promotion": "",
+      "requestDraw": "yes",
+      "requestUndo": "",
+      "resign": "",
+      "undoResponse": ""
+     },
+     "COOKIE": {
+      "PHPSESSID": "acesession"
+     }
+    },
+    "db_errno": 1064
+   },
+   {
+    "site": "chessdb.php:417",
+    "sink": "mysqli_query",
+    "kind": "malformed-at-reach",
+    "instance": "UPDATE games SET gameMessage = 'playerResigned', messageFrom = 'black' WHERE gameID = ",
+    "request": {
+     "GET": {
+      "autoreload": ""
+     },
+     "POST": {
+      "drawResponse": "",
+      "fromRow": "",
+      "gameID": "",
+      "isCheckMate": "",
+      "isInCheck": "",
+      "promotion": "",
+      "requestDraw": "",
+      "requestUndo": "",
+      "resign": "yes",
+      "undoResponse": ""
+     },
+     "COOKIE": {
+      "PHPSESSID": "acesession"
+     }
+    },
+    "db_errno": 1064
+   },
+   {
+    "site": "chessdb.php:520",
+    "sink": "mysqli_query",
+    "kind": "malformed-at-reach",
+    "instance": "UPDATE games SET gameMessage = 'checkMate', messageFrom = 'black' WHERE gameID = ",
+    "request": {
+     "GET": {
+      "autoreload": ""
+     },
+     "POST": {
+      "drawResponse": "",
+      "fromRow": "",
+      "gameID": "",
+      "isCheckMate": "true",
+      "isInCheck": "",
+      "promotion": "",
+      "requestDraw": "",
+      "requestUndo": "",
+      "resign": "",
+      "undoResponse": ""
+     },
+     "COOKIE": {
+      "PHPSESSID": "acesession"
+     }
+    },
+    "db_errno": 1064
+   },
+   {
+    "site": "chessdb.php:386",
+    "sink": "mysqli_query",
+    "kind": "malformed-at-reach",
+    "instance": "UPDATE messages SET msgStatus = 'denied', destination = 'white' WHERE gameID =  AND msgType = 'undo' AND msgStatus = 'request' AND destination = 'black'",
+    "request": {
+     "GET": {},
+     "POST": {
+      "drawResponse": "",
+      "fromRow": "",
+      "gameID": "",
+      "isCheckMate": "",
+      "isInCheck": "",
+      "promotion": "",
+      "requestDraw": "",
+      "requestUndo": "",
+      "resign": "",
+      "undoResponse": "",
+      "fromCol": "",
+      "isDrawResponseDone": "",
+      "isUndoResponseDone": "yes",
+      "toRow": ""
+     },
+     "COOKIE": {
+      "PHPSESSID": "acesession"
+     }
+    },
+    "db_errno": 1064
+   },
+   {
+    "site": "chessdb.php:407",
+    "sink": "mysqli_query",
+    "kind": "malformed-at-reach",
+    "instance": "UPDATE messages SET msgStatus = 'denied', destination = 'white' WHERE gameID =  AND msgType = 'draw' AND msgStatus = 'request' AND destination = 'black'",
+    "request": {
+     "GET": {},
+     "POST": {
+      "drawResponse": "",
+      "fromRow": "",
+      "gameID": "",
+      "isCheckMate": "",
+      "isInCheck": "",
+      "promotion": "",
+      "requestDraw": "",
+      "requestUndo": "",
+      "resign": "",
+      "undoResponse": "",
+      "fromCol": "",
+      "isDrawResponseDone": "yes",
+      "isUndoResponseDone": "",
+      "toRow": ""
+     },
+     "COOKIE": {
+      "PHPSESSID": "acesession"
+     }
+    },
+    "db_errno": 1064
+   }
+  ],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {
+    "mysqli_fetch_row": 3786,
+    "mysqli_fetch_array": 11358
+   }
+  }
+ },
+ {
+  "script": "chessconstants.php",
+  "wall_s": 0.4,
+  "requests": 1,
+  "rounds": 1,
+  "traces": 1,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [],
+   "COOKIE": [
+    "PHPSESSID"
+   ]
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "chessdb.php",
+  "wall_s": 0.3,
+  "requests": 1,
+  "rounds": 1,
+  "traces": 1,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [],
+   "COOKIE": [
+    "PHPSESSID"
+   ]
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "chessutils.php",
+  "wall_s": 0.3,
+  "requests": 1,
+  "rounds": 1,
+  "traces": 1,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [],
+   "COOKIE": [
+    "PHPSESSID"
+   ]
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "config.php",
+  "wall_s": 0.3,
+  "requests": 1,
+  "rounds": 1,
+  "traces": 1,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [],
+   "COOKIE": [
+    "PHPSESSID"
+   ]
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "connectdb.php",
+  "wall_s": 0.3,
+  "requests": 1,
+  "rounds": 1,
+  "traces": 1,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [],
+   "COOKIE": [
+    "PHPSESSID"
+   ]
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "footer.php",
+  "wall_s": 0.3,
+  "requests": 1,
+  "rounds": 1,
+  "traces": 1,
+  "errored": 1,
+  "first_error": "Error: Call to undefined function gettext()",
+  "keys_discovered": {
+   "GET": [],
+   "POST": [],
+   "COOKIE": [
+    "PHPSESSID"
+   ]
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [
+   "Error: Call to undefined function gettext()"
+  ],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {
+    "APP_NAME": 1
+   },
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "gui.php",
+  "wall_s": 0.3,
+  "requests": 1,
+  "rounds": 1,
+  "traces": 1,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [],
+   "COOKIE": [
+    "PHPSESSID"
+   ]
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "index.php",
+  "wall_s": 0.3,
+  "requests": 1,
+  "rounds": 1,
+  "traces": 1,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [],
+   "COOKIE": [
+    "PHPSESSID"
+   ]
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [],
+  "halted_traces": 1,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "info.php",
+  "wall_s": 0.3,
+  "requests": 1,
+  "rounds": 1,
+  "traces": 1,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [],
+   "COOKIE": [
+    "PHPSESSID"
+   ]
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "install.php",
+  "wall_s": 1.4,
+  "requests": 4,
+  "rounds": 4,
+  "traces": 4,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [
+    "confirm"
+   ],
+   "COOKIE": [
+    "PHPSESSID"
+   ]
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [],
+  "halted_traces": 2,
+  "concretized": {
+   "comparison == @ install.php:197": 2,
+   "comparison == @ install.php:220": 2,
+   "comparison == @ install.php:260": 2
+  },
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "inviteplayer.php",
+  "wall_s": 0.3,
+  "requests": 1,
+  "rounds": 1,
+  "traces": 1,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [],
+   "COOKIE": [
+    "PHPSESSID"
+   ]
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {
+    "APP_NAME": 2
+   },
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "lang.php",
+  "wall_s": 0.4,
+  "requests": 1,
+  "rounds": 1,
+  "traces": 1,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [],
+   "COOKIE": [
+    "PHPSESSID"
+   ]
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [],
+  "halted_traces": 1,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "mailmsginvite.php",
+  "wall_s": 0.3,
+  "requests": 1,
+  "rounds": 1,
+  "traces": 1,
+  "errored": 1,
+  "first_error": "Error: Call to undefined function gettext()",
+  "keys_discovered": {
+   "GET": [],
+   "POST": [],
+   "COOKIE": [
+    "PHPSESSID"
+   ]
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [
+   "Error: Call to undefined function gettext()"
+  ],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "mailmsgmove.php",
+  "wall_s": 0.3,
+  "requests": 1,
+  "rounds": 1,
+  "traces": 1,
+  "errored": 1,
+  "first_error": "Error: Call to undefined function gettext()",
+  "keys_discovered": {
+   "GET": [],
+   "POST": [],
+   "COOKIE": [
+    "PHPSESSID"
+   ]
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [
+   "Error: Call to undefined function gettext()"
+  ],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "mailmsgresign.php",
+  "wall_s": 0.3,
+  "requests": 1,
+  "rounds": 1,
+  "traces": 1,
+  "errored": 1,
+  "first_error": "Error: Call to undefined function gettext()",
+  "keys_discovered": {
+   "GET": [],
+   "POST": [],
+   "COOKIE": [
+    "PHPSESSID"
+   ]
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [
+   "Error: Call to undefined function gettext()"
+  ],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "mailmsgtest.php",
+  "wall_s": 0.4,
+  "requests": 1,
+  "rounds": 1,
+  "traces": 1,
+  "errored": 1,
+  "first_error": "Error: Call to undefined function gettext()",
+  "keys_discovered": {
+   "GET": [],
+   "POST": [],
+   "COOKIE": [
+    "PHPSESSID"
+   ]
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [
+   "Error: Call to undefined function gettext()"
+  ],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {
+    "APP_NAME": 1
+   },
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "mailmsgwithdraw.php",
+  "wall_s": 0.3,
+  "requests": 1,
+  "rounds": 1,
+  "traces": 1,
+  "errored": 1,
+  "first_error": "Error: Call to undefined function gettext()",
+  "keys_discovered": {
+   "GET": [],
+   "POST": [],
+   "COOKIE": [
+    "PHPSESSID"
+   ]
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [
+   "Error: Call to undefined function gettext()"
+  ],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "mainmenu.php",
+  "wall_s": 600.0,
+  "requests": 794,
+  "rounds": 24,
+  "traces": 725,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [
+    "autoreload"
+   ],
+   "POST": [
+    "ToDo",
+    "color",
+    "gameID",
+    "messageFrom",
+    "messageID",
+    "opponent",
+    "pwdOldPassword",
+    "pwdPassword",
+    "rdoHistory",
+    "rdoHistorylayout",
+    "rdoTheme",
+    "replayAll",
+    "response",
+    "txtFirstName",
+    "txtLastName",
+    "txtNick",
+    "txtReload",
+    "userLevel"
+   ],
+   "COOKIE": [
+    "PHPSESSID"
+   ]
+  },
+  "budget_hit": true,
+  "coverage_complete": false,
+  "missing": 3,
+  "assumptions": [],
+  "sink_sites": [
+   {
+    "site": "mainmenu.php:263",
+    "sink": "mysqli_query",
+    "kind": "malformed-at-reach",
+    "instance": "SELECT gameID FROM games WHERE gameMessage = 'playerInvited' AND ((messageFrom = 'white' AND whitePlayer = 2 AND blackPlayer = ) OR (messageFrom = 'black' AND whitePlayer =  AND blackPlayer = 2))",
+    "request": {
+     "GET": {
+      "autoreload": ""
+     },
+     "POST": {
+      "ToDo": "InvitePlayer"
+     },
+     "COOKIE": {
+      "PHPSESSID": "acesession"
+     }
+    },
+    "db_errno": 1064
+   },
+   {
+    "site": "mainmenu.php:316",
+    "sink": "mysqli_query",
+    "kind": "malformed-at-reach",
+    "instance": "UPDATE games SET gameMessage = 'inviteDeclined', messageFrom = '' WHERE gameID = ",
+    "request": {
+     "GET": {
+      "autoreload": ""
+     },
+     "POST": {
+      "ToDo": "ResponseToInvite"
+     },
+     "COOKIE": {
+      "PHPSESSID": "acesession"
+     }
+    },
+    "db_errno": 1064
+   },
+   {
+    "site": "mainmenu.php:324",
+    "sink": "mysqli_query",
+    "kind": "malformed-at-reach",
+    "instance": "SELECT whitePlayer FROM games WHERE gameID = ",
+    "request": {
+     "GET": {
+      "autoreload": ""
+     },
+     "POST": {
+      "ToDo": "WithdrawRequest"
+     },
+     "COOKIE": {
+      "PHPSESSID": "acesession"
+     }
+    },
+    "db_errno": 1064
+   },
+   {
+    "site": "mainmenu.php:482",
+    "sink": "mysqli_query",
+    "kind": "malformed-at-reach",
+    "instance": "UPDATE communication SET ack = 1 WHERE commID = ",
+    "request": {
+     "GET": {
+      "autoreload": ""
+     },
+     "POST": {
+      "ToDo": "HideMessage"
+     },
+     "COOKIE": {
+      "PHPSESSID": "acesession"
+     }
+    },
+    "db_errno": 1064
+   },
+   {
+    "site": "mainmenu.php:150",
+    "sink": "mysqli_query",
+    "kind": "injectable",
+    "instance": "SELECT * FROM players WHERE nick = '''",
+    "request": {
+     "GET": {
+      "autoreload": ""
+     },
+     "POST": {
+      "ToDo": "Login",
+      "pwdOldPassword": "pw2",
+      "txtNick": "'",
+      "pwdPassword": "pw2"
+     },
+     "COOKIE": {
+      "PHPSESSID": "acesession"
+     }
+    },
+    "db_errno": 0
+   },
+   {
+    "site": "mainmenu.php:279",
+    "sink": "mysqli_query",
+    "kind": "injectable",
+    "instance": "INSERT INTO games (whitePlayer, blackPlayer, gameMessage, messageFrom, dateCreated, lastMove) VALUES (', 2, 'playerInvited', '', NOW(), NOW())",
+    "request": {
+     "GET": {
+      "autoreload": ""
+     },
+     "POST": {
+      "ToDo": "InvitePlayer",
+      "color": "",
+      "opponent": "'",
+      "pwdOldPassword": "pw2",
+      "pwdPassword": "pw2"
+     },
+     "COOKIE": {
+      "PHPSESSID": "acesession"
+     }
+    },
+    "db_errno": 1064
+   },
+   {
+    "site": "mainmenu.php:408",
+    "sink": "mysqli_query",
+    "kind": "injectable",
+    "instance": "UPDATE preferences SET value = ''' WHERE playerID = 2 AND preference = 'theme'",
+    "request": {
+     "GET": {
+      "autoreload": ""
+     },
+     "POST": {
+      "ToDo": "UpdatePrefs",
+      "pwdOldPassword": "pw2",
+      "rdoHistory": "",
+      "rdoHistorylayout": "",
+      "rdoTheme": "'",
+      "replayAll": "",
+      "txtReload": "",
+      "userLevel": "",
+      "pwdPassword": "pw2"
+     },
+     "COOKIE": {
+      "PHPSESSID": "acesession"
+     }
+    },
+    "db_errno": 0
+   },
+   {
+    "site": "mainmenu.php:412",
+    "sink": "mysqli_query",
+    "kind": "injectable",
+    "instance": "UPDATE preferences SET value = ''' WHERE playerID = 2 AND preference = 'history'",
+    "request": {
+     "GET": {
+      "autoreload": ""
+     },
+     "POST": {
+      "ToDo": "UpdatePrefs",
+      "pwdOldPassword": "pw2",
+      "rdoHistory": "'",
+      "rdoHistorylayout": "",
+      "rdoTheme": "",
+      "replayAll": "",
+      "txtReload": "",
+      "userLevel": "",
+      "pwdPassword": "pw2"
+     },
+     "COOKIE": {
+      "PHPSESSID": "acesession"
+     }
+    },
+    "db_errno": 0
+   },
+   {
+    "site": "mainmenu.php:416",
+    "sink": "mysqli_query",
+    "kind": "injectable",
+    "instance": "UPDATE preferences SET value = ''' WHERE playerID = 2 AND preference = 'historylayout'",
+    "request": {
+     "GET": {
+      "autoreload": ""
+     },
+     "POST": {
+      "ToDo": "UpdatePrefs",
+      "pwdOldPassword": "pw2",
+      "rdoHistory": "",
+      "rdoHistorylayout": "'",
+      "rdoTheme": "",
+      "replayAll": "",
+      "txtReload": "",
+      "userLevel": "",
+      "pwdPassword": "pw2"
+     },
+     "COOKIE": {
+      "PHPSESSID": "acesession"
+     }
+    },
+    "db_errno": 0
+   },
+   {
+    "site": "mainmenu.php:452",
+    "sink": "mysqli_query",
+    "kind": "injectable",
+    "instance": "UPDATE preferences SET value = ''' WHERE playerID = 2 AND preference = 'replayall'",
+    "request": {
+     "GET": {
+      "autoreload": ""
+     },
+     "POST": {
+      "ToDo": "UpdatePrefs",
+      "pwdOldPassword": "pw2",
+      "rdoHistory": "",
+      "rdoHistorylayout": "",
+      "rdoTheme": "",
+      "replayAll": "'",
+      "txtReload": "",
+      "userLevel": "",
+      "pwdPassword": "pw2"
+     },
+     "COOKIE": {
+      "PHPSESSID": "acesession"
+     }
+    },
+    "db_errno": 0
+   },
+   {
+    "site": "mainmenu.php:96",
+    "sink": "mysqli_query",
+    "kind": "injectable",
+    "instance": "SELECT playerID FROM players WHERE nick = '''",
+    "request": {
+     "GET": {
+      "autoreload": ""
+     },
+     "POST": {
+      "ToDo": "NewUser",
+      "pwdOldPassword": "pw2",
+      "txtNick": "'",
+      "pwdPassword": "pw2"
+     },
+     "COOKIE": {
+      "PHPSESSID": "acesession"
+     }
+    },
+    "db_errno": 0
+   },
+   {
+    "site": "mainmenu.php:105",
+    "sink": "mysqli_query",
+    "kind": "injectable",
+    "instance": "INSERT INTO players (password, firstName, lastName, nick) VALUES ('$2y$10$rDyNdsW37ObVIX7IWACJVu/w2IQ7YmMIUxRF5BsBtpqnoucw/jM9a', '', '', ''')",
+    "request": {
+     "GET": {
+      "autoreload": ""
+     },
+     "POST": {
+      "ToDo": "NewUser",
+      "pwdOldPassword": "pw2",
+      "txtNick": "'",
+      "pwdPassword": "pw2"
+     },
+     "COOKIE": {
+      "PHPSESSID": "acesession"
+     }
+    },
+    "db_errno": 0
+   },
+   {
+    "site": "mainmenu.php:305",
+    "sink": "mysqli_query",
+    "kind": "malformed-at-reach",
+    "instance": "UPDATE games SET gameMessage = '', messageFrom = '' WHERE gameID = ",
+    "request": {
+     "GET": {
+      "autoreload": ""
+     },
+     "POST": {
+      "ToDo": "ResponseToInvite",
+      "gameID": "",
+      "messageFrom": "",
+      "pwdOldPassword": "pw2",
+      "response": "accepted",
+      "pwdPassword": "pw2"
+     },
+     "COOKIE": {
+      "PHPSESSID": "acesession"
+     }
+    },
+    "db_errno": 1064
+   },
+   {
+    "site": "newgame.php:71",
+    "sink": "mysqli_query",
+    "kind": "malformed-at-reach",
+    "instance": "DELETE FROM history WHERE gameID = ",
+    "request": {
+     "GET": {
+      "autoreload": ""
+     },
+     "POST": {
+      "ToDo": "ResponseToInvite",
+      "gameID": "",
+      "messageFrom": "",
+      "pwdOldPassword": "pw2",
+      "response": "accepted",
+      "pwdPassword": "pw2"
+     },
+     "COOKIE": {
+      "PHPSESSID": "acesession"
+     }
+    },
+    "db_errno": 1064
+   },
+   {
+    "site": "chessdb.php:291",
+    "sink": "mysqli_query",
+    "kind": "malformed-at-reach",
+    "instance": "DELETE FROM pieces WHERE gameID = ",
+    "request": {
+     "GET": {
+      "autoreload": ""
+     },
+     "POST": {
+      "ToDo": "ResponseToInvite",
+      "gameID": "",
+      "messageFrom": "",
+      "pwdOldPassword": "pw2",
+      "response": "accepted",
+      "pwdPassword": "pw2"
+     },
+     "COOKIE": {
+      "PHPSESSID": "acesession"
+     }
+    },
+    "db_errno": 1064
+   },
+   {
+    "site": "chessdb.php:27",
+    "sink": "mysqli_query",
+    "kind": "malformed-at-reach",
+    "instance": "UPDATE games SET lastMove = NOW() WHERE gameID = ",
+    "request": {
+     "GET": {
+      "autoreload": ""
+     },
+     "POST": {
+      "ToDo": "ResponseToInvite",
+      "gameID": "",
+      "messageFrom": "",
+      "pwdOldPassword": "pw2",
+      "response": "accepted",
+      "pwdPassword": "pw2"
+     },
+     "COOKIE": {
+      "PHPSESSID": "acesession"
+     }
+    },
+    "db_errno": 1064
+   },
+   {
+    "site": "mainmenu.php:447",
+    "sink": "mysqli_query",
+    "kind": "injectable",
+    "instance": "UPDATE players SET userlevel = ''' WHERE playerID = 2",
+    "request": {
+     "GET": {
+      "autoreload": ""
+     },
+     "POST": {
+      "ToDo": "UpdatePrefs",
+      "pwdOldPassword": "pw2",
+      "rdoHistory": "",
+      "rdoHistorylayout": "",
+      "rdoTheme": "",
+      "replayAll": "",
+      "txtReload": "",
+      "userLevel": "'",
+      "pwdPassword": "pw2"
+     },
+     "COOKIE": {
+      "PHPSESSID": "acesession"
+     }
+    },
+    "db_errno": 0
+   }
+  ],
+  "errors_distinct": [],
+  "halted_traces": 11,
+  "concretized": {
+   "string conversion @ mainmenu.php:363": 1,
+   "is_numeric @ mainmenu.php:419": 466,
+   "is_numeric @ mainmenu.php:437": 570,
+   "is_numeric @ mainmenu.php:461": 466,
+   "string conversion @ mainmenu.php:104": 1,
+   "string conversion @ mainmenu.php:153": 1,
+   "string conversion @ chessdb.php:292": 64
+  },
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {
+    "mysqli_num_rows": 32
+   }
+  }
+ },
+ {
+  "script": "makeConfig.php",
+  "wall_s": 0.3,
+  "requests": 1,
+  "rounds": 1,
+  "traces": 1,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [],
+   "COOKIE": [
+    "PHPSESSID"
+   ]
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [],
+  "halted_traces": 1,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "move.php",
+  "wall_s": 0.3,
+  "requests": 1,
+  "rounds": 1,
+  "traces": 1,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [],
+   "COOKIE": [
+    "PHPSESSID"
+   ]
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "newgame.php",
+  "wall_s": 0.3,
+  "requests": 1,
+  "rounds": 1,
+  "traces": 1,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [],
+   "COOKIE": [
+    "PHPSESSID"
+   ]
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "newuser.php",
+  "wall_s": 1.3,
+  "requests": 5,
+  "rounds": 4,
+  "traces": 5,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [
+    "txtFirstName",
+    "txtLastName"
+   ],
+   "COOKIE": [
+    "PHPSESSID"
+   ]
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "openpgn.php",
+  "wall_s": 0.3,
+  "requests": 1,
+  "rounds": 1,
+  "traces": 1,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [],
+   "COOKIE": [
+    "PHPSESSID"
+   ]
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [
+   {
+    "site": "chessdb.php:35",
+    "sink": "mysqli_query",
+    "kind": "malformed-at-reach",
+    "instance": "SELECT * FROM history WHERE gameID =  ORDER BY timeOfMove",
+    "request": {
+     "GET": {},
+     "POST": {},
+     "COOKIE": {
+      "PHPSESSID": "acesession"
+     }
+    },
+    "db_errno": 1064
+   },
+   {
+    "site": "chessutils.php:347",
+    "sink": "mysqli_query",
+    "kind": "malformed-at-reach",
+    "instance": "SELECT whitePlayer,blackPlayer,dateCreated,gameMessage FROM games WHERE gameID = ",
+    "request": {
+     "GET": {},
+     "POST": {},
+     "COOKIE": {
+      "PHPSESSID": "acesession"
+     }
+    },
+    "db_errno": 1064
+   }
+  ],
+  "errors_distinct": [],
+  "halted_traces": 1,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {
+    "mysqli_fetch_array": 1
+   }
+  }
+ },
+ {
+  "script": "opponentspassword.php",
+  "wall_s": 1.9,
+  "requests": 11,
+  "rounds": 5,
+  "traces": 7,
+  "errored": 11,
+  "first_error": "Error: Call to undefined function gettext()",
+  "keys_discovered": {
+   "GET": [
+    "autoreload"
+   ],
+   "POST": [
+    "gameID",
+    "opponentsID",
+    "opponentsNick",
+    "pwdPassword"
+   ],
+   "COOKIE": [
+    "PHPSESSID"
+   ]
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [
+   {
+    "site": "opponentspassword.php:66",
+    "sink": "mysqli_query",
+    "kind": "malformed-at-reach",
+    "instance": "SELECT whitePlayer, blackPlayer FROM games WHERE gameID = ",
+    "request": {
+     "GET": {},
+     "POST": {},
+     "COOKIE": {
+      "PHPSESSID": "acesession"
+     }
+    },
+    "db_errno": 1064
+   },
+   {
+    "site": "opponentspassword.php:77",
+    "sink": "mysqli_query",
+    "kind": "malformed-at-reach",
+    "instance": "SELECT nick FROM players WHERE playerID = ",
+    "request": {
+     "GET": {},
+     "POST": {},
+     "COOKIE": {
+      "PHPSESSID": "acesession"
+     }
+    },
+    "db_errno": 1064
+   },
+   {
+    "site": "opponentspassword.php:44",
+    "sink": "mysqli_query",
+    "kind": "malformed-at-reach",
+    "instance": "SELECT password FROM players WHERE playerID = ",
+    "request": {
+     "GET": {
+      "autoreload": ""
+     },
+     "POST": {
+      "gameID": "",
+      "opponentsID": ""
+     },
+     "COOKIE": {
+      "PHPSESSID": "acesession"
+     }
+    },
+    "db_errno": 1064
+   }
+  ],
+  "errors_distinct": [
+   "Error: Call to undefined function gettext()"
+  ],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {
+    "mysqli_fetch_array": 7,
+    "mysqli_fetch_row": 11
+   }
+  }
+ },
+ {
+  "script": "sendmessage.php",
+  "wall_s": 9.9,
+  "requests": 66,
+  "rounds": 10,
+  "traces": 53,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [
+    "autoreload",
+    "to"
+   ],
+   "POST": [
+    "from",
+    "newMessage",
+    "to",
+    "txtMessage",
+    "txtTitle"
+   ],
+   "COOKIE": [
+    "PHPSESSID"
+   ]
+  },
+  "budget_hit": false,
+  "coverage_complete": false,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [
+   {
+    "site": "sendmessage.php:76",
+    "sink": "mysqli_query",
+    "kind": "injectable",
+    "instance": "INSERT INTO communication (gameID,fromID,toID,title,text,postDate,expireDate,ack,commType) VALUES ( NULL , ' , NULL, '', '', NOW( ) , NULL , '0', '0' );",
+    "request": {
+     "GET": {
+      "autoreload": "",
+      "to": ""
+     },
+     "POST": {
+      "newMessage": "A",
+      "from": "'",
+      "to": ""
+     },
+     "COOKIE": {
+      "PHPSESSID": "acesession"
+     }
+    },
+    "db_errno": 1054
+   }
+  ],
+  "errors_distinct": [],
+  "halted_traces": 34,
+  "concretized": {
+   "mysqli_real_escape_string @ sendmessage.php:67": 32,
+   "mysqli_real_escape_string @ sendmessage.php:68": 32
+  },
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "sessioncheck.php",
+  "wall_s": 1.0,
+  "requests": 3,
+  "rounds": 3,
+  "traces": 3,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [
+    "autoreload"
+   ],
+   "POST": [],
+   "COOKIE": [
+    "PHPSESSID"
+   ]
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "undo.php",
+  "wall_s": 0.3,
+  "requests": 1,
+  "rounds": 1,
+  "traces": 1,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [],
+   "COOKIE": [
+    "PHPSESSID"
+   ]
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {}
+  }
+ },
+ {
+  "script": "viewmessage.php",
+  "wall_s": 1.0,
+  "requests": 3,
+  "rounds": 3,
+  "traces": 3,
+  "errored": 0,
+  "first_error": null,
+  "keys_discovered": {
+   "GET": [],
+   "POST": [
+    "messageID"
+   ],
+   "COOKIE": [
+    "PHPSESSID"
+   ]
+  },
+  "budget_hit": false,
+  "coverage_complete": true,
+  "missing": 0,
+  "assumptions": [],
+  "sink_sites": [
+   {
+    "site": "viewmessage.php:64",
+    "sink": "mysqli_query",
+    "kind": "malformed-at-reach",
+    "instance": "SELECT * FROM communication WHERE commID = ",
+    "request": {
+     "GET": {},
+     "POST": {
+      "messageID": ""
+     },
+     "COOKIE": {
+      "PHPSESSID": "acesession"
+     }
+    },
+    "db_errno": 1064
+   }
+  ],
+  "errors_distinct": [],
+  "halted_traces": 0,
+  "concretized": {},
+  "php7_runtime": {
+   "const7": {},
+   "count7": 0,
+   "cmp7": 0,
+   "arith7": 0,
+   "call7": {
+    "mysqli_num_rows": 1
+   }
+  }
+ }
+]

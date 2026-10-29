@@ -42,7 +42,10 @@ SHELL = "shell"
 
 #: Payloads tried per carried input, in order. Each breaks a different
 #: lexical context: single-quoted, double-quoted, bare numeric, backslash.
-PAYLOADS = ("'", '"', "1 1", "\\")
+PAYLOADS = ("'", '"', "1 1", "\\",
+            # Unbalanced: an input that appears TWICE inside quotes balances a lone
+            # quote (`like '%'%'|| x like '%'%'` still parses); these do not.
+            "'(", '"(')
 
 REF = re.compile(r"\$\$\(([^)]+)\)")
 

@@ -1,0 +1,54 @@
+{
+ "script": "hms/doctor/forgot-password.php",
+ "wall_s": 2.0,
+ "requests": 9,
+ "rounds": 6,
+ "traces": 7,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [],
+  "POST": [
+   "contactno",
+   "email",
+   "submit"
+  ],
+  "COOKIE": [
+   "PHPSESSID"
+  ]
+ },
+ "budget_hit": false,
+ "coverage_complete": true,
+ "missing": 0,
+ "assumptions": [],
+ "sink_sites": [
+  {
+   "site": "hms/doctor/forgot-password.php:9",
+   "sink": "mysqli_query",
+   "kind": "injectable",
+   "instance": "select id from  doctors where contactno=''' and docEmail=''",
+   "request": {
+    "GET": {},
+    "POST": {
+     "submit": "",
+     "contactno": "'",
+     "email": ""
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession"
+    }
+   },
+   "db_errno": 0
+  }
+ ],
+ "errors_distinct": [],
+ "halted_traces": 0,
+ "concretized": {},
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

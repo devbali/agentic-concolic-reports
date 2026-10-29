@@ -1,0 +1,63 @@
+{
+ "script": "hms/get_doctor.php",
+ "wall_s": 2.8,
+ "requests": 17,
+ "rounds": 7,
+ "traces": 17,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [],
+  "POST": [
+   "doctor",
+   "specilizationid"
+  ],
+  "COOKIE": []
+ },
+ "budget_hit": false,
+ "coverage_complete": true,
+ "missing": 0,
+ "assumptions": [],
+ "sink_sites": [
+  {
+   "site": "hms/get_doctor.php:6",
+   "sink": "mysqli_query",
+   "kind": "injectable",
+   "instance": "select doctorName,id from doctors where specilization='''",
+   "request": {
+    "GET": {},
+    "POST": {
+     "doctor": "",
+     "specilizationid": "'"
+    },
+    "COOKIE": {}
+   },
+   "db_errno": 0
+  },
+  {
+   "site": "hms/get_doctor.php:20",
+   "sink": "mysqli_query",
+   "kind": "injectable",
+   "instance": "select docFees from doctors where id='''",
+   "request": {
+    "GET": {},
+    "POST": {
+     "doctor": "'",
+     "specilizationid": ""
+    },
+    "COOKIE": {}
+   },
+   "db_errno": 0
+  }
+ ],
+ "errors_distinct": [],
+ "halted_traces": 0,
+ "concretized": {},
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

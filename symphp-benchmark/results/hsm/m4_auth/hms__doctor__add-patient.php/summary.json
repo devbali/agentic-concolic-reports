@@ -1,0 +1,64 @@
+{
+ "script": "hms/doctor/add-patient.php",
+ "wall_s": 10.9,
+ "requests": 133,
+ "rounds": 11,
+ "traces": 131,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [],
+  "POST": [
+   "gender",
+   "medhis",
+   "pataddress",
+   "patage",
+   "patcontact",
+   "patemail",
+   "patname",
+   "submit"
+  ],
+  "COOKIE": [
+   "PHPSESSID"
+  ]
+ },
+ "budget_hit": false,
+ "coverage_complete": true,
+ "missing": 0,
+ "assumptions": [],
+ "sink_sites": [
+  {
+   "site": "hms/doctor/add-patient.php:18",
+   "sink": "mysqli_query",
+   "kind": "injectable",
+   "instance": "insert into tblpatient(Docid,PatientName,PatientContno,PatientEmail,PatientGender,PatientAdd,PatientAge,PatientMedhis) values('7',''','','','','','','')",
+   "request": {
+    "GET": {},
+    "POST": {
+     "submit": "",
+     "gender": "",
+     "medhis": "",
+     "pataddress": "",
+     "patage": "",
+     "patcontact": "",
+     "patemail": "",
+     "patname": "'"
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession"
+    }
+   },
+   "db_errno": 1366
+  }
+ ],
+ "errors_distinct": [],
+ "halted_traces": 0,
+ "concretized": {},
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}
