@@ -89,7 +89,9 @@ def app_runner(app: str) -> str:
     src = (HERE / APPS[app]["src"]).resolve()
     # An app whose config names its OWN absolute path (WeBid's `$main_path`) includes every file
     # from there, i.e. from the uninstrumented source. With `ace_build_at_src`, ACE's runner
-    # mounts the instrumented COPY at that path (read-only), so those includes load the copy.
+    # mounts the instrumented COPY at that path, so those includes load the copy. The copy is
+    # ACE's own (build/), so it is mounted WRITABLE: the app's logs and caches go into it
+    # (OpenCart's storage/logs); the real source is not mounted at all then.
     # The container is labelled with the copy it mounts and recreated when that changes.
     mount = str(MODE.get("build") or src) if APPS[app].get("ace_build_at_src") else str(src)
     st = subprocess.run(["docker", "inspect", "-f", '{{.State.Running}} {{index .Config.Labels "ace.mount"}}', name],
@@ -101,7 +103,7 @@ def app_runner(app: str) -> str:
         subprocess.run(["docker", "rm", "-f", name], capture_output=True)
     subprocess.run(["docker", "run", "-d", "--name", name, *appdb.LOG_OPTS, "--network", f"container:{db}",
                     "--label", f"ace.mount={mount}",
-                    "-u", f"{os.getuid()}:{os.getgid()}", "-v", f"{ROOT}:{ROOT}", "-v", f"{mount}:{src}:ro",
+                    "-u", f"{os.getuid()}:{os.getgid()}", "-v", f"{ROOT}:{ROOT}", "-v", f"{mount}:{src}" + ("" if mount != str(src) else ":ro"),
                     "-w", str(HERE), app_image(), "sleep", "infinity"], check=True, capture_output=True)
     return name
 
@@ -141,7 +143,7 @@ def instrument(app: str, label: str | None = None, options: tuple[str, ...] = ()
     src = (HERE / APPS[app]["src"]).resolve()
     if MODE["app"]:
         cmd = ["docker", "run", "--rm", "-i", *appdb.LOG_OPTS, "-u", f"{os.getuid()}:{os.getgid()}",
-               "-v", f"{ROOT}:{ROOT}", "-v", f"{src}:{src}:ro", "-w", str(HERE), app_image(), "php", "-d", "memory_limit=4G",
+               "-v", f"{ROOT}:{ROOT}", "-v", f"{src}:{src}:ro", "-w", str(HERE), app_image(), "php", "-d", "memory_limit=4G", "-d", "display_errors=stderr",
                "instrument_app.php", str(src), str(build), "--app-targets", *options,
                *([f"--ext={','.join(APPS[app]['php_exts'])}"] if APPS[app].get("php_exts") else [])]
     else:
@@ -422,6 +424,8 @@ def main() -> int:
                                      ("realAppBuiltins", a.real_app_builtins), ("evalInstrument", True)) if on}
                                     | ({"newClassMap": {"pdo": "\\AcePDO", "mysqli": "\\AceMysqli"}} if a.db_classes else {})
                                     if a.eval_instrument else None)}
+        flags["realSession"] = bool(spec.get("ace_real_session"))
+        flags["sessionIdBeforeStart"] = bool(spec.get("ace_session_id_before_start"))
         extra = {"flags": flags, "session": {}, "session_ser": ""}
     seeds_by_script = witcher_seeds(a.app) if a.arm == "witcher" else {}
     if a.arm == "auth":

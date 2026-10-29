@@ -453,7 +453,7 @@ def exec_lines(app: str) -> dict[str, list[int]]:
     root = HERE.parents[1]
     p = subprocess.run(["docker", "run", "--rm", *appdb.LOG_OPTS, "-u", f"{os.getuid()}:{os.getgid()}",
                         "-v", f"{root}:{root}", "-v", f"{src}:{src}:ro",
-                        "php:8.2-cli", "php", str(HERE / "exec_lines.php"), str(src),
+                        "php:8.2-cli", "php", "-d", "memory_limit=2G", str(HERE / "exec_lines.php"), str(src),
                         ",".join(APPS[app].get("php_exts") or ["php"])],
                        capture_output=True, text=True, check=True)
     return json.loads(p.stdout)
@@ -497,7 +497,13 @@ def main() -> int:
             reqs = [{k: v for k, v in r.items() if k != "reset"} for r in reqs]
             for r, lines in zip(results, xdebug_pass(a.app, reqs)):
                 r["xdebug_lines"] = lines
-        pathlib.Path(a.out).write_text(json.dumps(results, indent=1) + "\n")
+        out = json.dumps(results, indent=1) + "\n"
+        if a.out.endswith(".gz"):
+            # Per-request covered lines make large-app replays GBs of JSON (disk): gzip it.
+            import gzip
+            pathlib.Path(a.out).write_bytes(gzip.compress(out.encode(), 6))
+        else:
+            pathlib.Path(a.out).write_text(out)
         print(f"{len(results)} requests replayed, {sum(1 for r in results if r['faults'])} faulted", file=sys.stderr)
     return 0
 

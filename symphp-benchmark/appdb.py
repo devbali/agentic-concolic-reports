@@ -49,12 +49,13 @@ def container(app: str, role: str) -> str:
     return f"{role}-{app}-{sfx}-db" if sfx else f"{role}-{app}-db"
 
 
-def sql(name: str, text: str, db: str | None = None, check: bool = True) -> str:
+def sql(name: str, text: str | bytes, db: str | None = None, check: bool = True) -> str:
+    """Run SQL on a clone. `text` may be BYTES: a dump with binary blobs (MediaWiki) is not UTF-8."""
     cmd = ["docker", "exec", "-i", name, "mysql", "-uroot", "-N", "-B"] + ([db] if db else [])
-    p = subprocess.run(cmd, input=text, capture_output=True, text=True)
+    p = subprocess.run(cmd, input=text if isinstance(text, bytes) else text.encode(), capture_output=True)
     if check and p.returncode != 0:
-        raise RuntimeError(f"{name}: {p.stderr.strip()[:500]}")
-    return p.stdout
+        raise RuntimeError(f"{name}: {p.stderr.decode(errors='replace').strip()[:500]}")
+    return p.stdout.decode(errors="replace")
 
 
 def _running(name: str) -> bool | None:
@@ -68,7 +69,9 @@ def ensure(app: str, role: str) -> str:
     name = container(app, role)
     state = _running(name)
     if state is None:
-        args = [f"--port={s['port']}", "--performance-schema-consumer-events-statements-history-long=ON"]
+        # No native AIO: a dozen concurrent clones exhaust the host's fs.aio-max-nr (InnoDB io_setup EAGAIN).
+        args = [f"--port={s['port']}", "--performance-schema-consumer-events-statements-history-long=ON",
+                "--innodb-use-native-aio=0"]
         if s.get("sql_mode") is not None:
             args.append(f"--sql-mode={s['sql_mode']}")
         args += s.get("mysqld_args", [])
@@ -104,8 +107,8 @@ def restore(app: str, role: str) -> None:
     """Drop and reload the app's database from its snapshot (the reset)."""
     s = spec(app)
     name = container(app, role)
-    dump = (HERE / s["snapshot"]).read_text()
-    sql(name, f"DROP DATABASE IF EXISTS `{s['database']}`;\n" + dump)
+    dump = (HERE / s["snapshot"]).read_bytes()
+    sql(name, f"DROP DATABASE IF EXISTS `{s['database']}`;\n".encode() + dump)
     if s.get("init_sql"):
         # Server-level state a `--databases` dump does not carry (e.g. the app's DB user).
         sql(name, "\n".join(s["init_sql"]))

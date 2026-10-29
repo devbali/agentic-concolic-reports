@@ -145,6 +145,24 @@ function deplain(mixed $v): mixed
     return $v;
 }
 
+// Every runtime class is loaded BEFORE the app: an app that prepends its own autoloader (Drupal's
+// composer loader compares class names with `===`, i.e. through \__cmp) would otherwise be asked
+// for Concolic\Z3 from inside itself, and the class would never load.
+foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator(
+    dirname(__DIR__, 2) . '/agentic_concolic_engine/runtimes/php_runtime/src', FilesystemIterator::SKIP_DOTS)) as $__ace_f) {
+    $__ace_rel = substr($__ace_f->getPathname(), strlen(dirname(__DIR__, 2) . '/agentic_concolic_engine/runtimes/php_runtime/src/'));
+    // Not the instrumentor (it needs PhpParser, loaded only for eval instrumentation).
+    if ($__ace_f->getExtension() === 'php'
+        && !in_array($__ace_rel, ['autoload.php', 'probes.php', 'Instrument.php', 'InstrumentVisitor.php'], true)) {
+        $__ace_c = 'Concolic\\' . str_replace('/', '\\', substr($__ace_rel, 0, -4));
+        try {
+            class_exists($__ace_c) || interface_exists($__ace_c) || trait_exists($__ace_c) || enum_exists($__ace_c);
+        } catch (\Throwable) {
+        }
+    }
+}
+unset($__ace_f, $__ace_rel, $__ace_c);
+
 AceState::$request = json_decode(file_get_contents($argv[2]), true, 512, JSON_THROW_ON_ERROR);
 AceState::$result_path = $argv[3];
 mysqli_report(MYSQLI_REPORT_OFF);
@@ -157,7 +175,16 @@ AceState::$rt->outputEvents = (bool) (AceState::$request['flags']['outputEvents'
 AceState::$rt->templateSplit = (bool) (AceState::$request['flags']['templateSplit'] ?? false); // explode() keeps template parts
 if (!empty(AceState::$request['flags']['evalInstrument'])) {
     // eval'd code gets the copy's own targets and options (instrument_app.php --eval-instrument).
-    require_once dirname(__DIR__, 2) . '/agentic_concolic_engine/runtimes/php_runtime/vendor/autoload.php';
+    // Only PhpParser: the runtime's composer autoload would re-require probes.php ('files').
+    spl_autoload_register(static function (string $c): void {
+        if (str_starts_with($c, 'PhpParser\\')) {
+            $f = dirname(__DIR__, 2) . '/agentic_concolic_engine/runtimes/php_runtime/vendor/nikic/php-parser/lib/'
+                . str_replace('\\', '/', $c) . '.php';
+            if (is_file($f)) {
+                require $f;
+            }
+        }
+    });
     AceState::$rt->evalInstrument = [array_fill_keys(app_targets(), true), AceState::$request['flags']['evalInstrument']];
 }
 Runtime::$php7Compare = (bool) (AceState::$request['flags']['php7Compare'] ?? false);
@@ -219,6 +246,14 @@ AceState::$standins = [];
                 // PHP's own handler does -- after the app has registered its
                 // autoloader, so session objects come back as their classes.
                 'session_start' => (function () {
+                    if (!AceState::$session_started && !empty(AceState::$request['flags']['realSession'])
+                        && session_status() !== PHP_SESSION_ACTIVE) {
+                        // apps.json ace_real_session (OpenCart 2.3: its save handler extends
+                        // SessionHandler, whose create_sid() needs an ACTIVE session). A real,
+                        // cookie-less session in the runner's tmp; the seeded data is put over it.
+                        @\session_start(['use_cookies' => 0, 'use_only_cookies' => 0, 'cache_limiter' => '',
+                            'save_path' => sys_get_temp_dir()]);
+                    }
                     if (!AceState::$session_started && (AceState::$request['session_ser'] ?? '') !== '') {
                         $restored = unserialize(base64_decode(AceState::$request['session_ser']));
                         $_SESSION = is_array($restored) ? $restored + (is_array($_SESSION ?? null) ? $_SESSION : []) : ($_SESSION ?? []);
@@ -227,7 +262,13 @@ AceState::$standins = [];
                     return true;
                 })(),
                 'session_destroy', 'session_unset' => (function () { $_SESSION = []; return true; })(),
-                'session_id' => 'acesession',
+                // realSession: the real id (empty until started), as the app's own guard expects.
+                'session_id' => match (true) {
+                    !empty(AceState::$request['flags']['realSession']) => \session_id(),
+                    // apps.json ace_session_id_before_start (MediaWiki): '' until session_start, as in PHP.
+                    !empty(AceState::$request['flags']['sessionIdBeforeStart']) && !AceState::$session_started => '',
+                    default => 'acesession',
+                },
                 'session_name' => 'PHPSESSID',
                 'session_cache_limiter' => 'nocache',
                 'header', 'header_remove' => null,

@@ -22,6 +22,7 @@ Writes results/<app>/score_<label>.json and prints one row.
 from __future__ import annotations
 
 import argparse
+import gzip
 import json
 import pathlib
 import subprocess
@@ -36,7 +37,10 @@ def known_vulns(app: str) -> list[dict]:
     spec = APPS[app]
     if spec.get("known_vulns_file"):
         doc = json.loads((HERE / spec["known_vulns_file"]).read_text())
-        return [{**v, "sink_file": v.get("sink_file") or v["script"], "sink_line": int(v["sink_line"])}
+        # An entry with no sink line (confidence `unverified`, e.g. OE502-28) can never be matched;
+        # it stays in the denominator with sink_line -1.
+        return [{**v, "sink_file": v.get("sink_file") or v["script"],
+                 "sink_line": int(v["sink_line"]) if v.get("sink_line") is not None else -1}
                 for v in doc["vulns"]]
     return [{**v, "sink_file": v["script"], "sink_line": int(v["line"])} for v in spec.get("known_vulns", [])]
 
@@ -48,7 +52,9 @@ def ace_requests(app: str, arm: str) -> list[dict]:
     out = []
     for summary in sorted((HERE / "results" / app / arm).glob("*/summary.json")):
         row = json.loads(summary.read_text())
-        reqs = [json.loads(d.read_text())["request"] for d in sorted(summary.parent.glob("dump_*.json"))]
+        # Dumps may be gzipped once an app is scored (disk); both spellings are read.
+        reqs = [json.loads(gzip.decompress(d.read_bytes()) if d.suffix == ".gz" else d.read_text())["request"]
+                for d in sorted([*summary.parent.glob("dump_*.json"), *summary.parent.glob("dump_*.json.gz")])]
         reqs += [s["request"] for s in row["sink_sites"]]
         for req in reqs:
             out.append({"script": row["script"], **{g: {k: v for k, v in req.get(g, {}).items() if v is not None}
@@ -81,6 +87,7 @@ def main() -> int:
     ap.add_argument("label")
     ap.add_argument("requests", nargs="?")
     ap.add_argument("--coverage", choices=("trace", "xdebug"), default="trace")
+    ap.add_argument("--from-replay", action="store_true", help="re-score from the saved slim replay (no judge run)")
     ap.add_argument("--judge-shards", type=int, default=1, help="replay with K parallel judge instances")
     ap.add_argument("--reset", choices=("request", "batch", "marked", "none"),
                     help="judge.py's reset policy (default: request for a db app)")
@@ -109,7 +116,13 @@ def main() -> int:
         sent.write_text(json.dumps([{**r, "reset": True} if json.dumps(r, sort_keys=True) in witness else r
                                     for r in reqs], indent=1) + "\n")
     extra = ["--coverage", a.coverage, *(["--reset", a.reset] if a.reset else [])]
-    if a.judge_shards > 1:
+    prior = None
+    if a.from_replay:
+        # Re-score from the SLIM replay already on disk (no judge run). Its lines are limited to
+        # the scored ones, so coverage is taken from the previous score of the same label.
+        prior = json.loads((work / f"score_{tag}.json").read_text())
+        parts = []
+    elif a.judge_shards > 1:
         # K judge instances (own clone DB, runner, statement history), each replaying one
         # CONTIGUOUS slice of the list in order; results are concatenated back in order.
         allreqs = json.loads(sent.read_text())
@@ -119,10 +132,10 @@ def main() -> int:
         for i in range(k):
             part = sent.with_suffix(f".j{i}.json")
             part.write_text(json.dumps(allreqs[i * size:(i + 1) * size]))
-            out = replay.with_suffix(f".j{i}.json")
+            out = replay.with_suffix(f".j{i}.json.gz")
             parts.append(out)
             try:
-                if out.exists() and [r["request"] for r in json.loads(out.read_text())] == \
+                if out.exists() and [r["request"] for r in json.loads(gzip.decompress(out.read_bytes()))] == \
                         [{k: v for k, v in r.items() if k != "reset"} for r in allreqs[i * size:(i + 1) * size]]:
                     continue                     # this slice was already replayed (a resumed score)
             except (json.JSONDecodeError, KeyError):
@@ -131,27 +144,54 @@ def main() -> int:
                                            "--out", str(out), "--instance", f"j{i}", *extra]))
         if any(p.wait() != 0 for p in procs):
             raise SystemExit("a judge shard failed")
-        results = [r for out in parts for r in json.loads(out.read_text())]
-        replay.write_text(json.dumps(results, indent=1) + "\n")
-        for f in [*parts, *(sent.with_suffix(f".j{i}.json") for i in range(k))]:
+        for f in (sent.with_suffix(f".j{i}.json") for i in range(k)):
             f.unlink(missing_ok=True)
     else:
         subprocess.run([sys.executable, str(HERE / "judge.py"), "replay", app, str(sent), "--out", str(replay),
                         *extra], check=True)
-    results = json.loads(replay.read_text())
+        parts = [replay]
 
     exec_cache = work / "exec_lines.json"
     if not exec_cache.exists():
         exec_cache.write_text(subprocess.run([sys.executable, str(HERE / "judge.py"), "exec-lines", app],
                                              capture_output=True, text=True, check=True).stdout)
     executable = {f"{f}:{n}" for f, ns in json.loads(exec_cache.read_text()).items() for n in ns}
-    covered = {l for r in results for l in r["lines"]} & executable
+
+    # STREAMED, one replay file at a time: tens of thousands of requests with thousands of covered
+    # lines each do not fit in memory at once (WeBid: 3.5 GB of replay JSON). Coverage (overall, per
+    # arm, Xdebug) is accumulated here; each kept result carries only the lines scoring looks at
+    # (known sink lines and the sites of ACE's findings).
+    if prior is not None:
+        parts = [replay]
+    arm_list = label[4:].split("+") if label.startswith("ace:") else []
+    interesting = {f"{v['sink_file']}:{v['sink_line']}" for v in known_vulns(app)}
+    interesting |= {f["site"] for arm in arm_list for f in ace_findings(app, arm)}
+    covered, xcov_all = set(), set()
+    arm_cov = {arm: set() for arm in arm_list}
+    results = []
+    for part in parts:
+        for r in json.loads(gzip.decompress(part.read_bytes()) if part.suffix == ".gz" else part.read_text()):
+            lines = set(r["lines"]) & executable
+            covered |= lines
+            xcov_all |= set(r.get("xdebug_lines", [])) & executable
+            for arm in arms_of.get(json.dumps(r["request"], sort_keys=True), ()):
+                arm_cov[arm] |= lines
+            r["lines"] = sorted(l for l in r["lines"] if l in interesting)
+            r.pop("xdebug_lines", None)
+            results.append(r)
+    # The kept replay is the SLIM one (lines limited as above); the full per-slice files are removed.
+    if prior is None:
+        replay.write_text(json.dumps(results, indent=1) + "\n")
+    for part in parts:
+        if part != replay:
+            part.unlink(missing_ok=True)
 
     vulns = []
     for v in known_vulns(app):
         hits = detected(v, results)
         vulns.append({"id": v["id"], "cve": v.get("cve", []), "type": v["type"],
                       "sink": f"{v['sink_file']}:{v['sink_line']}", "auth": v.get("auth"),
+                      "confidence": v.get("confidence"), "param": v.get("param"), "method": v.get("method"),
                       "detected": bool(hits), "witness": hits[0]["request"] if hits else None})
     cves: dict[str, bool] = {}
     for v in vulns:
@@ -162,7 +202,9 @@ def main() -> int:
         by_req = {json.dumps(r["request"], sort_keys=True): r for r in results}
         for f in (f for arm in label[4:].split("+") for f in ace_findings(app, arm)):
             r = by_req.get(json.dumps(f["request"], sort_keys=True))
-            kind = "shell" if f["sink"] in ("system", "exec", "shell_exec", "passthru", "popen", "proc_open") else "sql"
+            # (fix) an XSS finding is confirmed by an `xss` fault, not a SQL one.
+            kind = ("xss" if str(f["kind"]).startswith("xss") else
+                    "shell" if f["sink"] in ("system", "exec", "shell_exec", "passthru", "popen", "proc_open") else "sql")
             f["judge_fault"] = bool(r and any(x["kind"] == kind for x in r["faults"]))
             f["judge_reached_site"] = bool(r and f["site"] in r["lines"])
             findings.append(f)
@@ -175,7 +217,7 @@ def main() -> int:
            "coverage_pct": round(100 * len(covered) / len(executable), 2) if executable else None,
            "covered_lines": len(covered), "executable_lines": len(executable), "vulns": vulns}
     if a.coverage == "xdebug":
-        xcov = {l for r in results for l in r.get("xdebug_lines", [])} & executable
+        xcov = xcov_all
         row |= {"xdebug_coverage_pct": round(100 * len(xcov) / len(executable), 2) if executable else None,
                 "xdebug_covered_lines": len(xcov), "xdebug_method": "auto_prepend_file (coverage-only, outside docroot)"
                 + ("; the fault replays themselves ran under it (judge_cgi xdebug), so trace == xdebug"
@@ -185,10 +227,18 @@ def main() -> int:
         row["arms"] = {}
         for arm in label[4:].split("+"):
             mine = [r for r in results if arm in arms_of.get(json.dumps(r["request"], sort_keys=True), ())]
-            cov = {l for r in mine for l in r["lines"]} & executable
+            cov = arm_cov[arm]
             row["arms"][arm] = {"requests": len(mine), "detected": sum(bool(detected(v, mine)) for v in known_vulns(app)),
                                 "detected_ids": [v["id"] for v in known_vulns(app) if detected(v, mine)],
                                 "coverage_pct": round(100 * len(cov) / len(executable), 2) if executable else None}
+    if prior is not None:
+        for k in ("coverage_pct", "covered_lines", "executable_lines", "xdebug_coverage_pct", "xdebug_covered_lines",
+                  "xdebug_method"):
+            if k in prior:
+                row[k] = prior[k]
+        for arm, x in row.get("arms", {}).items():
+            x["coverage_pct"] = prior.get("arms", {}).get(arm, {}).get("coverage_pct")
+        row["rescored_from_replay"] = True
     (work / f"score_{tag}.json").write_text(json.dumps(row, indent=1) + "\n")
     print(f"{label:16} detected {row['detected']}/{row['known']}  coverage {row['coverage_pct']}% "
           f"({row['covered_lines']}/{row['executable_lines']})  requests {row['requests']}"

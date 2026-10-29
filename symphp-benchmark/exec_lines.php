@@ -16,6 +16,7 @@ use PhpParser\{Node, NodeTraverser, NodeVisitorAbstract, ParserFactory};
 $root = rtrim($argv[1], '/');
 $exts = explode(',', $argv[2] ?? 'php');
 $parser = (new ParserFactory())->createForHostVersion();
+$parser74 = (new ParserFactory())->createForVersion(PhpParser\PhpVersion::fromComponents(7, 4));
 $out = [];
 $it = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($root, FilesystemIterator::SKIP_DOTS));
 foreach ($it as $f) {
@@ -40,7 +41,19 @@ foreach ($it as $f) {
     if ($code === false) {
         continue;                    // e.g. a dangling symlink (HSM's `doctor/.#search.php`)
     }
-    $t->traverse($parser->parse($code));
+    try {
+        $stmts = $parser->parse($code);
+    } catch (PhpParser\Error $err) {
+        // PHP 7-only syntax (`$s{0}`, ...): parse as 7.4, the version the apps target.
+        // A file neither parser reads is left out of the denominator.
+        try {
+            $stmts = $parser74->parse($code);
+        } catch (PhpParser\Error $err2) {
+            fwrite(STDERR, "unparsable: {$f->getPathname()}\n");
+            continue;
+        }
+    }
+    $t->traverse($stmts);
     $lines = array_keys($visitor->lines);
     sort($lines);
     $out[substr($f->getPathname(), strlen($root) + 1)] = $lines;

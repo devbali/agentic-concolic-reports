@@ -80,6 +80,8 @@ if ($rc !== 0) {
     fwrite(STDERR, "copy failed\n");
     exit(1);
 }
+// The copy is ours: make it writable (Drupal's installer leaves sites/default read-only).
+exec(sprintf('chmod -R u+w %s', escapeshellarg($build)));
 
 $ok = $failed = 0;
 $warnings_all = [];
