@@ -1,18 +1,27 @@
 #!/usr/bin/env python3
 """Score one tool's requests on one app with the concrete judge.
 
-usage: score.py <app> <tool-label> <requests.json>
-       score.py <app> ace:<arm>            (collects results/<app>/<arm>/*/dump_*.json)
+usage: score.py <app> <tool-label> <requests.json> [--coverage xdebug]
+       score.py <app> ace:<arm>[+<arm>...]      (collects results/<app>/<arm>/*/dump_*.json;
+                                                 `ace:cold+auth` scores the UNION of the arms)
 
-A known vulnerability is DETECTED when at least one of the tool's requests to
-its script faults during concrete replay (judge.py) at that sink -- the
-paper's criterion, applied by a judge neither tool controls. Line coverage is
-the union of the replays' traces over the executable lines PHP-Parser finds.
+A known vulnerability is DETECTED when at least one of the tool's requests
+faults during concrete replay (judge.py) with the vuln's fault kind AND the
+replay's trace passes the SINK LINE, `sink_file:sink_line`. Matching on the
+sink's own file (not on the entry script) is what credits a sink that lives in
+an included file. The known-vuln list comes from `known_vulns_file` in
+apps.json (`known_vulns/<app>.json`, read only), else from apps.json's own
+`known_vulns` (Witcher-Test: there the script IS the sink file).
+
+Reported per sink (each list entry) and per CVE (an entry's `cve` list; a CVE
+counts once any of its entries is detected). Line coverage is the union of the
+replays' traces over the executable lines PHP-Parser finds.
 Writes results/<app>/score_<label>.json and prints one row.
 """
 
 from __future__ import annotations
 
+import argparse
 import json
 import pathlib
 import subprocess
@@ -20,6 +29,16 @@ import sys
 
 HERE = pathlib.Path(__file__).resolve().parent
 APPS = json.loads((HERE / "apps.json").read_text())
+FAULT_KIND = {"sqli": "sql", "cmdi": "shell", "xss": "xss"}
+
+
+def known_vulns(app: str) -> list[dict]:
+    spec = APPS[app]
+    if spec.get("known_vulns_file"):
+        doc = json.loads((HERE / spec["known_vulns_file"]).read_text())
+        return [{**v, "sink_file": v.get("sink_file") or v["script"], "sink_line": int(v["sink_line"])}
+                for v in doc["vulns"]]
+    return [{**v, "sink_file": v["script"], "sink_line": int(v["line"])} for v in spec.get("known_vulns", [])]
 
 
 def ace_requests(app: str, arm: str) -> list[dict]:
@@ -37,19 +56,32 @@ def ace_requests(app: str, arm: str) -> list[dict]:
     return list({json.dumps(r, sort_keys=True): r for r in out}.values())
 
 
+def detected(v: dict, results: list[dict]) -> list[dict]:
+    kind = FAULT_KIND[v["type"]]
+    site = f"{v['sink_file']}:{v['sink_line']}"
+    return [r for r in results if site in r["lines"] and any(f["kind"] == kind for f in r["faults"])]
+
+
 def main() -> int:
-    app, label = sys.argv[1], sys.argv[2]
+    ap = argparse.ArgumentParser()
+    ap.add_argument("app")
+    ap.add_argument("label")
+    ap.add_argument("requests", nargs="?")
+    ap.add_argument("--coverage", choices=("trace", "xdebug"), default="trace")
+    a = ap.parse_args()
+    app, label = a.app, a.label
     if label.startswith("ace:"):
-        reqs = ace_requests(app, label[4:])
+        reqs = [r for arm in label[4:].split("+") for r in ace_requests(app, arm)]
+        reqs = list({json.dumps(r, sort_keys=True): r for r in reqs}.values())
     else:
-        reqs = json.loads(pathlib.Path(sys.argv[3]).read_text())
+        reqs = json.loads(pathlib.Path(a.requests).read_text())
     work = HERE / "results" / app
     work.mkdir(parents=True, exist_ok=True)
-    tag = label.replace(":", "_")
+    tag = label.replace(":", "_").replace("+", "_")
     (work / f"requests_{tag}.json").write_text(json.dumps(reqs, indent=1) + "\n")
     replay = work / f"replay_{tag}.json"
     subprocess.run([sys.executable, str(HERE / "judge.py"), "replay", app,
-                    str(work / f"requests_{tag}.json"), "--out", str(replay)], check=True)
+                    str(work / f"requests_{tag}.json"), "--out", str(replay), "--coverage", a.coverage], check=True)
     results = json.loads(replay.read_text())
 
     exec_cache = work / "exec_lines.json"
@@ -60,19 +92,29 @@ def main() -> int:
     covered = {l for r in results for l in r["lines"]} & executable
 
     vulns = []
-    for v in APPS[app]["known_vulns"]:
-        hits = [r for r in results if r["request"]["script"] == v["script"]
-                and any(f["kind"] == ("shell" if v["type"] == "cmdi" else "sql") for f in r["faults"])
-                and f"{v['script']}:{v['line']}" in r["lines"]]
-        vulns.append({**v, "detected": bool(hits), "witness": hits[0]["request"] if hits else None})
+    for v in known_vulns(app):
+        hits = detected(v, results)
+        vulns.append({"id": v["id"], "cve": v.get("cve", []), "type": v["type"],
+                      "sink": f"{v['sink_file']}:{v['sink_line']}", "auth": v.get("auth"),
+                      "detected": bool(hits), "witness": hits[0]["request"] if hits else None})
+    cves: dict[str, bool] = {}
+    for v in vulns:
+        for c in v["cve"]:
+            cves[c] = cves.get(c, False) or v["detected"]
     row = {"app": app, "tool": label, "requests": len(results),
            "faulting_requests": sum(1 for r in results if r["faults"]),
            "detected": sum(v["detected"] for v in vulns), "known": len(vulns),
+           "cves_detected": sum(cves.values()), "cves_known": len(cves), "cves": cves,
            "coverage_pct": round(100 * len(covered) / len(executable), 2) if executable else None,
            "covered_lines": len(covered), "executable_lines": len(executable), "vulns": vulns}
+    if a.coverage == "xdebug":
+        xcov = {l for r in results for l in r.get("xdebug_lines", [])} & executable
+        row |= {"xdebug_coverage_pct": round(100 * len(xcov) / len(executable), 2) if executable else None,
+                "xdebug_covered_lines": len(xcov), "xdebug_method": "auto_prepend_file (coverage-only, outside docroot)"}
     (work / f"score_{tag}.json").write_text(json.dumps(row, indent=1) + "\n")
     print(f"{label:16} detected {row['detected']}/{row['known']}  coverage {row['coverage_pct']}% "
-          f"({row['covered_lines']}/{row['executable_lines']})  requests {row['requests']}")
+          f"({row['covered_lines']}/{row['executable_lines']})  requests {row['requests']}"
+          + (f"  xdebug {row['xdebug_coverage_pct']}%" if a.coverage == "xdebug" else ""))
     return 0
 
 
