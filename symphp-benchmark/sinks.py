@@ -232,3 +232,78 @@ def _inject(run, prefix, name, text, refs, values, family, timeout_ms):
         if not parses(family, instance):
             return {"payload": payload, "instance": instance, "witness": witness}
     return None
+
+
+# -- M4: the reflected-XSS oracle (E6 output events) ------------------------------
+#
+# An `output` event says a symbolic value was printed, with its sealed note
+# (refs, and any sanitizer chain applied to it). For each input the note
+# carries, ask Z3 -- exactly as `_inject` does -- for a value that satisfies
+# every path condition before the echo and contains a MARKER that would be
+# page structure if it survived: `"'><acexss...>`. Apply the ref's sanitizer
+# chain; if the marker's `<` survives, the site is an XSS candidate. Nothing
+# here is the verdict: the judge replays the witness and counts it only if the
+# marker parses as an element or attribute (decision (f), structural only).
+
+XSS_MARKER = "acexss"
+
+
+def xss_payload(site: str) -> str:
+    import hashlib
+    return f"\"'><{XSS_MARKER}{hashlib.sha1(site.encode()).hexdigest()[:8]}>"
+
+
+def xss_findings(dump: dict, timeout_ms: int = 5000) -> list[dict]:
+    run = Run.from_dict(dump)
+    values = {v["name"]: v.get("value") for v in dump["symbolic_vars"]
+              if v.get("origin", {}).get("kind") == "input"}
+    out, prefix, seen = [], [], set()
+    for event in dump["events"]:
+        if event["type"] == "path_condition":
+            prefix.append((json.dumps(event["expr"], sort_keys=True, separators=(",", ":")), event["taken"]))
+            continue
+        if event["type"] != "output":
+            continue
+        text, refs = _note(event)
+        site = f"{event.get('file')}:{event.get('lineno')}"
+        for ref in refs.values():
+            name = _ref_name(ref)
+            if (site, name) in seen:
+                continue
+            seen.add((site, name))
+            chain = ref.get("apply", []) if isinstance(ref, dict) else []
+            payload = xss_payload(site)
+            if "<" not in apply_chain(payload, chain):
+                continue                          # the sanitizer encodes it: not a candidate
+            hit = _witness_containing(run, prefix, name, values, payload, timeout_ms)
+            if hit is not None:
+                out.append({"sink": "echo", "family": "xss", "file": event.get("file"), "lineno": event.get("lineno"),
+                            "statement": text, "kind": "xss-candidate", "carried": name, "payload": payload,
+                            "instance": _instantiate(text, refs, hit), "witness": hit, "offset": event.get("offset")})
+    return out
+
+
+def _witness_containing(run, prefix, name, values, payload, timeout_ms):
+    ctx = z3.Context()
+    lo = Lowering(run.symbols(), ctx)
+    try:
+        conds = [lo.cond(e if taken else ("not", e)) for e, taken in prefix]
+        var = lo.var(name)
+    except Exception:  # noqa: BLE001
+        return None
+    if not z3.is_string(var):
+        return None
+    s = z3.Solver(ctx=ctx)
+    s.set("timeout", timeout_ms)
+    s.add(*conds, *lo.axioms, z3.Contains(var, z3.StringVal(payload, ctx)), z3.Not(lo.is_null(Sym(name))))
+    if s.check() != z3.sat:
+        return None
+    m = s.model()
+    witness = dict(values)
+    for d in m.decls():
+        if d.arity() == 0 and d.name() in witness:
+            witness[d.name()] = m[d].as_string() if z3.is_string_value(m[d]) else witness[d.name()]
+        elif d.arity() == 0 and d.name().startswith("is_null(") and z3.is_true(m[d]):
+            witness[d.name()[len("is_null("):-1]] = None
+    witness[name] = m.eval(var, model_completion=True).as_string()
+    return witness

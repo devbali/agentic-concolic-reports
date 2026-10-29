@@ -152,6 +152,7 @@ AceState::$rt = new Runtime();
 AceState::$rt->templates = true;
 AceState::$rt->concretizeUnmodelled = (bool) (AceState::$request['flags']['concretize'] ?? false);
 AceState::$rt->sanitizers = (bool) (AceState::$request['flags']['sanitizers'] ?? false);     // E5
+AceState::$rt->outputEvents = (bool) (AceState::$request['flags']['outputEvents'] ?? false);   // E6
 Runtime::$php7Compare = (bool) (AceState::$request['flags']['php7Compare'] ?? false);
 AceState::$sinks = [];
 AceState::$standins = [];
@@ -340,6 +341,7 @@ unset($__ace_g, $__ace_k, $__ace_v, $__ace_n, $__ace_known, $__ace_inputs);
 
 chdir(dirname(AceState::$app . '/' . AceState::$request['script']));
 AceState::$ob_base = ob_get_level();
+AceState::$rt->outputBaseLevel = AceState::$ob_base;
 ob_start();
 $__ace_caught = null;
 try {

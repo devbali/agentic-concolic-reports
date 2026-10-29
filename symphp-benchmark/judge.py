@@ -203,6 +203,91 @@ def _run_cgi(app: str, req: dict, *, xdebug: bool = False, cov_out: str | None =
     return p, text
 
 
+def is_authenticated(app: str, req: dict) -> bool:
+    login = APPS[app].get("login")
+    return bool(login) and all((req.get("COOKIE") or {}).get(k) == v for k, v in login["cookie"].items())
+
+
+def login_recipe(app: str, script: str) -> dict:
+    """The login recipe for `script`: the first whose path prefix matches (apps.json `login.recipes`)."""
+    for r in APPS[app]["login"]["recipes"]:
+        if script.startswith(r["prefix"]):
+            return r
+    raise SystemExit(f"{app}: no login recipe covers {script}")
+
+
+def set_cookies(stdout: bytes) -> dict:
+    """name -> value from a CGI response's Set-Cookie headers (the last one per name wins)."""
+    head = stdout.partition(b"\r\n\r\n")[0].decode(errors="replace")
+    out = {}
+    for line in head.split("\r\n"):
+        if line.lower().startswith("set-cookie:"):
+            name, _, rest = line.split(":", 1)[1].strip().partition("=")
+            value = rest.split(";", 1)[0]
+            if value != "deleted":
+                out[name] = urllib.parse.unquote(value)
+    return out
+
+
+def login_if_authenticated(app: str, req: dict) -> dict:
+    """The authenticated arm (M2): a request carrying the login cookie is replayed on a session the
+    app's own login request just created (fixed session id, so the cookie names it).
+
+    For an app whose login SETS its own auth cookies (`login.cookies_from_login`, phpMyAdmin's
+    encrypted pmaUser/pmaAuth and a regenerated session id), the judge uses the cookies of ITS OWN
+    login: the ones ACE's harness recorded were made for ACE's session and mean nothing here.
+    Returns the cookies to substitute (empty otherwise)."""
+    if not is_authenticated(app, req):
+        return {}
+    recipe = login_recipe(app, req["script"])
+    jar = dict(recipe["request"].get("COOKIE") or {})
+    login = recipe["request"]
+    if recipe.get("pre"):
+        # Two-step login (phpMyAdmin): a GET that issues the form token, then the POST with it.
+        p, _ = _run_cgi(app, {**recipe["pre"], "COOKIE": jar})
+        jar.update(set_cookies(p.stdout))
+        m = re.search(recipe["token"]["regex"].encode(), p.stdout)
+        if m:
+            login = {**login, "POST": {**login.get("POST", {}), recipe["token"]["into"]: m.group(1).decode()}}
+    p, _ = _run_cgi(app, {**login, "COOKIE": jar})
+    jar.update(set_cookies(p.stdout))
+    return jar if APPS[app]["login"].get("cookies_from_login") else {}
+
+
+def with_cookies(req: dict, cookies: dict) -> dict:
+    return {**req, "COOKIE": {**(req.get("COOKIE") or {}), **cookies}} if cookies else req
+
+
+XSS_MARKER = "acexss"
+
+
+def xss_faults(req: dict, stdout: bytes) -> list[dict]:
+    """M4, decision (f): a reflected-XSS fault is STRUCTURAL. The request must carry a benign
+    unique marker (`acexss<hex>`); the response must be HTML and not an attachment; and an HTML5
+    parse (html5lib) must show the marker as an element or attribute NAME -- page structure the
+    request created -- not merely as text."""
+    markers = {m for g in ("GET", "POST", "COOKIE") for v in (req.get(g) or {}).values()
+               for m in re.findall(XSS_MARKER + r"[0-9a-f]+", str(v))}
+    if not markers:
+        return []
+    head, _, body = stdout.partition(b"\r\n\r\n")
+    h = head.decode(errors="replace").lower()
+    ctype = re.search(r"^content-type:\s*([^;\r\n]+)", h, re.M)
+    if (ctype and "html" not in ctype.group(1)) or re.search(r"^content-disposition:\s*attachment", h, re.M):
+        return []
+    import html5lib
+    doc = html5lib.parse(body, treebuilder="etree", namespaceHTMLElements=False)
+    out = []
+    for el in doc.iter():
+        tag = el.tag if isinstance(el.tag, str) else ""
+        names = [tag] + list(el.attrib)
+        for n in names:
+            for m in markers:
+                if n.lower().startswith(m):
+                    out.append({"kind": "xss", "marker": m, "as": "element" if n == tag else "attribute"})
+    return out
+
+
 def replay_one(app: str, req: dict, reset: str = "none") -> dict:
     src = src_of(app)
     rel = lambda l: l.replace(str(src) + "/", "")                      # noqa: E731
@@ -210,12 +295,15 @@ def replay_one(app: str, req: dict, reset: str = "none") -> dict:
     if spec:
         db = appdb.container(app, "judge")
         with appdb.lock(db):
+            cookies = {}
             if reset == "request":
                 appdb.restore(app, "judge")
                 reset_sessions(app)
+                cookies = login_if_authenticated(app, req)
             appdb.clear_history(db)
-            p, text = _run_cgi(app, req)
-            faults = [{"kind": "sql", **e} for e in appdb.statement_errors(db, spec["database"])]
+            p, text = _run_cgi(app, with_cookies(req, cookies))
+            faults = [{"kind": "sql", **e} for e in
+                      appdb.statement_errors(db, spec["database"] if spec.get("schema_filter", True) else None)]
         lines = sorted(set(text.split()))
     else:
         with appdb.lock("ace-judge-mysql"), tempfile.TemporaryDirectory() as tmp:
@@ -229,6 +317,7 @@ def replay_one(app: str, req: dict, reset: str = "none") -> dict:
             lines = sorted(set(pathlib.Path(trace).read_text(errors="replace").split())) if os.path.exists(trace) else []
             faults = [{"kind": "sql", **e} for e in statement_errors(APPS[app].get("schema"))]
     faults += [{"kind": "shell", "message": m.decode(errors="replace")} for m in SHELL_FAULT.findall(p.stderr)]
+    faults += xss_faults(req, p.stdout)
     head, sep, _ = p.stdout.partition(b"\r\n\r\n")
     return {"request": req, "exit": p.returncode, "body_bytes": len(p.stdout),
             "headers": head.decode(errors="replace")[:2000] if sep else "",
@@ -245,7 +334,14 @@ def xdebug_pass(app: str, reqs: list[dict]) -> list[list[str]]:
     with appdb.lock(db):
         appdb.restore(app, "judge")
         reset_sessions(app)
+        area, cookies = None, {}
         for i, req in enumerate(reqs):
+            if is_authenticated(app, req) and login_recipe(app, req["script"])["prefix"] != area:
+                # A different area's login replaces the session's role (same session id).
+                reset_sessions(app)
+                cookies = login_if_authenticated(app, req)
+                area = login_recipe(app, req["script"])["prefix"]
+            req = with_cookies(req, cookies) if is_authenticated(app, req) else req
             cov = work / "xdebug_cov.json"
             if cov.exists():
                 cov.unlink()
@@ -292,6 +388,8 @@ def main() -> int:
             if reset == "batch":
                 appdb.restore(a.app, "judge")
                 reset_sessions(a.app)
+                if reqs and is_authenticated(a.app, reqs[0]):
+                    _run_cgi(a.app, login_recipe(a.app, reqs[0]["script"])["request"])
         results = [replay_one(a.app, r, reset) for r in reqs]
         if a.coverage == "xdebug":
             for r, lines in zip(results, xdebug_pass(a.app, reqs)):

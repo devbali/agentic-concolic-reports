@@ -350,6 +350,7 @@ def main() -> int:
     ap.add_argument("--array-mode", action="store_true", help="decision (b): real-array superglobals (app mode)")
     ap.add_argument("--real-app-builtins", action="store_true", help="route type predicates through __fn (app mode)")
     ap.add_argument("--sanitizers", action="store_true", help="E5: sanitizers as tagged template parts (app mode)")
+    ap.add_argument("--xss", action="store_true", help="E6 output events + the XSS oracle (app mode)")
     a = ap.parse_args()
 
     spec = APPS[a.app]
@@ -363,7 +364,8 @@ def main() -> int:
     src = (HERE / spec["src"]).resolve()
     extra: dict = {}
     if app_mode:
-        flags = {"php7Compare": a.php7compat, "concretize": a.concretize, "arrayMode": a.array_mode, "sanitizers": a.sanitizers}
+        flags = {"php7Compare": a.php7compat, "concretize": a.concretize, "arrayMode": a.array_mode, "sanitizers": a.sanitizers,
+                 "outputEvents": a.xss}
         extra = {"flags": flags, "session": {}, "session_ser": ""}
     seeds_by_script = witcher_seeds(a.app) if a.arm == "witcher" else {}
     if a.arm == "auth":
@@ -406,7 +408,7 @@ def main() -> int:
                 if e["type"] == "concretized":
                     k = f"{e['what']} @ {rel_file(e.get('file'), app_dir)}:{e.get('lineno')}"
                     concretized[k] = concretized.get(k, 0) + 1
-            for f in sinks.findings(dump, FAMILIES):
+            for f in sinks.findings(dump, FAMILIES) + (sinks.xss_findings(dump) if a.xss else []):
                 f["request"] = {g: {k: f["witness"].get(n) for n, (gg, k) in r["names"].items() if gg == g
                                     and f["witness"].get(n) is not None} for g in GLOBALS}
                 found.append(f)
