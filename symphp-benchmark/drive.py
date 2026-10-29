@@ -63,13 +63,16 @@ import sinks                                                           # noqa: E
 
 APPS = json.loads((HERE / "apps.json").read_text())
 GLOBALS = ("GET", "POST", "COOKIE")
-FAMILIES = {**{n: sinks.SQL for n in ("mysqli_query", "mysqli_real_query", "mysqli_multi_query", "mysql_query")},
+FAMILIES = {**{n: sinks.SQL for n in ("mysqli_query", "mysqli_real_query", "mysqli_multi_query", "mysql_query",
+                                      # E7 (--db-classes): object-style sinks, harness_db.php
+                                      "PDO::prepare", "PDO::query", "PDO::exec", "mysqli::query",
+                                      "mysqli::real_query", "mysqli::multi_query", "mysqli::prepare")},
             **{n: sinks.SHELL for n in ("system", "exec", "shell_exec", "passthru", "popen", "proc_open")}}
 PHP = ["docker", "run", "--rm", "-i", *appdb.LOG_OPTS, "-u", f"{os.getuid()}:{os.getgid()}",
        "-v", f"{ROOT}:{ROOT}", "-w", str(HERE), "php:8.2-cli", "php"]
 #: PHP 8.2 plus mysqli, for app mode (php:8.2-cli has no mysqli). Built on first use.
-APP_IMAGE = "ace-php82-mysqli:1"
-APP_DOCKERFILE = "FROM php:8.2-cli\nRUN docker-php-ext-install mysqli >/dev/null\n"
+APP_IMAGE = "ace-php82-mysqli:2"
+APP_DOCKERFILE = "FROM php:8.2-cli\nRUN docker-php-ext-install mysqli pdo_mysql >/dev/null\n"
 MODE = {"app": None}          # set by main(): the app name when running in app mode
 
 
@@ -82,17 +85,34 @@ def app_image() -> str:
 def app_runner(app: str) -> str:
     """`ace-<app>-php`: a long-lived PHP 8.2 container in ACE's clone DB's network namespace."""
     db = appdb.ensure(app, "ace")
-    name = f"ace-{app}-php"
-    st = subprocess.run(["docker", "inspect", "-f", "{{.State.Running}}", name], capture_output=True, text=True)
-    if st.returncode == 0 and st.stdout.strip() == "true":
+    name = f"ace-{app}-{appdb.ACE_INSTANCE['suffix']}-php" if appdb.ACE_INSTANCE["suffix"] else f"ace-{app}-php"
+    src = (HERE / APPS[app]["src"]).resolve()
+    # An app whose config names its OWN absolute path (WeBid's `$main_path`) includes every file
+    # from there, i.e. from the uninstrumented source. With `ace_build_at_src`, ACE's runner
+    # mounts the instrumented COPY at that path (read-only), so those includes load the copy.
+    # The container is labelled with the copy it mounts and recreated when that changes.
+    mount = str(MODE.get("build") or src) if APPS[app].get("ace_build_at_src") else str(src)
+    st = subprocess.run(["docker", "inspect", "-f", '{{.State.Running}} {{index .Config.Labels "ace.mount"}}', name],
+                        capture_output=True, text=True)
+    running, _, label = st.stdout.strip().partition(" ")
+    if st.returncode == 0 and running == "true" and (label in ("", "<no value>", mount) if mount == str(src) else label == mount):
         return name
     if st.returncode == 0:
         subprocess.run(["docker", "rm", "-f", name], capture_output=True)
-    src = (HERE / APPS[app]["src"]).resolve()
     subprocess.run(["docker", "run", "-d", "--name", name, *appdb.LOG_OPTS, "--network", f"container:{db}",
-                    "-u", f"{os.getuid()}:{os.getgid()}", "-v", f"{ROOT}:{ROOT}", "-v", f"{src}:{src}:ro",
+                    "--label", f"ace.mount={mount}",
+                    "-u", f"{os.getuid()}:{os.getgid()}", "-v", f"{ROOT}:{ROOT}", "-v", f"{mount}:{src}:ro",
                     "-w", str(HERE), app_image(), "sleep", "infinity"], check=True, capture_output=True)
     return name
+
+
+def harness_path(app_dir: pathlib.Path) -> str:
+    """The path the harness runs the app from: the copy, or (`ace_build_at_src`) the app's own
+    source path, where the runner mounts the copy -- so every file has ONE path in the run."""
+    app = MODE["app"]
+    if app and APPS[app].get("ace_build_at_src"):
+        return str((HERE / APPS[app]["src"]).resolve())
+    return str(app_dir)
 
 
 def php(requests: list[dict]) -> list[dict]:
@@ -101,10 +121,18 @@ def php(requests: list[dict]) -> list[dict]:
         cmd = ["docker", "exec", "-i", app_runner(app), "php", "-d", "display_errors=0", "harness_app.php", "--batch"]
     else:
         cmd = [*PHP, "harness.php"]
-    p = subprocess.run(cmd, input=json.dumps(requests), capture_output=True, text=True, timeout=3600)
-    if p.returncode != 0:
-        raise SystemExit(f"harness failed:\n{p.stderr[-3000:]}")
-    return json.loads(p.stdout)
+    try:
+        p = subprocess.run(cmd, input=json.dumps(requests), capture_output=True, text=True, timeout=3600)
+        if p.returncode == 0:
+            return json.loads(p.stdout)
+        why = f"batch exited {p.returncode}: {p.stderr[-500:]}"
+    except (subprocess.TimeoutExpired, json.JSONDecodeError) as e:
+        why = f"batch failed: {type(e).__name__}"
+    if not app:
+        raise SystemExit(f"harness failed: {why}")
+    # App mode: a crashed batch (the app exhausting memory, ...) is a harness error for each of
+    # its requests, recorded in the script's summary; exploration of the next script goes on.
+    return [{"harness_error": why} for _ in requests]
 
 
 def instrument(app: str, label: str | None = None, options: tuple[str, ...] = ()) -> pathlib.Path:
@@ -114,7 +142,8 @@ def instrument(app: str, label: str | None = None, options: tuple[str, ...] = ()
     if MODE["app"]:
         cmd = ["docker", "run", "--rm", "-i", *appdb.LOG_OPTS, "-u", f"{os.getuid()}:{os.getgid()}",
                "-v", f"{ROOT}:{ROOT}", "-v", f"{src}:{src}:ro", "-w", str(HERE), app_image(), "php", "-d", "memory_limit=4G",
-               "instrument_app.php", str(src), str(build), "--app-targets", *options]
+               "instrument_app.php", str(src), str(build), "--app-targets", *options,
+               *([f"--ext={','.join(APPS[app]['php_exts'])}"] if APPS[app].get("php_exts") else [])]
     else:
         cmd = [*PHP, "instrument_app.php", str(src), str(build)]
     p = subprocess.run(cmd, capture_output=True, text=True)
@@ -279,7 +308,7 @@ def explore(app_dir: pathlib.Path, script: str, seeds: list[dict], max_rounds: i
             for r in overflow:
                 seen.discard(canon(r))
                 queue.append(r)
-        batch = [{"app": str(app_dir), "script": script, "label": f"r{rounds:02}_{i:03}", "inputs": r,
+        batch = [{"app": harness_path(app_dir), "script": script, "label": f"r{rounds:02}_{i:03}", "inputs": r,
                   **({k: (v(r) if callable(v) else v) for k, v in extra.items()})}
                  for i, r in enumerate(fresh)]
         for req, res in zip(fresh, php(batch)):
@@ -329,10 +358,13 @@ def server_vars(app: str, src: pathlib.Path, script: str, req: dict) -> dict:
 
 
 def rel_file(path: str | None, app_dir: pathlib.Path) -> str:
-    """A dump location relative to the instrumented tree (= the app's own relative path)."""
+    """A dump location relative to the instrumented tree (= the app's own relative path). Under
+    `ace_build_at_src` a file can also be named by the app's own source path."""
     path = path or ""
-    root = str(app_dir) + "/"
-    return path[len(root):] if path.startswith(root) else path.rsplit("/", 1)[-1]
+    for root in (str(app_dir) + "/", str((HERE / APPS[MODE["app"]]["src"]).resolve()) + "/" if MODE["app"] else None):
+        if root and path.startswith(root):
+            return path[len(root):]
+    return path.rsplit("/", 1)[-1]
 
 
 def main() -> int:
@@ -351,6 +383,16 @@ def main() -> int:
     ap.add_argument("--real-app-builtins", action="store_true", help="route type predicates through __fn (app mode)")
     ap.add_argument("--sanitizers", action="store_true", help="E5: sanitizers as tagged template parts (app mode)")
     ap.add_argument("--xss", action="store_true", help="E6 output events + the XSS oracle (app mode)")
+    ap.add_argument("--instance", default="", help="use ACE clone ace-<app>-<N>-db / runner ace-<app>-<N>-php")
+    ap.add_argument("--shard", help="i/n: explore only scripts[i::n] (parallel shards, each with its own --instance)")
+    ap.add_argument("--skip-done", action="store_true", help="skip scripts that already have a summary.json under the label")
+    ap.add_argument("--reuse-build", action="store_true", help="reuse build/<app>-<label> if it exists (shards)")
+    ap.add_argument("--eval-instrument", action="store_true", help="instrument eval'd code at run time (WeBid templates)")
+    ap.add_argument("--template-split", action="store_true", help="explode() on a SQL template keeps its parts (ADOdb)")
+    ap.add_argument("--db-classes", action="store_true", help="E7: object-style PDO/mysqli sinks (app mode)")
+    ap.add_argument("--site-by-statement", action="store_true",
+                    help="one finding per (site, statement shape), not per site: for apps whose every query "
+                         "goes through ONE wrapper line (WeBid's DatabasePDO.php:76)")
     a = ap.parse_args()
 
     spec = APPS[a.app]
@@ -359,13 +401,27 @@ def main() -> int:
     MODE["app"] = a.app if app_mode else None
     options = tuple(f for f, on in (("--php7compat", a.php7compat), ("--exit-as-halt", a.exit_as_halt),
                                     ("--switch-cmp", a.switch_cmp), ("--superglobal-reads", a.array_mode),
-                                    ("--real-app-builtins", a.real_app_builtins)) if on)
-    app_dir = instrument(a.app, label, options)
+                                    ("--real-app-builtins", a.real_app_builtins),
+                                    ("--db-classes", a.db_classes), ("--eval-instrument", a.eval_instrument)) if on)
+    appdb.ACE_INSTANCE["suffix"] = a.instance
+    MODE["app"] = a.app if app_mode else None
+    built = HERE / "build" / f"{a.app}-{label}"
+    if a.reuse_build and app_mode and built.is_dir() and (HERE / "build" / f"{built.name}.instrument.json").exists():
+        app_dir = built
+    else:
+        app_dir = instrument(a.app, label, options)
+    MODE["build"] = app_dir
     src = (HERE / spec["src"]).resolve()
     extra: dict = {}
     if app_mode:
         flags = {"php7Compare": a.php7compat, "concretize": a.concretize, "arrayMode": a.array_mode, "sanitizers": a.sanitizers,
-                 "outputEvents": a.xss}
+                 "outputEvents": a.xss, "templateSplit": a.template_split,
+                 # the instrumentor options eval'd code is instrumented with (= the copy's)
+                 "evalInstrument": ({k: True for k, on in (("php7Compat", a.php7compat), ("exitAsHalt", a.exit_as_halt),
+                                     ("switchCmp", a.switch_cmp), ("superglobalReads", a.array_mode),
+                                     ("realAppBuiltins", a.real_app_builtins), ("evalInstrument", True)) if on}
+                                    | ({"newClassMap": {"pdo": "\\AcePDO", "mysqli": "\\AceMysqli"}} if a.db_classes else {})
+                                    if a.eval_instrument else None)}
         extra = {"flags": flags, "session": {}, "session_ser": ""}
     seeds_by_script = witcher_seeds(a.app) if a.arm == "witcher" else {}
     if a.arm == "auth":
@@ -377,20 +433,39 @@ def main() -> int:
     out.mkdir(parents=True, exist_ok=True)
     (out / "run.json").write_text(json.dumps({"arm": a.arm, "options": options, "concretize": a.concretize,
                                               "sanitizers": a.sanitizers, "array_mode": a.array_mode,
+                                              "site_by_statement": a.site_by_statement,
                                               "budget_s": a.budget, "max_rounds": a.max_rounds,
                                               "instrument": json.loads((HERE / "build" / f"{app_dir.name}.instrument.json").read_text())
                                               if app_mode else None}, indent=1) + "\n")
     rows = []
-    for script in spec["scripts"]:
+    scripts = spec["scripts"]
+    if a.shard:
+        i, n = map(int, a.shard.split("/"))
+        scripts = scripts[i::n]
+    for script in scripts:
         if a.only and script not in a.only:
+            continue
+        if a.skip_done and (out / script.replace("/", "__") / "summary.json").exists():
             continue
         seeds = seeds_by_script.get(script) or [{}]
         if app_mode:
+            appdb.ensure(a.app, "ace")                  # a no-op once the clone is up
             appdb.restore(a.app, "ace")                 # decision (a): reset per script
             extra["server"] = functools.partial(server_vars, a.app, src, script)
             if a.arm == "auth":
                 extra["script"] = script
-                login_session(a.app, app_dir, extra)       # sets extra["session_ser"] (and auth cookies)
+                try:
+                    login_session(a.app, app_dir, extra)   # sets extra["session_ser"] (and auth cookies)
+                except SystemExit as e:
+                    # A failed login is recorded for this script; the next script logs in afresh.
+                    dd = out / script.replace("/", "__")
+                    dd.mkdir(parents=True, exist_ok=True)
+                    (dd / "summary.json").write_text(json.dumps({"script": script, "wall_s": 0, "requests": 0, "rounds": 0,
+                        "traces": 0, "errored": 1, "first_error": f"login failed: {str(e)[:300]}", "keys_discovered": {},
+                        "budget_hit": False, "coverage_complete": False, "missing": None, "assumptions": [],
+                        "sink_sites": [], "errors_distinct": [f"login failed: {str(e)[:150]}"]}, indent=1) + "\n")
+                    print(f"{script:28} login failed", flush=True)
+                    continue
                 seeds = [{"COOKIE": {**auth_seed(a.app)["COOKIE"], **extra.pop("auth_cookies", {})}}]
         t0 = time.monotonic()
         r = explore(app_dir, script, seeds, a.max_rounds, a.budget, extra)
@@ -416,8 +491,9 @@ def main() -> int:
         # One finding per sink site: the first witness that reached it.
         sites = {}
         for f in found:
+            shape = (re.sub(r"\$\$\(p\d+\)", "$$", str(f.get("statement"))),) if a.site_by_statement else ()
             sites.setdefault((rel_file(f["file"], app_dir) if app_mode else f["file"].rsplit("/", 1)[-1],
-                              f["lineno"], f["sink"]), f)
+                              f["lineno"], f["sink"], *shape), f)
         row = {"script": script, "wall_s": wall, "requests": r["requests"], "rounds": r["rounds"], "traces": len(r["kept"]),
                "errored": len(r["errors"]), "first_error": r["errors"][0] if r["errors"] else None,
                "keys_discovered": r["keys"], "budget_hit": r["budget_hit"],
@@ -435,7 +511,7 @@ def main() -> int:
         print(f"{script:28} {row['traces']:3} traces {row['requests']:3} requests  "
               f"{'complete' if row['coverage_complete'] else str(row['missing']) + ' missing':12} "
               f"sinks={len(row['sink_sites'])} errored={row['errored']} {wall}s", flush=True)
-    if not a.only:
+    if not a.only and not a.shard:
         (out / "summary.json").write_text(json.dumps(rows, indent=1) + "\n")
     return 0
 
@@ -447,7 +523,7 @@ def login_session(app: str, app_dir: pathlib.Path, extra: dict) -> dict:
     src = (HERE / APPS[app]["src"]).resolve()
 
     def run(req, session_ser):
-        return php([{"app": str(app_dir), "script": req["script"], "label": "login",
+        return php([{"app": harness_path(app_dir), "script": req["script"], "label": "login",
                      "inputs": {g: req.get(g, {}) for g in GLOBALS}, "flags": extra.get("flags", {}),
                      "session": {}, "session_ser": session_ser, "server": server_vars(app, src, req["script"], req)}])[0]
     req, ser = recipe["request"], ""
@@ -461,20 +537,41 @@ def login_session(app: str, app_dir: pathlib.Path, extra: dict) -> dict:
     res = run(req, ser)
     session = res.get("session_after") or {}
     extra["session_ser"] = res.get("session_after_ser") or ""
+    judge.pin_session_db(app, "ace")
+    if extra["session_ser"] and APPS[app]["login"].get("pin_token"):
+        import base64
+        raw = base64.b64decode(extra["session_ser"]).decode("latin-1")
+        extra["session_ser"] = base64.b64encode(judge.pin_session_token(app, raw).encode("latin-1")).decode()
     cookies = {}
     for name, args in res.get("standins") or []:
         if name in ("setcookie", "setrawcookie") and args and len(args) > 1 and args[1] not in (None, "", False):
             cookies[args[0]] = str(args[1])
-    if "success_cookie" in recipe:
+    if "success_db_sql" in recipe:
+        # A DB-stored session (OpenCart 3): the login took when the query finds a row.
+        got = appdb.sql(appdb.container(app, "ace"), recipe["success_db_sql"], APPS[app]["db"]["database"]).strip()
+        ok = got not in ("", "0")
+    elif "success_cookie" in recipe:
         ok = recipe["success_cookie"] in cookies
     else:
-        ok = isinstance(session, dict) and str(session.get(recipe["success_key"], "")) not in ("", "-1")
+        ok = str(_find_key(session, recipe["success_key"]) or "") not in ("", "-1")
     if not ok:
         raise SystemExit(f"{app}: login recipe {recipe['prefix']!r} did not log in (session keys {list(session)[:12]}, "
                          f"cookies {list(cookies)}, error {(res.get('dump') or {}).get('error')})")
     KEY_DEFAULTS["value"] = recipe.get("password")
     extra["auth_cookies"] = cookies if APPS[app]["login"].get("cookies_from_login") else {}
     return session
+
+
+def _find_key(obj, key: str):
+    """`key` at the top of the session, or (OpenCart: $_SESSION[<id>][...]) at any depth."""
+    if isinstance(obj, dict):
+        if obj.get(key) not in (None, ""):
+            return obj[key]
+        for v in obj.values():
+            found = _find_key(v, key)
+            if found not in (None, ""):
+                return found
+    return None
 
 
 def auth_seed(app: str) -> dict:

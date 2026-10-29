@@ -1,7 +1,7 @@
 <?php
 
 /**
- * usage: php exec_lines.php <app-src>
+ * usage: php exec_lines.php <app-src> [php,inc]   (the PHP source extensions; default php)
  *
  * The coverage DENOMINATOR: per file, the start line of every statement that
  * is not a pure declaration, a no-op or inline HTML -- the paper's method
@@ -14,11 +14,12 @@ require_once $runtime . '/vendor/autoload.php';
 use PhpParser\{Node, NodeTraverser, NodeVisitorAbstract, ParserFactory};
 
 $root = rtrim($argv[1], '/');
+$exts = explode(',', $argv[2] ?? 'php');
 $parser = (new ParserFactory())->createForHostVersion();
 $out = [];
 $it = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($root, FilesystemIterator::SKIP_DOTS));
 foreach ($it as $f) {
-    if ($f->getExtension() !== 'php') {
+    if (!in_array($f->getExtension(), $exts, true)) {
         continue;
     }
     $visitor = new class extends NodeVisitorAbstract {

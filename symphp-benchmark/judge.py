@@ -85,13 +85,15 @@ def src_of(app: str) -> pathlib.Path:
 
 
 def work_of(app: str) -> pathlib.Path:
-    w = HERE / "build" / "judge-work" / app
+    sfx = appdb.JUDGE_INSTANCE["suffix"]
+    w = HERE / "build" / "judge-work" / (f"{app}-{sfx}" if sfx else app)
     w.mkdir(parents=True, exist_ok=True)
     return w
 
 
 def runner(app: str) -> str:
-    return f"judge-{app}-php"
+    sfx = appdb.JUDGE_INSTANCE["suffix"]
+    return f"judge-{app}-{sfx}-php" if sfx else f"judge-{app}-php"
 
 
 def ensure_runner(app: str) -> str:
@@ -193,6 +195,11 @@ def _run_cgi(app: str, req: dict, *, xdebug: bool = False, cov_out: str | None =
         env["ACE_COV_OUT"] = cov_out
         cmd = ["/usr/local/bin/php-cgi", "-d", "xdebug.mode=coverage",
                "-d", f"auto_prepend_file={HERE / 'judge_cov_prepend.php'}", *ini]
+    elif APPS[app].get("judge_cgi") == "xdebug":
+        # The image's own php-cgi (7.4.33, with pdo_mysql), Xdebug off: logins and other
+        # untraced runs of an app the trace build cannot run.
+        env["XDEBUG_MODE"] = "off"
+        cmd = ["/usr/local/bin/php-cgi", *ini]
     else:
         env["SYMPHP_TRACE"] = str(trace)
         cmd = ["/hostlib/ld-linux-x86-64.so.2", "--library-path", "/hostlib", str(CGI_REAL), "-n", *ini]
@@ -200,6 +207,22 @@ def _run_cgi(app: str, req: dict, *, xdebug: bool = False, cov_out: str | None =
             *[f"{k}={v}" for k, v in env.items()], *cmd]
     p = subprocess.run(full, input=body, capture_output=True, timeout=120)
     text = trace.read_text(errors="replace") if trace.exists() else ""
+    return p, text
+
+
+def _run_fault_cgi(app: str, req: dict):
+    """The fault replay. An app with `judge_cgi: "xdebug"` (one whose extensions the trace build
+    lacks: php-cgi-trace has no PDO) is replayed under the ace-judge-php74 php-cgi instead, and its
+    `lines` come from the same coverage-only Xdebug prepend as the coverage pass."""
+    if APPS[app].get("judge_cgi") != "xdebug":
+        return _run_cgi(app, req)
+    cov = work_of(app) / "fault_cov.json"
+    if cov.exists():
+        cov.unlink()
+    p, _ = _run_cgi(app, req, xdebug=True, cov_out=str(cov))
+    text = ""
+    if cov.exists():
+        text = "\n".join(f"{f}:{n}" for f, ns in json.loads(cov.read_text()).items() for n in ns)
     return p, text
 
 
@@ -251,7 +274,45 @@ def login_if_authenticated(app: str, req: dict) -> dict:
             login = {**login, "POST": {**login.get("POST", {}), recipe["token"]["into"]: m.group(1).decode()}}
     p, _ = _run_cgi(app, {**login, "COOKIE": jar})
     jar.update(set_cookies(p.stdout))
+    pin_session_files(app)
     return jar if APPS[app]["login"].get("cookies_from_login") else {}
+
+
+def pin_session_token(app: str, text: str) -> str:
+    """apps.json `login.pin_token` {key, value}: the session's form/CSRF token (or the key it is
+    derived from), as PHP serialized it (`key|s:N:"..."` in a session file, `s:K:"key";s:N:"..."`
+    in a serialized array), set to a fixed value. Both ACE's harness and the judge pin it right
+    after their own login, so a POST that carries the token is valid on both sides (each login
+    draws its own random token otherwise). Session STATE, never app code. `text` is latin-1
+    decoded bytes: the old value is skipped by its declared LENGTH, so a binary key works."""
+    pin = (APPS[app].get("login") or {}).get("pin_token")
+    if not pin:
+        return text
+    rx = re.compile(r'(?:^|(?<=[;}|"]))' + re.escape(pin["key"]) + r'(\||";)s:(\d+):"')
+    out, pos = [], 0
+    for m in rx.finditer(text):
+        if m.start() < pos:
+            continue
+        end = m.end() + int(m.group(2)) + 1                 # value bytes + closing quote
+        out += [text[pos:m.start()], f'{pin["key"]}{m.group(1)}s:{len(pin["value"])}:"{pin["value"]}"']
+        pos = end
+    return "".join(out) + text[pos:]
+
+
+def pin_session_db(app: str, role: str) -> None:
+    """`pin_token.db_sql`: an app whose sessions live in its DATABASE (OpenCart 3: oc_session, JSON)
+    pins the token with that statement, on the role's clone, right after the login."""
+    pin = (APPS[app].get("login") or {}).get("pin_token") or {}
+    if pin.get("db_sql"):
+        appdb.sql(appdb.container(app, role), pin["db_sql"].replace("{value}", pin["value"]), APPS[app]["db"]["database"])
+
+
+def pin_session_files(app: str) -> None:
+    pin_session_db(app, "judge")
+    if not (APPS[app].get("login") or {}).get("pin_token"):
+        return
+    for f in (work_of(app) / "sessions").glob("sess_*"):
+        f.write_bytes(pin_session_token(app, f.read_bytes().decode("latin-1")).encode("latin-1"))
 
 
 def with_cookies(req: dict, cookies: dict) -> dict:
@@ -288,10 +349,36 @@ def xss_faults(req: dict, stdout: bytes) -> list[dict]:
     return out
 
 
+#: `--reset marked` state: the login area and its cookies, valid until the next restore.
+MARKED = {"area": None, "cookies": {}, "fresh": False}
+LOGOUT = re.compile(r"(?i)logout|log_out|signout")
+
+
+def _marked_prepare(app: str, req: dict) -> dict:
+    """`--reset marked` (apps with a large snapshot, e.g. OpenEMR's 10 MB): restore the snapshot
+    and the sessions only before a request marked `"reset": true` (score.py marks every ORACLE
+    WITNESS, so each finding is still judged on the snapshot state); other requests (one per
+    explored trace) run in order on the state their predecessors left. An authenticated request
+    logs in once per area, again after every restore and after any logout-looking script."""
+    if req.get("reset"):
+        appdb.restore(app, "judge")
+        reset_sessions(app)
+        MARKED.update(area=None, cookies={})
+    if not is_authenticated(app, req):
+        return {}
+    area = login_recipe(app, req["script"])["prefix"]
+    if MARKED["area"] != area:
+        reset_sessions(app)
+        MARKED.update(area=area, cookies=login_if_authenticated(app, req))
+    return MARKED["cookies"]
+
+
 def replay_one(app: str, req: dict, reset: str = "none") -> dict:
     src = src_of(app)
     rel = lambda l: l.replace(str(src) + "/", "")                      # noqa: E731
     spec = APPS[app].get("db")
+    marked = bool(req.get("reset"))
+    req = {k: v for k, v in req.items() if k != "reset"}
     if spec:
         db = appdb.container(app, "judge")
         with appdb.lock(db):
@@ -300,10 +387,15 @@ def replay_one(app: str, req: dict, reset: str = "none") -> dict:
                 appdb.restore(app, "judge")
                 reset_sessions(app)
                 cookies = login_if_authenticated(app, req)
+            elif reset == "marked":
+                cookies = _marked_prepare(app, {**req, "reset": marked})
             appdb.clear_history(db)
-            p, text = _run_cgi(app, with_cookies(req, cookies))
+            p, text = _run_fault_cgi(app, with_cookies(req, cookies))
+            if reset == "marked" and LOGOUT.search(req["script"] + json.dumps(req.get("GET") or {})):
+                MARKED["area"] = None
             faults = [{"kind": "sql", **e} for e in
-                      appdb.statement_errors(db, spec["database"] if spec.get("schema_filter", True) else None)]
+                      appdb.statement_errors(db, spec["database"] if spec.get("schema_filter", True) else None,
+                                             spec.get("fault_exclude_errnos", ()))]
         lines = sorted(set(text.split()))
     else:
         with appdb.lock("ace-judge-mysql"), tempfile.TemporaryDirectory() as tmp:
@@ -361,7 +453,8 @@ def exec_lines(app: str) -> dict[str, list[int]]:
     root = HERE.parents[1]
     p = subprocess.run(["docker", "run", "--rm", *appdb.LOG_OPTS, "-u", f"{os.getuid()}:{os.getgid()}",
                         "-v", f"{root}:{root}", "-v", f"{src}:{src}:ro",
-                        "php:8.2-cli", "php", str(HERE / "exec_lines.php"), str(src)],
+                        "php:8.2-cli", "php", str(HERE / "exec_lines.php"), str(src),
+                        ",".join(APPS[app].get("php_exts") or ["php"])],
                        capture_output=True, text=True, check=True)
     return json.loads(p.stdout)
 
@@ -372,9 +465,11 @@ def main() -> int:
     ap.add_argument("app")
     ap.add_argument("requests", nargs="?")
     ap.add_argument("--out")
-    ap.add_argument("--reset", choices=("request", "batch", "none"))
+    ap.add_argument("--reset", choices=("request", "batch", "marked", "none"))
     ap.add_argument("--coverage", choices=("trace", "xdebug"), default="trace")
+    ap.add_argument("--instance", default="", help="judge clone judge-<app>-<N>-db / runner judge-<app>-<N>-php")
     a = ap.parse_args()
+    appdb.JUDGE_INSTANCE["suffix"] = a.instance
     if a.cmd == "setup":
         setup(a.app)
     elif a.cmd == "exec-lines":
@@ -385,13 +480,21 @@ def main() -> int:
         reset = a.reset or ("request" if has_db else "none")
         if has_db:
             ensure_runner(a.app)
+            if reset == "marked":
+                appdb.restore(a.app, "judge")
+                reset_sessions(a.app)
             if reset == "batch":
                 appdb.restore(a.app, "judge")
                 reset_sessions(a.app)
                 if reqs and is_authenticated(a.app, reqs[0]):
                     _run_cgi(a.app, login_recipe(a.app, reqs[0]["script"])["request"])
         results = [replay_one(a.app, r, reset) for r in reqs]
-        if a.coverage == "xdebug":
+        if a.coverage == "xdebug" and APPS[a.app].get("judge_cgi") == "xdebug":
+            # The fault replays already ran under Xdebug: their lines ARE the Xdebug coverage.
+            for r in results:
+                r["xdebug_lines"] = r["lines"]
+        elif a.coverage == "xdebug":
+            reqs = [{k: v for k, v in r.items() if k != "reset"} for r in reqs]
             for r, lines in zip(results, xdebug_pass(a.app, reqs)):
                 r["xdebug_lines"] = lines
         pathlib.Path(a.out).write_text(json.dumps(results, indent=1) + "\n")

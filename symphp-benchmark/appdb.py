@@ -32,10 +32,21 @@ def spec(app: str) -> dict | None:
     return APPS[app].get("db")
 
 
+#: drive.py --instance N: a further, independent ACE clone (`ace-<app>-N-db`), so several
+#: shards of one app explore in parallel, each resetting ITS OWN database per script.
+ACE_INSTANCE = {"suffix": ""}
+
+
+#: judge.py --instance N: a further judge clone (`judge-<app>-N-db`), so score.py can replay
+#: shards of one request list in parallel, each against its own server and statement history.
+JUDGE_INSTANCE = {"suffix": ""}
+
+
 def container(app: str, role: str) -> str:
-    """`ace-<app>-db` or `judge-<app>-db`."""
+    """`ace-<app>-db` / `judge-<app>-db`, or with an instance: `<role>-<app>-<N>-db`."""
     assert role in ("ace", "judge")
-    return f"{role}-{app}-db"
+    sfx = (ACE_INSTANCE if role == "ace" else JUDGE_INSTANCE)["suffix"]
+    return f"{role}-{app}-{sfx}-db" if sfx else f"{role}-{app}-db"
 
 
 def sql(name: str, text: str, db: str | None = None, check: bool = True) -> str:
@@ -72,7 +83,7 @@ def ensure(app: str, role: str) -> str:
         fresh = False
     # The image's entrypoint first runs a TEMPORARY server (no networking) to
     # initialise the datadir, then restarts; wait for the real one, on our port.
-    for _ in range(180):
+    for _ in range(900):          # a loaded host can take minutes to initialise a datadir
         logs = subprocess.run(["docker", "logs", name], capture_output=True, text=True)
         ready = f"port: {s['port']}" in (logs.stdout + logs.stderr)
         if ready and subprocess.run(["docker", "exec", name, "mysql", "-uroot", "-e", "select 1"],
@@ -100,12 +111,19 @@ def restore(app: str, role: str) -> None:
         sql(name, "\n".join(s["init_sql"]))
 
 
-def statement_errors(name: str, schema: str | None) -> list[dict]:
-    """Statement errors since the last `clear_history`, filtered to `schema` (CURRENT_SCHEMA)."""
-    where = "MYSQL_ERRNO <> 0 AND SQL_TEXT IS NOT NULL"
+def statement_errors(name: str, schema: str | None, exclude_errnos: list[int] | tuple = ()) -> list[dict]:
+    """Statement errors since the last `clear_history`, filtered to `schema` (CURRENT_SCHEMA).
+
+    A server-side PREPARE (PDO with emulated prepares off: WeBid) is recorded as
+    `statement/com/Prepare` with a NULL SQL_TEXT; its error counts too, as `(prepare)`.
+    `exclude_errnos` (apps.json `db.fault_exclude_errnos`) drops errors the app raises on
+    requests with no injected input at all (e.g. WeBid's 1055 under ONLY_FULL_GROUP_BY)."""
+    where = ("MYSQL_ERRNO <> 0 AND (SQL_TEXT IS NOT NULL OR EVENT_NAME = 'statement/com/Prepare')")
     if schema:
         where += f" AND CURRENT_SCHEMA = '{schema}'"
-    rows = sql(name, "SELECT MYSQL_ERRNO, REPLACE(REPLACE(SQL_TEXT, '\\n', ' '), '\\t', ' ') "
+    if exclude_errnos:
+        where += f" AND MYSQL_ERRNO NOT IN ({','.join(str(int(e)) for e in exclude_errnos)})"
+    rows = sql(name, "SELECT MYSQL_ERRNO, COALESCE(REPLACE(REPLACE(SQL_TEXT, '\\n', ' '), '\\t', ' '), '(prepare)') "
                      f"FROM performance_schema.events_statements_history_long WHERE {where};")
     return [{"errno": int(r.split("\t", 1)[0]), "sql": r.split("\t", 1)[1]} for r in rows.splitlines() if r]
 

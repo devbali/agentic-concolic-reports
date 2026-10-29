@@ -37,6 +37,7 @@
 
 define('ACE_HARNESS_LIB', true);
 require __DIR__ . '/harness.php';
+require __DIR__ . '/harness_db.php';
 
 use Concolic\Runtime;
 use Concolic\Template;
@@ -153,7 +154,16 @@ AceState::$rt->templates = true;
 AceState::$rt->concretizeUnmodelled = (bool) (AceState::$request['flags']['concretize'] ?? false);
 AceState::$rt->sanitizers = (bool) (AceState::$request['flags']['sanitizers'] ?? false);     // E5
 AceState::$rt->outputEvents = (bool) (AceState::$request['flags']['outputEvents'] ?? false);   // E6
+AceState::$rt->templateSplit = (bool) (AceState::$request['flags']['templateSplit'] ?? false); // explode() keeps template parts
+if (!empty(AceState::$request['flags']['evalInstrument'])) {
+    // eval'd code gets the copy's own targets and options (instrument_app.php --eval-instrument).
+    require_once dirname(__DIR__, 2) . '/agentic_concolic_engine/runtimes/php_runtime/vendor/autoload.php';
+    AceState::$rt->evalInstrument = [array_fill_keys(app_targets(), true), AceState::$request['flags']['evalInstrument']];
+}
 Runtime::$php7Compare = (bool) (AceState::$request['flags']['php7Compare'] ?? false);
+if (Runtime::$php7Compare) {
+    require __DIR__ . '/harness_php7.php';    // PHP 7.4 functions PHP 8 removed (get_magic_quotes_gpc, each, ...)
+}
 AceState::$sinks = [];
 AceState::$standins = [];
 
@@ -227,6 +237,9 @@ AceState::$standins = [];
             return ['value' => $value, 'summary' => ['args' => $plain]];
         });
     }
+    // E7: object-style PDO/mysqli sinks (used only by a copy instrumented with --db-classes).
+    ace_db_register($rt, $sinks);
+    $rt->locationSkipFiles = [__DIR__ . '/harness_db.php'];
 })(AceState::$rt, AceState::$sinks, AceState::$standins);
 
 $__ace_seeds = $__ace_types = AceState::$names = [];

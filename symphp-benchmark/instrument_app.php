@@ -17,6 +17,9 @@
  * --switch-cmp    switch cases compare through __cmp (implied by --php7compat)
  * --superglobal-reads  decision (b) array mode: direct superglobal reads -> __sg_key probe
  * --real-app-builtins   route type predicates (is_scalar, gettype, ...) through __fn
+ * --ext=php,inc  the PHP source extensions to instrument (default php; OpenEMR's library/*.inc)
+ * --eval-instrument  eval'd code is instrumented at run time (WeBid's admin templates)
+ * --db-classes    E7: `new PDO`/`new mysqli` -> AcePDO/AceMysqli (harness_db.php), object-style SQL sinks
  * Every rewrite an option performs is counted, per file and in total.
  */
 
@@ -24,6 +27,12 @@ $runtime = getenv('ACE_PHP_RUNTIME') ?: dirname(__DIR__, 2) . '/agentic_concolic
 require_once $runtime . '/vendor/autoload.php';
 require_once $runtime . '/src/autoload.php';
 
+$exts = ['php'];
+foreach (array_slice($argv, 1) as $a) {
+    if (str_starts_with($a, '--ext=')) {
+        $exts = explode(',', substr($a, 6));
+    }
+}
 $flags = array_values(array_filter(array_slice($argv, 1), fn($a) => str_starts_with($a, '--')));
 $pos = array_values(array_filter(array_slice($argv, 1), fn($a) => !str_starts_with($a, '--')));
 [$src, $build] = $pos + [null, null];
@@ -37,6 +46,10 @@ $options = [
     'switchCmp' => in_array('--switch-cmp', $flags, true),
     'superglobalReads' => in_array('--superglobal-reads', $flags, true),
     'realAppBuiltins' => in_array('--real-app-builtins', $flags, true),
+    // E7: `new PDO`/`new mysqli` -> harness_db.php's recording subclasses.
+    // eval(E) -> eval(\__ace_eval_src(E)); harness_app.php instruments the source at run time.
+    'evalInstrument' => in_array('--eval-instrument', $flags, true),
+    'newClassMap' => in_array('--db-classes', $flags, true) ? ['pdo' => '\\AcePDO', 'mysqli' => '\\AceMysqli'] : [],
 ];
 
 if (in_array('--app-targets', $flags, true)) {
@@ -75,7 +88,7 @@ $rewrites_total = [];
 $rewrites_by_file = [];
 $it = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($build, FilesystemIterator::SKIP_DOTS));
 foreach ($it as $file) {
-    if (!$file->isFile() || $file->getExtension() !== 'php') {
+    if (!$file->isFile() || !in_array($file->getExtension(), $exts, true)) {
         continue;
     }
     $path = $file->getPathname();

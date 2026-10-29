@@ -81,6 +81,9 @@ def main() -> int:
     ap.add_argument("label")
     ap.add_argument("requests", nargs="?")
     ap.add_argument("--coverage", choices=("trace", "xdebug"), default="trace")
+    ap.add_argument("--judge-shards", type=int, default=1, help="replay with K parallel judge instances")
+    ap.add_argument("--reset", choices=("request", "batch", "marked", "none"),
+                    help="judge.py's reset policy (default: request for a db app)")
     a = ap.parse_args()
     app, label = a.app, a.label
     arms_of: dict[str, set] = {}
@@ -98,8 +101,43 @@ def main() -> int:
     tag = label.replace(":", "_").replace("+", "_")
     (work / f"requests_{tag}.json").write_text(json.dumps(reqs, indent=1) + "\n")
     replay = work / f"replay_{tag}.json"
-    subprocess.run([sys.executable, str(HERE / "judge.py"), "replay", app,
-                    str(work / f"requests_{tag}.json"), "--out", str(replay), "--coverage", a.coverage], check=True)
+    sent = work / f"requests_{tag}.json"
+    if a.reset == "marked" and label.startswith("ace:"):
+        # Every oracle witness is replayed on a freshly restored snapshot (judge.py --reset marked).
+        witness = {json.dumps(f["request"], sort_keys=True) for arm in label[4:].split("+") for f in ace_findings(app, arm)}
+        sent = work / f"requests_{tag}.marked.json"
+        sent.write_text(json.dumps([{**r, "reset": True} if json.dumps(r, sort_keys=True) in witness else r
+                                    for r in reqs], indent=1) + "\n")
+    extra = ["--coverage", a.coverage, *(["--reset", a.reset] if a.reset else [])]
+    if a.judge_shards > 1:
+        # K judge instances (own clone DB, runner, statement history), each replaying one
+        # CONTIGUOUS slice of the list in order; results are concatenated back in order.
+        allreqs = json.loads(sent.read_text())
+        k = a.judge_shards
+        size = -(-len(allreqs) // k)
+        procs, parts = [], []
+        for i in range(k):
+            part = sent.with_suffix(f".j{i}.json")
+            part.write_text(json.dumps(allreqs[i * size:(i + 1) * size]))
+            out = replay.with_suffix(f".j{i}.json")
+            parts.append(out)
+            try:
+                if out.exists() and [r["request"] for r in json.loads(out.read_text())] == \
+                        [{k: v for k, v in r.items() if k != "reset"} for r in allreqs[i * size:(i + 1) * size]]:
+                    continue                     # this slice was already replayed (a resumed score)
+            except (json.JSONDecodeError, KeyError):
+                pass
+            procs.append(subprocess.Popen([sys.executable, str(HERE / "judge.py"), "replay", app, str(part),
+                                           "--out", str(out), "--instance", f"j{i}", *extra]))
+        if any(p.wait() != 0 for p in procs):
+            raise SystemExit("a judge shard failed")
+        results = [r for out in parts for r in json.loads(out.read_text())]
+        replay.write_text(json.dumps(results, indent=1) + "\n")
+        for f in [*parts, *(sent.with_suffix(f".j{i}.json") for i in range(k))]:
+            f.unlink(missing_ok=True)
+    else:
+        subprocess.run([sys.executable, str(HERE / "judge.py"), "replay", app, str(sent), "--out", str(replay),
+                        *extra], check=True)
     results = json.loads(replay.read_text())
 
     exec_cache = work / "exec_lines.json"
@@ -139,7 +177,9 @@ def main() -> int:
     if a.coverage == "xdebug":
         xcov = {l for r in results for l in r.get("xdebug_lines", [])} & executable
         row |= {"xdebug_coverage_pct": round(100 * len(xcov) / len(executable), 2) if executable else None,
-                "xdebug_covered_lines": len(xcov), "xdebug_method": "auto_prepend_file (coverage-only, outside docroot)"}
+                "xdebug_covered_lines": len(xcov), "xdebug_method": "auto_prepend_file (coverage-only, outside docroot)"
+                + ("; the fault replays themselves ran under it (judge_cgi xdebug), so trace == xdebug"
+                   if APPS[app].get("judge_cgi") == "xdebug" else "")}
     if len(label[4:].split("+")) > 1 and label.startswith("ace:"):
         # Decision (e): each arm separately, from the SAME replay (each request is judged once).
         row["arms"] = {}
