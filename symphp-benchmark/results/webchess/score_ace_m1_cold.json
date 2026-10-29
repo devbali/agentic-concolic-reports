@@ -1,0 +1,181 @@
+{
+ "app": "webchess",
+ "tool": "ace:m1_cold",
+ "requests": 141,
+ "findings": 20,
+ "findings_judge_confirmed": 20,
+ "findings_unconfirmed": [],
+ "faulting_requests": 32,
+ "detected": 6,
+ "known": 10,
+ "cves_detected": 2,
+ "cves_known": 2,
+ "cves": {
+  "CVE-2019-20896": true,
+  "CVE-2023-22959": true
+ },
+ "coverage_pct": 32.38,
+ "covered_lines": 620,
+ "executable_lines": 1915,
+ "vulns": [
+  {
+   "id": "WC-1",
+   "cve": [
+    "CVE-2019-20896"
+   ],
+   "type": "sqli",
+   "sink": "mainmenu.php:315",
+   "auth": "none",
+   "detected": true,
+   "witness": {
+    "script": "mainmenu.php",
+    "GET": {},
+    "POST": {
+     "ToDo": "ResponseToInvite"
+    },
+    "COOKIE": {}
+   }
+  },
+  {
+   "id": "WC-2",
+   "cve": [
+    "CVE-2019-20896"
+   ],
+   "type": "sqli",
+   "sink": "mainmenu.php:304",
+   "auth": "none",
+   "detected": true,
+   "witness": {
+    "script": "mainmenu.php",
+    "GET": {},
+    "POST": {
+     "ToDo": "ResponseToInvite",
+     "gameID": "",
+     "messageFrom": "",
+     "response": "accepted"
+    },
+    "COOKIE": {}
+   }
+  },
+  {
+   "id": "WC-3",
+   "cve": [
+    "CVE-2019-20896"
+   ],
+   "type": "sqli",
+   "sink": "opponentspassword.php:65",
+   "auth": "user",
+   "detected": false,
+   "witness": null
+  },
+  {
+   "id": "WC-4",
+   "cve": [
+    "CVE-2019-20896"
+   ],
+   "type": "sqli",
+   "sink": "chess.php:56",
+   "auth": "user",
+   "detected": false,
+   "witness": null
+  },
+  {
+   "id": "WC-5",
+   "cve": [
+    "CVE-2019-20896"
+   ],
+   "type": "sqli",
+   "sink": "mainmenu.php:261",
+   "auth": "none",
+   "detected": true,
+   "witness": {
+    "script": "mainmenu.php",
+    "GET": {},
+    "POST": {
+     "ToDo": "InvitePlayer"
+    },
+    "COOKIE": {}
+   }
+  },
+  {
+   "id": "WC-6",
+   "cve": [
+    "CVE-2019-20896"
+   ],
+   "type": "sqli",
+   "sink": "viewmessage.php:63",
+   "auth": "none",
+   "detected": true,
+   "witness": {
+    "script": "viewmessage.php",
+    "GET": {},
+    "POST": {
+     "messageID": ""
+    },
+    "COOKIE": {}
+   }
+  },
+  {
+   "id": "WC-7",
+   "cve": [
+    "CVE-2019-20896"
+   ],
+   "type": "sqli",
+   "sink": "mainmenu.php:481",
+   "auth": "none",
+   "detected": true,
+   "witness": {
+    "script": "mainmenu.php",
+    "GET": {},
+    "POST": {
+     "ToDo": "HideMessage"
+    },
+    "COOKIE": {}
+   }
+  },
+  {
+   "id": "WC-8",
+   "cve": [
+    "CVE-2019-20896"
+   ],
+   "type": "sqli",
+   "sink": "sendmessage.php:75",
+   "auth": "user",
+   "detected": false,
+   "witness": null
+  },
+  {
+   "id": "WC-9",
+   "cve": [
+    "CVE-2023-22959"
+   ],
+   "type": "sqli",
+   "sink": "mainmenu.php:384",
+   "auth": "user",
+   "detected": false,
+   "witness": null
+  },
+  {
+   "id": "WC-10",
+   "cve": [
+    "CVE-2023-22959"
+   ],
+   "type": "sqli",
+   "sink": "mainmenu.php:104",
+   "auth": "none",
+   "detected": true,
+   "witness": {
+    "script": "mainmenu.php",
+    "GET": {},
+    "POST": {
+     "ToDo": "NewUser",
+     "txtNick": "'"
+    },
+    "COOKIE": {}
+   }
+  }
+ ],
+ "xdebug_coverage_pct": 33.58,
+ "xdebug_covered_lines": 643,
+ "xdebug_method": "auto_prepend_file (coverage-only, outside docroot)"
+}

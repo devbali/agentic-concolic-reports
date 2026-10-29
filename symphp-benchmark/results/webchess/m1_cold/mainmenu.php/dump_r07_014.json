@@ -1,0 +1,955 @@
+{
+ "schema_version": "1.4",
+ "label": "r07_014",
+ "symbolic_vars": [
+  {
+   "name": "POST_ToDo",
+   "type": "str?",
+   "sort": "String",
+   "value": "NewUser",
+   "origin": {
+    "kind": "input",
+    "name": "POST_ToDo"
+   }
+  },
+  {
+   "name": "POST_color",
+   "type": "str?",
+   "sort": "String",
+   "value": null,
+   "origin": {
+    "kind": "input",
+    "name": "POST_color"
+   }
+  },
+  {
+   "name": "POST_gameID",
+   "type": "str?",
+   "sort": "String",
+   "value": null,
+   "origin": {
+    "kind": "input",
+    "name": "POST_gameID"
+   }
+  },
+  {
+   "name": "POST_messageFrom",
+   "type": "str?",
+   "sort": "String",
+   "value": null,
+   "origin": {
+    "kind": "input",
+    "name": "POST_messageFrom"
+   }
+  },
+  {
+   "name": "POST_messageID",
+   "type": "str?",
+   "sort": "String",
+   "value": null,
+   "origin": {
+    "kind": "input",
+    "name": "POST_messageID"
+   }
+  },
+  {
+   "name": "POST_opponent",
+   "type": "str?",
+   "sort": "String",
+   "value": null,
+   "origin": {
+    "kind": "input",
+    "name": "POST_opponent"
+   }
+  },
+  {
+   "name": "POST_pwdOldPassword",
+   "type": "str?",
+   "sort": "String",
+   "value": null,
+   "origin": {
+    "kind": "input",
+    "name": "POST_pwdOldPassword"
+   }
+  },
+  {
+   "name": "POST_rdoHistory",
+   "type": "str?",
+   "sort": "String",
+   "value": null,
+   "origin": {
+    "kind": "input",
+    "name": "POST_rdoHistory"
+   }
+  },
+  {
+   "name": "POST_rdoHistorylayout",
+   "type": "str?",
+   "sort": "String",
+   "value": null,
+   "origin": {
+    "kind": "input",
+    "name": "POST_rdoHistorylayout"
+   }
+  },
+  {
+   "name": "POST_rdoTheme",
+   "type": "str?",
+   "sort": "String",
+   "value": null,
+   "origin": {
+    "kind": "input",
+    "name": "POST_rdoTheme"
+   }
+  },
+  {
+   "name": "POST_replayAll",
+   "type": "str?",
+   "sort": "String",
+   "value": null,
+   "origin": {
+    "kind": "input",
+    "name": "POST_replayAll"
+   }
+  },
+  {
+   "name": "POST_response",
+   "type": "str?",
+   "sort": "String",
+   "value": null,
+   "origin": {
+    "kind": "input",
+    "name": "POST_response"
+   }
+  },
+  {
+   "name": "POST_txtNick",
+   "type": "str?",
+   "sort": "String",
+   "value": "A",
+   "origin": {
+    "kind": "input",
+    "name": "POST_txtNick"
+   }
+  },
+  {
+   "name": "POST_txtReload",
+   "type": "str?",
+   "sort": "String",
+   "value": null,
+   "origin": {
+    "kind": "input",
+    "name": "POST_txtReload"
+   }
+  },
+  {
+   "name": "POST_userLevel",
+   "type": "str?",
+   "sort": "String",
+   "value": null,
+   "origin": {
+    "kind": "input",
+    "name": "POST_userLevel"
+   }
+  }
+ ],
+ "events": [
+  {
+   "type": "concrete_call",
+   "target": "session_start",
+   "args": {},
+   "summary": {
+    "args": []
+   },
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_cold/mainmenu.php",
+   "lineno": 22,
+   "function": "include"
+  },
+  {
+   "type": "concrete_call",
+   "target": "mysqli_query",
+   "args": {
+    "tmpQuery": {
+     "lit": {
+      "sort": "str",
+      "value": "SELECT gameID FROM games WHERE lastMove < '2026-10-15'"
+     }
+    }
+   },
+   "note": "SELECT gameID FROM games WHERE lastMove < '2026-10-15'",
+   "summary": {
+    "text": "SELECT gameID FROM games WHERE lastMove < '2026-10-15'",
+    "ok": true,
+    "errno": 0,
+    "error": "",
+    "rows": 0
+   },
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_cold/mainmenu.php",
+   "lineno": 59,
+   "function": "include"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "POST_ToDo"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": false,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_cold/mainmenu.php",
+   "lineno": 81,
+   "function": "include"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "POST_ToDo"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": false,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_cold/mainmenu.php",
+   "lineno": 86,
+   "function": "include"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "and",
+    "args": [
+     {
+      "op": "not",
+      "args": [
+       {
+        "op": "==",
+        "args": [
+         {
+          "sym": "POST_ToDo"
+         },
+         {
+          "lit": {
+           "sort": "null"
+          }
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "op": "==",
+      "args": [
+       {
+        "sym": "POST_ToDo"
+       },
+       {
+        "lit": {
+         "sort": "str",
+         "value": "NewUser"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "taken": true,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_cold/mainmenu.php",
+   "lineno": 86,
+   "function": "include"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "POST_txtNick"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": false,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_cold/mainmenu.php",
+   "lineno": 91,
+   "function": "include"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "and",
+    "args": [
+     {
+      "op": "not",
+      "args": [
+       {
+        "op": "==",
+        "args": [
+         {
+          "sym": "POST_txtNick"
+         },
+         {
+          "lit": {
+           "sort": "null"
+          }
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "op": "==",
+      "args": [
+       {
+        "sym": "POST_txtNick"
+       },
+       {
+        "lit": {
+         "sort": "str",
+         "value": ""
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "taken": false,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_cold/mainmenu.php",
+   "lineno": 91,
+   "function": "include"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "POST_txtNick"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": false,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_cold/mainmenu.php",
+   "lineno": 95,
+   "function": "include"
+  },
+  {
+   "type": "concrete_call",
+   "target": "mysqli_query",
+   "args": {},
+   "note": "{\"refs\":{\"p0\":\"POST_txtNick\"},\"text\":\"SELECT playerID FROM players WHERE nick = '$$(p0)'\"}",
+   "summary": {
+    "text": "SELECT playerID FROM players WHERE nick = 'A'",
+    "ok": true,
+    "errno": 0,
+    "error": "",
+    "rows": 0
+   },
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_cold/mainmenu.php",
+   "lineno": 96,
+   "function": "include"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "POST_txtNick"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": false,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_cold/mainmenu.php",
+   "lineno": 104,
+   "function": "include"
+  },
+  {
+   "type": "concrete_call",
+   "target": "mysqli_query",
+   "args": {},
+   "note": "{\"refs\":{\"p1\":\"POST_txtNick\"},\"text\":\"INSERT INTO players (password, firstName, lastName, nick) VALUES ('$2y$10$p4aLYgJmyMMY4SpCJVf4x.NPz0F/l3h93O4u6jshFDeeS6r2SRzTm', '', '', '$$(p1)')\"}",
+   "summary": {
+    "text": "INSERT INTO players (password, firstName, lastName, nick) VALUES ('$2y$10$p4aLYgJmyMMY4SpCJVf4x.NPz0F/l3h93O4u6jshFDeeS6r2SRzTm', '', '', 'A')",
+    "ok": true,
+    "errno": 0,
+    "error": "",
+    "rows": 1
+   },
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_cold/mainmenu.php",
+   "lineno": 105,
+   "function": "include"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "POST_rdoHistory"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": true,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_cold/mainmenu.php",
+   "lineno": 112,
+   "function": "include"
+  },
+  {
+   "type": "concrete_call",
+   "target": "mysqli_query",
+   "args": {
+    "tmpQuery": {
+     "sym": "POST_rdoHistory"
+    }
+   },
+   "note": "{\"refs\":{\"p2\":\"POST_rdoHistory\"},\"text\":\"$$(p2)\"}",
+   "summary": {
+    "text": "",
+    "value_error": "mysqli_query(): Argument #2 ($query) cannot be empty",
+    "ok": false,
+    "errno": 0,
+    "error": "",
+    "rows": 1
+   },
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_cold/mainmenu.php",
+   "lineno": 113,
+   "function": "include"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "POST_rdoHistorylayout"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": true,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_cold/mainmenu.php",
+   "lineno": 116,
+   "function": "include"
+  },
+  {
+   "type": "concrete_call",
+   "target": "mysqli_query",
+   "args": {
+    "tmpQuery": {
+     "sym": "POST_rdoHistorylayout"
+    }
+   },
+   "note": "{\"refs\":{\"p3\":\"POST_rdoHistorylayout\"},\"text\":\"$$(p3)\"}",
+   "summary": {
+    "text": "",
+    "value_error": "mysqli_query(): Argument #2 ($query) cannot be empty",
+    "ok": false,
+    "errno": 0,
+    "error": "",
+    "rows": 1
+   },
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_cold/mainmenu.php",
+   "lineno": 117,
+   "function": "include"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "POST_rdoTheme"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": true,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_cold/mainmenu.php",
+   "lineno": 120,
+   "function": "include"
+  },
+  {
+   "type": "concrete_call",
+   "target": "mysqli_query",
+   "args": {
+    "tmpQuery": {
+     "sym": "POST_rdoTheme"
+    }
+   },
+   "note": "{\"refs\":{\"p4\":\"POST_rdoTheme\"},\"text\":\"$$(p4)\"}",
+   "summary": {
+    "text": "",
+    "value_error": "mysqli_query(): Argument #2 ($query) cannot be empty",
+    "ok": false,
+    "errno": 0,
+    "error": "",
+    "rows": 1
+   },
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_cold/mainmenu.php",
+   "lineno": 121,
+   "function": "include"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "POST_txtReload"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": true,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_cold/mainmenu.php",
+   "lineno": 128,
+   "function": "include"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "POST_txtNick"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": false,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_cold/mainmenu.php",
+   "lineno": 149,
+   "function": "include"
+  },
+  {
+   "type": "concrete_call",
+   "target": "mysqli_query",
+   "args": {},
+   "note": "{\"refs\":{\"p5\":\"POST_txtNick\"},\"text\":\"SELECT * FROM players WHERE nick = '$$(p5)'\"}",
+   "summary": {
+    "text": "SELECT * FROM players WHERE nick = 'A'",
+    "ok": true,
+    "errno": 0,
+    "error": "",
+    "rows": 1
+   },
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_cold/mainmenu.php",
+   "lineno": 150,
+   "function": "include"
+  },
+  {
+   "type": "concrete_call",
+   "target": "mysqli_query",
+   "args": {
+    "tmpQuery": {
+     "lit": {
+      "sort": "str",
+      "value": "SELECT * FROM preferences WHERE playerID = 3"
+     }
+    }
+   },
+   "note": "SELECT * FROM preferences WHERE playerID = 3",
+   "summary": {
+    "text": "SELECT * FROM preferences WHERE playerID = 3",
+    "ok": true,
+    "errno": 0,
+    "error": "",
+    "rows": 0
+   },
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_cold/mainmenu.php",
+   "lineno": 174,
+   "function": "include"
+  },
+  {
+   "type": "concrete_call",
+   "target": "mysqli_query",
+   "args": {
+    "tmpQuery": {
+     "lit": {
+      "sort": "str",
+      "value": "INSERT INTO preferences (playerID, preference, value) VALUES (3, 'history', 'pgn')"
+     }
+    }
+   },
+   "note": "INSERT INTO preferences (playerID, preference, value) VALUES (3, 'history', 'pgn')",
+   "summary": {
+    "text": "INSERT INTO preferences (playerID, preference, value) VALUES (3, 'history', 'pgn')",
+    "ok": true,
+    "errno": 0,
+    "error": "",
+    "rows": 1
+   },
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_cold/mainmenu.php",
+   "lineno": 243,
+   "function": "include"
+  },
+  {
+   "type": "concrete_call",
+   "target": "mysqli_query",
+   "args": {
+    "tmpQuery": {
+     "lit": {
+      "sort": "str",
+      "value": "INSERT INTO preferences (playerID, preference, value) VALUES (3, 'historylayout', 'columns')"
+     }
+    }
+   },
+   "note": "INSERT INTO preferences (playerID, preference, value) VALUES (3, 'historylayout', 'columns')",
+   "summary": {
+    "text": "INSERT INTO preferences (playerID, preference, value) VALUES (3, 'historylayout', 'columns')",
+    "ok": true,
+    "errno": 0,
+    "error": "",
+    "rows": 1
+   },
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_cold/mainmenu.php",
+   "lineno": 243,
+   "function": "include"
+  },
+  {
+   "type": "concrete_call",
+   "target": "mysqli_query",
+   "args": {
+    "tmpQuery": {
+     "lit": {
+      "sort": "str",
+      "value": "INSERT INTO preferences (playerID, preference, value) VALUES (3, 'theme', 'gnuchess_simple')"
+     }
+    }
+   },
+   "note": "INSERT INTO preferences (playerID, preference, value) VALUES (3, 'theme', 'gnuchess_simple')",
+   "summary": {
+    "text": "INSERT INTO preferences (playerID, preference, value) VALUES (3, 'theme', 'gnuchess_simple')",
+    "ok": true,
+    "errno": 0,
+    "error": "",
+    "rows": 1
+   },
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_cold/mainmenu.php",
+   "lineno": 243,
+   "function": "include"
+  },
+  {
+   "type": "concrete_call",
+   "target": "mysqli_query",
+   "args": {
+    "tmpQuery": {
+     "lit": {
+      "sort": "str",
+      "value": "INSERT INTO preferences (playerID, preference, value) VALUES (3, 'autoreload', '10')"
+     }
+    }
+   },
+   "note": "INSERT INTO preferences (playerID, preference, value) VALUES (3, 'autoreload', '10')",
+   "summary": {
+    "text": "INSERT INTO preferences (playerID, preference, value) VALUES (3, 'autoreload', '10')",
+    "ok": true,
+    "errno": 0,
+    "error": "",
+    "rows": 1
+   },
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_cold/mainmenu.php",
+   "lineno": 243,
+   "function": "include"
+  },
+  {
+   "type": "concrete_call",
+   "target": "mysqli_query",
+   "args": {
+    "tmpQuery": {
+     "lit": {
+      "sort": "str",
+      "value": "INSERT INTO preferences (playerID, preference, value) VALUES (3, 'emailnotification', '')"
+     }
+    }
+   },
+   "note": "INSERT INTO preferences (playerID, preference, value) VALUES (3, 'emailnotification', '')",
+   "summary": {
+    "text": "INSERT INTO preferences (playerID, preference, value) VALUES (3, 'emailnotification', '')",
+    "ok": true,
+    "errno": 0,
+    "error": "",
+    "rows": 1
+   },
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_cold/mainmenu.php",
+   "lineno": 243,
+   "function": "include"
+  },
+  {
+   "type": "concrete_call",
+   "target": "mysqli_query",
+   "args": {
+    "tmpQuery": {
+     "lit": {
+      "sort": "str",
+      "value": "INSERT INTO preferences (playerID, preference, value) VALUES (3, 'replayall', 'false')"
+     }
+    }
+   },
+   "note": "INSERT INTO preferences (playerID, preference, value) VALUES (3, 'replayall', 'false')",
+   "summary": {
+    "text": "INSERT INTO preferences (playerID, preference, value) VALUES (3, 'replayall', 'false')",
+    "ok": true,
+    "errno": 0,
+    "error": "",
+    "rows": 1
+   },
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_cold/mainmenu.php",
+   "lineno": 243,
+   "function": "include"
+  },
+  {
+   "type": "concrete_call",
+   "target": "mysqli_query",
+   "args": {
+    "tmpQuery": {
+     "lit": {
+      "sort": "str",
+      "value": "SELECT playerID, nick, userlevel FROM players WHERE playerID != 3"
+     }
+    }
+   },
+   "note": "SELECT playerID, nick, userlevel FROM players WHERE playerID != 3",
+   "summary": {
+    "text": "SELECT playerID, nick, userlevel FROM players WHERE playerID != 3",
+    "ok": true,
+    "errno": 0,
+    "error": "",
+    "rows": 2
+   },
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_cold/mainmenu.php",
+   "lineno": 873,
+   "function": "include"
+  },
+  {
+   "type": "concrete_call",
+   "target": "mysqli_query",
+   "args": {
+    "tmpQuery": {
+     "lit": {
+      "sort": "str",
+      "value": "SELECT * FROM games WHERE gameMessage = 'playerInvited' AND ((whitePlayer = 3 AND messageFrom = 'black') OR (blackPlayer = 3 AND messageFrom = 'white')) ORDER BY dateCreated"
+     }
+    }
+   },
+   "note": "SELECT * FROM games WHERE gameMessage = 'playerInvited' AND ((whitePlayer = 3 AND messageFrom = 'black') OR (blackPlayer = 3 AND messageFrom = 'white')) ORDER BY dateCreated",
+   "summary": {
+    "text": "SELECT * FROM games WHERE gameMessage = 'playerInvited' AND ((whitePlayer = 3 AND messageFrom = 'black') OR (blackPlayer = 3 AND messageFrom = 'white')) ORDER BY dateCreated",
+    "ok": true,
+    "errno": 0,
+    "error": "",
+    "rows": 0
+   },
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_cold/mainmenu.php",
+   "lineno": 935,
+   "function": "include"
+  },
+  {
+   "type": "concrete_call",
+   "target": "mysqli_query",
+   "args": {
+    "tmpQuery": {
+     "lit": {
+      "sort": "str",
+      "value": "SELECT * FROM games WHERE (gameMessage = 'playerInvited' AND ((whitePlayer = 3 AND messageFrom = 'white') OR (blackPlayer = 3 AND messageFrom = 'black'))) OR (gameMessage = 'inviteDeclined' AND ((whitePlayer = 3 AND messageFrom = 'black') OR (blackPlayer = 3 AND messageFrom = 'white')))  ORDER BY dateCreated"
+     }
+    }
+   },
+   "note": "SELECT * FROM games WHERE (gameMessage = 'playerInvited' AND ((whitePlayer = 3 AND messageFrom = 'white') OR (blackPlayer = 3 AND messageFrom = 'black'))) OR (gameMessage = 'inviteDeclined' AND ((whitePlayer = 3 AND messageFrom = 'black') OR (blackPlayer = 3 AND messageFrom = 'white')))  ORDER BY dateCreated",
+   "summary": {
+    "text": "SELECT * FROM games WHERE (gameMessage = 'playerInvited' AND ((whitePlayer = 3 AND messageFrom = 'white') OR (blackPlayer = 3 AND messageFrom = 'black'))) OR (gameMessage = 'inviteDeclined' AND ((whitePlayer = 3 AND messageFrom = 'black') OR (blackPlayer = 3 AND messageFrom = 'white')))  ORDER BY dateCreated",
+    "ok": true,
+    "errno": 0,
+    "error": "",
+    "rows": 0
+   },
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_cold/mainmenu.php",
+   "lineno": 1011,
+   "function": "include"
+  },
+  {
+   "type": "concrete_call",
+   "target": "mysqli_query",
+   "args": {
+    "arg1": {
+     "lit": {
+      "sort": "str",
+      "value": "SELECT * FROM games WHERE gameMessage = '' AND (whitePlayer = 3 OR blackPlayer = 3) ORDER BY dateCreated"
+     }
+    }
+   },
+   "note": "SELECT * FROM games WHERE gameMessage = '' AND (whitePlayer = 3 OR blackPlayer = 3) ORDER BY dateCreated",
+   "summary": {
+    "text": "SELECT * FROM games WHERE gameMessage = '' AND (whitePlayer = 3 OR blackPlayer = 3) ORDER BY dateCreated",
+    "ok": true,
+    "errno": 0,
+    "error": "",
+    "rows": 0
+   },
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_cold/mainmenu.php",
+   "lineno": 1101,
+   "function": "include"
+  },
+  {
+   "type": "concrete_call",
+   "target": "mysqli_query",
+   "args": {
+    "tmpQuery": {
+     "lit": {
+      "sort": "str",
+      "value": "SELECT playerID, nick FROM players WHERE playerID <> 3"
+     }
+    }
+   },
+   "note": "SELECT playerID, nick FROM players WHERE playerID <> 3",
+   "summary": {
+    "text": "SELECT playerID, nick FROM players WHERE playerID <> 3",
+    "ok": true,
+    "errno": 0,
+    "error": "",
+    "rows": 2
+   },
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_cold/mainmenu.php",
+   "lineno": 1209,
+   "function": "include"
+  },
+  {
+   "type": "concrete_call",
+   "target": "mysqli_query",
+   "args": {
+    "SqlQuery": {
+     "lit": {
+      "sort": "str",
+      "value": "SELECT * FROM communication left join players on communication.fromID=players.playerID WHERE ((toID is null) or (toID=3)) and ((fromID is null) or (fromID=playerID)) and ack=0 and gameID is null order by communication.postDate desc;"
+     }
+    }
+   },
+   "note": "SELECT * FROM communication left join players on communication.fromID=players.playerID WHERE ((toID is null) or (toID=3)) and ((fromID is null) or (fromID=playerID)) and ack=0 and gameID is null order by communication.postDate desc;",
+   "summary": {
+    "text": "SELECT * FROM communication left join players on communication.fromID=players.playerID WHERE ((toID is null) or (toID=3)) and ((fromID is null) or (fromID=playerID)) and ack=0 and gameID is null order by communication.postDate desc;",
+    "ok": true,
+    "errno": 0,
+    "error": "",
+    "rows": 0
+   },
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_cold/mainmenu.php",
+   "lineno": 1247,
+   "function": "include"
+  },
+  {
+   "type": "concrete_call",
+   "target": "mysqli_query",
+   "args": {
+    "arg1": {
+     "lit": {
+      "sort": "str",
+      "value": "SELECT * FROM games WHERE (gameMessage <> '' AND gameMessage <> 'playerInvited' AND gameMessage <> 'inviteDeclined') AND (whitePlayer = 3 OR blackPlayer = 3) ORDER BY lastMove DESC"
+     }
+    }
+   },
+   "note": "SELECT * FROM games WHERE (gameMessage <> '' AND gameMessage <> 'playerInvited' AND gameMessage <> 'inviteDeclined') AND (whitePlayer = 3 OR blackPlayer = 3) ORDER BY lastMove DESC",
+   "summary": {
+    "text": "SELECT * FROM games WHERE (gameMessage <> '' AND gameMessage <> 'playerInvited' AND gameMessage <> 'inviteDeclined') AND (whitePlayer = 3 OR blackPlayer = 3) ORDER BY lastMove DESC",
+    "ok": true,
+    "errno": 0,
+    "error": "",
+    "rows": 0
+   },
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_cold/mainmenu.php",
+   "lineno": 1331,
+   "function": "include"
+  }
+ ],
+ "types": {},
+ "declarations": {
+  "system": {
+   "kind": "target_function"
+  },
+  "exec": {
+   "kind": "target_function"
+  },
+  "shell_exec": {
+   "kind": "target_function"
+  },
+  "passthru": {
+   "kind": "target_function"
+  },
+  "popen": {
+   "kind": "target_function"
+  },
+  "proc_open": {
+   "kind": "target_function"
+  }
+ },
+ "request": {
+  "GET": {},
+  "POST": {
+   "ToDo": "NewUser",
+   "color": null,
+   "gameID": null,
+   "messageFrom": null,
+   "messageID": null,
+   "opponent": null,
+   "pwdOldPassword": null,
+   "rdoHistory": null,
+   "rdoHistorylayout": null,
+   "rdoTheme": null,
+   "replayAll": null,
+   "response": null,
+   "txtNick": "A",
+   "txtReload": null,
+   "userLevel": null
+  },
+  "COOKIE": {}
+ }
+}

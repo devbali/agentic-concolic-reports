@@ -56,6 +56,19 @@ def ace_requests(app: str, arm: str) -> list[dict]:
     return list({json.dumps(r, sort_keys=True): r for r in out}.values())
 
 
+def ace_findings(app: str, arm: str) -> list[dict]:
+    """Every sink site ACE's oracle flagged, with its witness request."""
+    out = []
+    for summary in sorted((HERE / "results" / app / arm).glob("*/summary.json")):
+        row = json.loads(summary.read_text())
+        for s in row["sink_sites"]:
+            req = {"script": row["script"], **{g: {k: v for k, v in s["request"].get(g, {}).items() if v is not None}
+                                               for g in ("GET", "POST", "COOKIE")}}
+            out.append({"arm": arm, "site": s["site"], "sink": s["sink"], "kind": s["kind"], "request": req,
+                        "carries_input": "$$(" in json.dumps(s.get("instance", "")) or bool(sum(map(len, s["request"].values())))})
+    return out
+
+
 def detected(v: dict, results: list[dict]) -> list[dict]:
     kind = FAULT_KIND[v["type"]]
     site = f"{v['sink_file']}:{v['sink_line']}"
@@ -101,7 +114,18 @@ def main() -> int:
     for v in vulns:
         for c in v["cve"]:
             cves[c] = cves.get(c, False) or v["detected"]
+    findings = []
+    if label.startswith("ace:"):
+        by_req = {json.dumps(r["request"], sort_keys=True): r for r in results}
+        for f in (f for arm in label[4:].split("+") for f in ace_findings(app, arm)):
+            r = by_req.get(json.dumps(f["request"], sort_keys=True))
+            kind = "shell" if f["sink"] in ("system", "exec", "shell_exec", "passthru", "popen", "proc_open") else "sql"
+            f["judge_fault"] = bool(r and any(x["kind"] == kind for x in r["faults"]))
+            f["judge_reached_site"] = bool(r and f["site"] in r["lines"])
+            findings.append(f)
     row = {"app": app, "tool": label, "requests": len(results),
+           "findings": len(findings), "findings_judge_confirmed": sum(f["judge_fault"] for f in findings),
+           "findings_unconfirmed": [{k: f[k] for k in ("site", "kind", "request")} for f in findings if not f["judge_fault"]],
            "faulting_requests": sum(1 for r in results if r["faults"]),
            "detected": sum(v["detected"] for v in vulns), "known": len(vulns),
            "cves_detected": sum(cves.values()), "cves_known": len(cves), "cves": cves,
@@ -114,6 +138,7 @@ def main() -> int:
     (work / f"score_{tag}.json").write_text(json.dumps(row, indent=1) + "\n")
     print(f"{label:16} detected {row['detected']}/{row['known']}  coverage {row['coverage_pct']}% "
           f"({row['covered_lines']}/{row['executable_lines']})  requests {row['requests']}"
+          + (f"  findings {row['findings_judge_confirmed']}/{row['findings']} judge-confirmed" if findings else "")
           + (f"  xdebug {row['xdebug_coverage_pct']}%" if a.coverage == "xdebug" else ""))
     return 0
 

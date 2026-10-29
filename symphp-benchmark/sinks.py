@@ -89,12 +89,15 @@ def findings(dump: dict, families: dict[str, str], timeout_ms: int = 5000) -> li
         if event["type"] == "path_condition":
             prefix.append((json.dumps(event["expr"], sort_keys=True, separators=(",", ":")), event["taken"]))
             continue
-        if event["type"] != "symbolic_call" or event["target"] not in families:
+        # `concrete_call`: app mode's real mysqli_query (E1) -- same note, plus the DB's verdict.
+        if event["type"] not in ("symbolic_call", "concrete_call") or event["target"] not in families:
             continue
         family = families[event["target"]]
         text, refs = _note(event)
         site = {"sink": event["target"], "family": family, "file": event.get("file"),
                 "lineno": event.get("lineno"), "statement": text}
+        if event["type"] == "concrete_call" and isinstance(event.get("summary"), dict):
+            site["db_errno"] = event["summary"].get("errno")
         concrete = _instantiate(text, refs, values)
         if not parses(family, concrete):
             out.append(site | {"kind": "malformed-at-reach", "instance": concrete, "witness": values})

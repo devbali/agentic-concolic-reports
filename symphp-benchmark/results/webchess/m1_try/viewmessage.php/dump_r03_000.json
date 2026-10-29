@@ -1,0 +1,113 @@
+{
+ "schema_version": "1.4",
+ "label": "r03_000",
+ "symbolic_vars": [
+  {
+   "name": "POST_messageID",
+   "type": "str?",
+   "sort": "String",
+   "value": "",
+   "origin": {
+    "kind": "input",
+    "name": "POST_messageID"
+   }
+  }
+ ],
+ "events": [
+  {
+   "type": "concrete_call",
+   "target": "session_start",
+   "args": {},
+   "summary": {
+    "args": []
+   },
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/viewmessage.php",
+   "lineno": 20,
+   "function": "include"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "POST_messageID"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": false,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/viewmessage.php",
+   "lineno": 59,
+   "function": "include"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "POST_messageID"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": false,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/viewmessage.php",
+   "lineno": 63,
+   "function": "include"
+  },
+  {
+   "type": "concrete_call",
+   "target": "mysqli_query",
+   "args": {},
+   "note": "{\"refs\":{\"p0\":\"POST_messageID\"},\"text\":\"SELECT * FROM communication WHERE commID = $$(p0)\"}",
+   "summary": {
+    "text": "SELECT * FROM communication WHERE commID = ",
+    "ok": false,
+    "errno": 1064,
+    "error": "You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1",
+    "rows": -1
+   },
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/viewmessage.php",
+   "lineno": 64,
+   "function": "include"
+  }
+ ],
+ "types": {},
+ "declarations": {
+  "system": {
+   "kind": "target_function"
+  },
+  "exec": {
+   "kind": "target_function"
+  },
+  "shell_exec": {
+   "kind": "target_function"
+  },
+  "passthru": {
+   "kind": "target_function"
+  },
+  "popen": {
+   "kind": "target_function"
+  },
+  "proc_open": {
+   "kind": "target_function"
+  }
+ },
+ "request": {
+  "GET": {},
+  "POST": {
+   "messageID": ""
+  },
+  "COOKIE": {}
+ }
+}

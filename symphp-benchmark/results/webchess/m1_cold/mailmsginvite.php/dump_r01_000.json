@@ -1,0 +1,37 @@
+{
+ "schema_version": "1.4",
+ "label": "r01_000",
+ "error": {
+  "type": "Error",
+  "message": "Call to undefined function gettext()",
+  "traceback": "#0 /home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/harness_app.php(262): include()\n#1 {main}"
+ },
+ "symbolic_vars": [],
+ "events": [],
+ "types": {},
+ "declarations": {
+  "system": {
+   "kind": "target_function"
+  },
+  "exec": {
+   "kind": "target_function"
+  },
+  "shell_exec": {
+   "kind": "target_function"
+  },
+  "passthru": {
+   "kind": "target_function"
+  },
+  "popen": {
+   "kind": "target_function"
+  },
+  "proc_open": {
+   "kind": "target_function"
+  }
+ },
+ "request": {
+  "GET": {},
+  "POST": {},
+  "COOKIE": {}
+ }
+}

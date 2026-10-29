@@ -1,7 +1,16 @@
 #!/usr/bin/env python3
 """ACE on one benchmark app: explore every entry script, then ask the sink oracle.
 
-usage: drive.py <app> [--arm cold|witcher] [--only SCRIPT] [--max-rounds N]
+usage: drive.py <app> [--arm cold|witcher|auth] [--only SCRIPT] [--max-rounds N] [--budget SECONDS]
+                [--label NAME] [--php7compat] [--exit-as-halt] [--concretize] [--switch-cmp]
+
+An app with a `db` block in apps.json (a real app) runs in APP MODE: the copy is
+instrumented with harness_app.php's targets and the chosen options, every
+request runs in its own PHP 8.2 process (harness_app.php) inside the network
+namespace of ACE's own clone database (`ace-<app>-db`, appdb.py), and that
+database is restored from its snapshot before each entry script (decision (a)).
+Results go to results/<app>/<label>/ (default label: the arm), so a new run
+never overwrites an old one.
 
 Per entry script, starting from the arm's seed request:
 
@@ -28,6 +37,7 @@ the requests Witcher's crawler recorded (the benchmark's own
 from __future__ import annotations
 
 import argparse
+import functools
 import json
 import os
 import pathlib
@@ -46,31 +56,70 @@ from concolic.coverage import CoverageChecker                          # noqa: E
 from concolic.model.run import Run                                     # noqa: E402
 from concolic.solver import solve_and_evaluate                         # noqa: E402
 
+import appdb                                                           # noqa: E402
+import judge                                                           # noqa: E402
 import sinks                                                           # noqa: E402
 
 APPS = json.loads((HERE / "apps.json").read_text())
 GLOBALS = ("GET", "POST", "COOKIE")
 FAMILIES = {**{n: sinks.SQL for n in ("mysqli_query", "mysqli_real_query", "mysqli_multi_query", "mysql_query")},
             **{n: sinks.SHELL for n in ("system", "exec", "shell_exec", "passthru", "popen", "proc_open")}}
-PHP = ["docker", "run", "--rm", "-i", "-u", f"{os.getuid()}:{os.getgid()}",
+PHP = ["docker", "run", "--rm", "-i", *appdb.LOG_OPTS, "-u", f"{os.getuid()}:{os.getgid()}",
        "-v", f"{ROOT}:{ROOT}", "-w", str(HERE), "php:8.2-cli", "php"]
+#: PHP 8.2 plus mysqli, for app mode (php:8.2-cli has no mysqli). Built on first use.
+APP_IMAGE = "ace-php82-mysqli:1"
+APP_DOCKERFILE = "FROM php:8.2-cli\nRUN docker-php-ext-install mysqli >/dev/null\n"
+MODE = {"app": None}          # set by main(): the app name when running in app mode
+
+
+def app_image() -> str:
+    if subprocess.run(["docker", "image", "inspect", APP_IMAGE], capture_output=True).returncode != 0:
+        subprocess.run(["docker", "build", "-q", "-t", APP_IMAGE, "-"], input=APP_DOCKERFILE, text=True, check=True)
+    return APP_IMAGE
+
+
+def app_runner(app: str) -> str:
+    """`ace-<app>-php`: a long-lived PHP 8.2 container in ACE's clone DB's network namespace."""
+    db = appdb.ensure(app, "ace")
+    name = f"ace-{app}-php"
+    st = subprocess.run(["docker", "inspect", "-f", "{{.State.Running}}", name], capture_output=True, text=True)
+    if st.returncode == 0 and st.stdout.strip() == "true":
+        return name
+    if st.returncode == 0:
+        subprocess.run(["docker", "rm", "-f", name], capture_output=True)
+    src = (HERE / APPS[app]["src"]).resolve()
+    subprocess.run(["docker", "run", "-d", "--name", name, *appdb.LOG_OPTS, "--network", f"container:{db}",
+                    "-u", f"{os.getuid()}:{os.getgid()}", "-v", f"{ROOT}:{ROOT}", "-v", f"{src}:{src}:ro",
+                    "-w", str(HERE), app_image(), "sleep", "infinity"], check=True, capture_output=True)
+    return name
 
 
 def php(requests: list[dict]) -> list[dict]:
-    p = subprocess.run([*PHP, "harness.php"], input=json.dumps(requests),
-                       capture_output=True, text=True, timeout=1800)
+    app = MODE["app"]
+    if app:
+        cmd = ["docker", "exec", "-i", app_runner(app), "php", "-d", "display_errors=0", "harness_app.php", "--batch"]
+    else:
+        cmd = [*PHP, "harness.php"]
+    p = subprocess.run(cmd, input=json.dumps(requests), capture_output=True, text=True, timeout=3600)
     if p.returncode != 0:
         raise SystemExit(f"harness failed:\n{p.stderr[-3000:]}")
     return json.loads(p.stdout)
 
 
-def instrument(app: str) -> pathlib.Path:
-    build = HERE / "build" / app
+def instrument(app: str, label: str | None = None, options: tuple[str, ...] = ()) -> pathlib.Path:
+    """Instrument a COPY of the app. Options change only that copy (build/<app>[-<label>])."""
+    build = HERE / "build" / (app if not MODE["app"] else f"{app}-{label}")
     src = (HERE / APPS[app]["src"]).resolve()
-    p = subprocess.run([*PHP, "instrument_app.php", str(src), str(build)], capture_output=True, text=True)
+    if MODE["app"]:
+        cmd = ["docker", "run", "--rm", "-i", *appdb.LOG_OPTS, "-u", f"{os.getuid()}:{os.getgid()}",
+               "-v", f"{ROOT}:{ROOT}", "-v", f"{src}:{src}:ro", "-w", str(HERE), app_image(), "php",
+               "instrument_app.php", str(src), str(build), "--app-targets", *options]
+    else:
+        cmd = [*PHP, "instrument_app.php", str(src), str(build)]
+    p = subprocess.run(cmd, capture_output=True, text=True)
     if p.returncode != 0:
         raise SystemExit(f"instrumentation failed:\n{p.stderr[-3000:]}")
-    (HERE / "build" / f"{app}.instrument.json").write_text(p.stdout)
+    (HERE / "build" / f"{build.name}.instrument.json").write_text(p.stdout)
     return build
 
 
@@ -178,7 +227,8 @@ def coverage(kept: list[dict], names: dict) -> tuple:
     return checker.check_coverage(), [a.description for a in aset.assumptions]
 
 
-def explore(app_dir: pathlib.Path, script: str, seeds: list[dict], max_rounds: int) -> dict:
+def explore(app_dir: pathlib.Path, script: str, seeds: list[dict], max_rounds: int,
+            budget_s: float | None = None, extra: dict | None = None) -> dict:
     keys = {g: set() for g in GLOBALS}
     for s in seeds:
         for g in GLOBALS:
@@ -186,7 +236,10 @@ def explore(app_dir: pathlib.Path, script: str, seeds: list[dict], max_rounds: i
     queue = [with_keys(s, keys) for s in seeds]
     seen, traces, kept, errors, names = set(), set(), [], [], {}
     rounds = 0
-    while queue and rounds < max_rounds:
+    deadline = time.monotonic() + budget_s if budget_s else None
+    extra = extra or {}
+    php7 = {"const7": {}, "count7": 0, "cmp7": 0, "arith7": 0}
+    while queue and rounds < max_rounds and (deadline is None or time.monotonic() < deadline):
         fresh = []
         for req in queue:
             req = with_keys(req, keys)
@@ -205,9 +258,26 @@ def explore(app_dir: pathlib.Path, script: str, seeds: list[dict], max_rounds: i
                 break
             continue
         rounds += 1
-        batch = [{"app": str(app_dir), "script": script, "label": f"r{rounds:02}_{i:03}", "inputs": r}
+        if deadline is not None:
+            # Bounded batches, so the wall-clock budget is checked often.
+            fresh, overflow = fresh[:40], fresh[40:]
+            for r in overflow:
+                seen.discard(canon(r))
+                queue.append(r)
+        batch = [{"app": str(app_dir), "script": script, "label": f"r{rounds:02}_{i:03}", "inputs": r,
+                  **({k: (v(r) if callable(v) else v) for k, v in extra.items()})}
                  for i, r in enumerate(fresh)]
         for req, res in zip(fresh, php(batch)):
+            if "harness_error" in res:
+                errors.append(f"harness: {res['harness_error']}: {res.get('stderr', '')[-300:]}")
+                continue
+            for k, v in (res.get("php7") or {}).items():
+                if isinstance(v, (dict, list)):
+                    bucket = php7.setdefault(k, {})
+                    for c, n in (v if isinstance(v, dict) else {}).items():
+                        bucket[c] = bucket.get(c, 0) + n
+                else:
+                    php7[k] = php7.get(k, 0) + v
             for g, ks in (res.get("discovered") or {}).items():
                 new = set(ks) - keys[g]
                 if new:
@@ -218,7 +288,11 @@ def explore(app_dir: pathlib.Path, script: str, seeds: list[dict], max_rounds: i
             dump = res["dump"]
             if dump.get("error"):
                 errors.append(f"{dump['error']['type']}: {dump['error']['message'][:200]}")
-                continue
+                if not MODE["app"]:
+                    continue
+                # App mode KEEPS an errored run: every event before the error
+                # (a sink reached, a branch taken) really happened, and a sink
+                # is often reached just before the app trips over its result.
             sig = trace(dump)
             if sig in traces:
                 continue
@@ -227,36 +301,84 @@ def explore(app_dir: pathlib.Path, script: str, seeds: list[dict], max_rounds: i
             kept.append(dump)
             queue.extend(negations(dump, names, req))
     return {"kept": kept, "errors": errors, "keys": {g: sorted(k) for g, k in keys.items()},
-            "requests": len(seen), "rounds": rounds, "names": names, "budget_hit": bool(queue)}
+            "requests": len(seen), "rounds": rounds, "names": names, "budget_hit": bool(queue), "php7": php7}
+
+
+def server_vars(app: str, src: pathlib.Path, script: str, req: dict) -> dict:
+    """$_SERVER for one request: the judge's own CGI environment for it (H1)."""
+    env, _ = judge.cgi_env(app, {"script": script, **{g: {k: v for k, v in req.get(g, {}).items() if v is not None}
+                                                       for g in GLOBALS}}, src)
+    return {k: v for k, v in env.items() if k not in ("PATH", "SCRIPT_FILENAME", "DOCUMENT_ROOT")}
+
+
+def rel_file(path: str | None, app_dir: pathlib.Path) -> str:
+    """A dump location relative to the instrumented tree (= the app's own relative path)."""
+    path = path or ""
+    root = str(app_dir) + "/"
+    return path[len(root):] if path.startswith(root) else path.rsplit("/", 1)[-1]
 
 
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("app")
-    ap.add_argument("--arm", choices=("cold", "witcher"), default="cold")
-    ap.add_argument("--only")
+    ap.add_argument("--arm", choices=("cold", "witcher", "auth"), default="cold")
+    ap.add_argument("--only", action="append", help="entry script (repeatable)")
     ap.add_argument("--max-rounds", type=int, default=50)
+    ap.add_argument("--budget", type=float, help="wall-clock seconds per entry script (H5)")
+    ap.add_argument("--label", help="results/<app>/<label>/ (default: the arm)")
+    ap.add_argument("--php7compat", action="store_true", help="E2 (DEFAULT-off; app mode)")
+    ap.add_argument("--exit-as-halt", action="store_true", help="E3 (app mode)")
+    ap.add_argument("--switch-cmp", action="store_true", help="switch via __cmp (app mode)")
+    ap.add_argument("--concretize", action="store_true", help="E4 (app mode)")
     a = ap.parse_args()
 
-    app_dir = instrument(a.app)
     spec = APPS[a.app]
+    label = a.label or a.arm
+    app_mode = bool(spec.get("db"))
+    MODE["app"] = a.app if app_mode else None
+    options = tuple(f for f, on in (("--php7compat", a.php7compat), ("--exit-as-halt", a.exit_as_halt),
+                                    ("--switch-cmp", a.switch_cmp)) if on)
+    app_dir = instrument(a.app, label, options)
+    src = (HERE / spec["src"]).resolve()
+    extra: dict = {}
+    if app_mode:
+        flags = {"php7Compare": a.php7compat, "concretize": a.concretize}
+        sessions = auth_sessions(a.app) if a.arm == "auth" else {}
+
+        extra = {"flags": flags, "session": sessions.get("session", {})}
     seeds_by_script = witcher_seeds(a.app) if a.arm == "witcher" else {}
-    out = HERE / "results" / a.app / a.arm
+    if a.arm == "auth":
+        seeds_by_script = {s: [auth_seed(a.app)] for s in spec["scripts"]}
+    out = HERE / "results" / a.app / label
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "run.json").write_text(json.dumps({"arm": a.arm, "options": options, "concretize": a.concretize,
+                                              "budget_s": a.budget, "max_rounds": a.max_rounds,
+                                              "instrument": json.loads((HERE / "build" / f"{app_dir.name}.instrument.json").read_text())
+                                              if app_mode else None}, indent=1) + "\n")
     rows = []
     for script in spec["scripts"]:
-        if a.only and a.only != script:
+        if a.only and script not in a.only:
             continue
         seeds = seeds_by_script.get(script) or [{}]
+        if app_mode:
+            appdb.restore(a.app, "ace")                 # decision (a): reset per script
+            extra["server"] = functools.partial(server_vars, a.app, src, script)
         t0 = time.monotonic()
-        r = explore(app_dir, script, seeds, a.max_rounds)
+        r = explore(app_dir, script, seeds, a.max_rounds, a.budget, extra)
         wall = round(time.monotonic() - t0, 1)
         d = out / script.replace("/", "__")
         d.mkdir(parents=True, exist_ok=True)
         for stale in d.glob("dump_*.json"):
             stale.unlink()
         found = []
+        concretized, halted = {}, 0
         for dump in r["kept"]:
             (d / f"dump_{dump['label']}.json").write_text(json.dumps(dump, indent=1))
+            halted += bool(dump.get("halted"))
+            for e in dump["events"]:
+                if e["type"] == "concretized":
+                    k = f"{e['what']} @ {rel_file(e.get('file'), app_dir)}:{e.get('lineno')}"
+                    concretized[k] = concretized.get(k, 0) + 1
             for f in sinks.findings(dump, FAMILIES):
                 f["request"] = {g: {k: f["witness"].get(n) for n, (gg, k) in r["names"].items() if gg == g
                                     and f["witness"].get(n) is not None} for g in GLOBALS}
@@ -265,22 +387,37 @@ def main() -> int:
         # One finding per sink site: the first witness that reached it.
         sites = {}
         for f in found:
-            sites.setdefault((f["file"].rsplit("/", 1)[-1], f["lineno"], f["sink"]), f)
+            sites.setdefault((rel_file(f["file"], app_dir) if app_mode else f["file"].rsplit("/", 1)[-1],
+                              f["lineno"], f["sink"]), f)
         row = {"script": script, "wall_s": wall, "requests": r["requests"], "rounds": r["rounds"], "traces": len(r["kept"]),
                "errored": len(r["errors"]), "first_error": r["errors"][0] if r["errors"] else None,
                "keys_discovered": r["keys"], "budget_hit": r["budget_hit"],
                "coverage_complete": bool(cov and cov.complete), "missing": len(cov.missing) if cov else None,
                "assumptions": assumed,
                "sink_sites": [{"site": f"{k[0]}:{k[1]}", "sink": k[2], "kind": f["kind"],
-                               "instance": f["instance"], "request": f["request"]} for k, f in sites.items()]}
+                               "instance": f["instance"], "request": f["request"],
+                               **({"db_errno": f["db_errno"]} if f.get("db_errno") is not None else {})}
+                              for k, f in sites.items()]}
+        if app_mode:
+            row |= {"errors_distinct": sorted(set(e[:160] for e in r["errors"]))[:20], "halted_traces": halted,
+                    "concretized": concretized, "php7_runtime": r["php7"]}
         (d / "summary.json").write_text(json.dumps(row, indent=1) + "\n")
         rows.append(row)
         print(f"{script:28} {row['traces']:3} traces {row['requests']:3} requests  "
               f"{'complete' if row['coverage_complete'] else str(row['missing']) + ' missing':12} "
-              f"sinks={len(row['sink_sites'])} errored={row['errored']}")
+              f"sinks={len(row['sink_sites'])} errored={row['errored']} {wall}s", flush=True)
     if not a.only:
         (out / "summary.json").write_text(json.dumps(rows, indent=1) + "\n")
     return 0
+
+
+def auth_sessions(app: str) -> dict:
+    """M2: the authenticated arm's seeded session (apps.json `login`)."""
+    raise SystemExit("the authenticated arm is not configured for this app yet")
+
+
+def auth_seed(app: str) -> dict:
+    return {}
 
 
 if __name__ == "__main__":

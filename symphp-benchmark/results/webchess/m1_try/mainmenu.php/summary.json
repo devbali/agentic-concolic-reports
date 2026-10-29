@@ -1,0 +1,316 @@
+{
+ "script": "mainmenu.php",
+ "wall_s": 19.7,
+ "requests": 186,
+ "rounds": 13,
+ "traces": 76,
+ "errored": 28,
+ "first_error": "Concolic\\NotImplementedError: is_numeric of a symbolic string needs a predicate the dump IR does not have",
+ "keys_discovered": {
+  "GET": [],
+  "POST": [
+   "ToDo",
+   "color",
+   "gameID",
+   "messageFrom",
+   "messageID",
+   "opponent",
+   "pwdOldPassword",
+   "pwdPassword",
+   "rdoHistory",
+   "rdoHistorylayout",
+   "rdoTheme",
+   "replayAll",
+   "response",
+   "txtFirstName",
+   "txtLastName",
+   "txtNick",
+   "txtReload",
+   "userLevel"
+  ],
+  "COOKIE": []
+ },
+ "budget_hit": false,
+ "coverage_complete": false,
+ "missing": 2,
+ "assumptions": [],
+ "sink_sites": [
+  {
+   "site": "mainmenu.php:263",
+   "sink": "mysqli_query",
+   "kind": "malformed-at-reach",
+   "instance": "SELECT gameID FROM games WHERE gameMessage = 'playerInvited' AND ((messageFrom = 'white' AND whitePlayer = -1 AND blackPlayer = ) OR (messageFrom = 'black' AND whitePlayer =  AND blackPlayer = -1))",
+   "request": {
+    "GET": {},
+    "POST": {
+     "ToDo": "InvitePlayer"
+    },
+    "COOKIE": {}
+   },
+   "db_errno": 1064
+  },
+  {
+   "site": "mainmenu.php:316",
+   "sink": "mysqli_query",
+   "kind": "malformed-at-reach",
+   "instance": "UPDATE games SET gameMessage = 'inviteDeclined', messageFrom = '' WHERE gameID = ",
+   "request": {
+    "GET": {},
+    "POST": {
+     "ToDo": "ResponseToInvite"
+    },
+    "COOKIE": {}
+   },
+   "db_errno": 1064
+  },
+  {
+   "site": "mainmenu.php:324",
+   "sink": "mysqli_query",
+   "kind": "malformed-at-reach",
+   "instance": "SELECT whitePlayer FROM games WHERE gameID = ",
+   "request": {
+    "GET": {},
+    "POST": {
+     "ToDo": "WithdrawRequest"
+    },
+    "COOKIE": {}
+   },
+   "db_errno": 1064
+  },
+  {
+   "site": "mainmenu.php:482",
+   "sink": "mysqli_query",
+   "kind": "malformed-at-reach",
+   "instance": "UPDATE communication SET ack = 1 WHERE commID = ",
+   "request": {
+    "GET": {},
+    "POST": {
+     "ToDo": "HideMessage"
+    },
+    "COOKIE": {}
+   },
+   "db_errno": 1064
+  },
+  {
+   "site": "mainmenu.php:150",
+   "sink": "mysqli_query",
+   "kind": "injectable",
+   "instance": "SELECT * FROM players WHERE nick = '''",
+   "request": {
+    "GET": {},
+    "POST": {
+     "ToDo": "Login",
+     "txtNick": "'"
+    },
+    "COOKIE": {}
+   },
+   "db_errno": 0
+  },
+  {
+   "site": "mainmenu.php:279",
+   "sink": "mysqli_query",
+   "kind": "injectable",
+   "instance": "INSERT INTO games (whitePlayer, blackPlayer, gameMessage, messageFrom, dateCreated, lastMove) VALUES (', -1, 'playerInvited', '', NOW(), NOW())",
+   "request": {
+    "GET": {},
+    "POST": {
+     "ToDo": "InvitePlayer",
+     "color": "",
+     "opponent": "'"
+    },
+    "COOKIE": {}
+   },
+   "db_errno": 1064
+  },
+  {
+   "site": "mainmenu.php:408",
+   "sink": "mysqli_query",
+   "kind": "injectable",
+   "instance": "UPDATE preferences SET value = ''' WHERE playerID = -1 AND preference = 'theme'",
+   "request": {
+    "GET": {},
+    "POST": {
+     "ToDo": "UpdatePrefs",
+     "rdoHistory": "",
+     "rdoHistorylayout": "",
+     "rdoTheme": "'",
+     "replayAll": "",
+     "txtReload": "",
+     "userLevel": ""
+    },
+    "COOKIE": {}
+   },
+   "db_errno": 0
+  },
+  {
+   "site": "mainmenu.php:412",
+   "sink": "mysqli_query",
+   "kind": "injectable",
+   "instance": "UPDATE preferences SET value = ''' WHERE playerID = -1 AND preference = 'history'",
+   "request": {
+    "GET": {},
+    "POST": {
+     "ToDo": "UpdatePrefs",
+     "rdoHistory": "'",
+     "rdoHistorylayout": "",
+     "rdoTheme": "",
+     "replayAll": "",
+     "txtReload": "",
+     "userLevel": ""
+    },
+    "COOKIE": {}
+   },
+   "db_errno": 0
+  },
+  {
+   "site": "mainmenu.php:416",
+   "sink": "mysqli_query",
+   "kind": "injectable",
+   "instance": "UPDATE preferences SET value = ''' WHERE playerID = -1 AND preference = 'historylayout'",
+   "request": {
+    "GET": {},
+    "POST": {
+     "ToDo": "UpdatePrefs",
+     "rdoHistory": "",
+     "rdoHistorylayout": "'",
+     "rdoTheme": "",
+     "replayAll": "",
+     "txtReload": "",
+     "userLevel": ""
+    },
+    "COOKIE": {}
+   },
+   "db_errno": 0
+  },
+  {
+   "site": "mainmenu.php:452",
+   "sink": "mysqli_query",
+   "kind": "injectable",
+   "instance": "UPDATE preferences SET value = ''' WHERE playerID = -1 AND preference = 'replayall'",
+   "request": {
+    "GET": {},
+    "POST": {
+     "ToDo": "UpdatePrefs",
+     "replayAll": "'"
+    },
+    "COOKIE": {}
+   },
+   "db_errno": 0
+  },
+  {
+   "site": "mainmenu.php:96",
+   "sink": "mysqli_query",
+   "kind": "injectable",
+   "instance": "SELECT playerID FROM players WHERE nick = '''",
+   "request": {
+    "GET": {},
+    "POST": {
+     "ToDo": "NewUser",
+     "txtNick": "'"
+    },
+    "COOKIE": {}
+   },
+   "db_errno": 0
+  },
+  {
+   "site": "mainmenu.php:105",
+   "sink": "mysqli_query",
+   "kind": "injectable",
+   "instance": "INSERT INTO players (password, firstName, lastName, nick) VALUES ('$2y$10$xDJhDS/T6J0UI.jFjL6SnOwZipcveUV.n/dygCe0GrCXEHUSdK9OG', '', '', ''')",
+   "request": {
+    "GET": {},
+    "POST": {
+     "ToDo": "NewUser",
+     "txtNick": "'"
+    },
+    "COOKIE": {}
+   },
+   "db_errno": 0
+  },
+  {
+   "site": "mainmenu.php:305",
+   "sink": "mysqli_query",
+   "kind": "malformed-at-reach",
+   "instance": "UPDATE games SET gameMessage = '', messageFrom = '' WHERE gameID = ",
+   "request": {
+    "GET": {},
+    "POST": {
+     "ToDo": "ResponseToInvite",
+     "gameID": "",
+     "messageFrom": "",
+     "response": "accepted"
+    },
+    "COOKIE": {}
+   },
+   "db_errno": 1064
+  },
+  {
+   "site": "newgame.php:71",
+   "sink": "mysqli_query",
+   "kind": "malformed-at-reach",
+   "instance": "DELETE FROM history WHERE gameID = ",
+   "request": {
+    "GET": {},
+    "POST": {
+     "ToDo": "ResponseToInvite",
+     "gameID": "",
+     "messageFrom": "",
+     "response": "accepted"
+    },
+    "COOKIE": {}
+   },
+   "db_errno": 1064
+  },
+  {
+   "site": "chessdb.php:291",
+   "sink": "mysqli_query",
+   "kind": "malformed-at-reach",
+   "instance": "DELETE FROM pieces WHERE gameID = ",
+   "request": {
+    "GET": {},
+    "POST": {
+     "ToDo": "ResponseToInvite",
+     "gameID": "",
+     "messageFrom": "",
+     "response": "accepted"
+    },
+    "COOKIE": {}
+   },
+   "db_errno": 1064
+  },
+  {
+   "site": "chessdb.php:27",
+   "sink": "mysqli_query",
+   "kind": "malformed-at-reach",
+   "instance": "UPDATE games SET lastMove = NOW() WHERE gameID = ",
+   "request": {
+    "GET": {},
+    "POST": {
+     "ToDo": "ResponseToInvite",
+     "gameID": "",
+     "messageFrom": "",
+     "response": "accepted"
+    },
+    "COOKIE": {}
+   },
+   "db_errno": 1064
+  }
+ ],
+ "errors_distinct": [
+  "Concolic\\NotImplementedError: is_numeric of a symbolic string needs a predicate the dump IR does not have",
+  "ValueError: mysqli_query(): Argument #2 ($query) cannot be empty"
+ ],
+ "halted_traces": 59,
+ "concretized": {
+  "string conversion @ chessdb.php:292": 32
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {
+   "mysqli_num_rows": 29
+  }
+ }
+}

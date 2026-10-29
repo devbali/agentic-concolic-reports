@@ -1,0 +1,1512 @@
+{
+ "schema_version": "1.4",
+ "label": "r09_013",
+ "halted": {
+  "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/sessioncheck.php",
+  "lineno": 39,
+  "function": "require",
+  "exit": true
+ },
+ "symbolic_vars": [
+  {
+   "name": "POST_ToDo",
+   "type": "str?",
+   "sort": "String",
+   "value": "ResponseToInvite",
+   "origin": {
+    "kind": "input",
+    "name": "POST_ToDo"
+   }
+  },
+  {
+   "name": "POST_color",
+   "type": "str?",
+   "sort": "String",
+   "value": null,
+   "origin": {
+    "kind": "input",
+    "name": "POST_color"
+   }
+  },
+  {
+   "name": "POST_gameID",
+   "type": "str?",
+   "sort": "String",
+   "value": null,
+   "origin": {
+    "kind": "input",
+    "name": "POST_gameID"
+   }
+  },
+  {
+   "name": "POST_messageFrom",
+   "type": "str?",
+   "sort": "String",
+   "value": "",
+   "origin": {
+    "kind": "input",
+    "name": "POST_messageFrom"
+   }
+  },
+  {
+   "name": "POST_messageID",
+   "type": "str?",
+   "sort": "String",
+   "value": null,
+   "origin": {
+    "kind": "input",
+    "name": "POST_messageID"
+   }
+  },
+  {
+   "name": "POST_opponent",
+   "type": "str?",
+   "sort": "String",
+   "value": null,
+   "origin": {
+    "kind": "input",
+    "name": "POST_opponent"
+   }
+  },
+  {
+   "name": "POST_pwdOldPassword",
+   "type": "str?",
+   "sort": "String",
+   "value": null,
+   "origin": {
+    "kind": "input",
+    "name": "POST_pwdOldPassword"
+   }
+  },
+  {
+   "name": "POST_pwdPassword",
+   "type": "str?",
+   "sort": "String",
+   "value": null,
+   "origin": {
+    "kind": "input",
+    "name": "POST_pwdPassword"
+   }
+  },
+  {
+   "name": "POST_rdoHistory",
+   "type": "str?",
+   "sort": "String",
+   "value": null,
+   "origin": {
+    "kind": "input",
+    "name": "POST_rdoHistory"
+   }
+  },
+  {
+   "name": "POST_rdoHistorylayout",
+   "type": "str?",
+   "sort": "String",
+   "value": null,
+   "origin": {
+    "kind": "input",
+    "name": "POST_rdoHistorylayout"
+   }
+  },
+  {
+   "name": "POST_rdoTheme",
+   "type": "str?",
+   "sort": "String",
+   "value": null,
+   "origin": {
+    "kind": "input",
+    "name": "POST_rdoTheme"
+   }
+  },
+  {
+   "name": "POST_replayAll",
+   "type": "str?",
+   "sort": "String",
+   "value": null,
+   "origin": {
+    "kind": "input",
+    "name": "POST_replayAll"
+   }
+  },
+  {
+   "name": "POST_response",
+   "type": "str?",
+   "sort": "String",
+   "value": "accepted",
+   "origin": {
+    "kind": "input",
+    "name": "POST_response"
+   }
+  },
+  {
+   "name": "POST_txtFirstName",
+   "type": "str?",
+   "sort": "String",
+   "value": null,
+   "origin": {
+    "kind": "input",
+    "name": "POST_txtFirstName"
+   }
+  },
+  {
+   "name": "POST_txtLastName",
+   "type": "str?",
+   "sort": "String",
+   "value": null,
+   "origin": {
+    "kind": "input",
+    "name": "POST_txtLastName"
+   }
+  },
+  {
+   "name": "POST_txtNick",
+   "type": "str?",
+   "sort": "String",
+   "value": null,
+   "origin": {
+    "kind": "input",
+    "name": "POST_txtNick"
+   }
+  },
+  {
+   "name": "POST_txtReload",
+   "type": "str?",
+   "sort": "String",
+   "value": null,
+   "origin": {
+    "kind": "input",
+    "name": "POST_txtReload"
+   }
+  },
+  {
+   "name": "POST_userLevel",
+   "type": "str?",
+   "sort": "String",
+   "value": null,
+   "origin": {
+    "kind": "input",
+    "name": "POST_userLevel"
+   }
+  }
+ ],
+ "events": [
+  {
+   "type": "concrete_call",
+   "target": "session_start",
+   "args": {},
+   "summary": {
+    "args": []
+   },
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/mainmenu.php",
+   "lineno": 22,
+   "function": "include"
+  },
+  {
+   "type": "concrete_call",
+   "target": "mysqli_query",
+   "args": {
+    "tmpQuery": {
+     "lit": {
+      "sort": "str",
+      "value": "SELECT gameID FROM games WHERE lastMove < '2026-10-15'"
+     }
+    }
+   },
+   "note": "SELECT gameID FROM games WHERE lastMove < '2026-10-15'",
+   "summary": {
+    "text": "SELECT gameID FROM games WHERE lastMove < '2026-10-15'",
+    "ok": true,
+    "errno": 0,
+    "error": "",
+    "rows": 0
+   },
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/mainmenu.php",
+   "lineno": 59,
+   "function": "include"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "POST_ToDo"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": false,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/mainmenu.php",
+   "lineno": 81,
+   "function": "include"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "POST_ToDo"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": false,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/mainmenu.php",
+   "lineno": 86,
+   "function": "include"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "and",
+    "args": [
+     {
+      "op": "not",
+      "args": [
+       {
+        "op": "==",
+        "args": [
+         {
+          "sym": "POST_ToDo"
+         },
+         {
+          "lit": {
+           "sort": "null"
+          }
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "op": "==",
+      "args": [
+       {
+        "sym": "POST_ToDo"
+       },
+       {
+        "lit": {
+         "sort": "str",
+         "value": "NewUser"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "taken": false,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/mainmenu.php",
+   "lineno": 86,
+   "function": "include"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "POST_ToDo"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": false,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/mainmenu.php",
+   "lineno": 147,
+   "function": "include"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "and",
+    "args": [
+     {
+      "op": "not",
+      "args": [
+       {
+        "op": "==",
+        "args": [
+         {
+          "sym": "POST_ToDo"
+         },
+         {
+          "lit": {
+           "sort": "null"
+          }
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "op": "==",
+      "args": [
+       {
+        "sym": "POST_ToDo"
+       },
+       {
+        "lit": {
+         "sort": "str",
+         "value": "Login"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "taken": false,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/mainmenu.php",
+   "lineno": 147,
+   "function": "include"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "POST_ToDo"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": false,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/mainmenu.php",
+   "lineno": 253,
+   "function": "include"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "and",
+    "args": [
+     {
+      "op": "not",
+      "args": [
+       {
+        "op": "==",
+        "args": [
+         {
+          "sym": "POST_ToDo"
+         },
+         {
+          "lit": {
+           "sort": "null"
+          }
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "op": "==",
+      "args": [
+       {
+        "sym": "POST_ToDo"
+       },
+       {
+        "lit": {
+         "sort": "str",
+         "value": "Logout"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "taken": false,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/mainmenu.php",
+   "lineno": 253,
+   "function": "include"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "POST_ToDo"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": false,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/mainmenu.php",
+   "lineno": 258,
+   "function": "include"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "and",
+    "args": [
+     {
+      "op": "not",
+      "args": [
+       {
+        "op": "==",
+        "args": [
+         {
+          "sym": "POST_ToDo"
+         },
+         {
+          "lit": {
+           "sort": "null"
+          }
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "op": "==",
+      "args": [
+       {
+        "sym": "POST_ToDo"
+       },
+       {
+        "lit": {
+         "sort": "str",
+         "value": "InvitePlayer"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "taken": false,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/mainmenu.php",
+   "lineno": 258,
+   "function": "include"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "POST_ToDo"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": false,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/mainmenu.php",
+   "lineno": 300,
+   "function": "include"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "and",
+    "args": [
+     {
+      "op": "not",
+      "args": [
+       {
+        "op": "==",
+        "args": [
+         {
+          "sym": "POST_ToDo"
+         },
+         {
+          "lit": {
+           "sort": "null"
+          }
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "op": "==",
+      "args": [
+       {
+        "sym": "POST_ToDo"
+       },
+       {
+        "lit": {
+         "sort": "str",
+         "value": "ResponseToInvite"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "taken": true,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/mainmenu.php",
+   "lineno": 300,
+   "function": "include"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "POST_response"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": false,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/mainmenu.php",
+   "lineno": 301,
+   "function": "include"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "and",
+    "args": [
+     {
+      "op": "not",
+      "args": [
+       {
+        "op": "==",
+        "args": [
+         {
+          "sym": "POST_response"
+         },
+         {
+          "lit": {
+           "sort": "null"
+          }
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "op": "==",
+      "args": [
+       {
+        "sym": "POST_response"
+       },
+       {
+        "lit": {
+         "sort": "str",
+         "value": "accepted"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "taken": true,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/mainmenu.php",
+   "lineno": 301,
+   "function": "include"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "POST_gameID"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": true,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/mainmenu.php",
+   "lineno": 304,
+   "function": "include"
+  },
+  {
+   "type": "concrete_call",
+   "target": "mysqli_query",
+   "args": {
+    "tmpQuery": {
+     "lit": {
+      "sort": "str",
+      "value": "UPDATE games SET gameMessage = '', messageFrom = '' WHERE gameID = "
+     }
+    }
+   },
+   "note": "UPDATE games SET gameMessage = '', messageFrom = '' WHERE gameID = ",
+   "summary": {
+    "text": "UPDATE games SET gameMessage = '', messageFrom = '' WHERE gameID = ",
+    "ok": false,
+    "errno": 1064,
+    "error": "You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1",
+    "rows": -1
+   },
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/mainmenu.php",
+   "lineno": 305,
+   "function": "include"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "POST_gameID"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": true,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/newgame.php",
+   "lineno": 71,
+   "function": "createNewGame"
+  },
+  {
+   "type": "concrete_call",
+   "target": "mysqli_query",
+   "args": {
+    "arg1": {
+     "lit": {
+      "sort": "str",
+      "value": "DELETE FROM history WHERE gameID = "
+     }
+    }
+   },
+   "note": "DELETE FROM history WHERE gameID = ",
+   "summary": {
+    "text": "DELETE FROM history WHERE gameID = ",
+    "ok": false,
+    "errno": 1064,
+    "error": "You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1",
+    "rows": -1
+   },
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/newgame.php",
+   "lineno": 71,
+   "function": "createNewGame"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "POST_gameID"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": true,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/chessdb.php",
+   "lineno": 286,
+   "function": "saveGame"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "POST_gameID"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": true,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/chessdb.php",
+   "lineno": 286,
+   "function": "saveGame"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "POST_gameID"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": true,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/chessdb.php",
+   "lineno": 286,
+   "function": "saveGame"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "POST_gameID"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": true,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/chessdb.php",
+   "lineno": 286,
+   "function": "saveGame"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "POST_gameID"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": true,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/chessdb.php",
+   "lineno": 286,
+   "function": "saveGame"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "POST_gameID"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": true,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/chessdb.php",
+   "lineno": 286,
+   "function": "saveGame"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "POST_gameID"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": true,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/chessdb.php",
+   "lineno": 286,
+   "function": "saveGame"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "POST_gameID"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": true,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/chessdb.php",
+   "lineno": 286,
+   "function": "saveGame"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "POST_gameID"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": true,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/chessdb.php",
+   "lineno": 286,
+   "function": "saveGame"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "POST_gameID"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": true,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/chessdb.php",
+   "lineno": 286,
+   "function": "saveGame"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "POST_gameID"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": true,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/chessdb.php",
+   "lineno": 286,
+   "function": "saveGame"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "POST_gameID"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": true,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/chessdb.php",
+   "lineno": 286,
+   "function": "saveGame"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "POST_gameID"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": true,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/chessdb.php",
+   "lineno": 286,
+   "function": "saveGame"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "POST_gameID"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": true,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/chessdb.php",
+   "lineno": 286,
+   "function": "saveGame"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "POST_gameID"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": true,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/chessdb.php",
+   "lineno": 286,
+   "function": "saveGame"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "POST_gameID"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": true,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/chessdb.php",
+   "lineno": 286,
+   "function": "saveGame"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "POST_gameID"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": true,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/chessdb.php",
+   "lineno": 286,
+   "function": "saveGame"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "POST_gameID"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": true,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/chessdb.php",
+   "lineno": 286,
+   "function": "saveGame"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "POST_gameID"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": true,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/chessdb.php",
+   "lineno": 286,
+   "function": "saveGame"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "POST_gameID"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": true,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/chessdb.php",
+   "lineno": 286,
+   "function": "saveGame"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "POST_gameID"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": true,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/chessdb.php",
+   "lineno": 286,
+   "function": "saveGame"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "POST_gameID"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": true,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/chessdb.php",
+   "lineno": 286,
+   "function": "saveGame"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "POST_gameID"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": true,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/chessdb.php",
+   "lineno": 286,
+   "function": "saveGame"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "POST_gameID"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": true,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/chessdb.php",
+   "lineno": 286,
+   "function": "saveGame"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "POST_gameID"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": true,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/chessdb.php",
+   "lineno": 286,
+   "function": "saveGame"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "POST_gameID"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": true,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/chessdb.php",
+   "lineno": 286,
+   "function": "saveGame"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "POST_gameID"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": true,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/chessdb.php",
+   "lineno": 286,
+   "function": "saveGame"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "POST_gameID"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": true,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/chessdb.php",
+   "lineno": 286,
+   "function": "saveGame"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "POST_gameID"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": true,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/chessdb.php",
+   "lineno": 286,
+   "function": "saveGame"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "POST_gameID"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": true,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/chessdb.php",
+   "lineno": 286,
+   "function": "saveGame"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "POST_gameID"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": true,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/chessdb.php",
+   "lineno": 286,
+   "function": "saveGame"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "POST_gameID"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": true,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/chessdb.php",
+   "lineno": 286,
+   "function": "saveGame"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "POST_gameID"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": true,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/chessdb.php",
+   "lineno": 291,
+   "function": "saveGame"
+  },
+  {
+   "type": "concrete_call",
+   "target": "mysqli_query",
+   "args": {
+    "arg1": {
+     "lit": {
+      "sort": "str",
+      "value": "DELETE FROM pieces WHERE gameID = "
+     }
+    }
+   },
+   "note": "DELETE FROM pieces WHERE gameID = ",
+   "summary": {
+    "text": "DELETE FROM pieces WHERE gameID = ",
+    "ok": false,
+    "errno": 1064,
+    "error": "You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1",
+    "rows": -1
+   },
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/chessdb.php",
+   "lineno": 291,
+   "function": "saveGame"
+  },
+  {
+   "type": "concrete_call",
+   "target": "mysqli_query",
+   "args": {
+    "arg1": {
+     "lit": {
+      "sort": "str",
+      "value": "INSERT INTO pieces (gameID, color, piece, row, col) VALUES (, 'white', 'rook', 0, 0),(, 'white', 'knight', 0, 1),(, 'white', 'bishop', 0, 2),(, 'white', 'queen', 0, 3),(, 'white', 'king', 0, 4),(, 'white', 'bishop', 0, 5),(, 'white', 'knight', 0, 6),(, 'white', 'rook', 0, 7),(, 'white', 'pawn', 1, 0),(, 'white', 'pawn', 1, 1),(, 'white', 'pawn', 1, 2),(, 'white', 'pawn', 1, 3),(, 'white', 'pawn', 1, 4),(, 'white', 'pawn', 1, 5),(, 'white', 'pawn', 1, 6),(, 'white', 'pawn', 1, 7),(, 'black', 'pawn', 6, 0),(, 'black', 'pawn', 6, 1),(, 'black', 'pawn', 6, 2),(, 'black', 'pawn', 6, 3),(, 'black', 'pawn', 6, 4),(, 'black', 'pawn', 6, 5),(, 'black', 'pawn', 6, 6),(, 'black', 'pawn', 6, 7),(, 'black', 'rook', 7, 0),(, 'black', 'knight', 7, 1),(, 'black', 'bishop', 7, 2),(, 'black', 'queen', 7, 3),(, 'black', 'king', 7, 4),(, 'black', 'bishop', 7, 5),(, 'black', 'knight', 7, 6),(, 'black', 'rook', 7, 7)"
+     }
+    }
+   },
+   "note": "INSERT INTO pieces (gameID, color, piece, row, col) VALUES (, 'white', 'rook', 0, 0),(, 'white', 'knight', 0, 1),(, 'white', 'bishop', 0, 2),(, 'white', 'queen', 0, 3),(, 'white', 'king', 0, 4),(, 'white', 'bishop', 0, 5),(, 'white', 'knight', 0, 6),(, 'white', 'rook', 0, 7),(, 'white', 'pawn', 1, 0),(, 'white', 'pawn', 1, 1),(, 'white', 'pawn', 1, 2),(, 'white', 'pawn', 1, 3),(, 'white', 'pawn', 1, 4),(, 'white', 'pawn', 1, 5),(, 'white', 'pawn', 1, 6),(, 'white', 'pawn', 1, 7),(, 'black', 'pawn', 6, 0),(, 'black', 'pawn', 6, 1),(, 'black', 'pawn', 6, 2),(, 'black', 'pawn', 6, 3),(, 'black', 'pawn', 6, 4),(, 'black', 'pawn', 6, 5),(, 'black', 'pawn', 6, 6),(, 'black', 'pawn', 6, 7),(, 'black', 'rook', 7, 0),(, 'black', 'knight', 7, 1),(, 'black', 'bishop', 7, 2),(, 'black', 'queen', 7, 3),(, 'black', 'king', 7, 4),(, 'black', 'bishop', 7, 5),(, 'black', 'knight', 7, 6),(, 'black', 'rook', 7, 7)",
+   "summary": {
+    "text": "INSERT INTO pieces (gameID, color, piece, row, col) VALUES (, 'white', 'rook', 0, 0),(, 'white', 'knight', 0, 1),(, 'white', 'bishop', 0, 2),(, 'white', 'queen', 0, 3),(, 'white', 'king', 0, 4),(, 'white', 'bishop', 0, 5),(, 'white', 'knight', 0, 6),(, 'white', 'rook', 0, 7),(, 'white', 'pawn', 1, 0),(, 'white', 'pawn', 1, 1),(, 'white', 'pawn', 1, 2),(, 'white', 'pawn', 1, 3),(, 'white', 'pawn', 1, 4),(, 'white', 'pawn', 1, 5),(, 'white', 'pawn', 1, 6),(, 'white', 'pawn', 1, 7),(, 'black', 'pawn', 6, 0),(, 'black', 'pawn', 6, 1),(, 'black', 'pawn', 6, 2),(, 'black', 'pawn', 6, 3),(, 'black', 'pawn', 6, 4),(, 'black', 'pawn', 6, 5),(, 'black', 'pawn', 6, 6),(, 'black', 'pawn', 6, 7),(, 'black', 'rook', 7, 0),(, 'black', 'knight', 7, 1),(, 'black', 'bishop', 7, 2),(, 'black', 'queen', 7, 3),(, 'black', 'king', 7, 4),(, 'black', 'bishop', 7, 5),(, 'black', 'knight', 7, 6),(, 'black', 'rook', 7, 7)",
+    "ok": false,
+    "errno": 1064,
+    "error": "You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ' 'white', 'rook', 0, 0),(, 'white', 'knight', 0, 1),(, 'white', 'bishop', 0, 2),' at line 1",
+    "rows": -1
+   },
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/chessdb.php",
+   "lineno": 292,
+   "function": "saveGame"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "POST_gameID"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": true,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/chessdb.php",
+   "lineno": 27,
+   "function": "updateTimestamp"
+  },
+  {
+   "type": "concrete_call",
+   "target": "mysqli_query",
+   "args": {
+    "arg1": {
+     "lit": {
+      "sort": "str",
+      "value": "UPDATE games SET lastMove = NOW() WHERE gameID = "
+     }
+    }
+   },
+   "note": "UPDATE games SET lastMove = NOW() WHERE gameID = ",
+   "summary": {
+    "text": "UPDATE games SET lastMove = NOW() WHERE gameID = ",
+    "ok": false,
+    "errno": 1064,
+    "error": "You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1",
+    "rows": -1
+   },
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-m1_try/chessdb.php",
+   "lineno": 27,
+   "function": "updateTimestamp"
+  }
+ ],
+ "types": {},
+ "declarations": {
+  "system": {
+   "kind": "target_function"
+  },
+  "exec": {
+   "kind": "target_function"
+  },
+  "shell_exec": {
+   "kind": "target_function"
+  },
+  "passthru": {
+   "kind": "target_function"
+  },
+  "popen": {
+   "kind": "target_function"
+  },
+  "proc_open": {
+   "kind": "target_function"
+  }
+ },
+ "request": {
+  "GET": {},
+  "POST": {
+   "ToDo": "ResponseToInvite",
+   "color": null,
+   "gameID": null,
+   "messageFrom": "",
+   "messageID": null,
+   "opponent": null,
+   "pwdOldPassword": null,
+   "pwdPassword": null,
+   "rdoHistory": null,
+   "rdoHistorylayout": null,
+   "rdoTheme": null,
+   "replayAll": null,
+   "response": "accepted",
+   "txtFirstName": null,
+   "txtLastName": null,
+   "txtNick": null,
+   "txtReload": null,
+   "userLevel": null
+  },
+  "COOKIE": {}
+ }
+}

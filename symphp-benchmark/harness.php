@@ -241,9 +241,12 @@ function run_request(array $request): array
     ];
 }
 
-$requests = json_decode(stream_get_contents(STDIN), true, 512, JSON_THROW_ON_ERROR);
-$results = [];
-foreach ($requests as $request) {
-    $results[] = run_request($request);
+// harness_app.php reuses the superglobal classes above without this batch loop.
+if (!defined('ACE_HARNESS_LIB')) {
+    $requests = json_decode(stream_get_contents(STDIN), true, 512, JSON_THROW_ON_ERROR);
+    $results = [];
+    foreach ($requests as $request) {
+        $results[] = run_request($request);
+    }
+    echo json_encode($results, JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES | JSON_INVALID_UTF8_SUBSTITUTE);
 }
-echo json_encode($results, JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES | JSON_INVALID_UTF8_SUBSTITUTE);
