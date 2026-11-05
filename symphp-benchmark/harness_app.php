@@ -148,9 +148,10 @@ function deplain(mixed $v): mixed
 // Every runtime class is loaded BEFORE the app: an app that prepends its own autoloader (Drupal's
 // composer loader compares class names with `===`, i.e. through \__cmp) would otherwise be asked
 // for Concolic\Z3 from inside itself, and the class would never load.
-foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator(
-    dirname(__DIR__, 2) . '/agentic_concolic_engine/runtimes/php_runtime/src', FilesystemIterator::SKIP_DOTS)) as $__ace_f) {
-    $__ace_rel = substr($__ace_f->getPathname(), strlen(dirname(__DIR__, 2) . '/agentic_concolic_engine/runtimes/php_runtime/src/'));
+// The runtime harness.php loaded: ACE_PHP_RUNTIME (drive.py sets it under ACE_ENGINE), else the default checkout.
+define('ACE_RUNTIME_DIR', getenv('ACE_PHP_RUNTIME') ?: dirname(__DIR__, 2) . '/agentic_concolic_engine/runtimes/php_runtime');
+foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator(ACE_RUNTIME_DIR . '/src', FilesystemIterator::SKIP_DOTS)) as $__ace_f) {
+    $__ace_rel = substr($__ace_f->getPathname(), strlen(ACE_RUNTIME_DIR . '/src/'));
     // Not the instrumentor (it needs PhpParser, loaded only for eval instrumentation).
     if ($__ace_f->getExtension() === 'php'
         && !in_array($__ace_rel, ['autoload.php', 'probes.php', 'Instrument.php', 'InstrumentVisitor.php'], true)) {
@@ -178,7 +179,7 @@ if (!empty(AceState::$request['flags']['evalInstrument'])) {
     // Only PhpParser: the runtime's composer autoload would re-require probes.php ('files').
     spl_autoload_register(static function (string $c): void {
         if (str_starts_with($c, 'PhpParser\\')) {
-            $f = dirname(__DIR__, 2) . '/agentic_concolic_engine/runtimes/php_runtime/vendor/nikic/php-parser/lib/'
+            $f = ACE_RUNTIME_DIR . '/vendor/nikic/php-parser/lib/'
                 . str_replace('\\', '/', $c) . '.php';
             if (is_file($f)) {
                 require $f;

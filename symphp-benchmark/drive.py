@@ -426,15 +426,9 @@ def main() -> int:
 
     spec = APPS[a.app]
     label = a.label or a.arm
-    if engine.V2:
-        # Engine work these options need is port plan P4-P7, not on the v2 branch yet: refuse, never ignore.
-        unported = [f for f, on in (("--php7compat", a.php7compat), ("--exit-as-halt", a.exit_as_halt),
-                                    ("--switch-cmp", a.switch_cmp), ("--concretize", a.concretize),
-                                    ("--array-mode", a.array_mode), ("--real-app-builtins", a.real_app_builtins),
-                                    ("--xss", a.xss), ("--eval-instrument", a.eval_instrument),
-                                    ("--template-split", a.template_split), ("--db-classes", a.db_classes)) if on]
-        if unported:
-            raise SystemExit(f"not ported to the v2 engine yet: {' '.join(unported)}")
+    if engine.V2 and a.template_split:
+        # templateSplit was a Template feature; on v2 explode() of a concat value is concretized (E4, port plan P6).
+        raise SystemExit("--template-split does not exist on the v2 engine")
     app_mode = bool(spec.get("db"))
     MODE["app"] = a.app if app_mode else None
     options = tuple(f for f, on in (("--php7compat", a.php7compat), ("--exit-as-halt", a.exit_as_halt),
@@ -529,7 +523,7 @@ def main() -> int:
                 if e["type"] == "concretized":
                     k = f"{e['what']} @ {rel_file(e.get('file'), app_dir)}:{e.get('lineno')}"
                     concretized[k] = concretized.get(k, 0) + 1
-            oracle = sinks_v2.findings(dump, FAMILIES) if engine.V2 else \
+            oracle = sinks_v2.findings(dump, FAMILIES) + (sinks_v2.xss_findings(dump) if a.xss else []) if engine.V2 else \
                 sinks.findings(dump, FAMILIES) + (sinks.xss_findings(dump) if a.xss else [])
             for f in oracle:
                 f["request"] = {g: {k: f["witness"].get(n) for n, (gg, k) in r["names"].items() if gg == g

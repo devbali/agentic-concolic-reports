@@ -2,24 +2,24 @@
 
 /**
  * harness_app.php for the v2 engine (php-runtime/real-apps-v2: main's native
- * `concat`). Same protocol, same file-scope request, same real clone database,
- * sessions, header stand-ins and shutdown path as harness_app.php; see there.
+ * `concat`). Same protocol, same file-scope request, real clone database,
+ * sessions, header stand-ins, flags and shutdown path as harness_app.php; see
+ * there. What differs:
  *
- * What differs:
  * - No Concolic\Template. A statement built with `.` is a symbolic string
  *   whose term is the whole concatenation. The SQL sinks are still E1
- *   CONCRETE targets (the query runs for real on this run's text and the real
- *   result goes back to the app); the `concrete_call` event now carries the
- *   statement's TERM in its args, and the note only names the statement
- *   argument and its text (harness_v2.php's v2_statement_note).
- * - Request flags whose engine work is not ported yet (port plan P4-P6:
- *   php7Compare, concretize, arrayMode, outputEvents, templateSplit,
- *   evalInstrument, E7's db classes) are REFUSED: the request comes back as a
- *   harness error rather than running with the flag silently off.
+ *   CONCRETE targets; the `concrete_call` event carries the statement's TERM
+ *   in its args, and the note only names the statement argument and its text
+ *   (harness_v2.php's v2_statement_note). E7's stand-ins: harness_db_v2.php.
+ * - `sanitizers` registers P3's sanitizer shims (sanitizers_v2.php) instead of
+ *   E5's Template parts; `templateSplit` does not exist (refused).
+ * - E6 output events carry the echoed value's term (sinks_v2.xss_findings).
+ * - The runtime is ACE_PHP_RUNTIME's (drive.py: the engine it drives).
  */
 
 define('ACE_HARNESS_V2_LIB', true);
 require __DIR__ . '/harness_v2.php';
+require __DIR__ . '/harness_db_v2.php';
 
 use Concolic\Runtime;
 use Concolic\Value;
@@ -125,9 +125,9 @@ function deplain(mixed $v): mixed
 // Every runtime class is loaded BEFORE the app: an app that prepends its own autoloader (Drupal's
 // composer loader compares class names with `===`, i.e. through \__cmp) would otherwise be asked
 // for Concolic\Z3 from inside itself, and the class would never load.
-$__ace_src = (getenv('ACE_PHP_RUNTIME') ?: dirname(__DIR__, 2) . '/agentic_concolic_engine/runtimes/php_runtime') . '/src';
-foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($__ace_src, FilesystemIterator::SKIP_DOTS)) as $__ace_f) {
-    $__ace_rel = substr($__ace_f->getPathname(), strlen($__ace_src . '/'));
+const ACE_RUNTIME_DIR = ACE_PHP_RUNTIME_DIR;
+foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator(ACE_RUNTIME_DIR . '/src', FilesystemIterator::SKIP_DOTS)) as $__ace_f) {
+    $__ace_rel = substr($__ace_f->getPathname(), strlen(ACE_RUNTIME_DIR . '/src/'));
     // Not the instrumentor (it needs PhpParser, loaded only for eval instrumentation).
     if ($__ace_f->getExtension() === 'php'
         && !in_array($__ace_rel, ['autoload.php', 'probes.php', 'Instrument.php', 'InstrumentVisitor.php'], true)) {
@@ -138,21 +138,39 @@ foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($__ace_src
         }
     }
 }
-unset($__ace_f, $__ace_rel, $__ace_c, $__ace_src);
+unset($__ace_f, $__ace_rel, $__ace_c);
 
 AceState::$request = json_decode(file_get_contents($argv[2]), true, 512, JSON_THROW_ON_ERROR);
 AceState::$result_path = $argv[3];
 mysqli_report(MYSQLI_REPORT_OFF);
 
 AceState::$rt = new Runtime();
-$__ace_unported = array_keys(array_filter(array_intersect_key(AceState::$request['flags'] ?? [], array_flip(
-    ['php7Compare', 'concretize', 'arrayMode', 'outputEvents', 'templateSplit', 'evalInstrument', 'dbClasses']))));
-if ($__ace_unported) {
-    file_put_contents(AceState::$result_path, json_encode(['harness_error' => 'not ported to the v2 engine yet (port plan P4-P6): '
-        . implode(', ', $__ace_unported)]));
+if (!empty(AceState::$request['flags']['templateSplit'])) {
+    file_put_contents(AceState::$result_path, json_encode(['harness_error' => 'templateSplit does not exist on the v2 engine (port plan P6)']));
     exit(0);
 }
-unset($__ace_unported);
+AceState::$rt->concretizeUnmodelled = (bool) (AceState::$request['flags']['concretize'] ?? false);   // E4
+AceState::$rt->outputEvents = (bool) (AceState::$request['flags']['outputEvents'] ?? false);         // E6
+if (!empty(AceState::$request['flags']['evalInstrument'])) {
+    // eval'd code gets the copy's own targets and options (instrument_app.php --eval-instrument).
+    // Only PhpParser: the runtime's composer autoload would re-require probes.php ('files').
+    spl_autoload_register(static function (string $c): void {
+        if (str_starts_with($c, 'PhpParser\\')) {
+            $f = ACE_RUNTIME_DIR . '/vendor/nikic/php-parser/lib/'
+                . str_replace('\\', '/', $c) . '.php';
+            if (is_file($f)) {
+                require $f;
+            }
+        }
+    });
+    AceState::$rt->evalInstrument = [array_fill_keys([...app_targets(),
+        ...(!empty(AceState::$request['flags']['sanitizers']) ? array_keys(SANITIZER_SHIMS) : [])], true),
+        AceState::$request['flags']['evalInstrument']];
+}
+Runtime::$php7Compare = (bool) (AceState::$request['flags']['php7Compare'] ?? false);
+if (Runtime::$php7Compare) {
+    require __DIR__ . '/harness_php7.php';    // PHP 7.4 functions PHP 8 removed (get_magic_quotes_gpc, each, ...)
+}
 AceState::$sinks = [];
 AceState::$standins = [];
 
@@ -239,6 +257,9 @@ AceState::$standins = [];
             return ['value' => $value, 'summary' => ['args' => $plain]];
         });
     }
+    // E7: object-style PDO/mysqli sinks (used only by a copy instrumented with --db-classes).
+    ace_db_register($rt, $sinks);
+    $rt->locationSkipFiles = [__DIR__ . '/harness_db_v2.php'];
 })(AceState::$rt, AceState::$sinks, AceState::$standins);
 
 $__ace_seeds = $__ace_types = AceState::$names = [];
@@ -267,6 +288,14 @@ function __ace_write_result(?Throwable $caught): void
         AceState::$output = ob_get_clean() . AceState::$output;
     }
     $dump = AceState::$rt->finish($caught);
+    foreach (Concolic\Superglobals::$discovered as $g => $keys) {
+        // A $_REQUEST key could come from GET or POST: declare it in both.
+        foreach ($g === 'REQUEST' ? ['GET', 'POST'] : [$g] as $gg) {
+            foreach ($keys as $k => $_) {
+                AceState::$discovered[$gg][$k] = true;
+            }
+        }
+    }
     $res = [
         'dump' => $dump,
         'inputs' => (object) array_map(fn($p) => ['global' => $p[0], 'key' => $p[1]], AceState::$names),
@@ -283,6 +312,9 @@ function __ace_write_result(?Throwable $caught): void
                 return null;                          // e.g. a closure in the session
             }
         })() : null,
+        'php7' => ['const7' => $GLOBALS['__ace_const7'] ?? [], 'count7' => $GLOBALS['__ace_count7'] ?? 0,
+            'cmp7' => $GLOBALS['__ace_cmp7'] ?? 0, 'arith7' => $GLOBALS['__ace_arith7'] ?? 0,
+            'call7' => $GLOBALS['__ace_call7'] ?? []],
     ];
     file_put_contents(AceState::$result_path, json_encode($res, JSON_UNESCAPED_SLASHES | JSON_INVALID_UTF8_SUBSTITUTE | JSON_PARTIAL_OUTPUT_ON_ERROR));
 }
@@ -290,8 +322,7 @@ function __ace_write_result(?Throwable $caught): void
 register_shutdown_function(static function (): void {
     // Reached only if the request did not come back to file scope: a fatal
     // error, or a real `exit` in a file the instrumentor could not rewrite.
-    // Only a FATAL last error explains the exit; anything else (a warning) is stale, and the
-    // process ended in a real `exit` (E3 exitAsHalt is port plan P4).
+    // Only a FATAL last error explains the exit; a warning is stale (the process ended in a real `exit`).
     $e = error_get_last();
     $fatal = $e && in_array($e['type'], [E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR, E_USER_ERROR], true);
     __ace_write_result(new Error($fatal ? "fatal: {$e['message']} at {$e['file']}:{$e['line']}" : 'the process exited inside the app'));
@@ -303,10 +334,33 @@ foreach ($__ace_inputs as $__ace_n => $__ace_v) {
     [$__ace_g, $__ace_k] = AceState::$names[$__ace_n];
     $__ace_known[$__ace_g][$__ace_k] = $__ace_v;
 }
-$_GET = new RecordingSuperglobal('GET', $__ace_known['GET'], AceState::$discovered);
-$_POST = new RecordingSuperglobal('POST', $__ace_known['POST'], AceState::$discovered);
-$_COOKIE = new RecordingSuperglobal('COOKIE', $__ace_known['COOKIE'], AceState::$discovered);
-$_REQUEST = new RequestSuperglobal([$_GET, $_POST, $_COOKIE]);
+if (!empty(AceState::$request['flags']['arrayMode'])) {
+    // Decision (b), ARRAY MODE: real arrays of the PRESENT inputs; reads go
+    // through the instrumentor's __sg_read (Concolic\Superglobals). $_REQUEST
+    // is GET, then POST, then COOKIE (php-cgi -n: variables_order EGPCS).
+    $__ace_present = $__ace_absent = ['GET' => [], 'POST' => [], 'COOKIE' => []];
+    foreach ($__ace_known as $__ace_g => $__ace_kv) {
+        foreach ($__ace_kv as $__ace_k => $__ace_v) {
+            if ($__ace_v->concrete() === null) {
+                $__ace_absent[$__ace_g][$__ace_k] = $__ace_v;
+            } else {
+                $__ace_present[$__ace_g][$__ace_k] = $__ace_v;
+            }
+        }
+    }
+    $__ace_absent['REQUEST'] = $__ace_absent['COOKIE'] + $__ace_absent['POST'] + $__ace_absent['GET'];
+    Concolic\Superglobals::reset($__ace_absent);
+    $_GET = $__ace_present['GET'];
+    $_POST = $__ace_present['POST'];
+    $_COOKIE = $__ace_present['COOKIE'];
+    $_REQUEST = array_merge($_GET, $_POST, $_COOKIE);
+    unset($__ace_present, $__ace_absent, $__ace_kv);
+} else {
+    $_GET = new RecordingSuperglobal('GET', $__ace_known['GET'], AceState::$discovered);
+    $_POST = new RecordingSuperglobal('POST', $__ace_known['POST'], AceState::$discovered);
+    $_COOKIE = new RecordingSuperglobal('COOKIE', $__ace_known['COOKIE'], AceState::$discovered);
+    $_REQUEST = new RequestSuperglobal([$_GET, $_POST, $_COOKIE]);
+}
 $_FILES = [];
 $_SESSION = AceState::$request['session'] ?? [];
 if (!empty(AceState::$request['flags']['sessionUnsetBeforeStart']) && $_SESSION === []) {
@@ -327,6 +381,7 @@ unset($__ace_g, $__ace_k, $__ace_v, $__ace_n, $__ace_known, $__ace_inputs);
 
 chdir(dirname(AceState::$app . '/' . AceState::$request['script']));
 AceState::$ob_base = ob_get_level();
+AceState::$rt->outputBaseLevel = AceState::$ob_base;
 ob_start();
 $__ace_caught = null;
 try {

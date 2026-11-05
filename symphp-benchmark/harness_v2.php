@@ -20,6 +20,8 @@
 
 define('ACE_HARNESS_LIB', true);
 require __DIR__ . '/harness.php';
+/** The runtime this harness drives (harness.php loads it from the same place). */
+define('ACE_PHP_RUNTIME_DIR', getenv('ACE_PHP_RUNTIME') ?: dirname(__DIR__, 2) . '/agentic_concolic_engine/runtimes/php_runtime');
 require __DIR__ . '/sanitizers_v2.php';      // P3: the sanitizer shims, registered under the `sanitizers` flag
 
 use Concolic\Runtime;

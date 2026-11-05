@@ -61,7 +61,7 @@ def pc(expr, taken, line=3):
 def dump(vars_, events):
     return {"label": "t", "symbolic_vars": vars_, "events": events,
             "declarations": {"mysqli_query": {"kind": "target_function"}, "system": {"kind": "target_function"},
-                             **{fn: {"kind": "shim"} for fn in ("addslashes", "strtolower", "trim")}}}
+                             **{fn: {"kind": "shim"} for fn in ("addslashes", "strtolower", "trim", "htmlspecialchars")}}}
 
 
 def isnull(n):
@@ -203,3 +203,31 @@ def test_a_candidate_the_sanitized_branch_would_reject_is_dropped():
 
 
 import sinks  # noqa: E402  (for the twins in the assertions above)
+
+
+# ---- P7: the XSS oracle on output terms ----------------------------------------------------------
+
+def out_ev(term, text, line=8):
+    return {"type": "output", "term": term, "text": text, "offset": 3, "file": "/app/x.php", "lineno": line,
+            "function": None}
+
+
+def test_an_echoed_input_is_an_xss_candidate():
+    d = dump([inp("GET_q", "a")], [pc(isnull("GET_q"), False), out_ev(cat(lit("<p>"), sym("GET_q")), "<p>a")])
+    [f] = sinks_v2.xss_findings(d)
+    assert f["kind"] == "xss-candidate" and f["carried"] == "GET_q" and "<acexss" in f["instance"]
+    assert f["witness"]["GET_q"].count(f["payload"]) >= 1 and f["offset"] == 3
+
+
+def test_an_escaped_echo_is_not_a_candidate_and_7_4_defaults_apply():
+    h = "SYM_RESULT_htmlspecialchars_1"
+    d = dump([inp("GET_q", "a")], [shim("htmlspecialchars", sym("GET_q"), h, "a"), out_ev(sym(h), "a")])
+    assert sinks_v2.xss_findings(d) == []
+    # No flags: PHP 7.4's ENT_COMPAT leaves `'` alone (PHP 8.1 would write &#039;).
+    assert sinks_v2.SANITIZERS["htmlspecialchars"]("'\"<") == "'&quot;&lt;"
+
+
+def test_an_echo_guarded_to_a_harmless_value_is_not_a_candidate():
+    eq = {"op": "==", "args": [sym("GET_q"), lit("ok")]}
+    d = dump([inp("GET_q", "ok")], [pc(isnull("GET_q"), False), pc(eq, True), out_ev(sym("GET_q"), "ok")])
+    assert sinks_v2.xss_findings(d) == []

@@ -52,6 +52,9 @@ function v2_sanitize(string $fn, mixed $subject, array $rest): string
         'mysqli_real_escape_string' => strtr($s, ["\0" => '\\0', "\n" => '\\n', "\r" => '\\r', '\\' => '\\\\',
             "'" => "\\'", '"' => '\\"', "\x1a" => '\\Z']),
         'escapeshellarg', 'escapeshellcmd', 'strtolower', 'strtoupper', 'addslashes' => $fn($s),
+        // No flags given: PHP 7.4's default, ENT_COMPAT | ENT_HTML401 (`'` is NOT escaped), because the
+        // benchmark apps and the judge run 7.4; PHP 8.1 changed it to ENT_QUOTES | ENT_SUBSTITUTE.
+        'htmlspecialchars', 'htmlentities' => $fn($s, ...($rest ?: [ENT_COMPAT | ENT_HTML401])),
         default => $fn($s, ...$rest),
     };
 }

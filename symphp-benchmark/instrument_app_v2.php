@@ -1,28 +1,35 @@
 <?php
 
 /**
- * instrument_app.php for the v2 engine (php-runtime/real-apps-v2).
+ * instrument_app.php for the v2 engine (php-runtime/real-apps-v2): the same options, plus
+ * --sanitizers (P3: sanitizers_v2.php's SANITIZER_SHIMS are routed through __target).
+ * The runtime comes from ACE_PHP_RUNTIME (drive.py sets it to the engine it drives).
  *
- * usage: php instrument_app_v2.php <app-src> <build-dir> [--app-targets] [--sanitizers] [--ext=php,inc]
+ * usage: php instrument_app_v2.php <app-src> <build-dir> [--app-targets] [--php7compat] [--exit-as-halt] [--switch-cmp]
  *
- * Copies the application and instruments every source file in the copy, as
- * instrument_app.php does. Main's `Instrument::source` takes no options, so
- * the v1 options that depend on not-yet-ported engine work (E2 --php7compat,
- * E3 --exit-as-halt, --switch-cmp, array mode, --real-app-builtins,
- * --eval-instrument, E7 --db-classes: port plan P4-P6) are REFUSED here
- * rather than silently ignored.
+ * Copies the application and instruments EVERY .php file in the copy, not
+ * just the ones an expected path loads: a symbolic value reaching an
+ * uninstrumented file is the one failure this design cannot make loud, since
+ * `if ($sym)` on an object is silently true. A file the instrumentor cannot
+ * rewrite is reported and left as it was.
  *
- * --app-targets   harness_app_v2.php's targets (SQL sinks, shell sinks, session/header stand-ins)
- *                 instead of harness_v2.php's (sinks plus the connection shims)
- * --sanitizers    P3: also route the sanitizers of sanitizers_v2.php (SANITIZER_SHIMS) through __target
+ * The options only ever change the COPY in <build-dir>; <app-src> is read.
+ * --app-targets   route harness_app.php's targets (SQL sinks, shell sinks,
+ *                 session/header stand-ins) instead of harness.php's
+ * --php7compat    E2: the copy behaves as on PHP 7.4 where 8.x would differ
+ * --exit-as-halt  E3: exit/die end the run, not the process
+ * --switch-cmp    switch cases compare through __cmp (implied by --php7compat)
+ * --superglobal-reads  decision (b) array mode: direct superglobal reads -> __sg_key probe
+ * --real-app-builtins   route type predicates (is_scalar, gettype, ...) through __fn
+ * --ext=php,inc  the PHP source extensions to instrument (default php; OpenEMR's library/*.inc)
+ * --eval-instrument  eval'd code is instrumented at run time (WeBid's admin templates)
+ * --db-classes    E7: `new PDO`/`new mysqli` -> AcePDO/AceMysqli (harness_db.php), object-style SQL sinks
+ * Every rewrite an option performs is counted, per file and in total.
  */
 
 $runtime = getenv('ACE_PHP_RUNTIME') ?: dirname(__DIR__, 2) . '/agentic_concolic_engine/runtimes/php_runtime';
 require_once $runtime . '/vendor/autoload.php';
 require_once $runtime . '/src/autoload.php';
-
-const V2_NOT_PORTED = ['--php7compat', '--exit-as-halt', '--switch-cmp', '--superglobal-reads', '--real-app-builtins',
-    '--eval-instrument', '--db-classes'];
 
 $exts = ['php'];
 foreach (array_slice($argv, 1) as $a) {
@@ -34,35 +41,44 @@ $flags = array_values(array_filter(array_slice($argv, 1), fn($a) => str_starts_w
 $pos = array_values(array_filter(array_slice($argv, 1), fn($a) => !str_starts_with($a, '--')));
 [$src, $build] = $pos + [null, null];
 if (!$src || !$build) {
-    fwrite(STDERR, "usage: php instrument_app_v2.php <app-src> <build-dir> [--app-targets] [--sanitizers] [--ext=php,inc]\n");
+    fwrite(STDERR, "usage: php instrument_app.php <app-src> <build-dir> [--app-targets] [--php7compat] [--exit-as-halt] [--switch-cmp]\n");
     exit(2);
 }
-$refused = array_values(array_intersect($flags, V2_NOT_PORTED));
-if ($refused) {
-    fwrite(STDERR, 'not ported to the v2 engine yet (port plan P4-P6): ' . implode(' ', $refused) . "\n");
-    exit(2);
-}
-
-$targets = [
-    'mysqli_query', 'mysqli_real_query', 'mysqli_multi_query', 'mysql_query',
-    'system', 'exec', 'shell_exec', 'passthru', 'popen', 'proc_open',
+$options = [
+    'php7Compat' => in_array('--php7compat', $flags, true),
+    'exitAsHalt' => in_array('--exit-as-halt', $flags, true),
+    'switchCmp' => in_array('--switch-cmp', $flags, true),
+    'superglobalReads' => in_array('--superglobal-reads', $flags, true),
+    'realAppBuiltins' => in_array('--real-app-builtins', $flags, true),
+    // E7: `new PDO`/`new mysqli` -> harness_db.php's recording subclasses.
+    // eval(E) -> eval(\__ace_eval_src(E)); harness_app.php instruments the source at run time.
+    'evalInstrument' => in_array('--eval-instrument', $flags, true),
+    'newClassMap' => in_array('--db-classes', $flags, true) ? ['pdo' => '\\AcePDO', 'mysqli' => '\\AceMysqli'] : [],
 ];
+
 if (in_array('--app-targets', $flags, true)) {
-    // harness_app_v2.php's stand-ins, by name.
-    array_push($targets, 'session_start', 'session_destroy', 'session_regenerate_id', 'session_unset',
+    // harness_app.php's app_targets(), by name.
+    $targets = array_fill_keys([
+        'mysqli_query', 'mysqli_real_query', 'mysqli_multi_query', 'mysql_query',
+        'system', 'exec', 'shell_exec', 'passthru', 'popen', 'proc_open',
+        'session_start', 'session_destroy', 'session_regenerate_id', 'session_unset',
         'session_write_close', 'session_id', 'session_name', 'session_cache_limiter', 'session_set_cookie_params',
-        'header', 'setcookie', 'setrawcookie', 'header_remove', 'http_response_code');
+        'header', 'setcookie', 'setrawcookie', 'header_remove', 'http_response_code',
+    ], true);
 } else {
-    // harness.php's SHIMS, by name.
-    array_push($targets, 'mysqli_connect', 'mysqli_connect_errno', 'mysqli_connect_error',
-        'mysqli_select_db', 'mysqli_close', 'mysqli_error');
+    // The harness's SQL_SINKS, SHELL_SINKS and SHIMS, by name.
+    $targets = array_fill_keys([
+        'mysqli_query', 'mysqli_real_query', 'mysqli_multi_query', 'mysql_query',
+        'system', 'exec', 'shell_exec', 'passthru', 'popen', 'proc_open',
+        'mysqli_connect', 'mysqli_connect_errno', 'mysqli_connect_error',
+        'mysqli_select_db', 'mysqli_close', 'mysqli_error',
+    ], true);
 }
 if (in_array('--sanitizers', $flags, true)) {
     // sanitizers_v2.php's SANITIZER_SHIMS, by name.
-    array_push($targets, 'addslashes', 'mysqli_real_escape_string', 'htmlspecialchars', 'htmlentities',
-        'escapeshellarg', 'escapeshellcmd', 'trim', 'strtolower', 'strtoupper');
+    $targets += array_fill_keys(['addslashes', 'mysqli_real_escape_string', 'htmlspecialchars', 'htmlentities',
+        'escapeshellarg', 'escapeshellcmd', 'trim', 'strtolower', 'strtoupper'], true);
 }
-$targets = array_fill_keys($targets, true);
 
 if (is_dir($build)) {
     exec('rm -rf ' . escapeshellarg($build));
@@ -73,11 +89,14 @@ if ($rc !== 0) {
     fwrite(STDERR, "copy failed\n");
     exit(1);
 }
+// The copy is ours: make it writable (Drupal's installer leaves sites/default read-only).
 exec(sprintf('chmod -R u+w %s', escapeshellarg($build)));
 
 $ok = $failed = 0;
 $warnings_all = [];
 $failures = [];
+$rewrites_total = [];
+$rewrites_by_file = [];
 $it = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($build, FilesystemIterator::SKIP_DOTS));
 foreach ($it as $file) {
     if (!$file->isFile() || !in_array($file->getExtension(), $exts, true)) {
@@ -87,9 +106,18 @@ foreach ($it as $file) {
     $rel = substr($path, strlen($build) + 1);
     try {
         $warnings = null;
-        file_put_contents($path, Concolic\Instrument::source(file_get_contents($path), $targets, $rel, null, $warnings));
+        $rewrites = null;
+        file_put_contents($path, Concolic\Instrument::source(file_get_contents($path), $targets, $rel, null, $warnings,
+            false, $options, $rewrites));
         foreach ((array) $warnings as $w) {
             $warnings_all[] = "{$rel}: {$w}";
+        }
+        if ($rewrites) {
+            ksort($rewrites);
+            $rewrites_by_file[$rel] = $rewrites;
+            foreach ($rewrites as $k => $n) {
+                $rewrites_total[$k] = ($rewrites_total[$k] ?? 0) + $n;
+            }
         }
         $ok++;
     } catch (Throwable $e) {
@@ -98,6 +126,11 @@ foreach ($it as $file) {
         fwrite(STDERR, "  [warn] {$rel}: {$e->getMessage()}\n");
     }
 }
-$report = ['engine' => 'v2', 'instrumented' => $ok, 'failed' => $failed, 'warnings' => $warnings_all,
-    'targets' => array_keys($targets), 'failures' => $failures];
+ksort($rewrites_total);
+ksort($rewrites_by_file);
+$report = ['engine' => 'v2', 'instrumented' => $ok, 'failed' => $failed, 'warnings' => $warnings_all];
+if (true) {
+    $report += ['options' => $options, 'failures' => $failures, 'rewrites_total' => (object) $rewrites_total,
+        'rewrites_by_file' => (object) $rewrites_by_file];
+}
 echo json_encode($report, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES), "\n";

@@ -60,6 +60,18 @@ from dump_ir.smt import Lowering, Unlowerable
 from dump_ir.term import Lit, Sym, from_json as _leaf
 
 SQL, SHELL = sinks.SQL, sinks.SHELL
+
+#: PHP 7.4's default flags for htmlspecialchars/htmlentities (ENT_COMPAT | ENT_HTML401): `'` is NOT
+#: escaped. The apps and the judge run 7.4; sinks.SANITIZERS (v1) keeps PHP 8.1's ENT_QUOTES default.
+PHP74_HTML_FLAGS = 2
+
+
+def _html74(s: str, flags: int = PHP74_HTML_FLAGS, *rest) -> str:
+    return sinks._htmlspecialchars(s, flags, *rest)
+
+
+#: The Python twins sinks_v2 applies (checked against sanitizers_v2.php and php:7.4 by test_sanitizers_v2.py).
+SANITIZERS = {**sinks.SANITIZERS, "htmlspecialchars": _html74, "htmlentities": _html74}
 PAYLOADS = sinks.PAYLOADS
 parses = sinks.parses
 
@@ -163,7 +175,7 @@ def sanitizers(dump: dict) -> list[Sanitizer]:
             note = json.loads(e["note"])
         except (TypeError, json.JSONDecodeError):
             continue
-        if not isinstance(note, dict) or note.get("sanitizer") not in sinks.SANITIZERS:
+        if not isinstance(note, dict) or note.get("sanitizer") not in SANITIZERS:
             continue
         raw = (e.get("args") or {}).get(note.get("subject"))
         subject = term_of(raw) if raw is not None else None
@@ -191,7 +203,7 @@ def recompute(lo: Lowering, run: Run, values: dict, shims: list[Sanitizer]) -> d
             continue
         if subject is None:
             continue
-        values[sh.result] = sinks.SANITIZERS[sh.fn](_php_string(subject), *sh.args)
+        values[sh.result] = SANITIZERS[sh.fn](_php_string(subject), *sh.args)
     return values
 
 
@@ -336,3 +348,87 @@ def _witness(m, lo: Lowering, inputs: dict) -> dict:
         elif null is not None and witness[n] is None:
             witness[n] = ""                   # present, and nothing else asked of it (drive._from_model)
     return witness
+
+
+# -- P7: the reflected-XSS oracle on output TERMS (E6) ---------------------------------
+#
+# An `output` event carries the echoed value's term and this run's text. For each input
+# the term reads (directly or through a sanitizer shim), Z3 is asked -- exactly as for a
+# sink -- for a value that satisfies every earlier path condition and contains a marker
+# that would be page structure if it survived (`"'><acexss...>`). Each sanitizer result
+# is recomputed by its twin, the term is evaluated under the candidate, and the site is a
+# candidate only if `<acexss` appears in the evaluated output. Nothing here is the
+# verdict: the judge replays the witness and counts it only if the marker parses as an
+# element or attribute (decision (f), unchanged).
+
+def xss_findings(dump: dict, timeout_ms: int = 5000) -> list[dict]:
+    run = Run.from_dict(dump)
+    inputs, every = run_values(dump)
+    shims = {sh.result: sh for sh in sanitizers(dump)}
+    before: list[Sanitizer] = []
+    out, prefix, seen = [], [], set()
+    for event in dump["events"]:
+        if event["type"] == "symbolic_call" and event.get("result_name") in shims:
+            before.append(shims[event["result_name"]])
+            continue
+        if event["type"] == "path_condition":
+            prefix.append((event["expr"], bool(event["taken"]), event))
+            continue
+        if event["type"] != "output" or "term" not in event:
+            continue
+        term = term_of(event["term"])
+        if term is None:
+            continue
+        site = f"{event.get('file')}:{event.get('lineno')}"
+        ctx = z3.Context()
+        lo = Lowering(run.symbols(), ctx)
+        try:
+            text_t = lo.term(term)
+        except (Unlowerable, z3.Z3Exception):
+            continue
+        if not z3.is_string(text_t):
+            continue
+        for name in carried_inputs(term, inputs, before):
+            if (site, name) in seen:
+                continue
+            seen.add((site, name))
+            payload = sinks.xss_payload(site)
+            hit = _xss_witness(run, lo, text_t, prefix, name, inputs, every, payload, timeout_ms, list(before))
+            if hit is not None:
+                out.append({"sink": "echo", "family": "xss", "file": event.get("file"), "lineno": event.get("lineno"),
+                            "statement": render(term), "kind": "xss-candidate", "carried": name, "payload": payload,
+                            "offset": event.get("offset"), **hit})
+    return out
+
+
+def _xss_witness(run, lo, text_t, prefix, name, inputs, every, payload, timeout_ms, shims):
+    conds = _lowered_prefix(lo, prefix)
+    if conds is None:
+        return None
+    try:
+        var = lo.var(name)
+        null = lo.is_null(Sym(name))
+    except Unlowerable:
+        return None
+    if not z3.is_string(var):
+        return None
+    sanitized = {sh.result for sh in shims}
+    on_sanitized = [(c, ev) for c, (raw, _, ev) in zip(conds, prefix)
+                    if _expr.symbols(_expr.from_json(raw)) & sanitized]
+    s = z3.Solver(ctx=lo.ctx)
+    s.set("timeout", timeout_ms)
+    s.add(*conds, *lo.axioms, z3.Contains(var, z3.StringVal(payload, lo.ctx)), z3.Not(null))
+    if s.check() != z3.sat:
+        return None
+    witness = _witness(s.model(), lo, inputs)
+    at = Assignment(lo, run, recompute(lo, run, {**every, **witness}, shims))
+    if any(at.eval(c) is not True for c, _ in on_sanitized):
+        return None
+    instance = at.eval(text_t)
+    marker = "<" + sinks.XSS_MARKER
+    if not isinstance(instance, str) or marker not in instance:
+        return None                               # a sanitizer (or the term) encodes it: not a candidate
+    hit = {"instance": instance, "witness": witness}
+    if on_sanitized:
+        hit["assumes"] = [f"{str(ev.get('file') or '').rsplit('/', 1)[-1]}:{ev.get('lineno')}" for _, ev in on_sanitized]
+    return hit
