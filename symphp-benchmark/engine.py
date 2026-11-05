@@ -40,15 +40,45 @@ else:
     from concolic.model.run import Run                                                 # noqa: E402,F401
 
 
+#: Z3's default for an unconstrained constant, by sort: what model completion assigns.
+_COMPLETION = {"String": "", "Int": 0, "Bool": False}
+
+
 def negations(dump: dict, timeout_ms: int = 5000):
-    """v2: for each branch this run took, a model of the prefix with that branch flipped (or None)."""
+    """v2: for each branch this run took, a model of the prefix with that branch flipped (or None).
+
+    The model is COMPLETED over every symbol the run's decisions read, as v1's
+    `solve_and_evaluate(..., eval_conditions=<every decision>)` completed it: a symbol the
+    flipped prefix leaves unconstrained gets Z3's default (`""`, `0`, False; `is_null` False,
+    i.e. PRESENT). Main's `solve` returns only the constrained ones, which leaves a later
+    absent input absent; v1's completion makes it present, and that is what the M0-M5
+    exploration did. Measured on WebChess's round-limited `mainmenu.php`: 467 traces in 50
+    rounds without it, against v1's 1165.
+    """
     run = Run.from_dict(dump)
     symbols = run.symbols()
     pcs = run.path_conditions
+    read = set()
+    for pc in pcs:
+        node = _expr.from_identity(pc.expr)
+        if node is not None:
+            read |= set(_expr.symbols(node))
     observed = [(pc.expr, bool(pc.taken)) for pc in pcs]
     for i, pc in enumerate(pcs):
         res = solve([*observed[:i], (pc.expr, not pc.taken)], symbols, timeout_ms=timeout_ms)
-        yield res.model if res.status == "sat" else None
+        if res.status != "sat":
+            yield None
+            continue
+        model = dict(res.model or {})
+        for n in read:
+            sv = symbols.get(n)
+            sort = (sv.sort or "") if sv is not None else ""
+            sort = "String" if sort.startswith("String") else sort
+            if n not in model and sort in _COMPLETION:
+                model[n] = _COMPLETION[sort]
+            if sv is not None and str(sv.type or "").endswith("?") and f"is_null({n})" not in model:
+                model[f"is_null({n})"] = False
+        yield model
 
 
 def sanitizer_results(dump: dict) -> dict[str, str]:
