@@ -65,6 +65,14 @@ else:
 import appdb                                                           # noqa: E402
 import judge                                                           # noqa: E402
 import sinks                                                           # noqa: E402
+if engine.V2:
+    import sinks_v2                                                    # noqa: E402
+
+#: v2 (engine.py): the PHP harnesses that drive the v2 runtime, and the runtime they load.
+HARNESS = "harness_v2.php" if engine.V2 else "harness.php"
+HARNESS_APP = "harness_app_v2.php" if engine.V2 else "harness_app.php"
+INSTRUMENT_APP = "instrument_app_v2.php" if engine.V2 else "instrument_app.php"
+RUNTIME_ENV = ["-e", f"ACE_PHP_RUNTIME={engine.PHP_RUNTIME}"] if engine.V2 or os.environ.get("ACE_ENGINE") else []
 
 APPS = json.loads((HERE / "apps.json").read_text())
 GLOBALS = ("GET", "POST", "COOKIE")
@@ -73,7 +81,7 @@ FAMILIES = {**{n: sinks.SQL for n in ("mysqli_query", "mysqli_real_query", "mysq
                                       "PDO::prepare", "PDO::query", "PDO::exec", "mysqli::query",
                                       "mysqli::real_query", "mysqli::multi_query", "mysqli::prepare")},
             **{n: sinks.SHELL for n in ("system", "exec", "shell_exec", "passthru", "popen", "proc_open")}}
-PHP = ["docker", "run", "--rm", "-i", *appdb.LOG_OPTS, "-u", f"{os.getuid()}:{os.getgid()}",
+PHP = ["docker", "run", "--rm", "-i", *appdb.LOG_OPTS, "-u", f"{os.getuid()}:{os.getgid()}", *RUNTIME_ENV,
        "-v", f"{ROOT}:{ROOT}", "-w", str(HERE), "php:8.2-cli", "php"]
 #: PHP 8.2 plus mysqli, for app mode (php:8.2-cli has no mysqli). Built on first use.
 APP_IMAGE = "ace-php82-mysqli:2"
@@ -125,9 +133,9 @@ def harness_path(app_dir: pathlib.Path) -> str:
 def php(requests: list[dict]) -> list[dict]:
     app = MODE["app"]
     if app:
-        cmd = ["docker", "exec", "-i", app_runner(app), "php", "-d", "display_errors=0", "harness_app.php", "--batch"]
+        cmd = ["docker", "exec", "-i", *RUNTIME_ENV, app_runner(app), "php", "-d", "display_errors=0", HARNESS_APP, "--batch"]
     else:
-        cmd = [*PHP, "harness.php"]
+        cmd = [*PHP, HARNESS]
     try:
         p = subprocess.run(cmd, input=json.dumps(requests), capture_output=True, text=True, timeout=3600)
         if p.returncode == 0:
@@ -147,12 +155,12 @@ def instrument(app: str, label: str | None = None, options: tuple[str, ...] = ()
     build = HERE / "build" / (app if not MODE["app"] else f"{app}-{label}")
     src = (HERE / APPS[app]["src"]).resolve()
     if MODE["app"]:
-        cmd = ["docker", "run", "--rm", "-i", *appdb.LOG_OPTS, "-u", f"{os.getuid()}:{os.getgid()}",
+        cmd = ["docker", "run", "--rm", "-i", *appdb.LOG_OPTS, "-u", f"{os.getuid()}:{os.getgid()}", *RUNTIME_ENV,
                "-v", f"{ROOT}:{ROOT}", "-v", f"{src}:{src}:ro", "-w", str(HERE), app_image(), "php", "-d", "memory_limit=4G", "-d", "display_errors=stderr",
-               "instrument_app.php", str(src), str(build), "--app-targets", *options,
+               INSTRUMENT_APP, str(src), str(build), "--app-targets", *options,
                *([f"--ext={','.join(APPS[app]['php_exts'])}"] if APPS[app].get("php_exts") else [])]
     else:
-        cmd = [*PHP, "instrument_app.php", str(src), str(build)]
+        cmd = [*PHP, INSTRUMENT_APP, str(src), str(build), *(options if engine.V2 else ())]
     p = subprocess.run(cmd, capture_output=True, text=True)
     if p.returncode != 0:
         raise SystemExit(f"instrumentation failed:\n{p.stderr[-3000:]}")
@@ -417,6 +425,16 @@ def main() -> int:
 
     spec = APPS[a.app]
     label = a.label or a.arm
+    if engine.V2:
+        # Engine work these options need is port plan P4-P7, not on the v2 branch yet: refuse, never ignore.
+        unported = [f for f, on in (("--php7compat", a.php7compat), ("--exit-as-halt", a.exit_as_halt),
+                                    ("--switch-cmp", a.switch_cmp), ("--concretize", a.concretize),
+                                    ("--array-mode", a.array_mode), ("--real-app-builtins", a.real_app_builtins),
+                                    ("--xss", a.xss), ("--eval-instrument", a.eval_instrument),
+                                    ("--template-split", a.template_split), ("--db-classes", a.db_classes),
+                                    ("--sanitizers", a.sanitizers)) if on]
+        if unported:
+            raise SystemExit(f"not ported to the v2 engine yet: {' '.join(unported)}")
     app_mode = bool(spec.get("db"))
     MODE["app"] = a.app if app_mode else None
     options = tuple(f for f, on in (("--php7compat", a.php7compat), ("--exit-as-halt", a.exit_as_halt),
@@ -454,7 +472,8 @@ def main() -> int:
             KEY_DEFAULTS.update(regex=login["credential_keys"])
     out = HERE / "results" / a.app / label
     out.mkdir(parents=True, exist_ok=True)
-    (out / "run.json").write_text(json.dumps({"arm": a.arm, "options": options, "concretize": a.concretize,
+    (out / "run.json").write_text(json.dumps({"engine": "v2" if engine.V2 else "v1", "engine_path": str(engine.ENGINE),
+                                              "arm": a.arm, "options": options, "concretize": a.concretize,
                                               "sanitizers": a.sanitizers, "array_mode": a.array_mode,
                                               "site_by_statement": a.site_by_statement,
                                               "budget_s": a.budget, "max_rounds": a.max_rounds,
@@ -506,7 +525,9 @@ def main() -> int:
                 if e["type"] == "concretized":
                     k = f"{e['what']} @ {rel_file(e.get('file'), app_dir)}:{e.get('lineno')}"
                     concretized[k] = concretized.get(k, 0) + 1
-            for f in sinks.findings(dump, FAMILIES) + (sinks.xss_findings(dump) if a.xss else []):
+            oracle = sinks_v2.findings(dump, FAMILIES) if engine.V2 else \
+                sinks.findings(dump, FAMILIES) + (sinks.xss_findings(dump) if a.xss else [])
+            for f in oracle:
                 f["request"] = {g: {k: f["witness"].get(n) for n, (gg, k) in r["names"].items() if gg == g
                                     and f["witness"].get(n) is not None} for g in GLOBALS}
                 found.append(f)
@@ -514,7 +535,8 @@ def main() -> int:
         # One finding per sink site: the first witness that reached it.
         sites = {}
         for f in found:
-            shape = (re.sub(r"\$\$\(p\d+\)", "$$", str(f.get("statement"))),) if a.site_by_statement else ()
+            shape = (re.sub(r"\$\$\([^)]+\)" if engine.V2 else r"\$\$\(p\d+\)", "$$", str(f.get("statement"))),) \
+                if a.site_by_statement else ()
             sites.setdefault((rel_file(f["file"], app_dir) if app_mode else f["file"].rsplit("/", 1)[-1],
                               f["lineno"], f["sink"], *shape), f)
         row = {"script": script, "wall_s": wall, "requests": r["requests"], "rounds": r["rounds"], "traces": len(r["kept"]),
