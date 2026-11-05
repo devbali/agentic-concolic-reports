@@ -33,9 +33,16 @@ import sqlglot
 import z3
 from sqlglot.errors import ParseError, TokenError
 
-from concolic.model.term import Sym
-from concolic.model.run import Run
-from concolic.solver import Lowering
+import engine                           # which engine is checked out (or ACE_ENGINE): v1 or v2
+
+if engine.V2:                           # main's layout: dump_ir.*
+    from dump_ir.term import Sym
+    from dump_ir.run import Run
+    from dump_ir.smt import Lowering
+else:                                   # php-runtime/real-apps: every result up to M5
+    from concolic.model.term import Sym
+    from concolic.model.run import Run
+    from concolic.solver import Lowering
 
 SQL = "sql"
 SHELL = "shell"

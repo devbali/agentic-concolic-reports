@@ -51,11 +51,16 @@ HERE = pathlib.Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 sys.path.insert(0, str(ROOT / "agentic_concolic_engine"))
 
-from concolic.assumptions.assumption_set import AssumptionSet          # noqa: E402
-from concolic.assumptions.untracked import UntrackedPathAssumption     # noqa: E402
-from concolic.coverage import CoverageChecker                          # noqa: E402
-from concolic.model.run import Run                                     # noqa: E402
-from concolic.solver import solve_and_evaluate                         # noqa: E402
+import engine                                                          # noqa: E402  (v1 or v2: engine.py)
+
+if engine.V2:
+    Run = engine.Run
+else:
+    from concolic.assumptions.assumption_set import AssumptionSet      # noqa: E402
+    from concolic.assumptions.untracked import UntrackedPathAssumption  # noqa: E402
+    from concolic.coverage import CoverageChecker                      # noqa: E402
+    from concolic.model.run import Run                                 # noqa: E402
+    from concolic.solver import solve_and_evaluate                     # noqa: E402
 
 import appdb                                                           # noqa: E402
 import judge                                                           # noqa: E402
@@ -225,6 +230,13 @@ def _from_model(model: dict, names: dict[str, tuple], base: dict) -> dict:
 
 def negations(dump: dict, names: dict[str, tuple], base: dict, deadline: float | None = None):
     """One request per branch this run took, flipped against its prefix."""
+    if engine.V2:
+        for model in engine.negations(dump):
+            if deadline is not None and time.monotonic() >= deadline:
+                return
+            if model is not None:
+                yield _from_model(model, names, base)
+        return
     run = Run.from_dict(dump)
     symbols = run.symbols()
     pcs = run.path_conditions
@@ -253,6 +265,8 @@ def shim_only(expr: dict, inputs: set[str]) -> bool:
 
 
 def coverage(kept: list[dict], names: dict) -> tuple:
+    if engine.V2:
+        return engine.coverage(kept, names)
     inputs = set(names)
     declared = {}
     for d in kept:
@@ -296,7 +310,11 @@ def explore(app_dir: pathlib.Path, script: str, seeds: list[dict], max_rounds: i
         if not fresh:
             if kept and (deadline is None or time.monotonic() < deadline):
                 cov, _ = coverage(kept, names)
-                for m in cov.missing:
+                if engine.V2:
+                    # main's checker drops an untracked decision before asking, so every edge is tracked.
+                    for model in engine.missing_models(cov):
+                        queue.append(_from_model(model, names, kept[-1]["request"]))
+                for m in (() if engine.V2 else cov.missing):
                     if not m.untracked and m.concrete_values:
                         queue.append(_from_model(m.concrete_values, names, kept[-1]["request"]))
                 queue = [q for q in queue if canon(with_keys(q, keys)) not in seen]
