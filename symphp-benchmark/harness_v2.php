@@ -20,6 +20,7 @@
 
 define('ACE_HARNESS_LIB', true);
 require __DIR__ . '/harness.php';
+require __DIR__ . '/sanitizers_v2.php';      // P3: the sanitizer shims, registered under the `sanitizers` flag
 
 use Concolic\Runtime;
 use Concolic\Value;
@@ -46,6 +47,9 @@ function run_request_v2(array $request): array
 
     foreach (SHIMS as $name => [$type, $value]) {
         $rt->target($name, 'shim', $type, fn() => $value);
+    }
+    if (!empty($request['flags']['sanitizers'])) {
+        v2_register_sanitizers($rt);
     }
     foreach ([...SQL_SINKS, ...SHELL_SINKS] as $name) {
         $family = in_array($name, SQL_SINKS, true) ? 'sql' : 'shell';

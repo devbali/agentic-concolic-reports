@@ -3856,5 +3856,25 @@
       "php",
       "inc"
     ]
+  },
+  "sanitizer-fixtures": {
+    "src": "fixtures/sanitizers",
+    "note": "port P3 (v2 engine, --sanitizers). escaped_quoted.php is the control: escaped and quoted, no input breaks it",
+    "scripts": [
+      "escaped_quoted.php",
+      "escaped_numeric.php",
+      "sanitized_branch.php"
+    ],
+    "known_vulns": [
+      {"id": "S1", "script": "escaped_numeric.php", "line": 6, "type": "sqli"},
+      {"id": "S2", "script": "sanitized_branch.php", "line": 9, "type": "sqli"}
+    ],
+    "db_setup": [
+      "DROP DATABASE IF EXISTS testdb;",
+      "CREATE DATABASE testdb;",
+      "CREATE TABLE testdb.`user` (`id` int(11) NOT NULL AUTO_INCREMENT,`username` varchar(255) NOT NULL, PRIMARY KEY (id)) ENGINE=InnoDB DEFAULT CHARSET=latin1;",
+      "INSERT INTO testdb.`user` (`username`) VALUES ('trickE');"
+    ],
+    "schema": "testdb"
   }
 }

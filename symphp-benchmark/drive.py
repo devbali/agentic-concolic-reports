@@ -409,7 +409,8 @@ def main() -> int:
     ap.add_argument("--concretize", action="store_true", help="E4 (app mode)")
     ap.add_argument("--array-mode", action="store_true", help="decision (b): real-array superglobals (app mode)")
     ap.add_argument("--real-app-builtins", action="store_true", help="route type predicates through __fn (app mode)")
-    ap.add_argument("--sanitizers", action="store_true", help="E5: sanitizers as tagged template parts (app mode)")
+    ap.add_argument("--sanitizers", action="store_true", help="E5: sanitizers as tagged template parts (app mode); "
+                    "v2 engine: P3 sanitizer shims (sanitizers_v2.php), either mode")
     ap.add_argument("--xss", action="store_true", help="E6 output events + the XSS oracle (app mode)")
     ap.add_argument("--instance", default="", help="use ACE clone ace-<app>-<N>-db / runner ace-<app>-<N>-php")
     ap.add_argument("--shard", help="i/n: explore only scripts[i::n] (parallel shards, each with its own --instance)")
@@ -431,8 +432,7 @@ def main() -> int:
                                     ("--switch-cmp", a.switch_cmp), ("--concretize", a.concretize),
                                     ("--array-mode", a.array_mode), ("--real-app-builtins", a.real_app_builtins),
                                     ("--xss", a.xss), ("--eval-instrument", a.eval_instrument),
-                                    ("--template-split", a.template_split), ("--db-classes", a.db_classes),
-                                    ("--sanitizers", a.sanitizers)) if on]
+                                    ("--template-split", a.template_split), ("--db-classes", a.db_classes)) if on]
         if unported:
             raise SystemExit(f"not ported to the v2 engine yet: {' '.join(unported)}")
     app_mode = bool(spec.get("db"))
@@ -440,7 +440,9 @@ def main() -> int:
     options = tuple(f for f, on in (("--php7compat", a.php7compat), ("--exit-as-halt", a.exit_as_halt),
                                     ("--switch-cmp", a.switch_cmp), ("--superglobal-reads", a.array_mode),
                                     ("--real-app-builtins", a.real_app_builtins),
-                                    ("--db-classes", a.db_classes), ("--eval-instrument", a.eval_instrument)) if on)
+                                    ("--db-classes", a.db_classes), ("--eval-instrument", a.eval_instrument),
+                                    # P3 (v2): the sanitizer shims are __target calls, so the copy routes them.
+                                    ("--sanitizers", a.sanitizers and engine.V2)) if on)
     appdb.ACE_INSTANCE["suffix"] = a.instance
     MODE["app"] = a.app if app_mode else None
     built = HERE / "build" / f"{a.app}-{label}"
@@ -451,6 +453,8 @@ def main() -> int:
     MODE["build"] = app_dir
     src = (HERE / spec["src"]).resolve()
     extra: dict = {}
+    if engine.V2 and a.sanitizers and not app_mode:
+        extra = {"flags": {"sanitizers": True}}          # P3: harness_v2.php registers the shims
     if app_mode:
         flags = {"php7Compare": a.php7compat, "concretize": a.concretize, "arrayMode": a.array_mode, "sanitizers": a.sanitizers,
                  "outputEvents": a.xss, "templateSplit": a.template_split,
@@ -546,7 +550,9 @@ def main() -> int:
                "assumptions": assumed,
                "sink_sites": [{"site": f"{k[0]}:{k[1]}", "sink": k[2], "kind": f["kind"],
                                "instance": f["instance"], "request": f["request"],
-                               **({"db_errno": f["db_errno"]} if f.get("db_errno") is not None else {})}
+                               **({"db_errno": f["db_errno"]} if f.get("db_errno") is not None else {}),
+                               # v2/P3: branches on sanitized values the witness was checked against (sinks_v2)
+                               **({"assumes": f["assumes"]} if f.get("assumes") else {})}
                               for k, f in sites.items()]}
         if app_mode:
             row |= {"errors_distinct": sorted(set(e[:160] for e in r["errors"]))[:20], "halted_traces": halted,

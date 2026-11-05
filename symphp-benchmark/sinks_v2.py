@@ -28,6 +28,19 @@ query, the parser is the check. Evaluating the term rather than splicing the
 witness into a template means every operation between the input and the sink
 that the IR models (substring, itos, ite, concatenation order) is honoured.
 
+**Sanitizers (P3).** Under `--sanitizers` a sanitizer on a symbolic subject is
+a shim (sanitizers_v2.php): its result is a fresh symbol, its call event
+carries the subject's term, and its note names the function, the subject's
+argument key and the other arguments. Z3 knows nothing of the function, so the
+symbol is free in the query; what makes the verdict right is the evaluation
+step: every sanitizer result reached before the sink is RECOMPUTED, in event
+order, by applying the Python twin (`sinks.SANITIZERS`, tested against PHP) to
+its subject evaluated under the candidate. So `'...'` . addslashes(x) . `'` is
+not a finding and `id=` . addslashes(x) is. A path condition on a sanitizer's
+result is checked the same way -- the candidate is dropped if, with the twin's
+value, the branch would go the other way -- and each finding lists those
+branches under `assumes`, since they are relations the IR does not track.
+
 Nothing here is the verdict on the benchmark: `judge.py` replays each finding
 against the unmodified application under PHP 7.4, as before.
 """
@@ -133,6 +146,69 @@ def _z3_value(var, v):
     return None
 
 
+class Sanitizer(t.NamedTuple):
+    result: str          # the shim's result symbol
+    fn: str
+    subject: t.Any       # the subject's term
+    args: list           # the other arguments, concrete
+
+
+def sanitizers(dump: dict) -> list[Sanitizer]:
+    """Every sanitizer shim call in the dump, in event order (P3)."""
+    out = []
+    for e in dump["events"]:
+        if e.get("type") != "symbolic_call" or not e.get("note"):
+            continue
+        try:
+            note = json.loads(e["note"])
+        except (TypeError, json.JSONDecodeError):
+            continue
+        if not isinstance(note, dict) or note.get("sanitizer") not in sinks.SANITIZERS:
+            continue
+        raw = (e.get("args") or {}).get(note.get("subject"))
+        subject = term_of(raw) if raw is not None else None
+        if subject is not None:
+            out.append(Sanitizer(e["result_name"], note["sanitizer"], subject, list(note.get("args") or [])))
+    return out
+
+
+def _php_string(v: t.Any) -> str:
+    """PHP's string conversion of a scalar a twin receives."""
+    if v is None or v is False:
+        return ""
+    if v is True:
+        return "1"
+    return str(v)
+
+
+def recompute(lo: Lowering, run: Run, values: dict, shims: list[Sanitizer]) -> dict:
+    """`values` with every sanitizer result recomputed by its twin, in order (each may read an earlier one)."""
+    values = dict(values)
+    for sh in shims:
+        try:
+            subject = Assignment(lo, run, values).eval(lo.term(sh.subject))
+        except (Unlowerable, z3.Z3Exception):
+            continue
+        if subject is None:
+            continue
+        values[sh.result] = sinks.SANITIZERS[sh.fn](_php_string(subject), *sh.args)
+    return values
+
+
+def carried_inputs(term, inputs: dict, shims: list[Sanitizer]) -> list[str]:
+    """The inputs a statement reads, directly or through a sanitizer's subject."""
+    by_result = {sh.result: sh for sh in shims}
+    seen, todo = set(), set(_expr.symbols(term))
+    while todo:
+        n = todo.pop()
+        if n in seen:
+            continue
+        seen.add(n)
+        if n in by_result:
+            todo |= set(_expr.symbols(by_result[n].subject))
+    return [n for n in sorted(seen) if n in inputs]
+
+
 def run_values(dump: dict) -> tuple[dict, dict]:
     """(this run's input values, every symbol's value: inputs and each target result)."""
     inputs = {v["name"]: v.get("value") for v in dump["symbolic_vars"]
@@ -150,9 +226,14 @@ def findings(dump: dict, families: dict[str, str], timeout_ms: int = 5000) -> li
     """Every sink finding in one dump. `families` maps target name -> SQL/SHELL."""
     run = Run.from_dict(dump)
     inputs, every = run_values(dump)
+    shims = {sh.result: sh for sh in sanitizers(dump)}
+    before: list[Sanitizer] = []              # the sanitizer calls recorded so far, in order
     out = []
     prefix: list[tuple[t.Any, bool, dict]] = []
     for event in dump["events"]:
+        if event["type"] == "symbolic_call" and event.get("result_name") in shims:
+            before.append(shims[event["result_name"]])
+            continue
         if event["type"] == "path_condition":
             prefix.append((event["expr"], bool(event["taken"]), event))
             continue
@@ -179,9 +260,8 @@ def findings(dump: dict, families: dict[str, str], timeout_ms: int = 5000) -> li
         if not parses(family, text):
             out.append(site | {"kind": "malformed-at-reach", "instance": text, "witness": inputs})
             continue
-        carried = [n for n in sorted(_expr.symbols(term)) if n in inputs]
-        for name in carried:
-            hit = _inject(run, lo, stmt, prefix, name, inputs, every, family, timeout_ms)
+        for name in carried_inputs(term, inputs, before):
+            hit = _inject(run, lo, stmt, prefix, name, inputs, every, family, timeout_ms, list(before))
             if hit is not None:
                 out.append(site | {"kind": "injectable", "carried": name} | hit)
                 break
@@ -199,11 +279,15 @@ def _lowered_prefix(lo: Lowering, prefix) -> list | None:
     return conds
 
 
-def _inject(run, lo, stmt, prefix, name, inputs, every, family, timeout_ms):
+def _inject(run, lo, stmt, prefix, name, inputs, every, family, timeout_ms, shims=()):
     """A payload-bearing value for `name` that still reaches the sink and breaks the statement, or None."""
     conds = _lowered_prefix(lo, prefix)
     if conds is None:
         return None
+    sanitized = {sh.result: sh for sh in shims}
+    # The prefix decisions that read a sanitizer's result: re-checked under the twin, and listed.
+    on_sanitized = [(c, ev) for c, (raw, _, ev) in zip(conds, prefix)
+                    if _expr.symbols(_expr.from_json(raw)) & set(sanitized)]
     try:
         var = lo.var(name)
         null = lo.is_null(Sym(name))
@@ -215,14 +299,25 @@ def _inject(run, lo, stmt, prefix, name, inputs, every, family, timeout_ms):
         p = z3.StringVal(payload, lo.ctx)
         s = z3.Solver(ctx=lo.ctx)
         s.set("timeout", timeout_ms)
-        s.add(*conds, *lo.axioms, z3.Contains(var, p), z3.Contains(stmt, p), z3.Not(null))
+        s.add(*conds, *lo.axioms, z3.Contains(var, p), z3.Not(null))
+        if not shims:
+            s.add(z3.Contains(stmt, p))       # with a sanitizer in between, the twin decides (recompute)
         if s.check() != z3.sat:
             continue
         witness = _witness(s.model(), lo, inputs)
-        values = {**every, **witness}
-        instance = Assignment(lo, run, values).eval(stmt)
+        values = recompute(lo, run, {**every, **witness}, list(shims))
+        at = Assignment(lo, run, values)
+        if any(at.eval(c) is not True for c, _ in on_sanitized):
+            continue                          # with the sanitizer's real value the sink is not reached this way
+        instance = at.eval(stmt)
         if isinstance(instance, str) and not parses(family, instance):
-            return {"payload": payload, "instance": instance, "witness": witness}
+            hit = {"payload": payload, "instance": instance, "witness": witness}
+            if on_sanitized:
+                hit["assumes"] = [f"{str(ev.get('file') or '').rsplit('/', 1)[-1]}:{ev.get('lineno')}: a branch on "
+                                  + ", ".join(f"{sanitized[n].fn}(...) = {n}"
+                                              for n in sorted(_expr.symbols(_expr.from_json(ev['expr'])) & set(sanitized)))
+                                  for _, ev in on_sanitized]
+            return hit
     return None
 
 

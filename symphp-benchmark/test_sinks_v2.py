@@ -60,7 +60,8 @@ def pc(expr, taken, line=3):
 
 def dump(vars_, events):
     return {"label": "t", "symbolic_vars": vars_, "events": events,
-            "declarations": {"mysqli_query": {"kind": "target_function"}, "system": {"kind": "target_function"}}}
+            "declarations": {"mysqli_query": {"kind": "target_function"}, "system": {"kind": "target_function"},
+                             **{fn: {"kind": "shim"} for fn in ("addslashes", "strtolower", "trim")}}}
 
 
 def isnull(n):
@@ -135,3 +136,70 @@ def test_the_dump_round_trips_through_the_engine():
     d = dump([inp("GET_id", "a")], [pc(isnull("GET_id"), False), sink(QUOTED, "x", kind="concrete_call")])
     run = Run.from_dict(d)
     assert [type(e).__name__ for e in run.events] == ["PathCondition", "ConcreteCallEvent"]
+
+
+# ---- P3: sanitizer shims ----------------------------------------------------------------------
+
+def shim(fn, subject, result, value, line=4, key="s", args=()):
+    note = {"sanitizer": fn, "subject": key, "args": list(args)}
+    return {"type": "symbolic_call", "target": fn, "args": {key: subject}, "note": json.dumps(note),
+            "result_name": result, "result_type": "str", "result_sort": "String",
+            "result_value": lit(value), "file": "/app/x.php", "lineno": line, "function": None}
+
+
+ESC = "SYM_RESULT_addslashes_1"
+
+
+def test_an_escaped_value_inside_quotes_is_not_a_finding():
+    stmt = cat(lit("select * from user where username='"), sym(ESC), lit("'"))
+    d = dump([inp("GET_id", "a")], [pc(isnull("GET_id"), False), shim("addslashes", sym("GET_id"), ESC, "a"),
+                                    sink(stmt, "select * from user where username='a'")])
+    assert sinks_v2.findings(d, FAM) == []
+
+
+def test_an_escaped_value_in_a_numeric_context_is_a_finding():
+    stmt = cat(lit("select * from user where id="), sym(ESC))
+    d = dump([inp("GET_id", "1")], [pc(isnull("GET_id"), False), shim("addslashes", sym("GET_id"), ESC, "1"),
+                                    sink(stmt, "select * from user where id=1")])
+    [f] = sinks_v2.findings(d, FAM)
+    assert f["kind"] == "injectable" and f["carried"] == "GET_id"
+    # The instance is the TWIN's output, not Z3's free choice for the shim symbol.
+    import sinks
+    assert f["instance"] == "select * from user where id=" + sinks.SANITIZERS["addslashes"](f["witness"]["GET_id"])
+    assert "assumes" not in f
+
+
+def test_a_chain_of_sanitizers_is_applied_in_order():
+    low, up = "SYM_RESULT_strtolower_1", "SYM_RESULT_addslashes_1"
+    stmt = cat(lit("select * from user where id="), sym(up))
+    d = dump([inp("GET_id", "A")], [shim("strtolower", sym("GET_id"), low, "a"), shim("addslashes", sym(low), up, "a"),
+                                    sink(stmt, "select * from user where id=a")])
+    [f] = sinks_v2.findings(d, FAM)
+    assert f["instance"] == "select * from user where id=" + f["witness"]["GET_id"].lower().replace("'", "\\'")
+
+
+def test_a_branch_on_a_sanitized_value_is_checked_with_the_twin_and_listed():
+    t = "SYM_RESULT_trim_1"
+    nonempty = {"op": "!=", "args": [{"op": "length", "args": [sym(t)]}, {"lit": {"sort": "int", "value": 0}}]}
+    stmt = cat(lit("select * from user where id="), sym(t))
+    d = dump([inp("GET_id", "7")], [pc(isnull("GET_id"), False), shim("trim", sym("GET_id"), t, "7"),
+                                    pc(nonempty, True, line=5), sink(stmt, "select * from user where id=7")])
+    [f] = sinks_v2.findings(d, FAM)
+    assert f["assumes"] == ["x.php:5: a branch on trim(...) = SYM_RESULT_trim_1"]
+    assert sinks.SANITIZERS["trim"](f["witness"]["GET_id"]) != ""
+
+
+def test_a_candidate_the_sanitized_branch_would_reject_is_dropped():
+    # The sink is reached only when trim(x) == "": no payload survives trim to the
+    # statement and still leaves it empty, so the twin rejects every candidate.
+    t = "SYM_RESULT_trim_1"
+    empty = {"op": "==", "args": [sym(t), lit("")]}
+    stmt = cat(lit("select * from user where id="), sym("GET_id"))
+    d = dump([inp("GET_id", "")], [pc(isnull("GET_id"), False), shim("trim", sym("GET_id"), t, ""),
+                                   pc(empty, True, line=5), sink(stmt, "select * from user where id=")])
+    fs = sinks_v2.findings(d, FAM)
+    # malformed-at-reach (`id=` with nothing) is still reported: it is this run's own text.
+    assert [f["kind"] for f in fs] == ["malformed-at-reach"]
+
+
+import sinks  # noqa: E402  (for the twins in the assertions above)

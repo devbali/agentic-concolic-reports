@@ -1,0 +1,136 @@
+[
+ {
+  "request": {
+   "script": "escaped_numeric.php",
+   "GET": {},
+   "POST": {},
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 67,
+  "headers": "X-Powered-By: PHP/7.4.4\r\nContent-type: text/html; charset=UTF-8",
+  "faults": [],
+  "lines": []
+ },
+ {
+  "request": {
+   "script": "escaped_numeric.php",
+   "GET": {
+    "id": ""
+   },
+   "POST": {},
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 77,
+  "headers": "X-Powered-By: PHP/7.4.4\r\nContent-type: text/html; charset=UTF-8",
+  "faults": [],
+  "lines": [
+   "escaped_numeric.php:6"
+  ]
+ },
+ {
+  "request": {
+   "script": "escaped_numeric.php",
+   "GET": {
+    "id": "'"
+   },
+   "POST": {},
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 77,
+  "headers": "X-Powered-By: PHP/7.4.4\r\nContent-type: text/html; charset=UTF-8",
+  "faults": [
+   {
+    "kind": "sql",
+    "errno": 1064,
+    "sql": "select * from user where id=0\\\\'"
+   }
+  ],
+  "lines": [
+   "escaped_numeric.php:6"
+  ]
+ },
+ {
+  "request": {
+   "script": "escaped_quoted.php",
+   "GET": {},
+   "POST": {},
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 67,
+  "headers": "X-Powered-By: PHP/7.4.4\r\nContent-type: text/html; charset=UTF-8",
+  "faults": [],
+  "lines": []
+ },
+ {
+  "request": {
+   "script": "escaped_quoted.php",
+   "GET": {
+    "name": ""
+   },
+   "POST": {},
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 77,
+  "headers": "X-Powered-By: PHP/7.4.4\r\nContent-type: text/html; charset=UTF-8",
+  "faults": [],
+  "lines": []
+ },
+ {
+  "request": {
+   "script": "sanitized_branch.php",
+   "GET": {},
+   "POST": {},
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 67,
+  "headers": "X-Powered-By: PHP/7.4.4\r\nContent-type: text/html; charset=UTF-8",
+  "faults": [],
+  "lines": []
+ },
+ {
+  "request": {
+   "script": "sanitized_branch.php",
+   "GET": {
+    "q": ""
+   },
+   "POST": {},
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 77,
+  "headers": "X-Powered-By: PHP/7.4.4\r\nContent-type: text/html; charset=UTF-8",
+  "faults": [],
+  "lines": [
+   "sanitized_branch.php:9"
+  ]
+ },
+ {
+  "request": {
+   "script": "sanitized_branch.php",
+   "GET": {
+    "q": "'"
+   },
+   "POST": {},
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 77,
+  "headers": "X-Powered-By: PHP/7.4.4\r\nContent-type: text/html; charset=UTF-8",
+  "faults": [
+   {
+    "kind": "sql",
+    "errno": 1064,
+    "sql": "select * from user where id=0'"
+   }
+  ],
+  "lines": [
+   "sanitized_branch.php:9"
+  ]
+ }
+]

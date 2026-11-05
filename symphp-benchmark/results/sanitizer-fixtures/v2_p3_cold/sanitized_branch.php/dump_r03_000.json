@@ -1,0 +1,333 @@
+{
+ "schema_version": "1.5",
+ "label": "r03_000",
+ "symbolic_vars": [
+  {
+   "name": "GET_q",
+   "type": "str?",
+   "sort": "String",
+   "value": "",
+   "origin": {
+    "kind": "input",
+    "name": "GET_q"
+   }
+  },
+  {
+   "name": "SYM_RESULT_mysqli_connect_1",
+   "type": "bool",
+   "sort": "Bool",
+   "value": true
+  },
+  {
+   "name": "SYM_RESULT_trim_1",
+   "type": "str",
+   "sort": "String",
+   "value": ""
+  },
+  {
+   "name": "SYM_RESULT_mysqli_query_1",
+   "type": "bool",
+   "sort": "Bool",
+   "value": true
+  }
+ ],
+ "events": [
+  {
+   "type": "call",
+   "target": "mysqli_connect",
+   "args": {
+    "arg0": {
+     "lit": {
+      "sort": "str",
+      "value": "127.0.0.1"
+     }
+    },
+    "arg1": {
+     "lit": {
+      "sort": "str",
+      "value": "root"
+     }
+    },
+    "arg2": {
+     "lit": {
+      "sort": "str",
+      "value": ""
+     }
+    },
+    "arg3": {
+     "lit": {
+      "sort": "str",
+      "value": "testdb"
+     }
+    }
+   },
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/sanitizer-fixtures/config.php",
+   "lineno": 2,
+   "function": "include"
+  },
+  {
+   "type": "symbolic_call",
+   "target": "mysqli_connect",
+   "args": {
+    "arg0": {
+     "lit": {
+      "sort": "str",
+      "value": "127.0.0.1"
+     }
+    },
+    "arg1": {
+     "lit": {
+      "sort": "str",
+      "value": "root"
+     }
+    },
+    "arg2": {
+     "lit": {
+      "sort": "str",
+      "value": ""
+     }
+    },
+    "arg3": {
+     "lit": {
+      "sort": "str",
+      "value": "testdb"
+     }
+    }
+   },
+   "result_name": "SYM_RESULT_mysqli_connect_1",
+   "result_type": "bool",
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/sanitizer-fixtures/config.php",
+   "lineno": 2,
+   "function": "include",
+   "result_sort": "Bool",
+   "result_value": {
+    "lit": {
+     "sort": "bool",
+     "value": true
+    }
+   }
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "GET_q"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": false,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/sanitizer-fixtures/sanitized_branch.php",
+   "lineno": 4,
+   "function": "include"
+  },
+  {
+   "type": "call",
+   "target": "trim",
+   "args": {
+    "arg0": {
+     "sym": "GET_q"
+    }
+   },
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/sanitizer-fixtures/sanitized_branch.php",
+   "lineno": 5,
+   "function": "include"
+  },
+  {
+   "type": "symbolic_call",
+   "target": "trim",
+   "args": {
+    "arg0": {
+     "sym": "GET_q"
+    }
+   },
+   "result_name": "SYM_RESULT_trim_1",
+   "result_type": "str",
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/sanitizer-fixtures/sanitized_branch.php",
+   "lineno": 5,
+   "function": "include",
+   "result_sort": "String",
+   "result_value": {
+    "lit": {
+     "sort": "str",
+     "value": ""
+    }
+   },
+   "note": "{\"sanitizer\":\"trim\",\"subject\":\"arg0\",\"args\":[]}"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "SYM_RESULT_trim_1"
+     },
+     {
+      "lit": {
+       "sort": "str",
+       "value": "admin"
+      }
+     }
+    ]
+   },
+   "taken": false,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/sanitizer-fixtures/sanitized_branch.php",
+   "lineno": 6,
+   "function": "include"
+  },
+  {
+   "type": "call",
+   "target": "mysqli_query",
+   "args": {
+    "con": {
+     "sym": "SYM_RESULT_mysqli_connect_1"
+    },
+    "arg1": {
+     "op": "concat",
+     "args": [
+      {
+       "lit": {
+        "sort": "str",
+        "value": "select * from user where id=0"
+       }
+      },
+      {
+       "sym": "SYM_RESULT_trim_1"
+      }
+     ]
+    }
+   },
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/sanitizer-fixtures/sanitized_branch.php",
+   "lineno": 9,
+   "function": "include"
+  },
+  {
+   "type": "symbolic_call",
+   "target": "mysqli_query",
+   "args": {
+    "con": {
+     "sym": "SYM_RESULT_mysqli_connect_1"
+    },
+    "arg1": {
+     "op": "concat",
+     "args": [
+      {
+       "lit": {
+        "sort": "str",
+        "value": "select * from user where id=0"
+       }
+      },
+      {
+       "sym": "SYM_RESULT_trim_1"
+      }
+     ]
+    }
+   },
+   "result_name": "SYM_RESULT_mysqli_query_1",
+   "result_type": "bool",
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/sanitizer-fixtures/sanitized_branch.php",
+   "lineno": 9,
+   "function": "include",
+   "result_sort": "Bool",
+   "result_value": {
+    "lit": {
+     "sort": "bool",
+     "value": true
+    }
+   },
+   "note": "{\"statement_arg\":\"arg1\",\"text\":\"select * from user where id=0\"}"
+  }
+ ],
+ "types": {},
+ "declarations": {
+  "mysqli_connect": {
+   "kind": "shim"
+  },
+  "mysqli_connect_errno": {
+   "kind": "shim"
+  },
+  "mysqli_connect_error": {
+   "kind": "shim"
+  },
+  "mysqli_select_db": {
+   "kind": "shim"
+  },
+  "mysqli_close": {
+   "kind": "shim"
+  },
+  "mysqli_error": {
+   "kind": "shim"
+  },
+  "addslashes": {
+   "kind": "shim"
+  },
+  "mysqli_real_escape_string": {
+   "kind": "shim"
+  },
+  "htmlspecialchars": {
+   "kind": "shim"
+  },
+  "htmlentities": {
+   "kind": "shim"
+  },
+  "escapeshellarg": {
+   "kind": "shim"
+  },
+  "escapeshellcmd": {
+   "kind": "shim"
+  },
+  "trim": {
+   "kind": "shim"
+  },
+  "strtolower": {
+   "kind": "shim"
+  },
+  "strtoupper": {
+   "kind": "shim"
+  },
+  "mysqli_query": {
+   "kind": "target_function"
+  },
+  "mysqli_real_query": {
+   "kind": "target_function"
+  },
+  "mysqli_multi_query": {
+   "kind": "target_function"
+  },
+  "mysql_query": {
+   "kind": "target_function"
+  },
+  "system": {
+   "kind": "target_function"
+  },
+  "exec": {
+   "kind": "target_function"
+  },
+  "shell_exec": {
+   "kind": "target_function"
+  },
+  "passthru": {
+   "kind": "target_function"
+  },
+  "popen": {
+   "kind": "target_function"
+  },
+  "proc_open": {
+   "kind": "target_function"
+  }
+ },
+ "request": {
+  "GET": {
+   "q": ""
+  },
+  "POST": {},
+  "COOKIE": {}
+ }
+}

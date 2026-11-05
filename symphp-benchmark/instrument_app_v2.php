@@ -3,7 +3,7 @@
 /**
  * instrument_app.php for the v2 engine (php-runtime/real-apps-v2).
  *
- * usage: php instrument_app_v2.php <app-src> <build-dir> [--app-targets] [--ext=php,inc]
+ * usage: php instrument_app_v2.php <app-src> <build-dir> [--app-targets] [--sanitizers] [--ext=php,inc]
  *
  * Copies the application and instruments every source file in the copy, as
  * instrument_app.php does. Main's `Instrument::source` takes no options, so
@@ -14,6 +14,7 @@
  *
  * --app-targets   harness_app_v2.php's targets (SQL sinks, shell sinks, session/header stand-ins)
  *                 instead of harness_v2.php's (sinks plus the connection shims)
+ * --sanitizers    P3: also route the sanitizers of sanitizers_v2.php (SANITIZER_SHIMS) through __target
  */
 
 $runtime = getenv('ACE_PHP_RUNTIME') ?: dirname(__DIR__, 2) . '/agentic_concolic_engine/runtimes/php_runtime';
@@ -33,7 +34,7 @@ $flags = array_values(array_filter(array_slice($argv, 1), fn($a) => str_starts_w
 $pos = array_values(array_filter(array_slice($argv, 1), fn($a) => !str_starts_with($a, '--')));
 [$src, $build] = $pos + [null, null];
 if (!$src || !$build) {
-    fwrite(STDERR, "usage: php instrument_app_v2.php <app-src> <build-dir> [--app-targets] [--ext=php,inc]\n");
+    fwrite(STDERR, "usage: php instrument_app_v2.php <app-src> <build-dir> [--app-targets] [--sanitizers] [--ext=php,inc]\n");
     exit(2);
 }
 $refused = array_values(array_intersect($flags, V2_NOT_PORTED));
@@ -55,6 +56,11 @@ if (in_array('--app-targets', $flags, true)) {
     // harness.php's SHIMS, by name.
     array_push($targets, 'mysqli_connect', 'mysqli_connect_errno', 'mysqli_connect_error',
         'mysqli_select_db', 'mysqli_close', 'mysqli_error');
+}
+if (in_array('--sanitizers', $flags, true)) {
+    // sanitizers_v2.php's SANITIZER_SHIMS, by name.
+    array_push($targets, 'addslashes', 'mysqli_real_escape_string', 'htmlspecialchars', 'htmlentities',
+        'escapeshellarg', 'escapeshellcmd', 'trim', 'strtolower', 'strtoupper');
 }
 $targets = array_fill_keys($targets, true);
 

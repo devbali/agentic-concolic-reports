@@ -1,0 +1,40 @@
+{
+ "script": "sanitized_branch.php",
+ "wall_s": 0.9,
+ "requests": 3,
+ "rounds": 3,
+ "traces": 3,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "q"
+  ],
+  "POST": [],
+  "COOKIE": []
+ },
+ "budget_hit": false,
+ "coverage_complete": true,
+ "missing": 0,
+ "assumptions": [
+  "branch on a sanitized value, at sanitized_branch.php:6: SYM_RESULT_trim_1 = trim(GET_q); its relation to the input is not tracked"
+ ],
+ "sink_sites": [
+  {
+   "site": "sanitized_branch.php:9",
+   "sink": "mysqli_query",
+   "kind": "injectable",
+   "instance": "select * from user where id=0'",
+   "request": {
+    "GET": {
+     "q": "'"
+    },
+    "POST": {},
+    "COOKIE": {}
+   },
+   "assumes": [
+    "sanitized_branch.php:6: a branch on trim(...) = SYM_RESULT_trim_1"
+   ]
+  }
+ ]
+}

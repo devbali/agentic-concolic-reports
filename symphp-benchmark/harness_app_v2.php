@@ -185,6 +185,9 @@ AceState::$standins = [];
             return ['value' => $result, 'summary' => $summary];
         });
     }
+    if (!empty(AceState::$request['flags']['sanitizers'])) {
+        v2_register_sanitizers($rt);           // P3 (sanitizers_v2.php)
+    }
     foreach (SHELL_SINKS as $name) {
         $rt->target($name, 'target_function', 'bool', function (array $args) use ($rt, $name, &$sinks) {
             [$note, $text] = v2_statement_note($name, $args);
