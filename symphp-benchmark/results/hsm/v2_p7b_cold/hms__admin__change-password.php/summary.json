@@ -1,0 +1,48 @@
+{
+ "script": "hms/admin/change-password.php",
+ "wall_s": 1.8,
+ "requests": 7,
+ "rounds": 5,
+ "traces": 5,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [],
+  "POST": [
+   "cpass",
+   "submit"
+  ],
+  "COOKIE": []
+ },
+ "budget_hit": false,
+ "coverage_complete": true,
+ "missing": 0,
+ "assumptions": [],
+ "sink_sites": [
+  {
+   "site": "hms/admin/change-password.php:11",
+   "sink": "mysqli_query",
+   "kind": "injectable",
+   "instance": "SELECT password FROM  admin where password=''' && username=''",
+   "request": {
+    "GET": {},
+    "POST": {
+     "submit": "",
+     "cpass": "'"
+    },
+    "COOKIE": {}
+   },
+   "db_errno": 0
+  }
+ ],
+ "errors_distinct": [],
+ "halted_traces": 0,
+ "concretized": {},
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

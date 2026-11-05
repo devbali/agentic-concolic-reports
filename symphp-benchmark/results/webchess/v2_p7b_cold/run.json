@@ -1,0 +1,152 @@
+{
+ "engine": "v2",
+ "engine_path": "/home/jamie/ace-eval/agentic_concolic_engine",
+ "arm": "cold",
+ "options": [
+  "--php7compat",
+  "--exit-as-halt"
+ ],
+ "concretize": true,
+ "sanitizers": false,
+ "array_mode": false,
+ "site_by_statement": false,
+ "budget_s": 600.0,
+ "max_rounds": 50,
+ "instrument": {
+  "engine": "v2",
+  "instrumented": 30,
+  "failed": 0,
+  "warnings": [],
+  "options": {
+   "php7Compat": true,
+   "exitAsHalt": true,
+   "switchCmp": false,
+   "superglobalReads": false,
+   "realAppBuiltins": false,
+   "evalInstrument": false,
+   "newClassMap": []
+  },
+  "failures": [],
+  "rewrites_total": {
+   "call7": 115,
+   "const7": 249,
+   "count7": 1,
+   "exit": 32,
+   "switch": 14
+  },
+  "rewrites_by_file": {
+   "capt.php": {
+    "call7": 1,
+    "const7": 1
+   },
+   "chess.php": {
+    "call7": 3,
+    "const7": 12
+   },
+   "chessdb.php": {
+    "call7": 22,
+    "const7": 45,
+    "switch": 4
+   },
+   "chessutils.php": {
+    "call7": 4,
+    "const7": 22,
+    "exit": 1,
+    "switch": 5
+   },
+   "config.php": {
+    "const7": 7
+   },
+   "connectdb.php": {
+    "exit": 1
+   },
+   "footer.php": {
+    "const7": 2
+   },
+   "gui.php": {
+    "call7": 1,
+    "const7": 17,
+    "count7": 1,
+    "switch": 1
+   },
+   "index.php": {
+    "const7": 4,
+    "exit": 3
+   },
+   "info.php": {
+    "call7": 1
+   },
+   "install.php": {
+    "call7": 9,
+    "exit": 12,
+    "switch": 1
+   },
+   "inviteplayer.php": {
+    "call7": 2,
+    "const7": 3
+   },
+   "lang.php": {
+    "const7": 4,
+    "exit": 1
+   },
+   "mailmsginvite.php": {
+    "const7": 2
+   },
+   "mailmsgmove.php": {
+    "const7": 2
+   },
+   "mailmsgresign.php": {
+    "const7": 2
+   },
+   "mailmsgtest.php": {
+    "const7": 1
+   },
+   "mailmsgwithdraw.php": {
+    "const7": 2
+   },
+   "mainmenu.php": {
+    "call7": 59,
+    "const7": 60,
+    "exit": 5,
+    "switch": 3
+   },
+   "makeConfig.php": {
+    "exit": 3
+   },
+   "move.php": {
+    "const7": 6
+   },
+   "newgame.php": {
+    "const7": 37
+   },
+   "newuser.php": {
+    "const7": 3,
+    "exit": 1
+   },
+   "openpgn.php": {
+    "call7": 1
+   },
+   "opponentspassword.php": {
+    "call7": 4,
+    "const7": 6,
+    "exit": 1
+   },
+   "sendmessage.php": {
+    "call7": 3,
+    "const7": 2,
+    "exit": 3
+   },
+   "sessioncheck.php": {
+    "exit": 1
+   },
+   "undo.php": {
+    "call7": 2,
+    "const7": 5
+   },
+   "viewmessage.php": {
+    "call7": 3,
+    "const7": 4
+   }
+  }
+ }
+}

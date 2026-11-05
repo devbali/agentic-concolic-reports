@@ -1,0 +1,385 @@
+{
+ "script": "chess.php",
+ "wall_s": 569.7,
+ "requests": 1893,
+ "rounds": 50,
+ "traces": 1782,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "autoreload"
+  ],
+  "POST": [
+   "drawResponse",
+   "fromCol",
+   "fromRow",
+   "gameID",
+   "isCheckMate",
+   "isDrawResponseDone",
+   "isInCheck",
+   "isUndoResponseDone",
+   "promotion",
+   "requestDraw",
+   "requestUndo",
+   "resign",
+   "toCol",
+   "toRow",
+   "undoResponse"
+  ],
+  "COOKIE": [
+   "PHPSESSID"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 7682,
+ "assumptions": [],
+ "sink_sites": [
+  {
+   "site": "chess.php:56",
+   "sink": "mysqli_query",
+   "kind": "malformed-at-reach",
+   "instance": "SELECT nick FROM players, games WHERE playerID = whitePlayer AND gameID = ",
+   "request": {
+    "GET": {},
+    "POST": {},
+    "COOKIE": {
+     "PHPSESSID": "acesession"
+    }
+   },
+   "db_errno": 1064
+  },
+  {
+   "site": "chess.php:60",
+   "sink": "mysqli_query",
+   "kind": "malformed-at-reach",
+   "instance": "SELECT nick FROM players, games WHERE playerID = blackPlayer AND gameID = ",
+   "request": {
+    "GET": {},
+    "POST": {},
+    "COOKIE": {
+     "PHPSESSID": "acesession"
+    }
+   },
+   "db_errno": 1064
+  },
+  {
+   "site": "chessdb.php:35",
+   "sink": "mysqli_query",
+   "kind": "malformed-at-reach",
+   "instance": "SELECT * FROM history WHERE gameID =  ORDER BY timeOfMove",
+   "request": {
+    "GET": {},
+    "POST": {},
+    "COOKIE": {
+     "PHPSESSID": "acesession"
+    }
+   },
+   "db_errno": 1064
+  },
+  {
+   "site": "chessdb.php:244",
+   "sink": "mysqli_query",
+   "kind": "malformed-at-reach",
+   "instance": "SELECT * FROM pieces WHERE gameID = ",
+   "request": {
+    "GET": {},
+    "POST": {},
+    "COOKIE": {
+     "PHPSESSID": "acesession"
+    }
+   },
+   "db_errno": 1064
+  },
+  {
+   "site": "chessdb.php:254",
+   "sink": "mysqli_query",
+   "kind": "malformed-at-reach",
+   "instance": "SELECT whitePlayer, blackPlayer FROM games WHERE gameID = ",
+   "request": {
+    "GET": {},
+    "POST": {},
+    "COOKIE": {
+     "PHPSESSID": "acesession"
+    }
+   },
+   "db_errno": 1064
+  },
+  {
+   "site": "chessdb.php:453",
+   "sink": "mysqli_query",
+   "kind": "malformed-at-reach",
+   "instance": "SELECT * FROM messages WHERE gameID =  AND destination = 'black'",
+   "request": {
+    "GET": {},
+    "POST": {},
+    "COOKIE": {
+     "PHPSESSID": "acesession"
+    }
+   },
+   "db_errno": 1064
+  },
+  {
+   "site": "chessdb.php:502",
+   "sink": "mysqli_query",
+   "kind": "malformed-at-reach",
+   "instance": "SELECT * FROM messages WHERE gameID =  AND msgStatus = 'request' AND destination = 'white'",
+   "request": {
+    "GET": {},
+    "POST": {},
+    "COOKIE": {
+     "PHPSESSID": "acesession"
+    }
+   },
+   "db_errno": 1064
+  },
+  {
+   "site": "chessdb.php:524",
+   "sink": "mysqli_query",
+   "kind": "malformed-at-reach",
+   "instance": "SELECT gameMessage, messageFrom FROM games WHERE gameID = ",
+   "request": {
+    "GET": {},
+    "POST": {},
+    "COOKIE": {
+     "PHPSESSID": "acesession"
+    }
+   },
+   "db_errno": 1064
+  },
+  {
+   "site": "capt.php:25",
+   "sink": "mysqli_query",
+   "kind": "injectable",
+   "instance": "SELECT * FROM history WHERE ((replaced > '') OR (curPiece = 'pawn' AND toCol <> fromCol AND replaced IS NULL)) AND gameID =  ''' ORDER BY curColor DESC, replaced DESC",
+   "request": {
+    "GET": {
+     "autoreload": ""
+    },
+    "POST": {
+     "drawResponse": "",
+     "fromRow": "",
+     "gameID": "'",
+     "isCheckMate": "",
+     "isInCheck": "",
+     "promotion": "",
+     "requestDraw": "",
+     "requestUndo": "",
+     "resign": "",
+     "undoResponse": ""
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession"
+    }
+   },
+   "db_errno": 0
+  },
+  {
+   "site": "chessdb.php:346",
+   "sink": "mysqli_query",
+   "kind": "injectable",
+   "instance": "INSERT INTO messages (gameID, msgType, msgStatus, destination) VALUES (', 'undo', 'request', 'white')",
+   "request": {
+    "GET": {
+     "autoreload": ""
+    },
+    "POST": {
+     "drawResponse": "",
+     "fromRow": "",
+     "gameID": "'",
+     "isCheckMate": "",
+     "isInCheck": "",
+     "promotion": "",
+     "requestDraw": "",
+     "requestUndo": "yes",
+     "resign": "",
+     "undoResponse": ""
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession"
+    }
+   },
+   "db_errno": 1064
+  },
+  {
+   "site": "chessdb.php:27",
+   "sink": "mysqli_query",
+   "kind": "malformed-at-reach",
+   "instance": "UPDATE games SET lastMove = NOW() WHERE gameID = ",
+   "request": {
+    "GET": {
+     "autoreload": ""
+    },
+    "POST": {
+     "drawResponse": "",
+     "fromRow": "",
+     "gameID": "",
+     "isCheckMate": "",
+     "isInCheck": "",
+     "promotion": "",
+     "requestDraw": "",
+     "requestUndo": "yes",
+     "resign": "",
+     "undoResponse": ""
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession"
+    }
+   },
+   "db_errno": 1064
+  },
+  {
+   "site": "chessdb.php:366",
+   "sink": "mysqli_query",
+   "kind": "injectable",
+   "instance": "INSERT INTO messages (gameID, msgType, msgStatus, destination) VALUES (', 'draw', 'request', 'white')",
+   "request": {
+    "GET": {
+     "autoreload": ""
+    },
+    "POST": {
+     "drawResponse": "",
+     "fromRow": "",
+     "gameID": "'",
+     "isCheckMate": "",
+     "isInCheck": "",
+     "promotion": "",
+     "requestDraw": "yes",
+     "requestUndo": "",
+     "resign": "",
+     "undoResponse": ""
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession"
+    }
+   },
+   "db_errno": 1064
+  },
+  {
+   "site": "chessdb.php:417",
+   "sink": "mysqli_query",
+   "kind": "malformed-at-reach",
+   "instance": "UPDATE games SET gameMessage = 'playerResigned', messageFrom = 'black' WHERE gameID = ",
+   "request": {
+    "GET": {
+     "autoreload": ""
+    },
+    "POST": {
+     "drawResponse": "",
+     "fromRow": "",
+     "gameID": "",
+     "isCheckMate": "",
+     "isInCheck": "",
+     "promotion": "",
+     "requestDraw": "",
+     "requestUndo": "",
+     "resign": "yes",
+     "undoResponse": ""
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession"
+    }
+   },
+   "db_errno": 1064
+  },
+  {
+   "site": "chessdb.php:520",
+   "sink": "mysqli_query",
+   "kind": "malformed-at-reach",
+   "instance": "UPDATE games SET gameMessage = 'checkMate', messageFrom = 'black' WHERE gameID = ",
+   "request": {
+    "GET": {
+     "autoreload": ""
+    },
+    "POST": {
+     "drawResponse": "",
+     "fromRow": "",
+     "gameID": "",
+     "isCheckMate": "true",
+     "isInCheck": "",
+     "promotion": "",
+     "requestDraw": "",
+     "requestUndo": "",
+     "resign": "",
+     "undoResponse": ""
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession"
+    }
+   },
+   "db_errno": 1064
+  },
+  {
+   "site": "chessdb.php:386",
+   "sink": "mysqli_query",
+   "kind": "malformed-at-reach",
+   "instance": "UPDATE messages SET msgStatus = 'denied', destination = 'white' WHERE gameID =  AND msgType = 'undo' AND msgStatus = 'request' AND destination = 'black'",
+   "request": {
+    "GET": {},
+    "POST": {
+     "drawResponse": "",
+     "fromRow": "",
+     "gameID": "",
+     "isCheckMate": "",
+     "isInCheck": "",
+     "promotion": "",
+     "requestDraw": "",
+     "requestUndo": "",
+     "resign": "",
+     "undoResponse": "",
+     "fromCol": "",
+     "isDrawResponseDone": "",
+     "isUndoResponseDone": "yes",
+     "toRow": ""
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession"
+    }
+   },
+   "db_errno": 1064
+  },
+  {
+   "site": "chessdb.php:407",
+   "sink": "mysqli_query",
+   "kind": "malformed-at-reach",
+   "instance": "UPDATE messages SET msgStatus = 'denied', destination = 'white' WHERE gameID =  AND msgType = 'draw' AND msgStatus = 'request' AND destination = 'black'",
+   "request": {
+    "GET": {},
+    "POST": {
+     "drawResponse": "",
+     "fromRow": "",
+     "gameID": "",
+     "isCheckMate": "",
+     "isInCheck": "",
+     "promotion": "",
+     "requestDraw": "",
+     "requestUndo": "",
+     "resign": "",
+     "undoResponse": "",
+     "fromCol": "",
+     "isDrawResponseDone": "yes",
+     "isUndoResponseDone": "",
+     "toRow": ""
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession"
+    }
+   },
+   "db_errno": 1064
+  }
+ ],
+ "errors_distinct": [],
+ "halted_traces": 0,
+ "concretized": {},
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {
+   "mysqli_fetch_row": 3786,
+   "mysqli_fetch_array": 11358
+  }
+ }
+}

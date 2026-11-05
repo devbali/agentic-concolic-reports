@@ -1,0 +1,62 @@
+{
+ "script": "hms/doctor/search.php",
+ "wall_s": 1.8,
+ "requests": 7,
+ "rounds": 5,
+ "traces": 5,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [],
+  "POST": [
+   "search",
+   "searchdata"
+  ],
+  "COOKIE": []
+ },
+ "budget_hit": false,
+ "coverage_complete": true,
+ "missing": 0,
+ "assumptions": [],
+ "sink_sites": [
+  {
+   "site": "hms/doctor/search.php:74",
+   "sink": "echo",
+   "kind": "xss-candidate",
+   "instance": "\"'><acexss301d2692>",
+   "request": {
+    "GET": {},
+    "POST": {
+     "search": "",
+     "searchdata": "\"'><acexss301d2692>"
+    },
+    "COOKIE": {}
+   }
+  },
+  {
+   "site": "hms/doctor/search.php:90",
+   "sink": "mysqli_query",
+   "kind": "injectable",
+   "instance": "select * from tblpatient where PatientName like '%'(%'|| PatientContno like '%'(%'",
+   "request": {
+    "GET": {},
+    "POST": {
+     "search": "",
+     "searchdata": "'("
+    },
+    "COOKIE": {}
+   },
+   "db_errno": 0
+  }
+ ],
+ "errors_distinct": [],
+ "halted_traces": 0,
+ "concretized": {},
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

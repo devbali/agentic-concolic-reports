@@ -1,0 +1,38 @@
+{
+ "app": "oracle-fixtures",
+ "tool": "ace:v2_p7_final_cold",
+ "requests": 6,
+ "findings": 1,
+ "findings_judge_confirmed": 1,
+ "findings_unconfirmed": [],
+ "faulting_requests": 1,
+ "detected": 1,
+ "known": 1,
+ "cves_detected": 0,
+ "cves_known": 0,
+ "cves": {},
+ "coverage_pct": 100.0,
+ "covered_lines": 11,
+ "executable_lines": 11,
+ "vulns": [
+  {
+   "id": "F1",
+   "cve": [],
+   "type": "sqli",
+   "sink": "inject.php:6",
+   "auth": null,
+   "confidence": null,
+   "param": null,
+   "method": null,
+   "detected": true,
+   "witness": {
+    "script": "inject.php",
+    "GET": {
+     "id": "'"
+    },
+    "POST": {},
+    "COOKIE": {}
+   }
+  }
+ ]
+}

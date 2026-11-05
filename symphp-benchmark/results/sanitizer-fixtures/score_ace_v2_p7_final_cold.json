@@ -1,0 +1,57 @@
+{
+ "app": "sanitizer-fixtures",
+ "tool": "ace:v2_p7_final_cold",
+ "requests": 8,
+ "findings": 2,
+ "findings_judge_confirmed": 2,
+ "findings_unconfirmed": [],
+ "faulting_requests": 2,
+ "detected": 2,
+ "known": 2,
+ "cves_detected": 0,
+ "cves_known": 0,
+ "cves": {},
+ "coverage_pct": 94.44,
+ "covered_lines": 17,
+ "executable_lines": 18,
+ "vulns": [
+  {
+   "id": "S1",
+   "cve": [],
+   "type": "sqli",
+   "sink": "escaped_numeric.php:6",
+   "auth": null,
+   "confidence": null,
+   "param": null,
+   "method": null,
+   "detected": true,
+   "witness": {
+    "script": "escaped_numeric.php",
+    "GET": {
+     "id": "'"
+    },
+    "POST": {},
+    "COOKIE": {}
+   }
+  },
+  {
+   "id": "S2",
+   "cve": [],
+   "type": "sqli",
+   "sink": "sanitized_branch.php:9",
+   "auth": null,
+   "confidence": null,
+   "param": null,
+   "method": null,
+   "detected": true,
+   "witness": {
+    "script": "sanitized_branch.php",
+    "GET": {
+     "q": "'"
+    },
+    "POST": {},
+    "COOKIE": {}
+   }
+  }
+ ]
+}

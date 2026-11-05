@@ -985,3 +985,144 @@ new files: `harness_v2.php`, `harness_app_v2.php`, `instrument_app_v2.php`, `san
 - `drive.py` on v2 refuses `--php7compat --exit-as-halt --switch-cmp --concretize --array-mode
   --real-app-builtins --xss --eval-instrument --template-split --db-classes` (P4–P7). It never
   ignores them.
+
+## Port P4–P7 (2026-11-05)
+
+The user approved P4–P7 after reviewing P0–P3. Their decisions:
+- `symbolicArgumentsOnly` is accepted.
+- Branches on sanitized values stay as listed untracked assumptions.
+- The htmlspecialchars/htmlentities twins use PHP 7.4 defaults.
+- A worktree for the old branch replaces switching branches in one checkout.
+
+Stopped again before P8.
+
+### Two engines side by side
+- `~/ace-eval/agentic_concolic_engine-old` is a `git worktree` on `php-runtime/real-apps` (6d3e764,
+  untouched). Its `runtimes/php_runtime/vendor` is copied from the main checkout.
+  `~/ace-eval/agentic_concolic_engine` stays on `php-runtime/real-apps-v2`.
+- `ACE_ENGINE=<checkout>` selects the engine for everything:
+  - `engine.py` picks the Python side.
+  - `drive.py` passes `ACE_PHP_RUNTIME` to every PHP container: Witcher-mode runs, instrumentation,
+    and the app runner via `docker exec -e`.
+  - Every PHP harness, v1 `harness_app.php` included, loads the runtime from `ACE_PHP_RUNTIME`.
+    This one-line change to `harness_app.php` keeps its default unchanged.
+  ```sh
+  build/venv/bin/python drive.py webchess ...                                    # v2 (default checkout)
+  ACE_ENGINE=$HOME/ace-eval/agentic_concolic_engine-old build/venv/bin/python drive.py webchess ...   # v1
+  ```
+  Checked in app mode with `v1_via_ace_engine` (WebChess `mainmenu.php` and `newuser.php`, the old
+  flags): the traces, requests, sinks and concretizations equal `m5r_cold`. `run.json` records
+  `engine` and `engine_path`.
+
+### Engine (`php-runtime/real-apps-v2`, commit a92e01e)
+- **Method.** `InstrumentVisitor.php`, `Instrument.php`, `probes.php` and `Value.php` were
+  three-way merged: base 6cce627, ours v2, theirs the old branch. Every
+  Template/Sanitized/E5/templateSplit path was then removed. `Runtime.php` was done by hand. Every
+  feature is opt-in, and with nothing set every one of main's tests passes unchanged.
+- **P4, E3** (`exitAsHalt`):
+  - `\__exit` throws `ExitSignal extends HaltError` (main's; still an `\Exception`).
+  - The catch-block rethrow guard is joined onto the `{` line, so no line moves.
+  - `finish()` records `halted.exit`.
+  - Main's `NotImplementedError extends \Error` makes nothing here unnecessary: an app's
+    `catch (Exception)` would still swallow an `ExitSignal` without the guard.
+- **P5, E4** (`concretizeUnmodelled`):
+  - Shrunk to main's refusals. `cast()` and `arithmetic()` ask main's model first and concretize
+    only if it raises, so `concat`, `itos`, `%`/`intdiv` and `(string)` stay terms (test
+    `test_concretize_leaves_what_main_models_as_terms`). Float `/` and string operands are
+    concretized.
+  - Also hooked: `is_numeric`, implicit string conversion, string subscripts, `__fn` defaults, and
+    the comparisons main refuses.
+  - New: the `sprintf`/`printf`/`var_export`/`print_r` family, which main now refuses, gets one
+    `concretized` event per call.
+  - The Template-decision paths are gone with Template. On main a decision on a built string is a
+    real path condition.
+- **P6:**
+  - E2 `php7Compat`, all rewrites: 7.4 parse, const7, count7, call7, switch, curly offsets, nested
+    ternary, sig7, token_get_all7, autoload7, and PHP 7 loose comparison/arithmetic.
+  - Also: `switchCmp`, array mode (`Superglobals`, `__sg_key`), `realAppBuiltins` (type
+    predicates, `hash_equals`, `__key`, `__arg`/`__arg_deep`, `__memzero`), `evalInstrument`, and
+    E7 (`newClassMap`, `locationSkipFiles`).
+  - **Dropped:** `templateSplit` and the `\__explode` rewrite. `explode()` of a concat value now
+    goes through `__arg` and is concretized (E4, counted as `internal argument`). WebChess and HSM
+    never reach it. WeBid/ADOdb, the app it was built for, is P8.
+  - The E5 sanitizer names are **not** added to `BUILTINS`, which is unconditional, so default
+    instrumentation stays main's.
+- **P7, E6** (`outputEvents`): an `output` event carries the echoed value's **term**, this run's
+  text and the byte offset, instead of a sealed note.
+- **Tests:**
+  - `t_realapps.php` ported. E1/begin-finish moved to `t_harness.php` and the instrumentor fixes
+    to `t_instrument.php`; the Template/E5/templateSplit tests were dropped.
+  - New tests: the E6 term, E4 leaving main's terms alone, and E4 on `sprintf`.
+  - `t_php7compat.php` and `fixtures/php7compat` (the recorded php:7.4 outputs) copied as they
+    were.
+- **Suites:**
+  - PHP **201 tests, 1482 assertions, 0 failed**.
+  - `dump_ir/tests concolic/tests`: **636 passed, 3 skipped, 1 failed**. The failure is the known,
+    pre-existing `test_z3_text_transport_lint`.
+
+### Harness (`report/symphp-benchmark`)
+- **Files:**
+  - `instrument_app_v2.php`: all of `instrument_app.php`'s options plus `--sanitizers`.
+  - `harness_app_v2.php`: regenerated from `harness_app.php` with every flag and v2 notes;
+    `templateSplit` is refused.
+  - `harness_db_v2.php`: E7.
+- **`drive.py`** on v2 refuses only `--template-split`. `--xss` uses `sinks_v2.xss_findings`.
+- **XSS oracle** (P7): it lowers the output term and asks Z3 for an input containing the marker
+  that still reaches the echo. It recomputes sanitizer results with the twins and evaluates the
+  term. A site is a candidate only if `<acexss` survives into the output. Judge confirmation is
+  unchanged.
+- **htmlspecialchars/htmlentities with no flags** (user decision): PHP 7.4's ENT_COMPAT, which
+  leaves `'` unescaped. This applies in `sinks_v2.SANITIZERS` and in the shim
+  (`sanitizers_v2.php`), so the run's own output is 7.4's too. `sinks.SANITIZERS` (v1) is
+  unchanged. `test_sanitizers_v2.py` now also compares every twin with **php:7.4-cli** builtins,
+  including the no-flags case, over 3,000+ strings. Pass.
+- **A real exploration difference, found and fixed (`engine.py`):**
+  - The first v2 run of the WebChess auth arm found 467 traces in the round-limited
+    `mainmenu.php`, against the old 1,165.
+  - The same request gives the same trace on both engines (189 of 190 shared requests). The
+    difference was in the requests proposed.
+  - v1's `solve_and_evaluate(..., eval_conditions=<every decision>)` evaluated with model
+    completion. An input the flipped prefix leaves unconstrained came back at Z3's default (`""`,
+    present). Main's `solve` returns only the constrained symbols, so such inputs stayed absent.
+  - `engine.negations` now completes the model the same way. On 11 sampled WebChess/HSM dumps the
+    proposed requests are identical to v1's.
+  - All four arms were re-run with the fix (`v2_p7b_*`). The first attempt's results were
+    discarded.
+
+### Results (judge-replayed on uninstrumented PHP 7.4; old = `m5r_*`, same flags, 600 s/script)
+| | old (v1) | v2 (`v2_p7b_*`) |
+|---|---|---|
+| WebChess logged out (cold) | 6/10 (WC-1, 2, 5, 6, 7, 10), 32.38% / Xdebug 33.58%, 141 req, 20/20 | **identical** (same IDs and numbers) |
+| WebChess cold + auth | 9/10 (WC-9 missed), 52.43% / 50.91%, 3173 req, 59/60 | **9/10**, same IDs, 52.43% / 50.91%, 3653 req, 59/60 |
+| HSM cold + auth (`--sanitizers --xss`) | 29/29, 29.13% / 29.33%, 2271 req, 98/101 | **identical** |
+| Witcher-Test, flags off | 7/7, 98.82% | 7/7, 98.82% (`v2_p7_final_cold`) |
+| oracle / sanitizer fixtures | — | 1/1 guarded clean; 2/2 quoted control clean |
+
+- **Per script:**
+  - WebChess cold: 146 traces and 20 sinks on both.
+  - HSM cold: 1165 traces and 50 sinks on both. HSM auth: 1166 traces and 51 sinks on both.
+  - WebChess auth is identical except the round-limited `mainmenu.php`: 1645 traces against 1165,
+    17 sinks both. That accounts for the 480 extra scored requests. The old note said this script
+    was re-run on an idle host; this run was sequential.
+- **E2 rewrite counts** (instrumentation report), identical on both branches:
+  - WebChess: call7 115, const7 249, count7 1, exit 32, switch 14.
+  - HSM: call7 75, catch 4, const7 24, count7 9, exit 6, switch 33.
+- **`concretized` events, old → v2:**
+  - WebChess cold: 134 → 134 (is_numeric 96, string conversion 32, comparison 6).
+  - WebChess auth: 2696 → 3720. is_numeric goes 2559 → 3583, in proportion to `mainmenu.php`'s
+    extra traces. The per-site set is the same.
+  - HSM, each arm: 292 → 292 (intval 160, string conversion 132).
+  - **P5 did not lower them.** Every site is something main still refuses: `is_numeric` and
+    `intval` of a symbolic string (no IR predicate or term), `md5($_POST[...])` (implicit
+    conversion), `implode()` over Values (chessdb.php:292), and two mixed-sort `==`. What main
+    newly models (concat, itos, `%`, intdiv) never reached E4 in these apps, because on v1 those
+    were Template operations or not used.
+
+### State before P8
+- Containers started here are stopped again: `ace-webchess-{db,php}`, `judge-webchess-*`,
+  `ace-hsm-r-*` and `judge-hsm-*`. Logs are capped. `ace-judge-mysql` was already running.
+- Raw dumps of the `v2_p7b_*` and `v1_via_ace_engine` runs are gzipped in place and untracked, as
+  in M5. Their summaries, `run.json`, requests and scores are committed.
+- Not exercised by an app yet, only by unit tests: array mode, `realAppBuiltins`,
+  `evalInstrument`, E7 (WeBid, phpMyAdmin, OpenEMR, ...). P8's 15-app re-run is the first real
+  test of these.

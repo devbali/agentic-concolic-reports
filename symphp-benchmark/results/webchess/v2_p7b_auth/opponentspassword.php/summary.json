@@ -1,0 +1,91 @@
+{
+ "script": "opponentspassword.php",
+ "wall_s": 2.1,
+ "requests": 11,
+ "rounds": 5,
+ "traces": 7,
+ "errored": 11,
+ "first_error": "Error: Call to undefined function gettext()",
+ "keys_discovered": {
+  "GET": [
+   "autoreload"
+  ],
+  "POST": [
+   "gameID",
+   "opponentsID",
+   "opponentsNick",
+   "pwdPassword"
+  ],
+  "COOKIE": [
+   "PHPSESSID"
+  ]
+ },
+ "budget_hit": false,
+ "coverage_complete": true,
+ "missing": 0,
+ "assumptions": [],
+ "sink_sites": [
+  {
+   "site": "opponentspassword.php:66",
+   "sink": "mysqli_query",
+   "kind": "malformed-at-reach",
+   "instance": "SELECT whitePlayer, blackPlayer FROM games WHERE gameID = ",
+   "request": {
+    "GET": {},
+    "POST": {},
+    "COOKIE": {
+     "PHPSESSID": "acesession"
+    }
+   },
+   "db_errno": 1064
+  },
+  {
+   "site": "opponentspassword.php:77",
+   "sink": "mysqli_query",
+   "kind": "malformed-at-reach",
+   "instance": "SELECT nick FROM players WHERE playerID = ",
+   "request": {
+    "GET": {},
+    "POST": {},
+    "COOKIE": {
+     "PHPSESSID": "acesession"
+    }
+   },
+   "db_errno": 1064
+  },
+  {
+   "site": "opponentspassword.php:44",
+   "sink": "mysqli_query",
+   "kind": "malformed-at-reach",
+   "instance": "SELECT password FROM players WHERE playerID = ",
+   "request": {
+    "GET": {
+     "autoreload": ""
+    },
+    "POST": {
+     "gameID": "",
+     "opponentsID": ""
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession"
+    }
+   },
+   "db_errno": 1064
+  }
+ ],
+ "errors_distinct": [
+  "Error: Call to undefined function gettext()"
+ ],
+ "halted_traces": 0,
+ "concretized": {},
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {
+   "mysqli_fetch_array": 7,
+   "mysqli_fetch_row": 11
+  }
+ }
+}

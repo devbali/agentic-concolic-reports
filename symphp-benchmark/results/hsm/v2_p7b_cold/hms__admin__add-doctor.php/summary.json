@@ -1,0 +1,61 @@
+{
+ "script": "hms/admin/add-doctor.php",
+ "wall_s": 7.7,
+ "requests": 69,
+ "rounds": 10,
+ "traces": 67,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [],
+  "POST": [
+   "Doctorspecialization",
+   "clinicaddress",
+   "doccontact",
+   "docemail",
+   "docfees",
+   "docname",
+   "npass",
+   "submit"
+  ],
+  "COOKIE": []
+ },
+ "budget_hit": false,
+ "coverage_complete": true,
+ "missing": 0,
+ "assumptions": [],
+ "sink_sites": [
+  {
+   "site": "hms/admin/add-doctor.php:16",
+   "sink": "mysqli_query",
+   "kind": "injectable",
+   "instance": "insert into doctors(specilization,doctorName,address,docFees,contactno,docEmail,password) values(''','','','','','','d41d8cd98f00b204e9800998ecf8427e')",
+   "request": {
+    "GET": {},
+    "POST": {
+     "submit": "",
+     "Doctorspecialization": "'",
+     "clinicaddress": "",
+     "doccontact": "",
+     "docemail": "",
+     "docfees": "",
+     "docname": ""
+    },
+    "COOKIE": {}
+   },
+   "db_errno": 1366
+  }
+ ],
+ "errors_distinct": [],
+ "halted_traces": 0,
+ "concretized": {
+  "string conversion @ hms/admin/add-doctor.php:15": 64
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

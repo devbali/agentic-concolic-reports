@@ -1,0 +1,442 @@
+{
+ "script": "mainmenu.php",
+ "wall_s": 600.0,
+ "requests": 1714,
+ "rounds": 47,
+ "traces": 1645,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "autoreload"
+  ],
+  "POST": [
+   "ToDo",
+   "color",
+   "gameID",
+   "messageFrom",
+   "messageID",
+   "opponent",
+   "pwdOldPassword",
+   "pwdPassword",
+   "rdoHistory",
+   "rdoHistorylayout",
+   "rdoTheme",
+   "replayAll",
+   "response",
+   "txtFirstName",
+   "txtLastName",
+   "txtNick",
+   "txtReload",
+   "userLevel"
+  ],
+  "COOKIE": [
+   "PHPSESSID"
+  ]
+ },
+ "budget_hit": true,
+ "coverage_complete": false,
+ "missing": 3707,
+ "assumptions": [],
+ "sink_sites": [
+  {
+   "site": "mainmenu.php:263",
+   "sink": "mysqli_query",
+   "kind": "malformed-at-reach",
+   "instance": "SELECT gameID FROM games WHERE gameMessage = 'playerInvited' AND ((messageFrom = 'white' AND whitePlayer = 2 AND blackPlayer = ) OR (messageFrom = 'black' AND whitePlayer =  AND blackPlayer = 2))",
+   "request": {
+    "GET": {
+     "autoreload": ""
+    },
+    "POST": {
+     "ToDo": "InvitePlayer"
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession"
+    }
+   },
+   "db_errno": 1064
+  },
+  {
+   "site": "mainmenu.php:316",
+   "sink": "mysqli_query",
+   "kind": "malformed-at-reach",
+   "instance": "UPDATE games SET gameMessage = 'inviteDeclined', messageFrom = '' WHERE gameID = ",
+   "request": {
+    "GET": {
+     "autoreload": ""
+    },
+    "POST": {
+     "ToDo": "ResponseToInvite"
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession"
+    }
+   },
+   "db_errno": 1064
+  },
+  {
+   "site": "mainmenu.php:324",
+   "sink": "mysqli_query",
+   "kind": "malformed-at-reach",
+   "instance": "SELECT whitePlayer FROM games WHERE gameID = ",
+   "request": {
+    "GET": {
+     "autoreload": ""
+    },
+    "POST": {
+     "ToDo": "WithdrawRequest"
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession"
+    }
+   },
+   "db_errno": 1064
+  },
+  {
+   "site": "mainmenu.php:482",
+   "sink": "mysqli_query",
+   "kind": "malformed-at-reach",
+   "instance": "UPDATE communication SET ack = 1 WHERE commID = ",
+   "request": {
+    "GET": {
+     "autoreload": ""
+    },
+    "POST": {
+     "ToDo": "HideMessage"
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession"
+    }
+   },
+   "db_errno": 1064
+  },
+  {
+   "site": "mainmenu.php:150",
+   "sink": "mysqli_query",
+   "kind": "injectable",
+   "instance": "SELECT * FROM players WHERE nick = '''",
+   "request": {
+    "GET": {
+     "autoreload": ""
+    },
+    "POST": {
+     "ToDo": "Login",
+     "pwdOldPassword": "pw2",
+     "txtNick": "'",
+     "pwdPassword": "pw2"
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession"
+    }
+   },
+   "db_errno": 0
+  },
+  {
+   "site": "mainmenu.php:279",
+   "sink": "mysqli_query",
+   "kind": "injectable",
+   "instance": "INSERT INTO games (whitePlayer, blackPlayer, gameMessage, messageFrom, dateCreated, lastMove) VALUES (, 2, 'playerInvited', ''', NOW(), NOW())",
+   "request": {
+    "GET": {
+     "autoreload": ""
+    },
+    "POST": {
+     "ToDo": "InvitePlayer",
+     "color": "'",
+     "opponent": "",
+     "pwdOldPassword": "pw2",
+     "pwdPassword": "pw2"
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession"
+    }
+   },
+   "db_errno": 1064
+  },
+  {
+   "site": "mainmenu.php:408",
+   "sink": "mysqli_query",
+   "kind": "injectable",
+   "instance": "UPDATE preferences SET value = ''' WHERE playerID = 2 AND preference = 'theme'",
+   "request": {
+    "GET": {
+     "autoreload": ""
+    },
+    "POST": {
+     "ToDo": "UpdatePrefs",
+     "pwdOldPassword": "pw2",
+     "rdoHistory": "",
+     "rdoHistorylayout": "",
+     "rdoTheme": "'",
+     "replayAll": "",
+     "txtReload": "",
+     "userLevel": "",
+     "pwdPassword": "pw2"
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession"
+    }
+   },
+   "db_errno": 0
+  },
+  {
+   "site": "mainmenu.php:412",
+   "sink": "mysqli_query",
+   "kind": "injectable",
+   "instance": "UPDATE preferences SET value = ''' WHERE playerID = 2 AND preference = 'history'",
+   "request": {
+    "GET": {
+     "autoreload": ""
+    },
+    "POST": {
+     "ToDo": "UpdatePrefs",
+     "pwdOldPassword": "pw2",
+     "rdoHistory": "'",
+     "rdoHistorylayout": "",
+     "rdoTheme": "",
+     "replayAll": "",
+     "txtReload": "",
+     "userLevel": "",
+     "pwdPassword": "pw2"
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession"
+    }
+   },
+   "db_errno": 0
+  },
+  {
+   "site": "mainmenu.php:416",
+   "sink": "mysqli_query",
+   "kind": "injectable",
+   "instance": "UPDATE preferences SET value = ''' WHERE playerID = 2 AND preference = 'historylayout'",
+   "request": {
+    "GET": {
+     "autoreload": ""
+    },
+    "POST": {
+     "ToDo": "UpdatePrefs",
+     "pwdOldPassword": "pw2",
+     "rdoHistory": "",
+     "rdoHistorylayout": "'",
+     "rdoTheme": "",
+     "replayAll": "",
+     "txtReload": "",
+     "userLevel": "",
+     "pwdPassword": "pw2"
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession"
+    }
+   },
+   "db_errno": 0
+  },
+  {
+   "site": "mainmenu.php:452",
+   "sink": "mysqli_query",
+   "kind": "injectable",
+   "instance": "UPDATE preferences SET value = ''' WHERE playerID = 2 AND preference = 'replayall'",
+   "request": {
+    "GET": {
+     "autoreload": ""
+    },
+    "POST": {
+     "ToDo": "UpdatePrefs",
+     "pwdOldPassword": "pw2",
+     "rdoHistory": "",
+     "rdoHistorylayout": "",
+     "rdoTheme": "",
+     "replayAll": "'",
+     "txtReload": "",
+     "userLevel": "",
+     "pwdPassword": "pw2"
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession"
+    }
+   },
+   "db_errno": 0
+  },
+  {
+   "site": "mainmenu.php:96",
+   "sink": "mysqli_query",
+   "kind": "injectable",
+   "instance": "SELECT playerID FROM players WHERE nick = '''",
+   "request": {
+    "GET": {
+     "autoreload": ""
+    },
+    "POST": {
+     "ToDo": "NewUser",
+     "pwdOldPassword": "pw2",
+     "txtNick": "'",
+     "pwdPassword": "pw2"
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession"
+    }
+   },
+   "db_errno": 0
+  },
+  {
+   "site": "mainmenu.php:105",
+   "sink": "mysqli_query",
+   "kind": "injectable",
+   "instance": "INSERT INTO players (password, firstName, lastName, nick) VALUES ('$2y$10$2b/1.D.gTLBq/pPrvbiREOarhwU04RRKNFwSCcUolV1a8XBeqBzaO', '', '', ''')",
+   "request": {
+    "GET": {
+     "autoreload": ""
+    },
+    "POST": {
+     "ToDo": "NewUser",
+     "pwdOldPassword": "pw2",
+     "txtNick": "'",
+     "pwdPassword": "pw2"
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession"
+    }
+   },
+   "db_errno": 0
+  },
+  {
+   "site": "mainmenu.php:305",
+   "sink": "mysqli_query",
+   "kind": "malformed-at-reach",
+   "instance": "UPDATE games SET gameMessage = '', messageFrom = '' WHERE gameID = ",
+   "request": {
+    "GET": {
+     "autoreload": ""
+    },
+    "POST": {
+     "ToDo": "ResponseToInvite",
+     "gameID": "",
+     "messageFrom": "",
+     "pwdOldPassword": "pw2",
+     "response": "accepted",
+     "pwdPassword": "pw2"
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession"
+    }
+   },
+   "db_errno": 1064
+  },
+  {
+   "site": "newgame.php:71",
+   "sink": "mysqli_query",
+   "kind": "malformed-at-reach",
+   "instance": "DELETE FROM history WHERE gameID = ",
+   "request": {
+    "GET": {
+     "autoreload": ""
+    },
+    "POST": {
+     "ToDo": "ResponseToInvite",
+     "gameID": "",
+     "messageFrom": "",
+     "pwdOldPassword": "pw2",
+     "response": "accepted",
+     "pwdPassword": "pw2"
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession"
+    }
+   },
+   "db_errno": 1064
+  },
+  {
+   "site": "chessdb.php:291",
+   "sink": "mysqli_query",
+   "kind": "malformed-at-reach",
+   "instance": "DELETE FROM pieces WHERE gameID = ",
+   "request": {
+    "GET": {
+     "autoreload": ""
+    },
+    "POST": {
+     "ToDo": "ResponseToInvite",
+     "gameID": "",
+     "messageFrom": "",
+     "pwdOldPassword": "pw2",
+     "response": "accepted",
+     "pwdPassword": "pw2"
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession"
+    }
+   },
+   "db_errno": 1064
+  },
+  {
+   "site": "chessdb.php:27",
+   "sink": "mysqli_query",
+   "kind": "malformed-at-reach",
+   "instance": "UPDATE games SET lastMove = NOW() WHERE gameID = ",
+   "request": {
+    "GET": {
+     "autoreload": ""
+    },
+    "POST": {
+     "ToDo": "ResponseToInvite",
+     "gameID": "",
+     "messageFrom": "",
+     "pwdOldPassword": "pw2",
+     "response": "accepted",
+     "pwdPassword": "pw2"
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession"
+    }
+   },
+   "db_errno": 1064
+  },
+  {
+   "site": "mainmenu.php:447",
+   "sink": "mysqli_query",
+   "kind": "injectable",
+   "instance": "UPDATE players SET userlevel = ''' WHERE playerID = 2",
+   "request": {
+    "GET": {
+     "autoreload": ""
+    },
+    "POST": {
+     "ToDo": "UpdatePrefs",
+     "pwdOldPassword": "pw2",
+     "rdoHistory": "",
+     "rdoHistorylayout": "",
+     "rdoTheme": "",
+     "replayAll": "",
+     "txtReload": "",
+     "userLevel": "'",
+     "pwdPassword": "pw2"
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession"
+    }
+   },
+   "db_errno": 0
+  }
+ ],
+ "errors_distinct": [],
+ "halted_traces": 11,
+ "concretized": {
+  "string conversion @ mainmenu.php:363": 1,
+  "is_numeric @ mainmenu.php:419": 1101,
+  "is_numeric @ mainmenu.php:437": 1381,
+  "is_numeric @ mainmenu.php:461": 1101,
+  "string conversion @ mainmenu.php:104": 1,
+  "string conversion @ mainmenu.php:153": 1,
+  "string conversion @ chessdb.php:292": 64
+ },
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {
+   "mysqli_num_rows": 32
+  }
+ }
+}

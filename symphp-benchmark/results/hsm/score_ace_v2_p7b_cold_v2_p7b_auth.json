@@ -1,0 +1,950 @@
+{
+ "app": "hsm",
+ "tool": "ace:v2_p7b_cold+v2_p7b_auth",
+ "requests": 2271,
+ "findings": 101,
+ "findings_judge_confirmed": 98,
+ "findings_unconfirmed": [
+  {
+   "site": "hms/admin/registration.php:11",
+   "kind": "injectable",
+   "request": {
+    "script": "hms/admin/registration.php",
+    "GET": {},
+    "POST": {
+     "submit": "",
+     "address": "'",
+     "city": "",
+     "email": "",
+     "full_name": "",
+     "gender": ""
+    },
+    "COOKIE": {}
+   }
+  },
+  {
+   "site": "hms/admin/change-password.php:15",
+   "kind": "injectable",
+   "request": {
+    "script": "hms/admin/change-password.php",
+    "GET": {},
+    "POST": {
+     "submit": "",
+     "npass": "'"
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession"
+    }
+   }
+  },
+  {
+   "site": "hms/admin/registration.php:11",
+   "kind": "injectable",
+   "request": {
+    "script": "hms/admin/registration.php",
+    "GET": {},
+    "POST": {
+     "submit": "",
+     "address": "'",
+     "city": "",
+     "email": "",
+     "full_name": "",
+     "gender": "",
+     "password": "Test@12345"
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession"
+    }
+   }
+  }
+ ],
+ "faulting_requests": 80,
+ "detected": 29,
+ "known": 29,
+ "cves_detected": 29,
+ "cves_known": 29,
+ "cves": {
+  "CVE-2020-22165": true,
+  "CVE-2025-7604": true,
+  "CVE-2020-22164": true,
+  "CVE-2020-22166": true,
+  "CVE-2020-22168": true,
+  "CVE-2020-22169": true,
+  "CVE-2020-22170": true,
+  "CVE-2020-22172": true,
+  "CVE-2020-22171": true,
+  "CVE-2020-22173": true,
+  "CVE-2020-22174": true,
+  "CVE-2020-22175": true,
+  "CVE-2020-5192": true,
+  "CVE-2025-6570": true,
+  "CVE-2024-0362": true,
+  "CVE-2024-0363": true,
+  "CVE-2024-0364": true,
+  "CVE-2024-0360": true,
+  "CVE-2025-7176": true,
+  "CVE-2025-8954": true,
+  "CVE-2025-8955": true,
+  "CVE-2025-56212": true,
+  "CVE-2025-56214": true,
+  "CVE-2026-2134": true,
+  "CVE-2026-2179": true,
+  "CVE-2020-5193": true,
+  "CVE-2021-39411": true,
+  "CVE-2024-10807": true,
+  "CVE-2024-10806": true
+ },
+ "coverage_pct": 29.13,
+ "covered_lines": 990,
+ "executable_lines": 3399,
+ "vulns": [
+  {
+   "id": "HSM-1",
+   "cve": [
+    "CVE-2020-22165",
+    "CVE-2025-7604"
+   ],
+   "type": "sqli",
+   "sink": "hms/user-login.php:7",
+   "auth": "none",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "username"
+   ],
+   "method": "POST",
+   "detected": true,
+   "witness": {
+    "script": "hms/user-login.php",
+    "GET": {},
+    "POST": {
+     "submit": "",
+     "username": "'"
+    },
+    "COOKIE": {}
+   }
+  },
+  {
+   "id": "HSM-2",
+   "cve": [
+    "CVE-2020-22164"
+   ],
+   "type": "sqli",
+   "sink": "hms/check_availability.php:6",
+   "auth": "none",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "email"
+   ],
+   "method": "POST",
+   "detected": true,
+   "witness": {
+    "script": "hms/check_availability.php",
+    "GET": {},
+    "POST": {
+     "email": "'"
+    },
+    "COOKIE": {}
+   }
+  },
+  {
+   "id": "HSM-3",
+   "cve": [
+    "CVE-2020-22166"
+   ],
+   "type": "sqli",
+   "sink": "hms/forgot-password.php:9",
+   "auth": "none",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "fullname",
+    "email"
+   ],
+   "method": "POST",
+   "detected": true,
+   "witness": {
+    "script": "hms/forgot-password.php",
+    "GET": {},
+    "POST": {
+     "submit": "",
+     "email": "'",
+     "fullname": ""
+    },
+    "COOKIE": {}
+   }
+  },
+  {
+   "id": "HSM-4",
+   "cve": [
+    "CVE-2020-22168"
+   ],
+   "type": "sqli",
+   "sink": "hms/change-emaild.php:10",
+   "auth": "user",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "email"
+   ],
+   "method": "POST",
+   "detected": true,
+   "witness": {
+    "script": "hms/change-emaild.php",
+    "GET": {},
+    "POST": {
+     "submit": "",
+     "email": "'"
+    },
+    "COOKIE": {}
+   }
+  },
+  {
+   "id": "HSM-5",
+   "cve": [
+    "CVE-2020-22169"
+   ],
+   "type": "sqli",
+   "sink": "hms/appointment-history.php:9",
+   "auth": "user",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "id"
+   ],
+   "method": "GET",
+   "detected": true,
+   "witness": {
+    "script": "hms/appointment-history.php",
+    "GET": {
+     "cancel": "",
+     "id": "'"
+    },
+    "POST": {},
+    "COOKIE": {}
+   }
+  },
+  {
+   "id": "HSM-6",
+   "cve": [
+    "CVE-2020-22170"
+   ],
+   "type": "sqli",
+   "sink": "hms/get_doctor.php:6",
+   "auth": "none",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "specilizationid"
+   ],
+   "method": "POST",
+   "detected": true,
+   "witness": {
+    "script": "hms/get_doctor.php",
+    "GET": {},
+    "POST": {
+     "doctor": "",
+     "specilizationid": "'"
+    },
+    "COOKIE": {}
+   }
+  },
+  {
+   "id": "HSM-7",
+   "cve": [
+    "CVE-2020-22172"
+   ],
+   "type": "sqli",
+   "sink": "hms/get_doctor.php:20",
+   "auth": "none",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "doctor"
+   ],
+   "method": "POST",
+   "detected": true,
+   "witness": {
+    "script": "hms/get_doctor.php",
+    "GET": {},
+    "POST": {
+     "doctor": "'",
+     "specilizationid": ""
+    },
+    "COOKIE": {}
+   }
+  },
+  {
+   "id": "HSM-8",
+   "cve": [
+    "CVE-2020-22171"
+   ],
+   "type": "sqli",
+   "sink": "hms/registration.php:11",
+   "auth": "none",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "full_name",
+    "address",
+    "city",
+    "gender",
+    "email"
+   ],
+   "method": "POST",
+   "detected": true,
+   "witness": {
+    "script": "hms/registration.php",
+    "GET": {},
+    "POST": {
+     "submit": "",
+     "address": "'",
+     "city": "",
+     "email": "",
+     "full_name": "",
+     "gender": ""
+    },
+    "COOKIE": {}
+   }
+  },
+  {
+   "id": "HSM-9",
+   "cve": [
+    "CVE-2020-22173"
+   ],
+   "type": "sqli",
+   "sink": "hms/edit-profile.php:14",
+   "auth": "user",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "fname",
+    "address",
+    "city",
+    "gender"
+   ],
+   "method": "POST",
+   "detected": true,
+   "witness": {
+    "script": "hms/edit-profile.php",
+    "GET": {},
+    "POST": {
+     "submit": "",
+     "address": "'",
+     "city": "",
+     "fname": "",
+     "gender": ""
+    },
+    "COOKIE": {}
+   }
+  },
+  {
+   "id": "HSM-10",
+   "cve": [
+    "CVE-2020-22174"
+   ],
+   "type": "sqli",
+   "sink": "hms/book-appointment.php:18",
+   "auth": "user",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "Doctorspecialization",
+    "doctor",
+    "fees",
+    "appdate",
+    "apptime"
+   ],
+   "method": "POST",
+   "detected": true,
+   "witness": {
+    "script": "hms/book-appointment.php",
+    "GET": {},
+    "POST": {
+     "submit": "",
+     "Doctorspecialization": "'",
+     "appdate": "",
+     "apptime": "",
+     "doctor": "",
+     "fees": ""
+    },
+    "COOKIE": {}
+   }
+  },
+  {
+   "id": "HSM-11",
+   "cve": [
+    "CVE-2020-22175"
+   ],
+   "type": "sqli",
+   "sink": "hms/admin/betweendates-detailsreports.php:78",
+   "auth": "admin",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "fromdate",
+    "todate"
+   ],
+   "method": "POST",
+   "detected": true,
+   "witness": {
+    "script": "hms/admin/betweendates-detailsreports.php",
+    "GET": {},
+    "POST": {
+     "fromdate": "\"'><acexss7af42216>"
+    },
+    "COOKIE": {}
+   }
+  },
+  {
+   "id": "HSM-12",
+   "cve": [
+    "CVE-2020-5192",
+    "CVE-2025-6570"
+   ],
+   "type": "sqli",
+   "sink": "hms/doctor/search.php:90",
+   "auth": "user",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "searchdata"
+   ],
+   "method": "POST",
+   "detected": true,
+   "witness": {
+    "script": "hms/doctor/search.php",
+    "GET": {},
+    "POST": {
+     "search": "",
+     "searchdata": "\"'><acexss301d2692>"
+    },
+    "COOKIE": {}
+   }
+  },
+  {
+   "id": "HSM-13",
+   "cve": [
+    "CVE-2020-5192"
+   ],
+   "type": "sqli",
+   "sink": "hms/doctor/view-patient.php:81",
+   "auth": "user",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "viewid"
+   ],
+   "method": "GET",
+   "detected": true,
+   "witness": {
+    "script": "hms/doctor/view-patient.php",
+    "GET": {
+     "viewid": "'"
+    },
+    "POST": {
+     "submit": ""
+    },
+    "COOKIE": {}
+   }
+  },
+  {
+   "id": "HSM-14",
+   "cve": [
+    "CVE-2020-5192"
+   ],
+   "type": "sqli",
+   "sink": "hms/doctor/view-patient.php:18",
+   "auth": "user",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "bp",
+    "bs",
+    "weight",
+    "temp",
+    "pres",
+    "viewid"
+   ],
+   "method": "POST",
+   "detected": true,
+   "witness": {
+    "script": "hms/doctor/view-patient.php",
+    "GET": {
+     "viewid": "'"
+    },
+    "POST": {
+     "submit": ""
+    },
+    "COOKIE": {}
+   }
+  },
+  {
+   "id": "HSM-15",
+   "cve": [
+    "CVE-2020-5192"
+   ],
+   "type": "sqli",
+   "sink": "hms/doctor/add-patient.php:18",
+   "auth": "user",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "patname",
+    "patcontact",
+    "patemail",
+    "gender",
+    "pataddress",
+    "patage",
+    "medhis"
+   ],
+   "method": "POST",
+   "detected": true,
+   "witness": {
+    "script": "hms/doctor/add-patient.php",
+    "GET": {},
+    "POST": {
+     "submit": "",
+     "gender": "'",
+     "medhis": "",
+     "pataddress": "",
+     "patage": "",
+     "patcontact": "",
+     "patemail": "",
+     "patname": ""
+    },
+    "COOKIE": {}
+   }
+  },
+  {
+   "id": "HSM-16",
+   "cve": [
+    "CVE-2020-5192",
+    "CVE-2024-0362"
+   ],
+   "type": "sqli",
+   "sink": "hms/admin/change-password.php:11",
+   "auth": "admin",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "cpass"
+   ],
+   "method": "POST",
+   "detected": true,
+   "witness": {
+    "script": "hms/admin/change-password.php",
+    "GET": {},
+    "POST": {
+     "submit": "",
+     "cpass": "'"
+    },
+    "COOKIE": {}
+   }
+  },
+  {
+   "id": "HSM-17",
+   "cve": [
+    "CVE-2024-0363"
+   ],
+   "type": "sqli",
+   "sink": "hms/admin/patient-search.php:90",
+   "auth": "admin",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "searchdata"
+   ],
+   "method": "POST",
+   "detected": true,
+   "witness": {
+    "script": "hms/admin/patient-search.php",
+    "GET": {},
+    "POST": {
+     "search": "",
+     "searchdata": "\"'><acexssfeb8be41>"
+    },
+    "COOKIE": {}
+   }
+  },
+  {
+   "id": "HSM-18",
+   "cve": [
+    "CVE-2024-0364"
+   ],
+   "type": "sqli",
+   "sink": "hms/admin/query-details.php:14",
+   "auth": "admin",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "adminremark"
+   ],
+   "method": "POST",
+   "detected": true,
+   "witness": {
+    "script": "hms/admin/query-details.php",
+    "GET": {},
+    "POST": {
+     "update": "",
+     "adminremark": "'"
+    },
+    "COOKIE": {}
+   }
+  },
+  {
+   "id": "HSM-19",
+   "cve": [
+    "CVE-2024-0360"
+   ],
+   "type": "sqli",
+   "sink": "hms/admin/edit-doctor-specialization.php:11",
+   "auth": "admin",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "doctorspecilization"
+   ],
+   "method": "POST",
+   "detected": true,
+   "witness": {
+    "script": "hms/admin/edit-doctor-specialization.php",
+    "GET": {},
+    "POST": {
+     "submit": "",
+     "doctorspecilization": "'"
+    },
+    "COOKIE": {}
+   }
+  },
+  {
+   "id": "HSM-20",
+   "cve": [
+    "CVE-2025-7176"
+   ],
+   "type": "sqli",
+   "sink": "hms/view-medhistory.php:81",
+   "auth": "user",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "viewid"
+   ],
+   "method": "GET",
+   "detected": true,
+   "witness": {
+    "script": "hms/view-medhistory.php",
+    "GET": {
+     "viewid": "'"
+    },
+    "POST": {
+     "submit": ""
+    },
+    "COOKIE": {}
+   }
+  },
+  {
+   "id": "HSM-21",
+   "cve": [
+    "CVE-2025-8954"
+   ],
+   "type": "sqli",
+   "sink": "hms/admin/doctor-specilization.php:9",
+   "auth": "admin",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "doctorspecilization"
+   ],
+   "method": "POST",
+   "detected": true,
+   "witness": {
+    "script": "hms/admin/doctor-specilization.php",
+    "GET": {
+     "del": "",
+     "id": ""
+    },
+    "POST": {
+     "submit": "",
+     "doctorspecilization": "'"
+    },
+    "COOKIE": {}
+   }
+  },
+  {
+   "id": "HSM-22",
+   "cve": [
+    "CVE-2025-8955"
+   ],
+   "type": "sqli",
+   "sink": "hms/admin/edit-doctor.php:16",
+   "auth": "admin",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "docfees",
+    "docname",
+    "clinicaddress",
+    "doccontact",
+    "docemail",
+    "Doctorspecialization"
+   ],
+   "method": "POST",
+   "detected": true,
+   "witness": {
+    "script": "hms/admin/edit-doctor.php",
+    "GET": {},
+    "POST": {
+     "submit": "",
+     "Doctorspecialization": "'",
+     "clinicaddress": "",
+     "doccontact": "",
+     "docemail": "",
+     "docfees": "",
+     "docname": ""
+    },
+    "COOKIE": {}
+   }
+  },
+  {
+   "id": "HSM-23",
+   "cve": [
+    "CVE-2025-56212"
+   ],
+   "type": "sqli",
+   "sink": "hms/admin/add-doctor.php:16",
+   "auth": "admin",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "docname",
+    "Doctorspecialization",
+    "clinicaddress",
+    "docfees",
+    "doccontact",
+    "docemail"
+   ],
+   "method": "POST",
+   "detected": true,
+   "witness": {
+    "script": "hms/admin/add-doctor.php",
+    "GET": {},
+    "POST": {
+     "submit": "",
+     "Doctorspecialization": "'",
+     "clinicaddress": "",
+     "doccontact": "",
+     "docemail": "",
+     "docfees": "",
+     "docname": ""
+    },
+    "COOKIE": {}
+   }
+  },
+  {
+   "id": "HSM-24",
+   "cve": [
+    "CVE-2025-56214"
+   ],
+   "type": "sqli",
+   "sink": "hms/admin/index.php:7",
+   "auth": "none",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "username",
+    "password"
+   ],
+   "method": "POST",
+   "detected": true,
+   "witness": {
+    "script": "hms/admin/index.php",
+    "GET": {},
+    "POST": {
+     "submit": "",
+     "password": "'",
+     "username": ""
+    },
+    "COOKIE": {}
+   }
+  },
+  {
+   "id": "HSM-25",
+   "cve": [
+    "CVE-2026-2134"
+   ],
+   "type": "sqli",
+   "sink": "hms/admin/manage-doctors.php:11",
+   "auth": "admin",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "id"
+   ],
+   "method": "GET",
+   "detected": true,
+   "witness": {
+    "script": "hms/admin/manage-doctors.php",
+    "GET": {
+     "del": "",
+     "id": "'"
+    },
+    "POST": {},
+    "COOKIE": {}
+   }
+  },
+  {
+   "id": "HSM-26",
+   "cve": [
+    "CVE-2026-2179"
+   ],
+   "type": "sqli",
+   "sink": "hms/admin/manage-users.php:10",
+   "auth": "admin",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "id"
+   ],
+   "method": "GET",
+   "detected": true,
+   "witness": {
+    "script": "hms/admin/manage-users.php",
+    "GET": {
+     "del": "",
+     "id": "'"
+    },
+    "POST": {},
+    "COOKIE": {}
+   }
+  },
+  {
+   "id": "HSM-27",
+   "cve": [
+    "CVE-2020-5193",
+    "CVE-2021-39411",
+    "CVE-2024-10807"
+   ],
+   "type": "xss",
+   "sink": "hms/doctor/search.php:74",
+   "auth": "user",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "searchdata"
+   ],
+   "method": "POST",
+   "detected": true,
+   "witness": {
+    "script": "hms/doctor/search.php",
+    "GET": {},
+    "POST": {
+     "search": "",
+     "searchdata": "\"'><acexss301d2692>"
+    },
+    "COOKIE": {}
+   }
+  },
+  {
+   "id": "HSM-28",
+   "cve": [
+    "CVE-2020-5193",
+    "CVE-2021-39411"
+   ],
+   "type": "xss",
+   "sink": "hms/admin/patient-search.php:74",
+   "auth": "admin",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "searchdata"
+   ],
+   "method": "POST",
+   "detected": true,
+   "witness": {
+    "script": "hms/admin/patient-search.php",
+    "GET": {},
+    "POST": {
+     "search": "",
+     "searchdata": "\"'><acexssfeb8be41>"
+    },
+    "COOKIE": {}
+   }
+  },
+  {
+   "id": "HSM-29",
+   "cve": [
+    "CVE-2021-39411",
+    "CVE-2024-10806"
+   ],
+   "type": "xss",
+   "sink": "hms/admin/betweendates-detailsreports.php:61",
+   "auth": "admin",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "fromdate",
+    "todate"
+   ],
+   "method": "POST",
+   "detected": true,
+   "witness": {
+    "script": "hms/admin/betweendates-detailsreports.php",
+    "GET": {},
+    "POST": {
+     "fromdate": "\"'><acexss7af42216>"
+    },
+    "COOKIE": {}
+   }
+  }
+ ],
+ "xdebug_coverage_pct": 29.33,
+ "xdebug_covered_lines": 997,
+ "xdebug_method": "auto_prepend_file (coverage-only, outside docroot)",
+ "arms": {
+  "v2_p7b_cold": {
+   "requests": 1132,
+   "detected": 29,
+   "detected_ids": [
+    "HSM-1",
+    "HSM-2",
+    "HSM-3",
+    "HSM-4",
+    "HSM-5",
+    "HSM-6",
+    "HSM-7",
+    "HSM-8",
+    "HSM-9",
+    "HSM-10",
+    "HSM-11",
+    "HSM-12",
+    "HSM-13",
+    "HSM-14",
+    "HSM-15",
+    "HSM-16",
+    "HSM-17",
+    "HSM-18",
+    "HSM-19",
+    "HSM-20",
+    "HSM-21",
+    "HSM-22",
+    "HSM-23",
+    "HSM-24",
+    "HSM-25",
+    "HSM-26",
+    "HSM-27",
+    "HSM-28",
+    "HSM-29"
+   ],
+   "coverage_pct": 27.45
+  },
+  "v2_p7b_auth": {
+   "requests": 1139,
+   "detected": 29,
+   "detected_ids": [
+    "HSM-1",
+    "HSM-2",
+    "HSM-3",
+    "HSM-4",
+    "HSM-5",
+    "HSM-6",
+    "HSM-7",
+    "HSM-8",
+    "HSM-9",
+    "HSM-10",
+    "HSM-11",
+    "HSM-12",
+    "HSM-13",
+    "HSM-14",
+    "HSM-15",
+    "HSM-16",
+    "HSM-17",
+    "HSM-18",
+    "HSM-19",
+    "HSM-20",
+    "HSM-21",
+    "HSM-22",
+    "HSM-23",
+    "HSM-24",
+    "HSM-25",
+    "HSM-26",
+    "HSM-27",
+    "HSM-28",
+    "HSM-29"
+   ],
+   "coverage_pct": 28.71
+  }
+ }
+}

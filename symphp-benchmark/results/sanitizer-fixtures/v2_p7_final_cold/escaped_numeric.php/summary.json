@@ -1,0 +1,35 @@
+{
+ "script": "escaped_numeric.php",
+ "wall_s": 0.9,
+ "requests": 3,
+ "rounds": 3,
+ "traces": 3,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [
+   "id"
+  ],
+  "POST": [],
+  "COOKIE": []
+ },
+ "budget_hit": false,
+ "coverage_complete": true,
+ "missing": 0,
+ "assumptions": [],
+ "sink_sites": [
+  {
+   "site": "escaped_numeric.php:6",
+   "sink": "mysqli_query",
+   "kind": "injectable",
+   "instance": "select * from user where id=0\\'",
+   "request": {
+    "GET": {
+     "id": "'"
+    },
+    "POST": {},
+    "COOKIE": {}
+   }
+  }
+ ]
+}

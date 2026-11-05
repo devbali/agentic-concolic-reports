@@ -1,0 +1,58 @@
+{
+ "script": "contact.php",
+ "wall_s": 3.6,
+ "requests": 21,
+ "rounds": 8,
+ "traces": 19,
+ "errored": 0,
+ "first_error": null,
+ "keys_discovered": {
+  "GET": [],
+  "POST": [
+   "description",
+   "emailid",
+   "fullname",
+   "mobileno",
+   "submit"
+  ],
+  "COOKIE": [
+   "PHPSESSID"
+  ]
+ },
+ "budget_hit": false,
+ "coverage_complete": true,
+ "missing": 0,
+ "assumptions": [],
+ "sink_sites": [
+  {
+   "site": "contact.php:9",
+   "sink": "mysqli_query",
+   "kind": "injectable",
+   "instance": "insert into tblcontactus(fullname,email,contactno,message) value('','','',''')",
+   "request": {
+    "GET": {},
+    "POST": {
+     "submit": "",
+     "description": "'",
+     "emailid": "",
+     "fullname": "",
+     "mobileno": ""
+    },
+    "COOKIE": {
+     "PHPSESSID": "acesession"
+    }
+   },
+   "db_errno": 1366
+  }
+ ],
+ "errors_distinct": [],
+ "halted_traces": 0,
+ "concretized": {},
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}
