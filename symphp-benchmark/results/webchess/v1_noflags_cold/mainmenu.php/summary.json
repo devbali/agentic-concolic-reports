@@ -1,0 +1,34 @@
+{
+ "script": "mainmenu.php",
+ "wall_s": 1.0,
+ "requests": 3,
+ "rounds": 3,
+ "traces": 3,
+ "errored": 3,
+ "first_error": "Error: the process exited inside the app",
+ "keys_discovered": {
+  "GET": [],
+  "POST": [
+   "ToDo"
+  ],
+  "COOKIE": []
+ },
+ "budget_hit": false,
+ "coverage_complete": true,
+ "missing": 0,
+ "assumptions": [],
+ "sink_sites": [],
+ "errors_distinct": [
+  "Concolic\\NotImplementedError: Implicit symbolic string conversion loses identity",
+  "Error: the process exited inside the app"
+ ],
+ "halted_traces": 0,
+ "concretized": {},
+ "php7_runtime": {
+  "const7": {},
+  "count7": 0,
+  "cmp7": 0,
+  "arith7": 0,
+  "call7": {}
+ }
+}

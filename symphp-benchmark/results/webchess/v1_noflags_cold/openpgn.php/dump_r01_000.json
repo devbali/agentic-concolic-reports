@@ -1,0 +1,232 @@
+{
+ "schema_version": "1.4",
+ "label": "r01_000",
+ "error": {
+  "type": "TypeError",
+  "message": "mysqli_fetch_array(): Argument #1 ($result) must be of type mysqli_result, bool given",
+  "traceback": "#0 /home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-v1_noflags_cold/chessdb.php(38): mysqli_fetch_array(false, 1)\n#1 /home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-v1_noflags_cold/openpgn.php(59): loadHistory()\n#2 /home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/harness_app.php(410): include('/home/jamie/ace...')\n#3 {main}"
+ },
+ "symbolic_vars": [],
+ "events": [
+  {
+   "type": "concrete_call",
+   "target": "session_start",
+   "args": {},
+   "summary": {
+    "args": []
+   },
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-v1_noflags_cold/openpgn.php",
+   "lineno": 22,
+   "function": "include"
+  },
+  {
+   "type": "concrete_call",
+   "target": "header",
+   "args": {
+    "arg0": {
+     "lit": {
+      "sort": "str",
+      "value": "Cache-Control: no-store, no-cache, must-revalidate"
+     }
+    }
+   },
+   "summary": {
+    "args": [
+     "Cache-Control: no-store, no-cache, must-revalidate"
+    ]
+   },
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-v1_noflags_cold/openpgn.php",
+   "lineno": 49,
+   "function": "include"
+  },
+  {
+   "type": "concrete_call",
+   "target": "header",
+   "args": {
+    "arg0": {
+     "lit": {
+      "sort": "str",
+      "value": "Cache-Control: pre-check=0, post-check=0, max-age=0"
+     }
+    }
+   },
+   "summary": {
+    "args": [
+     "Cache-Control: pre-check=0, post-check=0, max-age=0"
+    ]
+   },
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-v1_noflags_cold/openpgn.php",
+   "lineno": 50,
+   "function": "include"
+  },
+  {
+   "type": "concrete_call",
+   "target": "header",
+   "args": {
+    "arg0": {
+     "lit": {
+      "sort": "str",
+      "value": "Pragma: no-cache"
+     }
+    }
+   },
+   "summary": {
+    "args": [
+     "Pragma: no-cache"
+    ]
+   },
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-v1_noflags_cold/openpgn.php",
+   "lineno": 51,
+   "function": "include"
+  },
+  {
+   "type": "concrete_call",
+   "target": "header",
+   "args": {
+    "arg0": {
+     "lit": {
+      "sort": "str",
+      "value": "Expires: Mon, 26 Jul 1997 05:00:00 GMT"
+     }
+    }
+   },
+   "summary": {
+    "args": [
+     "Expires: Mon, 26 Jul 1997 05:00:00 GMT"
+    ]
+   },
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-v1_noflags_cold/openpgn.php",
+   "lineno": 52,
+   "function": "include"
+  },
+  {
+   "type": "concrete_call",
+   "target": "header",
+   "args": {
+    "arg0": {
+     "lit": {
+      "sort": "str",
+      "value": "Last-Modified: Thu, 05 Nov 2026 18:25:39GMT"
+     }
+    }
+   },
+   "summary": {
+    "args": [
+     "Last-Modified: Thu, 05 Nov 2026 18:25:39GMT"
+    ]
+   },
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-v1_noflags_cold/openpgn.php",
+   "lineno": 53,
+   "function": "include"
+  },
+  {
+   "type": "concrete_call",
+   "target": "header",
+   "args": {
+    "arg0": {
+     "lit": {
+      "sort": "str",
+      "value": "Content-Transfer-Encoding: none"
+     }
+    }
+   },
+   "summary": {
+    "args": [
+     "Content-Transfer-Encoding: none"
+    ]
+   },
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-v1_noflags_cold/openpgn.php",
+   "lineno": 54,
+   "function": "include"
+  },
+  {
+   "type": "concrete_call",
+   "target": "header",
+   "args": {
+    "arg0": {
+     "lit": {
+      "sort": "str",
+      "value": "Content-Type: application/x-chess-pgn; name=\"game.pgn\""
+     }
+    }
+   },
+   "summary": {
+    "args": [
+     "Content-Type: application/x-chess-pgn; name=\"game.pgn\""
+    ]
+   },
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-v1_noflags_cold/openpgn.php",
+   "lineno": 55,
+   "function": "include"
+  },
+  {
+   "type": "concrete_call",
+   "target": "header",
+   "args": {
+    "arg0": {
+     "lit": {
+      "sort": "str",
+      "value": "Content-Disposition: attachment; filename=\"game.pgn\""
+     }
+    }
+   },
+   "summary": {
+    "args": [
+     "Content-Disposition: attachment; filename=\"game.pgn\""
+    ]
+   },
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-v1_noflags_cold/openpgn.php",
+   "lineno": 56,
+   "function": "include"
+  },
+  {
+   "type": "concrete_call",
+   "target": "mysqli_query",
+   "args": {
+    "arg1": {
+     "lit": {
+      "sort": "str",
+      "value": "SELECT * FROM history WHERE gameID =  ORDER BY timeOfMove"
+     }
+    }
+   },
+   "note": "SELECT * FROM history WHERE gameID =  ORDER BY timeOfMove",
+   "summary": {
+    "text": "SELECT * FROM history WHERE gameID =  ORDER BY timeOfMove",
+    "ok": false,
+    "errno": 1064,
+    "error": "You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ORDER BY timeOfMove' at line 1",
+    "rows": -1
+   },
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-v1_noflags_cold/chessdb.php",
+   "lineno": 35,
+   "function": "loadHistory"
+  }
+ ],
+ "types": {},
+ "declarations": {
+  "system": {
+   "kind": "target_function"
+  },
+  "exec": {
+   "kind": "target_function"
+  },
+  "shell_exec": {
+   "kind": "target_function"
+  },
+  "passthru": {
+   "kind": "target_function"
+  },
+  "popen": {
+   "kind": "target_function"
+  },
+  "proc_open": {
+   "kind": "target_function"
+  }
+ },
+ "request": {
+  "GET": {},
+  "POST": {},
+  "COOKIE": {}
+ }
+}

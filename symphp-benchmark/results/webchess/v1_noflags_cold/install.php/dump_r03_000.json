@@ -1,0 +1,86 @@
+{
+ "schema_version": "1.4",
+ "label": "r03_000",
+ "symbolic_vars": [
+  {
+   "name": "POST_confirm",
+   "type": "str?",
+   "sort": "String",
+   "value": "",
+   "origin": {
+    "kind": "input",
+    "name": "POST_confirm"
+   }
+  }
+ ],
+ "events": [
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "POST_confirm"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": false,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-v1_noflags_cold/install.php",
+   "lineno": 28,
+   "function": "include"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "POST_confirm"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": false,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-v1_noflags_cold/install.php",
+   "lineno": 191,
+   "function": "include"
+  }
+ ],
+ "types": {},
+ "declarations": {
+  "system": {
+   "kind": "target_function"
+  },
+  "exec": {
+   "kind": "target_function"
+  },
+  "shell_exec": {
+   "kind": "target_function"
+  },
+  "passthru": {
+   "kind": "target_function"
+  },
+  "popen": {
+   "kind": "target_function"
+  },
+  "proc_open": {
+   "kind": "target_function"
+  }
+ },
+ "request": {
+  "GET": {},
+  "POST": {
+   "confirm": ""
+  },
+  "COOKIE": {}
+ }
+}

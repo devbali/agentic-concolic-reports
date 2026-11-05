@@ -845,3 +845,143 @@ per-script exploration under load is less than the same budget on an idle host.
     replays, timeouts recorded as no-fault results;
   - scoring: XSS findings confirmed by XSS faults (bug fix), array-valued and route-by-name
     parameters counted as outside the input model.
+
+## Port P0–P3: `php-runtime/real-apps` onto the new main (2026-11-05)
+
+Plan: `PORT_PLAN.md`. Engine branch **`php-runtime/real-apps-v2`**, cut from `origin/main` 04e6bde
+(not a rebase; `php-runtime/real-apps` is untouched and every M0–M5 number still comes from it).
+Re-applied by logical group, not commit by commit. Nothing is pushed. Stopped at the plan's CHECKPOINT.
+
+**How the harness tells the engines apart: new files plus a version switch.** `engine.py` reads
+`dump_ir/run.py` (only v2 has it; `ACE_ENGINE=<checkout>` overrides). `drive.py` and `sinks.py`
+branch on `engine.V2`. With v1 checked out, every code path is the old one. All v2-only code is in
+new files: `harness_v2.php`, `harness_app_v2.php`, `instrument_app_v2.php`, `sanitizers_v2.php`,
+`sinks_v2.py`, `test_sinks_v2.py`, `test_sanitizers_v2.py`, `fixtures/sanitizers/`, and a new
+`apps.json` key `sanitizer-fixtures`. Check: `v1_regress_port` ran the v1 path against an export of
+`php-runtime/real-apps` and reproduced M5 exactly (7/7, 98.82%, the same 21/31/43 request counts).
+`test_sanitizers.py` is v1-only (it calls `Concolic\Sanitized`); its v2 counterpart is
+`test_sanitizers_v2.py`.
+
+### Engine commits (`php-runtime/real-apps-v2`)
+- **P0** `062bc50`: `AnnotationEvent` / `ConcreteCallEvent` / `ANNOTATION_EVENTS` in
+  `dump_ir/run.py`, exported from `dump_ir`. The dedup key uses `_canon`, like every other event.
+  Test: `dump_ir/tests/test_annotation_events.py`, the old test plus an interning test.
+- **P1** `d66f4a4`: the four instrumentor fixes: comment kept on a rewritten echo; echo closed by
+  `?>` goes through `\__echo_str`; namespaced `instanceof` uses `Name::class`; interpolated
+  `${name}` / `$a[key]` and multi-line `.` chains. **Main had fixed none of them.** The six tests
+  fail 9 assertions without the src changes. To support them, main's visitor gained a `$source`
+  constructor argument and namespace/`use` tracking.
+- **P2** `909eb43`: `Runtime::begin()` / `finish()`, with `run()` being exactly those two calls;
+  `target(..., 'concrete', ...)` (E1). `concrete_call` encodes a symbolic argument as its whole
+  term. On the old branch it encoded named leaves only.
+- **P3** `dc16e25`: `Runtime::$symbolicArgumentsOnly`, empty by default. A listed target whose call
+  has no symbolic argument runs the original call and records nothing. This is **not in the plan**.
+  Without it, every `trim('const')` would mint a symbol, and each later branch on it would become
+  a shim-only assumption. The PHP README gained a section covering the three opt-in features.
+- **Not ported, made unnecessary by main:** `Concolic\Template`, `Runtime::$templates`, rendering
+  a statement into `$$(ref)` notes, `Concolic\Sanitized`, `bindRef(..., $apply)` and the array refs
+  in `sealNote`. Main's native `concat`, together with `call()` encoding every argument as
+  `$v->term()`, already puts the whole statement term on the sink event. The Template type
+  predicates (9e57246) and `templateSplit` go with them (the plan drops `templateSplit` in P6).
+- Suites: PHP **172 tests, 1351 assertions, 0 failed** (main: 159 tests; the 4 z3-grid tests skip,
+  since there is no z3 under the image's python, as on main). Python `dump_ir/tests concolic/tests`:
+  **636 passed, 3 skipped, 1 failed**. The failure is `test_z3_text_transport_lint`, and it also
+  fails on clean main here: the lint walks `~/ace-eval/` and finds pytest's own `eval` in
+  `symphp-benchmark/build/venv` (environmental, not ours).
+
+### P2 as built: the statement is the sink event's own term
+- **Harness.** `harness_v2.php` (Witcher mode; reuses harness.php's recording superglobals) and
+  `harness_app_v2.php` (app mode; E1 concrete `mysqli_*query`, run for real on this run's text). A
+  sink publishes only `{"statement_arg": <arg key>, "text": <this run's statement>}` as its note.
+  The statement's term is the event's own `args[<arg key>]`, which main's `call()` and the E1
+  concrete call already encode. The note carries the key because an object argument (the mysqli
+  connection) has no encoding, so positions shift.
+- **Oracle** (`sinks_v2.py`), per sink event:
+  - **malformed-at-reach:** this run's text does not parse (sqlglot, or `sh -n`).
+  - **injectable:** the term and every earlier path condition are lowered with
+    `dump_ir.smt.Lowering`. Z3 is asked for `Contains(input, payload) ∧ Contains(statement, payload)
+    ∧ ¬is_null(input) ∧ prefix`. The statement is then **evaluated** under the model (`z3.substitute`
+    of every symbol, then `simplify`) and kept if it does not parse.
+  - **Plan deviation, recorded:** Z3 cannot be asked "does not parse" directly. The query is
+    payload containment, and the parser is the check, as in v1. Evaluating the term, rather than
+    splicing into a template, honours every modelled operation between input and sink (substring,
+    `itos`, `ite`, concatenation order).
+  - Tests: `test_sinks_v2.py` (9 P2 cases: concat, E1 event, at-reach, term evaluation, the guarded
+    control, substring, numeric, shell, dump round-trip).
+
+### P3 as built: sanitizers are shims
+- **Harness** (`sanitizers_v2.php`; `--sanitizers` in either mode; `instrument_app_v2.php
+  --sanitizers` routes the calls): `addslashes`, `mysqli_real_escape_string`,
+  `htmlspecialchars`/`htmlentities` (flags as passed), `escapeshellarg`/`escapeshellcmd`, `trim`,
+  `strtolower`/`strtoupper`.
+  - Each is `target(fn, 'shim', 'str')` and is listed in `symbolicArgumentsOnly`.
+  - On a symbolic subject the result is a fresh `SYM_RESULT_<fn>_<n>`, whose value is this run's
+    real result. `mysqli_real_escape_string` uses the old strtr emulation, because Witcher mode has
+    no connection.
+  - The `symbolic_call` event carries the subject's term and the other arguments. Its note is
+    `{"sanitizer": fn, "subject": <arg key>, "args": [the other arguments, concrete]}`.
+- **Oracle:**
+  - Z3 treats a sanitizer's result as a free symbol.
+  - Under a candidate model, every sanitizer result recorded before the sink is **recomputed in
+    event order** by its Python twin, applied to its subject's term evaluated under the candidate.
+    A chain such as `addslashes(strtolower(x))` works, because each result may read an earlier one.
+    The statement is then evaluated.
+  - Every prefix decision that reads a sanitized result is re-evaluated with the twin's value. If
+    one goes the other way, the candidate is dropped. The ones that hold are listed under
+    `assumes` in the finding and in `sink_sites`.
+  - With a sanitizer in between, `Contains(statement, payload)` is left out of the query, since the
+    free symbol could satisfy it.
+- **Coverage** (`engine.coverage`): a branch that reads a sanitizer's result is an
+  `UntrackedPathAssumption`, written into the summary as
+  `branch on a sanitized value, at <file:line>: SYM_RESULT_trim_1 = trim(GET_q); its relation to
+  the input is not tracked`. Connection shims keep the old "shim result only" assumption.
+- **Tests:**
+  - `test_sanitizers_v2.py`: the twins equal the shim's PHP, which equals PHP's builtins, over 3865
+    comparisons (13 cases × 309 strings).
+  - `test_sinks_v2.py`: 5 P3 cases (escaped+quoted, escaped+numeric, chain, listed branch,
+    rejected candidate).
+
+### Results (all scored by the unchanged judge, PHP 7.4, uninstrumented)
+| run | engine / flags | detected | coverage | requests | findings confirmed |
+|---|---|---|---|---|---|
+| witcher-test `v2_p2_cold`, `v2_p3_regress_cold` | v2 | 7/7 | 98.82% (84/85) | 39 | 7/7 |
+| witcher-test `v2_p3_witcher` | v2 | 7/7 | 98.82% | 39 | 7/7 |
+| witcher-test `m5_regress_cold` (old) | v1 | 7/7 | 98.82% | 39 | 7/7 |
+| oracle-fixtures `v2_p2_cold` | v2 | 1/1, guarded.php: no finding | 100% | 6 | 1/1 |
+| sanitizer-fixtures `v2_p3_cold` | v2 `--sanitizers` | 2/2; escaped_quoted.php: no finding | 94.44% (17/18) | 8 | 2/2 |
+| webchess `v2_smoke_cold` | v2, no flags, 120 s | 1/10 (WC-6) | 13.42% (257/1915) | 36 | 2/2 |
+| webchess `v1_noflags_cold` | v1, no flags, 120 s | 1/10 (WC-6) | 13.42% | 36 | 2/2 |
+| webchess `m1_cold` (old) | v1 `--php7compat --exit-as-halt --concretize` | 6/10 | 32.38% | 141 | 20/20 |
+
+- **Witcher-Test** is the same 7/7 at 98.82%: the same traces per script, the same scored request
+  set (39), the same single uncovered line (`config.php:10`), and the same single assumption
+  (`config.php:8`). One difference: the per-script count of requests *run* is lower on 3 scripts
+  (18/25/33 against 21/31/43). Those are extra proposals v1 made through
+  `solve_and_evaluate`/`CoverageChecker` that led to traces it had already seen. The kept traces
+  and the scored requests are identical.
+- **Sanitizer fixtures:** S1 (`id=0` . addslashes) is injectable through the escape. The witness
+  `'` becomes `id=0\'`, and MySQL returns 1064. S2 (`trim` branch, then numeric) is injectable,
+  with `assumes: sanitized_branch.php:6`. The coverage summary lists the `trim` branch. The
+  uncovered line, `sanitized_branch.php:7`, is that branch's `admin` side: no request can be
+  derived for it from the shim's model.
+- **WebChess smoke:** the drop from 6/10 to 1/10 is **entirely the not-yet-ported E2/E3/E4**. With
+  the same flags off, the old engine gives an identical result script by script (traces, requests,
+  sinks, errors). The errors are the app calling `exit` 8× (E3, P4), `APP_NAME` and the `call7`
+  TypeErrors (E2, P6), one implicit string conversion (E4, P5), and the app's own `gettext()`
+  fatal (as on 7.4).
+- **Harness fix found by the smoke run:** `harness_app_v2.php`'s shutdown path reported a stale
+  *warning* from `error_get_last()` as "fatal". It now only names a fatal error type. The v1 file
+  has the same latent pattern, but no warning precedes it there, so it is left alone.
+
+### State at the checkpoint
+- The engine checkout `~/ace-eval/agentic_concolic_engine` is on **`php-runtime/real-apps-v2`**.
+  To reproduce any M0–M5 number, `git checkout php-runtime/real-apps` first. `ACE_ENGINE=<v1
+  checkout>` also works for Witcher-mode apps, but not app mode, where v1's `harness_app.php`
+  hardcodes the runtime path.
+- `build/<app>` (the non-app instrumented copy) is shared by v1 and v2 runs; each run rebuilds it.
+- Containers: `ace-webchess-{db,php}` and `judge-webchess-{db,php}` were started for the smoke run
+  and stopped again (log caps verified). `ace-judge-mysql` was already running; only its `testdb`
+  was read (no `judge.py setup`).
+- `drive.py` on v2 refuses `--php7compat --exit-as-halt --switch-cmp --concretize --array-mode
+  --real-app-builtins --xss --eval-instrument --template-split --db-classes` (P4–P7). It never
+  ignores them.

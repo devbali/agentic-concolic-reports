@@ -1,0 +1,194 @@
+{
+ "app": "webchess",
+ "tool": "ace:v2_smoke_cold",
+ "requests": 36,
+ "findings": 2,
+ "findings_judge_confirmed": 2,
+ "findings_unconfirmed": [],
+ "faulting_requests": 3,
+ "detected": 1,
+ "known": 10,
+ "cves_detected": 1,
+ "cves_known": 2,
+ "cves": {
+  "CVE-2019-20896": true,
+  "CVE-2023-22959": false
+ },
+ "coverage_pct": 13.42,
+ "covered_lines": 257,
+ "executable_lines": 1915,
+ "vulns": [
+  {
+   "id": "WC-1",
+   "cve": [
+    "CVE-2019-20896"
+   ],
+   "type": "sqli",
+   "sink": "mainmenu.php:315",
+   "auth": "none",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "messageFrom",
+    "gameID"
+   ],
+   "method": "POST",
+   "detected": false,
+   "witness": null
+  },
+  {
+   "id": "WC-2",
+   "cve": [
+    "CVE-2019-20896"
+   ],
+   "type": "sqli",
+   "sink": "mainmenu.php:304",
+   "auth": "none",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "gameID"
+   ],
+   "method": "POST",
+   "detected": false,
+   "witness": null
+  },
+  {
+   "id": "WC-3",
+   "cve": [
+    "CVE-2019-20896"
+   ],
+   "type": "sqli",
+   "sink": "opponentspassword.php:65",
+   "auth": "user",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "gameID"
+   ],
+   "method": "POST",
+   "detected": false,
+   "witness": null
+  },
+  {
+   "id": "WC-4",
+   "cve": [
+    "CVE-2019-20896"
+   ],
+   "type": "sqli",
+   "sink": "chess.php:56",
+   "auth": "user",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "gameID"
+   ],
+   "method": "POST",
+   "detected": false,
+   "witness": null
+  },
+  {
+   "id": "WC-5",
+   "cve": [
+    "CVE-2019-20896"
+   ],
+   "type": "sqli",
+   "sink": "mainmenu.php:261",
+   "auth": "none",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "opponent"
+   ],
+   "method": "POST",
+   "detected": false,
+   "witness": null
+  },
+  {
+   "id": "WC-6",
+   "cve": [
+    "CVE-2019-20896"
+   ],
+   "type": "sqli",
+   "sink": "viewmessage.php:63",
+   "auth": "none",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "messageID"
+   ],
+   "method": "POST",
+   "detected": true,
+   "witness": {
+    "script": "viewmessage.php",
+    "GET": {},
+    "POST": {
+     "messageID": ""
+    },
+    "COOKIE": {}
+   }
+  },
+  {
+   "id": "WC-7",
+   "cve": [
+    "CVE-2019-20896"
+   ],
+   "type": "sqli",
+   "sink": "mainmenu.php:481",
+   "auth": "none",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "messageID"
+   ],
+   "method": "POST",
+   "detected": false,
+   "witness": null
+  },
+  {
+   "id": "WC-8",
+   "cve": [
+    "CVE-2019-20896"
+   ],
+   "type": "sqli",
+   "sink": "sendmessage.php:75",
+   "auth": "user",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "to",
+    "from"
+   ],
+   "method": "POST",
+   "detected": false,
+   "witness": null
+  },
+  {
+   "id": "WC-9",
+   "cve": [
+    "CVE-2023-22959"
+   ],
+   "type": "sqli",
+   "sink": "mainmenu.php:384",
+   "auth": "user",
+   "confidence": "confirmed-in-code",
+   "param": [
+    "txtFirstName",
+    "txtLastName"
+   ],
+   "method": "POST",
+   "detected": false,
+   "witness": null
+  },
+  {
+   "id": "WC-10",
+   "cve": [
+    "CVE-2023-22959"
+   ],
+   "type": "sqli",
+   "sink": "mainmenu.php:104",
+   "auth": "none",
+   "confidence": "likely",
+   "param": [
+    "txtFirstName",
+    "txtLastName",
+    "txtNick"
+   ],
+   "method": "POST",
+   "detected": false,
+   "witness": null
+  }
+ ]
+}

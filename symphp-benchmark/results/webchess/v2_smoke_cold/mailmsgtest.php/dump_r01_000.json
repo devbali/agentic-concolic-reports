@@ -1,0 +1,37 @@
+{
+ "schema_version": "1.5",
+ "label": "r01_000",
+ "error": {
+  "type": "Error",
+  "message": "Undefined constant \"APP_NAME\"",
+  "traceback": "#0 /home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/harness_app_v2.php(333): include()\n#1 {main}"
+ },
+ "symbolic_vars": [],
+ "events": [],
+ "types": {},
+ "declarations": {
+  "system": {
+   "kind": "target_function"
+  },
+  "exec": {
+   "kind": "target_function"
+  },
+  "shell_exec": {
+   "kind": "target_function"
+  },
+  "passthru": {
+   "kind": "target_function"
+  },
+  "popen": {
+   "kind": "target_function"
+  },
+  "proc_open": {
+   "kind": "target_function"
+  }
+ },
+ "request": {
+  "GET": {},
+  "POST": {},
+  "COOKIE": {}
+ }
+}

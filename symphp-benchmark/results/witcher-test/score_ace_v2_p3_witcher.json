@@ -1,0 +1,180 @@
+{
+ "app": "witcher-test",
+ "tool": "ace:v2_p3_witcher",
+ "requests": 39,
+ "findings": 7,
+ "findings_judge_confirmed": 7,
+ "findings_unconfirmed": [],
+ "faulting_requests": 11,
+ "detected": 7,
+ "known": 7,
+ "cves_detected": 0,
+ "cves_known": 0,
+ "cves": {},
+ "coverage_pct": 98.82,
+ "covered_lines": 84,
+ "executable_lines": 85,
+ "vulns": [
+  {
+   "id": "W1",
+   "cve": [],
+   "type": "sqli",
+   "sink": "test-2.php:20",
+   "auth": null,
+   "confidence": null,
+   "param": null,
+   "method": null,
+   "detected": true,
+   "witness": {
+    "script": "test-2.php",
+    "GET": {},
+    "POST": {
+     "nv1": "1",
+     "nv2": "2",
+     "nv3": "3",
+     "nv4": "4"
+    },
+    "COOKIE": {}
+   }
+  },
+  {
+   "id": "W2",
+   "cve": [],
+   "type": "cmdi",
+   "sink": "test-5-cmd.php:22",
+   "auth": null,
+   "confidence": null,
+   "param": null,
+   "method": null,
+   "detected": true,
+   "witness": {
+    "script": "test-5-cmd.php",
+    "GET": {
+     "vul1": "6"
+    },
+    "POST": {
+     "nv1": "1",
+     "nv2": "2",
+     "nv3": "3",
+     "nv4": "4",
+     "nv5": ""
+    },
+    "COOKIE": {}
+   }
+  },
+  {
+   "id": "W3",
+   "cve": [],
+   "type": "sqli",
+   "sink": "test-cookie-5.php:22",
+   "auth": null,
+   "confidence": null,
+   "param": null,
+   "method": null,
+   "detected": true,
+   "witness": {
+    "script": "test-cookie-5.php",
+    "GET": {
+     "vul1": "6"
+    },
+    "POST": {
+     "nv1": "nv_val1"
+    },
+    "COOKIE": {
+     "nv1": "1",
+     "nv2": "2",
+     "nv3": "3",
+     "nv4": "4",
+     "nv5": ""
+    }
+   }
+  },
+  {
+   "id": "W4",
+   "cve": [],
+   "type": "sqli",
+   "sink": "test-equal-1.php:16",
+   "auth": null,
+   "confidence": null,
+   "param": null,
+   "method": null,
+   "detected": true,
+   "witness": {
+    "script": "test-equal-1.php",
+    "GET": {
+     "vul1": "6",
+     "nv1": "YYYY"
+    },
+    "POST": {
+     "nv1": "SSSS"
+    },
+    "COOKIE": {}
+   }
+  },
+  {
+   "id": "W5",
+   "cve": [],
+   "type": "sqli",
+   "sink": "test-findvar-1.php:16",
+   "auth": null,
+   "confidence": null,
+   "param": null,
+   "method": null,
+   "detected": true,
+   "witness": {
+    "script": "test-findvar-1.php",
+    "GET": {
+     "aaa": "1"
+    },
+    "POST": {
+     "ao3": ""
+    },
+    "COOKIE": {}
+   }
+  },
+  {
+   "id": "W6",
+   "cve": [],
+   "type": "sqli",
+   "sink": "test-get-5-crosspol.php:22",
+   "auth": null,
+   "confidence": null,
+   "param": null,
+   "method": null,
+   "detected": true,
+   "witness": {
+    "script": "test-get-5-crosspol.php",
+    "GET": {
+     "nv1": "1",
+     "nv2": "2",
+     "nv3": "3",
+     "nv82": "",
+     "nv92": "5"
+    },
+    "POST": {},
+    "COOKIE": {}
+   }
+  },
+  {
+   "id": "W7",
+   "cve": [],
+   "type": "sqli",
+   "sink": "test-select-3.php:20",
+   "auth": null,
+   "confidence": null,
+   "param": null,
+   "method": null,
+   "detected": true,
+   "witness": {
+    "script": "test-select-3.php",
+    "GET": {
+     "sel1": "s-val1a",
+     "sel2": "s-val2b",
+     "sel3": "s-val3c"
+    },
+    "POST": {},
+    "COOKIE": {}
+   }
+  }
+ ]
+}

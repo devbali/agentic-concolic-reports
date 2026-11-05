@@ -1,0 +1,105 @@
+{
+ "schema_version": "1.5",
+ "label": "r03_000",
+ "error": {
+  "type": "Concolic\\NotImplementedError",
+  "message": "Implicit symbolic string conversion loses identity; use Runtime::render",
+  "traceback": "#0 /home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-v2_smoke_cold/mainmenu.php(86): Concolic\\Value->__toString()\n#1 /home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/harness_app_v2.php(333): include('/home/jamie/ace...')\n#2 {main}"
+ },
+ "symbolic_vars": [
+  {
+   "name": "POST_ToDo",
+   "type": "str?",
+   "sort": "String",
+   "value": "",
+   "origin": {
+    "kind": "input",
+    "name": "POST_ToDo"
+   }
+  }
+ ],
+ "events": [
+  {
+   "type": "concrete_call",
+   "target": "session_start",
+   "args": {},
+   "summary": {
+    "args": []
+   },
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-v2_smoke_cold/mainmenu.php",
+   "lineno": 22,
+   "function": "include"
+  },
+  {
+   "type": "concrete_call",
+   "target": "mysqli_query",
+   "args": {
+    "tmpQuery": {
+     "lit": {
+      "sort": "str",
+      "value": "SELECT gameID FROM games WHERE lastMove < '2026-10-22'"
+     }
+    }
+   },
+   "note": "{\"statement_arg\":\"tmpQuery\",\"text\":\"SELECT gameID FROM games WHERE lastMove < '2026-10-22'\"}",
+   "summary": {
+    "text": "SELECT gameID FROM games WHERE lastMove < '2026-10-22'",
+    "ok": true,
+    "errno": 0,
+    "error": "",
+    "rows": 0
+   },
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-v2_smoke_cold/mainmenu.php",
+   "lineno": 59,
+   "function": "include"
+  },
+  {
+   "type": "path_condition",
+   "expr": {
+    "op": "==",
+    "args": [
+     {
+      "sym": "POST_ToDo"
+     },
+     {
+      "lit": {
+       "sort": "null"
+      }
+     }
+    ]
+   },
+   "taken": false,
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-v2_smoke_cold/mainmenu.php",
+   "lineno": 81,
+   "function": "include"
+  }
+ ],
+ "types": {},
+ "declarations": {
+  "system": {
+   "kind": "target_function"
+  },
+  "exec": {
+   "kind": "target_function"
+  },
+  "shell_exec": {
+   "kind": "target_function"
+  },
+  "passthru": {
+   "kind": "target_function"
+  },
+  "popen": {
+   "kind": "target_function"
+  },
+  "proc_open": {
+   "kind": "target_function"
+  }
+ },
+ "request": {
+  "GET": {},
+  "POST": {
+   "ToDo": ""
+  },
+  "COOKIE": {}
+ }
+}

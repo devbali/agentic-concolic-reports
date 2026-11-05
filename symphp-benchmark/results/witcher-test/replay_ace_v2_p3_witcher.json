@@ -1,0 +1,798 @@
+[
+ {
+  "request": {
+   "script": "config.php",
+   "GET": {},
+   "POST": {},
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 67,
+  "headers": "X-Powered-By: PHP/7.4.4\r\nContent-type: text/html; charset=UTF-8",
+  "faults": [],
+  "lines": []
+ },
+ {
+  "request": {
+   "script": "test-2.php",
+   "GET": {},
+   "POST": {
+    "nv1": "1",
+    "nv2": "2",
+    "nv3": "3",
+    "nv4": "4"
+   },
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 226,
+  "headers": "X-Powered-By: PHP/7.4.4\r\nContent-type: text/html; charset=UTF-8",
+  "faults": [
+   {
+    "kind": "sql",
+    "errno": 1064,
+    "sql": "select * from user where id=0'"
+   }
+  ],
+  "lines": [
+   "test-2.php:20"
+  ]
+ },
+ {
+  "request": {
+   "script": "test-2.php",
+   "GET": {},
+   "POST": {
+    "nv2": "2",
+    "nv3": "3",
+    "nv4": "4"
+   },
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 213,
+  "headers": "X-Powered-By: PHP/7.4.4\r\nContent-type: text/html; charset=UTF-8",
+  "faults": [],
+  "lines": []
+ },
+ {
+  "request": {
+   "script": "test-2.php",
+   "GET": {},
+   "POST": {
+    "nv1": "1",
+    "nv3": "3",
+    "nv4": "4"
+   },
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 213,
+  "headers": "X-Powered-By: PHP/7.4.4\r\nContent-type: text/html; charset=UTF-8",
+  "faults": [],
+  "lines": []
+ },
+ {
+  "request": {
+   "script": "test-2.php",
+   "GET": {},
+   "POST": {
+    "nv1": "1",
+    "nv2": "2",
+    "nv4": "4"
+   },
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 213,
+  "headers": "X-Powered-By: PHP/7.4.4\r\nContent-type: text/html; charset=UTF-8",
+  "faults": [],
+  "lines": []
+ },
+ {
+  "request": {
+   "script": "test-2.php",
+   "GET": {
+    "vul1": ""
+   },
+   "POST": {
+    "nv1": "1",
+    "nv2": "2",
+    "nv3": "3",
+    "nv4": "4"
+   },
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 226,
+  "headers": "X-Powered-By: PHP/7.4.4\r\nContent-type: text/html; charset=UTF-8",
+  "faults": [
+   {
+    "kind": "sql",
+    "errno": 1064,
+    "sql": "select * from user where id=0'"
+   }
+  ],
+  "lines": [
+   "test-2.php:20"
+  ]
+ },
+ {
+  "request": {
+   "script": "test-5-cmd.php",
+   "GET": {
+    "vul1": "6"
+   },
+   "POST": {
+    "nv1": "1",
+    "nv2": "2",
+    "nv3": "3",
+    "nv4": "4"
+   },
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 213,
+  "headers": "X-Powered-By: PHP/7.4.4\r\nContent-type: text/html; charset=UTF-8",
+  "faults": [],
+  "lines": []
+ },
+ {
+  "request": {
+   "script": "test-5-cmd.php",
+   "GET": {
+    "vul1": "6"
+   },
+   "POST": {
+    "nv2": "2",
+    "nv3": "3",
+    "nv4": "4"
+   },
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 213,
+  "headers": "X-Powered-By: PHP/7.4.4\r\nContent-type: text/html; charset=UTF-8",
+  "faults": [],
+  "lines": []
+ },
+ {
+  "request": {
+   "script": "test-5-cmd.php",
+   "GET": {
+    "vul1": "6"
+   },
+   "POST": {
+    "nv1": "1",
+    "nv3": "3",
+    "nv4": "4"
+   },
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 213,
+  "headers": "X-Powered-By: PHP/7.4.4\r\nContent-type: text/html; charset=UTF-8",
+  "faults": [],
+  "lines": []
+ },
+ {
+  "request": {
+   "script": "test-5-cmd.php",
+   "GET": {
+    "vul1": "6"
+   },
+   "POST": {
+    "nv1": "1",
+    "nv2": "2",
+    "nv4": "4"
+   },
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 213,
+  "headers": "X-Powered-By: PHP/7.4.4\r\nContent-type: text/html; charset=UTF-8",
+  "faults": [],
+  "lines": []
+ },
+ {
+  "request": {
+   "script": "test-5-cmd.php",
+   "GET": {
+    "vul1": "6"
+   },
+   "POST": {
+    "nv1": "1",
+    "nv2": "2",
+    "nv3": "3"
+   },
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 213,
+  "headers": "X-Powered-By: PHP/7.4.4\r\nContent-type: text/html; charset=UTF-8",
+  "faults": [],
+  "lines": []
+ },
+ {
+  "request": {
+   "script": "test-5-cmd.php",
+   "GET": {
+    "vul1": "6"
+   },
+   "POST": {
+    "nv1": "1",
+    "nv2": "2",
+    "nv3": "3",
+    "nv4": "4",
+    "nv5": ""
+   },
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 222,
+  "headers": "X-Powered-By: PHP/7.4.4\r\nContent-type: text/html; charset=UTF-8",
+  "faults": [
+   {
+    "kind": "shell",
+    "message": "sh: 1: Syntax error: end of file unexpected (expecting \")\")"
+   }
+  ],
+  "lines": [
+   "test-5-cmd.php:22"
+  ]
+ },
+ {
+  "request": {
+   "script": "test-cookie-5.php",
+   "GET": {
+    "vul1": "6"
+   },
+   "POST": {
+    "nv1": "nv_val1"
+   },
+   "COOKIE": {
+    "nv1": "1",
+    "nv2": "2",
+    "nv3": "3",
+    "nv4": "4"
+   }
+  },
+  "exit": 0,
+  "body_bytes": 213,
+  "headers": "X-Powered-By: PHP/7.4.4\r\nContent-type: text/html; charset=UTF-8",
+  "faults": [],
+  "lines": []
+ },
+ {
+  "request": {
+   "script": "test-cookie-5.php",
+   "GET": {
+    "vul1": "6"
+   },
+   "POST": {
+    "nv1": "nv_val1"
+   },
+   "COOKIE": {
+    "nv2": "2",
+    "nv3": "3",
+    "nv4": "4"
+   }
+  },
+  "exit": 0,
+  "body_bytes": 213,
+  "headers": "X-Powered-By: PHP/7.4.4\r\nContent-type: text/html; charset=UTF-8",
+  "faults": [],
+  "lines": []
+ },
+ {
+  "request": {
+   "script": "test-cookie-5.php",
+   "GET": {
+    "vul1": "6"
+   },
+   "POST": {
+    "nv1": "nv_val1"
+   },
+   "COOKIE": {
+    "nv1": "1",
+    "nv3": "3",
+    "nv4": "4"
+   }
+  },
+  "exit": 0,
+  "body_bytes": 213,
+  "headers": "X-Powered-By: PHP/7.4.4\r\nContent-type: text/html; charset=UTF-8",
+  "faults": [],
+  "lines": []
+ },
+ {
+  "request": {
+   "script": "test-cookie-5.php",
+   "GET": {
+    "vul1": "6"
+   },
+   "POST": {
+    "nv1": "nv_val1"
+   },
+   "COOKIE": {
+    "nv1": "1",
+    "nv2": "2",
+    "nv4": "4"
+   }
+  },
+  "exit": 0,
+  "body_bytes": 213,
+  "headers": "X-Powered-By: PHP/7.4.4\r\nContent-type: text/html; charset=UTF-8",
+  "faults": [],
+  "lines": []
+ },
+ {
+  "request": {
+   "script": "test-cookie-5.php",
+   "GET": {
+    "vul1": "6"
+   },
+   "POST": {
+    "nv1": "nv_val1"
+   },
+   "COOKIE": {
+    "nv1": "1",
+    "nv2": "2",
+    "nv3": "3"
+   }
+  },
+  "exit": 0,
+  "body_bytes": 213,
+  "headers": "X-Powered-By: PHP/7.4.4\r\nContent-type: text/html; charset=UTF-8",
+  "faults": [],
+  "lines": []
+ },
+ {
+  "request": {
+   "script": "test-cookie-5.php",
+   "GET": {
+    "vul1": "6"
+   },
+   "POST": {
+    "nv1": "nv_val1"
+   },
+   "COOKIE": {
+    "nv1": "1",
+    "nv2": "2",
+    "nv3": "3",
+    "nv4": "4",
+    "nv5": ""
+   }
+  },
+  "exit": 0,
+  "body_bytes": 226,
+  "headers": "X-Powered-By: PHP/7.4.4\r\nContent-type: text/html; charset=UTF-8",
+  "faults": [
+   {
+    "kind": "sql",
+    "errno": 1064,
+    "sql": "select * from user where id=0'"
+   }
+  ],
+  "lines": [
+   "test-cookie-5.php:22"
+  ]
+ },
+ {
+  "request": {
+   "script": "test-cookie-5.php",
+   "GET": {
+    "vul1": "6"
+   },
+   "POST": {
+    "nv1": "nv_val1"
+   },
+   "COOKIE": {
+    "nv1": "1",
+    "nv2": "2",
+    "nv3": "3",
+    "nv4": "4",
+    "nv5": "",
+    "vul1": ""
+   }
+  },
+  "exit": 0,
+  "body_bytes": 226,
+  "headers": "X-Powered-By: PHP/7.4.4\r\nContent-type: text/html; charset=UTF-8",
+  "faults": [
+   {
+    "kind": "sql",
+    "errno": 1064,
+    "sql": "select * from user where id=0'"
+   }
+  ],
+  "lines": [
+   "test-cookie-5.php:22"
+  ]
+ },
+ {
+  "request": {
+   "script": "test-equal-1.php",
+   "GET": {
+    "vul1": "6"
+   },
+   "POST": {
+    "nv1": "SSSS"
+   },
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 215,
+  "headers": "X-Powered-By: PHP/7.4.4\r\nContent-type: text/html; charset=UTF-8",
+  "faults": [],
+  "lines": []
+ },
+ {
+  "request": {
+   "script": "test-equal-1.php",
+   "GET": {
+    "nv1": "",
+    "vul1": "6"
+   },
+   "POST": {
+    "nv1": "SSSS"
+   },
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 215,
+  "headers": "X-Powered-By: PHP/7.4.4\r\nContent-type: text/html; charset=UTF-8",
+  "faults": [],
+  "lines": []
+ },
+ {
+  "request": {
+   "script": "test-equal-1.php",
+   "GET": {
+    "vul1": "6",
+    "nv1": "YYYY"
+   },
+   "POST": {
+    "nv1": "SSSS"
+   },
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 226,
+  "headers": "X-Powered-By: PHP/7.4.4\r\nContent-type: text/html; charset=UTF-8",
+  "faults": [
+   {
+    "kind": "sql",
+    "errno": 1064,
+    "sql": "select * from user where id='"
+   }
+  ],
+  "lines": [
+   "test-equal-1.php:16"
+  ]
+ },
+ {
+  "request": {
+   "script": "test-findvar-1.php",
+   "GET": {
+    "aaa": "1"
+   },
+   "POST": {},
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 213,
+  "headers": "X-Powered-By: PHP/7.4.4\r\nContent-type: text/html; charset=UTF-8",
+  "faults": [],
+  "lines": []
+ },
+ {
+  "request": {
+   "script": "test-findvar-1.php",
+   "GET": {
+    "aaa": "1"
+   },
+   "POST": {
+    "ao3": ""
+   },
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 226,
+  "headers": "X-Powered-By: PHP/7.4.4\r\nContent-type: text/html; charset=UTF-8",
+  "faults": [
+   {
+    "kind": "sql",
+    "errno": 1064,
+    "sql": "select * from user where id='"
+   }
+  ],
+  "lines": [
+   "test-findvar-1.php:16"
+  ]
+ },
+ {
+  "request": {
+   "script": "test-get-5-crosspol.php",
+   "GET": {
+    "nv3": "3",
+    "nv82": "4"
+   },
+   "POST": {},
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 213,
+  "headers": "X-Powered-By: PHP/7.4.4\r\nContent-type: text/html; charset=UTF-8",
+  "faults": [],
+  "lines": []
+ },
+ {
+  "request": {
+   "script": "test-get-5-crosspol.php",
+   "GET": {
+    "nv1": "1",
+    "nv2": "2",
+    "nv3": "3",
+    "nv92": "5"
+   },
+   "POST": {},
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 213,
+  "headers": "X-Powered-By: PHP/7.4.4\r\nContent-type: text/html; charset=UTF-8",
+  "faults": [],
+  "lines": []
+ },
+ {
+  "request": {
+   "script": "test-get-5-crosspol.php",
+   "GET": {
+    "nv1": "",
+    "nv3": "3",
+    "nv82": "4"
+   },
+   "POST": {},
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 213,
+  "headers": "X-Powered-By: PHP/7.4.4\r\nContent-type: text/html; charset=UTF-8",
+  "faults": [],
+  "lines": []
+ },
+ {
+  "request": {
+   "script": "test-get-5-crosspol.php",
+   "GET": {
+    "nv1": "1",
+    "nv2": "2",
+    "nv92": "5"
+   },
+   "POST": {},
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 213,
+  "headers": "X-Powered-By: PHP/7.4.4\r\nContent-type: text/html; charset=UTF-8",
+  "faults": [],
+  "lines": []
+ },
+ {
+  "request": {
+   "script": "test-get-5-crosspol.php",
+   "GET": {
+    "nv1": "1",
+    "nv2": "2",
+    "nv3": "3",
+    "nv82": "",
+    "nv92": "5"
+   },
+   "POST": {},
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 226,
+  "headers": "X-Powered-By: PHP/7.4.4\r\nContent-type: text/html; charset=UTF-8",
+  "faults": [
+   {
+    "kind": "sql",
+    "errno": 1064,
+    "sql": "select * from user where id='"
+   }
+  ],
+  "lines": [
+   "test-get-5-crosspol.php:22"
+  ]
+ },
+ {
+  "request": {
+   "script": "test-get-5-crosspol.php",
+   "GET": {
+    "nv1": "",
+    "nv2": "",
+    "nv3": "3",
+    "nv82": "4"
+   },
+   "POST": {},
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 213,
+  "headers": "X-Powered-By: PHP/7.4.4\r\nContent-type: text/html; charset=UTF-8",
+  "faults": [],
+  "lines": []
+ },
+ {
+  "request": {
+   "script": "test-get-5-crosspol.php",
+   "GET": {
+    "nv1": "1",
+    "nv2": "2",
+    "nv3": "3",
+    "nv82": "",
+    "nv92": "5",
+    "vul1": ""
+   },
+   "POST": {},
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 226,
+  "headers": "X-Powered-By: PHP/7.4.4\r\nContent-type: text/html; charset=UTF-8",
+  "faults": [
+   {
+    "kind": "sql",
+    "errno": 1064,
+    "sql": "select * from user where id='"
+   }
+  ],
+  "lines": [
+   "test-get-5-crosspol.php:22"
+  ]
+ },
+ {
+  "request": {
+   "script": "test-select-3.php",
+   "GET": {
+    "sel1": "s-val2b"
+   },
+   "POST": {},
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 215,
+  "headers": "X-Powered-By: PHP/7.4.4\r\nContent-type: text/html; charset=UTF-8",
+  "faults": [],
+  "lines": []
+ },
+ {
+  "request": {
+   "script": "test-select-3.php",
+   "GET": {},
+   "POST": {},
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 215,
+  "headers": "X-Powered-By: PHP/7.4.4\r\nContent-type: text/html; charset=UTF-8",
+  "faults": [],
+  "lines": []
+ },
+ {
+  "request": {
+   "script": "test-select-3.php",
+   "GET": {
+    "sel1": "s-val1a"
+   },
+   "POST": {},
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 215,
+  "headers": "X-Powered-By: PHP/7.4.4\r\nContent-type: text/html; charset=UTF-8",
+  "faults": [],
+  "lines": []
+ },
+ {
+  "request": {
+   "script": "test-select-3.php",
+   "GET": {
+    "sel1": "s-val1a",
+    "sel2": ""
+   },
+   "POST": {},
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 215,
+  "headers": "X-Powered-By: PHP/7.4.4\r\nContent-type: text/html; charset=UTF-8",
+  "faults": [],
+  "lines": []
+ },
+ {
+  "request": {
+   "script": "test-select-3.php",
+   "GET": {
+    "sel1": "s-val1a",
+    "sel2": "s-val2b"
+   },
+   "POST": {},
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 215,
+  "headers": "X-Powered-By: PHP/7.4.4\r\nContent-type: text/html; charset=UTF-8",
+  "faults": [],
+  "lines": []
+ },
+ {
+  "request": {
+   "script": "test-select-3.php",
+   "GET": {
+    "sel1": "s-val1a",
+    "sel2": "s-val2b",
+    "sel3": ""
+   },
+   "POST": {},
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 215,
+  "headers": "X-Powered-By: PHP/7.4.4\r\nContent-type: text/html; charset=UTF-8",
+  "faults": [],
+  "lines": []
+ },
+ {
+  "request": {
+   "script": "test-select-3.php",
+   "GET": {
+    "sel1": "s-val1a",
+    "sel2": "s-val2b",
+    "sel3": "s-val3c"
+   },
+   "POST": {},
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 226,
+  "headers": "X-Powered-By: PHP/7.4.4\r\nContent-type: text/html; charset=UTF-8",
+  "faults": [
+   {
+    "kind": "sql",
+    "errno": 1064,
+    "sql": "select * from user where id=0'"
+   }
+  ],
+  "lines": [
+   "test-select-3.php:20"
+  ]
+ },
+ {
+  "request": {
+   "script": "test-select-3.php",
+   "GET": {
+    "sel1": "s-val1a",
+    "sel2": "s-val2b",
+    "sel3": "s-val3c",
+    "vul1": ""
+   },
+   "POST": {},
+   "COOKIE": {}
+  },
+  "exit": 0,
+  "body_bytes": 226,
+  "headers": "X-Powered-By: PHP/7.4.4\r\nContent-type: text/html; charset=UTF-8",
+  "faults": [
+   {
+    "kind": "sql",
+    "errno": 1064,
+    "sql": "select * from user where id=0'"
+   }
+  ],
+  "lines": [
+   "test-select-3.php:20"
+  ]
+ }
+]

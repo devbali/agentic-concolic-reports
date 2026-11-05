@@ -1,0 +1,44 @@
+{
+ "schema_version": "1.5",
+ "label": "r01_000",
+ "symbolic_vars": [],
+ "events": [
+  {
+   "type": "concrete_call",
+   "target": "session_start",
+   "args": {},
+   "summary": {
+    "args": []
+   },
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-v2_smoke_cold/viewmessage.php",
+   "lineno": 20,
+   "function": "include"
+  }
+ ],
+ "types": {},
+ "declarations": {
+  "system": {
+   "kind": "target_function"
+  },
+  "exec": {
+   "kind": "target_function"
+  },
+  "shell_exec": {
+   "kind": "target_function"
+  },
+  "passthru": {
+   "kind": "target_function"
+  },
+  "popen": {
+   "kind": "target_function"
+  },
+  "proc_open": {
+   "kind": "target_function"
+  }
+ },
+ "request": {
+  "GET": {},
+  "POST": {},
+  "COOKIE": {}
+ }
+}

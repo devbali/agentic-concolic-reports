@@ -19,7 +19,6 @@
  */
 
 define('ACE_HARNESS_V2_LIB', true);
-define('ACE_HARNESS_LIB', true);
 require __DIR__ . '/harness_v2.php';
 
 use Concolic\Runtime;
@@ -291,8 +290,11 @@ function __ace_write_result(?Throwable $caught): void
 register_shutdown_function(static function (): void {
     // Reached only if the request did not come back to file scope: a fatal
     // error, or a real `exit` in a file the instrumentor could not rewrite.
+    // Only a FATAL last error explains the exit; anything else (a warning) is stale, and the
+    // process ended in a real `exit` (E3 exitAsHalt is port plan P4).
     $e = error_get_last();
-    __ace_write_result(new Error($e ? "fatal: {$e['message']} at {$e['file']}:{$e['line']}" : 'the process exited inside the app'));
+    $fatal = $e && in_array($e['type'], [E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR, E_USER_ERROR], true);
+    __ace_write_result(new Error($fatal ? "fatal: {$e['message']} at {$e['file']}:{$e['line']}" : 'the process exited inside the app'));
 });
 
 $__ace_inputs = AceState::$rt->begin($__ace_seeds, AceState::$request['label'] ?? null, [], $__ace_types);

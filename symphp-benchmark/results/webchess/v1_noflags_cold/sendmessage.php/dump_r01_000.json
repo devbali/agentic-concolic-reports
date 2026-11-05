@@ -1,0 +1,49 @@
+{
+ "schema_version": "1.4",
+ "label": "r01_000",
+ "error": {
+  "type": "Error",
+  "message": "the process exited inside the app",
+  "traceback": "#0 [internal function]: {closure}()\n#1 {main}"
+ },
+ "symbolic_vars": [],
+ "events": [
+  {
+   "type": "concrete_call",
+   "target": "session_start",
+   "args": {},
+   "summary": {
+    "args": []
+   },
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-v1_noflags_cold/sendmessage.php",
+   "lineno": 21,
+   "function": "include"
+  }
+ ],
+ "types": {},
+ "declarations": {
+  "system": {
+   "kind": "target_function"
+  },
+  "exec": {
+   "kind": "target_function"
+  },
+  "shell_exec": {
+   "kind": "target_function"
+  },
+  "passthru": {
+   "kind": "target_function"
+  },
+  "popen": {
+   "kind": "target_function"
+  },
+  "proc_open": {
+   "kind": "target_function"
+  }
+ },
+ "request": {
+  "GET": {},
+  "POST": {},
+  "COOKIE": {}
+ }
+}

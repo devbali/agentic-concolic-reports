@@ -1,0 +1,56 @@
+{
+ "schema_version": "1.5",
+ "label": "r01_000",
+ "symbolic_vars": [],
+ "events": [
+  {
+   "type": "concrete_call",
+   "target": "mysqli_query",
+   "args": {
+    "arg1": {
+     "lit": {
+      "sort": "str",
+      "value": "SELECT * FROM history WHERE ((replaced > '') OR (curPiece = 'pawn' AND toCol <> fromCol AND replaced IS NULL)) AND gameID =  '' ORDER BY curColor DESC, replaced DESC"
+     }
+    }
+   },
+   "note": "{\"statement_arg\":\"arg1\",\"text\":\"SELECT * FROM history WHERE ((replaced > '') OR (curPiece = 'pawn' AND toCol <> fromCol AND replaced IS NULL)) AND gameID =  '' ORDER BY curColor DESC, replaced DESC\"}",
+   "summary": {
+    "text": "SELECT * FROM history WHERE ((replaced > '') OR (curPiece = 'pawn' AND toCol <> fromCol AND replaced IS NULL)) AND gameID =  '' ORDER BY curColor DESC, replaced DESC",
+    "ok": true,
+    "errno": 0,
+    "error": "",
+    "rows": 0
+   },
+   "file": "/home/jamie/ace-eval/agentic-concolic-reports/symphp-benchmark/build/webchess-v2_smoke_cold/capt.php",
+   "lineno": 25,
+   "function": "include"
+  }
+ ],
+ "types": {},
+ "declarations": {
+  "system": {
+   "kind": "target_function"
+  },
+  "exec": {
+   "kind": "target_function"
+  },
+  "shell_exec": {
+   "kind": "target_function"
+  },
+  "passthru": {
+   "kind": "target_function"
+  },
+  "popen": {
+   "kind": "target_function"
+  },
+  "proc_open": {
+   "kind": "target_function"
+  }
+ },
+ "request": {
+  "GET": {},
+  "POST": {},
+  "COOKIE": {}
+ }
+}
